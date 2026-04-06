@@ -6,579 +6,665 @@
 <meta name="theme-color" content="#09090f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="I&N RUN — Chauffeur Privé Paris. CDG, Orly, longue distance. Tarifs fixes. Réservez en 1 tap.">
+<meta name="description" content="I&N RUN — Chauffeur Privé Paris. Réservez en 30 secondes.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
 <style>
-/* ===== VARIABLES & RESET ===== */
-:root {
-  --ink:#09090f; --surface:#14141f; --surface2:#1e1e30;
-  --gold:#c9a84c; --gold-l:#e8c97a; --gold-glow:rgba(201,168,76,.22);
-  --green:#22c55e; --green-glow:rgba(34,197,94,.2);
-  --wa:#25D366;
-  --white:#f4f3ef; --muted:#888;
-  --border:rgba(255,255,255,.07); --border-gold:rgba(201,168,76,.28);
-  --r:16px; --rl:24px; --rxl:32px;
-  --ease:cubic-bezier(.23,1,.32,1);
-  /* Touch targets */
-  --tap:52px;
+:root{
+  --ink:#09090f;--s1:#13131e;--s2:#1b1b2a;--s3:#222235;
+  --gold:#c9a84c;--gold-l:#e8c97a;--glow:rgba(201,168,76,.18);
+  --green:#16a34a;--green-l:#22c55e;--wa:#128C7E;
+  --white:#f0efe9;--gray:#6b7280;--gray2:#9ca3af;
+  --b:rgba(255,255,255,.07);--bg:rgba(201,168,76,.22);
+  --r:14px;--rl:22px;--rxl:28px;
+  --ease:cubic-bezier(.23,1,.32,1);--tap:54px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
-body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.6;padding-bottom:90px;}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.6;padding-bottom:76px;}
 a{text-decoration:none;color:inherit;}
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--gold);}
 
 /* ===== HEADER ===== */
 .hdr{
   position:fixed;top:0;left:0;right:0;z-index:999;
+  padding-top:env(safe-area-inset-top,0);
   background:rgba(9,9,15,.92);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-bottom:1px solid var(--border);
-  padding:env(safe-area-inset-top,0) 0 0;
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-bottom:1px solid var(--b);
 }
-.hdr-inner{
+.nav{
+  max-width:520px;margin:0 auto;
+  height:58px;padding:0 20px;
   display:flex;align-items:center;justify-content:space-between;
-  height:60px;padding:0 20px;max-width:600px;margin:0 auto;
 }
 .logo{
-  font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;
+  font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;
   background:linear-gradient(135deg,var(--gold),var(--gold-l));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:-.01em;
 }
-.hdr-wa{
-  display:flex;align-items:center;gap:8px;
-  background:var(--wa);color:#000;font-weight:700;font-size:.85rem;
-  padding:10px 18px;border-radius:50px;
+.nav-wa{
+  background:var(--wa);color:#fff;font-weight:600;font-size:.82rem;
+  padding:9px 18px;border-radius:50px;letter-spacing:.01em;
   transition:all .3s var(--ease);
 }
-.hdr-wa:hover{transform:scale(1.05);}
+.nav-wa:hover{transform:scale(1.04);}
 
 /* ===== HERO ===== */
 .hero{
-  min-height:100svh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:100px 20px 60px;
+  padding:88px 24px 0;
   background:
-    radial-gradient(ellipse 120% 60% at 50% 0%,rgba(201,168,76,.1) 0%,transparent 70%),
-    radial-gradient(ellipse 80% 50% at 80% 100%,rgba(34,197,94,.05) 0%,transparent 60%),
-    linear-gradient(180deg,var(--ink) 0%,var(--surface) 100%);
-  position:relative;overflow:hidden;
+    radial-gradient(ellipse 140% 60% at 50% 0%,rgba(201,168,76,.08),transparent 65%),
+    linear-gradient(180deg,var(--ink) 0%,var(--s1) 100%);
+  text-align:center;position:relative;overflow:hidden;
 }
-/* Orb flottant */
 .hero::before{
-  content:'';position:absolute;width:400px;height:400px;border-radius:50%;
-  background:radial-gradient(circle,rgba(201,168,76,.12),transparent 70%);
-  top:-100px;left:50%;transform:translateX(-50%);
-  animation:orb 7s ease-in-out infinite;
+  content:'';position:absolute;width:600px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,.09),transparent 70%);
+  top:0;left:50%;transform:translateX(-50%);
+  animation:orb 9s ease-in-out infinite;
 }
-@keyframes orb{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+@keyframes orb{0%,100%{transform:translateX(-50%) scaleX(1)}50%{transform:translateX(-50%) scaleX(1.1)}}
 
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:9px 18px;border-radius:50px;
-  background:var(--green-glow);border:1px solid rgba(34,197,94,.4);
-  font-size:.8rem;font-weight:600;color:var(--green);
-  margin-bottom:28px;position:relative;z-index:1;
-  animation:badgepulse 2.5s infinite;
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 16px;border-radius:50px;
+  background:rgba(22,163,74,.12);border:1px solid rgba(34,197,94,.3);
+  font-size:.72rem;font-weight:700;color:var(--green-l);letter-spacing:.05em;text-transform:uppercase;
+  margin-bottom:22px;position:relative;z-index:1;
 }
-@keyframes badgepulse{0%,100%{box-shadow:0 0 0 0 var(--green-glow)}50%{box-shadow:0 0 0 10px transparent}}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:dotblink 1.5s infinite;}
-@keyframes dotblink{0%,100%{opacity:1}50%{opacity:.2}}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 1.6s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
 
 .hero-title{
   font-family:'Playfair Display',serif;
-  font-size:clamp(2.8rem,12vw,5.5rem);font-weight:700;line-height:1.05;
-  letter-spacing:-.03em;margin-bottom:20px;position:relative;z-index:1;
+  font-size:clamp(2.4rem,10vw,4.2rem);font-weight:700;line-height:1.08;
+  letter-spacing:-.03em;position:relative;z-index:1;margin-bottom:14px;
 }
-.hero-title .gold{
-  display:block;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l) 50%,var(--gold));
+.hero-title .g{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  background-size:200%;animation:shine 4s infinite;
+  background-size:200%;animation:shine 4.5s infinite;
 }
 @keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
-.hero-sub{
-  font-size:clamp(.95rem,4vw,1.1rem);color:var(--muted);
-  max-width:400px;margin:0 auto 36px;position:relative;z-index:1;
+.hero-copy{
+  font-size:clamp(.88rem,3.5vw,1rem);color:var(--gray2);
+  max-width:340px;margin:0 auto 32px;position:relative;z-index:1;line-height:1.75;
 }
-.hero-btns{display:flex;flex-direction:column;gap:14px;width:100%;max-width:360px;position:relative;z-index:1;}
-.btn-main{
-  height:var(--tap);border-radius:50px;font-size:1rem;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:all .35s var(--ease);
+/* Proof line */
+.proof{
+  display:flex;justify-content:center;gap:24px;
+  margin-bottom:40px;position:relative;z-index:1;
+  flex-wrap:wrap;
 }
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;box-shadow:0 12px 35px rgba(201,168,76,.35);}
-.btn-gold:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(201,168,76,.45);}
-.btn-outline{background:rgba(255,255,255,.06);border:1px solid var(--border-gold);color:var(--white);}
-.btn-outline:hover{background:var(--gold-glow);}
+.proof-item{text-align:center;}
+.proof-val{font-weight:700;font-size:1.05rem;color:var(--white);}
+.proof-lbl{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
 
-/* ===== SECTION TEMPLATE ===== */
-.sec{padding:64px 20px;max-width:600px;margin:0 auto;}
-.sec-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,7vw,2.8rem);font-weight:700;letter-spacing:-.02em;margin-bottom:32px;line-height:1.15;}
-.sec-title span{background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* ===== TUNNEL ===== */
+.tunnel{max-width:520px;margin:0 auto;padding:0 20px;}
 
-/* ===== TARIFF CARDS ===== */
-.tariff-list{display:flex;flex-direction:column;gap:16px;}
-.tariff-row{
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:var(--rl);padding:22px 24px;
-  transition:all .3s var(--ease);
-}
-.tariff-row:hover{border-color:var(--border-gold);background:var(--gold-glow);}
-.tariff-info{display:flex;align-items:center;gap:14px;}
-.tariff-icon{font-size:1.6rem;}
-.tariff-name{font-weight:600;font-size:1rem;}
-.tariff-note{font-size:.8rem;color:var(--muted);margin-top:2px;}
-.tariff-price{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);}
-.tariff-reserve{
-  display:block;text-align:center;margin-top:10px;
-  padding:14px;border-radius:var(--r);
-  background:var(--green-glow);border:1px solid rgba(34,197,94,.3);
-  color:var(--green);font-size:.85rem;font-weight:600;
-  cursor:pointer;transition:all .3s var(--ease);
-}
-.tariff-reserve:hover{background:rgba(34,197,94,.15);}
-
-/* ===== MESSAGES PRÉ-RÉDIGÉS ===== */
-.msg-grid{display:flex;flex-direction:column;gap:14px;}
-.msg-card{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:var(--rl);padding:20px;
-  transition:all .3s var(--ease);cursor:pointer;
-}
-.msg-card:hover,.msg-card:active{border-color:var(--wa);background:rgba(37,211,102,.06);}
-.msg-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.msg-title{font-weight:600;font-size:.95rem;display:flex;align-items:center;gap:8px;}
-.msg-tag{
-  font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:4px 10px;border-radius:50px;
-}
-.tag-airport{background:rgba(201,168,76,.2);color:var(--gold);}
-.tag-pro{background:rgba(100,149,237,.2);color:#6495ed;}
-.tag-urgent{background:rgba(239,68,68,.2);color:#ef4444;}
-.tag-info{background:rgba(34,197,94,.2);color:var(--green);}
-.msg-preview{font-size:.85rem;color:var(--muted);line-height:1.5;margin-bottom:14px;}
-.msg-send{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--wa);color:#000;font-weight:700;font-size:.85rem;
-  padding:10px 20px;border-radius:50px;
-  transition:all .3s var(--ease);
-}
-.msg-send:hover{transform:scale(1.04);}
-
-/* ===== CALCULATOR ===== */
-.calc-box{
-  background:var(--surface2);border:1px solid var(--border-gold);
-  border-radius:var(--rxl);padding:32px 24px;
-}
-.field-group{margin-bottom:20px;}
-.field-lbl{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
-.field-wrap{
-  display:flex;align-items:center;
-  background:rgba(255,255,255,.05);border:1.5px solid var(--border);
-  border-radius:var(--r);transition:all .3s var(--ease);
-}
-.field-wrap:focus-within{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-glow);}
-.f-icon{padding:0 14px;font-size:1.1rem;flex-shrink:0;}
-.f-input{
-  flex:1;height:var(--tap);background:transparent;border:none;outline:none;
-  color:var(--white);font-size:1rem;font-family:'Inter',sans-serif;padding-right:14px;
-}
-.f-input::placeholder{color:var(--muted);}
-.swap-row{display:flex;justify-content:center;margin:8px 0;}
-.swap-btn{
-  width:40px;height:40px;border-radius:50%;background:var(--surface);
-  border:1px solid var(--border-gold);color:var(--gold);font-size:1.1rem;
-  cursor:pointer;transition:all .4s var(--ease);
+/* Step indicator */
+.steps{
   display:flex;align-items:center;justify-content:center;
+  gap:0;margin:36px 0 32px;
 }
-.swap-btn:hover{background:var(--gold-glow);transform:rotate(180deg);}
-.btn-calcul{
-  width:100%;height:var(--tap);border-radius:var(--r);
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  color:#000;font-weight:700;font-size:1rem;
-  border:none;cursor:pointer;margin-top:8px;
+.step{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex:1;position:relative;
+}
+.step:not(:last-child)::after{
+  content:'';position:absolute;top:16px;left:60%;width:80%;height:1px;
+  background:var(--b);
+}
+.step.active:not(:last-child)::after{background:rgba(201,168,76,.3);}
+.step-num{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;
+  background:var(--s3);border:1.5px solid var(--b);color:var(--gray);
   transition:all .4s var(--ease);
 }
-.btn-calcul:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(201,168,76,.4);}
-.btn-calcul.loading{opacity:.7;pointer-events:none;}
-.spin{width:18px;height:18px;border-radius:50%;border:3px solid rgba(0,0,0,.2);border-top-color:#000;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+.step.active .step-num{background:var(--gold);border-color:var(--gold);color:#000;}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#fff;}
+.step-lbl{font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);transition:color .4s;}
+.step.active .step-lbl{color:var(--gold);}
+.step.done .step-lbl{color:var(--green-l);}
+
+/* Card step */
+.card{
+  background:var(--s2);border:1px solid var(--b);
+  border-radius:var(--rxl);padding:28px 22px;
+  margin-bottom:16px;
+  transition:all .4s var(--ease);
+}
+.card.active{border-color:rgba(201,168,76,.3);box-shadow:0 0 0 1px rgba(201,168,76,.08);}
+.card.locked{opacity:.45;pointer-events:none;filter:blur(.5px);}
+.card-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:0;
+  cursor:pointer;
+}
+.card-num{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;
+  background:var(--gold);color:#000;
+}
+.card.locked .card-num{background:var(--s3);color:var(--gray);}
+.card-title{font-weight:700;font-size:1rem;}
+.card-sub{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.card-body{margin-top:22px;}
+
+/* ===== FLATPICKR INLINE ===== */
+#cal-inline{margin:0 auto;}
+.flatpickr-calendar.inline{
+  background:transparent !important;
+  box-shadow:none !important;border:none !important;
+  width:100% !important;max-width:100% !important;
+}
+.flatpickr-calendar{
+  font-family:'Inter',sans-serif !important;
+  border-radius:var(--rl) !important;
+}
+.flatpickr-months{background:transparent !important;}
+.flatpickr-month{height:44px !important;background:transparent !important;}
+.flatpickr-current-month{
+  font-family:'Playfair Display',serif !important;
+  font-size:1.1rem !important;color:var(--white) !important;
+  padding-top:10px !important;
+}
+.flatpickr-monthDropdown-months{
+  background:var(--s2) !important;color:var(--white) !important;
+}
+.cur-year{color:var(--gold) !important;}
+.numInputWrapper input{color:var(--gold) !important;}
+.flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--gold) !important;}
+.flatpickr-weekday{
+  background:transparent !important;
+  color:var(--gold) !important;font-weight:700 !important;font-size:.72rem !important;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.flatpickr-days{border:none !important;}
+.dayContainer{padding:4px 0 !important;width:100% !important;min-width:100% !important;max-width:100% !important;}
+.flatpickr-day{
+  color:var(--white) !important;border-radius:var(--r) !important;
+  font-size:.9rem !important;max-width:14.28% !important;
+  height:42px !important;line-height:42px !important;
+  transition:all .2s !important;
+}
+.flatpickr-day:hover{background:var(--glow) !important;border-color:rgba(201,168,76,.3) !important;}
+.flatpickr-day.selected{
+  background:var(--gold) !important;border-color:var(--gold) !important;
+  color:#000 !important;font-weight:700 !important;
+}
+.flatpickr-day.today{
+  border-color:rgba(201,168,76,.4) !important;
+  color:var(--gold) !important;font-weight:600 !important;
+}
+.flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{
+  color:var(--gray) !important;opacity:.3 !important;
+}
+
+/* ===== FORM FIELDS ===== */
+.f-row{margin-bottom:16px;}
+.f-lbl{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.f-wrap{
+  display:flex;align-items:center;
+  background:rgba(255,255,255,.05);border:1.5px solid var(--b);
+  border-radius:var(--r);transition:all .3s var(--ease);
+  overflow:hidden;
+}
+.f-wrap:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
+.f-ic{
+  width:40px;text-align:center;font-size:.8rem;font-weight:700;
+  color:var(--gray2);flex-shrink:0;letter-spacing:.02em;
+}
+.f-in{
+  flex:1;height:var(--tap);background:transparent;border:none;outline:none;
+  color:var(--white);font-size:.95rem;font-family:'Inter',sans-serif;padding-right:14px;
+}
+.f-in::placeholder{color:var(--gray);}
+select.f-in{cursor:pointer;}
+option{background:var(--s2);color:var(--white);}
+
+.swap-row{display:flex;justify-content:center;margin:4px 0;}
+.swap-b{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--s1);border:1px solid rgba(201,168,76,.25);
+  color:var(--gold);font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .4s var(--ease);
+}
+.swap-b:hover{background:var(--glow);transform:rotate(180deg);}
+
+.btn-next{
+  width:100%;height:var(--tap);border-radius:var(--r);
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:#000;font-weight:700;font-size:.95rem;
+  border:none;cursor:pointer;margin-top:8px;letter-spacing:.01em;
+  transition:all .4s var(--ease);
+}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(201,168,76,.35);}
+.btn-next:disabled{opacity:.5;pointer-events:none;}
+.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(0,0,0,.2);border-top-color:#000;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* RESULT */
+/* Summary badge */
+.summary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--glow);border:1px solid rgba(201,168,55,.3);
+  border-radius:50px;padding:7px 16px;
+  font-size:.8rem;font-weight:600;color:var(--gold);
+  margin-top:12px;
+}
+
+/* ===== RESULT ===== */
 .result-box{
-  margin-top:24px;background:rgba(34,197,94,.05);
-  border:1px solid rgba(34,197,94,.2);border-radius:var(--rl);
-  padding:28px 20px;text-align:center;display:none;
-  animation:slideup .5s var(--ease);
+  background:var(--s2);border:1px solid rgba(34,197,94,.2);
+  border-radius:var(--rxl);padding:28px 22px;
+  margin-bottom:16px;display:none;
+  animation:su .5s var(--ease);
 }
 .result-box.show{display:block;}
-@keyframes slideup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.res-lbl{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.res-price{
+@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.r-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:4px;}
+.r-price{
   font-family:'Playfair Display',serif;
-  font-size:clamp(3rem,14vw,5rem);font-weight:700;line-height:1;
+  font-size:clamp(3.2rem,13vw,5rem);font-weight:700;line-height:1;
   background:linear-gradient(135deg,var(--gold),var(--gold-l));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
-.res-meta{font-size:.85rem;color:var(--muted);margin-bottom:24px;}
-.res-meta strong{color:var(--white);}
-.map-box{height:260px;border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
-.btn-wa-res{
+.r-meta{font-size:.8rem;color:var(--gray);margin-bottom:20px;}
+.r-meta strong{color:var(--white);}
+.map-w{height:230px;border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
+.btn-wa-final{
   display:flex;align-items:center;justify-content:center;gap:10px;
   width:100%;height:var(--tap);border-radius:var(--r);
-  background:var(--wa);color:#000;font-weight:700;font-size:.95rem;
+  background:var(--wa);color:#fff;font-weight:700;font-size:.92rem;
+  transition:all .3s var(--ease);letter-spacing:.01em;
+}
+.btn-wa-final:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,140,126,.35);}
+
+/* ===== TRUST STRIP ===== */
+.trust-strip{
+  display:flex;overflow-x:auto;gap:12px;
+  padding:0 20px 32px;
+  max-width:520px;margin:0 auto;
+  scrollbar-width:none;
+}
+.trust-strip::-webkit-scrollbar{display:none;}
+.trust-chip{
+  flex-shrink:0;
+  background:rgba(255,255,255,.04);border:1px solid var(--b);
+  border-radius:50px;padding:10px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  white-space:nowrap;
+}
+.tc-val{font-weight:700;font-size:.88rem;}
+.tc-lbl{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
+
+/* ===== TARIFS SECTION ===== */
+.sec{padding:48px 20px;max-width:520px;margin:0 auto;}
+.sec-lbl{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.sec-h{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:22px;line-height:1.2;}
+.sec-h span{background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tariff-list{display:flex;flex-direction:column;gap:10px;}
+.t-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.04);border:1px solid var(--b);
+  border-radius:var(--rl);padding:18px 20px;
   transition:all .3s var(--ease);
 }
-.btn-wa-res:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.4);}
+.t-row:hover{border-color:rgba(201,168,76,.28);background:rgba(201,168,76,.05);}
+.t-name{font-weight:600;font-size:.92rem;}
+.t-note{font-size:.75rem;color:var(--gray);margin-top:2px;}
+.t-price{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-/* ===== TRUST BADGES ===== */
-.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.trust-card{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:var(--rl);padding:22px 18px;text-align:center;
+/* ===== CONTACT ===== */
+.contact-list{display:flex;flex-direction:column;gap:10px;}
+.c-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.04);border:1px solid var(--b);
+  border-radius:var(--rl);padding:16px 20px;
   transition:all .3s var(--ease);
 }
-.trust-card:hover{border-color:var(--border-gold);}
-.trust-icon{font-size:1.8rem;margin-bottom:10px;}
-.trust-val{font-weight:700;font-size:1.1rem;margin-bottom:4px;}
-.trust-name{font-size:.78rem;color:var(--muted);}
+.c-row:hover{border-color:rgba(201,168,76,.28);}
+.c-label{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);}
+.c-val{font-size:.9rem;font-weight:500;margin-top:2px;}
+.c-act{
+  padding:9px 16px;border-radius:50px;font-size:.8rem;font-weight:600;
+  background:var(--glow);border:1px solid rgba(201,168,76,.28);color:var(--gold);
+  transition:all .3s var(--ease);white-space:nowrap;
+}
+.c-act:hover{background:rgba(201,168,76,.16);}
+.btn-vcard{
+  width:100%;height:var(--tap);border-radius:var(--r);margin-top:14px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.25);
+  color:var(--gold);font-weight:600;font-size:.9rem;cursor:pointer;
+  transition:all .3s var(--ease);letter-spacing:.01em;
+}
+.btn-vcard:hover{background:var(--glow);}
 
-/* ===== STICKY BOTTOM BAR ===== */
-.sticky-bar{
+.footer{text-align:center;color:var(--gray);font-size:.72rem;padding:24px 20px;border-top:1px solid var(--b);}
+
+/* ===== STICKY BAR ===== */
+.sticky{
   position:fixed;bottom:0;left:0;right:0;z-index:998;
-  padding:12px 20px env(safe-area-inset-bottom,12px);
-  background:rgba(9,9,15,.97);
+  padding:10px 20px env(safe-area-inset-bottom,10px);
+  background:rgba(9,9,15,.96);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  display:flex;gap:12px;max-width:600px;margin:0 auto;
+  border-top:1px solid var(--b);
+  display:flex;gap:10px;
 }
-.sticky-bar a{
-  flex:1;height:50px;border-radius:50px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-weight:700;font-size:.9rem;
+.sb{
+  flex:1;height:46px;border-radius:50px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.85rem;gap:6px;
   transition:all .3s var(--ease);
 }
-.sb-wa{background:var(--wa);color:#000;box-shadow:0 6px 20px rgba(37,211,102,.3);}
-.sb-tel{background:rgba(255,255,255,.08);border:1px solid var(--border-gold);color:var(--gold);}
-.sb-tel:hover{background:var(--gold-glow);}
-
-/* ===== FOOTER ===== */
-.footer{text-align:center;color:var(--muted);font-size:.78rem;padding:32px 20px;border-top:1px solid var(--border);}
+.sb-wa{background:var(--wa);color:#fff;}
+.sb-tel{background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.22);color:var(--gold);}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="hdr">
-  <div class="hdr-inner">
+  <nav class="nav">
     <div class="logo">I&N RUN</div>
-    <a href="https://wa.me/33767742220?text=Bonjour I%26N RUN, je souhaite réserver." class="hdr-wa" target="_blank">
-      💬 Réserver
-    </a>
-  </div>
+    <a href="https://wa.me/33767742220?text=Bonjour I%26N RUN," class="nav-wa" target="_blank">Réserver</a>
+  </nav>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="badge"><span class="dot"></span>Disponible maintenant</div>
+  <div class="pill"><span class="dot"></span>Disponible maintenant</div>
   <h1 class="hero-title">
-    Votre chauffeur
-    <span class="gold">privé Paris</span>
+    Votre vol atterrit.<br>
+    <span class="g">Nous sommes là.</span>
   </h1>
-  <p class="hero-sub">CDG • Orly • Longue distance<br>Tarifs fixes, véhicule premium, 24h/24</p>
-  <div class="hero-btns">
-    <a href="#messages" class="btn-main btn-gold">💬 Envoyer un message rapide</a>
-    <a href="#calculator" class="btn-main btn-outline">🧮 Calculer mon tarif</a>
-    <a href="tel:+33767742220" class="btn-main btn-outline">📞 Appel direct</a>
+  <p class="hero-copy">Chauffeur privé à Paris. CDG, Orly, longue distance.<br>Réservez en 30 secondes — tarif fixe garanti.</p>
+  <div class="proof">
+    <div class="proof-item"><div class="proof-val">30 sec</div><div class="proof-lbl">Réservation</div></div>
+    <div class="proof-item"><div class="proof-val">5 min</div><div class="proof-lbl">Réponse</div></div>
+    <div class="proof-item"><div class="proof-val">24h/24</div><div class="proof-lbl">Disponible</div></div>
+    <div class="proof-item"><div class="proof-val">Tarif fixe</div><div class="proof-lbl">Garanti</div></div>
   </div>
 </section>
 
-<!-- TARIFFS -->
-<section class="sec">
-  <div class="sec-label">Tarification</div>
-  <h2 class="sec-title">Tarifs <span>fixes & clairs</span></h2>
+<!-- TUNNEL -->
+<div class="tunnel">
+
+  <!-- STEP 1 : DATE -->
+  <div class="card active" id="card1">
+    <div class="card-head">
+      <div class="card-num">1</div>
+      <div>
+        <div class="card-title">Choisissez votre date</div>
+        <div class="card-sub" id="card1-sub">Quand souhaitez-vous voyager ?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="cal-inline"></div>
+      <button class="btn-next" id="btn1" onclick="goStep2()" disabled>Choisir l'heure</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 : HEURE + TRAJET -->
+  <div class="card locked" id="card2">
+    <div class="card-head">
+      <div class="card-num">2</div>
+      <div>
+        <div class="card-title">Heure et itinéraire</div>
+        <div class="card-sub">Où et à quelle heure ?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="f-row">
+        <label class="f-lbl">Heure de prise en charge</label>
+        <div class="f-wrap">
+          <span class="f-ic">H</span>
+          <input id="timepicker" class="f-in" placeholder="Sélectionner l'heure" readonly>
+        </div>
+      </div>
+      <div class="f-row">
+        <label class="f-lbl">Départ</label>
+        <div class="f-wrap">
+          <span class="f-ic">A</span>
+          <input id="dep" class="f-in" type="text" placeholder="Adresse de départ...">
+        </div>
+      </div>
+      <div class="swap-row">
+        <button class="swap-b" onclick="swap()">&#8645;</button>
+      </div>
+      <div class="f-row">
+        <label class="f-lbl">Arrivée</label>
+        <div class="f-wrap">
+          <span class="f-ic">B</span>
+          <input id="arr" class="f-in" type="text" placeholder="Destination...">
+        </div>
+      </div>
+      <div class="f-row">
+        <label class="f-lbl">Passagers</label>
+        <div class="f-wrap">
+          <span class="f-ic">N</span>
+          <select id="pax" class="f-in">
+            <option value="1">1 passager</option>
+            <option value="2">2 passagers</option>
+            <option value="3">3 passagers</option>
+            <option value="4">4 passagers</option>
+            <option value="5+">5 passagers ou plus</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-next" id="btn2" onclick="goStep3()">Calculer mon tarif</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 : RESULT -->
+  <div class="result-box" id="result">
+    <div class="r-lbl">Votre tarif estimé</div>
+    <div id="r-price" class="r-price">—</div>
+    <div id="r-meta" class="r-meta"></div>
+    <div id="r-map" class="map-w"></div>
+    <a id="r-wa" class="btn-wa-final" href="#" target="_blank">
+      Confirmer la réservation par WhatsApp
+    </a>
+  </div>
+
+</div><!-- /tunnel -->
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-chip"><div class="tc-val">Hybride 2022</div><div class="tc-lbl">Véhicule</div></div>
+  <div class="trust-chip"><div class="tc-val">Eau & chargeurs</div><div class="tc-lbl">À bord</div></div>
+  <div class="trust-chip"><div class="tc-val">Suivi vol</div><div class="tc-lbl">Retards OK</div></div>
+  <div class="trust-chip"><div class="tc-val">Annulation</div><div class="tc-lbl">Gratuite 2h avant</div></div>
+  <div class="trust-chip"><div class="tc-val">+10 € nuit</div><div class="tc-lbl">22h–06h</div></div>
+</div>
+
+<!-- TARIFS -->
+<section class="sec" id="tarifs">
+  <div class="sec-lbl">Tarification</div>
+  <h2 class="sec-h">Tarifs <span>fixes</span></h2>
   <div class="tariff-list">
-    <div class="tariff-row">
-      <div class="tariff-info">
-        <div class="tariff-icon">✈️</div>
-        <div>
-          <div class="tariff-name">Paris ↔ CDG</div>
-          <div class="tariff-note">Charles de Gaulle • attente incluse</div>
-        </div>
-      </div>
-      <div class="tariff-price">68€</div>
+    <div class="t-row">
+      <div><div class="t-name">Paris — CDG</div><div class="t-note">Charles de Gaulle, attente incluse</div></div>
+      <div class="t-price">68 €</div>
     </div>
-    <div class="tariff-row">
-      <div class="tariff-info">
-        <div class="tariff-icon">🛬</div>
-        <div>
-          <div class="tariff-name">Paris ↔ Orly</div>
-          <div class="tariff-note">Tous terminaux • suivi vol inclus</div>
-        </div>
-      </div>
-      <div class="tariff-price">50€</div>
+    <div class="t-row">
+      <div><div class="t-name">Paris — Orly</div><div class="t-note">Tous terminaux, suivi vol inclus</div></div>
+      <div class="t-price">50 €</div>
     </div>
-    <div class="tariff-row">
-      <div class="tariff-info">
-        <div class="tariff-icon">⏱</div>
-        <div>
-          <div class="tariff-name">Mise à disposition</div>
-          <div class="tariff-note">Événements, RDV pro, journée</div>
-        </div>
-      </div>
-      <div class="tariff-price">60€/h</div>
+    <div class="t-row">
+      <div><div class="t-name">Mise à disposition</div><div class="t-note">Événements, rendez-vous pro</div></div>
+      <div class="t-price">60 €/h</div>
     </div>
-    <div class="tariff-row">
-      <div class="tariff-info">
-        <div class="tariff-icon">🛣</div>
-        <div>
-          <div class="tariff-name">Longue distance</div>
-          <div class="tariff-note">Hors Paris • sur devis</div>
-        </div>
-      </div>
-      <div class="tariff-price">1.95€/km</div>
-    </div>
-  </div>
-  <a href="#messages" class="tariff-reserve">💬 Réserver rapidement →</a>
-</section>
-
-<!-- MESSAGES PRÉ-RÉDIGÉS -->
-<section class="sec" id="messages">
-  <div class="sec-label">Réservation rapide</div>
-  <h2 class="sec-title">Messages <span>prêts à envoyer</span></h2>
-  <div class="msg-grid">
-
-    <div class="msg-card" onclick="sendWA('airport_cdg')">
-      <div class="msg-header">
-        <div class="msg-title">✈️ Transfert CDG</div>
-        <span class="msg-tag tag-airport">Aéroport</span>
-      </div>
-      <div class="msg-preview">"Bonjour, je souhaite un transfert vers/depuis CDG. Vol le [date] à [heure]. [Nb] personnes. Adresse : [...]"</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-    <div class="msg-card" onclick="sendWA('airport_orly')">
-      <div class="msg-header">
-        <div class="msg-title">🛬 Transfert Orly</div>
-        <span class="msg-tag tag-airport">Aéroport</span>
-      </div>
-      <div class="msg-preview">"Bonjour, transfert Orly le [date] à [heure]. [Nb] personnes. Bagage : [oui/non]. Adresse de prise en charge : [...]"</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-    <div class="msg-card" onclick="sendWA('devis')">
-      <div class="msg-header">
-        <div class="msg-title">💰 Demande de devis</div>
-        <span class="msg-tag tag-pro">Devis</span>
-      </div>
-      <div class="msg-preview">"Bonjour I&N RUN, pouvez-vous me faire un devis pour : Départ [adresse] → Arrivée [adresse], le [date] à [heure] ?"</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-    <div class="msg-card" onclick="sendWA('dispo')">
-      <div class="msg-header">
-        <div class="msg-title">⏱ Mise à disposition</div>
-        <span class="msg-tag tag-pro">Pro</span>
-      </div>
-      <div class="msg-preview">"Bonjour, je souhaite une mise à disposition de [X]h le [date] à partir de [heure]. Secteur : [Paris/...]"</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-    <div class="msg-card" onclick="sendWA('urgent')">
-      <div class="msg-header">
-        <div class="msg-title">🚨 Course urgente</div>
-        <span class="msg-tag tag-urgent">Urgent</span>
-      </div>
-      <div class="msg-preview">"Bonjour, j'ai besoin d'une voiture rapidement pour aller de [A] vers [B]. Je suis disponible maintenant."</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-    <div class="msg-card" onclick="sendWA('longue')">
-      <div class="msg-header">
-        <div class="msg-title">🛣 Longue distance</div>
-        <span class="msg-tag tag-info">Distance</span>
-      </div>
-      <div class="msg-preview">"Bonjour, je souhaite un trajet longue distance : [Ville A] → [Ville B] le [date]. Pouvez-vous me confirmer disponibilité et tarif ?"</div>
-      <span class="msg-send">💬 Envoyer ce message</span>
-    </div>
-
-  </div>
-</section>
-
-<!-- CALCULATOR -->
-<section class="sec" id="calculator">
-  <div class="sec-label">Calculateur GPS</div>
-  <h2 class="sec-title">Tarif <span>exact en temps réel</span></h2>
-  <div class="calc-box">
-    <div class="field-group">
-      <label class="field-lbl">Départ</label>
-      <div class="field-wrap">
-        <span class="f-icon">📍</span>
-        <input id="dep" class="f-input" type="text" placeholder="Adresse de départ...">
-      </div>
-    </div>
-    <div class="swap-row">
-      <button class="swap-btn" onclick="swap()" aria-label="Inverser">⇅</button>
-    </div>
-    <div class="field-group">
-      <label class="field-lbl">Arrivée</label>
-      <div class="field-wrap">
-        <span class="f-icon">🏁</span>
-        <input id="arr" class="f-input" type="text" placeholder="Destination...">
-      </div>
-    </div>
-    <button id="calcBtn" class="btn-calcul" onclick="calcFare()">Calculer l'itinéraire</button>
-    <div id="result" class="result-box">
-      <div class="res-lbl">Tarif estimé</div>
-      <div id="r-price" class="res-price">–</div>
-      <div id="r-meta" class="res-meta"></div>
-      <div id="r-map" class="map-box"></div>
-      <a id="r-wa" class="btn-wa-res" href="#" target="_blank">💬 Réserver ce trajet</a>
+    <div class="t-row">
+      <div><div class="t-name">Longue distance</div><div class="t-note">Hors Paris, sur devis</div></div>
+      <div class="t-price">1,95 €/km</div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BADGES -->
+<!-- CONTACT -->
 <section class="sec">
-  <div class="sec-label">Confiance</div>
-  <h2 class="sec-title">Pourquoi <span>nous choisir</span></h2>
-  <div class="trust-grid">
-    <div class="trust-card">
-      <div class="trust-icon">⚡</div>
-      <div class="trust-val">&lt; 5 min</div>
-      <div class="trust-name">Temps de réponse</div>
+  <div class="sec-lbl">Contact</div>
+  <h2 class="sec-h">Nous <span>joindre</span></h2>
+  <div class="contact-list">
+    <div class="c-row">
+      <div><div class="c-label">WhatsApp</div><div class="c-val">+33 7 67 74 22 20</div></div>
+      <a href="https://wa.me/33767742220" class="c-act" target="_blank">Écrire</a>
     </div>
-    <div class="trust-card">
-      <div class="trust-icon">🛡</div>
-      <div class="trust-val">Tarifs fixes</div>
-      <div class="trust-name">Aucune surprise</div>
+    <div class="c-row">
+      <div><div class="c-label">Téléphone</div><div class="c-val">07 67 74 22 20</div></div>
+      <a href="tel:+33767742220" class="c-act">Appeler</a>
     </div>
-    <div class="trust-card">
-      <div class="trust-icon">🚗</div>
-      <div class="trust-val">Hybride 2022</div>
-      <div class="trust-name">Véhicule premium</div>
-    </div>
-    <div class="trust-card">
-      <div class="trust-icon">🌙</div>
-      <div class="trust-val">24h/24</div>
-      <div class="trust-name">7j/7 disponible</div>
-    </div>
-    <div class="trust-card">
-      <div class="trust-icon">💧</div>
-      <div class="trust-val">Eau & Chargeurs</div>
-      <div class="trust-name">À bord inclus</div>
-    </div>
-    <div class="trust-card">
-      <div class="trust-icon">✈️</div>
-      <div class="trust-val">Suivi vol</div>
-      <div class="trust-name">Retard surveillé</div>
+    <div class="c-row">
+      <div><div class="c-label">Email</div><div class="c-val">contact.inrun@gmail.com</div></div>
+      <a href="mailto:contact.inrun@gmail.com" class="c-act">Écrire</a>
     </div>
   </div>
+  <button class="btn-vcard" onclick="downloadVCard()">Ajouter aux contacts</button>
 </section>
 
 <footer class="footer">
-  <p>© 2026 I&N RUN — Chauffeur Privé Paris</p>
-  <p style="margin-top:6px;">📞 07 67 74 22 20 • contact.inrun@gmail.com</p>
+  <p>© 2026 I&N RUN — Chauffeur Privé Paris · 07 67 74 22 20</p>
 </footer>
 
-<!-- STICKY BOTTOM BAR -->
-<div class="sticky-bar">
-  <a href="https://wa.me/33767742220?text=Bonjour I%26N RUN!" class="sb-wa" target="_blank">💬 WhatsApp</a>
-  <a href="tel:+33767742220" class="sb-tel">📞 Appeler</a>
+<!-- STICKY -->
+<div class="sticky">
+  <a href="https://wa.me/33767742220" class="sb sb-wa" target="_blank">WhatsApp</a>
+  <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
 </div>
 
 <script>
-/* ===== MESSAGES PRÉ-RÉDIGÉS ===== */
-const MESSAGES = {
-  airport_cdg: `Bonjour I&N RUN ! ✈️%0AJe souhaite un transfert vers/depuis CDG.%0A%0A📅 Date : %0A🕐 Heure : %0A👥 Nb personnes : %0A📍 Adresse : %0A%0AMerci de confirmer disponibilité et tarif.`,
-  airport_orly: `Bonjour I&N RUN ! 🛬%0AJe souhaite un transfert vers/depuis Orly.%0A%0A📅 Date : %0A🕐 Heure : %0A👥 Nb personnes : %0A📍 Adresse de prise en charge : %0A%0AMerci !`,
-  devis: `Bonjour I&N RUN ! 💰%0APourriez-vous me faire un devis ?%0A%0A📍 Départ : %0A🏁 Arrivée : %0A📅 Date : %0A🕐 Heure : %0A👥 Nb personnes : %0A%0AMerci d'avance !`,
-  dispo: `Bonjour I&N RUN ! ⏱%0AJe souhaite une mise à disposition.%0A%0A📅 Date : %0A🕐 À partir de : %0A⌛ Durée souhaitée : %0A📍 Secteur : %0A%0AMerci de confirmer tarif.`,
-  urgent: `Bonjour I&N RUN 🚨%0AJ'ai besoin d'une voiture rapidement.%0A%0A📍 Je suis à : %0A🏁 Je vais à : %0A🕐 Maintenant%0A%0AÊtes-vous disponible ?`,
-  longue: `Bonjour I&N RUN ! 🛣%0ATrajet longue distance :%0A%0A📍 Départ : %0A🏁 Arrivée : %0A📅 Date : %0A🕐 Heure : %0A👥 Nb personnes : %0A%0AMerci de confirmer disponibilité et tarif.`
-};
+/* ===== CALENDAR INLINE ===== */
+let selDate = null;
+const fp = flatpickr('#cal-inline',{
+  locale:'fr',
+  inline:true,
+  dateFormat:'d/m/Y',
+  minDate:'today',
+  maxDate: new Date().fp_incr(90),
+  onChange:function(sel,str){
+    if(str){
+      selDate = str;
+      const d = sel[0];
+      const JOURS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+      const MOIS=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+      document.getElementById('card1-sub').textContent =
+        JOURS[d.getDay()] + ' ' + d.getDate() + ' ' + MOIS[d.getMonth()];
+      document.getElementById('btn1').disabled = false;
+    }
+  }
+});
 
-function sendWA(key) {
-  const msg = MESSAGES[key];
-  window.open(`https://wa.me/33767742220?text=${msg}`, '_blank');
+/* ===== TIMEPICKER ===== */
+flatpickr('#timepicker',{
+  locale:'fr',enableTime:true,noCalendar:true,
+  dateFormat:'H:i',time_24hr:true,minuteIncrement:15,
+  defaultHour:8,disableMobile:false
+});
+
+/* ===== STEPS ===== */
+function goStep2(){
+  document.getElementById('card1').classList.remove('active');
+  const c2 = document.getElementById('card2');
+  c2.classList.remove('locked');
+  c2.classList.add('active');
+  c2.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ===== SWAP ===== */
-function swap() {
-  const d = document.getElementById('dep');
-  const a = document.getElementById('arr');
-  [d.value, a.value] = [a.value, d.value];
+function swap(){
+  const d=document.getElementById('dep'),a=document.getElementById('arr');
+  [d.value,a.value]=[a.value,d.value];
 }
 
 /* ===== GEOCODE ===== */
-async function geocode(q) {
-  const FB = {
-    cdg:[48.9755,2.5597], 'charles de gaulle':[48.9755,2.5597],
-    orly:[48.7233,2.3794], paris:[48.8566,2.3522]
+async function geocode(q){
+  const FB={
+    'cdg':[48.9755,2.5597],'charles de gaulle':[48.9755,2.5597],
+    'roissy':[48.9755,2.5597],'orly':[48.7233,2.3794],
+    'paris':[48.8566,2.3522],'gare du nord':[48.8809,2.3553],
+    'gare de lyon':[48.8449,2.3735],'gare montparnasse':[48.8413,2.3202]
   };
   for(const[k,v] of Object.entries(FB)) if(q.toLowerCase().includes(k)) return v;
-  try {
-    const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}&countrycodes=fr`);
-    const d = await r.json();
-    if(d[0]) return [+d[0].lat,+d[0].lon];
-  } catch(e){}
-  return [48.8566,2.3522];
+  try{
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}&countrycodes=fr`);
+    const d=await r.json();
+    if(d[0]) return[+d[0].lat,+d[0].lon];
+  }catch(e){}
+  return[48.8566,2.3522];
 }
 
-/* ===== DISTANCE OSRM ===== */
-async function getDist(a,b) {
-  try {
-    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=false`);
-    const d = await r.json();
+async function getDist(a,b){
+  try{
+    const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=false`);
+    const d=await r.json();
     if(d.routes?.[0]) return d.routes[0].distance/1000;
-  } catch(e){}
+  }catch(e){}
   return 32;
 }
 
-/* ===== CALC FARE ===== */
+/* ===== STEP 3 ===== */
 let rMap;
-async function calcFare() {
-  const dep = document.getElementById('dep').value.trim()||'Paris';
-  const arr = document.getElementById('arr').value.trim()||'CDG Aéroport';
-  const btn = document.getElementById('calcBtn');
-  btn.innerHTML = '<span class="spin"></span>Calcul en cours...';
-  btn.classList.add('loading');
+async function goStep3(){
+  const dep=document.getElementById('dep').value.trim()||'Paris';
+  const arr=document.getElementById('arr').value.trim()||'CDG';
+  const heure=document.getElementById('timepicker').value||'--:--';
+  const pax=document.getElementById('pax').value;
+  const btn=document.getElementById('btn2');
 
-  const [dc,ac] = await Promise.all([geocode(dep),geocode(arr)]);
-  const km = await getDist(dc,ac);
-  const prix = Math.max(6 + km*1.95, 12);
+  btn.innerHTML='<span class="spin"></span>Calcul en cours...';
+  btn.disabled=true;
 
-  document.getElementById('r-price').textContent = prix.toFixed(2)+' €';
-  document.getElementById('r-meta').innerHTML = `<strong>${km.toFixed(1)} km</strong> • 6€ frais + 1.95€/km`;
-  document.getElementById('r-wa').href = `https://wa.me/33767742220?text=Bonjour I%26N RUN !%0A%0A📍 ${dep} → ${arr}%0A📏 Distance : ${km.toFixed(1)} km%0A💰 Tarif estimé : ${prix.toFixed(2)}€%0A%0AJe souhaite confirmer la réservation.`;
+  const[dc,ac]=await Promise.all([geocode(dep),geocode(arr)]);
+  const km=await getDist(dc,ac);
+  let prix=Math.max(6+km*1.95,12);
+  const h=parseInt(heure);
+  if(!isNaN(h)&&(h>=22||h<6)) prix+=10;
 
-  const mapEl = document.getElementById('r-map');
+  document.getElementById('r-price').textContent=prix.toFixed(2)+' €';
+  document.getElementById('r-meta').innerHTML=
+    `<strong>${km.toFixed(1)} km</strong> &nbsp;·&nbsp; 6 € fixe + 1,95 €/km`+
+    ((!isNaN(h)&&(h>=22||h<6)) ? ' <strong>+ 10 € nuit</strong>' : '');
+
+  const d = selDate||new Date().toLocaleDateString('fr-FR');
+  document.getElementById('r-wa').href=
+    `https://wa.me/33767742220?text=Bonjour I%26N RUN,%0A%0AJe souhaite r%C3%A9server :%0A%0A` +
+    `Dep : ${dep}%0AArr : ${arr}%0ADate : ${d}%0AHeure : ${heure}%0APax : ${pax}%0A%0ATarif estim%C3%A9 : ${prix.toFixed(2)} %E2%82%AC%0A%0AMerci de confirmer.`;
+
+  const me=document.getElementById('r-map');
   if(rMap){rMap.remove();rMap=null;}
-  rMap = L.map(mapEl).setView([(dc[0]+ac[0])/2,(dc[1]+ac[1])/2],11);
+  rMap=L.map(me).setView([(dc[0]+ac[0])/2,(dc[1]+ac[1])/2],11);
   L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(rMap);
-  L.marker(dc).addTo(rMap).bindPopup('📍 '+dep);
-  L.marker(ac).addTo(rMap).bindPopup('🏁 '+arr);
+  L.marker(dc).addTo(rMap).bindPopup(dep);
+  L.marker(ac).addTo(rMap).bindPopup(arr);
   rMap.fitBounds([dc,ac],{padding:[20,20]});
 
   document.getElementById('result').classList.add('show');
-  btn.innerHTML = 'Calculer l\'itinéraire';
-  btn.classList.remove('loading');
+  btn.innerHTML='Calculer mon tarif';btn.disabled=false;
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter')calcFare();});
+
+/* ===== VCARD ===== */
+function downloadVCard(){
+  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nNOTE:Chauffeur Privé Paris · CDG · Orly · Tarifs fixes · 24h/24\nEND:VCARD`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'}));
+  a.download='inrun.vcf';a.click();
+}
 </script>
 </body>
 </html>
