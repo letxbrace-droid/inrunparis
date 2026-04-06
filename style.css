@@ -1,19 +1,375 @@
 
-:root {
-  --bg: #0a0a14; --glass: rgba(255,255,255,0.08); --gold: #d4af37;
-  --green: #10b981; --shadow: 0 25px 50px rgba(0,0,0,0.5);
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: white; line-height: 1.6; }
-.calculator { max-width: 500px; margin: 50px auto; padding: 40px; background: var(--glass); backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(212,175,55,0.3); box-shadow: var(--shadow); }
-.input-group { margin-bottom: 24px; }
-label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--gold); }
-input { width: 100%; padding: 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(255,255,255,0.05); color: white; font-size: 16px; }
-.btn-calc { width: 100%; padding: 20px; background: linear-gradient(135deg, var(--gold), #f1c40f); color: #000; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-.btn-calc:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.4); }
-.result { margin-top: 32px; padding: 24px; background: rgba(16,185,129,0.2); border-radius: 12px; text-align: center; display: none; }
-.result.show { display: block; }
-.price-final { font-size: 2.5rem; font-weight: 700; color: var(--gold); margin: 16px 0; }
-#map-preview { height: 300px; border-radius: 12px; margin-top: 20px; }
-.whatsapp-btn { margin-top: 20px; background: #25D366 !important; color: white !important; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  color: #f8f9fa;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* HEADER PREMIUM */
+.header {
+  position: sticky;
+  top: 0;
+  background: rgba(15,15,35,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+  z-index: 100;
+  padding: 1rem 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4af37, #f1c40f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.btn-call {
+  background: transparent;
+  color: #d4af37;
+  border-color: #d4af37;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(212,175,55,0.3);
+}
+
+/* HERO SECTION */
+.hero {
+  text-align: center;
+  padding: 120px 20px 80px;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #adb5bd;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(16,185,129,0.2);
+  border: 1px solid #10b981;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-bottom: 3rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(16,185,129,0); }
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-hero {
+  padding: 1.25rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* CALCULATOR SECTION */
+.calculator-section {
+  background: rgba(26,26,46,0.5);
+  padding: 80px 20px;
+  margin: 60px 0;
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.calculator-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05);
+  padding: 48px;
+  border-radius: 24px;
+  border: 1px solid rgba(212,175,55,0.2);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.calculator-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #d4af37;
+}
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: #d4af37;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.2);
+  background: rgba(255,255,255,0.12);
+}
+
+.btn-calculate {
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #d4af37, #f1c40f);
+  color: #000;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-calculate:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(212,175,55,0.4);
+}
+
+.result-container {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: rgba(16,185,129,0.15);
+  border: 1px solid #10b981;
+  border-radius: 16px;
+  text-align: center;
+  display: none;
+}
+
+.result-container.show {
+  display: block;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.price-display {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 1rem 0;
+}
+
+.distance-info {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+#map-container {
+  height: 300px;
+  border-radius: 16px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.btn-whatsapp-result {
+  display: inline-block;
+  margin-top: 1.5rem;
+  background: #25D366 !important;
+  color: white !important;
+}
+
+/* CAROUSEL TARIFFS */
+.tariffs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 4rem 0;
+}
+
+.tariff-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.tariff-card:hover {
+  border-color: #d4af37;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(212,175,55,0.2);
+}
+
+.tariff-price {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 1rem 0;
+}
+
+.tariff-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* FLOATING ACTION BUTTONS */
+.floating-actions {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.fab-whatsapp {
+  background: #25D366;
+  box-shadow: 0 10px 30px rgba(37,211,102,0.4);
+}
+
+.fab-call {
+  background: linear-gradient(135deg, #d4af37, #f1c40f);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(212,175,55,0.4);
+}
+
+.fab:hover {
+  transform: scale(1.1) translateY(-3px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .hero {
+    padding: 100px 15px 60px;
+  }
+
+  .calculator-container {
+    padding: 32px 24px;
+  }
+
+  .floating-actions {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .fab {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
+  }
+}
+
+/* SCROLLBAR CUSTOM */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#d4af37, #f1c40f);
+  border-radius: 4px;
+}
     

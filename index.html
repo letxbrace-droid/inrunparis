@@ -2,108 +2,212 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I&N RUN | Calculateur Tarif GPS</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="style.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I&N RUN - Chauffeur Privé Premium Paris</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-<div class="calculator">
-  <h1 style="text-align:center;margin-bottom:32px;color:var(--gold);">Calculateur I&N RUN</h1>
-  <div class="input-group">
-    <label>Départ</label>
-    <input type="text" id="depart" placeholder="Paris Centre, Louvre..." />
-  </div>
-  <div class="input-group">
-    <label>Arrivée</label>
-    <input type="text" id="arrivee" placeholder="CDG Aéroport, Orly..." />
-  </div>
-  <button class="btn-calc" onclick="calculerTarif()">Calculer tarif exact</button>
-  <div id="result" class="result">
-    <h3>Tarif calculé</h3>
-    <div id="prix" class="price-final"></div>
-    <p id="info"></p>
-    <div id="map-preview"></div>
-    <a id="wa-link" class="btn-calc whatsapp-btn" href="#" target="_blank">Réserver WhatsApp</a>
-  </div>
-</div>
+  <!-- HEADER -->
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">I&N RUN</div>
+      <div class="cta-buttons">
+        <a href="tel:+33767742220" class="btn btn-call">Appeler</a>
+        <a href="https://wa.me/33767742220" class="btn btn-whatsapp">WhatsApp</a>
+      </div>
+    </nav>
+  </header>
 
-<script>
-const FRAIS = 6.0, PRIX_KM = 1.95, MINIMUM = 12.0;
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Votre chauffeur privé premium</h1>
+      <p class="hero-subtitle">Transferts aéroport CDG Orly, mise à disposition, trajets longue distance. Tarifs fixes, service premium, réponse immédiate.</p>
+      <div class="status-badge">
+        ✅ DISPONIBLE — Réponse en moins de 5 min
+      </div>
+      <div class="hero-cta">
+        <a href="#calculator" class="btn btn-hero btn-gold">Obtenir tarif exact</a>
+        <a href="https://wa.me/33767742220" class="btn btn-hero btn-whatsapp">Réserver maintenant</a>
+      </div>
+    </div>
+  </section>
 
-async function calculerTarif() {
-  const dep = document.getElementById('depart').value.trim() || '48.8566,2.3522';
-  const arr = document.getElementById('arrivee').value.trim() || '48.975,2.56';
+  <!-- TARIFFS FIXED -->
+  <section class="tariffs-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">Tarifs fixes populaires</h2>
+      <div class="tariffs-grid">
+        <div class="tariff-card">
+          <h3>Paris ↔ Orly</h3>
+          <div class="tariff-price">50€</div>
+          <p>Aéroport Paris-Orly</p>
+        </div>
+        <div class="tariff-card">
+          <h3>Paris ↔ CDG</h3>
+          <div class="tariff-price">68€</div>
+          <p>Charles-de-Gaulle</p>
+        </div>
+        <div class="tariff-card">
+          <h3>Mise à disposition</h3>
+          <div class="tariff-price">60€/h</div>
+          <p>Journée complète</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="calculator" class="calculator-section">
+    <div class="calculator-container">
+      <h2 class="calculator-title">Calculateur de tarif personnalisé</h2>
+      <div class="form-group">
+        <label>Départ</label>
+        <input type="text" id="depart" placeholder="75001 Paris, adresse exacte..." />
+      </div>
+      <div class="form-group">
+        <label>Arrivée</label>
+        <input type="text" id="arrivee" placeholder="CDG Aéroport, Orly T2..." />
+      </div>
+      <button class="btn-calculate" onclick="calculateFare()">Calculer tarif exact</button>
+
+      <div id="calculation-result" class="result-container">
+        <h3>Votre estimation</h3>
+        <div id="final-price" class="price-display"></div>
+        <div id="fare-details" class="distance-info"></div>
+        <div id="map-container"></div>
+        <a id="whatsapp-booking" class="btn-calculate btn-whatsapp-result" href="#" target="_blank">Réserver par WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING ACTIONS -->
+  <div class="floating-actions">
+    <a href="tel:+33767742220" class="fab fab-call" title="Appel direct">📞</a>
+    <a href="https://wa.me/33767742220" class="fab fab-whatsapp" title="WhatsApp">💬</a>
+  </div>
+
+  <script>
+let currentMap;
+
+const FraisApproche = 6.0;
+const PrixParKm = 1.95;
+const PrixMinimum = 12.0;
+
+async function calculateFare() {
+  const departAddr = document.getElementById('depart').value.trim() || 'Paris Centre';
+  const arriveeAddr = document.getElementById('arrivee').value.trim() || 'CDG Aéroport';
+
+  const resultDiv = document.getElementById('calculation-result');
+  resultDiv.style.display = 'none';
 
   try {
-    // Geocode robuste Paris/CDG
-    const [depCoord, arrCoord] = await Promise.all([
-      geocodeAddress(dep),
-      geocodeAddress(arr)
-    ]);
+    // Coordonnées précises avec fallback
+    let [depLat, depLon] = await geocode(departAddr);
+    let [arrLat, arrLon] = await geocode(arriveeAddr);
 
-    if (!depCoord || !arrCoord) throw new Error('Adresses non trouvées');
+    // Calcul distance OSRM
+    const distanceKm = await getPreciseDistance(depLon, depLat, arrLon, arrLat);
 
-    const distance = await getOSRMDistance(depCoord[1], depCoord[0], arrCoord[1], arrCoord[0]);
+    const totalPrice = Math.max(FraisApproche + (distanceKm * PrixParKm), PrixMinimum);
 
-    const prix = Math.max(FRAIS + distance * PRIX_KM, MINIMUM);
+    // Affichage
+    document.getElementById('final-price').textContent = totalPrice.toFixed(2) + ' €';
+    document.getElementById('fare-details').innerHTML = `
+      ${distanceKm.toFixed(1)} km • Frais: ${FraisApproche}€ • ${PrixParKm}€/km
+    `;
 
-    document.getElementById('prix').textContent = prix.toFixed(2) + ' €';
-    document.getElementById('info').innerHTML = `Distance: <strong>${distance.toFixed(1)} km</strong><br>Frais: <strong>${FRAIS} €</strong> | Km: <strong>${PRIX_KM} €</strong>`;
-    document.getElementById('wa-link').href = `https://wa.me/33767742220?text=Bonjour I&N RUN!%0A${dep} → ${arr}%0ADistance: ${distance.toFixed(1)}km%0ATarif: ${prix.toFixed(2)}€`;
+    // WhatsApp
+    document.getElementById('whatsapp-booking').href = `https://wa.me/33767742220?text=Bonjour I&N RUN!%0A${departAddr} → ${arriveeAddr}%0A${distanceKm.toFixed(1)}km = ${totalPrice.toFixed(2)}€`;
 
-    showMap(depCoord, arrCoord);
-    document.getElementById('result').classList.add('show');
+    // Carte
+    showRouteMap(depLat, depLon, arrLat, arrLon, departAddr, arriveeAddr);
 
-  } catch(e) {
-    alert('Erreur calcul: ' + e.message + '. Essayez "Paris" → "CDG"');
+    resultDiv.style.display = 'block';
+
+  } catch (error) {
+    alert('Erreur: ' + error.message + '. Essayez "Paris" → "CDG"');
   }
 }
 
-async function geocodeAddress(addr) {
+async function geocode(addr) {
   try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(addr)}&countrycodes=fr&addressdetails=1`);
-    const data = await res.json();
-    if (data[0]) return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-  } catch(e) {}
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(addr)}&countrycodes=fr&addressdetails=1`
+    );
+    const data = await response.json();
 
-  // Fallback Paris/CDG
-  if (addr.toLowerCase().includes('cdg') || addr.toLowerCase().includes('aéroport') ) return [48.975, 2.56];
+    if (data && data[0]) {
+      return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    }
+  } catch (e) {
+    console.error('Geocode error:', e);
+  }
+
+  // Fallbacks testés
+  if (addr.toLowerCase().includes('cdg') || addr.toLowerCase().includes('charles')) {
+    return [48.9755, 2.5597]; // CDG précis
+  }
+  if (addr.toLowerCase().includes('orly')) {
+    return [48.7233, 2.3794];
+  }
   return [48.8566, 2.3522]; // Paris Centre
 }
 
-async function getOSRMDistance(lon1, lat1, lon2, lat2) {
+async function getPreciseDistance(lon1, lat1, lon2, lat2) {
   try {
-    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false&alternatives=false`;
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.routes[0] ? data.routes[0].distance / 1000 : 32; // Fallback CDG
-  } catch(e) {
+    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    return data.routes && data.routes[0] ? data.routes[0].distance / 1000 : 32;
+  } catch (e) {
+    console.error('Distance error:', e);
     return 32; // Paris-CDG moyenne
   }
 }
 
-function showMap(dep, arr) {
-  const mapEl = document.getElementById('map-preview');
-  if (mapEl._leaflet_id) L.map(mapEl).remove();
+function showRouteMap(depLat, depLon, arrLat, arrLon, depName, arrName) {
+  const mapContainer = document.getElementById('map-container');
 
-  const map = L.map(mapEl).setView([(dep[0]+arr[0])/2, (dep[1]+arr[1])/2], 11);
+  if (currentMap) {
+    currentMap.remove();
+  }
+
+  currentMap = L.map(mapContainer).setView([(depLat+arrLat)/2, (depLon+arrLon)/2], 11);
+
   L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap France'
-  }).addTo(map);
+    attribution: '© OpenStreetMap France | I&N RUN'
+  }).addTo(currentMap);
 
-  L.marker(dep).addTo(map).bindPopup('Départ');
-  L.marker(arr).addTo(map).bindPopup('Arrivée');
-  map.fitBounds([dep, arr], {padding: [20,20]});
+  L.marker([depLat, depLon]).addTo(currentMap)
+    .bindPopup(`<b>Départ</b><br>${depName}`)
+    .openPopup();
+
+  L.marker([arrLat, arrLon]).addTo(currentMap)
+    .bindPopup(`<b>Arrivée</b><br>${arrName}`);
+
+  currentMap.fitBounds([[depLat, depLon], [arrLat, arrLon]]);
 }
 
-// Enter key
-document.addEventListener('keypress', e => {
-  if (e.key === 'Enter') calculerTarif();
+// Auto calcul Enter
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    calculateFare();
+  }
 });
-</script>
+
+// Exemples
+document.getElementById('depart').addEventListener('focus', function() {
+  if (!this.value) this.value = 'Paris Centre';
+});
+document.getElementById('arrivee').addEventListener('focus', function() {
+  if (!this.value) this.value = 'CDG Aéroport';
+});
+  </script>
 </body>
 </html>
     
