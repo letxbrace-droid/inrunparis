@@ -2,240 +2,95 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a14">
-<title>I&N RUN | Chauffeur Privé Premium Paris</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
-:root {
-  --bg: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 50%, #16213e 100%);
-  --glass: rgba(255,255,255,0.08);
-  --glass-glow: rgba(212,175,55,0.3);
-  --gold: #d4af37;
-  --gold-glow: rgba(212,175,55,0.6);
-  --white: #f8f9fa;
-  --text: #e0e6ed;
-  --green: #10b981;
-  --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.5);
-  --shadow-glass: 0 8px 32px 0 rgba(31,38,135,0.37);
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-body { 
-  font-family: 'Inter', sans-serif; 
-  background: var(--bg); 
-  color: var(--text); 
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-.glass { 
-  background: var(--glass); 
-  backdrop-filter: blur(20px); 
-  border: 1px solid var(--glass-glow); 
-  box-shadow: var(--shadow-glass);
-  border-radius: 24px;
-}
-.btn-premium { 
-  background: linear-gradient(135deg, var(--gold), #f1c40f); 
-  color: #0a0a14; 
-  font-weight: 600; 
-  padding: 16px 32px; 
-  border-radius: 50px; 
-  text-decoration: none; 
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 30px rgba(212,175,55,0.4);
-}
-.btn-premium:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 20px 40px rgba(212,175,55,0.6); }
-
-.header { 
-  position: fixed; top: 0; left: 0; right: 0; 
-  backdrop-filter: blur(30px); 
-  background: rgba(10,10,20,0.95); 
-  border-bottom: 1px solid var(--glass-glow); 
-  z-index: 1000; 
-  padding: 16px 0;
-}
-.nav { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
-.logo { 
-  font-family: 'Playfair Display', serif; 
-  font-size: 28px; font-weight: 700; 
-  background: linear-gradient(135deg, var(--gold), #f1c40f); 
-  -webkit-background-clip: text; 
-  -webkit-text-fill-color: transparent; 
-  background-clip: text;
-}
-
-.hero { 
-  min-height: 100vh; 
-  display: flex; align-items: center; 
-  text-align: center; 
-  padding: 120px 24px 60px;
-}
-.hero-content { max-width: 800px; margin: 0 auto; }
-.hero h1 { 
-  font-family: 'Playfair Display', serif; 
-  font-size: clamp(3.5rem, 10vw, 6rem); 
-  font-weight: 700; 
-  line-height: 1.1; 
-  margin-bottom: 24px; 
-  background: linear-gradient(135deg, var(--white), var(--text)); 
-  -webkit-background-clip: text; 
-  -webkit-text-fill-color: transparent;
-}
-.hero-subtitle { font-size: 1.3rem; color: var(--text); margin-bottom: 40px; opacity: 0.9; }
-.status-live { 
-  display: inline-flex; align-items: center; gap: 12px; 
-  background: rgba(16,185,129,0.2); 
-  border: 1px solid var(--green); 
-  padding: 16px 32px; 
-  border-radius: 50px; 
-  font-weight: 600; 
-  font-size: 1.1rem;
-  animation: pulse-green 2s infinite;
-}
-@keyframes pulse-green { 0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.4);} 50%{box-shadow:0 0 0 16px rgba(16,185,129,0);} }
-
-.cta-hero { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 48px; }
-
-.section { padding: 100px 0; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-
-.tarifs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; }
-.tarif-card { 
-  padding: 40px 32px; 
-  text-align: center; 
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.tarif-card:hover { transform: translateY(-12px) rotateX(5deg); }
-.tarif-price { 
-  font-family: 'Playfair Display', serif; 
-  font-size: 4rem; 
-  font-weight: 700; 
-  background: linear-gradient(135deg, var(--gold), #f1c40f); 
-  -webkit-background-clip: text; 
-  -webkit-text-fill-color: transparent; 
-  margin: 16px 0;
-}
-.tarif-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 16px; color: var(--white); }
-
-.map-section { position: relative; }
-#map-premium { 
-  height: 500px; 
-  border-radius: 24px; 
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 40px;
-}
-
-.floating-cta { 
-  position: fixed; 
-  bottom: 32px; right: 32px; 
-  z-index: 999; 
-  display: flex; gap: 16px;
-}
-.floating-btn { 
-  width: 64px; height: 64px; 
-  border-radius: 50%; 
-  display: flex; align-items: center; justify-content: center; 
-  font-size: 1.5rem; 
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s;
-}
-.floating-whatsapp { background: #25D366; color: white; }
-.floating-call { background: var(--gold); color: #0a0a14; }
-
-@keyframes float { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
-.floating-cta { animation: float 3s ease-in-out infinite; }
-
-@media (max-width: 768px) {
-  .cta-hero { flex-direction: column; }
-  .btn-premium { width: 100%; text-align: center; }
-  .floating-cta { bottom: 24px; right: 24px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I&N RUN | Chauffeur Privé Paris Premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <header class="header">
-    <nav class="nav">
-      <div class="logo">I&N RUN</div>
-      <div style="display:flex;gap:12px;">
-        <a href="tel:+33767742220" style="color:var(--gold);">📞</a>
-        <a href="https://wa.me/33767742220" style="color:#25D366;">💬</a>
+  <!-- HEADER TRANSPARENT LUXE -->
+  <header class="header-luxe">
+    <nav class="nav-container">
+      <div class="logo-premium">I&N RUN</div>
+      <div class="header-actions">
+        <a href="#contact" style="color:var(--text-secondary);text-decoration:none;font-weight:500;">Contact</a>
       </div>
     </nav>
   </header>
 
-  <section class="hero">
-    <div class="hero-content glass" style="padding:64px 40px;max-width:900px;margin:0 auto;">
-      <h1>Votre chauffeur<br>privé premium</h1>
-      <p class="hero-subtitle">Transferts CDG/Orly, mise à disposition, affaires. Tarifs fixes, réponse immédiate 24/7.</p>
-      <div class="status-live">✅ DISPONIBLE MAINTENANT</div>
-      <div class="cta-hero">
-        <a href="https://wa.me/33767742220?text=Bonjour%2CI%26N%20RUN%2Cdevis%20imm%C3%A9diat" class="btn-premium">Réserver WhatsApp</a>
-        <a href="tel:+33767742220" class="btn-premium" style="background:var(--green);">Appeler</a>
+  <!-- HERO IMMERSION FULL VH -->
+  <section class="hero-section">
+    <div class="hero-content glass-panel" style="padding:80px 48px;">
+      <h1 class="hero-title">Votre<br>Chauffeur Privé</h1>
+      <p class="hero-subtitle">Transferts CDG Orly • Mise à disposition • Longue distance<br>Tarifs fixes • Service 24/7 • Réponse immédiate</p>
+      <div class="status-premium">✅ DISPONIBLE</div>
+      <div class="cta-group">
+        <a href="https://wa.me/33767742220?text=Bonjour I&N RUN, devis immédiat" class="btn-luxe btn-gold">Réserver l'expérience</a>
+        <a href="tel:+33767742220" class="btn-luxe btn-green">Appeler maintenant</a>
       </div>
     </div>
   </section>
 
-  <section class="section" style="padding:80px 0;">
-    <div class="container">
-      <h2 style="font-family:'Playfair Display',serif;font-size:3.5rem;text-align:center;margin-bottom:64px;">Tarifs fixes premium</h2>
-      <div class="tarifs-grid">
-        <div class="tarif-card glass">
-          <h3>Paris ↔ Orly</h3>
-          <div class="tarif-price">50€</div>
-          <p>Aéroport Orly, transfert garanti</p>
-        </div>
-        <div class="tarif-card glass">
-          <h3>Paris ↔ CDG</h3>
-          <div class="tarif-price">65€</div>
-          <p>Charles-de-Gaulle 24/7</p>
-        </div>
-        <div class="tarif-card glass">
-          <h3>Mise à disposition</h3>
-          <div class="tarif-price">60€/h</div>
-          <p>Événements, affaires, journée</p>
+  <!-- TARIFFS ASYMÉTRIQUE -->
+  <section class="section-luxe">
+    <div class="container-luxe">
+      <h2 class="section-title">Tarifs Fixes Premium</h2>
+      <div class="tariffs-premium glass-panel">
+        <div class="tariffs-grid">
+          <div class="tariff-card">
+            <h3>Paris ↔ Orly</h3>
+            <div class="tariff-price">50€</div>
+            <p>Aéroport Orly<br>Transfert garanti 24/7</p>
+          </div>
+          <div class="tariff-card">
+            <h3>Paris ↔ CDG</h3>
+            <div class="tariff-price">65€</div>
+            <p>Charles de Gaulle<br>Suivi vol inclus</p>
+          </div>
+          <div class="tariff-card">
+            <h3>Mise à Disposition</h3>
+            <div class="tariff-price">60€/h</div>
+            <p>Événements • Affaires<br>Suzuki Hybride 2022</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section map-section">
-    <div class="container">
-      <div id="map-premium"></div>
+  <!-- MAP INTERACTIVE -->
+  <section class="section-luxe map-container">
+    <div class="container-luxe">
+      <div id="map-luxe"></div>
     </div>
   </section>
 
-  <div class="floating-cta">
-    <a href="tel:+33767742220" class="floating-btn floating-call">📞</a>
-    <a href="https://wa.me/33767742220" class="floating-btn floating-whatsapp">💬</a>
+  <!-- FLOATING CTAs LUXE -->
+  <div class="floating-suite">
+    <a href="tel:+33767742220" class="fab-luxe fab-call" title="Appeler">📞</a>
+    <a href="https://wa.me/33767742220" class="fab-luxe fab-whatsapp" title="WhatsApp">💬</a>
   </div>
 
   <script>
-    // OSM Premium Map
-    const map = L.map('map-premium').setView([48.85, 2.35], 10);
+    // OpenStreetMap Premium Paris
+    const map = L.map('map-luxe', { zoomControl: false }).setView([48.8566, 2.3522], 11);
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap France'
+      attribution: '© OpenStreetMap France | I&N RUN'
     }).addTo(map);
 
-    // Markers premium
-    const airports = [
-      {pos: [49.01, 2.55], popup: '🛫 CDG Aéroport'},
-      {pos: [48.72, 2.38], popup: '✈️ Orly Aéroport'},
-      {pos: [48.86, 2.35], popup: '🏙️ Paris Centre'}
-    ];
-    airports.forEach(a => {
-      L.marker(a.pos).addTo(map).bindPopup(`<b>${a.popup}</b>`).openPopup();
-    });
+    // Markers Luxe
+    const customIcon = L.divIcon({ className: 'custom-marker', html: '✨', iconSize: [30,30] });
+    L.marker([48.975, 2.56], {icon: customIcon}).addTo(map).bindPopup('<b>🛫 CDG Aéroport</b>');
+    L.marker([48.72, 2.36], {icon: customIcon}).addTo(map).bindPopup('<b>✈️ Orly Aéroport</b>');
+    L.marker([48.8566, 2.3522], {icon: customIcon}).addTo(map).bindPopup('<b>🏙️ Paris Centre</b>');
 
-    // Smooth scroll + parallax
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', e => {
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
         e.preventDefault();
-        document.querySelector(anchor.getAttribute('href')).scrollIntoView({behavior: 'smooth'});
+        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
       });
     });
   </script>
