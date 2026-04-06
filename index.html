@@ -2,98 +2,110 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>I&N RUN | Chauffeur Privé Paris Premium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I&N RUN | Réservation Premium VTC Paris</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <!-- HEADER TRANSPARENT LUXE -->
-  <header class="header-luxe">
-    <nav class="nav-container">
-      <div class="logo-premium">I&N RUN</div>
-      <div class="header-actions">
-        <a href="#contact" style="color:var(--text-secondary);text-decoration:none;font-weight:500;">Contact</a>
-      </div>
-    </nav>
-  </header>
-
-  <!-- HERO IMMERSION FULL VH -->
-  <section class="hero-section">
-    <div class="hero-content glass-panel" style="padding:80px 48px;">
-      <h1 class="hero-title">Votre<br>Chauffeur Privé</h1>
-      <p class="hero-subtitle">Transferts CDG Orly • Mise à disposition • Longue distance<br>Tarifs fixes • Service 24/7 • Réponse immédiate</p>
-      <div class="status-premium">✅ DISPONIBLE</div>
-      <div class="cta-group">
-        <a href="https://wa.me/33767742220?text=Bonjour I&N RUN, devis immédiat" class="btn-luxe btn-gold">Réserver l'expérience</a>
-        <a href="tel:+33767742220" class="btn-luxe btn-green">Appeler maintenant</a>
-      </div>
+<header class="header-apple">
+  <nav class="nav-apple">
+    <div class="logo-sf">I&N RUN</div>
+    <div class="cta-apple">
+      <a href="#calculator" style="color:rgba(255,255,255,0.8);text-decoration:none;font-weight:500;font-size:17px;">Calculateur</a>
     </div>
-  </section>
+  </nav>
+</header>
 
-  <!-- TARIFFS ASYMÉTRIQUE -->
-  <section class="section-luxe">
-    <div class="container-luxe">
-      <h2 class="section-title">Tarifs Fixes Premium</h2>
-      <div class="tariffs-premium glass-panel">
-        <div class="tariffs-grid">
-          <div class="tariff-card">
-            <h3>Paris ↔ Orly</h3>
-            <div class="tariff-price">50€</div>
-            <p>Aéroport Orly<br>Transfert garanti 24/7</p>
-          </div>
-          <div class="tariff-card">
-            <h3>Paris ↔ CDG</h3>
-            <div class="tariff-price">65€</div>
-            <p>Charles de Gaulle<br>Suivi vol inclus</p>
-          </div>
-          <div class="tariff-card">
-            <h3>Mise à Disposition</h3>
-            <div class="tariff-price">60€/h</div>
-            <p>Événements • Affaires<br>Suzuki Hybride 2022</p>
-          </div>
-        </div>
-      </div>
+<section class="hero-liquid">
+  <div class="hero-panel liquid-container">
+    <h1 class="hero-title">Chauffeur<br>Privé Paris</h1>
+    <p class="hero-subtitle">Tarifs fixes • Transferts CDG/Orly • Service 24/7<br>Réservation immédiate via WhatsApp</p>
+    <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:64px;">
+      <a href="#calculator" class="btn-liquid btn-gold-liquid" style="padding:24px 56px;font-size:18px;">Obtenir tarif exact</a>
+      <a href="tel:+33767742220" class="btn-liquid btn-gold-liquid" style="padding:24px 56px;font-size:18px;background:linear-gradient(135deg,#10b981,#059669);">Appeler</a>
     </div>
-  </section>
-
-  <!-- MAP INTERACTIVE -->
-  <section class="section-luxe map-container">
-    <div class="container-luxe">
-      <div id="map-luxe"></div>
-    </div>
-  </section>
-
-  <!-- FLOATING CTAs LUXE -->
-  <div class="floating-suite">
-    <a href="tel:+33767742220" class="fab-luxe fab-call" title="Appeler">📞</a>
-    <a href="https://wa.me/33767742220" class="fab-luxe fab-whatsapp" title="WhatsApp">💬</a>
   </div>
+</section>
 
-  <script>
-    // OpenStreetMap Premium Paris
-    const map = L.map('map-luxe', { zoomControl: false }).setView([48.8566, 2.3522], 11);
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap France | I&N RUN'
-    }).addTo(map);
+<section id="calculator" class="form-liquid liquid-container">
+  <h2 style="font-family:'SF Pro Display',serif;font-size:clamp(2rem,6vw,3rem);text-align:center;margin-bottom:48px;letter-spacing:-0.02em;">Calculateur Intelligent</h2>
+  <form class="input-apple">
+    <input type="text" id="depart" placeholder=" " required />
+    <label>Départ</label>
+  </form>
+  <form class="input-apple">
+    <input type="text" id="arrivee" placeholder=" " required />
+    <label>Arrivée</label>
+  </form>
+  <button type="button" class="btn-liquid btn-gold-liquid" onclick="calculPrix()" style="height:72px;font-size:18px;">Calculer itinéraire précis</button>
 
-    // Markers Luxe
-    const customIcon = L.divIcon({ className: 'custom-marker', html: '✨', iconSize: [30,30] });
-    L.marker([48.975, 2.56], {icon: customIcon}).addTo(map).bindPopup('<b>🛫 CDG Aéroport</b>');
-    L.marker([48.72, 2.36], {icon: customIcon}).addTo(map).bindPopup('<b>✈️ Orly Aéroport</b>');
-    L.marker([48.8566, 2.3522], {icon: customIcon}).addTo(map).bindPopup('<b>🏙️ Paris Centre</b>');
+  <div id="resultat" class="result-liquid" style="display:none;">
+    <h3 style="font-size:1.4rem;margin-bottom:16px;opacity:0.95;">Votre tarif personnalisé</h3>
+    <div id="prix-montant" class="price-hero" style="font-size:clamp(4rem,15vw,6rem)">54.75 €</div>
+    <div id="details-trajet" class="distance-details"></div>
+    <div id="carte-preview" style="height:400px;border-radius:24px;margin-top:32px;"></div>
+    <a id="whatsapp-resa" class="btn-liquid btn-gold-liquid" style="margin-top:32px;">Réserver par WhatsApp →</a>
+  </div>
+</section>
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-  </script>
+<div class="floating-apple">
+  <a href="tel:+33767742220" class="fab-apple fab-call" title="Appel direct">📞</a>
+  <a href="https://wa.me/33767742220" class="fab-apple fab-whatsapp" title="WhatsApp">💬</a>
+</div>
+
+<script>
+let mapPreview;
+const FRAIS = 6.0, KM_PRICE = 1.95, MIN_PRICE = 12.0;
+
+async function calculPrix() {
+  const dep = document.getElementById('depart').value;
+  const arr = document.getElementById('arrivee').value;
+
+  if (!dep || !arr) return alert('Saisir départ et arrivée');
+
+  const [depCoords, arrCoords] = await Promise.all([
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(dep)}&countrycodes=fr`).then(r=>r.json()).then(d=>d[0]?[parseFloat(d[0].lat),parseFloat(d[0].lon)]:null),
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(arr)}&countrycodes=fr`).then(r=>r.json()).then(d=>d[0]?[parseFloat(d[0].lat),parseFloat(d[0].lon)]:null)
+  ]);
+
+  if (!depCoords || !arrCoords) return alert('Adresses non trouvées');
+
+  const distRes = await fetch(`https://router.project-osrm.org/route/v1/driving/${depCoords[1]},${depCoords[0]};${arrCoords[1]},${arrCoords[0]}?overview=false`);
+  const distData = await distRes.json();
+  const distance = distData.routes[0]?.distance / 1000 || 25;
+
+  const prix = Math.max(FRAIS + (distance * KM_PRICE), MIN_PRICE);
+
+  document.getElementById('prix-montant').textContent = `${prix.toFixed(2)} €`;
+  document.getElementById('details-trajet').innerHTML = `
+    ${distance.toFixed(1)} km • Frais: ${FRAIS}€ • ${KM_PRICE}€/km
+  `;
+  document.getElementById('whatsapp-resa').href = `https://wa.me/33767742220?text=Bonjour I&N RUN!%0ATarif: ${prix.toFixed(2)}€ (${distance.toFixed(1)}km)%0ADépart: ${dep}%0AArrivée: ${arr}`;
+
+  // Carte
+  const mapEl = document.getElementById('carte-preview');
+  if (!mapPreview) {
+    mapPreview = L.map(mapEl).setView([(depCoords[0]+arrCoords[0])/2, (depCoords[1]+arrCoords[1])/2], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png').addTo(mapPreview);
+  }
+  L.marker(depCoords).addTo(mapPreview).bindPopup(dep);
+  L.marker(arrCoords).addTo(mapPreview).bindPopup(arr);
+  mapPreview.fitBounds([depCoords, arrCoords]);
+
+  document.getElementById('resultat').style.display = 'block';
+}
+
+// Auto-focus exemples
+document.getElementById('depart').addEventListener('focus', ()=> {
+  if (!document.getElementById('depart').value) document.getElementById('depart').value = 'Paris Centre';
+});
+document.getElementById('arrivee').addEventListener('focus', ()=> {
+  if (!document.getElementById('arrivee').value) document.getElementById('arrivee').value = 'CDG Aéroport';
+});
+</script>
 </body>
 </html>
     
