@@ -1,552 +1,615 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#08080C">
-<meta name="description" content="I&N RUN — Chauffeur Privé Paris. CDG, Orly, Gares. Prix fixe garanti. 07 67 74 22 20">
+<meta name="theme-color" content="#0F0F0F">
+<meta name="description" content="I&N RUN — Chauffeur Privé Paris. CDG, Orly, Gares, Événements. Prix fixe garanti. 07 67 74 22 20">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ════════════════════════════════
-   RESET & TOKENS
-════════════════════════════════ */
+/* ═══════════════════════════════════════
+   TOKENS — La Berline Noire
+═══════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{overflow-x:hidden;scroll-behavior:smooth;}
 
 :root{
-  /* Palette nacre-anthracite-or mat */
-  --void:#06060A;
-  --deep:#0A0A10;
-  --dark:#101018;
-  --mid:#181820;
-  --surface:#1E1E28;
-  --rim:rgba(255,255,255,0.055);
-  --rim2:rgba(255,255,255,0.10);
+  /* Fond profond */
+  --void:   #0A0A0A;
+  --deep:   #0F0F0F;
+  --panel:  #141414;
+  --card:   #1A1A1A;
+  --lift:   #202020;
+  --rim:    rgba(255,255,255,0.06);
+  --rim2:   rgba(255,255,255,0.10);
 
-  /* Or mat parisien */
-  --au1:#8C6C18;
-  --au2:#B08C28;
-  --au3:#C8A03C;
-  --au4:#DCBA58;
-  --au5:#EED078;
-  --au6:#F8E8A8;
-  --au-d:rgba(200,160,60,0.08);
-  --au-b:rgba(200,160,60,0.16);
-  --au-b2:rgba(200,160,60,0.32);
+  /* Or mat D4AF37 */
+  --au:     #D4AF37;
+  --au-d:   #A88B28;
+  --au-l:   #E8C84E;
+  --au-xl:  #F8E8A8;
+  --au-dim: rgba(212,175,55,0.08);
+  --au-brd: rgba(212,175,55,0.18);
+  --au-brd2:rgba(212,175,55,0.38);
 
-  /* Nacre */
-  --nacre:#EDEAE5;
-  --stone:#A0A0A8;
-  --dusk:#585862;
+  /* Argent */
+  --ag:     #C0C0C0;
+  --ag-dim: rgba(192,192,192,0.06);
+  --ag-brd: rgba(192,192,192,0.14);
 
-  /* Vert disponibilité */
-  --emerald:#18904A;
-  --em-d:rgba(24,144,74,0.08);
-  --em-b:rgba(24,144,74,0.20);
+  /* Texte */
+  --t1: #F5F5F5;
+  --t2: #A0A0A0;
+  --t3: #606060;
 
-  --r:10px;
-  --font-serif:"Cormorant",Georgia,serif;
-  --font-sans:"Outfit",system-ui,sans-serif;
-  --font-mono:"DM Mono",monospace;
+  /* Vert */
+  --emerald:#1A9450;
+  --em-d:rgba(26,148,80,0.07);
+  --em-b:rgba(26,148,80,0.18);
+
+  --r: 8px;
+  --f-palace: "Cinzel", Georgia, serif;
+  --f-body:   "Outfit", system-ui, sans-serif;
+  --f-serif:  "Playfair Display", Georgia, serif;
+  --f-mono:   "DM Mono", monospace;
 }
 
 body{
   background:var(--void);
-  color:var(--nacre);
-  font-family:var(--font-sans);
+  color:var(--t1);
+  font-family:var(--f-body);
   min-height:100vh;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
 
-/* ════════════════════════════════
-   SKELETON LOADER
-════════════════════════════════ */
-#skeleton{
-  position:fixed;inset:0;z-index:500;
+/* ═══════════════════════════════════════
+   SKELETON
+═══════════════════════════════════════ */
+#sk{
+  position:fixed;inset:0;z-index:600;
   background:var(--void);
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:28px;
+  align-items:center;justify-content:center;gap:20px;
 }
-#skeleton.hide{animation:sk-out .5s ease forwards;}
-@keyframes sk-out{to{opacity:0;pointer-events:none;}}
+#sk.out{animation:sk-fade .5s ease forwards;}
+@keyframes sk-fade{to{opacity:0;pointer-events:none;}}
 
-.sk-logo{
-  width:120px;height:48px;
-  background:linear-gradient(90deg,var(--dark) 25%,var(--mid) 50%,var(--dark) 75%);
+.sk-emblem{
+  width:64px;height:24px;
+  background:linear-gradient(90deg,var(--panel) 0%,var(--lift) 50%,var(--panel) 100%);
   background-size:300% 100%;
-  border-radius:4px;
-  animation:sk-shimmer 1.6s ease-in-out infinite;
+  border-radius:3px;
+  animation:sk-sh 1.5s ease-in-out infinite;
 }
-.sk-line{height:12px;border-radius:3px;background:linear-gradient(90deg,var(--dark) 25%,var(--mid) 50%,var(--dark) 75%);background-size:300% 100%;animation:sk-shimmer 1.6s ease-in-out infinite;}
-.sk-l1{width:200px;animation-delay:.1s;}
-.sk-l2{width:140px;animation-delay:.2s;}
-.sk-btn{width:180px;height:48px;border-radius:6px;background:linear-gradient(90deg,var(--dark) 25%,var(--mid) 50%,var(--dark) 75%);background-size:300% 100%;animation:sk-shimmer 1.6s ease-in-out infinite;animation-delay:.3s;}
-@keyframes sk-shimmer{0%{background-position:100% 50%;}100%{background-position:-100% 50%;}}
+.sk-t{height:10px;border-radius:3px;background:linear-gradient(90deg,var(--panel) 0%,var(--lift) 50%,var(--panel) 100%);background-size:300% 100%;animation:sk-sh 1.5s ease-in-out infinite;}
+.sk-t1{width:160px;animation-delay:.1s;}
+.sk-t2{width:110px;animation-delay:.2s;}
+.sk-btn{width:140px;height:40px;border-radius:4px;background:linear-gradient(90deg,var(--panel) 0%,var(--lift) 50%,var(--panel) 100%);background-size:300% 100%;animation:sk-sh 1.5s ease-in-out infinite;animation-delay:.3s;}
+@keyframes sk-sh{0%{background-position:100% 50%;}100%{background-position:-100% 50%;}}
 
-/* ════════════════════════════════
+/* ═══════════════════════════════════════
    PARTICULES
-════════════════════════════════ */
-#cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.8;}
+═══════════════════════════════════════ */
+#cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7;}
 
-/* ════════════════════════════════
-   HEADER TRANSPARENT
-════════════════════════════════ */
+/* ═══════════════════════════════════════
+   HEADER — Transparent → Opaque
+═══════════════════════════════════════ */
 #hdr{
   position:fixed;top:0;left:0;right:0;z-index:200;
-  height:60px;
+  height:62px;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 24px;
   background:transparent;
   border-bottom:1px solid transparent;
   transition:background .4s,border-color .4s,backdrop-filter .4s;
 }
-#hdr.scrolled{
-  background:rgba(6,6,10,.93);
+#hdr.sc{
+  background:rgba(10,10,10,.96);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-color:rgba(200,160,60,.09);
+  border-color:rgba(212,175,55,.10);
 }
 
-.hdr-brand{display:flex;align-items:center;gap:10px;}
-.hdr-emblem{width:30px;height:30px;}
-.hdr-name{
-  font-family:var(--font-serif);
-  font-size:18px;font-weight:600;letter-spacing:.14em;
-  color:var(--nacre);
-  text-shadow:0 1px 8px rgba(0,0,0,.5);
+.hdr-left{display:flex;align-items:center;gap:12px;}
+.hdr-logo{width:32px;height:32px;}
+.hdr-wordmark{
+  font-family:var(--f-palace);
+  font-size:14px;font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--t1);
 }
-.hdr-name em{font-style:italic;font-weight:300;color:var(--au4);}
 
-.hdr-cta{
-  display:flex;align-items:center;gap:7px;
-  padding:9px 18px;
-  background:var(--au3);border:none;border-radius:5px;
-  color:#020100;font-family:var(--font-sans);
-  font-size:13px;font-weight:700;letter-spacing:.05em;
+/* Bouton premium outline */
+.btn-premium{
+  display:flex;align-items:center;gap:8px;
+  background:transparent;
+  border:1px solid var(--au);
+  color:var(--au);
+  padding:10px 22px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-family:var(--f-body);
+  font-size:11px;font-weight:600;
   text-decoration:none;cursor:pointer;
-  transition:background .15s,transform .15s,box-shadow .2s;
-  box-shadow:0 4px 16px rgba(200,160,60,.22);
+  border-radius:3px;
+  transition:all .4s ease;
+  white-space:nowrap;
 }
-.hdr-cta:hover{background:var(--au4);transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,160,60,.32);}
-.hdr-cta svg{width:13px;height:13px;stroke:#020100;fill:none;stroke-width:2.3;stroke-linecap:round;flex-shrink:0;}
+.btn-premium:hover{
+  background:var(--au);
+  color:#000;
+  box-shadow:0 0 20px rgba(212,175,55,.4);
+  transform:translateY(-1px);
+}
+.btn-premium svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;flex-shrink:0;}
 
-/* ════════════════════════════════
-   HERO — PLEIN ÉCRAN
-════════════════════════════════ */
+/* ═══════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════ */
+.div{width:100%;height:1px;overflow:hidden;position:relative;}
+.div::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(212,175,55,.14),transparent);}
+.div::after{content:"";position:absolute;top:0;left:-55%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45),transparent);animation:scan 8s ease-in-out infinite;}
+@keyframes scan{0%{left:-55%;}100%{left:160%;}}
+
+/* ═══════════════════════════════════════
+   HERO — Immersion totale
+═══════════════════════════════════════ */
 .hero{
   position:relative;z-index:1;
   min-height:100svh;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:80px 28px 100px;
+  padding:80px 24px 100px;
   text-align:center;
   overflow:hidden;
 }
 
-/* Fond simulé nuit parisienne — dégradés layerés */
-.hero::before{
-  content:"";position:absolute;inset:0;
+/* Simulation fond nuit parisienne */
+.hero-bg{
+  position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(200,160,60,.07) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 60% at 0% 100%, rgba(40,40,80,.8) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 100% 90%, rgba(20,20,50,.6) 0%, transparent 60%),
-    linear-gradient(180deg, rgba(6,6,10,0) 0%, rgba(6,6,10,.4) 60%, rgba(6,6,10,.9) 100%);
+    radial-gradient(ellipse 140% 80% at 50% 0%, rgba(212,175,55,.06) 0%, transparent 45%),
+    radial-gradient(ellipse 80% 100% at 0% 60%, rgba(20,15,40,.9) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 100% at 100% 40%, rgba(15,20,40,.8) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,.5) 55%, rgba(10,10,10,.95) 100%);
   pointer-events:none;
 }
 
-/* Grille décorative asymétrique très subtile */
-.hero::after{
-  content:"";position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(200,160,60,.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,160,60,.02) 1px, transparent 1px);
-  background-size:60px 60px;
-  transform:skewY(-2deg);
-  pointer-events:none;
+/* Grain cinématique */
+.hero-grain{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.5;pointer-events:none;
 }
 
-/* Cercles pulsants */
-.hero-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;pointer-events:none;z-index:0;}
+/* Lumières de ville simulées */
+.hero-lights{position:absolute;inset:0;pointer-events:none;}
+.hero-lights::before{
+  content:"";position:absolute;
+  bottom:0;left:0;right:0;height:40%;
+  background:linear-gradient(to top,
+    rgba(10,10,10,.95) 0%,
+    transparent 100%);
+}
+
+/* Cercles subtils */
+.hero-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;pointer-events:none;}
 .hr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;}
-.hr:nth-child(1){width:100px;height:100px;border:1px solid rgba(200,160,60,.15);animation:hrp 12s ease-in-out infinite;}
-.hr:nth-child(2){width:220px;height:220px;border:1px solid rgba(200,160,60,.08);animation:hrp 12s ease-in-out infinite 2.5s;}
-.hr:nth-child(3){width:380px;height:380px;border:1px solid rgba(200,160,60,.04);animation:hrp 12s ease-in-out infinite 5s;}
-.hr:nth-child(4){width:580px;height:580px;border:1px solid rgba(200,160,60,.02);animation:hrp 12s ease-in-out infinite 7.5s;}
-@keyframes hrp{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}50%{opacity:.9;transform:translate(-50%,-50%) scale(1.02);}}
+.hr:nth-child(1){width:80px;height:80px;border:1px solid rgba(212,175,55,.12);animation:hrp 14s ease-in-out infinite;}
+.hr:nth-child(2){width:200px;height:200px;border:1px solid rgba(212,175,55,.06);animation:hrp 14s ease-in-out infinite 3s;}
+.hr:nth-child(3){width:360px;height:360px;border:1px solid rgba(212,175,55,.03);animation:hrp 14s ease-in-out infinite 6s;}
+.hr:nth-child(4){width:560px;height:560px;border:1px solid rgba(212,175,55,.015);animation:hrp 14s ease-in-out infinite 9s;}
+@keyframes hrp{0%,100%{opacity:.4;}50%{opacity:.9;}}
 
-/* EMBLEME — rectangle horizontal signé */
-.hero-emblem-wrap{
+/* EMBLÈME */
+.hero-emblem{
   position:relative;z-index:2;
-  margin-bottom:52px;
+  margin-bottom:48px;
+  opacity:0;animation:up .8s ease forwards .1s;
 }
 .hero-emblem-svg{
-  width:200px;height:80px;
-  filter:drop-shadow(0 0 32px rgba(200,160,60,.2)) drop-shadow(0 2px 8px rgba(0,0,0,.5));
+  width:180px;height:72px;
+  filter:drop-shadow(0 0 28px rgba(212,175,55,.22));
 }
 
-/* ACCROCHE courte — storytelling */
+/* ACCROCHE */
 .hero-eyebrow{
   position:relative;z-index:2;
-  font-size:10px;font-weight:400;
-  letter-spacing:.6em;text-transform:uppercase;
-  color:var(--au3);
-  margin-bottom:16px;
-  opacity:0;animation:up .6s ease forwards .2s;
+  font-family:var(--f-palace);
+  font-size:9px;font-weight:400;
+  letter-spacing:.65em;text-transform:uppercase;
+  color:var(--au);
+  margin-bottom:18px;
+  opacity:0;animation:up .6s ease forwards .25s;
 }
-@keyframes up{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 
-.hero-headline{
+.hero-h1{
   position:relative;z-index:2;
-  font-family:var(--font-serif);
-  font-size:clamp(36px,9vw,54px);
+  font-family:var(--f-serif);
+  font-size:clamp(32px,8vw,48px);
   font-weight:300;font-style:italic;
-  line-height:1.2;
-  color:var(--nacre);
-  margin-bottom:12px;
-  max-width:360px;
-  text-shadow:0 2px 20px rgba(0,0,0,.4);
-  opacity:0;animation:up .7s ease forwards .35s;
+  line-height:1.25;
+  color:var(--t1);
+  max-width:340px;
+  margin-bottom:10px;
+  text-shadow:0 2px 24px rgba(0,0,0,.5);
+  opacity:0;animation:up .7s ease forwards .4s;
 }
-.hero-headline strong{
-  font-style:normal;font-weight:600;
+.hero-h1 strong{
   display:block;
-  background:linear-gradient(135deg,#B08C28,#EED078 40%,#FFFCE0 55%,#EED078 70%,#B08C28);
+  font-family:var(--f-palace);
+  font-style:normal;font-weight:600;
+  font-size:.75em;letter-spacing:.08em;
+  text-transform:uppercase;
+  background:linear-gradient(135deg,#A88B28,#E8C84E 35%,#FFFCE0 50%,#E8C84E 65%,#A88B28);
   background-size:250% 100%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:goldShimmer 6s ease-in-out infinite 1.5s;
+  animation:gsh 6s ease-in-out infinite 1.5s;
 }
-@keyframes goldShimmer{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+@keyframes gsh{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
 
 .hero-sub{
   position:relative;z-index:2;
   font-size:13px;font-weight:300;
-  color:var(--stone);
-  line-height:1.7;
-  max-width:300px;
-  margin-bottom:40px;
-  text-shadow:0 1px 8px rgba(0,0,0,.4);
-  opacity:0;animation:up .6s ease forwards .5s;
+  color:var(--t2);line-height:1.75;
+  max-width:280px;
+  margin-bottom:36px;
+  opacity:0;animation:up .6s ease forwards .55s;
 }
 
-/* STATUS */
+/* Status */
 .hero-status{
   position:relative;z-index:2;
   display:inline-flex;align-items:center;gap:8px;
   background:var(--em-d);border:1px solid var(--em-b);
-  border-radius:4px;padding:8px 18px;
+  border-radius:3px;padding:7px 16px;
   margin-bottom:44px;
-  opacity:0;animation:up .6s ease forwards .65s;
+  opacity:0;animation:up .5s ease forwards .7s;
 }
-.sdot{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:sdot 2.5s ease-in-out infinite;}
-@keyframes sdot{0%{box-shadow:0 0 0 0 rgba(24,144,74,.5);}70%{box-shadow:0 0 0 9px rgba(24,144,74,0);}100%{box-shadow:0 0 0 0 rgba(24,144,74,0);}}
-.stxt{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--emerald);animation:sdot 2.5s ease-in-out infinite;}
+@keyframes sdot{0%{box-shadow:0 0 0 0 rgba(26,148,80,.5);}70%{box-shadow:0 0 0 8px rgba(26,148,80,0);}100%{box-shadow:0 0 0 0 rgba(26,148,80,0);}}
+.stxt{font-family:var(--f-body);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);}
 
-/* CTA HERO */
-.hero-cta-block{
+/* FORMULAIRE HÉRO */
+.hero-form{
   position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  width:100%;max-width:320px;
-  opacity:0;animation:up .6s ease forwards .8s;
+  width:100%;max-width:400px;
+  background:rgba(10,10,10,.88);
+  border:1px solid rgba(212,175,55,.16);
+  border-radius:6px;
+  padding:20px;
+  display:flex;flex-direction:column;gap:12px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  opacity:0;animation:up .6s ease forwards .85s;
 }
-.cta-halo{position:absolute;inset:-16px;background:radial-gradient(ellipse,rgba(200,160,60,.18) 0%,transparent 68%);filter:blur(20px);opacity:0;transition:opacity .4s;pointer-events:none;border-radius:24px;}
-.hero-cta-block:hover .cta-halo{opacity:1;}
-
-.cta-main{
-  position:relative;z-index:1;
-  display:flex;align-items:center;justify-content:center;gap:11px;
-  width:100%;padding:18px 24px;
-  background:linear-gradient(135deg,#C8A03C 0%,#9C7820 40%,#C8A03C 100%);
-  background-size:200% 100%;
-  border:none;border-radius:7px;
-  color:#020100;font-family:var(--font-sans);
-  font-size:15px;font-weight:700;letter-spacing:.06em;
-  text-decoration:none;cursor:pointer;
-  transition:background-position .5s,transform .15s,box-shadow .2s;
-  box-shadow:0 8px 32px rgba(200,160,60,.24),0 1px 0 rgba(255,240,140,.28) inset;
-}
-.cta-main:hover{background-position:100% 0;box-shadow:0 14px 44px rgba(200,160,60,.42),0 1px 0 rgba(255,240,140,.28) inset;transform:translateY(-2px);}
-.cta-main:active{transform:scale(.98);}
-.cta-main svg{width:18px;height:18px;stroke:#020100;fill:none;stroke-width:2.3;stroke-linecap:round;flex-shrink:0;}
-.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.22);width:10px;height:10px;transform:scale(0);opacity:1;animation:rip .6s linear;pointer-events:none;}
-@keyframes rip{to{transform:scale(40);opacity:0;}}
-
-.cta-ghost{
-  font-size:12px;font-weight:400;color:var(--stone);
-  text-decoration:none;letter-spacing:.06em;
-  display:flex;align-items:center;gap:6px;
-  transition:color .2s;
-}
-.cta-ghost:hover{color:var(--nacre);}
-.cta-ghost svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;}
-
-/* Scroll cue */
-.scue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:up .5s ease forwards 1.1s;}
-.scue-t{font-size:8px;letter-spacing:.48em;text-transform:uppercase;color:rgba(88,88,98,.4);}
-.scue-a{width:16px;height:16px;border-right:1px solid rgba(200,160,60,.2);border-bottom:1px solid rgba(200,160,60,.2);transform:rotate(45deg);animation:bounce 2.4s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0);opacity:.3;}50%{transform:rotate(45deg) translateY(7px);opacity:.9;}}
-
-/* ════════════════════════════════
-   STICKY CTA CONCIERGE
-════════════════════════════════ */
-#sticky-concierge{
-  position:fixed;bottom:24px;right:20px;z-index:300;
-  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
-  pointer-events:none;opacity:0;
-  transition:opacity .4s;
-}
-#sticky-concierge.show{opacity:1;pointer-events:all;}
-
-.concierge-label{
-  font-size:10px;font-weight:500;letter-spacing:.08em;
-  color:var(--au4);
-  background:rgba(6,6,10,.9);
-  border:1px solid var(--au-b);
-  border-radius:4px;padding:5px 12px;
-  white-space:nowrap;
-  animation:pulse-border 3s ease-in-out infinite;
-}
-@keyframes pulse-border{0%,100%{border-color:var(--au-b);}50%{border-color:var(--au-b2);}}
-
-.concierge-btn{
-  width:54px;height:54px;border-radius:50%;
-  background:var(--au3);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 28px rgba(200,160,60,.35);
-  transition:transform .2s,box-shadow .2s;
-  text-decoration:none;
-}
-.concierge-btn:hover{transform:scale(1.08);box-shadow:0 12px 36px rgba(200,160,60,.5);}
-.concierge-btn svg{width:22px;height:22px;stroke:#020100;fill:none;stroke-width:2.2;stroke-linecap:round;}
-
-/* ════════════════════════════════
-   DIVIDER
-════════════════════════════════ */
-.div{width:100%;height:1px;overflow:hidden;position:relative;}
-.div::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,160,60,.14),transparent);}
-.div::after{content:"";position:absolute;top:0;left:-55%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(200,160,60,.4),transparent);animation:scan 7s ease-in-out infinite;}
-@keyframes scan{0%{left:-55%;}100%{left:160%;}}
-
-/* ════════════════════════════════
-   SECTIONS
-════════════════════════════════ */
-.S{position:relative;z-index:1;padding:48px 24px;display:flex;flex-direction:column;gap:20px;max-width:520px;margin:0 auto;width:100%;}
-.S-eyebrow{font-size:9px;font-weight:600;letter-spacing:.55em;text-transform:uppercase;color:var(--au3);margin-bottom:0;}
-.S-title{font-family:var(--font-serif);font-size:28px;font-weight:400;font-style:italic;color:var(--nacre);line-height:1.3;margin-top:4px;}
-
-/* ════════════════════════════════
-   CARDS
-════════════════════════════════ */
-.card{background:var(--deep);border:1px solid var(--rim);border-radius:var(--r);position:relative;overflow:hidden;}
-.card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--rim2),transparent);}
-.cardg{background:var(--deep);border:1px solid var(--au-b);border-radius:var(--r);position:relative;overflow:hidden;}
-.cardg::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,160,60,.28),transparent);}
-
-/* ════════════════════════════════
-   SÉLECTION EXPÉRIENCE
-════════════════════════════════ */
-.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.exp-card{
-  padding:20px 16px;
-  display:flex;flex-direction:column;gap:10px;
-  cursor:pointer;
-  transition:border-color .25s,transform .2s,box-shadow .2s;
-  text-decoration:none;color:inherit;
-}
-.exp-card:hover{border-color:var(--au-b2);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.3);}
-.exp-card.active{border-color:var(--au3);background:rgba(200,160,60,.06);}
-.exp-ico{width:42px;height:42px;border-radius:9px;background:var(--au-d);border:1px solid var(--au-b);display:flex;align-items:center;justify-content:center;}
-.exp-ico svg{width:20px;height:20px;stroke:var(--au4);fill:none;stroke-width:1.6;stroke-linecap:round;}
-.exp-name{font-size:13px;font-weight:600;color:var(--nacre);}
-.exp-desc{font-size:11px;color:var(--stone);line-height:1.5;font-weight:300;}
-
-/* ════════════════════════════════
-   STEPS
-════════════════════════════════ */
-.steps{display:flex;flex-direction:column;position:relative;}
-.steps-track{position:absolute;left:22px;top:36px;bottom:36px;width:1px;background:linear-gradient(to bottom,rgba(200,160,60,.35),rgba(200,160,60,.04));opacity:.3;}
-.step{display:flex;gap:18px;padding:20px 22px;}
-.step-n{width:44px;height:44px;border-radius:50%;background:var(--au-d);border:1px solid var(--au-b);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;}
-.step-ni{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--au4);}
-.step-b{flex:1;padding-top:10px;}
-.step-t{font-size:14px;font-weight:600;color:var(--nacre);margin-bottom:5px;}
-.step-d{font-size:13px;color:var(--stone);line-height:1.7;font-weight:300;}
-.step-d b{color:var(--nacre);font-weight:500;}
-.step-pill{display:inline-flex;align-items:center;background:var(--em-d);border:1px solid var(--em-b);border-radius:4px;padding:3px 10px;margin-top:8px;}
-.step-pill span{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);}
-
-/* ════════════════════════════════
-   DISPO BANNER
-════════════════════════════════ */
-.dispo{padding:18px 22px;display:flex;align-items:center;gap:16px;}
-.dp-dot{width:12px;height:12px;border-radius:50%;background:var(--emerald);flex-shrink:0;animation:sdot 2.2s ease-in-out infinite;}
-.dp-b{flex:1;}
-.dp-t{font-size:15px;font-weight:600;color:var(--nacre);}
-.dp-s{font-size:11.5px;color:var(--stone);margin-top:3px;font-weight:300;}
-.dp-btn{font-size:13px;font-weight:700;color:var(--au4);text-decoration:none;padding:9px 16px;border:1px solid var(--au-b);border-radius:5px;background:var(--au-d);transition:all .2s;white-space:nowrap;}
-.dp-btn:hover{background:rgba(200,160,60,.18);}
-
-/* ════════════════════════════════
-   CITATION CLIENT — Social Proof Discret
-════════════════════════════════ */
-.citation{
-  padding:28px 24px;
-  display:flex;flex-direction:column;gap:16px;
-  position:relative;
-}
-.citation::before{
-  content:"\201C";
-  position:absolute;top:12px;left:18px;
-  font-family:var(--font-serif);font-size:72px;font-weight:700;
-  color:rgba(200,160,60,.12);line-height:1;
+.hero-form::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);
   pointer-events:none;
 }
-.cit-q{
-  font-family:var(--font-serif);font-style:italic;
-  font-size:17px;line-height:1.7;
-  color:var(--stone);
-  padding-top:8px;
-}
-.cit-q b{color:var(--nacre);font-style:normal;font-weight:500;}
-.cit-author{display:flex;align-items:center;gap:12px;}
-.cit-av{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--au-d);border:1px solid var(--au-b);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-serif);font-size:13px;font-weight:700;
-  color:var(--au4);flex-shrink:0;
-}
-.cit-name{font-size:13px;font-weight:500;color:var(--stone);}
-.cit-ctx{font-size:10px;color:var(--dusk);margin-top:1px;font-weight:300;}
 
-/* Rating discret */
-.rating-row{display:flex;align-items:center;gap:8px;padding:0 24px 18px;}
-.stars{display:flex;gap:2px;}
-.star{font-size:11px;color:var(--au3);}
-.rating-txt{font-size:11px;color:var(--dusk);font-weight:300;}
-
-/* ════════════════════════════════
-   TARIFS — Grille asymétrique
-════════════════════════════════ */
-.tarif-hero{padding:22px 22px;display:flex;align-items:flex-start;gap:16px;background:linear-gradient(135deg,rgba(200,160,60,.07),rgba(200,160,60,.02));}
-.tarif-ico{width:48px;height:48px;border-radius:11px;background:var(--au-d);border:1px solid var(--au-b);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.tarif-ico svg{width:22px;height:22px;stroke:var(--au4);fill:none;stroke-width:1.6;stroke-linecap:round;}
-.tarif-info{flex:1;}
-.tarif-name{font-size:15px;font-weight:600;color:var(--nacre);margin-bottom:4px;}
-.tarif-sub{font-size:12px;color:var(--stone);font-weight:300;line-height:1.5;}
-.tarif-rate{text-align:right;flex-shrink:0;}
-.tv{font-family:var(--font-serif);font-size:34px;font-weight:700;color:var(--au4);display:block;line-height:1;}
-.tu{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dusk);display:block;margin-top:2px;}
-
-.tarif-list{display:flex;flex-direction:column;}
-.trow{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.03);transition:background .2s;}
-.trow:last-of-type{border-bottom:none;}
-.trow:hover{background:rgba(200,160,60,.04);}
-.trow.hi{background:rgba(200,160,60,.06);}
-.tr-left{}
-.trn{font-size:14px;font-weight:500;color:var(--nacre);}
-.trw{font-size:11px;color:var(--stone);margin-top:3px;font-weight:300;}
-.trp{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--au4);white-space:nowrap;padding-left:16px;flex-shrink:0;}
-
-.tarif-note{padding:14px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:11px;color:var(--dusk);line-height:1.65;font-weight:300;}
-
-/* ════════════════════════════════
-   FORMULAIRE DEVIS — Premium
-════════════════════════════════ */
-.form-body{padding:26px 22px;display:flex;flex-direction:column;gap:18px;}
-.form-title{font-family:var(--font-serif);font-size:22px;font-weight:500;color:var(--nacre);}
-.form-sub{font-size:12px;color:var(--stone);margin-top:-12px;line-height:1.65;font-weight:300;}
-.form-fields{display:flex;flex-direction:column;gap:12px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.field{display:flex;flex-direction:column;gap:7px;}
-.field label{font-size:8.5px;font-weight:600;letter-spacing:.44em;text-transform:uppercase;color:var(--au3);}
-.field input,.field select{
-  background:rgba(4,4,8,.9);
+.hf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hf-field{display:flex;flex-direction:column;gap:5px;}
+.hf-label{font-family:var(--f-palace);font-size:7.5px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:var(--au);}
+.hf-input{
+  background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.07);
-  border-radius:8px;padding:14px 16px;
-  color:var(--nacre);font-family:var(--font-sans);
-  font-size:14px;font-weight:300;outline:none;
+  border-radius:4px;
+  padding:11px 14px;
+  color:var(--t1);
+  font-family:var(--f-body);font-size:13px;font-weight:300;
+  outline:none;
   transition:border-color .2s,box-shadow .2s;
   width:100%;-webkit-appearance:none;appearance:none;
 }
-.field input::placeholder{color:var(--dusk);}
-.field select option{background:#0A0A10;}
-.field input:focus,.field select:focus{border-color:rgba(200,160,60,.45);box-shadow:0 0 0 3px rgba(200,160,60,.07);}
+.hf-input::placeholder{color:var(--t3);}
+.hf-input:focus{border-color:rgba(212,175,55,.4);box-shadow:0 0 0 3px rgba(212,175,55,.06);}
+.hf-input option{background:#141414;}
 
-.btn-form{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  width:100%;padding:16px;
-  background:var(--au-d);border:1px solid var(--au-b2);border-radius:7px;
-  color:var(--au4);font-family:var(--font-sans);
-  font-size:13px;font-weight:600;letter-spacing:.07em;
-  cursor:pointer;transition:all .25s;
+.hf-extras{display:flex;flex-direction:column;gap:4px;}
+.hf-extras-lbl{font-family:var(--f-palace);font-size:7px;font-weight:400;letter-spacing:.45em;text-transform:uppercase;color:var(--t3);margin-bottom:2px;}
+.hf-textarea{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:4px;
+  padding:10px 14px;
+  color:var(--t1);
+  font-family:var(--f-body);font-size:13px;font-weight:300;
+  outline:none;resize:none;
+  height:60px;
+  transition:border-color .2s;
+  width:100%;
 }
-.btn-form:hover{background:rgba(200,160,60,.16);border-color:rgba(200,160,60,.4);transform:translateY(-1px);}
-.btn-form svg{width:16px;height:16px;stroke:var(--au3);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
+.hf-textarea::placeholder{color:var(--t3);}
+.hf-textarea:focus{border-color:rgba(212,175,55,.35);}
 
-/* ════════════════════════════════
+.hf-submit{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:14px;
+  background:transparent;
+  border:1px solid var(--au);
+  color:var(--au);
+  font-family:var(--f-body);font-size:12px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  cursor:pointer;border-radius:3px;
+  transition:all .4s ease;
+}
+.hf-submit:hover{
+  background:var(--au);color:#000;
+  box-shadow:0 0 20px rgba(212,175,55,.4);
+}
+.hf-submit svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
+
+/* Scroll cue */
+.scue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:7px;opacity:0;animation:up .5s ease forwards 1.2s;}
+.scue-t{font-family:var(--f-palace);font-size:7px;letter-spacing:.55em;text-transform:uppercase;color:rgba(96,96,96,.45);}
+.scue-a{width:14px;height:14px;border-right:1px solid rgba(212,175,55,.18);border-bottom:1px solid rgba(212,175,55,.18);transform:rotate(45deg);animation:bounce 2.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0);opacity:.3;}50%{transform:rotate(45deg) translateY(6px);opacity:.8;}}
+@keyframes up{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+/* ═══════════════════════════════════════
+   STICKY CONCIERGE
+═══════════════════════════════════════ */
+#concierge{
+  position:fixed;bottom:24px;right:20px;z-index:300;
+  display:flex;flex-direction:column;align-items:flex-end;gap:9px;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+#concierge.show{opacity:1;pointer-events:all;}
+
+.cc-tag{
+  font-family:var(--f-palace);
+  font-size:8px;font-weight:400;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--au);
+  background:rgba(10,10,10,.92);
+  border:1px solid var(--au-brd);
+  border-radius:3px;padding:5px 12px;
+  white-space:nowrap;
+}
+.cc-btn{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--au);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 28px rgba(212,175,55,.35);
+  transition:transform .2s,box-shadow .2s;
+  text-decoration:none;
+}
+.cc-btn:hover{transform:scale(1.08);box-shadow:0 12px 36px rgba(212,175,55,.52);}
+.cc-btn svg{width:20px;height:20px;stroke:#000;fill:none;stroke-width:2.2;stroke-linecap:round;}
+
+/* ═══════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════ */
+.S{position:relative;z-index:1;padding:52px 24px;display:flex;flex-direction:column;gap:22px;max-width:520px;margin:0 auto;width:100%;}
+.S-eyebrow{font-family:var(--f-palace);font-size:8.5px;font-weight:400;letter-spacing:.6em;text-transform:uppercase;color:var(--au);margin-bottom:0;}
+.S-h{font-family:var(--f-serif);font-size:28px;font-weight:400;font-style:italic;color:var(--t1);line-height:1.3;margin-top:4px;}
+
+/* ═══════════════════════════════════════
+   CARDS
+═══════════════════════════════════════ */
+.card{background:var(--panel);border:1px solid var(--rim);border-radius:var(--r);position:relative;overflow:hidden;}
+.card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--rim2),transparent);}
+.cardg{background:var(--panel);border:1px solid var(--au-brd);border-radius:var(--r);position:relative;overflow:hidden;}
+.cardg::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.28),transparent);}
+
+/* ═══════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════ */
+.services-grid{display:flex;flex-direction:column;gap:1px;background:var(--au-brd);border-radius:var(--r);overflow:hidden;}
+.srv{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:22px 20px;
+  background:var(--panel);
+  transition:background .2s;
+}
+.srv:hover{background:var(--card);}
+.srv-ico{
+  width:44px;height:44px;flex-shrink:0;border-radius:8px;
+  background:var(--au-dim);border:1px solid var(--au-brd);
+  display:flex;align-items:center;justify-content:center;
+}
+.srv-ico svg{width:20px;height:20px;stroke:var(--au);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.srv-b{flex:1;padding-top:2px;}
+.srv-n{font-family:var(--f-palace);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t1);margin-bottom:5px;}
+.srv-d{font-size:12.5px;font-weight:300;color:var(--t2);line-height:1.65;}
+.srv-price{
+  font-family:var(--f-mono);font-size:14px;font-weight:500;
+  color:var(--au);white-space:nowrap;padding-top:2px;flex-shrink:0;
+}
+
+/* ═══════════════════════════════════════
+   VÉHICULE — Carte Premium
+═══════════════════════════════════════ */
+.vehicle-card{
+  border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--au-brd);
+  background:var(--panel);
+  position:relative;
+}
+
+/* Silhouette voiture CSS */
+.vehicle-visual{
+  height:180px;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 120%, rgba(212,175,55,.08) 0%, transparent 60%),
+    linear-gradient(180deg, var(--card) 0%, var(--panel) 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.vehicle-visual::before{
+  content:"";position:absolute;
+  bottom:20px;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);
+  box-shadow:0 0 20px rgba(212,175,55,.15);
+}
+
+.car-svg{
+  width:220px;height:90px;
+  filter:drop-shadow(0 4px 24px rgba(212,175,55,.12)) drop-shadow(0 0 8px rgba(0,0,0,.8));
+}
+
+.vehicle-badge{
+  position:absolute;top:14px;right:14px;
+  font-family:var(--f-palace);font-size:8px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--au);
+  background:rgba(10,10,10,.85);
+  border:1px solid var(--au-brd);
+  border-radius:3px;padding:4px 10px;
+}
+
+.vehicle-body{padding:20px;}
+.vehicle-name{
+  font-family:var(--f-palace);font-size:13px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t1);margin-bottom:6px;
+}
+.vehicle-model{font-size:11px;font-weight:300;color:var(--t2);margin-bottom:16px;}
+
+/* Services inclus — icônes fines */
+.vehicle-amenities{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.amenity{
+  display:flex;align-items:center;gap:5px;
+  background:var(--ag-dim);border:1px solid var(--ag-brd);
+  border-radius:3px;padding:5px 10px;
+}
+.amenity svg{width:12px;height:12px;stroke:var(--ag);fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0;}
+.amenity span{font-size:10px;font-weight:400;color:var(--ag);letter-spacing:.05em;}
+
+.vehicle-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:14px;
+  border-top:1px solid var(--rim);
+}
+.vehicle-capacity{font-size:11px;font-weight:300;color:var(--t3);}
+.vehicle-rate{
+  font-family:var(--f-mono);font-size:16px;font-weight:500;color:var(--au);
+}
+
+/* ═══════════════════════════════════════
+   ENGAGEMENT — 3 piliers
+═══════════════════════════════════════ */
+.eng-grid{display:flex;flex-direction:column;gap:1px;background:var(--rim);border-radius:var(--r);overflow:hidden;}
+.eng{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 20px;background:var(--panel);
+  transition:background .2s;
+}
+.eng:hover{background:var(--card);}
+.eng-ico{
+  width:38px;height:38px;flex-shrink:0;border-radius:7px;
+  background:var(--au-dim);border:1px solid var(--au-brd);
+  display:flex;align-items:center;justify-content:center;
+}
+.eng-ico svg{width:17px;height:17px;stroke:var(--au);fill:none;stroke-width:1.6;stroke-linecap:round;}
+.eng-b{flex:1;}
+.eng-t{font-family:var(--f-palace);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t1);margin-bottom:4px;}
+.eng-d{font-size:12px;font-weight:300;color:var(--t2);line-height:1.6;}
+.eng-check{color:var(--au);font-size:16px;flex-shrink:0;}
+
+/* ═══════════════════════════════════════
+   TARIFS
+═══════════════════════════════════════ */
+.tarif-hd{padding:20px 20px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(212,175,55,.07),rgba(212,175,55,.02));}
+.tarif-ico{width:44px;height:44px;border-radius:9px;background:var(--au-dim);border:1px solid var(--au-brd);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tarif-ico svg{width:21px;height:21px;stroke:var(--au);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.tarif-info{flex:1;}
+.tarif-name{font-family:var(--f-palace);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t1);margin-bottom:3px;}
+.tarif-sub{font-size:11px;font-weight:300;color:var(--t2);}
+.tarif-rate{text-align:right;flex-shrink:0;}
+.tv{font-family:var(--f-mono);font-size:28px;font-weight:500;color:var(--au);display:block;line-height:1;}
+.tu{font-family:var(--f-palace);font-size:7.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--t3);display:block;margin-top:2px;}
+
+.tarif-list{display:flex;flex-direction:column;}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.03);transition:background .2s;}
+.trow:last-of-type{border-bottom:none;}
+.trow:hover{background:rgba(212,175,55,.04);}
+.trow.hi{background:rgba(212,175,55,.055);}
+.trn{font-size:13px;font-weight:400;color:var(--t1);}
+.trw{font-size:10.5px;font-weight:300;color:var(--t2);margin-top:2px;}
+.trp{font-family:var(--f-mono);font-size:18px;font-weight:500;color:var(--au);padding-left:16px;flex-shrink:0;}
+.tarif-note{padding:13px 20px;border-top:1px solid rgba(255,255,255,.04);font-size:10.5px;font-weight:300;color:var(--t3);line-height:1.65;}
+
+/* ═══════════════════════════════════════
+   DEVIS
+═══════════════════════════════════════ */
+.devis-body{padding:24px 20px;display:flex;flex-direction:column;gap:16px;}
+.devis-title{font-family:var(--f-serif);font-size:20px;font-weight:400;font-style:italic;color:var(--t1);}
+.devis-sub{font-size:12px;font-weight:300;color:var(--t2);margin-top:-10px;line-height:1.65;}
+.dfields{display:flex;flex-direction:column;gap:10px;}
+.drow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-family:var(--f-palace);font-size:7.5px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:var(--au);}
+.field input,.field select,.field textarea{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:12px 14px;color:var(--t1);font-family:var(--f-body);font-size:13px;font-weight:300;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;-webkit-appearance:none;appearance:none;}
+.field input::placeholder,.field textarea::placeholder{color:var(--t3);}
+.field select option{background:#141414;}
+.field textarea{resize:none;height:72px;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(212,175,55,.4);box-shadow:0 0 0 3px rgba(212,175,55,.06);}
+.btn-devis{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:transparent;border:1px solid var(--au);color:var(--au);font-family:var(--f-body);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .4s ease;}
+.btn-devis:hover{background:var(--au);color:#000;box-shadow:0 0 20px rgba(212,175,55,.38);}
+.btn-devis svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
+
+/* ═══════════════════════════════════════
+   CITATIONS
+═══════════════════════════════════════ */
+.citation{padding:26px 22px;display:flex;flex-direction:column;gap:14px;position:relative;}
+.citation::before{content:"\201C";position:absolute;top:10px;left:16px;font-family:var(--f-serif);font-size:80px;font-weight:700;color:rgba(212,175,55,.10);line-height:1;pointer-events:none;}
+.cit-q{font-family:var(--f-serif);font-style:italic;font-size:16px;line-height:1.72;color:var(--t2);padding-top:6px;}
+.cit-q b{color:var(--t1);font-style:normal;font-weight:500;}
+.cit-author{display:flex;align-items:center;gap:11px;}
+.cit-av{width:34px;height:34px;border-radius:50%;background:var(--au-dim);border:1px solid var(--au-brd);display:flex;align-items:center;justify-content:center;font-family:var(--f-palace);font-size:11px;font-weight:600;color:var(--au);flex-shrink:0;}
+.cit-n{font-size:12px;font-weight:500;color:var(--t2);}
+.cit-c{font-size:10px;font-weight:300;color:var(--t3);margin-top:1px;}
+.rating-row{display:flex;align-items:center;gap:8px;padding:0 22px 16px;}
+.stars{display:flex;gap:2px;}
+.star{font-size:11px;color:var(--au);}
+.rating-txt{font-size:10px;font-weight:300;color:var(--t3);}
+
+/* ═══════════════════════════════════════
    CONTACTS
-════════════════════════════════ */
+═══════════════════════════════════════ */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .cc{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:20px 18px;text-decoration:none;color:inherit;transition:border-color .25s,transform .2s,box-shadow .2s;}
-.cc:hover{border-color:var(--au-b2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
+.cc:hover{border-color:var(--au-brd2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
 .cc:active{transform:scale(.97);}
-.cc-ico{width:40px;height:40px;border-radius:10px;background:var(--au-d);border:1px solid var(--au-b);display:flex;align-items:center;justify-content:center;}
-.cc-ico svg{width:18px;height:18px;stroke:var(--au4);fill:none;stroke-width:1.8;stroke-linecap:round;}
-.cc-l{font-size:9.5px;color:var(--dusk);font-weight:300;}
-.cc-v{font-size:15px;font-weight:600;color:var(--nacre);line-height:1.3;}
-.vbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:14px;background:transparent;border:1px solid var(--rim2);border-radius:7px;color:var(--stone);font-family:var(--font-sans);font-size:13px;font-weight:400;letter-spacing:.06em;cursor:pointer;text-decoration:none;transition:all .25s;}
-.vbtn:hover{background:rgba(255,255,255,.04);border-color:var(--rim2);color:var(--nacre);}
-.vbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;}
+.cc-ico{width:38px;height:38px;border-radius:8px;background:var(--au-dim);border:1px solid var(--au-brd);display:flex;align-items:center;justify-content:center;}
+.cc-ico svg{width:17px;height:17px;stroke:var(--au);fill:none;stroke-width:1.8;stroke-linecap:round;}
+.cc-l{font-family:var(--f-palace);font-size:8px;font-weight:400;letter-spacing:.4em;text-transform:uppercase;color:var(--t3);}
+.cc-v{font-size:15px;font-weight:600;color:var(--t1);line-height:1.3;}
+.vbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:13px;background:transparent;border:1px solid var(--rim2);border-radius:3px;color:var(--t2);font-family:var(--f-palace);font-size:9px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .4s ease;}
+.vbtn:hover{background:rgba(212,175,55,.06);border-color:var(--au-brd);color:var(--au);}
+.vbtn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;}
 
-/* ════════════════════════════════
-   INFOS PRATIQUES
-════════════════════════════════ */
-.igrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.itile{padding:20px;display:flex;flex-direction:column;gap:10px;}
-.ilbl{font-size:9px;font-weight:600;letter-spacing:.44em;text-transform:uppercase;color:var(--dusk);}
-.ival{font-family:var(--font-serif);font-size:19px;font-weight:600;color:var(--nacre);line-height:1.25;}
-.isub{font-size:12px;color:var(--stone);line-height:1.5;font-weight:300;}
-.prow{display:flex;gap:8px;margin-top:2px;flex-wrap:wrap;}
-.pb{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.03);border:1px solid var(--rim);border-radius:5px;padding:5px 10px;}
-.pb svg{width:12px;height:12px;stroke:var(--stone);fill:none;stroke-width:1.8;}
-.pb span{font-size:10px;color:var(--stone);font-weight:300;}
-.zwrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
-.zp{font-size:11px;font-weight:500;border-radius:4px;padding:5px 12px;}
-.zp.hi{color:var(--au4);background:var(--au-d);border:1px solid var(--au-b);}
-.zp.lo{color:var(--stone);background:rgba(255,255,255,.03);border:1px solid var(--rim);}
-
-/* ════════════════════════════════
-   FIDELITE
-════════════════════════════════ */
-.fid{padding:22px;display:flex;align-items:flex-start;gap:16px;}
-.fid-ico{width:48px;height:48px;flex-shrink:0;border-radius:11px;background:var(--au-d);border:1px solid var(--au-b);display:flex;align-items:center;justify-content:center;}
-.fid-ico svg{width:22px;height:22px;stroke:var(--au4);fill:none;stroke-width:1.6;stroke-linecap:round;}
-.fid-t{font-size:15px;font-weight:600;color:var(--nacre);margin-bottom:6px;}
-.fid-d{font-size:13px;color:var(--stone);line-height:1.7;font-weight:300;}
-.fid-d b{color:var(--au5);font-weight:600;}
-
-/* ════════════════════════════════
-   STATS
-════════════════════════════════ */
+/* STATS */
 .srow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.stile{padding:22px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;transition:border-color .25s,transform .2s;}
-.stile:hover{border-color:var(--au-b2);transform:translateY(-3px);}
-.sv{font-family:var(--font-serif);font-size:28px;font-weight:700;color:var(--au4);line-height:1;}
-.sl{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--dusk);line-height:1.45;margin-top:2px;}
+.stile{padding:22px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;transition:border-color .25s,transform .2s;}
+.stile:hover{border-color:var(--au-brd2);transform:translateY(-3px);}
+.sv{font-family:var(--f-mono);font-size:24px;font-weight:500;color:var(--au);line-height:1;}
+.sl{font-family:var(--f-palace);font-size:8px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);line-height:1.5;margin-top:2px;}
+
+/* FIDELITE */
+.fid{padding:22px;display:flex;align-items:flex-start;gap:16px;}
+.fid-ico{width:46px;height:46px;flex-shrink:0;border-radius:9px;background:var(--au-dim);border:1px solid var(--au-brd);display:flex;align-items:center;justify-content:center;}
+.fid-ico svg{width:21px;height:21px;stroke:var(--au);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.fid-t{font-family:var(--f-palace);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t1);margin-bottom:6px;}
+.fid-d{font-size:13px;font-weight:300;color:var(--t2);line-height:1.7;}
+.fid-d b{color:var(--au-xl);font-weight:500;}
 
 /* FOOTER */
-footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
-.ft-n{font-family:var(--font-serif);font-style:italic;font-size:16px;color:rgba(200,160,60,.20);letter-spacing:.14em;}
-.ft-l{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(88,88,98,.28);font-weight:300;}
-.ft-qr{display:flex;align-items:center;gap:6px;text-decoration:none;opacity:.22;transition:opacity .2s;margin-top:6px;}
-.ft-qr:hover{opacity:.6;}
-.ft-qr span{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--au3);}
+footer{position:relative;z-index:1;padding:24px 24px 60px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ft-n{font-family:var(--f-palace);font-size:13px;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:rgba(212,175,55,.2);}
+.ft-l{font-size:9px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:rgba(96,96,96,.3);}
+.ft-links{display:flex;align-items:center;gap:16px;margin-top:4px;}
+.ft-link{font-size:9px;font-weight:300;color:rgba(96,96,96,.35);text-decoration:none;letter-spacing:.08em;transition:color .2s;}
+.ft-link:hover{color:var(--au);}
 
 /* REVEAL */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1);}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1);}
 .rv.on{opacity:1;transform:none;}
 .rv.d1{transition-delay:.08s;}.rv.d2{transition-delay:.16s;}.rv.d3{transition-delay:.24s;}.rv.d4{transition-delay:.32s;}
 </style>
@@ -555,28 +618,28 @@ footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;disp
 
 <canvas id="cvs"></canvas>
 
-<!-- SKELETON LOADER -->
-<div id="skeleton">
-  <div class="sk-logo"></div>
-  <div class="sk-line sk-l1"></div>
-  <div class="sk-line sk-l2"></div>
+<!-- SKELETON -->
+<div id="sk">
+  <div class="sk-emblem"></div>
+  <div class="sk-t sk-t1"></div>
+  <div class="sk-t sk-t2"></div>
   <div class="sk-btn"></div>
 </div>
 
-<!-- HEADER TRANSPARENT -->
+<!-- HEADER -->
 <header id="hdr">
-  <div class="hdr-brand">
-    <svg class="hdr-emblem" viewBox="0 0 30 30" fill="none">
-      <circle cx="15" cy="15" r="13" stroke="#B08C28" stroke-width="0.6" opacity="0.3"/>
-      <rect x="6" y="6" width="3.5" height="13" rx="1.75" fill="#C8A03C"/>
-      <rect x="4.5" y="6" width="6.5" height="2" rx="1" fill="#C8A03C" opacity="0.5"/>
-      <rect x="4.5" y="17" width="6.5" height="2" rx="1" fill="#C8A03C" opacity="0.5"/>
-      <path d="M12.5 6 L12.5 19 L20.5 6 L20.5 19" stroke="#DCBA58" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="15" cy="24" r="1.8" fill="#C8A03C"/>
+  <div class="hdr-left">
+    <svg class="hdr-logo" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="14" stroke="#D4AF37" stroke-width="0.7" opacity="0.28"/>
+      <rect x="7" y="7" width="4" height="14" rx="2" fill="#D4AF37"/>
+      <rect x="5" y="7" width="8" height="2.5" rx="1.25" fill="#D4AF37" opacity="0.45"/>
+      <rect x="5" y="18.5" width="8" height="2.5" rx="1.25" fill="#D4AF37" opacity="0.45"/>
+      <path d="M14 7 L14 21 L23 7 L23 21" stroke="#E8C84E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="16" cy="26" r="1.8" fill="#D4AF37"/>
     </svg>
-    <span class="hdr-name">I<em>&amp;</em>N RUN</span>
+    <span class="hdr-wordmark">I&amp;N&nbsp;RUN</span>
   </div>
-  <a class="hdr-cta" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
+  <a class="btn-premium" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
     <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>
     R&eacute;server
   </a>
@@ -584,150 +647,220 @@ footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;disp
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-lights"></div>
   <div class="hero-rings"><div class="hr"></div><div class="hr"></div><div class="hr"></div><div class="hr"></div></div>
 
-  <!-- EMBLÈME HORIZONTAL — I & N dans un cadre signé -->
-  <div class="hero-emblem-wrap">
-    <svg class="hero-emblem-svg" viewBox="0 0 200 80" fill="none">
-      <!-- Cadre -->
-      <rect x="1.5" y="1.5" width="197" height="77" rx="7" stroke="#B08C28" stroke-width="0.8" opacity="0.22"/>
-      <!-- Lignes deco -->
-      <line x1="18" y1="12" x2="86" y2="12" stroke="#B08C28" stroke-width="0.5" opacity="0.18"/>
-      <line x1="114" y1="12" x2="182" y2="12" stroke="#B08C28" stroke-width="0.5" opacity="0.18"/>
-      <line x1="18" y1="68" x2="86" y2="68" stroke="#B08C28" stroke-width="0.5" opacity="0.14"/>
-      <line x1="114" y1="68" x2="182" y2="68" stroke="#B08C28" stroke-width="0.5" opacity="0.14"/>
-      <!-- Séparateur -->
-      <line x1="100" y1="18" x2="100" y2="35" stroke="#B08C28" stroke-width="0.5" opacity="0.18"/>
-      <circle cx="100" cy="40" r="2.5" fill="#B08C28" opacity="0.35"/>
-      <line x1="100" y1="45" x2="100" y2="62" stroke="#B08C28" stroke-width="0.5" opacity="0.18"/>
+  <!-- Emblème -->
+  <div class="hero-emblem">
+    <svg class="hero-emblem-svg" viewBox="0 0 180 72" fill="none">
+      <rect x="1.5" y="1.5" width="177" height="69" rx="6" stroke="#D4AF37" stroke-width="0.8" opacity="0.2"/>
+      <line x1="16" y1="11" x2="78" y2="11" stroke="#D4AF37" stroke-width="0.5" opacity="0.16"/>
+      <line x1="102" y1="11" x2="164" y2="11" stroke="#D4AF37" stroke-width="0.5" opacity="0.16"/>
+      <line x1="16" y1="61" x2="78" y2="61" stroke="#D4AF37" stroke-width="0.5" opacity="0.12"/>
+      <line x1="102" y1="61" x2="164" y2="61" stroke="#D4AF37" stroke-width="0.5" opacity="0.12"/>
+      <line x1="90" y1="18" x2="90" y2="32" stroke="#D4AF37" stroke-width="0.5" opacity="0.16"/>
+      <circle cx="90" cy="36" r="2.2" fill="#D4AF37" opacity="0.3"/>
+      <line x1="90" y1="40" x2="90" y2="54" stroke="#D4AF37" stroke-width="0.5" opacity="0.16"/>
       <!-- I sérif -->
-      <rect x="28" y="18" width="6" height="44" rx="3" fill="#C8A03C"/>
-      <rect x="20" y="18" width="22" height="4" rx="2" fill="#C8A03C" opacity="0.45"/>
-      <rect x="20" y="58" width="22" height="4" rx="2" fill="#C8A03C" opacity="0.45"/>
-      <!-- N diagonal -->
-      <path d="M116 18 L116 62 L148 18 L148 62" stroke="#DCBA58" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="24" y="17" width="6" height="38" rx="3" fill="#D4AF37"/>
+      <rect x="17" y="17" width="20" height="3.5" rx="1.75" fill="#D4AF37" opacity="0.42"/>
+      <rect x="17" y="51.5" width="20" height="3.5" rx="1.75" fill="#D4AF37" opacity="0.42"/>
+      <!-- N -->
+      <path d="M104 17 L104 55 L132 17 L132 55" stroke="#E8C84E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     </svg>
   </div>
 
-  <div class="hero-eyebrow">Paris &middot; &Icirc;le-de-France</div>
-  <h1 class="hero-headline">
-    Votre voyage,<br>
-    <strong>votre chauffeur.</strong>
+  <div class="hero-eyebrow">Paris &middot; &Icirc;le-de-France &middot; Depuis 2022</div>
+  <h1 class="hero-h1">
+    Votre temps<br>est pr&eacute;cieux.
+    <strong>Votre confort<br>est notre priorit&eacute;.</strong>
   </h1>
-  <p class="hero-sub">Prix fixe garanti, ponctualit&eacute; absolue.<br>R&eacute;servation en 60 secondes.</p>
+  <p class="hero-sub">Ponctualit&eacute; absolue. Prix fix&eacute; avant le d&eacute;part.<br>R&eacute;servation confirm&eacute;e en moins de 5 minutes.</p>
 
   <div class="hero-status">
     <div class="sdot"></div>
     <span class="stxt">Disponible &nbsp;&middot;&nbsp; R&eacute;ponse &lt; 5 min</span>
   </div>
 
-  <div class="hero-cta-block">
-    <div class="cta-halo"></div>
-    <a class="cta-main" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
+  <!-- Formulaire héro minimaliste -->
+  <div class="hero-form">
+    <div class="hf-row">
+      <div class="hf-field">
+        <div class="hf-label">D&eacute;part</div>
+        <input class="hf-input" type="text" id="hf-dep" placeholder="Adresse, ville&hellip;" autocomplete="off">
+      </div>
+      <div class="hf-field">
+        <div class="hf-label">Arriv&eacute;e</div>
+        <input class="hf-input" type="text" id="hf-arr" placeholder="A&eacute;roport, gare&hellip;" autocomplete="off">
+      </div>
+    </div>
+    <div class="hf-row">
+      <div class="hf-field">
+        <div class="hf-label">Date</div>
+        <input class="hf-input" type="date" id="hf-dat">
+      </div>
+      <div class="hf-field">
+        <div class="hf-label">Heure</div>
+        <input class="hf-input" type="time" id="hf-heu">
+      </div>
+    </div>
+    <div class="hf-extras">
+      <div class="hf-extras-lbl">Demandes particuli&egrave;res (optionnel)</div>
+      <textarea class="hf-textarea" id="hf-note" placeholder="Temp&eacute;rature souhait&eacute;e, silence bord, accueil avec pancarte&hellip;"></textarea>
+    </div>
+    <button class="hf-submit" onclick="sendHeroForm()">
       <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>
-      R&eacute;server l&rsquo;exp&eacute;rience
-    </a>
-    <a class="cta-ghost" href="tel:0767742220">
-      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.92v-1z"/></svg>
-      ou appeler directement
-    </a>
+      Demander un devis
+    </button>
   </div>
 
   <div class="scue"><span class="scue-t">D&eacute;couvrir</span><div class="scue-a"></div></div>
 </section>
 
 <!-- STICKY CONCIERGE -->
-<div id="sticky-concierge">
-  <span class="concierge-label">Votre Concierge</span>
-  <a class="concierge-btn" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
-    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>
-  </a>
+<div id="concierge">
+  <span class="cc-tag">Concierge</span>
+  <a class="cc-btn" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN."><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg></a>
 </div>
 
 <div class="div"></div>
 
-<!-- SELECTION EXPÉRIENCE -->
+<!-- NOS SERVICES -->
 <div class="S">
-  <div class="S-eyebrow rv">Votre trajet</div>
-  <div class="S-title rv">Quelle exp&eacute;rience<br>recherchez-vous&nbsp;?</div>
-  <div class="exp-grid">
-    <a class="exp-card cardg rv d1" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
-      <div class="exp-ico"><svg viewBox="0 0 24 24"><path d="M22 16.5H2M17 21l5-4.5-5-4.5M7 21l-5-4.5 5-4.5"/><path d="M12 3v10M8.5 7l3.5-4 3.5 4"/></svg></div>
-      <div class="exp-name">A&eacute;roport &amp; Gare</div>
-      <div class="exp-desc">CDG, Orly, Beauvais, toutes gares Paris</div>
-    </a>
-    <a class="exp-card cardg rv d2" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
-      <div class="exp-ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
-      <div class="exp-name">Affaires</div>
-      <div class="exp-desc">La D&eacute;fense, rendez-vous pro, discr&eacute;tion totale</div>
-    </a>
-    <a class="exp-card cardg rv d3" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
-      <div class="exp-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <div class="exp-name">Longue distance</div>
-      <div class="exp-desc">Province, week-end, transfert VIP</div>
-    </a>
-    <a class="exp-card cardg rv d4" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
-      <div class="exp-ico"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-      <div class="exp-name">Soirée &amp; &Eacute;v&eacute;nement</div>
-      <div class="exp-desc">D&icirc;ner, spectacle, occasion sp&eacute;ciale</div>
-    </a>
-  </div>
-</div>
-
-<div class="div"></div>
-
-<!-- COMMENT CA MARCHE -->
-<div class="S">
-  <div class="S-eyebrow rv">Le service</div>
-  <div class="S-title rv">Trois &eacute;tapes.<br>Z&eacute;ro friction.</div>
-  <div class="steps cardg rv d2">
-    <div class="steps-track"></div>
-    <div class="step"><div class="step-n"><span class="step-ni">1</span></div><div class="step-b"><div class="step-t">Envoyez votre trajet</div><div class="step-d">D&eacute;part, arriv&eacute;e, date &mdash; via WhatsApp ou le formulaire ci-dessous.</div></div></div>
-    <div class="step"><div class="step-n"><span class="step-ni">2</span></div><div class="step-b"><div class="step-t">Je confirme le tarif fixe</div><div class="step-d">Prix d&eacute;finitif en <b>moins de 5 minutes</b>. Aucune surprise.</div><div class="step-pill"><span>Garanti &lt; 5 min</span></div></div></div>
-    <div class="step"><div class="step-n"><span class="step-ni">3</span></div><div class="step-b"><div class="step-t">Je suis l&agrave;, &agrave; l&rsquo;heure exacte</div><div class="step-d">Berline hybride. Je <b>surveille votre vol</b> en temps r&eacute;el.</div></div></div>
+  <div class="S-eyebrow rv">Nos Services</div>
+  <div class="S-h rv">Ce que nous<br>offrons.</div>
+  <div class="services-grid rv d2">
+    <div class="srv">
+      <div class="srv-ico"><svg viewBox="0 0 24 24"><path d="M22 16.5H2M17 21l5-4.5-5-4.5M7 21l-5-4.5 5-4.5"/><path d="M12 3v10M8.5 7l3.5-4 3.5 4"/></svg></div>
+      <div class="srv-b">
+        <div class="srv-n">Transferts A&eacute;roports &amp; Gares</div>
+        <div class="srv-d">CDG, Orly, Beauvais, Le Bourget. Toutes gares parisiennes. Suivi de vol en temps r&eacute;el.</div>
+      </div>
+      <div class="srv-price">d&egrave;s 50&euro;</div>
+    </div>
+    <div class="srv">
+      <div class="srv-ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
+      <div class="srv-b">
+        <div class="srv-n">Mise &agrave; Disposition</div>
+        <div class="srv-d">Votre chauffeur d&eacute;di&eacute; pour la journ&eacute;e ou la demi-journ&eacute;e. Id&eacute;al pour les d&eacute;placements professionnels.</div>
+      </div>
+      <div class="srv-price">sur devis</div>
+    </div>
+    <div class="srv">
+      <div class="srv-ico"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="srv-b">
+        <div class="srv-n">&Eacute;v&eacute;nements &amp; Soir&eacute;es</div>
+        <div class="srv-d">D&icirc;ners, spectacles, c&eacute;r&eacute;monies. Discr&eacute;tion et ponctualit&eacute; garanties.</div>
+      </div>
+      <div class="srv-price">sur devis</div>
+    </div>
+    <div class="srv">
+      <div class="srv-ico"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
+      <div class="srv-b">
+        <div class="srv-n">Longue Distance</div>
+        <div class="srv-d">Province, c&ocirc;te, &eacute;tranger. Tarif fix&eacute; convenu avant le d&eacute;part, sans surprise.</div>
+      </div>
+      <div class="srv-price">1,80&euro;/km</div>
+    </div>
   </div>
 </div>
 
 <div class="div"></div>
 
-<!-- DISPO -->
-<div class="S" style="padding-top:28px;padding-bottom:0;">
-  <div class="dispo cardg rv">
-    <div class="dp-dot"></div>
-    <div class="dp-b"><div class="dp-t">Disponible maintenant</div><div class="dp-s">R&eacute;servation possible aujourd&rsquo;hui</div></div>
-    <a class="dp-btn" href="tel:0767742220">Appeler &rarr;</a>
+<!-- LA FLOTTE -->
+<div class="S">
+  <div class="S-eyebrow rv">La Flotte</div>
+  <div class="S-h rv">Un v&eacute;hicule<br>&agrave; votre image.</div>
+  <div class="vehicle-card rv d1">
+    <div class="vehicle-visual">
+      <!-- Silhouette voiture SVG élégante -->
+      <svg class="car-svg" viewBox="0 0 280 100" fill="none">
+        <!-- Carrosserie principale -->
+        <path d="M20 65 L20 72 Q20 78 26 78 L254 78 Q260 78 260 72 L260 65 L20 65Z" fill="#2A2A2A" stroke="rgba(212,175,55,0.15)" stroke-width="0.5"/>
+        <!-- Toit -->
+        <path d="M65 65 L78 38 Q82 30 92 28 L188 28 Q198 30 202 38 L215 65Z" fill="#252525" stroke="rgba(212,175,55,0.12)" stroke-width="0.5"/>
+        <!-- Vitre avant -->
+        <path d="M200 65 L210 42 Q212 36 204 35 L195 35 L183 65Z" fill="rgba(212,175,55,0.06)" stroke="rgba(212,175,55,0.08)" stroke-width="0.4"/>
+        <!-- Vitre arrière -->
+        <path d="M80 65 L90 35 L82 35 Q74 36 72 42 L63 65Z" fill="rgba(212,175,55,0.06)" stroke="rgba(212,175,55,0.08)" stroke-width="0.4"/>
+        <!-- Vitres latérales -->
+        <path d="M95 65 L98 32 L178 32 L181 65Z" fill="rgba(212,175,55,0.05)" stroke="rgba(212,175,55,0.07)" stroke-width="0.4"/>
+        <!-- Roues -->
+        <circle cx="80" cy="78" r="16" fill="#1A1A1A" stroke="rgba(212,175,55,0.2)" stroke-width="0.8"/>
+        <circle cx="80" cy="78" r="8" fill="#222" stroke="rgba(212,175,55,0.3)" stroke-width="0.6"/>
+        <circle cx="80" cy="78" r="3" fill="rgba(212,175,55,0.4)"/>
+        <circle cx="200" cy="78" r="16" fill="#1A1A1A" stroke="rgba(212,175,55,0.2)" stroke-width="0.8"/>
+        <circle cx="200" cy="78" r="8" fill="#222" stroke="rgba(212,175,55,0.3)" stroke-width="0.6"/>
+        <circle cx="200" cy="78" r="3" fill="rgba(212,175,55,0.4)"/>
+        <!-- Phares -->
+        <rect x="240" y="58" width="16" height="5" rx="2.5" fill="rgba(212,175,55,0.25)"/>
+        <rect x="240" y="58" width="16" height="5" rx="2.5" fill="url(#phare-r)"/>
+        <rect x="24" y="58" width="16" height="5" rx="2.5" fill="rgba(212,175,55,0.1)"/>
+        <!-- Calandre -->
+        <rect x="245" y="64" width="12" height="3" rx="1.5" fill="rgba(212,175,55,0.12)"/>
+        <!-- Reflet toit -->
+        <path d="M120 30 Q140 28 160 30" stroke="rgba(255,255,255,0.04)" stroke-width="1.5" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="phare-r" x1="240" y1="60" x2="256" y2="60" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="rgba(212,175,55,0.6)"/>
+            <stop offset="100%" stop-color="rgba(212,175,55,0)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="vehicle-badge">Classe Affaires</div>
+    </div>
+    <div class="vehicle-body">
+      <div class="vehicle-name">Berline Premium</div>
+      <div class="vehicle-model">Suzuki Swace 2022 &middot; Hybride &middot; Full LED</div>
+      <div class="vehicle-amenities">
+        <div class="amenity"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Climatis&eacute;</span></div>
+        <div class="amenity"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><span>Chargeur</span></div>
+        <div class="amenity"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>4 passagers</span></div>
+        <div class="amenity"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg><span>Silence</span></div>
+        <div class="amenity"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg><span>Eau &agrave; bord</span></div>
+        <div class="amenity"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Discr&eacute;tion</span></div>
+      </div>
+      <div class="vehicle-footer">
+        <span class="vehicle-capacity">Bagages inclus &middot; Hybride &eacute;co-responsable</span>
+        <span class="vehicle-rate">1,80&euro;<span style="font-size:11px;font-weight:300;color:var(--t3);">/km</span></span>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="div" style="margin-top:28px;"></div>
+<div class="div"></div>
 
-<!-- SOCIAL PROOF DISCRET -->
+<!-- NOTRE ENGAGEMENT -->
 <div class="S">
-  <div class="S-eyebrow rv">T&eacute;moignages</div>
-  <div class="S-title rv">Ce que disent<br>mes clients.</div>
-
-  <div class="card rv d1">
-    <div class="citation">
-      <div class="cit-q">&ldquo;Toujours <b>&agrave; l&rsquo;heure</b>, voiture impeccable. Je r&eacute;serve directement &mdash; moins cher et bien plus agr&eacute;able.&rdquo;</div>
-      <div class="cit-author"><div class="cit-av">S.M</div><div><div class="cit-name">S. Moreau</div><div class="cit-ctx">Orly r&eacute;gulier &middot; Client depuis 8 mois</div></div></div>
+  <div class="S-eyebrow rv">L&rsquo;Engagement</div>
+  <div class="S-h rv">Trois promesses.<br>Tenues &agrave; chaque course.</div>
+  <div class="eng-grid rv d1">
+    <div class="eng">
+      <div class="eng-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="eng-b">
+        <div class="eng-t">Ponctualit&eacute; Absolue</div>
+        <div class="eng-d">Je surveille votre vol ou votre train en temps r&eacute;el. Retard de 2h&nbsp;? Je suis l&agrave; quand vous arrivez.</div>
+      </div>
+      <span class="eng-check">&#10003;</span>
     </div>
-    <div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div>
-  </div>
-
-  <div class="card rv d2">
-    <div class="citation">
-      <div class="cit-q">&ldquo;Vol retard&eacute; de 2h, il a <b>suivi mon vol</b> et &eacute;tait l&agrave; &agrave; ma sortie. Un vrai professionnel.&rdquo;</div>
-      <div class="cit-author"><div class="cit-av">K.B</div><div><div class="cit-name">K. Benali</div><div class="cit-ctx">CDG Terminal 2 &middot; Voyage affaires</div></div></div>
+    <div class="eng">
+      <div class="eng-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="eng-b">
+        <div class="eng-t">Discr&eacute;tion Totale</div>
+        <div class="eng-d">Vos d&eacute;placements restent priv&eacute;s. Aucune information partag&eacute;e, aucune app tierce.</div>
+      </div>
+      <span class="eng-check">&#10003;</span>
     </div>
-    <div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div>
-  </div>
-
-  <div class="card rv d3">
-    <div class="citation">
-      <div class="cit-q">&ldquo;Prix <b>en dessous des applis</b>, trajet parfait. Je l&rsquo;appelle directement d&eacute;sormais.&rdquo;</div>
-      <div class="cit-author"><div class="cit-av">L.D</div><div><div class="cit-name">L. Dubois</div><div class="cit-ctx">Paris &rarr; La D&eacute;fense &middot; Navette hebdo</div></div></div>
+    <div class="eng">
+      <div class="eng-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <div class="eng-b">
+        <div class="eng-t">Prix Fix&eacute; Garanti</div>
+        <div class="eng-d">Votre tarif est confirm&eacute; avant le d&eacute;part. Z&eacute;ro surprise, z&eacute;ro majoration, z&eacute;ro commission.</div>
+      </div>
+      <span class="eng-check">&#10003;</span>
     </div>
-    <div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div>
   </div>
 </div>
 
@@ -736,80 +869,70 @@ footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;disp
 <!-- TARIFS -->
 <div class="S">
   <div class="S-eyebrow rv">Tarification</div>
-  <div class="S-title rv">Transparent.<br>Sans surprise.</div>
+  <div class="S-h rv">Transparent.<br>Sans surprise.</div>
   <div class="cardg rv d1">
-    <div class="tarif-hero">
+    <div class="tarif-hd">
       <div class="tarif-ico"><svg viewBox="0 0 24 24"><path d="M22 16.5H2M17 21l5-4.5-5-4.5M7 21l-5-4.5 5-4.5"/><path d="M12 3v10M8.5 7l3.5-4 3.5 4"/></svg></div>
-      <div class="tarif-info"><div class="tarif-name">Forfait A&eacute;roports</div><div class="tarif-sub">Orly &middot; CDG &middot; Beauvais &middot; Le Bourget<br>Tarif fix&eacute; avant la course, sans majoration</div></div>
+      <div class="tarif-info"><div class="tarif-name">Forfait A&eacute;roports</div><div class="tarif-sub">Orly &middot; CDG &middot; Beauvais &middot; Le Bourget</div></div>
       <div class="tarif-rate"><span class="tv">1,80&euro;</span><span class="tu">par km</span></div>
     </div>
     <div class="tarif-list">
-      <div class="trow hi"><div class="tr-left"><div class="trn">Paris &harr; Orly</div><div class="trw">Court, fluide en hybride</div></div><div class="trp">50 &euro;</div></div>
-      <div class="trow"><div class="tr-left"><div class="trn">Paris &harr; CDG</div><div class="trw">Inclut p&eacute;ages et approche</div></div><div class="trp">65 &euro;</div></div>
-      <div class="trow"><div class="tr-left"><div class="trn">La D&eacute;fense &harr; CDG</div><div class="trw">Trajet satur&eacute;, temps major&eacute;</div></div><div class="trp">75 &euro;</div></div>
-      <div class="trow"><div class="tr-left"><div class="trn">Banlieue &harr; A&eacute;roport</div><div class="trw">Ajust&eacute; selon kilom&eacute;trage r&eacute;el</div></div><div class="trp">60 &euro;</div></div>
+      <div class="trow hi"><div><div class="trn">Paris &harr; Orly</div><div class="trw">Court, fluide en hybride</div></div><div class="trp">50 &euro;</div></div>
+      <div class="trow"><div><div class="trn">Paris &harr; CDG</div><div class="trw">Inclut p&eacute;ages et approche</div></div><div class="trp">65 &euro;</div></div>
+      <div class="trow"><div><div class="trn">La D&eacute;fense &harr; CDG</div><div class="trw">Trajet satur&eacute;, temps major&eacute;</div></div><div class="trp">75 &euro;</div></div>
+      <div class="trow"><div><div class="trn">Banlieue &harr; A&eacute;roport</div><div class="trw">Ajust&eacute; selon km r&eacute;el</div></div><div class="trp">60 &euro;</div></div>
     </div>
-    <div class="tarif-note">&#128161; Prix indicatifs &mdash; tarif exact confirm&eacute; avant chaque course. Devis gratuit en moins de 5 min.</div>
+    <div class="tarif-note">Prix indicatifs &mdash; tarif exact confirm&eacute; avant chaque course. Devis gratuit en moins de 5 min.</div>
   </div>
-
-  <!-- FORMULAIRE DEVIS -->
   <div class="card rv d2">
-    <div class="form-body">
-      <div class="form-title">Obtenir mon prix exact</div>
-      <div class="form-sub">30 secondes &mdash; je vous confirme le tarif fixe par WhatsApp.</div>
-      <div class="form-fields">
-        <div class="form-row">
+    <div class="devis-body">
+      <div class="devis-title">Obtenir mon prix exact</div>
+      <div class="devis-sub">D&eacute;taillé, confirm&eacute; par WhatsApp en moins de 5 minutes.</div>
+      <div class="dfields">
+        <div class="drow">
           <div class="field"><label>D&eacute;part</label><input type="text" id="dep" placeholder="Adresse ou ville" autocomplete="off"></div>
           <div class="field"><label>Arriv&eacute;e</label><input type="text" id="arr" placeholder="A&eacute;roport, gare&hellip;" autocomplete="off"></div>
         </div>
-        <div class="form-row">
+        <div class="drow">
           <div class="field"><label>Date</label><input type="date" id="dat"></div>
           <div class="field"><label>Heure</label><input type="time" id="heu"></div>
         </div>
         <div class="field">
           <label>Type de trajet</label>
-          <select id="typ">
-            <option value="">Choisir&hellip;</option>
-            <option value="aeroport">A&eacute;roport</option>
-            <option value="gare">Gare</option>
-            <option value="paris">Paris intramuros</option>
-            <option value="idf">&Icirc;le-de-France</option>
-            <option value="pro">Rendez-vous professionnel</option>
-            <option value="autre">Autre destination</option>
-          </select>
+          <select id="typ"><option value="">Choisir&hellip;</option><option value="aeroport">A&eacute;roport</option><option value="gare">Gare</option><option value="paris">Paris</option><option value="idf">&Icirc;le-de-France</option><option value="pro">Rendez-vous pro</option><option value="evenement">&Eacute;v&eacute;nement / Soir&eacute;e</option><option value="longue">Longue distance</option></select>
+        </div>
+        <div class="field">
+          <label>Demandes particuli&egrave;res</label>
+          <textarea id="note" placeholder="Temp&eacute;rature, silence, accueil avec pancarte, bagages&hellip;"></textarea>
         </div>
       </div>
-      <button class="btn-form" onclick="sendDevis()">
-        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>
-        Envoyer ma demande de devis
-      </button>
+      <button class="btn-devis" onclick="sendDevis()"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>Envoyer ma demande</button>
     </div>
   </div>
 </div>
 
 <div class="div"></div>
 
-<!-- CONTACTS -->
+<!-- CITATIONS -->
 <div class="S">
-  <div class="S-eyebrow rv">Contact direct</div>
-  <div class="cgrid">
-    <a class="cc card rv d1" href="tel:0767742220"><div class="cc-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.92v-1z"/></svg></div><div class="cc-l">Appel direct</div><div class="cc-v">07 67 74<br>22 20</div></a>
-    <a class="cc card rv d2" href="mailto:contact.inrun@gmail.com?subject=R%C3%A9servation%20VTC"><div class="cc-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="cc-l">Email pro</div><div class="cc-v" style="font-size:11px;">contact.inrun<br>@gmail.com</div></a>
-  </div>
-  <button class="vbtn rv d3" onclick="dlVCard()"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sauvegarder dans mes contacts</button>
+  <div class="S-eyebrow rv">T&eacute;moignages</div>
+  <div class="S-h rv">Ils nous font<br>confiance.</div>
+  <div class="card rv d1"><div class="citation"><div class="cit-q">&ldquo;Toujours <b>&agrave; l&rsquo;heure</b>, voiture impeccable. Je r&eacute;serve directement &mdash; moins cher et bien plus agr&eacute;able que les applis.&rdquo;</div><div class="cit-author"><div class="cit-av">S.M</div><div><div class="cit-n">S. Moreau</div><div class="cit-c">Orly r&eacute;gulier &middot; Client depuis 8 mois</div></div></div></div><div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div></div>
+  <div class="card rv d2"><div class="citation"><div class="cit-q">&ldquo;Vol retard&eacute; de 2h, il a <b>suivi mon vol</b> et &eacute;tait l&agrave; &agrave; ma sortie. Discret, efficace. Un vrai professionnel.&rdquo;</div><div class="cit-author"><div class="cit-av">K.B</div><div><div class="cit-n">K. Benali</div><div class="cit-c">CDG Terminal 2 &middot; Voyage affaires</div></div></div></div><div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div></div>
+  <div class="card rv d3"><div class="citation"><div class="cit-q">&ldquo;Prix <b>bien en dessous des applis</b>, trajet parfait, z&eacute;ro stress. Je l&rsquo;appelle directement d&eacute;sormais.&rdquo;</div><div class="cit-author"><div class="cit-av">L.D</div><div><div class="cit-n">L. Dubois</div><div class="cit-c">Paris &rarr; La D&eacute;fense &middot; Navette hebdo</div></div></div></div><div class="rating-row"><div class="stars"><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span></div><span class="rating-txt">5,0 &middot; Exp&eacute;rience v&eacute;rifi&eacute;e</span></div></div>
 </div>
 
 <div class="div"></div>
 
-<!-- INFOS + FIDELITE -->
+<!-- CONTACTS + FIDELITE -->
 <div class="S">
-  <div class="S-eyebrow rv">Le service</div>
-  <div class="igrid">
-    <div class="itile card rv d1"><div class="ilbl">V&eacute;hicule</div><div class="ival">Berline<br>Premium</div><div class="isub">Hybride &middot; Climatis&eacute;<br>4 passagers</div></div>
-    <div class="itile card rv d2"><div class="ilbl">Paiement</div><div class="ival" style="font-size:16px;margin-bottom:5px;">Flexible</div><div class="prow"><div class="pb"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span>Carte</span></div><div class="pb"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>Cash</span></div></div></div>
+  <div class="S-eyebrow rv">Contact Direct</div>
+  <div class="cgrid">
+    <a class="cc card rv d1" href="tel:0767742220"><div class="cc-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.92v-1z"/></svg></div><div class="cc-l">T&eacute;l&eacute;phone</div><div class="cc-v">07 67 74<br>22 20</div></a>
+    <a class="cc card rv d2" href="mailto:contact.inrun@gmail.com?subject=R%C3%A9servation%20I%26N%20RUN"><div class="cc-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="cc-l">Email</div><div class="cc-v" style="font-size:11px;">contact.inrun<br>@gmail.com</div></a>
   </div>
-  <div class="itile card rv d3" style="border-radius:var(--r);"><div class="ilbl">Zones desservies</div><div class="zwrap"><span class="zp hi">A&eacute;roports</span><span class="zp hi">Gares</span><span class="zp hi">Paris</span><span class="zp lo">&Icirc;le-de-France</span><span class="zp lo">Longue distance</span></div></div>
-  <div class="fid cardg rv d4"><div class="fid-ico"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><div class="fid-t">Programme fid&eacute;lit&eacute;</div><div class="fid-d">D&egrave;s votre <b>3&egrave;me course directe</b>, b&eacute;n&eacute;ficiez de <b>5&euro; de r&eacute;duction</b>. Sans code, sans appli.</div></div></div>
+  <button class="vbtn rv d3" onclick="dlVCard()"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sauvegarder dans mes contacts</button>
+  <div class="fid cardg rv d4"><div class="fid-ico"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div><div class="fid-t">Programme Fid&eacute;lit&eacute;</div><div class="fid-d">D&egrave;s votre <b>3&egrave;me course directe</b>, b&eacute;n&eacute;ficiez de <b>5&euro; de r&eacute;duction</b>. Sans code, sans application &mdash; je m&rsquo;en souviens.</div></div></div>
 </div>
 
 <div class="div"></div>
@@ -817,13 +940,12 @@ footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;disp
 <!-- STATS + CTA FINAL -->
 <div class="S">
   <div class="srow">
-    <div class="stile card rv d1"><div class="sv">5&#9733;</div><div class="sl">Note clients</div></div>
-    <div class="stile card rv d2"><div class="sv">&lt;5'</div><div class="sl">D&eacute;lai r&eacute;ponse</div></div>
-    <div class="stile card rv d3"><div class="sv">0&euro;</div><div class="sl">Commission</div></div>
+    <div class="stile card rv d1"><div class="sv">5&#9733;</div><div class="sl">Note<br>clients</div></div>
+    <div class="stile card rv d2"><div class="sv">&lt;5'</div><div class="sl">D&eacute;lai<br>r&eacute;ponse</div></div>
+    <div class="stile card rv d3"><div class="sv">0%</div><div class="sl">Commis&shy;sion</div></div>
   </div>
   <div style="position:relative;" class="rv d4">
-    <div class="cta-halo"></div>
-    <a class="cta-main" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
+    <a class="btn-premium" style="width:100%;justify-content:center;border-radius:4px;padding:16px;" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">
       <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5a8.5 8.5 0 014.7-7.6A8.4 8.4 0 0112.5 3h.5a8.5 8.5 0 018 8v.5z"/></svg>
       R&eacute;server l&rsquo;exp&eacute;rience
     </a>
@@ -831,48 +953,51 @@ footer{position:relative;z-index:1;padding:24px 28px 60px;text-align:center;disp
 </div>
 
 <div class="div"></div>
+
 <footer>
   <div class="ft-n">I&amp;N RUN</div>
-  <div class="ft-l">VTC Professionnel &middot; Paris &middot; &Icirc;le-de-France</div>
-  <a class="ft-qr" href="qr.html"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A03C" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg><span>QR Code</span></a>
+  <div class="ft-l">VTC Professionnel &middot; Paris &middot; &Icirc;le-de-France &middot; SIRET en cours</div>
+  <div class="ft-links">
+    <a class="ft-link" href="mailto:contact.inrun@gmail.com">Contact</a>
+    <a class="ft-link" href="qr.html">QR Code</a>
+    <a class="ft-link" href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course%20avec%20I%26N%20RUN.">WhatsApp</a>
+  </div>
 </footer>
 
 <script>
 /* SKELETON */
-window.addEventListener("DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded",function(){
   setTimeout(function(){
-    var sk = document.getElementById("skeleton");
-    if(sk){ sk.classList.add("hide"); setTimeout(function(){ if(sk.parentNode) sk.parentNode.removeChild(sk); }, 550); }
-  }, 900);
+    var sk=document.getElementById("sk");
+    if(sk){sk.classList.add("out");setTimeout(function(){if(sk.parentNode)sk.parentNode.removeChild(sk);},550);}
+  },800);
 });
 
 /* PARTICULES */
 (function(){
   var c=document.getElementById("cvs"),ctx=c.getContext("2d"),W,H,P=[];
   function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
-  function Pt(){this.x=Math.random()*W;this.y=Math.random()*H;this.s=Math.random()*.75+.2;this.vx=(Math.random()-.5)*.13;this.vy=(Math.random()-.5)*.13;this.o=Math.random()*.22+.04;this.p=Math.random()*Math.PI*2;this.ps=.005+Math.random()*.007;}
+  function Pt(){this.x=Math.random()*W;this.y=Math.random()*H;this.s=Math.random()*.7+.15;this.vx=(Math.random()-.5)*.12;this.vy=(Math.random()-.5)*.12;this.o=Math.random()*.2+.03;this.p=Math.random()*Math.PI*2;this.ps=.004+Math.random()*.007;}
   Pt.prototype.u=function(){this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;if(this.x<0)this.x=W;if(this.x>W)this.x=0;if(this.y<0)this.y=H;if(this.y>H)this.y=0;};
-  Pt.prototype.d=function(){var o=this.o*(.5+.5*Math.sin(this.p));ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle="rgba(200,160,60,"+o+")";ctx.fill();};
-  function init(){rs();P=[];var n=Math.floor(W*H/15000);for(var i=0;i<n;i++)P.push(new Pt());}
+  Pt.prototype.d=function(){var o=this.o*(.5+.5*Math.sin(this.p));ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle="rgba(212,175,55,"+o+")";ctx.fill();};
+  function init(){rs();P=[];var n=Math.floor(W*H/16000);for(var i=0;i<n;i++)P.push(new Pt());}
   function draw(){ctx.clearRect(0,0,W,H);for(var i=0;i<P.length;i++){P[i].u();P[i].d();}requestAnimationFrame(draw);}
   window.addEventListener("resize",init);init();draw();
 })();
 
 /* HEADER SCROLL */
 (function(){
-  var hdr=document.getElementById("hdr");
+  var h=document.getElementById("hdr");
   window.addEventListener("scroll",function(){
-    if(window.scrollY>60) hdr.classList.add("scrolled");
-    else hdr.classList.remove("scrolled");
+    if(window.scrollY>80)h.classList.add("sc");else h.classList.remove("sc");
   },{passive:true});
 })();
 
-/* STICKY CONCIERGE */
+/* CONCIERGE */
 (function(){
-  var sc=document.getElementById("sticky-concierge");
+  var c=document.getElementById("concierge");
   window.addEventListener("scroll",function(){
-    if(window.scrollY>300) sc.classList.add("show");
-    else sc.classList.remove("show");
+    if(window.scrollY>400)c.classList.add("show");else c.classList.remove("show");
   },{passive:true});
 })();
 
@@ -880,46 +1005,56 @@ window.addEventListener("DOMContentLoaded", function(){
 (function(){
   var els=document.querySelectorAll(".rv");
   if(!window.IntersectionObserver){els.forEach(function(e){e.classList.add("on");});return;}
-  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");obs.unobserve(e.target);}});},{threshold:.08,rootMargin:"0px 0px -22px 0px"});
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");obs.unobserve(e.target);}});},{threshold:.08,rootMargin:"0px 0px -20px 0px"});
   els.forEach(function(el){obs.observe(el);});
 })();
 
-/* RIPPLE */
-document.querySelectorAll(".cta-main").forEach(function(b){
-  b.addEventListener("click",function(e){
-    var r=document.createElement("span");r.className="rip";
-    var rc=this.getBoundingClientRect();
-    r.style.cssText="left:"+(e.clientX-rc.left-5)+"px;top:"+(e.clientY-rc.top-5)+"px;position:absolute;";
-    this.appendChild(r);var s=this;setTimeout(function(){if(r.parentNode)s.removeChild(r);},700);
-  });
-});
+/* FORMULAIRE HÉRO */
+function sendHeroForm(){
+  var d=document.getElementById("hf-dep").value.trim();
+  var a=document.getElementById("hf-arr").value.trim();
+  var dt=document.getElementById("hf-dat").value;
+  var h=document.getElementById("hf-heu").value;
+  var n=document.getElementById("hf-note").value.trim();
+  if(!d||!a){alert("Veuillez indiquer votre d\u00e9part et votre arriv\u00e9e.");return;}
+  var msg="Bonjour, je souhaite r\u00e9server avec I&N RUN.\n\n";
+  msg+="D\u00e9part\u00a0: "+d+"\nArriv\u00e9e\u00a0: "+a+"\n";
+  if(dt)msg+="Date\u00a0: "+dt+"\n";
+  if(h)msg+="Heure\u00a0: "+h+"\n";
+  if(n)msg+="Demandes\u00a0: "+n+"\n";
+  msg+="\nMerci de confirmer disponibilit\u00e9 et tarif fixe.";
+  window.open("https://wa.me/33767742220?text="+encodeURIComponent(msg),"_blank");
+}
 
-/* DEVIS */
+/* DEVIS SECTION */
 function sendDevis(){
   var d=document.getElementById("dep").value.trim();
   var a=document.getElementById("arr").value.trim();
   var dt=document.getElementById("dat").value;
   var h=document.getElementById("heu").value;
   var t=document.getElementById("typ").value;
+  var n=document.getElementById("note").value.trim();
   if(!d||!a){alert("Veuillez indiquer votre d\u00e9part et votre arriv\u00e9e.");return;}
-  var tl={aeroport:"A\u00e9roport",gare:"Gare",paris:"Paris",idf:"\u00cele-de-France",pro:"RDV pro",autre:"Autre"}[t]||"";
-  var msg="Bonjour, je souhaite r\u00e9server une course avec I&N RUN.\n\n";
+  var tl={aeroport:"A\u00e9roport",gare:"Gare",paris:"Paris",idf:"\u00cele-de-France",pro:"RDV pro",evenement:"\u00c9v\u00e9nement",longue:"Longue distance"}[t]||"";
+  var msg="Bonjour, je souhaite un devis I&N RUN.\n\n";
   msg+="D\u00e9part\u00a0: "+d+"\nArriv\u00e9e\u00a0: "+a+"\n";
   if(tl)msg+="Type\u00a0: "+tl+"\n";
   if(dt)msg+="Date\u00a0: "+dt+"\n";
   if(h)msg+="Heure\u00a0: "+h+"\n";
+  if(n)msg+="Demandes\u00a0: "+n+"\n";
   msg+="\nMerci de confirmer disponibilit\u00e9 et tarif fixe.";
   window.open("https://wa.me/33767742220?text="+encodeURIComponent(msg),"_blank");
 }
 
 /* VCARD */
 function dlVCard(){
-  var v=["BEGIN:VCARD","VERSION:3.0","FN:I&N RUN \u2014 Chauffeur Priv\u00e9","ORG:I&N RUN","TITLE:Chauffeur Priv\u00e9 VTC","TEL;TYPE=CELL:+33767742220","EMAIL:contact.inrun@gmail.com","URL:https://letxbrace-droid.github.io/inrunparis","NOTE:Chauffeur Paris. 1,80\u20ac/km a\u00e9roports. -5\u20ac d\u00e8s 3e course.","END:VCARD"].join("\r\n");
+  var v=["BEGIN:VCARD","VERSION:3.0","FN:I&N RUN \u2014 Chauffeur Priv\u00e9","ORG:I&N RUN","TITLE:Chauffeur Priv\u00e9 VTC Paris","TEL;TYPE=CELL:+33767742220","EMAIL:contact.inrun@gmail.com","URL:https://letxbrace-droid.github.io/inrunparis","NOTE:Transferts Paris a\u00e9roports gares \u00e9v\u00e9nements. 1,80\u20ac/km. -5\u20ac d\u00e8s 3e course.","END:VCARD"].join("\r\n");
   var b=new Blob([v],{type:"text/vcard"});
   var u=URL.createObjectURL(b);
-  var x=document.createElement("a");x.href=u;x.download="INRun.vcf";x.click();URL.revokeObjectURL(u);
+  var x=document.createElement("a");x.href=u;x.download="INRun-ChauffeurParis.vcf";x.click();URL.revokeObjectURL(u);
 }
 
+document.getElementById("hf-dat").min=new Date().toISOString().split("T")[0];
 document.getElementById("dat").min=new Date().toISOString().split("T")[0];
 </script>
 </body>
