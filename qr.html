@@ -3,149 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#07070C">
+<meta name="theme-color" content="#060608">
 <title>I&N RUN &middot; QR Code</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--ink:#07070C;--ink2:#0D0D16;--ink3:#13131E;--gold:#C8A84B;--gold2:#DDB95C;--gold3:#EED07A;--gbord:rgba(200,168,75,0.18);--ash:#545468;--ash2:#878799;--white:#F5F5F0;--r:14px;}
+:root{--bg:#060608;--bg2:#0C0C10;--gold:#B8962E;--gold2:#CCA843;--gold3:#E0BE60;--gbord:rgba(184,150,46,0.18);--txt:#EEEEE8;--txt2:#A8A8B0;--txt3:#686878;--r:12px;}
 html,body{min-height:100vh;}
-body{background:var(--ink);color:var(--white);font-family:"DM Sans",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:48px 20px 60px;gap:40px;-webkit-font-smoothing:antialiased;}
+body{background:var(--bg);color:var(--txt);font-family:"Outfit",sans-serif;display:flex;flex-direction:column;align-items:center;padding:52px 20px 64px;gap:36px;-webkit-font-smoothing:antialiased;}
+body::before{content:"";position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:500px;height:350px;background:radial-gradient(ellipse,rgba(184,150,46,0.06) 0%,transparent 68%);pointer-events:none;z-index:0;}
 
-/* Ambient */
-body::before{content:"";position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(200,168,75,0.07) 0%,transparent 68%);pointer-events:none;z-index:0;}
+.hdr{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;}
+.hdr-logo{width:52px;height:52px;filter:drop-shadow(0 0 14px rgba(184,150,46,0.18));}
+.hdr-name{font-family:"Playfair Display",serif;font-size:26px;font-weight:700;letter-spacing:.18em;color:var(--txt);}
+.hdr-name i{font-style:italic;font-weight:400;color:var(--gold3);}
+.hdr-sub{font-size:9px;font-weight:500;letter-spacing:.5em;text-transform:uppercase;color:var(--txt3);}
 
-/* Header */
-.header{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
-.header-logo{width:56px;height:56px;filter:drop-shadow(0 0 16px rgba(200,168,75,0.2));}
-.header-brand{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:700;letter-spacing:.18em;color:var(--white);}
-.header-brand .amp{color:var(--gold2);font-style:italic;font-weight:300;}
-.header-sub{font-size:9px;font-weight:500;letter-spacing:.48em;text-transform:uppercase;color:var(--ash2);}
+.rule{width:100%;max-width:520px;height:1px;background:linear-gradient(90deg,transparent,rgba(184,150,46,0.14),transparent);position:relative;z-index:1;}
 
-/* Divider */
-.div{width:100%;max-width:520px;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.18),transparent);position:relative;z-index:1;}
+.url-box{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:7px;}
+.url-lbl{font-size:8.5px;font-weight:600;letter-spacing:.48em;text-transform:uppercase;color:var(--txt3);}
+.url-val{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--gold3);background:rgba(184,150,46,0.06);border:1px solid var(--gbord);border-radius:7px;padding:9px 18px;max-width:340px;text-align:center;word-break:break-all;}
 
-/* URL display */
-.url-block{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;}
-.url-lbl{font-size:8.5px;font-weight:600;letter-spacing:.45em;text-transform:uppercase;color:var(--ash);}
-.url-val{font-family:"DM Mono",monospace;font-size:12px;color:var(--gold2);background:rgba(200,168,75,0.07);border:1px solid var(--gbord);border-radius:8px;padding:9px 18px;letter-spacing:.04em;word-break:break-all;max-width:340px;text-align:center;}
+.qgrid{position:relative;z-index:1;display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+.qi{display:flex;flex-direction:column;align-items:center;gap:11px;}
+.qf{background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.qf.lg{width:196px;height:196px;padding:12px;border-radius:12px;box-shadow:0 0 0 2px var(--gold2),0 16px 48px rgba(0,0,0,0.6);}
+.qf.md{width:140px;height:140px;padding:9px;border-radius:10px;box-shadow:0 0 0 1px rgba(184,150,46,0.4),0 10px 30px rgba(0,0,0,0.5);}
+.qf.sm{width:96px;height:96px;padding:6px;border-radius:8px;box-shadow:0 0 0 1px rgba(184,150,46,0.25),0 6px 18px rgba(0,0,0,0.4);}
+.qf canvas,.qf img{display:block!important;}
+.qc-title{font-family:"Playfair Display",serif;font-size:13px;font-weight:600;color:var(--gold3);display:block;text-align:center;letter-spacing:.05em;}
+.qc-sub{font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--txt3);display:block;text-align:center;margin-top:3px;}
 
-/* QR GRID */
-.qr-grid{position:relative;z-index:1;display:flex;gap:28px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
-.qr-item{display:flex;flex-direction:column;align-items:center;gap:12px;}
-.qr-frame{background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px;}
-.qr-frame.large{width:200px;height:200px;padding:12px;box-shadow:0 0 0 2px var(--gold),0 16px 48px rgba(0,0,0,0.6);}
-.qr-frame.medium{width:144px;height:144px;padding:9px;box-shadow:0 0 0 1px rgba(200,168,75,0.4),0 10px 30px rgba(0,0,0,0.5);}
-.qr-frame.small{width:100px;height:100px;padding:6px;box-shadow:0 0 0 1px rgba(200,168,75,0.25),0 6px 18px rgba(0,0,0,0.4);}
-.qr-frame canvas,.qr-frame img{display:block!important;}
-.qr-cap{text-align:center;}
-.qr-cap-title{font-family:"Cormorant Garamond",serif;font-size:14px;font-weight:600;color:var(--gold2);display:block;letter-spacing:.06em;}
-.qr-cap-sub{font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--ash);display:block;margin-top:3px;}
+.btns{position:relative;z-index:1;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn{font-family:"Outfit",sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;padding:11px 20px;border-radius:7px;cursor:pointer;transition:all .2s;}
+.btn-g{border:1px solid rgba(184,150,46,0.22);background:rgba(184,150,46,0.07);color:var(--gold3);}
+.btn-g:hover{background:rgba(184,150,46,0.14);border-color:var(--gold2);}
+.btn-p{background:var(--gold2);color:#04030A;border:none;font-weight:700;box-shadow:0 4px 18px rgba(184,150,46,0.25);}
+.btn-p:hover{background:var(--gold3);transform:translateY(-1px);}
 
-/* Controls */
-.controls{position:relative;z-index:1;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
-.btn{font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;padding:11px 22px;border-radius:9px;cursor:pointer;transition:all .2s;}
-.btn-ghost{border:1px solid rgba(200,168,75,0.22);background:rgba(200,168,75,0.07);color:var(--gold2);}
-.btn-ghost:hover{background:rgba(200,168,75,0.14);border-color:var(--gold);}
-.btn-primary{background:var(--gold);color:#06050A;border:none;font-weight:700;box-shadow:0 4px 20px rgba(200,168,75,0.25);}
-.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);}
+.note{position:relative;z-index:1;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(104,104,120,0.32);text-align:center;max-width:340px;line-height:1.9;font-weight:300;}
 
-.note{position:relative;z-index:1;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(84,84,104,0.38);text-align:center;max-width:360px;line-height:1.8;}
-
-/* Print */
 @media print{
-  body{background:white;gap:16mm;padding:10mm;}
+  body{background:white;gap:14mm;padding:10mm;}
   body::before{display:none;}
-  .controls,.note,.header-sub,.url-block,.div{display:none!important;}
-  .header-brand{color:#111;}
-  .header-brand .amp{color:#C8A84B;}
-  .qr-frame.large{box-shadow:0 0 0 2px #C8A84B;}
-  .qr-frame.medium{box-shadow:0 0 0 1px rgba(200,168,75,0.5);}
-  .qr-frame.small{box-shadow:0 0 0 1px rgba(200,168,75,0.3);}
-  .qr-cap-title{color:#C8A84B;}
-  .qr-cap-sub{color:#888;}
+  .btns,.note,.url-box,.rule,.hdr-sub{display:none!important;}
+  .hdr-name{color:#111;}
+  .qf.lg{box-shadow:0 0 0 2px #B8962E;}
+  .qf.md{box-shadow:0 0 0 1px rgba(184,150,46,0.5);}
+  .qf.sm{box-shadow:0 0 0 1px rgba(184,150,46,0.3);}
+  .qc-title{color:#B8962E;}
   *{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <svg class="header-logo" viewBox="0 0 100 100" fill="none">
-    <circle cx="50" cy="50" r="46" stroke="#C8A84B" stroke-width="0.8" opacity="0.25"/>
-    <rect x="47" y="20" width="6" height="38" rx="3" fill="#C8A84B"/>
-    <path d="M58 30 L58 58 L72 34 L72 62" stroke="#DDB95C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="50" cy="70" r="5" fill="#C8A84B"/>
-    <circle cx="50" cy="70" r="9" stroke="#C8A84B" stroke-width="0.4" opacity="0.25"/>
+<div class="hdr">
+  <svg class="hdr-logo" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="46" stroke="#B8962E" stroke-width="0.8" opacity="0.25"/>
+    <rect x="24" y="22" width="6" height="44" rx="3" fill="#CCA843"/>
+    <rect x="20" y="22" width="14" height="3" rx="1.5" fill="#CCA843" opacity="0.6"/>
+    <rect x="20" y="63" width="14" height="3" rx="1.5" fill="#CCA843" opacity="0.6"/>
+    <path d="M 40 22 L 40 66 L 64 22 L 64 66" stroke="#DDB95C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="50" cy="82" r="5" fill="#CCA843"/>
+    <circle cx="50" cy="82" r="9" stroke="#CCA843" stroke-width="0.5" opacity="0.28"/>
   </svg>
-  <div class="header-brand">I<span class="amp">&amp;</span>N RUN</div>
-  <div class="header-sub">QR Code &middot; Chauffeur Priv&eacute; &middot; Paris</div>
+  <div class="hdr-name">I<i>&amp;</i>N RUN</div>
+  <div class="hdr-sub">QR Code &middot; Chauffeur Priv&eacute; &middot; Paris</div>
 </div>
 
-<div class="div"></div>
+<div class="rule"></div>
 
-<div class="url-block">
+<div class="url-box">
   <div class="url-lbl">Ce QR pointe vers</div>
   <div class="url-val">https://letxbrace-droid.github.io/inrunparis</div>
 </div>
 
-<div class="div"></div>
+<div class="rule"></div>
 
-<div class="qr-grid">
-  <div class="qr-item">
-    <div class="qr-frame large" id="qr-large"></div>
-    <div class="qr-cap">
-      <span class="qr-cap-title">Grande version</span>
-      <span class="qr-cap-sub">Affiche &middot; Vitrine &middot; Flyer</span>
-    </div>
+<div class="qgrid">
+  <div class="qi">
+    <div class="qf lg" id="ql"></div>
+    <div><span class="qc-title">Grande version</span><span class="qc-sub">Affiche &middot; Vitrine &middot; Flyer</span></div>
   </div>
-  <div class="qr-item">
-    <div class="qr-frame medium" id="qr-med"></div>
-    <div class="qr-cap">
-      <span class="qr-cap-title">Carte de visite</span>
-      <span class="qr-cap-sub">Autocollant &middot; Verso</span>
-    </div>
+  <div class="qi">
+    <div class="qf md" id="qm"></div>
+    <div><span class="qc-title">Carte de visite</span><span class="qc-sub">Autocollant &middot; Verso</span></div>
   </div>
-  <div class="qr-item">
-    <div class="qr-frame small" id="qr-sm"></div>
-    <div class="qr-cap">
-      <span class="qr-cap-title">Compact</span>
-      <span class="qr-cap-sub">Ticket &middot; Badge</span>
-    </div>
+  <div class="qi">
+    <div class="qf sm" id="qs"></div>
+    <div><span class="qc-title">Compact</span><span class="qc-sub">Ticket &middot; Badge</span></div>
   </div>
 </div>
 
-<div class="controls">
-  <button class="btn btn-ghost" onclick="window.location.href='index.html'">&larr; Carte</button>
-  <button class="btn btn-ghost" onclick="dlQR()">&#8659; T&eacute;l&eacute;charger PNG</button>
-  <button class="btn btn-primary" onclick="window.print()">&#128438; Imprimer</button>
+<div class="btns">
+  <button class="btn btn-g" onclick="window.location.href='index.html'">&larr; Carte</button>
+  <button class="btn btn-g" onclick="dlQR()">&#8659; T&eacute;l&eacute;charger PNG</button>
+  <button class="btn btn-p" onclick="window.print()">Imprimer</button>
 </div>
 
-<div class="note">
-  Ces QR codes renvoient vers votre carte interactive en ligne.<br>
-  Imprimez sur papier mat 350g &mdash; d&eacute;coupe 85.6 &times; 54mm.
-</div>
+<div class="note">QR codes pointant vers votre carte interactive en ligne.<br>Papier mat 350g recommand&eacute; &middot; D&eacute;coupe 85.6 &times; 54mm</div>
 
 <script>
-const URL_SITE="https://letxbrace-droid.github.io/inrunparis";
-const cfgs=[{id:"qr-large",s:176},{id:"qr-med",s:126},{id:"qr-sm",s:88}];
-cfgs.forEach(({id,s})=>{
-  new QRCode(document.getElementById(id),{
-    text:URL_SITE,width:s,height:s,
-    colorDark:"#000000",colorLight:"#ffffff",
-    correctLevel:QRCode.CorrectLevel.H
-  });
+const U="https://letxbrace-droid.github.io/inrunparis";
+[{id:"ql",s:172},{id:"qm",s:122},{id:"qs",s:84}].forEach(({id,s})=>{
+  new QRCode(document.getElementById(id),{text:U,width:s,height:s,colorDark:"#000",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.H});
 });
-
 function dlQR(){
-  const el=document.getElementById("qr-large");
-  const canvas=el.querySelector("canvas");
-  if(!canvas){alert("QR non encore généré, réessayez.");return;}
-  const a=document.createElement("a");
-  a.href=canvas.toDataURL("image/png");
-  a.download="inrun-qrcode.png";
-  a.click();
+  const el=document.getElementById("ql");
+  const cv=el.querySelector("canvas");
+  if(!cv){alert("QR pas encore généré, réessayez.");return;}
+  const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download="inrun-qr.png";a.click();
 }
 </script>
 </body>
