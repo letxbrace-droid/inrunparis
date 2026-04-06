@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#09090f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="I&N RUN — Chauffeur Privé Paris. CDG, Orly, longue distance. Tarifs fixes, réservation immédiate.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +20,7 @@
   --gold:#c9a84c;--gold-l:#e8c97a;--glow:rgba(201,168,76,.18);
   --green:#16a34a;--green-l:#22c55e;--wa:#128C7E;
   --white:#f0efe9;--gray:#6b7280;--gray2:#9ca3af;
-  --b:rgba(255,255,255,.07);--bg:rgba(201,168,76,.22);
+  --b:rgba(255,255,255,.07);
   --r:14px;--rl:22px;--rxl:28px;
   --ease:cubic-bezier(.23,1,.32,1);--tap:54px;
 }
@@ -32,11 +31,10 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);}
 
 /* HEADER */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0);background:rgba(9,9,15,.92);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-bottom:1px solid var(--b);}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0);background:rgba(9,9,15,.92);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--b);}
 .nav{max-width:520px;margin:0 auto;height:58px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;}
 .logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-wa{background:var(--wa);color:#fff;font-weight:600;font-size:.82rem;padding:9px 18px;border-radius:50px;letter-spacing:.01em;transition:all .3s var(--ease);}
-.nav-wa:hover{transform:scale(1.04);}
+.nav-wa{background:var(--wa);color:#fff;font-weight:600;font-size:.82rem;padding:9px 18px;border-radius:50px;transition:all .3s var(--ease);}
 
 /* HERO */
 .hero{padding:88px 24px 0;background:radial-gradient(ellipse 140% 60% at 50% 0%,rgba(201,168,76,.08),transparent 65%),linear-gradient(180deg,var(--ink) 0%,var(--s1) 100%);text-align:center;position:relative;overflow:hidden;}
@@ -50,31 +48,33 @@ a{text-decoration:none;color:inherit;}
 @keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
 .hero-copy{font-size:clamp(.88rem,3.5vw,1rem);color:var(--gray2);max-width:340px;margin:0 auto 28px;position:relative;z-index:1;line-height:1.75;}
 .proof{display:flex;justify-content:center;gap:24px;margin-bottom:40px;position:relative;z-index:1;flex-wrap:wrap;}
-.proof-val{font-weight:700;font-size:1.05rem;color:var(--white);}
+.proof-val{font-weight:700;font-size:1.05rem;}
 .proof-lbl{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
 
 /* TUNNEL */
 .tunnel{max-width:520px;margin:0 auto;padding:0 20px;}
 .card{background:var(--s2);border:1px solid var(--b);border-radius:var(--rxl);padding:28px 22px;margin-bottom:14px;transition:all .4s var(--ease);}
 .card.active{border-color:rgba(201,168,76,.3);box-shadow:0 0 0 1px rgba(201,168,76,.08);}
-.card.locked{opacity:.4;pointer-events:none;filter:blur(.4px);}
+.card.locked{opacity:.38;pointer-events:none;filter:blur(.4px);}
+.card.done{border-color:rgba(34,197,94,.2);}
 .card-head{display:flex;align-items:center;gap:12px;}
-.card-num{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:var(--gold);color:#000;}
+.card-num{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:var(--gold);color:#000;transition:all .3s;}
 .card.locked .card-num{background:var(--s3);color:var(--gray);}
+.card.done .card-num{background:var(--green);color:#fff;}
 .card-title{font-weight:700;font-size:1rem;}
 .card-sub{font-size:.78rem;color:var(--gray);margin-top:2px;}
 .card-body{margin-top:22px;}
 
-/* FLATPICKR INLINE */
+/* FLATPICKR */
 #cal-inline{margin:0 auto;}
 .flatpickr-calendar.inline{background:transparent !important;box-shadow:none !important;border:none !important;width:100% !important;max-width:100% !important;}
-.flatpickr-months{background:transparent !important;}
-.flatpickr-month{height:44px !important;background:transparent !important;}
+.flatpickr-months,.flatpickr-month{background:transparent !important;}
+.flatpickr-month{height:44px !important;}
 .flatpickr-current-month{font-family:'Playfair Display',serif !important;font-size:1.1rem !important;color:var(--white) !important;padding-top:10px !important;}
 .flatpickr-monthDropdown-months{background:var(--s2) !important;color:var(--white) !important;}
 .cur-year{color:var(--gold) !important;}.numInputWrapper input{color:var(--gold) !important;}
 .flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--gold) !important;}
-.flatpickr-weekday{background:transparent !important;color:var(--gold) !important;font-weight:700 !important;font-size:.72rem !important;letter-spacing:.06em;}
+.flatpickr-weekday{background:transparent !important;color:var(--gold) !important;font-weight:700 !important;font-size:.72rem !important;}
 .flatpickr-days{border:none !important;}
 .dayContainer{padding:4px 0 !important;width:100% !important;min-width:100% !important;max-width:100% !important;}
 .flatpickr-day{color:var(--white) !important;border-radius:var(--r) !important;font-size:.9rem !important;max-width:14.28% !important;height:42px !important;line-height:42px !important;transition:all .2s !important;}
@@ -83,31 +83,21 @@ a{text-decoration:none;color:inherit;}
 .flatpickr-day.today{border-color:rgba(201,168,76,.4) !important;color:var(--gold) !important;font-weight:600 !important;}
 .flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:var(--gray) !important;opacity:.3 !important;}
 
-/* FIELDS */
+/* FORM */
 .f-row{margin-bottom:16px;position:relative;}
 .f-lbl{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .f-wrap{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);transition:all .3s var(--ease);overflow:visible;position:relative;}
 .f-wrap:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
-.f-ic{width:40px;text-align:center;font-size:.8rem;font-weight:700;color:var(--gray2);flex-shrink:0;letter-spacing:.02em;}
+.f-ic{width:40px;text-align:center;font-size:.8rem;font-weight:700;color:var(--gray2);flex-shrink:0;}
 .f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:.95rem;font-family:'Inter',sans-serif;padding-right:14px;}
 .f-in::placeholder{color:var(--gray);}
 select.f-in{cursor:pointer;}
 option{background:var(--s2);color:var(--white);}
 
-/* AUTOCOMPLETE DROPDOWN */
-.ac-list{
-  position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:9999;
-  background:var(--s2);border:1px solid rgba(201,168,76,.3);
-  border-radius:var(--r);overflow:hidden;
-  box-shadow:0 16px 48px rgba(0,0,0,.7);
-  display:none;
-}
+/* AUTOCOMPLETE */
+.ac-list{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:9999;background:var(--s2);border:1px solid rgba(201,168,76,.3);border-radius:var(--r);overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.7);display:none;}
 .ac-list.open{display:block;}
-.ac-item{
-  padding:13px 16px;font-size:.85rem;cursor:pointer;
-  border-bottom:1px solid var(--b);transition:background .2s;
-  display:flex;align-items:flex-start;gap:10px;
-}
+.ac-item{padding:13px 16px;font-size:.85rem;cursor:pointer;border-bottom:1px solid var(--b);transition:background .2s;display:flex;align-items:flex-start;gap:10px;}
 .ac-item:last-child{border-bottom:none;}
 .ac-item:hover,.ac-item.focused{background:var(--glow);}
 .ac-ic{color:var(--gold);font-size:.75rem;font-weight:700;margin-top:2px;flex-shrink:0;width:14px;}
@@ -118,6 +108,40 @@ option{background:var(--s2);color:var(--white);}
 .swap-row{display:flex;justify-content:center;margin:4px 0;}
 .swap-b{width:38px;height:38px;border-radius:50%;background:var(--s1);border:1px solid rgba(201,168,76,.25);color:var(--gold);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease);}
 .swap-b:hover{background:var(--glow);transform:rotate(180deg);}
+
+/* ===== PREFERENCES ===== */
+.pref-section{margin-bottom:22px;}
+.pref-title{
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.pref-title::after{content:'';flex:1;height:1px;background:var(--b);}
+.pref-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.pref-grid.cols3{grid-template-columns:repeat(3,1fr);}
+.pref-btn{
+  padding:14px 10px;border-radius:var(--rl);text-align:center;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1.5px solid var(--b);
+  transition:all .3s var(--ease);user-select:none;
+}
+.pref-btn:hover{border-color:rgba(201,168,76,.3);background:var(--glow);}
+.pref-btn.sel{
+  border-color:var(--gold);background:rgba(201,168,76,.14);
+  box-shadow:0 0 0 1px rgba(201,168,76,.2);
+}
+.pref-icon{font-size:1.4rem;margin-bottom:6px;}
+.pref-name{font-size:.8rem;font-weight:600;line-height:1.3;}
+.pref-desc{font-size:.7rem;color:var(--gray);margin-top:3px;}
+
+/* NOTE LIBRE */
+.note-area{
+  width:100%;min-height:72px;background:rgba(255,255,255,.05);
+  border:1.5px solid var(--b);border-radius:var(--r);
+  color:var(--white);font-size:.9rem;font-family:'Inter',sans-serif;
+  padding:14px;outline:none;resize:vertical;transition:all .3s var(--ease);
+  line-height:1.5;
+}
+.note-area:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
+.note-area::placeholder{color:var(--gray);}
 
 /* BUTTONS */
 .btn-next{width:100%;height:var(--tap);border-radius:var(--r);background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;font-weight:700;font-size:.95rem;border:none;cursor:pointer;margin-top:8px;letter-spacing:.01em;transition:all .4s var(--ease);}
@@ -132,35 +156,32 @@ option{background:var(--s2);color:var(--white);}
 @keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .r-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:4px;}
 .r-price{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,13vw,5rem);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
-.r-meta{font-size:.82rem;color:var(--gray);margin-bottom:6px;}
+.r-meta{font-size:.82rem;color:var(--gray);margin-bottom:12px;}
 .r-meta strong{color:var(--white);}
-.r-stats{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
-.r-stat{
-  flex:1;min-width:120px;
-  background:rgba(255,255,255,.05);border:1px solid var(--b);
-  border-radius:var(--r);padding:12px 14px;
-}
-.rs-val{font-weight:700;font-size:1rem;color:var(--white);}
+.r-stats{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.r-stat{flex:1;min-width:100px;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:var(--r);padding:12px 14px;}
+.rs-val{font-weight:700;font-size:1rem;}
 .rs-lbl{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
-
-/* MAP */
-.map-w{height:280px;border-radius:var(--rl);overflow:hidden;margin-bottom:18px;border:1px solid var(--b);}
-.leaflet-tile-pane{filter:brightness(.85) saturate(.7);}
+/* Récap préférences */
+.pref-recap{
+  background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);
+  border-radius:var(--r);padding:14px 16px;margin-bottom:18px;
+  font-size:.82rem;color:var(--gray2);line-height:1.7;
+}
+.pref-recap strong{color:var(--gold);display:block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.map-w{height:260px;border-radius:var(--rl);overflow:hidden;margin-bottom:18px;border:1px solid var(--b);}
 .leaflet-container{background:#0a0a14 !important;}
-
-.btn-wa-final{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:var(--tap);border-radius:var(--r);background:var(--wa);color:#fff;font-weight:700;font-size:.92rem;transition:all .3s var(--ease);letter-spacing:.01em;}
+.btn-wa-final{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:var(--tap);border-radius:var(--r);background:var(--wa);color:#fff;font-weight:700;font-size:.92rem;transition:all .3s var(--ease);}
 .btn-wa-final:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,140,126,.35);}
-.btn-recalc{width:100%;height:42px;border-radius:var(--r);border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--gold);font-size:.82rem;font-weight:600;cursor:pointer;margin-top:10px;transition:all .3s var(--ease);}
+.btn-recalc{width:100%;height:42px;border-radius:var(--r);border:1px solid rgba(201,168,76,.22);background:transparent;color:var(--gold);font-size:.82rem;font-weight:600;cursor:pointer;margin-top:10px;transition:all .3s var(--ease);}
 .btn-recalc:hover{background:var(--glow);}
 
-/* TRUST STRIP */
+/* TRUST / TARIFS / CONTACT */
 .trust-strip{display:flex;overflow-x:auto;gap:10px;padding:0 20px 32px;max-width:520px;margin:0 auto;scrollbar-width:none;}
 .trust-strip::-webkit-scrollbar{display:none;}
-.trust-chip{flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:50px;padding:9px 16px;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;}
+.trust-chip{flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:50px;padding:9px 16px;display:flex;flex-direction:column;align-items:center;white-space:nowrap;}
 .tc-val{font-weight:700;font-size:.85rem;}
 .tc-lbl{font-size:.63rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
-
-/* TARIFS */
 .sec{padding:48px 20px;max-width:520px;margin:0 auto;}
 .sec-lbl{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .sec-h{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:22px;line-height:1.2;}
@@ -171,8 +192,6 @@ option{background:var(--s2);color:var(--white);}
 .t-name{font-weight:600;font-size:.92rem;}
 .t-note{font-size:.75rem;color:var(--gray);margin-top:2px;}
 .t-price{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);white-space:nowrap;}
-
-/* CONTACT */
 .contact-list{display:flex;flex-direction:column;gap:10px;}
 .c-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:var(--rl);padding:16px 20px;transition:all .3s var(--ease);}
 .c-row:hover{border-color:rgba(201,168,76,.28);}
@@ -180,12 +199,9 @@ option{background:var(--s2);color:var(--white);}
 .c-val{font-size:.9rem;font-weight:500;margin-top:2px;}
 .c-act{padding:9px 16px;border-radius:50px;font-size:.8rem;font-weight:600;background:var(--glow);border:1px solid rgba(201,168,76,.28);color:var(--gold);transition:all .3s var(--ease);white-space:nowrap;}
 .c-act:hover{background:rgba(201,168,76,.16);}
-.btn-vcard{width:100%;height:var(--tap);border-radius:var(--r);margin-top:12px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);color:var(--gold);font-weight:600;font-size:.88rem;cursor:pointer;transition:all .3s var(--ease);letter-spacing:.01em;}
+.btn-vcard{width:100%;height:var(--tap);border-radius:var(--r);margin-top:12px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);color:var(--gold);font-weight:600;font-size:.88rem;cursor:pointer;transition:all .3s var(--ease);}
 .btn-vcard:hover{background:var(--glow);}
-
 .footer{text-align:center;color:var(--gray);font-size:.72rem;padding:24px 20px;border-top:1px solid var(--b);}
-
-/* STICKY */
 .sticky{position:fixed;bottom:0;left:0;right:0;z-index:998;padding:10px 20px env(safe-area-inset-bottom,10px);background:rgba(9,9,15,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--b);display:flex;gap:10px;}
 .sb{flex:1;height:46px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;gap:6px;transition:all .3s var(--ease);}
 .sb-wa{background:var(--wa);color:#fff;}
@@ -215,96 +231,142 @@ option{background:var(--s2);color:var(--white);}
 
 <div class="tunnel">
 
-  <!-- STEP 1 : DATE -->
-  <div class="card active" id="card1">
-    <div class="card-head">
-      <div class="card-num">1</div>
-      <div>
-        <div class="card-title">Choisissez votre date</div>
-        <div class="card-sub" id="card1-sub">Quand souhaitez-vous voyager ?</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div id="cal-inline"></div>
-      <button class="btn-next" id="btn1" onclick="goStep2()" disabled>Continuer vers l'itinéraire</button>
-    </div>
+<!-- STEP 1 : DATE -->
+<div class="card active" id="card1">
+  <div class="card-head">
+    <div class="card-num">1</div>
+    <div><div class="card-title">Choisissez votre date</div><div class="card-sub" id="card1-sub">Quand souhaitez-vous voyager ?</div></div>
   </div>
-
-  <!-- STEP 2 : TRAJET -->
-  <div class="card locked" id="card2">
-    <div class="card-head">
-      <div class="card-num">2</div>
-      <div>
-        <div class="card-title">Heure et itinéraire</div>
-        <div class="card-sub">Où et à quelle heure ?</div>
-      </div>
-    </div>
-    <div class="card-body">
-
-      <div class="f-row">
-        <label class="f-lbl">Heure de prise en charge</label>
-        <div class="f-wrap">
-          <span class="f-ic">H</span>
-          <input id="timepicker" class="f-in" placeholder="Sélectionner l'heure" readonly>
-        </div>
-      </div>
-
-      <!-- DÉPART avec autocomplete -->
-      <div class="f-row" id="row-dep">
-        <label class="f-lbl">Départ</label>
-        <div class="f-wrap">
-          <span class="f-ic">A</span>
-          <input id="dep" class="f-in" type="text" placeholder="Adresse de départ..." autocomplete="off">
-        </div>
-        <div class="ac-list" id="ac-dep"></div>
-      </div>
-
-      <div class="swap-row">
-        <button class="swap-b" onclick="swap()">&#8645;</button>
-      </div>
-
-      <!-- ARRIVÉE avec autocomplete -->
-      <div class="f-row" id="row-arr">
-        <label class="f-lbl">Arrivée</label>
-        <div class="f-wrap">
-          <span class="f-ic">B</span>
-          <input id="arr" class="f-in" type="text" placeholder="Destination..." autocomplete="off">
-        </div>
-        <div class="ac-list" id="ac-arr"></div>
-      </div>
-
-      <div class="f-row">
-        <label class="f-lbl">Passagers</label>
-        <div class="f-wrap">
-          <span class="f-ic">N</span>
-          <select id="pax" class="f-in">
-            <option value="1">1 passager</option>
-            <option value="2">2 passagers</option>
-            <option value="3">3 passagers</option>
-            <option value="4">4 passagers</option>
-            <option value="5+">5 passagers ou plus</option>
-          </select>
-        </div>
-      </div>
-
-      <button class="btn-next" id="btn2" onclick="goStep3()">Calculer mon tarif</button>
-    </div>
+  <div class="card-body">
+    <div id="cal-inline"></div>
+    <button class="btn-next" id="btn1" onclick="goStep2()" disabled>Continuer vers l'itinéraire</button>
   </div>
-
-  <!-- STEP 3 : RESULT -->
-  <div class="result-box" id="result">
-    <div class="r-lbl">Tarif estimé pour votre trajet</div>
-    <div id="r-price" class="r-price">—</div>
-    <div id="r-meta" class="r-meta"></div>
-    <div class="r-stats" id="r-stats"></div>
-    <div id="r-map" class="map-w"></div>
-    <a id="r-wa" class="btn-wa-final" href="#" target="_blank">Confirmer la réservation par WhatsApp</a>
-    <button class="btn-recalc" onclick="resetForm()">Modifier le trajet</button>
-  </div>
-
 </div>
 
-<!-- TRUST STRIP -->
+<!-- STEP 2 : TRAJET -->
+<div class="card locked" id="card2">
+  <div class="card-head">
+    <div class="card-num">2</div>
+    <div><div class="card-title">Heure et itinéraire</div><div class="card-sub">Où et à quelle heure ?</div></div>
+  </div>
+  <div class="card-body">
+    <div class="f-row">
+      <label class="f-lbl">Heure de prise en charge</label>
+      <div class="f-wrap"><span class="f-ic">H</span><input id="timepicker" class="f-in" placeholder="Sélectionner l'heure" readonly></div>
+    </div>
+    <div class="f-row" id="row-dep">
+      <label class="f-lbl">Départ</label>
+      <div class="f-wrap"><span class="f-ic">A</span><input id="dep" class="f-in" type="text" placeholder="Adresse de départ..." autocomplete="off"></div>
+      <div class="ac-list" id="ac-dep"></div>
+    </div>
+    <div class="swap-row"><button class="swap-b" onclick="swap()">&#8645;</button></div>
+    <div class="f-row" id="row-arr">
+      <label class="f-lbl">Arrivée</label>
+      <div class="f-wrap"><span class="f-ic">B</span><input id="arr" class="f-in" type="text" placeholder="Destination..." autocomplete="off"></div>
+      <div class="ac-list" id="ac-arr"></div>
+    </div>
+    <div class="f-row">
+      <label class="f-lbl">Passagers</label>
+      <div class="f-wrap"><span class="f-ic">N</span>
+        <select id="pax" class="f-in">
+          <option value="1">1 passager</option>
+          <option value="2">2 passagers</option>
+          <option value="3">3 passagers</option>
+          <option value="4">4 passagers</option>
+          <option value="5+">5 passagers ou plus</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-next" onclick="goStep3()">Personnaliser le trajet</button>
+  </div>
+</div>
+
+<!-- STEP 3 : PRÉFÉRENCES À BORD -->
+<div class="card locked" id="card3">
+  <div class="card-head">
+    <div class="card-num">3</div>
+    <div><div class="card-title">Votre confort à bord</div><div class="card-sub">Personnalisez votre trajet</div></div>
+  </div>
+  <div class="card-body">
+
+    <!-- MUSIQUE -->
+    <div class="pref-section">
+      <div class="pref-title">Ambiance musicale</div>
+      <div class="pref-grid cols3" id="pref-music">
+        <div class="pref-btn" data-val="Jazz / Lounge" onclick="selectPref(this,'music')"><div class="pref-icon">&#127927;</div><div class="pref-name">Jazz</div><div class="pref-desc">Lounge</div></div>
+        <div class="pref-btn" data-val="Pop / Hits" onclick="selectPref(this,'music')"><div class="pref-icon">&#127928;</div><div class="pref-name">Pop</div><div class="pref-desc">Hits radio</div></div>
+        <div class="pref-btn" data-val="Classique" onclick="selectPref(this,'music')"><div class="pref-icon">&#127911;</div><div class="pref-name">Classique</div><div class="pref-desc">Détente</div></div>
+        <div class="pref-btn" data-val="Hip-Hop / RnB" onclick="selectPref(this,'music')"><div class="pref-icon">&#127925;</div><div class="pref-name">Hip-Hop</div><div class="pref-desc">RnB</div></div>
+        <div class="pref-btn" data-val="Radio info" onclick="selectPref(this,'music')"><div class="pref-icon">&#128251;</div><div class="pref-name">Radio</div><div class="pref-desc">Info / Sport</div></div>
+        <div class="pref-btn" data-val="Silence" onclick="selectPref(this,'music')"><div class="pref-icon">&#128263;</div><div class="pref-name">Silence</div><div class="pref-desc">Aucun son</div></div>
+      </div>
+    </div>
+
+    <!-- TEMPÉRATURE -->
+    <div class="pref-section">
+      <div class="pref-title">Température intérieure</div>
+      <div class="pref-grid cols3" id="pref-temp">
+        <div class="pref-btn" data-val="Fraiche (18-20°)" onclick="selectPref(this,'temp')"><div class="pref-icon">&#10052;</div><div class="pref-name">Fraîche</div><div class="pref-desc">18–20°C</div></div>
+        <div class="pref-btn sel" data-val="Confortable (21-22°)" onclick="selectPref(this,'temp')"><div class="pref-icon">&#127774;</div><div class="pref-name">Confort</div><div class="pref-desc">21–22°C</div></div>
+        <div class="pref-btn" data-val="Chaude (23-24°)" onclick="selectPref(this,'temp')"><div class="pref-icon">&#128293;</div><div class="pref-name">Chaude</div><div class="pref-desc">23–24°C</div></div>
+      </div>
+    </div>
+
+    <!-- VITRES -->
+    <div class="pref-section">
+      <div class="pref-title">Vitres</div>
+      <div class="pref-grid" id="pref-windows">
+        <div class="pref-btn sel" data-val="Fermées" onclick="selectPref(this,'windows')"><div class="pref-icon">&#128694;</div><div class="pref-name">Fermées</div><div class="pref-desc">Climatisation</div></div>
+        <div class="pref-btn" data-val="Ouvertes" onclick="selectPref(this,'windows')"><div class="pref-icon">&#127807;</div><div class="pref-name">Ouvertes</div><div class="pref-desc">Air frais</div></div>
+      </div>
+    </div>
+
+    <!-- CONVERSATION -->
+    <div class="pref-section">
+      <div class="pref-title">Échanges avec le chauffeur</div>
+      <div class="pref-grid" id="pref-talk">
+        <div class="pref-btn" data-val="Discret" onclick="selectPref(this,'talk')"><div class="pref-icon">&#129313;</div><div class="pref-name">Discret</div><div class="pref-desc">Trajet calme</div></div>
+        <div class="pref-btn" data-val="Disponible" onclick="selectPref(this,'talk')"><div class="pref-icon">&#128172;</div><div class="pref-name">Disponible</div><div class="pref-desc">Échange ouvert</div></div>
+      </div>
+    </div>
+
+    <!-- EXTRAS -->
+    <div class="pref-section">
+      <div class="pref-title">Extras</div>
+      <div class="pref-grid cols3" id="pref-extras">
+        <div class="pref-btn" data-val="Siège enfant" onclick="toggleExtra(this)"><div class="pref-icon">&#128119;</div><div class="pref-name">Siège</div><div class="pref-desc">Enfant</div></div>
+        <div class="pref-btn" data-val="Grands bagages" onclick="toggleExtra(this)"><div class="pref-icon">&#129524;</div><div class="pref-name">Bagages</div><div class="pref-desc">Volumineux</div></div>
+        <div class="pref-btn" data-val="Animal de compagnie" onclick="toggleExtra(this)"><div class="pref-icon">&#128062;</div><div class="pref-name">Animal</div><div class="pref-desc">Compagnie</div></div>
+        <div class="pref-btn" data-val="PMR / accessibilité" onclick="toggleExtra(this)"><div class="pref-icon">&#9855;</div><div class="pref-name">PMR</div><div class="pref-desc">Accessibilité</div></div>
+        <div class="pref-btn" data-val="Facturation pro" onclick="toggleExtra(this)"><div class="pref-icon">&#128203;</div><div class="pref-name">Facture</div><div class="pref-desc">Pro / TVA</div></div>
+        <div class="pref-btn" data-val="Paiement CB" onclick="toggleExtra(this)"><div class="pref-icon">&#128179;</div><div class="pref-name">CB</div><div class="pref-desc">Paiement carte</div></div>
+      </div>
+    </div>
+
+    <!-- NOTE LIBRE -->
+    <div class="pref-section">
+      <div class="pref-title">Message pour le chauffeur</div>
+      <textarea id="note" class="note-area" placeholder="Informations supplémentaires : numéro de vol, terminal, code d'accès résidence..."></textarea>
+    </div>
+
+    <button class="btn-next" id="btn3" onclick="goStep4()">Calculer mon tarif</button>
+  </div>
+</div>
+
+<!-- STEP 4 : RESULT -->
+<div class="result-box" id="result">
+  <div class="r-lbl">Tarif estimé pour votre trajet</div>
+  <div id="r-price" class="r-price">—</div>
+  <div id="r-meta" class="r-meta"></div>
+  <div class="r-stats" id="r-stats"></div>
+  <div class="pref-recap" id="r-prefs"></div>
+  <div id="r-map" class="map-w"></div>
+  <a id="r-wa" class="btn-wa-final" href="#" target="_blank">Confirmer la réservation par WhatsApp</a>
+  <button class="btn-recalc" onclick="resetForm()">Modifier le trajet</button>
+</div>
+
+</div><!-- /tunnel -->
+
 <div class="trust-strip">
   <div class="trust-chip"><div class="tc-val">Hybride 2022</div><div class="tc-lbl">Véhicule</div></div>
   <div class="trust-chip"><div class="tc-val">Eau & chargeurs</div><div class="tc-lbl">À bord</div></div>
@@ -313,8 +375,7 @@ option{background:var(--s2);color:var(--white);}
   <div class="trust-chip"><div class="tc-val">+10 € nuit</div><div class="tc-lbl">22h–06h</div></div>
 </div>
 
-<!-- TARIFS -->
-<section class="sec" id="tarifs">
+<section class="sec">
   <div class="sec-lbl">Tarification</div>
   <h2 class="sec-h">Tarifs <span>fixes</span></h2>
   <div class="tariff-list">
@@ -325,7 +386,6 @@ option{background:var(--s2);color:var(--white);}
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="sec">
   <div class="sec-lbl">Contact</div>
   <h2 class="sec-h">Nous <span>joindre</span></h2>
@@ -337,283 +397,142 @@ option{background:var(--s2);color:var(--white);}
   <button class="btn-vcard" onclick="downloadVCard()">Ajouter aux contacts</button>
 </section>
 
-<footer class="footer">
-  <p>© 2026 I&N RUN — Chauffeur Privé Paris · 07 67 74 22 20</p>
-</footer>
-
+<footer class="footer"><p>© 2026 I&N RUN — Chauffeur Privé Paris · 07 67 74 22 20</p></footer>
 <div class="sticky">
   <a href="https://wa.me/33767742220" class="sb sb-wa" target="_blank">WhatsApp</a>
   <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
 </div>
 
 <script>
-/* ==============================
-   CALENDRIER INLINE
-============================== */
-let selDate = null;
+/* === PREFS STATE === */
+const prefs = { music:'', temp:'Confortable (21-22°)', windows:'Fermées', talk:'', extras:[] };
+
+function selectPref(el, key){
+  el.closest('.pref-grid').querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  prefs[key] = el.dataset.val;
+}
+
+function toggleExtra(el){
+  el.classList.toggle('sel');
+  const v = el.dataset.val;
+  if(el.classList.contains('sel')){ if(!prefs.extras.includes(v)) prefs.extras.push(v); }
+  else { prefs.extras = prefs.extras.filter(x=>x!==v); }
+}
+
+/* === CALENDAR === */
+let selDate=null;
 const JOURS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 const MOIS=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
-const fp = flatpickr('#cal-inline',{
-  locale:'fr', inline:true, dateFormat:'d/m/Y',
-  minDate:'today', maxDate: new Date().fp_incr(90),
+flatpickr('#cal-inline',{
+  locale:'fr',inline:true,dateFormat:'d/m/Y',minDate:'today',maxDate:new Date().fp_incr(90),
   onChange:function(sel,str){
     if(str){
-      selDate = str;
-      const d = sel[0];
-      document.getElementById('card1-sub').textContent = JOURS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];
-      document.getElementById('btn1').disabled = false;
+      selDate=str;
+      const d=sel[0];
+      document.getElementById('card1-sub').textContent=JOURS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];
+      document.getElementById('btn1').disabled=false;
     }
   }
 });
-
 flatpickr('#timepicker',{locale:'fr',enableTime:true,noCalendar:true,dateFormat:'H:i',time_24hr:true,minuteIncrement:15,defaultHour:8,disableMobile:false});
 
-/* ==============================
-   STEPS
-============================== */
-function goStep2(){
-  document.getElementById('card1').classList.remove('active');
-  const c2=document.getElementById('card2');
-  c2.classList.remove('locked'); c2.classList.add('active');
-  c2.scrollIntoView({behavior:'smooth',block:'start'});
+/* === STEPS === */
+function unlock(id){ const c=document.getElementById(id); c.classList.remove('locked'); c.classList.add('active'); c.scrollIntoView({behavior:'smooth',block:'start'}); }
+function goStep2(){ document.getElementById('card1').classList.remove('active'); unlock('card2'); }
+function goStep3(){ document.getElementById('card2').classList.remove('active'); unlock('card3'); }
+function swap(){ const d=document.getElementById('dep'),a=document.getElementById('arr'); [d.value,a.value]=[a.value,d.value]; }
+function resetForm(){ document.getElementById('result').classList.remove('show'); unlock('card2'); }
+
+/* === AUTOCOMPLETE === */
+const depCoords={}, arrCoords={}, acTimers={};
+function setupAC(inputId,listId,co){
+  const inp=document.getElementById(inputId), list=document.getElementById(listId); let fi=-1;
+  inp.addEventListener('input',function(){ clearTimeout(acTimers[inputId]); const q=this.value.trim(); if(q.length<3){list.classList.remove('open');list.innerHTML='';return;} acTimers[inputId]=setTimeout(()=>fetchAC(q,list,inp,co),320); });
+  inp.addEventListener('keydown',function(e){ const it=list.querySelectorAll('.ac-item'); if(e.key==='ArrowDown'){fi=Math.min(fi+1,it.length-1);hlAC(it,fi);e.preventDefault();}else if(e.key==='ArrowUp'){fi=Math.max(fi-1,0);hlAC(it,fi);e.preventDefault();}else if(e.key==='Enter'&&fi>=0){it[fi].click();e.preventDefault();}else if(e.key==='Escape'){list.classList.remove('open');fi=-1;} });
+  document.addEventListener('click',function(e){ if(!inp.contains(e.target)&&!list.contains(e.target)){list.classList.remove('open');fi=-1;} });
 }
-function swap(){
-  const d=document.getElementById('dep'),a=document.getElementById('arr');
-  [d.value,a.value]=[a.value,d.value];
+function hlAC(items,idx){ items.forEach((it,i)=>it.classList.toggle('focused',i===idx)); }
+async function fetchAC(q,list,inp,co){
+  const p=new URLSearchParams({format:'json',limit:'5',q,addressdetails:'1',countrycodes:'fr',viewbox:'1.4,49.5,3.6,48.1',bounded:'0'});
+  try{ const r=await fetch('https://nominatim.openstreetmap.org/search?'+p,{headers:{'Accept-Language':'fr'}}); renderAC(await r.json(),list,inp,co); }catch(e){ list.classList.remove('open'); }
 }
-function resetForm(){
-  document.getElementById('result').classList.remove('show');
-  document.getElementById('card2').classList.add('active');
-  document.getElementById('card2').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-/* ==============================
-   AUTOCOMPLETE NOMINATIM
-============================== */
-const depCoords = {};
-const arrCoords = {};
-let acTimers = {};
-
-function setupAutocomplete(inputId, listId, coordsObj){
-  const inp = document.getElementById(inputId);
-  const list = document.getElementById(listId);
-  let focused = -1;
-
-  inp.addEventListener('input', function(){
-    clearTimeout(acTimers[inputId]);
-    const q = this.value.trim();
-    if(q.length < 3){ list.classList.remove('open'); list.innerHTML=''; return; }
-    acTimers[inputId] = setTimeout(()=>fetchSuggestions(q, list, inp, coordsObj), 320);
-  });
-
-  inp.addEventListener('keydown', function(e){
-    const items = list.querySelectorAll('.ac-item');
-    if(e.key==='ArrowDown'){ focused=Math.min(focused+1,items.length-1); highlight(items,focused); e.preventDefault(); }
-    else if(e.key==='ArrowUp'){ focused=Math.max(focused-1,0); highlight(items,focused); e.preventDefault(); }
-    else if(e.key==='Enter' && focused>=0){ items[focused].click(); e.preventDefault(); }
-    else if(e.key==='Escape'){ list.classList.remove('open'); focused=-1; }
-  });
-
-  document.addEventListener('click', function(e){
-    if(!inp.contains(e.target) && !list.contains(e.target)){ list.classList.remove('open'); focused=-1; }
-  });
-}
-
-function highlight(items, idx){
-  items.forEach((it,i)=>it.classList.toggle('focused',i===idx));
-}
-
-async function fetchSuggestions(q, list, inp, coordsObj){
-  // Priorité Île-de-France bbox
-  const params = new URLSearchParams({
-    format:'json', limit:'5', q,
-    addressdetails:'1',
-    countrycodes:'fr',
-    viewbox:'1.4,49.5,3.6,48.1',
-    bounded:'0'
-  });
-  try{
-    const r = await fetch('https://nominatim.openstreetmap.org/search?'+params, {
-      headers:{'Accept-Language':'fr'}
-    });
-    const data = await r.json();
-    renderSuggestions(data, list, inp, coordsObj);
-  }catch(e){ list.classList.remove('open'); }
-}
-
-function renderSuggestions(data, list, inp, coordsObj){
-  if(!data.length){ list.classList.remove('open'); return; }
-  list.innerHTML = '';
-  data.forEach(item=>{
-    const div = document.createElement('div');
-    div.className = 'ac-item';
-    const addr = item.address||{};
-    const main = addr.road||addr.amenity||addr.building||item.name||'';
-    const sec = [addr.city||addr.town||addr.village||addr.suburb, addr.postcode].filter(Boolean).join(', ');
-    div.innerHTML = `<div class="ac-ic">→</div><div><div class="ac-main">${main||item.display_name.split(',')[0]}</div><div class="ac-sec">${sec||item.display_name}</div></div>`;
-    div.addEventListener('mousedown', function(e){
-      e.preventDefault();
-      inp.value = main ? (main+(sec?', '+sec:'')) : item.display_name.split(',').slice(0,2).join(',');
-      coordsObj.lat = +item.lat;
-      coordsObj.lon = +item.lon;
-      list.classList.remove('open');
-      list.innerHTML = '';
-    });
-    list.appendChild(div);
-  });
+function renderAC(data,list,inp,co){
+  if(!data.length){list.classList.remove('open');return;}
+  list.innerHTML='';
+  data.forEach(item=>{ const div=document.createElement('div'); div.className='ac-item'; const a=item.address||{}; const main=a.road||a.amenity||a.building||item.name||''; const sec=[a.city||a.town||a.village||a.suburb,a.postcode].filter(Boolean).join(', '); div.innerHTML=`<div class="ac-ic">&#8594;</div><div><div class="ac-main">${main||item.display_name.split(',')[0]}</div><div class="ac-sec">${sec||item.display_name}</div></div>`; div.addEventListener('mousedown',function(e){ e.preventDefault(); inp.value=main?(main+(sec?', '+sec:'')):item.display_name.split(',').slice(0,2).join(','); co.lat=+item.lat; co.lon=+item.lon; list.classList.remove('open'); list.innerHTML=''; }); list.appendChild(div); });
   list.classList.add('open');
 }
+setupAC('dep','ac-dep',depCoords); setupAC('arr','ac-arr',arrCoords);
 
-// Init autocomplete
-setupAutocomplete('dep','ac-dep', depCoords);
-setupAutocomplete('arr','ac-arr', arrCoords);
+/* === GEOCODE === */
+const SC={'cdg':[48.9755,2.5597],'charles de gaulle':[48.9755,2.5597],'roissy':[48.9755,2.5597],'orly':[48.7233,2.3794],'paris':[48.8566,2.3522],'gare du nord':[48.8809,2.3553],'gare de lyon':[48.8449,2.3735],'gare montparnasse':[48.8413,2.3202],'gare saint lazare':[48.8760,2.3247],'versailles':[48.8014,2.1301],'disneyland':[48.8673,2.7797],'la defense':[48.8924,2.2390]};
+async function resolveCoords(val,co){ if(co.lat) return[co.lat,co.lon]; const q=val.toLowerCase().trim(); for(const[k,v] of Object.entries(SC)) if(q.includes(k)) return v; try{ const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(val)}&countrycodes=fr`,{headers:{'Accept-Language':'fr'}}); const d=await r.json(); if(d[0]) return[+d[0].lat,+d[0].lon]; }catch(e){} return[48.8566,2.3522]; }
+async function getRoute(a,b){ try{ const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=full&geometries=geojson`); const d=await r.json(); if(d.routes?.[0]) return{km:d.routes[0].distance/1000,dur:d.routes[0].duration/60,geo:d.routes[0].geometry}; }catch(e){} return{km:32,dur:35,geo:null}; }
+function makeMarker(color,label){ return L.divIcon({className:'',html:`<div style="width:32px;height:32px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #000;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.5);"><span style="transform:rotate(45deg);font-size:.68rem;font-weight:700;color:#000;">${label}</span></div>`,iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-36]}); }
 
-/* ==============================
-   GEOCODE FALLBACK
-============================== */
-const SHORTCUTS = {
-  'cdg':{lat:48.9755,lon:2.5597},'charles de gaulle':{lat:48.9755,lon:2.5597},
-  'roissy':{lat:48.9755,lon:2.5597},'orly':{lat:48.7233,lon:2.3794},
-  'paris centre':{lat:48.8566,lon:2.3522},'paris':{lat:48.8566,lon:2.3522},
-  'gare du nord':{lat:48.8809,lon:2.3553},'gare de lyon':{lat:48.8449,lon:2.3735},
-  'gare montparnasse':{lat:48.8413,lon:2.3202},'gare saint lazare':{lat:48.8760,lon:2.3247},
-  'gare de l\'est':{lat:48.8766,lon:2.3590},'versailles':{lat:48.8014,lon:2.1301},
-  'disneyland':{lat:48.8673,lon:2.7797},'la defense':{lat:48.8924,lon:2.2390}
-};
+/* === STEP 4 : CALCUL === */
+let rMap;
+async function goStep4(){
+  const depV=document.getElementById('dep').value.trim()||'Paris';
+  const arrV=document.getElementById('arr').value.trim()||'CDG';
+  const heure=document.getElementById('timepicker').value||'--:--';
+  const pax=document.getElementById('pax').value;
+  const note=document.getElementById('note').value.trim();
+  const btn=document.getElementById('btn3');
+  btn.innerHTML='<span class="spin"></span>Calcul...'; btn.disabled=true;
 
-async function resolveCoords(val, coordsObj){
-  if(coordsObj.lat) return [coordsObj.lat, coordsObj.lon];
-  const q = val.toLowerCase().trim();
-  for(const[k,v] of Object.entries(SHORTCUTS)) if(q.includes(k)) return [v.lat, v.lon];
-  try{
-    const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(val)}&countrycodes=fr`,{headers:{'Accept-Language':'fr'}});
-    const d = await r.json();
-    if(d[0]) return [+d[0].lat, +d[0].lon];
-  }catch(e){}
-  return [48.8566,2.3522];
-}
+  const[dc,ac]=await Promise.all([resolveCoords(depV,depCoords),resolveCoords(arrV,arrCoords)]);
+  const route=await getRoute(dc,ac);
+  const km=route.km, dur=route.dur;
+  let prix=Math.max(6+km*1.95,12);
+  const h=parseInt(heure); const nuit=!isNaN(h)&&(h>=22||h<6);
+  if(nuit) prix+=10;
 
-/* ==============================
-   OSRM ROUTE (avec géométrie)
-============================== */
-async function getRoute(a, b){
-  try{
-    const url = `https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=full&geometries=geojson&steps=false`;
-    const r = await fetch(url);
-    const d = await r.json();
-    if(d.routes?.[0]){
-      return {
-        km: d.routes[0].distance/1000,
-        duration: d.routes[0].duration/60, // minutes
-        geometry: d.routes[0].geometry
-      };
-    }
-  }catch(e){}
-  return {km:32, duration:35, geometry:null};
-}
+  document.getElementById('r-price').textContent=prix.toFixed(2)+' €';
+  document.getElementById('r-meta').innerHTML='Frais fixe 6 € + 1,95 €/km'+(nuit?' <strong>+ 10 € nuit</strong>':'');
 
-/* ==============================
-   CUSTOM MARKERS SVG
-============================== */
-function makeMarker(color, label){
-  return L.divIcon({
-    className:'',
-    html:`<div style="width:32px;height:32px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #000;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.5);">
-      <span style="transform:rotate(45deg);font-size:.68rem;font-weight:700;color:#000;">${label}</span>
-    </div>`,
-    iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-36]
-  });
-}
-
-/* ==============================
-   STEP 3 — CALCUL + CARTE
-============================== */
-let rMap, routeLayer;
-async function goStep3(){
-  const depVal = document.getElementById('dep').value.trim()||'Paris';
-  const arrVal = document.getElementById('arr').value.trim()||'CDG';
-  const heure  = document.getElementById('timepicker').value||'--:--';
-  const pax    = document.getElementById('pax').value;
-  const btn    = document.getElementById('btn2');
-
-  btn.innerHTML='<span class="spin"></span>Calcul de l\'itinéraire...';
-  btn.disabled=true;
-
-  const [dc, ac] = await Promise.all([
-    resolveCoords(depVal, depCoords),
-    resolveCoords(arrVal, arrCoords)
-  ]);
-
-  const route = await getRoute(dc, ac);
-  const km = route.km;
-  const dur = route.duration;
-
-  // PRIX
-  let prix = Math.max(6 + km*1.95, 12);
-  const h = parseInt(heure);
-  const nuit = !isNaN(h) && (h>=22||h<6);
-  if(nuit) prix += 10;
-
-  // AFFICHAGE PRIX
-  document.getElementById('r-price').textContent = prix.toFixed(2)+' €';
-  document.getElementById('r-meta').innerHTML =
-    `Frais fixe 6 € + 1,95 €/km`+(nuit?' <strong>+ 10 € nuit</strong>':'');
-
-  // STATS
-  const durH = Math.floor(dur/60);
-  const durM = Math.round(dur%60);
-  const durStr = durH>0 ? `${durH}h${durM<10?'0':''}${durM}` : `${durM} min`;
-  document.getElementById('r-stats').innerHTML =
-    `<div class="r-stat"><div class="rs-val">${km.toFixed(1)} km</div><div class="rs-lbl">Distance route</div></div>
-     <div class="r-stat"><div class="rs-val">${durStr}</div><div class="rs-lbl">Durée estimée</div></div>
+  const durH=Math.floor(dur/60), durM=Math.round(dur%60);
+  const durStr=durH>0?`${durH}h${durM<10?'0':''}${durM}`:`${durM} min`;
+  document.getElementById('r-stats').innerHTML=
+    `<div class="r-stat"><div class="rs-val">${km.toFixed(1)} km</div><div class="rs-lbl">Distance</div></div>
+     <div class="r-stat"><div class="rs-val">${durStr}</div><div class="rs-lbl">Durée</div></div>
      <div class="r-stat"><div class="rs-val">${prix.toFixed(2)} €</div><div class="rs-lbl">Tarif TTC</div></div>`;
 
-  // WHATSAPP
-  const d = selDate||new Date().toLocaleDateString('fr-FR');
-  document.getElementById('r-wa').href =
-    `https://wa.me/33767742220?text=Bonjour I%26N RUN,%0A%0AJe souhaite r%C3%A9server :%0A%0A` +
-    `Dep : ${depVal}%0AArr : ${arrVal}%0ADate : ${d}%0AHeure : ${heure}%0APax : ${pax}%0A%0A` +
-    `Distance : ${km.toFixed(1)} km%0ADur%C3%A9e : ${durStr}%0ATarif estim%C3%A9 : ${prix.toFixed(2)} %E2%82%AC%0A%0AMerci de confirmer.`;
+  /* Récap préférences */
+  const extrasStr = prefs.extras.length ? prefs.extras.join(', ') : 'Aucun';
+  document.getElementById('r-prefs').innerHTML=
+    `<strong>Préférences à bord</strong>`+
+    (prefs.music?`Musique : ${prefs.music}<br>`:'Musique : non renseignée<br>')+
+    `Température : ${prefs.temp}<br>`+
+    `Vitres : ${prefs.windows}<br>`+
+    (prefs.talk?`Échanges : ${prefs.talk}<br>`:'')+
+    `Extras : ${extrasStr}`+
+    (note?`<br>Note : ${note}`:'');
 
-  // CARTE
-  const me = document.getElementById('r-map');
-  if(rMap){ rMap.remove(); rMap=null; routeLayer=null; }
-  rMap = L.map(me, {zoomControl:true, attributionControl:false});
+  /* WhatsApp */
+  const d=selDate||new Date().toLocaleDateString('fr-FR');
+  const prefsMsg=`%0A%0APreferences a bord :%0A- Musique : ${prefs.music||'non specifiee'}%0A- Temperature : ${prefs.temp}%0A- Vitres : ${prefs.windows}%0A- Echanges : ${prefs.talk||'non specifie'}%0A- Extras : ${extrasStr}${note?'%0A- Note : '+encodeURIComponent(note):''}`;
+  document.getElementById('r-wa').href=`https://wa.me/33767742220?text=Bonjour I%26N RUN,%0A%0AReservation :%0ADep : ${depV}%0AArr : ${arrV}%0ADate : ${d}%0AHeure : ${heure}%0APax : ${pax}%0ADistance : ${km.toFixed(1)} km%0ADuree : ${durStr}%0ATarif : ${prix.toFixed(2)} %E2%82%AC${prefsMsg}%0A%0AMerci de confirmer.`;
 
-  // Tiles dark CartoDB
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png',{
-    subdomains:'abcd', maxZoom:19
-  }).addTo(rMap);
-
-  // Tracé de route (polyline dorée)
-  if(route.geometry){
-    routeLayer = L.geoJSON(route.geometry,{
-      style:{color:'#c9a84c',weight:4,opacity:.9,lineCap:'round',lineJoin:'round'}
-    }).addTo(rMap);
-    rMap.fitBounds(routeLayer.getBounds(), {padding:[30,30]});
-  } else {
-    rMap.fitBounds([dc,ac],{padding:[40,40]});
-  }
-
-  // Marqueurs personnalisés
-  L.marker(dc, {icon:makeMarker('#c9a84c','A')}).addTo(rMap)
-    .bindPopup(`<b>Départ</b><br>${depVal}`,{className:'custom-popup'});
-  L.marker(ac, {icon:makeMarker('#22c55e','B')}).addTo(rMap)
-    .bindPopup(`<b>Arrivée</b><br>${arrVal}`,{className:'custom-popup'});
+  /* Carte */
+  const me=document.getElementById('r-map');
+  if(rMap){rMap.remove();rMap=null;}
+  rMap=L.map(me,{zoomControl:true,attributionControl:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(rMap);
+  if(route.geo){ const rl=L.geoJSON(route.geo,{style:{color:'#c9a84c',weight:4,opacity:.9,lineCap:'round',lineJoin:'round'}}).addTo(rMap); rMap.fitBounds(rl.getBounds(),{padding:[30,30]}); }
+  else{ rMap.fitBounds([dc,ac],{padding:[40,40]}); }
+  L.marker(dc,{icon:makeMarker('#c9a84c','A')}).addTo(rMap).bindPopup(`<b>Départ</b><br>${depV}`);
+  L.marker(ac,{icon:makeMarker('#22c55e','B')}).addTo(rMap).bindPopup(`<b>Arrivée</b><br>${arrV}`);
 
   document.getElementById('result').classList.add('show');
   btn.innerHTML='Calculer mon tarif'; btn.disabled=false;
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-/* ==============================
-   VCARD
-============================== */
 function downloadVCard(){
-  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nNOTE:Chauffeur Privé Paris · CDG · Orly · Tarifs fixes\nEND:VCARD`;
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'}));
-  a.download='inrun.vcf';a.click();
+  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nEND:VCARD`;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'})); a.download='inrun.vcf'; a.click();
 }
 </script>
 </body>
