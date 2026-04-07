@@ -1,1 +1,1 @@
-V43 - Inversion des titres Étape 1 et 2 pour un copywriting incitatif ("Planifiez votre départ").
+V44 - Correction de la structure, du fond et du contenu de la modale des Mentions Légales.

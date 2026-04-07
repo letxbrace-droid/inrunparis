@@ -7,7 +7,6 @@
 <meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<!-- NOUVELLES POLICES ULTRA LUXE : Marcellus (Titres) et Jost (Corps de texte) -->
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -147,6 +146,66 @@ h1 span{display:inline-block;}
 
 .btn-close{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);margin-top:10px;}
 
+/* CORRECTION DE LA MODALE MENTIONS LÉGALES (V44) */
+.legal-modal{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(9,9,15,0.95); /* Fond plus opaque pour masquer le site derrière */
+  backdrop-filter: blur(10px);
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s;
+}
+.legal-modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+.legal-box{
+  background:var(--s1);
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:var(--rxl);
+  padding:30px 24px;
+  max-width:500px;
+  width:100%;
+  max-height:85vh;
+  overflow-y:auto;
+  text-align:left;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Ombre pour bien la détacher */
+}
+.legal-title{
+  font-family:"Marcellus",serif;
+  font-size:1.8rem;
+  color:var(--gold);
+  margin:0 0 24px 0;
+  text-align:center;
+}
+.legal-section{
+  margin-bottom:24px;
+}
+.legal-section h4{
+  color:var(--white);
+  font-size:1.1rem;
+  margin:0 0 12px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  padding-bottom:8px;
+  font-weight:500;
+}
+.legal-text{
+  color:var(--gray2);
+  font-size:0.95rem;
+  line-height:1.6;
+  font-weight:300;
+}
+.legal-text strong{
+  color:var(--white);
+  font-weight:500;
+}
+
 /* Footer */
 footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.75rem;line-height:1.6;}
 .legal-links{display:flex;justify-content:center;gap:16px;margin-bottom:12px;}
@@ -209,7 +268,6 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
     <div class="card-hd">
       <div class="c-num">1</div>
       <div>
-        <!-- INVERSION DES TITRES ICI -->
         <div class="c-title">Planifiez votre départ</div>
         <div class="c-sub">Heure et itinéraire</div>
       </div>
@@ -362,10 +420,11 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
   </div>
 </div>
 
-<!-- MODAL MENTIONS LEGALES -->
+<!-- MODAL MENTIONS LEGALES CORRECTEMENT STRUCTUREE -->
 <div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
   <div class="legal-box">
-    <h3 class="legal-title">Mentions Légales</h3>
+    <h3 class="legal-title">Mentions Légales & CGV</h3>
+
     <div class="legal-section">
       <h4>1. Éditeur du Service</h4>
       <div class="legal-text">
@@ -378,6 +437,32 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
         <strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.
       </div>
     </div>
+
+    <div class="legal-section">
+      <h4>2. Hébergement</h4>
+      <div class="legal-text">
+        <strong>Hébergeur :</strong> GitHub Pages<br>
+        <strong>Éditeur :</strong> GitHub Inc.<br>
+        <strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h4>3. Conditions de Transport (CGV)</h4>
+      <div class="legal-text">
+        <strong>Tarification :</strong> Les prix indiqués lors de la réservation sont fixes et garantis. Ils incluent la prise en charge, le trajet, l'attente aux aéroports, et la gestion des bagages.<br><br>
+        <strong>Réservation :</strong> Toute réservation est soumise à confirmation de la part du chauffeur. <br><br>
+        <strong>Assurance :</strong> Le transporteur est couvert par une assurance Responsabilité Civile Professionnelle pour le transport de personnes à titre onéreux.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h4>4. Données Personnelles</h4>
+      <div class="legal-text">
+        Les données collectées (nom, téléphone, adresses de départ et d'arrivée) sont strictement utilisées pour la bonne exécution de la course. Elles ne font l'objet d'aucune revente à des tiers.
+      </div>
+    </div>
+
     <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer</button>
   </div>
 </div>
