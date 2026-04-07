@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#09090f">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,345 +21,396 @@
   --green:#16a34a;--green-l:#22c55e;--wa:#128C7E;
   --white:#f0efe9;--gray:#6b7280;--gray2:#9ca3af;
   --b:rgba(255,255,255,.07);
-  --r:14px;--rl:22px;--rxl:28px;
-  --ease:cubic-bezier(.23,1,.32,1);--tap:54px;
+  --r:14px;--rl:20px;--rxl:26px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --tap:52px;--hdr:56px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
-body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.6;padding-bottom:76px;}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.6;padding-bottom:80px;}
 a{text-decoration:none;color:inherit;}
-::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
 
 /* HEADER */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0);background:rgba(9,9,15,.93);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--b);}
-.nav{max-width:520px;margin:0 auto;height:58px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;}
-.nav-wa{background:var(--wa);color:#fff;font-weight:600;font-size:.82rem;padding:9px 16px;border-radius:50px;white-space:nowrap;transition:all .3s var(--ease);}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0px);background:rgba(9,9,15,.96);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border-bottom:1px solid var(--b);}
+.nav{display:flex;align-items:center;height:var(--hdr);padding-left:max(18px,env(safe-area-inset-left,0px) + 18px);padding-right:max(18px,env(safe-area-inset-right,0px) + 18px);max-width:600px;margin:0 auto;}
+.logo{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;flex:0 0 auto;}
+.nav-gap{flex:1;}
+.nav-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:var(--wa);color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:.78rem;white-space:nowrap;padding:0 18px;height:36px;border-radius:50px;transition:opacity .2s,transform .2s;}
+.nav-btn:active{transform:scale(.97);opacity:.9;}
 
-/* ===== WEATHER WIDGET ===== */
-.weather-bar{
-  max-width:520px;margin:0 auto;padding:0 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  height:44px;
-}
-.weather-pill{
-  display:flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.05);border:1px solid var(--b);
-  border-radius:50px;padding:6px 14px;font-size:.8rem;
-  cursor:pointer;transition:all .3s var(--ease);white-space:nowrap;
-  flex:1;
-}
-.weather-pill:hover{border-color:rgba(201,168,76,.3);}
-.w-icon{font-size:1rem;}
-.w-temp{font-weight:700;color:var(--white);}
-.w-desc{color:var(--gray);font-size:.75rem;}
-.w-loc{color:var(--gray);font-size:.72rem;margin-left:auto;}
-.weather-detail{
-  display:none;
-  position:fixed;top:58px;left:0;right:0;z-index:998;
-  background:var(--s1);border-bottom:1px solid var(--b);
-  padding:16px;max-width:520px;margin:0 auto;
-}
-.weather-detail.open{display:block;animation:su .3s var(--ease);}
-.w-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
-.w-card{background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:var(--r);padding:12px 8px;text-align:center;}
-.w-card-val{font-weight:700;font-size:.9rem;}
-.w-card-lbl{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+/* MÉTÉO */
+.weather{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px) + 8px);left:max(12px,env(safe-area-inset-left,0px) + 12px);z-index:996;background:rgba(16,16,26,.93);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.09);border-radius:50px;padding:7px 14px 7px 10px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.5);max-width:min(200px,calc(50vw));}
+.w-icon{font-size:1.25rem;line-height:1;flex-shrink:0;}
+.w-right{min-width:0;overflow:hidden;}
+.w-row{display:flex;align-items:baseline;gap:5px;overflow:hidden;}
+.w-temp{font-weight:700;font-size:.85rem;color:var(--white);white-space:nowrap;}
+.w-city{font-size:.62rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px;}
+.w-desc{font-size:.65rem;color:var(--gray2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+.weather.loading .w-icon{animation:wspin 1.5s linear infinite;display:inline-block;}
+@keyframes wspin{to{transform:rotate(360deg)}}
 
-/* HERO */
-.hero{padding:112px 24px 0;background:radial-gradient(ellipse 140% 60% at 50% 0%,rgba(201,168,76,.08),transparent 65%),linear-gradient(180deg,var(--ink) 0%,var(--s1) 100%);text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;width:600px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.09),transparent 70%);top:0;left:50%;transform:translateX(-50%);animation:orb 9s ease-in-out infinite;}
-@keyframes orb{0%,100%{transform:translateX(-50%) scaleX(1)}50%{transform:translateX(-50%) scaleX(1.1)}}
-.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:50px;background:rgba(22,163,74,.12);border:1px solid rgba(34,197,94,.3);font-size:.72rem;font-weight:700;color:var(--green-l);letter-spacing:.05em;text-transform:uppercase;margin-bottom:22px;position:relative;z-index:1;}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 1.6s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,10vw,4.2rem);font-weight:700;line-height:1.08;letter-spacing:-.03em;position:relative;z-index:1;margin-bottom:14px;}
-.hero-title .g{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:shine 4.5s infinite;}
+/* ══════════════════════════════════════
+   HERO — texte + PHOTO VOITURE intégrée
+   ══════════════════════════════════════ */
+.hero{
+  padding-top:calc(var(--hdr) + env(safe-area-inset-top,0px) + 28px);
+  background:linear-gradient(180deg,var(--ink) 0%,var(--s1) 100%);
+  text-align:center;position:relative;overflow:hidden;
+}
+/* Halo doré en fond */
+.hero::before{content:'';position:absolute;width:500px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.09),transparent 70%);top:60px;left:50%;transform:translateX(-50%);pointer-events:none;}
+
+.hero-content{
+  padding:0 20px;
+  position:relative;z-index:2;
+}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:50px;background:rgba(22,163,74,.1);border:1px solid rgba(34,197,94,.25);font-size:.68rem;font-weight:700;color:var(--green-l);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.1rem,9vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:12px;}
+.g{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:shine 5s infinite;}
 @keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
-.hero-copy{font-size:clamp(.88rem,3.5vw,1rem);color:var(--gray2);max-width:340px;margin:0 auto 28px;position:relative;z-index:1;line-height:1.75;}
-.proof{display:flex;justify-content:center;gap:20px;margin-bottom:40px;position:relative;z-index:1;flex-wrap:wrap;}
-.proof-val{font-weight:700;font-size:1.05rem;}
-.proof-lbl{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+.hero-copy{font-size:.88rem;color:var(--gray2);max-width:310px;margin:0 auto 22px;line-height:1.7;}
+
+/* ─── BLOC PHOTO ─── */
+.car-wrap{
+  position:relative;
+  width:100%;
+  height:230px;
+  overflow:hidden;
+  /* fondu haut + bas pour fondre avec le fond dark */
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 14%,
+    black 70%,
+    transparent 100%
+  );
+  mask-image:linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 14%,
+    black 70%,
+    transparent 100%
+  );
+  z-index:1;
+}
+/* fondu latéral gauche + droite */
+.car-wrap::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to right,
+    var(--ink) 0%,
+    transparent 18%,
+    transparent 82%,
+    var(--ink) 100%
+  );
+  pointer-events:none;z-index:2;
+}
+.car-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 40%;
+  filter:brightness(.78) contrast(1.08) saturate(.9);
+  /* Légère teinte chaude pour matcher le gold */
+  transition:filter .4s;
+}
+/* Si la photo n'est pas encore chargée → placeholder élégant */
+.car-img-placeholder{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,var(--s2) 0%,var(--s3) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;color:var(--gray);font-size:.82rem;
+}
+.car-img-placeholder .ph-icon{font-size:2.4rem;opacity:.3;}
+.car-img-placeholder .ph-txt{opacity:.5;font-size:.75rem;}
+/* Badge flottant sur la photo */
+.car-badge{
+  position:absolute;bottom:36px;right:20px;z-index:3;
+  background:rgba(9,9,15,.88);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(201,168,76,.28);
+  border-radius:50px;
+  padding:6px 14px;
+  display:flex;align-items:center;gap:7px;
+  font-size:.72rem;
+}
+.car-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green-l);animation:blink 2s infinite;}
+.car-badge-txt{color:var(--white);font-weight:600;}
+.car-badge-sub{color:var(--gray);font-size:.62rem;margin-left:2px;}
+
+/* PROOF */
+.proof{display:flex;justify-content:center;padding:0 20px;margin-bottom:32px;position:relative;z-index:2;}
+.proof-item{flex:1;max-width:88px;padding:0 6px;border-right:1px solid var(--b);}
+.proof-item:last-child{border-right:none;}
+.proof-val{font-weight:700;font-size:.9rem;}
+.proof-lbl{font-size:.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
 
 /* TUNNEL */
-.tunnel{max-width:520px;margin:0 auto;padding:0 16px;}
-.card{background:var(--s2);border:1px solid var(--b);border-radius:var(--rxl);padding:26px 20px;margin-bottom:14px;transition:all .4s var(--ease);}
-.card.active{border-color:rgba(201,168,76,.3);}
-.card.locked{opacity:.38;pointer-events:none;filter:blur(.4px);}
-.card-head{display:flex;align-items:center;gap:12px;}
-.card-num{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:var(--gold);color:#000;transition:all .3s;}
+.tunnel{max-width:520px;margin:0 auto;padding:0 14px;}
+.card{background:var(--s2);border:1px solid var(--b);border-radius:var(--rxl);padding:22px 18px;margin-bottom:10px;transition:border-color .4s var(--ease),box-shadow .4s,opacity .4s,filter .3s;}
+.card.active{border-color:rgba(201,168,76,.28);box-shadow:0 0 0 1px rgba(201,168,76,.07);}
+.card.locked{opacity:.32;pointer-events:none;filter:blur(.4px);}
+.card.done{border-color:rgba(34,197,94,.2);}
+.card-head{display:flex;align-items:center;gap:11px;}
+.card-num{width:27px;height:27px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;background:var(--gold);color:#000;transition:background .3s,color .3s;}
 .card.locked .card-num{background:var(--s3);color:var(--gray);}
-.card-title{font-weight:700;font-size:1rem;}
-.card-sub{font-size:.78rem;color:var(--gray);margin-top:2px;}
-.card-body{margin-top:20px;}
+.card.done .card-num{background:var(--green);color:#fff;}
+.card-title{font-weight:700;font-size:.92rem;}
+.card-sub{font-size:.73rem;color:var(--gray);margin-top:2px;}
+.card-body{margin-top:18px;}
 
 /* FLATPICKR */
-#cal-inline{margin:0 auto;}
 .flatpickr-calendar.inline{background:transparent !important;box-shadow:none !important;border:none !important;width:100% !important;max-width:100% !important;}
 .flatpickr-months,.flatpickr-month{background:transparent !important;}
-.flatpickr-month{height:44px !important;}
-.flatpickr-current-month{font-family:'Playfair Display',serif !important;font-size:1.1rem !important;color:var(--white) !important;padding-top:10px !important;}
+.flatpickr-month{height:40px !important;}
+.flatpickr-current-month{font-family:'Playfair Display',serif !important;font-size:1rem !important;color:var(--white) !important;padding-top:8px !important;}
 .flatpickr-monthDropdown-months{background:var(--s2) !important;color:var(--white) !important;}
 .cur-year{color:var(--gold) !important;}.numInputWrapper input{color:var(--gold) !important;}
 .flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--gold) !important;}
-.flatpickr-weekday{background:transparent !important;color:var(--gold) !important;font-weight:700 !important;font-size:.72rem !important;}
+.flatpickr-weekday{background:transparent !important;color:var(--gold) !important;font-weight:700 !important;font-size:.65rem !important;}
 .flatpickr-days{border:none !important;}
-.dayContainer{padding:4px 0 !important;width:100% !important;min-width:100% !important;max-width:100% !important;}
-.flatpickr-day{color:var(--white) !important;border-radius:var(--r) !important;font-size:.9rem !important;max-width:14.28% !important;height:42px !important;line-height:42px !important;transition:all .2s !important;}
+.dayContainer{padding:2px 0 !important;width:100% !important;min-width:100% !important;max-width:100% !important;}
+.flatpickr-day{color:var(--white) !important;border-radius:10px !important;font-size:.85rem !important;max-width:14.28% !important;height:38px !important;line-height:38px !important;transition:background .15s,border-color .15s !important;}
 .flatpickr-day:hover{background:var(--glow) !important;border-color:rgba(201,168,76,.3) !important;}
 .flatpickr-day.selected{background:var(--gold) !important;border-color:var(--gold) !important;color:#000 !important;font-weight:700 !important;}
-.flatpickr-day.today{border-color:rgba(201,168,76,.4) !important;color:var(--gold) !important;font-weight:600 !important;}
-.flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:var(--gray) !important;opacity:.3 !important;}
+.flatpickr-day.today:not(.selected){border-color:rgba(201,168,76,.5) !important;color:var(--gold) !important;}
+.flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:var(--gray) !important;opacity:.22 !important;}
 
-/* FIELDS */
-.f-row{margin-bottom:14px;position:relative;}
-.f-lbl{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
-.f-wrap{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);transition:all .3s var(--ease);}
+/* CHAMPS */
+.f-row{margin-bottom:13px;position:relative;}
+.f-lbl{display:block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.f-wrap{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);transition:border-color .25s,box-shadow .25s;position:relative;}
 .f-wrap:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
-.f-ic{width:40px;text-align:center;font-size:.8rem;font-weight:700;color:var(--gray2);flex-shrink:0;}
-.f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:.95rem;font-family:'Inter',sans-serif;padding-right:14px;}
-.f-in::placeholder{color:var(--gray);}
-select.f-in{cursor:pointer;}
+.f-ic{width:36px;text-align:center;font-size:.76rem;font-weight:700;color:var(--gray2);flex-shrink:0;}
+.f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:.9rem;font-family:'Inter',sans-serif;padding-right:12px;}
+.f-in::placeholder{color:rgba(107,114,128,.65);}
+select.f-in{cursor:pointer;-webkit-appearance:none;appearance:none;}
 option{background:var(--s2);color:var(--white);}
-
-/* AUTOCOMPLETE */
-.ac-list{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:9999;background:var(--s2);border:1px solid rgba(201,168,76,.3);border-radius:var(--r);overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.8);display:none;}
+.ac-list{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:9999;background:var(--s2);border:1px solid rgba(201,168,76,.22);border-radius:var(--r);overflow:hidden;box-shadow:0 20px 56px rgba(0,0,0,.85);display:none;}
 .ac-list.open{display:block;}
-.ac-item{padding:12px 14px;font-size:.85rem;cursor:pointer;border-bottom:1px solid var(--b);transition:background .2s;display:flex;align-items:flex-start;gap:8px;}
+.ac-item{padding:11px 13px;font-size:.82rem;cursor:pointer;border-bottom:1px solid var(--b);transition:background .15s;display:flex;align-items:flex-start;gap:9px;}
 .ac-item:last-child{border-bottom:none;}
 .ac-item:hover,.ac-item.focused{background:var(--glow);}
-.ac-ic{color:var(--gold);font-size:.75rem;font-weight:700;margin-top:2px;flex-shrink:0;}
-.ac-main{font-weight:500;color:var(--white);font-size:.85rem;}
-.ac-sec{font-size:.72rem;color:var(--gray);margin-top:1px;}
-
-/* SWAP */
+.ac-ic{color:var(--gold);font-size:.7rem;margin-top:2px;flex-shrink:0;}
+.ac-main{font-weight:500;color:var(--white);}
+.ac-sec{font-size:.7rem;color:var(--gray);margin-top:1px;}
 .swap-row{display:flex;justify-content:center;margin:2px 0;}
-.swap-b{width:36px;height:36px;border-radius:50%;background:var(--s1);border:1px solid rgba(201,168,76,.25);color:var(--gold);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease);}
+.swap-b{width:34px;height:34px;border-radius:50%;background:var(--s1);border:1px solid rgba(201,168,76,.2);color:var(--gold);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .45s var(--ease);}
 .swap-b:hover{background:var(--glow);transform:rotate(180deg);}
 
 /* PREFS */
-.pref-section{margin-bottom:20px;}
-.pref-title{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.pref-section{margin-bottom:18px;}
+.pref-title{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:9px;display:flex;align-items:center;gap:8px;}
 .pref-title::after{content:'';flex:1;height:1px;background:var(--b);}
 .pref-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .pref-grid.cols3{grid-template-columns:repeat(3,1fr);}
-.pref-btn{padding:12px 8px;border-radius:var(--rl);text-align:center;cursor:pointer;background:rgba(255,255,255,.04);border:1.5px solid var(--b);transition:all .3s var(--ease);user-select:none;}
-.pref-btn:hover{border-color:rgba(201,168,76,.3);background:var(--glow);}
-.pref-btn.sel{border-color:var(--gold);background:rgba(201,168,76,.14);}
-.pref-icon{font-size:1.3rem;margin-bottom:5px;}
-.pref-name{font-size:.78rem;font-weight:600;line-height:1.3;}
-.pref-desc{font-size:.68rem;color:var(--gray);margin-top:2px;}
-.note-area{width:100%;min-height:68px;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);color:var(--white);font-size:.9rem;font-family:'Inter',sans-serif;padding:12px;outline:none;resize:vertical;transition:all .3s var(--ease);line-height:1.5;}
+.pref-btn{padding:11px 8px;border-radius:var(--rl);text-align:center;cursor:pointer;background:rgba(255,255,255,.04);border:1.5px solid var(--b);transition:all .22s var(--ease);user-select:none;-webkit-user-select:none;}
+.pref-btn:active{transform:scale(.96);}
+.pref-btn.sel{border-color:var(--gold);background:rgba(201,168,76,.12);box-shadow:0 0 0 1px rgba(201,168,76,.14);}
+.pref-icon{font-size:1.25rem;margin-bottom:5px;}
+.pref-name{font-size:.75rem;font-weight:600;line-height:1.3;}
+.pref-desc{font-size:.65rem;color:var(--gray);margin-top:2px;}
+.note-area{width:100%;min-height:64px;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);color:var(--white);font-size:.88rem;font-family:'Inter',sans-serif;padding:11px;outline:none;resize:vertical;transition:border-color .25s,box-shadow .25s;line-height:1.5;}
 .note-area:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
-.note-area::placeholder{color:var(--gray);}
+.note-area::placeholder{color:rgba(107,114,128,.65);}
 
-/* BUTTONS */
-.btn-next{width:100%;height:var(--tap);border-radius:var(--r);background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;font-weight:700;font-size:.95rem;border:none;cursor:pointer;margin-top:8px;letter-spacing:.01em;transition:all .4s var(--ease);}
-.btn-next:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(201,168,76,.35);}
-.btn-next:disabled{opacity:.45;pointer-events:none;}
-.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(0,0,0,.2);border-top-color:#000;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+/* BOUTONS */
+.btn-next{width:100%;height:var(--tap);border-radius:var(--r);background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;font-weight:700;font-size:.9rem;border:none;cursor:pointer;margin-top:6px;letter-spacing:.02em;transition:transform .3s var(--ease),box-shadow .3s,opacity .3s;-webkit-appearance:none;}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(201,168,76,.28);}
+.btn-next:active{transform:scale(.98);}
+.btn-next:disabled{opacity:.38;pointer-events:none;}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.15);border-top-color:#000;animation:sp .65s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* ===== RESULT ===== */
-.result-box{background:var(--s2);border:1px solid rgba(34,197,94,.2);border-radius:var(--rxl);padding:26px 20px;margin-bottom:14px;display:none;}
-.result-box.show{display:block;animation:su .5s var(--ease);}
-@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.r-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:4px;}
-.r-price{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,13vw,5rem);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
-.r-meta{font-size:.82rem;color:var(--gray);margin-bottom:12px;}
+/* RÉSULTAT */
+.result-box{background:var(--s2);border:1px solid rgba(34,197,94,.16);border-radius:var(--rxl);padding:22px 18px;margin-bottom:10px;display:none;animation:su .4s var(--ease) both;}
+.result-box.show{display:block;}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.r-lbl{font-size:.63rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+.r-price{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,11vw,4.4rem);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.r-meta{font-size:.78rem;color:var(--gray);margin-bottom:12px;}
 .r-meta strong{color:var(--white);}
-.r-stats{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-.r-stat{flex:1;min-width:90px;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:var(--r);padding:11px 12px;}
-.rs-val{font-weight:700;font-size:.95rem;}
-.rs-lbl{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
-.pref-recap{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:13px 15px;margin-bottom:16px;font-size:.8rem;color:var(--gray2);line-height:1.7;}
-.pref-recap strong{color:var(--gold);display:block;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
-
-/* ===== MAP FIX ===== */
-.map-w{
-  height:260px;
-  border-radius:var(--rl);
-  overflow:hidden;
-  margin-bottom:16px;
-  border:1px solid rgba(201,168,76,.2);
-  /* CRITIQUE: dimensions explicites pour Leaflet */
-  min-height:260px;
-  display:block;
-  position:relative;
-}
-#r-map{width:100%;height:100%;min-height:260px;}
-.leaflet-container{background:#0d0d1a !important;width:100% !important;height:100% !important;}
-.leaflet-tile-pane{filter:brightness(.8) saturate(.6) hue-rotate(200deg);}
-
-.btn-wa-final{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:var(--tap);border-radius:var(--r);background:var(--wa);color:#fff;font-weight:700;font-size:.92rem;transition:all .3s var(--ease);}
-.btn-wa-final:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,140,126,.35);}
-.btn-recalc{width:100%;height:42px;border-radius:var(--r);border:1px solid rgba(201,168,76,.22);background:transparent;color:var(--gold);font-size:.82rem;font-weight:600;cursor:pointer;margin-top:10px;transition:all .3s var(--ease);}
+.r-stats{display:flex;gap:7px;margin-bottom:14px;}
+.r-stat{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:var(--r);padding:10px 11px;}
+.rs-val{font-weight:700;font-size:.92rem;}
+.rs-lbl{font-size:.62rem;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+.pref-recap{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:.78rem;color:var(--gray2);line-height:1.75;}
+.pref-recap strong{color:var(--gold);display:block;font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.map-w{width:100%;height:230px;border-radius:var(--rl);overflow:hidden;margin-bottom:14px;border:1px solid rgba(201,168,76,.14);position:relative;background:#0a0a14;}
+.map-w .leaflet-container{width:100% !important;height:100% !important;background:#0a0a14 !important;}
+.btn-wa-final{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:var(--tap);border-radius:var(--r);background:var(--wa);color:#fff;font-weight:700;font-size:.88rem;transition:transform .25s,box-shadow .25s;}
+.btn-wa-final:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(18,140,126,.3);}
+.btn-wa-final:active{transform:scale(.98);}
+.btn-recalc{width:100%;height:38px;border-radius:var(--r);border:1px solid rgba(201,168,76,.18);background:transparent;color:var(--gold);font-size:.78rem;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s;}
 .btn-recalc:hover{background:var(--glow);}
 
-/* TRUST / TARIFS / CONTACT */
-.trust-strip{display:flex;overflow-x:auto;gap:10px;padding:0 16px 32px;max-width:520px;margin:0 auto;scrollbar-width:none;}
+/* SECTIONS */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--b) 15%,var(--b) 85%,transparent);margin:0 14px 28px;}
+.trust-strip{display:flex;overflow-x:auto;gap:8px;padding:0 14px 24px;max-width:520px;margin:0 auto;scrollbar-width:none;}
 .trust-strip::-webkit-scrollbar{display:none;}
-.trust-chip{flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:50px;padding:9px 14px;display:flex;flex-direction:column;align-items:center;white-space:nowrap;}
-.tc-val{font-weight:700;font-size:.83rem;}
-.tc-lbl{font-size:.62rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
-.sec{padding:44px 16px;max-width:520px;margin:0 auto;}
-.sec-lbl{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.sec-h{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:20px;line-height:1.2;}
+.trust-chip{flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:50px;padding:7px 13px;display:flex;flex-direction:column;align-items:center;gap:1px;white-space:nowrap;}
+.tc-val{font-weight:700;font-size:.8rem;}
+.tc-lbl{font-size:.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
+.sec{padding:36px 14px;max-width:520px;margin:0 auto;}
+.sec-lbl{font-size:.63rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.sec-h{font-family:'Playfair Display',serif;font-size:clamp(1.45rem,5.5vw,1.95rem);font-weight:700;letter-spacing:-.02em;margin-bottom:16px;line-height:1.2;}
 .sec-h span{background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.tariff-list{display:flex;flex-direction:column;gap:10px;}
-.t-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:var(--rl);padding:16px 18px;transition:all .3s var(--ease);}
-.t-row:hover{border-color:rgba(201,168,76,.28);background:rgba(201,168,76,.05);}
-.t-name{font-weight:600;font-size:.9rem;}
-.t-note{font-size:.73rem;color:var(--gray);margin-top:2px;}
-.t-price{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold);white-space:nowrap;}
-.contact-list{display:flex;flex-direction:column;gap:10px;}
-.c-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:var(--rl);padding:14px 18px;transition:all .3s var(--ease);}
-.c-row:hover{border-color:rgba(201,168,76,.28);}
-.c-label{font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);}
-.c-val{font-size:.88rem;font-weight:500;margin-top:2px;}
-.c-act{padding:8px 14px;border-radius:50px;font-size:.78rem;font-weight:600;background:var(--glow);border:1px solid rgba(201,168,76,.28);color:var(--gold);transition:all .3s var(--ease);white-space:nowrap;}
-.c-act:hover{background:rgba(201,168,76,.16);}
-.btn-vcard{width:100%;height:var(--tap);border-radius:var(--r);margin-top:12px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);color:var(--gold);font-weight:600;font-size:.88rem;cursor:pointer;transition:all .3s var(--ease);}
+.tariff-list,.contact-list{display:flex;flex-direction:column;gap:7px;}
+.t-row,.c-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:var(--rl);padding:14px 16px;transition:border-color .22s,background .22s;}
+.t-row:hover,.c-row:hover{border-color:rgba(201,168,76,.22);background:rgba(201,168,76,.04);}
+.t-name,.c-val{font-weight:600;font-size:.88rem;}
+.t-note{font-size:.7rem;color:var(--gray);margin-top:2px;}
+.c-label{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.t-price{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--gold);white-space:nowrap;margin-left:10px;flex-shrink:0;}
+.c-act{flex-shrink:0;padding:7px 13px;border-radius:50px;font-size:.76rem;font-weight:600;background:var(--glow);border:1px solid rgba(201,168,76,.22);color:var(--gold);transition:background .2s;white-space:nowrap;margin-left:10px;}
+.c-act:hover{background:rgba(201,168,76,.15);}
+.btn-vcard{width:100%;height:var(--tap);border-radius:var(--r);margin-top:9px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.18);color:var(--gold);font-weight:600;font-size:.84rem;cursor:pointer;transition:background .2s;}
 .btn-vcard:hover{background:var(--glow);}
-.footer{text-align:center;color:var(--gray);font-size:.72rem;padding:24px 16px;border-top:1px solid var(--b);}
-.sticky{position:fixed;bottom:0;left:0;right:0;z-index:998;padding:10px 16px env(safe-area-inset-bottom,10px);background:rgba(9,9,15,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--b);display:flex;gap:10px;}
-.sb{flex:1;height:46px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;gap:6px;transition:all .3s var(--ease);}
+.footer{text-align:center;color:var(--gray);font-size:.68rem;padding:18px 14px 20px;border-top:1px solid var(--b);}
+
+/* STICKY */
+.sticky{position:fixed;bottom:0;left:0;right:0;z-index:998;padding:9px 16px env(safe-area-inset-bottom,9px);background:rgba(9,9,15,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--b);display:flex;gap:9px;}
+.sb{flex:1;height:44px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;transition:transform .2s,box-shadow .2s;}
+.sb:active{transform:scale(.97);}
 .sb-wa{background:var(--wa);color:#fff;}
-.sb-tel{background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.22);color:var(--gold);}
+.sb-wa:hover{box-shadow:0 5px 18px rgba(18,140,126,.28);}
+.sb-tel{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.18);color:var(--gold);}
+.sb-tel:hover{background:var(--glow);}
 </style>
 </head>
 <body>
 
-<!-- HEADER + MÉTÉO -->
+<!-- HEADER -->
 <header class="hdr">
   <nav class="nav">
     <div class="logo">I&N RUN</div>
-    <!-- WEATHER WIDGET -->
-    <div class="weather-pill" id="weatherPill" onclick="toggleWeather()" title="Météo Paris">
-      <span class="w-icon" id="wIcon">--</span>
-      <span class="w-temp" id="wTemp">--°</span>
-      <span class="w-desc" id="wDesc">Météo</span>
-      <span class="w-loc" id="wLoc">Paris</span>
-    </div>
-    <a href="https://wa.me/33767742220?text=Bonjour I%26N RUN," class="nav-wa" target="_blank">Réserver</a>
+    <div class="nav-gap"></div>
+    <a href="https://wa.me/33767742220?text=Bonjour%20I%26N%20RUN," class="nav-btn" target="_blank">Réserver</a>
   </nav>
-  <!-- DÉTAIL MÉTÉO (expand) -->
-  <div class="weather-detail" id="weatherDetail">
-    <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);" id="wDetailTitle">Météo du jour</div>
-    <div class="w-grid" id="wGrid"></div>
-  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="pill"><span class="dot"></span>Disponible maintenant</div>
-  <h1 class="hero-title">Votre vol atterrit.<br><span class="g">Nous sommes là.</span></h1>
-  <p class="hero-copy">Chauffeur privé à Paris. CDG, Orly, longue distance.<br>Réservez en 30 secondes — tarif fixe garanti.</p>
-  <div class="proof">
-    <div class="proof-item"><div class="proof-val">30 sec</div><div class="proof-lbl">Réservation</div></div>
-    <div class="proof-item"><div class="proof-val">5 min</div><div class="proof-lbl">Réponse</div></div>
-    <div class="proof-item"><div class="proof-val">24h/24</div><div class="proof-lbl">Disponible</div></div>
-    <div class="proof-item"><div class="proof-val">Tarif fixe</div><div class="proof-lbl">Garanti</div></div>
+<!-- MÉTÉO -->
+<div class="weather loading" id="weather">
+  <div class="w-icon" id="w-icon">⟳</div>
+  <div class="w-right">
+    <div class="w-row"><span class="w-temp" id="w-temp">--°</span><span class="w-city" id="w-city">Paris</span></div>
+    <div class="w-desc" id="w-desc">Météo</div>
   </div>
-</section>
-
-<!-- TUNNEL -->
-<div class="tunnel">
-
-<!-- STEP 1 : DATE -->
-<div class="card active" id="card1">
-  <div class="card-head"><div class="card-num">1</div><div><div class="card-title">Choisissez votre date</div><div class="card-sub" id="card1-sub">Quand souhaitez-vous voyager ?</div></div></div>
-  <div class="card-body"><div id="cal-inline"></div><button class="btn-next" id="btn1" onclick="goStep2()" disabled>Continuer vers l'itinéraire</button></div>
 </div>
 
-<!-- STEP 2 : TRAJET -->
+<!-- ════════════════
+     HERO + PHOTO
+     ════════════════ -->
+<section class="hero">
+
+  <!-- Texte héro -->
+  <div class="hero-content">
+    <div class="pill"><span class="dot"></span>Disponible maintenant</div>
+    <h1 class="hero-title">Votre vol atterrit.<br><span class="g">Nous sommes là.</span></h1>
+    <p class="hero-copy">Chauffeur privé à Paris · CDG · Orly · Longue distance<br>Réservez en 30 secondes — tarif fixe garanti.</p>
+  </div>
+
+  <!-- ══ PHOTO VÉHICULE ══
+       Renommer ton fichier "voiture.jpg"
+       et le placer dans le dossier img/ du dépôt.
+       La div placeholder disparaît automatiquement quand la photo charge.
+  -->
+  <div class="car-wrap">
+    <!-- Placeholder affiché si la photo est absente -->
+    <div class="car-img-placeholder" id="car-placeholder">
+      <div class="ph-icon">🚗</div>
+      <div class="ph-txt">Ajouter img/voiture.jpg</div>
+    </div>
+    <!-- Photo réelle — cachée tant qu'elle n'est pas chargée -->
+    <img
+      src="img/voiture.jpg"
+      alt="Véhicule I&N RUN — Chauffeur Privé Paris"
+      class="car-img"
+      id="car-img"
+      style="display:none;"
+      onload="this.style.display='block';document.getElementById('car-placeholder').style.display='none';"
+      onerror="this.style.display='none';"
+    >
+    <!-- Badge "Disponible · Hybride 2022" flottant sur la photo -->
+    <div class="car-badge" id="car-badge" style="display:none;">
+      <span class="car-badge-dot"></span>
+      <span class="car-badge-txt">Disponible</span>
+      <span class="car-badge-sub">· Hybride 2022</span>
+    </div>
+  </div>
+
+  <!-- Stats proof -->
+  <div class="proof">
+    <div class="proof-item"><div class="proof-val">30 s</div><div class="proof-lbl">Réservation</div></div>
+    <div class="proof-item"><div class="proof-val">5 min</div><div class="proof-lbl">Réponse</div></div>
+    <div class="proof-item"><div class="proof-val">24h/7</div><div class="proof-lbl">Disponible</div></div>
+    <div class="proof-item"><div class="proof-val">Fixe</div><div class="proof-lbl">Tarif garanti</div></div>
+  </div>
+
+</section>
+
+<div class="tunnel">
+<!-- ÉTAPE 1 -->
+<div class="card active" id="card1">
+  <div class="card-head"><div class="card-num">1</div><div><div class="card-title">Choisissez votre date</div><div class="card-sub" id="card1-sub">Quand souhaitez-vous voyager ?</div></div></div>
+  <div class="card-body">
+    <div id="cal-inline"></div>
+    <button class="btn-next" id="btn1" onclick="goStep2()" disabled>Continuer vers l'itinéraire</button>
+  </div>
+</div>
+
+<!-- ÉTAPE 2 -->
 <div class="card locked" id="card2">
   <div class="card-head"><div class="card-num">2</div><div><div class="card-title">Heure et itinéraire</div><div class="card-sub">Où et à quelle heure ?</div></div></div>
   <div class="card-body">
     <div class="f-row"><label class="f-lbl">Heure de prise en charge</label><div class="f-wrap"><span class="f-ic">H</span><input id="timepicker" class="f-in" placeholder="Sélectionner l'heure" readonly></div></div>
-    <div class="f-row"><label class="f-lbl">Départ</label><div class="f-wrap"><span class="f-ic">A</span><input id="dep" class="f-in" type="text" placeholder="Adresse de départ..." autocomplete="off"></div><div class="ac-list" id="ac-dep"></div></div>
-    <div class="swap-row"><button class="swap-b" onclick="swap()">&#8645;</button></div>
-    <div class="f-row"><label class="f-lbl">Arrivée</label><div class="f-wrap"><span class="f-ic">B</span><input id="arr" class="f-in" type="text" placeholder="Destination..." autocomplete="off"></div><div class="ac-list" id="ac-arr"></div></div>
+    <div class="f-row"><label class="f-lbl">Départ</label><div class="f-wrap"><span class="f-ic">A</span><input id="dep" class="f-in" type="text" placeholder="Adresse de départ…" autocomplete="off"></div><div class="ac-list" id="ac-dep"></div></div>
+    <div class="swap-row"><button class="swap-b" onclick="swap()" aria-label="Inverser">&#8645;</button></div>
+    <div class="f-row"><label class="f-lbl">Arrivée</label><div class="f-wrap"><span class="f-ic">B</span><input id="arr" class="f-in" type="text" placeholder="Destination…" autocomplete="off"></div><div class="ac-list" id="ac-arr"></div></div>
     <div class="f-row"><label class="f-lbl">Passagers</label><div class="f-wrap"><span class="f-ic">N</span><select id="pax" class="f-in"><option value="1">1 passager</option><option value="2">2 passagers</option><option value="3">3 passagers</option><option value="4">4 passagers</option><option value="5+">5 passagers ou plus</option></select></div></div>
     <button class="btn-next" onclick="goStep3()">Personnaliser le trajet</button>
   </div>
 </div>
 
-<!-- STEP 3 : PRÉFÉRENCES -->
+<!-- ÉTAPE 3 -->
 <div class="card locked" id="card3">
   <div class="card-head"><div class="card-num">3</div><div><div class="card-title">Votre confort à bord</div><div class="card-sub">Personnalisez votre trajet</div></div></div>
   <div class="card-body">
-    <div class="pref-section">
-      <div class="pref-title">Ambiance musicale</div>
-      <div class="pref-grid cols3" id="pref-music">
-        <div class="pref-btn" data-val="Jazz / Lounge" onclick="selectPref(this,'music')"><div class="pref-icon">&#127927;</div><div class="pref-name">Jazz</div><div class="pref-desc">Lounge</div></div>
-        <div class="pref-btn" data-val="Pop / Hits" onclick="selectPref(this,'music')"><div class="pref-icon">&#127928;</div><div class="pref-name">Pop</div><div class="pref-desc">Hits radio</div></div>
-        <div class="pref-btn" data-val="Classique" onclick="selectPref(this,'music')"><div class="pref-icon">&#127911;</div><div class="pref-name">Classique</div><div class="pref-desc">Détente</div></div>
-        <div class="pref-btn" data-val="Hip-Hop / RnB" onclick="selectPref(this,'music')"><div class="pref-icon">&#127925;</div><div class="pref-name">Hip-Hop</div><div class="pref-desc">RnB</div></div>
-        <div class="pref-btn" data-val="Radio info" onclick="selectPref(this,'music')"><div class="pref-icon">&#128251;</div><div class="pref-name">Radio</div><div class="pref-desc">Info / Sport</div></div>
-        <div class="pref-btn" data-val="Silence" onclick="selectPref(this,'music')"><div class="pref-icon">&#128263;</div><div class="pref-name">Silence</div><div class="pref-desc">Aucun son</div></div>
-      </div>
-    </div>
-    <div class="pref-section">
-      <div class="pref-title">Température intérieure</div>
-      <div class="pref-grid cols3" id="pref-temp">
-        <div class="pref-btn" data-val="Fraiche 18-20°" onclick="selectPref(this,'temp')"><div class="pref-icon">&#10052;</div><div class="pref-name">Fraîche</div><div class="pref-desc">18–20°C</div></div>
-        <div class="pref-btn sel" data-val="Confortable 21-22°" onclick="selectPref(this,'temp')"><div class="pref-icon">&#127774;</div><div class="pref-name">Confort</div><div class="pref-desc">21–22°C</div></div>
-        <div class="pref-btn" data-val="Chaude 23-24°" onclick="selectPref(this,'temp')"><div class="pref-icon">&#128293;</div><div class="pref-name">Chaude</div><div class="pref-desc">23–24°C</div></div>
-      </div>
-    </div>
-    <div class="pref-section">
-      <div class="pref-title">Vitres</div>
-      <div class="pref-grid" id="pref-windows">
-        <div class="pref-btn sel" data-val="Fermées" onclick="selectPref(this,'windows')"><div class="pref-icon">&#128694;</div><div class="pref-name">Fermées</div><div class="pref-desc">Climatisation</div></div>
-        <div class="pref-btn" data-val="Ouvertes" onclick="selectPref(this,'windows')"><div class="pref-icon">&#127807;</div><div class="pref-name">Ouvertes</div><div class="pref-desc">Air frais</div></div>
-      </div>
-    </div>
-    <div class="pref-section">
-      <div class="pref-title">Échanges avec le chauffeur</div>
-      <div class="pref-grid" id="pref-talk">
-        <div class="pref-btn" data-val="Discret" onclick="selectPref(this,'talk')"><div class="pref-icon">&#129313;</div><div class="pref-name">Discret</div><div class="pref-desc">Trajet calme</div></div>
-        <div class="pref-btn" data-val="Disponible" onclick="selectPref(this,'talk')"><div class="pref-icon">&#128172;</div><div class="pref-name">Disponible</div><div class="pref-desc">Échange ouvert</div></div>
-      </div>
-    </div>
-    <div class="pref-section">
-      <div class="pref-title">Extras</div>
-      <div class="pref-grid cols3" id="pref-extras">
-        <div class="pref-btn" data-val="Siège enfant" onclick="toggleExtra(this)"><div class="pref-icon">&#128119;</div><div class="pref-name">Siège</div><div class="pref-desc">Enfant</div></div>
-        <div class="pref-btn" data-val="Grands bagages" onclick="toggleExtra(this)"><div class="pref-icon">&#129524;</div><div class="pref-name">Bagages</div><div class="pref-desc">Volumineux</div></div>
-        <div class="pref-btn" data-val="Animal compagnie" onclick="toggleExtra(this)"><div class="pref-icon">&#128062;</div><div class="pref-name">Animal</div><div class="pref-desc">Compagnie</div></div>
-        <div class="pref-btn" data-val="PMR accessibilité" onclick="toggleExtra(this)"><div class="pref-icon">&#9855;</div><div class="pref-name">PMR</div><div class="pref-desc">Accessibilité</div></div>
-        <div class="pref-btn" data-val="Facture pro" onclick="toggleExtra(this)"><div class="pref-icon">&#128203;</div><div class="pref-name">Facture</div><div class="pref-desc">Pro / TVA</div></div>
-        <div class="pref-btn" data-val="Paiement CB" onclick="toggleExtra(this)"><div class="pref-icon">&#128179;</div><div class="pref-name">CB</div><div class="pref-desc">Paiement carte</div></div>
-      </div>
-    </div>
-    <div class="pref-section">
-      <div class="pref-title">Message pour le chauffeur</div>
-      <textarea id="note" class="note-area" placeholder="Numéro de vol, terminal, code résidence..."></textarea>
-    </div>
+    <div class="pref-section"><div class="pref-title">Ambiance musicale</div><div class="pref-grid cols3" id="pref-music"><div class="pref-btn" data-val="Jazz / Lounge" onclick="selectPref(this,'music')"><div class="pref-icon">&#127927;</div><div class="pref-name">Jazz</div><div class="pref-desc">Lounge</div></div><div class="pref-btn" data-val="Pop / Hits" onclick="selectPref(this,'music')"><div class="pref-icon">&#127928;</div><div class="pref-name">Pop</div><div class="pref-desc">Hits</div></div><div class="pref-btn" data-val="Classique" onclick="selectPref(this,'music')"><div class="pref-icon">&#127911;</div><div class="pref-name">Classique</div><div class="pref-desc">Détente</div></div><div class="pref-btn" data-val="Hip-Hop / RnB" onclick="selectPref(this,'music')"><div class="pref-icon">&#127925;</div><div class="pref-name">Hip-Hop</div><div class="pref-desc">RnB</div></div><div class="pref-btn" data-val="Radio info" onclick="selectPref(this,'music')"><div class="pref-icon">&#128251;</div><div class="pref-name">Radio</div><div class="pref-desc">Infos</div></div><div class="pref-btn" data-val="Silence" onclick="selectPref(this,'music')"><div class="pref-icon">&#128263;</div><div class="pref-name">Silence</div><div class="pref-desc">Calme</div></div></div></div>
+    <div class="pref-section"><div class="pref-title">Température</div><div class="pref-grid cols3" id="pref-temp"><div class="pref-btn" data-val="Fraiche 18-20" onclick="selectPref(this,'temp')"><div class="pref-icon">&#10052;</div><div class="pref-name">Fraîche</div><div class="pref-desc">18–20°C</div></div><div class="pref-btn sel" data-val="Confort 21-22" onclick="selectPref(this,'temp')"><div class="pref-icon">&#127774;</div><div class="pref-name">Confort</div><div class="pref-desc">21–22°C</div></div><div class="pref-btn" data-val="Chaude 23-24" onclick="selectPref(this,'temp')"><div class="pref-icon">&#128293;</div><div class="pref-name">Chaude</div><div class="pref-desc">23–24°C</div></div></div></div>
+    <div class="pref-section"><div class="pref-title">Vitres</div><div class="pref-grid" id="pref-windows"><div class="pref-btn sel" data-val="Fermées" onclick="selectPref(this,'windows')"><div class="pref-icon">&#128694;</div><div class="pref-name">Fermées</div><div class="pref-desc">Climatisation</div></div><div class="pref-btn" data-val="Ouvertes" onclick="selectPref(this,'windows')"><div class="pref-icon">&#127807;</div><div class="pref-name">Ouvertes</div><div class="pref-desc">Air frais</div></div></div></div>
+    <div class="pref-section"><div class="pref-title">Échanges</div><div class="pref-grid" id="pref-talk"><div class="pref-btn" data-val="Discret" onclick="selectPref(this,'talk')"><div class="pref-icon">&#129313;</div><div class="pref-name">Discret</div><div class="pref-desc">Trajet calme</div></div><div class="pref-btn" data-val="Disponible" onclick="selectPref(this,'talk')"><div class="pref-icon">&#128172;</div><div class="pref-name">Disponible</div><div class="pref-desc">Ouvert</div></div></div></div>
+    <div class="pref-section"><div class="pref-title">Extras</div><div class="pref-grid cols3" id="pref-extras"><div class="pref-btn" data-val="Siege enfant" onclick="toggleExtra(this)"><div class="pref-icon">&#128119;</div><div class="pref-name">Siège</div><div class="pref-desc">Enfant</div></div><div class="pref-btn" data-val="Grands bagages" onclick="toggleExtra(this)"><div class="pref-icon">&#129524;</div><div class="pref-name">Bagages</div><div class="pref-desc">Volumineux</div></div><div class="pref-btn" data-val="Animal" onclick="toggleExtra(this)"><div class="pref-icon">&#128062;</div><div class="pref-name">Animal</div><div class="pref-desc">Compagnie</div></div><div class="pref-btn" data-val="PMR" onclick="toggleExtra(this)"><div class="pref-icon">&#9855;</div><div class="pref-name">PMR</div><div class="pref-desc">Accessibilité</div></div><div class="pref-btn" data-val="Facture pro" onclick="toggleExtra(this)"><div class="pref-icon">&#128203;</div><div class="pref-name">Facture</div><div class="pref-desc">Pro / TVA</div></div><div class="pref-btn" data-val="Paiement CB" onclick="toggleExtra(this)"><div class="pref-icon">&#128179;</div><div class="pref-name">CB</div><div class="pref-desc">Carte</div></div></div></div>
+    <div class="pref-section"><div class="pref-title">Message chauffeur</div><textarea id="note" class="note-area" placeholder="N° de vol, terminal, code résidence…"></textarea></div>
     <button class="btn-next" id="btn3" onclick="goStep4()">Calculer mon tarif</button>
   </div>
 </div>
 
-<!-- RESULT -->
+<!-- RÉSULTAT -->
 <div class="result-box" id="result">
-  <div class="r-lbl">Tarif estimé pour votre trajet</div>
+  <div class="r-lbl">Tarif estimé</div>
   <div id="r-price" class="r-price">—</div>
   <div id="r-meta" class="r-meta"></div>
   <div class="r-stats" id="r-stats"></div>
   <div class="pref-recap" id="r-prefs"></div>
-  <div class="map-w"><div id="r-map"></div></div>
-  <a id="r-wa" class="btn-wa-final" href="#" target="_blank">Confirmer la réservation par WhatsApp</a>
-  <button class="btn-recalc" onclick="resetForm()">Modifier le trajet</button>
+  <div id="r-map" class="map-w"></div>
+  <a id="r-wa" class="btn-wa-final" href="#" target="_blank">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="white"/></svg>
+    Confirmer par WhatsApp
+  </a>
+  <button class="btn-recalc" onclick="resetForm()">&#8592; Modifier le trajet</button>
+</div>
 </div>
 
-</div><!-- /tunnel -->
-
+<div class="sep"></div>
 <div class="trust-strip">
   <div class="trust-chip"><div class="tc-val">Hybride 2022</div><div class="tc-lbl">Véhicule</div></div>
   <div class="trust-chip"><div class="tc-val">Eau & chargeurs</div><div class="tc-lbl">À bord</div></div>
   <div class="trust-chip"><div class="tc-val">Suivi vol</div><div class="tc-lbl">Retards OK</div></div>
-  <div class="trust-chip"><div class="tc-val">Annulation gratuite</div><div class="tc-lbl">Jusqu'à 2h avant</div></div>
+  <div class="trust-chip"><div class="tc-val">Annulation gratuite</div><div class="tc-lbl">2h avant</div></div>
   <div class="trust-chip"><div class="tc-val">+10 € nuit</div><div class="tc-lbl">22h–06h</div></div>
 </div>
 
@@ -366,10 +418,10 @@ option{background:var(--s2);color:var(--white);}
   <div class="sec-lbl">Tarification</div>
   <h2 class="sec-h">Tarifs <span>fixes</span></h2>
   <div class="tariff-list">
-    <div class="t-row"><div><div class="t-name">Paris — CDG</div><div class="t-note">Charles de Gaulle, attente incluse</div></div><div class="t-price">68 €</div></div>
-    <div class="t-row"><div><div class="t-name">Paris — Orly</div><div class="t-note">Tous terminaux, suivi vol inclus</div></div><div class="t-price">50 €</div></div>
-    <div class="t-row"><div><div class="t-name">Mise à disposition</div><div class="t-note">Événements, rendez-vous pro</div></div><div class="t-price">60 €/h</div></div>
-    <div class="t-row"><div><div class="t-name">Longue distance</div><div class="t-note">Hors Paris, sur devis</div></div><div class="t-price">1,95 €/km</div></div>
+    <div class="t-row"><div><div class="t-name">Paris — CDG</div><div class="t-note">Charles de Gaulle · attente incluse</div></div><div class="t-price">68 €</div></div>
+    <div class="t-row"><div><div class="t-name">Paris — Orly</div><div class="t-note">Tous terminaux · suivi vol inclus</div></div><div class="t-price">50 €</div></div>
+    <div class="t-row"><div><div class="t-name">Mise à disposition</div><div class="t-note">Événements · rendez-vous pro</div></div><div class="t-price">60 €/h</div></div>
+    <div class="t-row"><div><div class="t-name">Longue distance</div><div class="t-note">Hors Paris · sur devis</div></div><div class="t-price">1,95 €/km</div></div>
   </div>
 </section>
 
@@ -383,193 +435,86 @@ option{background:var(--s2);color:var(--white);}
   </div>
   <button class="btn-vcard" onclick="downloadVCard()">Ajouter aux contacts</button>
 </section>
-
-<footer class="footer"><p>© 2026 I&N RUN — Chauffeur Privé Paris · 07 67 74 22 20</p></footer>
+<footer class="footer"><p>© 2026 I&N RUN · Chauffeur Privé Paris · 07 67 74 22 20</p></footer>
 <div class="sticky">
   <a href="https://wa.me/33767742220" class="sb sb-wa" target="_blank">WhatsApp</a>
   <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
 </div>
 
 <script>
-/* ============================
-   MÉTÉO — Open-Meteo (gratuit, zéro clé API)
-============================ */
-const WMO = {
-  0:['Ciel dégagé','☀️'],1:['Peu nuageux','🌤'],2:['Partiellement nuageux','⛅'],3:['Couvert','☁️'],
-  45:['Brouillard','🌫'],48:['Brouillard givrant','🌫'],
-  51:['Bruine légère','🌦'],53:['Bruine modérée','🌦'],55:['Bruine dense','🌧'],
-  61:['Pluie légère','🌧'],63:['Pluie modérée','🌧'],65:['Pluie forte','🌧'],
-  71:['Neige légère','❄️'],73:['Neige modérée','❄️'],75:['Neige forte','❄️'],
-  80:['Averses légères','🌦'],81:['Averses modérées','🌧'],82:['Averses fortes','⛈'],
-  95:['Orage','⛈'],96:['Orage avec grêle','⛈'],99:['Orage violent','⛈']
-};
-function wmoInfo(code){ return WMO[code]||['--','🌡']; }
+/* Badge visible dès que la photo charge */
+document.getElementById('car-img').addEventListener('load',function(){
+  document.getElementById('car-badge').style.display='flex';
+});
 
-let wOpen=false;
-function toggleWeather(){ wOpen=!wOpen; document.getElementById('weatherDetail').classList.toggle('open',wOpen); }
-document.addEventListener('click',e=>{ if(!e.target.closest('#weatherPill')&&!e.target.closest('#weatherDetail')){ wOpen=false; document.getElementById('weatherDetail').classList.remove('open'); } });
-
+/* MÉTÉO */
+const WMO={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',51:'🌦',61:'🌧',63:'🌧',65:'🌧',71:'🌨',80:'🌧',82:'⛈',95:'⛈'};
+const WMO_D={0:'Ciel dégagé',1:'Quasi dégagé',2:'Nuageux',3:'Couvert',45:'Brouillard',51:'Bruine',61:'Pluie légère',63:'Pluie',71:'Neige légère',80:'Averses',82:'Averses',95:'Orage'};
 async function loadWeather(lat,lon,city){
-  try{
-    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation_probability,windspeed_10m&timezone=auto&forecast_days=1`;
-    const r=await fetch(url); const d=await r.json();
-    const cw=d.current_weather;
-    const [desc,icon]=wmoInfo(cw.weathercode);
-    document.getElementById('wIcon').textContent=icon;
-    document.getElementById('wTemp').textContent=Math.round(cw.temperature)+'°';
-    document.getElementById('wDesc').textContent=desc;
-    document.getElementById('wLoc').textContent=city;
-    // Heure courante index
-    const nowH=new Date().getHours();
-    const hum=d.hourly.relativehumidity_2m[nowH]||'--';
-    const rain=d.hourly.precipitation_probability[nowH]||0;
-    const feel=d.hourly.apparent_temperature[nowH]||cw.temperature;
-    const wind=Math.round(cw.windspeed);
-    document.getElementById('wDetailTitle').textContent='Météo — '+city+' aujourd\'hui';
-    document.getElementById('wGrid').innerHTML=
-      `<div class="w-card"><div class="w-card-val">${Math.round(cw.temperature)}°C</div><div class="w-card-lbl">Température</div></div>
-       <div class="w-card"><div class="w-card-val">${Math.round(feel)}°C</div><div class="w-card-lbl">Ressentie</div></div>
-       <div class="w-card"><div class="w-card-val">${hum}%</div><div class="w-card-lbl">Humidité</div></div>
-       <div class="w-card"><div class="w-card-val">${rain}%</div><div class="w-card-lbl">Pluie</div></div>
-       <div class="w-card" style="grid-column:span 2"><div class="w-card-val">${wind} km/h</div><div class="w-card-lbl">Vent</div></div>
-       <div class="w-card" style="grid-column:span 2"><div class="w-card-val">${icon} ${desc}</div><div class="w-card-lbl">Conditions</div></div>`;
-  }catch(e){ document.getElementById('wTemp').textContent='--°'; }
+  try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=Europe%2FParis&forecast_days=1`);const d=await r.json();const c=d.current;const code=c.weathercode;document.getElementById('w-icon').textContent=WMO[code]||'🌡';document.getElementById('w-temp').textContent=Math.round(c.temperature_2m)+'°';document.getElementById('w-desc').textContent=WMO_D[code]||'';document.getElementById('w-city').textContent=city;document.getElementById('weather').classList.remove('loading');}
+  catch(e){document.getElementById('w-icon').textContent='🌡';document.getElementById('w-temp').textContent='--°';document.getElementById('weather').classList.remove('loading');}
 }
+navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>loadWeather(p.coords.latitude,p.coords.longitude,'Ma position'),()=>loadWeather(48.8566,2.3522,'Paris'),{timeout:4000}):loadWeather(48.8566,2.3522,'Paris');
 
-// Géoloc → météo locale, sinon Paris par défaut
-if(navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(
-    pos=>{ loadWeather(pos.coords.latitude,pos.coords.longitude,'Votre position'); },
-    ()=>{ loadWeather(48.8566,2.3522,'Paris'); },
-    {timeout:5000}
-  );
-} else { loadWeather(48.8566,2.3522,'Paris'); }
+/* PREFS */
+const prefs={music:'',temp:'Confort 21-22',windows:'Fermées',talk:'',extras:[]};
+function selectPref(el,k){el.closest('.pref-grid').querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');prefs[k]=el.dataset.val;}
+function toggleExtra(el){el.classList.toggle('sel');const v=el.dataset.val;el.classList.contains('sel')?(!prefs.extras.includes(v)&&prefs.extras.push(v)):prefs.extras=prefs.extras.filter(x=>x!==v);}
 
-/* ============================
-   PRÉFÉRENCES
-============================ */
-const prefs={music:'',temp:'Confortable 21-22°',windows:'Fermées',talk:'',extras:[]};
-function selectPref(el,key){ el.closest('.pref-grid').querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('sel')); el.classList.add('sel'); prefs[key]=el.dataset.val; }
-function toggleExtra(el){ el.classList.toggle('sel'); const v=el.dataset.val; el.classList.contains('sel')?prefs.extras.push(v):prefs.extras=prefs.extras.filter(x=>x!==v); }
-
-/* ============================
-   CALENDRIER
-============================ */
+/* CAL */
 let selDate=null;
-const JOURS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],MOIS=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
-flatpickr('#cal-inline',{locale:'fr',inline:true,dateFormat:'d/m/Y',minDate:'today',maxDate:new Date().fp_incr(90),onChange:function(sel,str){if(str){selDate=str;const d=sel[0];document.getElementById('card1-sub').textContent=JOURS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];document.getElementById('btn1').disabled=false;}}});
+const J=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],M=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+flatpickr('#cal-inline',{locale:'fr',inline:true,dateFormat:'d/m/Y',minDate:'today',maxDate:new Date().fp_incr(90),onChange:function(sel,str){if(str){selDate=str;const d=sel[0];document.getElementById('card1-sub').textContent=J[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()];document.getElementById('btn1').disabled=false;}}});
 flatpickr('#timepicker',{locale:'fr',enableTime:true,noCalendar:true,dateFormat:'H:i',time_24hr:true,minuteIncrement:15,defaultHour:8,disableMobile:false});
 
-/* ============================
-   STEPS
-============================ */
-function unlock(id){const c=document.getElementById(id);c.classList.remove('locked');c.classList.add('active');setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'start'}),50);}
-function goStep2(){document.getElementById('card1').classList.remove('active');unlock('card2');}
-function goStep3(){document.getElementById('card2').classList.remove('active');unlock('card3');}
-function swap(){const d=document.getElementById('dep'),a=document.getElementById('arr');[d.value,a.value]=[a.value,d.value];}
-function resetForm(){document.getElementById('result').classList.remove('show');if(rMap){rMap.remove();rMap=null;}unlock('card2');}
+/* STEPS */
+function unlock(id){const c=document.getElementById(id);c.classList.remove('locked');c.classList.add('active');setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+function done(id){const c=document.getElementById(id);c.classList.remove('active');c.classList.add('done');const n=c.querySelector('.card-num');if(n)n.textContent='✓';}
+function goStep2(){done('card1');unlock('card2');}
+function goStep3(){done('card2');unlock('card3');}
+function swap(){const d=document.getElementById('dep'),a=document.getElementById('arr');[d.value,a.value]=[a.value,d.value];const dl=depCoords.lat,dn=depCoords.lon;depCoords.lat=arrCoords.lat;depCoords.lon=arrCoords.lon;arrCoords.lat=dl;arrCoords.lon=dn;}
+function resetForm(){document.getElementById('result').classList.remove('show');if(rMap){rMap.remove();rMap=null;}['card2','card3'].forEach(id=>{const c=document.getElementById(id);c.classList.remove('done','active');c.classList.add('locked');const n=c.querySelector('.card-num');if(n)n.textContent=id==='card2'?'2':'3';});unlock('card2');}
 
-/* ============================
-   AUTOCOMPLETE
-============================ */
-const depC={},arrC={},acT={};
-function setupAC(iid,lid,co){
-  const inp=document.getElementById(iid),list=document.getElementById(lid);let fi=-1;
-  inp.addEventListener('input',function(){clearTimeout(acT[iid]);const q=this.value.trim();if(q.length<3){list.classList.remove('open');list.innerHTML='';return;}acT[iid]=setTimeout(()=>fetchAC(q,list,inp,co),320);});
-  inp.addEventListener('keydown',function(e){const it=list.querySelectorAll('.ac-item');if(e.key==='ArrowDown'){fi=Math.min(fi+1,it.length-1);hlAC(it,fi);e.preventDefault();}else if(e.key==='ArrowUp'){fi=Math.max(fi-1,0);hlAC(it,fi);e.preventDefault();}else if(e.key==='Enter'&&fi>=0){it[fi].click();e.preventDefault();}else if(e.key==='Escape'){list.classList.remove('open');fi=-1;}});
-  document.addEventListener('click',function(e){if(!inp.contains(e.target)&&!list.contains(e.target)){list.classList.remove('open');fi=-1;}});
-}
-function hlAC(items,idx){items.forEach((it,i)=>it.classList.toggle('focused',i===idx));}
+/* AC */
+const depCoords={},arrCoords={},acT={};
+function setupAC(iId,lId,co){const inp=document.getElementById(iId),list=document.getElementById(lId);let fi=-1;inp.addEventListener('input',function(){clearTimeout(acT[iId]);const q=this.value.trim();if(q.length<3){list.classList.remove('open');list.innerHTML='';return;}acT[iId]=setTimeout(()=>fetchAC(q,list,inp,co),320);});inp.addEventListener('keydown',function(e){const it=list.querySelectorAll('.ac-item');if(e.key==='ArrowDown'){fi=Math.min(fi+1,it.length-1);hlAC(it,fi);e.preventDefault();}else if(e.key==='ArrowUp'){fi=Math.max(fi-1,0);hlAC(it,fi);e.preventDefault();}else if(e.key==='Enter'&&fi>=0){it[fi].click();e.preventDefault();}else if(e.key==='Escape'){list.classList.remove('open');fi=-1;}});document.addEventListener('click',function(e){if(!inp.contains(e.target)&&!list.contains(e.target)){list.classList.remove('open');fi=-1;}});}
+function hlAC(it,idx){it.forEach((i,n)=>i.classList.toggle('focused',n===idx));}
 async function fetchAC(q,list,inp,co){const p=new URLSearchParams({format:'json',limit:'5',q,addressdetails:'1',countrycodes:'fr',viewbox:'1.4,49.5,3.6,48.1',bounded:'0'});try{const r=await fetch('https://nominatim.openstreetmap.org/search?'+p,{headers:{'Accept-Language':'fr'}});renderAC(await r.json(),list,inp,co);}catch(e){list.classList.remove('open');}}
 function renderAC(data,list,inp,co){if(!data.length){list.classList.remove('open');return;}list.innerHTML='';data.forEach(item=>{const div=document.createElement('div');div.className='ac-item';const a=item.address||{};const main=a.road||a.amenity||a.building||item.name||'';const sec=[a.city||a.town||a.village||a.suburb,a.postcode].filter(Boolean).join(', ');div.innerHTML=`<div class="ac-ic">&#8594;</div><div><div class="ac-main">${main||item.display_name.split(',')[0]}</div><div class="ac-sec">${sec||item.display_name}</div></div>`;div.addEventListener('mousedown',function(e){e.preventDefault();inp.value=main?(main+(sec?', '+sec:'')):item.display_name.split(',').slice(0,2).join(',');co.lat=+item.lat;co.lon=+item.lon;list.classList.remove('open');list.innerHTML='';});list.appendChild(div);});list.classList.add('open');}
-setupAC('dep','ac-dep',depC);setupAC('arr','ac-arr',arrC);
+setupAC('dep','ac-dep',depCoords);setupAC('arr','ac-arr',arrCoords);
 
-/* ============================
-   GEOCODE + ROUTE
-============================ */
-const SC={'cdg':[48.9755,2.5597],'charles de gaulle':[48.9755,2.5597],'roissy':[48.9755,2.5597],'orly':[48.7233,2.3794],'paris':[48.8566,2.3522],'gare du nord':[48.8809,2.3553],'gare de lyon':[48.8449,2.3735],'gare montparnasse':[48.8413,2.3202],'saint lazare':[48.8760,2.3247],'versailles':[48.8014,2.1301],'disneyland':[48.8673,2.7797],'la defense':[48.8924,2.2390]};
-async function resolveCoords(val,co){if(co.lat)return[co.lat,co.lon];const q=val.toLowerCase().trim();for(const[k,v]of Object.entries(SC))if(q.includes(k))return v;try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(val)}&countrycodes=fr`,{headers:{'Accept-Language':'fr'}});const d=await r.json();if(d[0])return[+d[0].lat,+d[0].lon];}catch(e){}return[48.8566,2.3522];}
+/* ROUTE */
+const SC={'cdg':[48.9755,2.5597],'charles de gaulle':[48.9755,2.5597],'roissy':[48.9755,2.5597],'orly':[48.7233,2.3794],'paris':[48.8566,2.3522],'gare du nord':[48.8809,2.3553],'gare de lyon':[48.8449,2.3735],'gare montparnasse':[48.8413,2.3202],'versailles':[48.8014,2.1301],'disneyland':[48.8673,2.7797],'la defense':[48.8924,2.2390]};
+async function resolveCoords(val,co){if(co.lat)return[co.lat,co.lon];const q=val.toLowerCase().trim();for(const[k,v] of Object.entries(SC))if(q.includes(k))return v;try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(val)}&countrycodes=fr`,{headers:{'Accept-Language':'fr'}});const d=await r.json();if(d[0])return[+d[0].lat,+d[0].lon];}catch(e){}return[48.8566,2.3522];}
 async function getRoute(a,b){try{const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=full&geometries=geojson`);const d=await r.json();if(d.routes?.[0])return{km:d.routes[0].distance/1000,dur:d.routes[0].duration/60,geo:d.routes[0].geometry};}catch(e){}return{km:32,dur:35,geo:null};}
-function makeMarker(color,label){return L.divIcon({className:'',html:`<div style="width:30px;height:30px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.6);"><span style="transform:rotate(45deg);font-size:.65rem;font-weight:800;color:#000;">${label}</span></div>`,iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-32]});}
+function mkMarker(color,label){return L.divIcon({className:'',html:`<div style="width:28px;height:28px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.55);"><span style="transform:rotate(45deg);font-size:.65rem;font-weight:800;color:#000;">${label}</span></div>`,iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-32]});}
 
-/* ============================
-   STEP 4 — CALCUL CARTE
-   FIX: invalidateSize après affichage
-============================ */
 let rMap=null;
 async function goStep4(){
-  const depV=document.getElementById('dep').value.trim()||'Paris';
-  const arrV=document.getElementById('arr').value.trim()||'CDG';
-  const heure=document.getElementById('timepicker').value||'--:--';
+  const dV=document.getElementById('dep').value.trim()||'Paris';
+  const aV=document.getElementById('arr').value.trim()||'CDG';
+  const h=document.getElementById('timepicker').value||'--:--';
   const pax=document.getElementById('pax').value;
   const note=document.getElementById('note').value.trim();
-  const btn=document.getElementById('btn3');
-  btn.innerHTML='<span class="spin"></span>Calcul...';btn.disabled=true;
-
-  const[dc,ac]=await Promise.all([resolveCoords(depV,depC),resolveCoords(arrV,arrC)]);
-  const route=await getRoute(dc,ac);
-  const km=route.km,dur=route.dur;
-  let prix=Math.max(6+km*1.95,12);
-  const h=parseInt(heure);const nuit=!isNaN(h)&&(h>=22||h<6);
-  if(nuit)prix+=10;
-
+  const btn=document.getElementById('btn3');btn.innerHTML='<span class="spin"></span>Calcul…';btn.disabled=true;
+  const[dc,ac]=await Promise.all([resolveCoords(dV,depCoords),resolveCoords(aV,arrCoords)]);
+  const rt=await getRoute(dc,ac);const km=rt.km,dur=rt.dur;
+  let prix=Math.max(6+km*1.95,12);const hr=parseInt(h);const nuit=!isNaN(hr)&&(hr>=22||hr<6);if(nuit)prix+=10;
   document.getElementById('r-price').textContent=prix.toFixed(2)+' €';
-  document.getElementById('r-meta').innerHTML='Frais fixe 6 € + 1,95 €/km'+(nuit?' <strong>+ 10 € nuit</strong>':'');
-  const durH=Math.floor(dur/60),durM=Math.round(dur%60);
-  const durStr=durH>0?`${durH}h${durM<10?'0':''}${durM}`:`${durM} min`;
-  document.getElementById('r-stats').innerHTML=`<div class="r-stat"><div class="rs-val">${km.toFixed(1)} km</div><div class="rs-lbl">Distance route</div></div><div class="r-stat"><div class="rs-val">${durStr}</div><div class="rs-lbl">Durée estimée</div></div><div class="r-stat"><div class="rs-val">${prix.toFixed(2)} €</div><div class="rs-lbl">Tarif TTC</div></div>`;
-
-  const extrasStr=prefs.extras.length?prefs.extras.join(', '):'Aucun';
-  document.getElementById('r-prefs').innerHTML=`<strong>Préférences à bord</strong>Musique : ${prefs.music||'non renseignée'} &nbsp;·&nbsp; Température : ${prefs.temp}<br>Vitres : ${prefs.windows} &nbsp;·&nbsp; Échanges : ${prefs.talk||'non spécifié'}<br>Extras : ${extrasStr}${note?'<br>Note : '+note:''}`;
-
-  const d=selDate||new Date().toLocaleDateString('fr-FR');
-  const prefsMsg=`%0AMusique : ${prefs.music||'nc'}%0ATemp : ${prefs.temp}%0AVitres : ${prefs.windows}%0AExtras : ${extrasStr}${note?'%0ANote : '+encodeURIComponent(note):''}`;
-  document.getElementById('r-wa').href=`https://wa.me/33767742220?text=Bonjour I%26N RUN,%0A%0AReservation :%0ADep : ${encodeURIComponent(depV)}%0AArr : ${encodeURIComponent(arrV)}%0ADate : ${d}%0AHeure : ${heure}%0APax : ${pax}%0ADistance : ${km.toFixed(1)} km%0ADuree : ${durStr}%0ATarif : ${prix.toFixed(2)} %E2%82%AC%0A%0APref :%0A${prefsMsg}%0A%0AMerci de confirmer.`;
-
-  // AFFICHER D'ABORD, PUIS INIT CARTE
-  const resultEl=document.getElementById('result');
-  resultEl.classList.add('show');
-  resultEl.scrollIntoView({behavior:'smooth',block:'start'});
-
-  // DÉLAI CRITIQUE: laisser le DOM reflow avant Leaflet
-  setTimeout(()=>{
-    const me=document.getElementById('r-map');
-    if(rMap){rMap.remove();rMap=null;}
-
-    // S'assurer que le conteneur a des dimensions
-    me.style.width='100%';
-    me.style.height='260px';
-
-    rMap=L.map(me,{zoomControl:true,attributionControl:false,preferCanvas:true});
-
-    // Tiles OSM standard (fiables sur mobile)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      maxZoom:19,subdomains:['a','b','c']
-    }).addTo(rMap);
-
-    if(route.geo){
-      const rl=L.geoJSON(route.geo,{style:{color:'#c9a84c',weight:5,opacity:.95,lineCap:'round',lineJoin:'round'}}).addTo(rMap);
-      rMap.fitBounds(rl.getBounds(),{padding:[40,40]});
-    } else {
-      rMap.fitBounds([dc,ac],{padding:[50,50]});
-    }
-
-    L.marker(dc,{icon:makeMarker('#c9a84c','A')}).addTo(rMap).bindPopup(`<b>Départ</b><br>${depV}`);
-    L.marker(ac,{icon:makeMarker('#22c55e','B')}).addTo(rMap).bindPopup(`<b>Arrivée</b><br>${arrV}`);
-
-    // DOUBLE invalidateSize pour mobile
-    rMap.invalidateSize();
-    setTimeout(()=>rMap&&rMap.invalidateSize(),300);
-    setTimeout(()=>rMap&&rMap.invalidateSize(),700);
-  }, 200);
-
-  btn.innerHTML='Calculer mon tarif';btn.disabled=false;
+  document.getElementById('r-meta').innerHTML='6 € fixe + 1,95 €/km'+(nuit?' · <strong>+10 € nuit</strong>':'');
+  const dH=Math.floor(dur/60),dM=Math.round(dur%60);const dS=dH>0?`${dH}h${dM<10?'0':''}${dM}`:`${dM} min`;
+  document.getElementById('r-stats').innerHTML=`<div class="r-stat"><div class="rs-val">${km.toFixed(1)} km</div><div class="rs-lbl">Distance</div></div><div class="r-stat"><div class="rs-val">${dS}</div><div class="rs-lbl">Durée</div></div><div class="r-stat"><div class="rs-val">${prix.toFixed(2)} €</div><div class="rs-lbl">Total TTC</div></div>`;
+  const ext=prefs.extras.length?prefs.extras.join(', '):'Aucun';
+  document.getElementById('r-prefs').innerHTML=`<strong>Préférences à bord</strong>Musique : ${prefs.music||'nc'} · Temp : ${prefs.temp}<br>Vitres : ${prefs.windows}`+(prefs.talk?` · Échanges : ${prefs.talk}`:'')+`<br>Extras : ${ext}`+(note?`<br>Note : ${note}`:'');
+  const dt=selDate||new Date().toLocaleDateString('fr-FR');
+  const pm=`%0A%0AConfort :%0A- Musique : ${prefs.music||'nc'}%0A- Temp : ${prefs.temp}%0A- Vitres : ${prefs.windows}%0A- Extras : ${ext}${note?'%0A- Note : '+encodeURIComponent(note):''}`;
+  document.getElementById('r-wa').href=`https://wa.me/33767742220?text=Bonjour%20I%26N%20RUN%2C%0A%0ADep%20%3A%20${encodeURIComponent(dV)}%0AArr%20%3A%20${encodeURIComponent(aV)}%0ADate%20%3A%20${dt}%0AHeure%20%3A%20${h}%0APax%20%3A%20${pax}%0ADist%20%3A%20${km.toFixed(1)}%20km%0ADuree%20%3A%20${dS}%0ATarif%20%3A%20${prix.toFixed(2)}%20%E2%82%AC${pm}%0A%0AMerci.`;
+  done('card3');const rb=document.getElementById('result');rb.classList.add('show');rb.scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(()=>initMap(dc,ac,rt,dV,aV),380);btn.innerHTML='Calculer mon tarif';btn.disabled=false;
 }
+function initMap(dc,ac,rt,dV,aV){const me=document.getElementById('r-map');if(rMap){rMap.remove();rMap=null;}me.style.height='230px';rMap=L.map(me,{zoomControl:true,attributionControl:false,preferCanvas:true});L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,crossOrigin:true}).addTo(rMap);let bounds;if(rt.geo){const rl=L.geoJSON(rt.geo,{style:{color:'#c9a84c',weight:4,opacity:.92,lineCap:'round',lineJoin:'round'}}).addTo(rMap);bounds=rl.getBounds();}else{bounds=L.latLngBounds([dc,ac]);}L.marker(dc,{icon:mkMarker('#c9a84c','A')}).addTo(rMap).bindPopup(`<b>Départ</b><br>${dV}`);L.marker(ac,{icon:mkMarker('#22c55e','B')}).addTo(rMap).bindPopup(`<b>Arrivée</b><br>${aV}`);rMap.fitBounds(bounds,{padding:[30,30],animate:false});setTimeout(()=>rMap.invalidateSize(),160);}
 
-/* ============================
-   VCARD
-============================ */
-function downloadVCard(){const v=`BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nEND:VCARD`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'}));a.download='inrun.vcf';a.click();}
+function downloadVCard(){const v=`BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nNOTE:Chauffeur Prive Paris CDG Orly Tarifs fixes\nEND:VCARD`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'}));a.download='inrun.vcf';a.click();}
 </script>
 </body>
 </html>
