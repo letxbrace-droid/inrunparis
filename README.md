@@ -1,1 +1,1 @@
-V38 - Restauration de la section 3 manquante dans les CGV.
+V39 - Refonte typographique et luxe (Cinzel + Montserrat), Logo retravaillé, Boutons WhatsApp discrets.

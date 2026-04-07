@@ -7,7 +7,7 @@
 <meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
@@ -21,13 +21,33 @@
   --ease:cubic-bezier(.23,1,.32,1); --tap:54px; --hdr:64px;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:"Inter",sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;padding-bottom:100px;margin:0;}
+body{font-family:"Montserrat",sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;padding-bottom:100px;margin:0;}
 input,textarea,button{font-family:inherit;}
 
 /* Header Premium */
 #hdr{position:sticky;top:0;z-index:990;background:rgba(9,9,15,.90);backdrop-filter:blur(24px);border-bottom:1px solid rgba(201,168,76,.15);}
 .nav{display:flex;align-items:center;justify-content:space-between;height:var(--hdr);padding:0 max(20px,calc(env(safe-area-inset-left,0px)+20px));max-width:640px;margin:0 auto;}
-.nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,var(--gold) 20%,var(--gold-l) 50%,var(--gold) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;}
+
+/* NOUVEAU LOGO - Plus Luxe et Épuré */
+.nav-logo{
+  font-family:"Cinzel",serif;
+  font-size:1.5rem;
+  font-weight:700;
+  letter-spacing: 2px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-icon {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+.logo-run {
+  color: var(--gold);
+  font-weight: 600;
+}
+
 .nav-status{display:flex;align-items:center;gap:6px;font-size:0.7rem;font-weight:600;color:var(--green-l);background:rgba(34,197,94,.1);padding:6px 12px;border-radius:50px;border:1px solid rgba(34,197,94,.2);}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
@@ -35,16 +55,15 @@ input,textarea,button{font-family:inherit;}
 /* Hero Section */
 .hero{padding:50px 20px 30px;text-align:center;position:relative;}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:radial-gradient(circle at top, rgba(201,168,76,.08) 0%, transparent 70%);pointer-events:none;}
-h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-height:1.15;margin:0 0 16px;font-weight:700;position:relative;}
+h1{font-family:"Cinzel",serif;font-size:clamp(1.8rem, 8vw, 2.4rem);line-height:1.2;margin:0 0 16px;font-weight:700;position:relative;}
 h1 span{display:inline-block;}
-.g{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:shine 5s linear infinite;}
-@keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
+.g{color: var(--gold);}
 .hero-p{color:var(--gray2);font-size:0.95rem;margin:0 auto 30px;line-height:1.5;max-width:440px;font-weight:300;}
 
 /* Proof Grid */
 .proof{display:flex;justify-content:center;gap:30px;margin-bottom:40px;position:relative;z-index:1;}
 .proof-item{text-align:center;}
-.pv{font-weight:700;font-size:1.1rem;color:var(--white);}
+.pv{font-family:"Cinzel",serif;font-weight:700;font-size:1.2rem;color:var(--white);}
 .pl{font-size:0.65rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
 
 /* Tunnel de réservation */
@@ -54,12 +73,12 @@ h1 span{display:inline-block;}
 .card.locked{opacity:0.5;pointer-events:none;filter:grayscale(0.5);}
 
 .card-hd{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-.c-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;background:var(--gold);color:#000;box-shadow:0 4px 10px rgba(201,168,76,.3);}
-.c-title{font-weight:700;font-size:1.1rem;letter-spacing:-0.02em;}
+.c-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:600;background:var(--gold);color:#000;box-shadow:0 4px 10px rgba(201,168,76,.3);}
+.c-title{font-family:"Cinzel",serif;font-weight:700;font-size:1.1rem;letter-spacing:0.02em;}
 .c-sub{font-size:0.8rem;color:var(--gray2);margin-top:2px;}
 
 /* Form Fields */
-.f-lbl{display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;margin-top:16px;}
+.f-lbl{display:block;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;margin-top:16px;}
 .f-wrap{display:flex;align-items:center;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);position:relative;transition:border-color 0.3s;}
 .f-wrap:focus-within{border-color:var(--gold);background:rgba(0,0,0,.5);}
 .f-ic{width:44px;text-align:center;font-size:1.1rem;color:var(--gray2);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
@@ -72,13 +91,13 @@ h1 span{display:inline-block;}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .ac-item{padding:12px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:2px;}
 .ac-item:hover{background:var(--glow);}
-.ac-main{font-weight:600;font-size:0.85rem;color:var(--white);line-height:1.3;}
+.ac-main{font-weight:500;font-size:0.85rem;color:var(--white);line-height:1.3;}
 .ac-sec{font-size:0.7rem;color:var(--gray);margin-top:4px;}
 
 /* Boutons d'action */
-.btn{width:100%;height:var(--tap);border-radius:var(--r);cursor:pointer;font-weight:700;font-size:1rem;border:none;margin-top:24px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;box-shadow:0 4px 15px rgba(201,168,76,.2);}
-.btn-gold:hover{box-shadow:0 6px 20px rgba(201,168,76,.3);transform:translateY(-2px);}
+.btn{width:100%;height:var(--tap);border-radius:var(--r);cursor:pointer;font-weight:600;font-size:0.95rem;border:none;margin-top:24px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease); text-transform: uppercase; letter-spacing: 1px;}
+.btn-gold{background:var(--gold);color:#000;box-shadow:0 4px 15px rgba(201,168,76,.2);}
+.btn-gold:hover{background:var(--gold-l); box-shadow:0 6px 20px rgba(201,168,76,.3);transform:translateY(-2px);}
 .btn-gold:active{transform:scale(0.98);}
 .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none;}
 
@@ -92,7 +111,7 @@ h1 span{display:inline-block;}
 
 /* Paiement */
 .payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
-.pay-btn{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center;color:var(--gray2);font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.pay-btn{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center;color:var(--gray2);font-weight:500;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
 .pay-btn.sel{background:var(--glow);border-color:var(--gold);color:var(--gold);}
 .pay-btn-ic{font-size:1.4rem;margin-bottom:6px;display:block;}
 
@@ -104,31 +123,30 @@ h1 span{display:inline-block;}
 /* Fil Trafic & Météo */
 .infos-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;padding:0 16px;max-width:540px;margin-left:auto;margin-right:auto;}
 .info-card{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:16px;}
-.i-hd{font-size:0.65rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.i-hd{font-size:0.65rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 
 .t-list{display:flex;flex-direction:column;gap:12px;}
 .t-item{display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;}
-.t-route{color:var(--white);font-weight:600;}
-.t-tag{font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.1);}
+.t-route{color:var(--white);font-weight:500;}
+.t-tag{font-size:0.6rem;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.1);}
 .t-tag.ok{color:var(--green-l);background:rgba(34,197,94,.15);}
 .t-tag.bad{color:#ef4444;background:rgba(239,68,68,.15);}
-.t-tag.warn{color:#fbbf24;background:rgba(251,191,36,.15);}
 
 .w-main{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
 .w-ic{font-size:2rem;}
-.w-temp{font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:700;color:var(--white);}
+.w-temp{font-family:"Cinzel",serif;font-size:1.8rem;font-weight:700;color:var(--white);}
 .w-desc{font-size:0.8rem;color:var(--gray2);}
 
 /* Mentions Légales Modale */
 .legal-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .legal-modal.show{opacity:1;pointer-events:auto;}
 .legal-box{background:var(--s1);border:1px solid rgba(201,168,76,.3);border-radius:var(--rxl);padding:30px 24px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;text-align:left;}
-.legal-title{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--gold);margin-bottom:24px;text-align:center;}
+.legal-title{font-family:"Cinzel",serif;font-size:1.6rem;color:var(--gold);margin-bottom:24px;text-align:center;}
 
 .legal-section{margin-bottom:24px;}
-.legal-section h4{color:var(--white);font-size:1rem;margin:0 0 10px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px;}
+.legal-section h4{color:var(--white);font-size:1rem;margin:0 0 10px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px;font-weight:500;}
 .legal-text{color:var(--gray2);font-size:0.85rem;line-height:1.6;}
-.legal-text strong{color:var(--white);}
+.legal-text strong{color:var(--white);font-weight:500;}
 
 /* Modal Prix OSRM */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
@@ -137,14 +155,26 @@ h1 span{display:inline-block;}
 .modal-overlay.show .modal-box-price{transform:translateY(0);}
 
 .m-handle{width:40px;height:4px;background:var(--b);border-radius:4px;margin:0 auto 20px;}
-.m-title{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:8px;}
+.m-title{font-family:"Cinzel",serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:8px;}
 .m-subtitle{text-align:center;color:var(--gray2);font-size:0.9rem;margin-bottom:24px;}
 
 .m-recap{background:rgba(0,0,0,.3);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;}
-.m-price{font-family:"Playfair Display",serif;font-size:3.2rem;color:var(--gold);font-weight:700;margin-bottom:10px;}
+.m-price{font-family:"Cinzel",serif;font-size:3.2rem;color:var(--gold);font-weight:700;margin-bottom:10px;}
 .m-calc-info{font-size:0.8rem;color:var(--gray2);line-height:1.4;}
 
-.btn-wa{background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
+/* CHANGEMENT BOUTON WHATSAPP: Plus discret, plus Premium */
+.btn-reserve-wa{
+  background: var(--gold);
+  color: #000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.btn-reserve-wa:hover {
+  background: var(--gold-l);
+}
 .btn-close{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);margin-top:10px;}
 
 /* Footer */
@@ -153,12 +183,14 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 .legal-links a{color:var(--gray2);text-decoration:none;cursor:pointer;}
 .legal-links a:hover{color:var(--gold);}
 
-/* Sticky Footer */
+/* Sticky Footer: Modification pour un rendu "Hôtel/Conciergerie" */
 .sticky{position:fixed;bottom:0;left:0;right:0;z-index:990;padding:12px 16px max(16px,env(safe-area-inset-bottom,16px));background:linear-gradient(0deg, rgba(9,9,15,1) 40%, rgba(9,9,15,0.8) 100%);display:flex;gap:12px;max-width:640px;margin:0 auto;}
-.sb{flex:1;height:50px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.95rem;text-decoration:none;transition:transform 0.2s;}
+.sb{flex:1;height:50px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.9rem;text-decoration:none;transition:transform 0.2s; letter-spacing:0.5px;}
 .sb:active{transform:scale(0.96);}
-.sb-wa{background:var(--wa);color:#fff;}
-.sb-tel{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);color:var(--gold);}
+
+/* Au lieu du vert vif WhatsApp, on opte pour du noir et de l'or */
+.sb-wa{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:var(--white);}
+.sb-tel{background:rgba(201,168,76,.1); border:1px solid rgba(201,168,76,.3); color:var(--gold);}
 
 /* Loader */
 .loader {border: 3px solid rgba(201,168,76,.2);border-top: 3px solid var(--gold);border-radius: 50%;width: 20px;height: 20px;animation: spin 1s linear infinite;display:none;margin: 0 auto;}
@@ -169,7 +201,9 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 <header id="hdr">
   <div class="nav">
-    <div class="nav-logo">I&N RUN</div>
+    <div class="nav-logo">
+      I&N <span class="logo-run">RUN</span>
+    </div>
     <div class="nav-status"><div class="dot"></div> Disponible</div>
   </div>
 </header>
@@ -314,8 +348,8 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 </footer>
 
 <div class="sticky">
-  <a href="https://wa.me/33767742220" class="sb sb-wa">WhatsApp direct</a>
-  <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
+  <a href="https://wa.me/33767742220" class="sb sb-wa">Messages</a>
+  <a href="tel:+33767742220" class="sb sb-tel">Réserver par Téléphone</a>
 </div>
 
 <!-- MODAL PRIX CALCULE -->
@@ -330,9 +364,9 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
       <div class="m-calc-info" id="calcDetails">Distance estimée : -- km<br>Durée estimée : -- min</div>
     </div>
 
-    <button class="btn btn-wa" onclick="sendWhatsApp()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Réserver à ce prix
+    <button class="btn btn-reserve-wa" onclick="sendWhatsApp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#000"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Valider la réservation
     </button>
     <button class="btn btn-close" onclick="hideModal()">Modifier le trajet</button>
   </div>
@@ -341,7 +375,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 <!-- MODAL MENTIONS LEGALES -->
 <div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
   <div class="legal-box">
-    <h3 class="legal-title">Mentions Légales & CGV</h3>
+    <h3 class="legal-title">Mentions Légales</h3>
 
     <div class="legal-section">
       <h4>1. Éditeur du Service</h4>
@@ -352,23 +386,23 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
         <strong>SIRET :</strong> 993 776 467 00017<br>
         <strong>Contact :</strong> contact@inrun.fr<br>
         <strong>Téléphone :</strong> 07 67 74 22 20<br>
-        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants de Voitures de Tourisme avec Chauffeur.
+        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.
       </div>
     </div>
 
     <div class="legal-section">
-      <h4>2. Conditions de Transport (CGV)</h4>
+      <h4>2. Conditions de Transport</h4>
       <div class="legal-text">
-        <strong>Tarification :</strong> Les prix indiqués lors de la simulation sont fixes et garantis. Ils incluent la prise en charge, le trajet, l'attente éventuelle aux aéroports, ainsi que les bagages raisonnables. Aucun supplément ne sera exigé à bord.<br><br>
-        <strong>Réservation :</strong> Toute réservation effectuée via WhatsApp doit faire l'objet d'une confirmation de notre part pour être valide. En cas d'annulation moins de 2 heures avant la prise en charge, des frais peuvent s'appliquer.<br><br>
-        <strong>Responsabilité :</strong> Le transporteur est assuré pour le transport de personnes à titre onéreux (Responsabilité Civile Professionnelle). Les passagers doivent attacher leur ceinture et respecter les règles de sécurité à bord.
+        <strong>Tarification :</strong> Prix fixes garantis. Inclus : prise en charge, trajet, attente aéroports, bagages.<br><br>
+        <strong>Réservation :</strong> Soumise à confirmation. Annulation moins de 2h avant : frais applicables.<br><br>
+        <strong>Assurance :</strong> Responsabilité Civile Professionnelle.
       </div>
     </div>
 
     <div class="legal-section">
       <h4>3. Données Personnelles</h4>
       <div class="legal-text">
-        Les données collectées (nom, téléphone, adresse) servent uniquement à l'exécution de la course et ne sont jamais revendues à des tiers.
+        Données collectées strictement pour l'exécution de la course. Aucune revente à des tiers.
       </div>
     </div>
 
@@ -377,7 +411,6 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 </div>
 
 <script>
-// Initialisation Flatpickr
 flatpickr('#timepick', {
   enableTime: true,
   dateFormat: "d/m/Y à H:i",
@@ -479,7 +512,6 @@ function sendWhatsApp() {
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// 1. CHANGEMENT D'API POUR LA RECHERCHE (Photon/Komoot)
 const PHOTON = 'https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=5&q=';
 
 function setupAutocomplete(inputId, dropdownId, type) {
@@ -506,7 +538,6 @@ function setupAutocomplete(inputId, dropdownId, type) {
           } else {
             dropdown.innerHTML = data.features.map(item => {
               const props = item.properties;
-
               let name = props.name || '';
               let street = props.street || '';
               let city = props.city || props.town || props.state || '';
@@ -546,7 +577,6 @@ function selectLocation(inputId, dropdownId, type, name, lat, lon) {
 setupAutocomplete('dep', 'ac-dep', 'dep');
 setupAutocomplete('arr', 'ac-arr', 'arr');
 
-// 2. METEO ET TRAFIC DYNAMIQUE
 function updateLiveWidgets() {
   fetch('https://wttr.in/Paris?format=j1')
     .then(res => res.json())
