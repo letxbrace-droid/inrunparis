@@ -342,6 +342,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 <div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
   <div class="legal-box">
     <h3 class="legal-title">Mentions Légales & CGV</h3>
+
     <div class="legal-section">
       <h4>1. Éditeur du Service</h4>
       <div class="legal-text">
@@ -351,17 +352,26 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
         <strong>SIRET :</strong> 993 776 467 00017<br>
         <strong>Contact :</strong> contact@inrun.fr<br>
         <strong>Téléphone :</strong> 07 67 74 22 20<br>
-        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.
+        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants de Voitures de Tourisme avec Chauffeur.
       </div>
     </div>
+
     <div class="legal-section">
-      <h4>2. Conditions de Transport</h4>
+      <h4>2. Conditions de Transport (CGV)</h4>
       <div class="legal-text">
-        Les prix indiqués sont fixes et garantis. Ils incluent la prise en charge, l'attente aux aéroports, et les bagages. Aucun supplément à bord.<br>
-        Toute réservation via WhatsApp doit faire l'objet d'une confirmation. En cas d'annulation moins de 2 heures avant, des frais s'appliquent.<br>
-        Transporteur couvert par une Assurance Responsabilité Civile Professionnelle.
+        <strong>Tarification :</strong> Les prix indiqués lors de la simulation sont fixes et garantis. Ils incluent la prise en charge, le trajet, l'attente éventuelle aux aéroports, ainsi que les bagages raisonnables. Aucun supplément ne sera exigé à bord.<br><br>
+        <strong>Réservation :</strong> Toute réservation effectuée via WhatsApp doit faire l'objet d'une confirmation de notre part pour être valide. En cas d'annulation moins de 2 heures avant la prise en charge, des frais peuvent s'appliquer.<br><br>
+        <strong>Responsabilité :</strong> Le transporteur est assuré pour le transport de personnes à titre onéreux (Responsabilité Civile Professionnelle). Les passagers doivent attacher leur ceinture et respecter les règles de sécurité à bord.
       </div>
     </div>
+
+    <div class="legal-section">
+      <h4>3. Données Personnelles</h4>
+      <div class="legal-text">
+        Les données collectées (nom, téléphone, adresse) servent uniquement à l'exécution de la course et ne sont jamais revendues à des tiers.
+      </div>
+    </div>
+
     <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer</button>
   </div>
 </div>
@@ -469,10 +479,7 @@ function sendWhatsApp() {
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// -----------------------------------------------------
 // 1. CHANGEMENT D'API POUR LA RECHERCHE (Photon/Komoot)
-// Beaucoup plus tolérant aux fautes ("Aéroport d'Orly")
-// -----------------------------------------------------
 const PHOTON = 'https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=5&q=';
 
 function setupAutocomplete(inputId, dropdownId, type) {
@@ -500,7 +507,6 @@ function setupAutocomplete(inputId, dropdownId, type) {
             dropdown.innerHTML = data.features.map(item => {
               const props = item.properties;
 
-              // Construction intelligente de l'adresse
               let name = props.name || '';
               let street = props.street || '';
               let city = props.city || props.town || props.state || '';
@@ -510,8 +516,6 @@ function setupAutocomplete(inputId, dropdownId, type) {
               if (!shortName) shortName = street;
 
               let fullName = `${shortName}, ${city}`.replace(/^, /, '').trim();
-
-              // Affichage secondaire
               let sec = `${props.postcode || ''} ${city}`.trim();
 
               return `<div class="ac-item" onclick="selectLocation('${inputId}', '${dropdownId}', '${type}', '${fullName.replace(/'/g,"\\'")}', ${item.geometry.coordinates[1]}, ${item.geometry.coordinates[0]})">
@@ -542,34 +546,26 @@ function selectLocation(inputId, dropdownId, type, name, lat, lon) {
 setupAutocomplete('dep', 'ac-dep', 'dep');
 setupAutocomplete('arr', 'ac-arr', 'arr');
 
-// -----------------------------------------------------
-// 2. METEO ET TRAFIC DYNAMIQUE (Simulation intelligente)
-// -----------------------------------------------------
+// 2. METEO ET TRAFIC DYNAMIQUE
 function updateLiveWidgets() {
-  // Météo via wttr.in (sans clé API)
   fetch('https://wttr.in/Paris?format=j1')
     .then(res => res.json())
     .then(data => {
       const current = data.current_condition[0];
       document.getElementById('wTemp').innerText = current.temp_C + '°';
-
       const desc = current.lang_fr[0].value;
       document.getElementById('wDesc').innerText = 'Paris — ' + desc;
-
-      // Icones simples en fonction du temps
       const weatherCode = current.weatherCode;
       let icon = '☁️';
-      if(['113'].includes(weatherCode)) icon = '☀️'; // Clair
-      if(['116','119'].includes(weatherCode)) icon = '⛅'; // Nuageux
-      if(['296','302','308'].includes(weatherCode)) icon = '🌧️'; // Pluie
+      if(['113'].includes(weatherCode)) icon = '☀️';
+      if(['116','119'].includes(weatherCode)) icon = '⛅';
+      if(['296','302','308'].includes(weatherCode)) icon = '🌧️';
       document.getElementById('wIcon').innerText = icon;
     }).catch(() => {
       document.getElementById('wDesc').innerText = 'Paris — Indisponible';
     });
 
-  // Trafic simulé en fonction de l'heure de pointe (Paris IDF)
   const hour = new Date().getHours();
-  // Heures de pointe : 7h-10h et 16h-19h
   const isRushHour = (hour >= 7 && hour <= 10) || (hour >= 16 && hour <= 19);
 
   const updateTag = (id, isSlow) => {
@@ -583,13 +579,11 @@ function updateLiveWidgets() {
     }
   };
 
-  // On crée un petit aléatoire pour que ça ne soit pas toujours identique
   updateTag('t-cdg', isRushHour && Math.random() > 0.3);
   updateTag('t-orly', isRushHour && Math.random() > 0.2);
-  updateTag('t-paris', isRushHour || Math.random() > 0.7); // Paris est souvent lent
+  updateTag('t-paris', isRushHour || Math.random() > 0.7);
 }
 
-// Lancer au démarrage
 updateLiveWidgets();
 
 </script>
