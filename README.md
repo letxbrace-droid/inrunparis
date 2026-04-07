@@ -1,1 +1,1 @@
-V34 - Mentions légales propres (Braha), Paiement CB/Especes ajouté, WhatsApp en nouvel onglet
+V35 - Mentions légales et CGV développées (Corporate)

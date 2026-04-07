@@ -118,13 +118,16 @@ h1 span{display:inline-block;}
 .w-temp{font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:700;color:var(--white);}
 .w-desc{font-size:0.8rem;color:var(--gray2);}
 
-/* Mentions Légales Modale (Remplace l'alert) */
+/* Mentions Légales Modale */
 .legal-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .legal-modal.show{opacity:1;pointer-events:auto;}
-.legal-box{background:var(--s1);border:1px solid rgba(201,168,76,.3);border-radius:var(--rxl);padding:30px;max-width:400px;width:100%;text-align:center;}
-.legal-title{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--gold);margin-bottom:20px;}
-.legal-text{color:var(--white);font-size:0.9rem;line-height:1.6;margin-bottom:30px;text-align:left;}
-.legal-text span{color:var(--gray);font-size:0.8rem;display:block;}
+.legal-box{background:var(--s1);border:1px solid rgba(201,168,76,.3);border-radius:var(--rxl);padding:30px 24px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;text-align:left;}
+.legal-title{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--gold);margin-bottom:24px;text-align:center;}
+
+.legal-section{margin-bottom:24px;}
+.legal-section h4{color:var(--white);font-size:1rem;margin:0 0 10px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px;}
+.legal-text{color:var(--gray2);font-size:0.85rem;line-height:1.6;}
+.legal-text strong{color:var(--white);}
 
 /* Modal Prix OSRM */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
@@ -327,20 +330,41 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
   </div>
 </div>
 
-<!-- MODAL MENTIONS LEGALES PROPRES -->
+<!-- MODAL MENTIONS LEGALES & CGV DETAILLEES -->
 <div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
   <div class="legal-box">
-    <h3 class="legal-title">Mentions Légales</h3>
-    <div class="legal-text">
-      <strong>I&N RUN</strong><br>
-      <span>Service de transport VTC</span><br><br>
-      <strong>Dirigeant :</strong> M. BRAHA<br>
-      <strong>SIRET :</strong> 993 776 467 00017<br>
-      <strong>Email :</strong> contact@inrun.fr<br>
-      <strong>Téléphone :</strong> 07 67 74 22 20<br><br>
-      Les tarifs indiqués sont fixes et définitifs. Aucun supplément bagage ou approche n'est facturé.
+    <h3 class="legal-title">Mentions Légales & CGV</h3>
+
+    <div class="legal-section">
+      <h4>1. Éditeur du Service</h4>
+      <div class="legal-text">
+        <strong>Raison sociale :</strong> I&N RUN<br>
+        <strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br>
+        <strong>Dirigeant :</strong> M. BRAHA<br>
+        <strong>SIRET :</strong> 993 776 467 00017<br>
+        <strong>Contact :</strong> contact@inrun.fr<br>
+        <strong>Téléphone :</strong> 07 67 74 22 20<br>
+        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants de Voitures de Tourisme avec Chauffeur.
+      </div>
     </div>
-    <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:0;">Fermer</button>
+
+    <div class="legal-section">
+      <h4>2. Conditions de Transport (CGV)</h4>
+      <div class="legal-text">
+        <strong>Tarification :</strong> Les prix indiqués lors de la simulation sont fixes et garantis. Ils incluent la prise en charge, le trajet, l'attente éventuelle aux aéroports, ainsi que les bagages raisonnables. Aucun supplément ne sera exigé à bord.<br><br>
+        <strong>Réservation :</strong> Toute réservation effectuée via WhatsApp doit faire l'objet d'une confirmation de notre part pour être valide. En cas d'annulation moins de 2 heures avant la prise en charge, des frais peuvent s'appliquer.<br><br>
+        <strong>Responsabilité :</strong> Le transporteur est assuré pour le transport de personnes à titre onéreux (Responsabilité Civile Professionnelle). Les passagers doivent attacher leur ceinture et respecter les règles de sécurité à bord.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h4>3. Données Personnelles</h4>
+      <div class="legal-text">
+        Les données collectées (nom, téléphone, adresse) servent uniquement à l'exécution de la course et ne sont jamais revendues à des tiers.
+      </div>
+    </div>
+
+    <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer et retourner au site</button>
   </div>
 </div>
 
@@ -425,7 +449,6 @@ function hideModal() {
   document.getElementById('customModal').classList.remove('show');
 }
 
-// WhatsApp Open in New Tab (Target Blank fix)
 function sendWhatsApp() {
   const time = document.getElementById('timepick').value;
   const dep = document.getElementById('dep').value;
@@ -454,8 +477,6 @@ function sendWhatsApp() {
   msg += `Pouvez-vous confirmer ma réservation ?`;
 
   const link = `https://wa.me/33767742220?text=${encodeURIComponent(msg)}`;
-
-  // Ouvre WhatsApp dans un nouvel onglet, pour ne pas fermer le site.
   window.open(link, '_blank');
 }
 
