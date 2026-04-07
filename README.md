@@ -1,1 +1,1 @@
-V39 - Refonte typographique et luxe (Cinzel + Montserrat), Logo retravaillé, Boutons WhatsApp discrets.
+V40 - Correction de l'alignement vertical
