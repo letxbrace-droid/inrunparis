@@ -1,1 +1,1 @@
-V32 - Emojis remplacés par des icones SVG vectorielles Premium
+V33 - Calcul de prix auto via OSRM, adresse complète corrigée, ajout services à bord
