@@ -1,1 +1,1 @@
-V29 - Version sans l'image au dessus, code 100% complet et fonctionnel.
+V32 - Emojis remplacés par des icones SVG vectorielles Premium
