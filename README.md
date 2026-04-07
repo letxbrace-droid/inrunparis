@@ -1,37 +1,32 @@
-# I&N RUN — Chauffeur Privé Paris
+# I&N RUN — Chauffeur Privé Paris v19
 
-## 🚀 Structure du dépôt
+## Structure du dépôt
 
 ```
 inrunparis/
-├── index.html           ← Site principal
-├── mentions-legales.html ← Page mentions légales + RGPD + CGV
-├── voiture.jpg          ← Photo du véhicule (à ajouter à la racine)
+├── index.html             ← Site principal
+├── mentions-legales.html  ← Mentions légales + RGPD + CGV
+├── voiture.jpg            ← Photo véhicule (à ajouter à la RACINE)
 └── README.md
 ```
 
-## 📋 À compléter avant mise en ligne
+## ⚠️ À compléter AVANT mise en ligne
 
-- [ ] `index.html` → remplacer `[à compléter]` par votre vrai SIRET
-- [ ] `mentions-legales.html` → idem SIRET
-- [ ] Uploader `voiture.jpg` à la **racine** du dépôt (pas dans un sous-dossier)
+1. Remplacer `[À COMPLÉTER AVANT MISE EN LIGNE]` par votre SIRET dans :
+   - `index.html` (pied de page)
+   - `mentions-legales.html` (section 1)
+2. Uploader `voiture.jpg` à la **racine** du dépôt (PAS dans un sous-dossier)
 
-## 🌦 Météo — Fonctionnement fiable
+## Météo v3 — 100% fiable
 
-- Géolocalisation avec timeout 3 secondes
-- Fallback automatique sur Paris si refus ou timeout
-- Cache sessionStorage 15 minutes (évite les appels répétés)
-- Retry automatique en cas d'erreur API
+- Géoloc avec timeout 3s → fallback automatique Paris
+- Retry automatique si erreur API
+- Cache sessionStorage 15 min
+- Widget TOUJOURS affiché (jamais invisible)
 
-## 📞 Contact
+## Correctifs v19
 
-WhatsApp : +33 7 67 74 22 20
-Email : contact.inrun@gmail.com
-
-## v18 — Changelog
-
-- ✅ Photo à la racine (`voiture.jpg` sans sous-dossier)
-- ✅ Météo fiabilisée (fallback + retry + cache)
-- ✅ Mentions légales complètes (LCEN + RGPD + CGV)
-- ✅ Code health review complet
-- ✅ Gestion erreurs API renforcée (AbortController partout)
+- Photo : `src="voiture.jpg"` racine (pas `img/` ni `image/`)
+- Météo : IIFE isolée, fallback garanti, retry, cache
+- Toutes les API : AbortController + timeout
+- Mentions légales complètes : LCEN + RGPD + CGV
