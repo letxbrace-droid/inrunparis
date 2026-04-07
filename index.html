@@ -296,9 +296,196 @@ footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
 .trafic-key-input:focus{border-color:var(--gold);}
 .trafic-key-save{margin-top:7px;padding:6px 14px;border-radius:8px;background:var(--gold);color:#000;font-weight:700;font-size:.75rem;border:none;cursor:pointer;transition:opacity .2s;}
 .trafic-key-save:hover{opacity:.88;}
+
+/* ═══════ TICKER BANDE SUPÉRIEURE ═══════ */
+:root { --ticker-h: 32px; }
+.ticker-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1100;
+  height: var(--ticker-h);
+  background: linear-gradient(90deg, #0b0b14 0%, #12121e 50%, #0b0b14 100%);
+  border-bottom: 1px solid rgba(201,168,76,.18);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.ticker-bar.hidden { transform: translateY(-100%); transition: transform .35s var(--ease); }
+.ticker-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 10px 0 12px;
+  border-right: 1px solid rgba(201,168,76,.15);
+  height: 100%;
+  background: rgba(201,168,76,.06);
+  z-index: 2;
+}
+.ticker-logo {
+  font-family: "Playfair Display", serif;
+  font-size: .62rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold), var(--gold-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+  letter-spacing: .04em;
+}
+.ticker-live {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green-l);
+  animation: blink 1.8s infinite;
+  margin-left: 6px; flex-shrink: 0;
+}
+.ticker-track {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  mask: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+}
+.ticker-inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  animation: ticker-scroll 35s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+.ticker-inner:hover { animation-play-state: paused; }
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 18px;
+  font-size: .65rem;
+  font-weight: 500;
+  color: var(--gray2);
+  border-right: 1px solid rgba(255,255,255,.07);
+  height: 100%;
+  white-space: nowrap;
+  transition: color .2s;
+  cursor: default;
+}
+.ticker-item:last-child { border-right: none; }
+.ticker-item .ti-icon { font-size: .8rem; }
+.ticker-item .ti-val  { color: var(--white); font-weight: 600; }
+.ticker-item .ti-lbl  { color: var(--gray); font-size: .6rem; }
+.ticker-item.ok   .ti-val { color: var(--green-l); }
+.ticker-item.warn .ti-val { color: #fbbf24; }
+.ticker-item.bad  .ti-val { color: #fb923c; }
+.ticker-item.crit .ti-val { color: #ef4444; }
+.ticker-item.gold .ti-val {
+  background: linear-gradient(135deg, var(--gold), var(--gold-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ticker-close {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray);
+  cursor: pointer;
+  font-size: .75rem;
+  transition: color .2s;
+  margin-right: 2px;
+}
+.ticker-close:hover { color: var(--white); }
+
+/* Décaler le header et contenu sous le ticker */
+.hdr { top: var(--ticker-h) !important; padding-top: 0 !important; }
+.hero { padding-top: calc(var(--ticker-h) + var(--hdr) + env(safe-area-inset-top, 0px) + 28px) !important; }
+.weather {
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 10px) !important;
+}
 </style>
 </head>
 <body>
+
+<!-- ═══════ TICKER BANDE SUPÉRIEURE ═══════ -->
+<div class="ticker-bar" id="ticker-bar">
+
+  <!-- Logo fixe à gauche -->
+  <div class="ticker-left">
+    <span class="ticker-logo">I&amp;N RUN</span>
+    <span class="ticker-live"></span>
+  </div>
+
+  <!-- Défilement -->
+  <div class="ticker-track">
+    <div class="ticker-inner" id="ticker-inner">
+
+      <!-- Éléments × 2 pour boucle infinie (clonés par JS) -->
+      <div class="ticker-item gold" id="tk-dispo">
+        <span class="ti-icon">🚗</span>
+        <span class="ti-val">Disponible maintenant</span>
+        <span class="ti-lbl">· 24h/7</span>
+      </div>
+
+      <div class="ticker-item" id="tk-meteo">
+        <span class="ti-icon">🌡</span>
+        <span class="ti-val" id="tk-m-val">--°</span>
+        <span class="ti-lbl" id="tk-m-lbl">Paris</span>
+      </div>
+
+      <div class="ticker-item" id="tk-trafic-global">
+        <span class="ti-icon">🚦</span>
+        <span class="ti-val" id="tk-t-val">Trafic</span>
+        <span class="ti-lbl" id="tk-t-lbl">Île-de-France</span>
+      </div>
+
+      <div class="ticker-item" id="tk-a1">
+        <span class="ti-icon">✈️</span>
+        <span class="ti-val" id="tk-a1-val">A1 → CDG</span>
+        <span class="ti-lbl" id="tk-a1-lbl">chargement…</span>
+      </div>
+
+      <div class="ticker-item" id="tk-a6">
+        <span class="ti-icon">✈️</span>
+        <span class="ti-val" id="tk-a6-val">A6 → Orly</span>
+        <span class="ti-lbl" id="tk-a6-lbl">chargement…</span>
+      </div>
+
+      <div class="ticker-item" id="tk-periph">
+        <span class="ti-icon">🔄</span>
+        <span class="ti-val" id="tk-p-val">Périphérique</span>
+        <span class="ti-lbl" id="tk-p-lbl">chargement…</span>
+      </div>
+
+      <div class="ticker-item" id="tk-heure">
+        <span class="ti-icon">🕐</span>
+        <span class="ti-val" id="tk-h-val">--:--</span>
+        <span class="ti-lbl">Paris</span>
+      </div>
+
+      <div class="ticker-item" id="tk-tarif">
+        <span class="ti-icon">💰</span>
+        <span class="ti-val">CDG fixe 68 €</span>
+        <span class="ti-lbl">· Orly 50 €</span>
+      </div>
+
+      <div class="ticker-item" id="tk-annul">
+        <span class="ti-icon">✅</span>
+        <span class="ti-val">Annulation gratuite</span>
+        <span class="ti-lbl">· jusqu'à 2h avant</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bouton fermer -->
+  <div class="ticker-close" onclick="hideTicker()" aria-label="Fermer la bande info">✕</div>
+</div>
+
 
 <header class="hdr">
   <nav class="nav">
@@ -1817,6 +2004,116 @@ function dlVCard(){
   a.href=URL.createObjectURL(new Blob([v],{type:"text/vcard"}));
   a.download="inrun.vcf";a.click();
 }
+
+/* ═══════ TICKER JS ═══════ */
+(function initTicker(){
+
+  var bar = document.getElementById('ticker-bar');
+
+  // ── Fermeture ──
+  window.hideTicker = function(){
+    bar.style.cssText = 'transform:translateY(-100%);transition:transform .35s ease';
+    document.querySelector('.hdr').style.top = '0px';
+    document.querySelector('.hero').style.paddingTop = '';
+    setTimeout(function(){ bar.style.display='none'; }, 400);
+    try{ sessionStorage.setItem('inrun_ticker','hidden'); }catch(e){}
+  };
+  try{
+    if(sessionStorage.getItem('inrun_ticker') === 'hidden'){
+      bar.style.display='none';
+      document.querySelector('.hdr').style.top = '0px';
+      return;
+    }
+  }catch(e){}
+
+  // ── Horloge ──
+  function updateClock(){
+    var el = document.getElementById('tk-h-val');
+    if(!el) return;
+    el.textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // ── Météo → ticker ──
+  function syncMeteoTicker(){
+    var temp = document.getElementById('w-temp');
+    var city = document.getElementById('w-city');
+    var desc = document.getElementById('w-desc');
+    if(temp && temp.textContent !== '--°'){
+      document.getElementById('tk-m-val').textContent = temp.textContent;
+      var loc = (city && city.textContent) || 'Paris';
+      var dc  = (desc && desc.textContent) || '';
+      document.getElementById('tk-m-lbl').textContent = '· ' + loc + (dc ? ' · ' + dc : '');
+    }
+  }
+
+  // ── Trafic → ticker ──
+  function syncTraficTicker(){
+    try{
+      var raw = sessionStorage.getItem('inrun_trafic_cache');
+      if(!raw) return;
+      var p = JSON.parse(raw);
+      var incs = p.data || [];
+
+      function maxSev(zone){
+        var z = incs.filter(function(i){ return i.zones && i.zones.includes(zone); });
+        return z.length ? Math.max.apply(null, z.map(function(i){ return i.sev||0; })) : 0;
+      }
+      function sevTxt(s, el, lblEl, label){
+        var item = document.getElementById(el);
+        var lbl  = document.getElementById(lblEl);
+        if(!item) return;
+        if(s >= 4){ item.className='ticker-item crit'; lbl.textContent='· Fermé'; }
+        else if(s >= 3){ item.className='ticker-item bad'; lbl.textContent='· Bouchon'; }
+        else if(s >= 2){ item.className='ticker-item warn'; lbl.textContent='· Ralenti'; }
+        else { item.className='ticker-item ok'; lbl.textContent='· Fluide'; }
+      }
+
+      var allSev = incs.length ? Math.max.apply(null, incs.map(function(i){ return i.sev||0; })) : 0;
+      var tEl = document.getElementById('tk-trafic-global');
+      var tVl = document.getElementById('tk-t-val');
+      var tLb = document.getElementById('tk-t-lbl');
+      if(tEl && tVl && tLb){
+        if(allSev >= 4){ tEl.className='ticker-item crit'; tVl.textContent='Incident grave'; tLb.textContent='· Île-de-France'; }
+        else if(allSev >= 3){ tEl.className='ticker-item bad'; tVl.textContent='Perturbations'; tLb.textContent='· Île-de-France'; }
+        else if(allSev >= 2){ tEl.className='ticker-item warn'; tVl.textContent='Ralentissements'; tLb.textContent='· Île-de-France'; }
+        else { tEl.className='ticker-item ok'; tVl.textContent='Trafic fluide'; tLb.textContent='· Île-de-France'; }
+      }
+
+      sevTxt(maxSev('cdg'),   'tk-a1', 'tk-a1-lbl', 'A1 → CDG');
+      sevTxt(maxSev('orly'),  'tk-a6', 'tk-a6-lbl', 'A6 → Orly');
+      sevTxt(maxSev('periph'),'tk-periph','tk-p-lbl','Périphérique');
+
+    }catch(e){ console.warn('ticker trafic sync:', e); }
+  }
+
+  // ── Dupliquer les items pour boucle infinie ──
+  function loopTicker(){
+    var inner = document.getElementById('ticker-inner');
+    if(!inner) return;
+    var clone = inner.innerHTML;
+    inner.innerHTML += clone;
+    // Ajuster durée selon largeur
+    var totalW = inner.scrollWidth;
+    var speed = Math.max(25, totalW / 45); // ~45px/s
+    inner.style.animationDuration = speed + 's';
+  }
+
+  // ── Init et sync ──
+  setTimeout(function(){
+    loopTicker();
+    syncMeteoTicker();
+    syncTraficTicker();
+  }, 800);
+
+  // Re-sync toutes les 30s
+  setInterval(function(){
+    syncMeteoTicker();
+    syncTraficTicker();
+  }, 30000);
+
+})();
 </script>
 </body>
 </html>
