@@ -1,1 +1,1 @@
-V42 - Typographie ultra-luxe (Marcellus + Jost) et ajustement colorimétrique pour la conversion (bouton lumineux, chiffres en évidence).
+V43 - Inversion des titres Étape 1 et 2 pour un copywriting incitatif ("Planifiez votre départ").
