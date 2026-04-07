@@ -132,8 +132,8 @@ h1 span{display:inline-block;}
 /* Modal Prix OSRM */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
 .modal-overlay.show{opacity:1;pointer-events:auto;}
-.modal-box{background:var(--s1);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:30px 24px 40px;border-top:1px solid rgba(201,168,76,.3);transform:translateY(100%);transition:transform 0.4s var(--ease);}
-.modal-overlay.show .modal-box{transform:translateY(0);}
+.modal-box-price{background:var(--s1);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:30px 24px 40px;border-top:1px solid rgba(201,168,76,.3);transform:translateY(100%);transition:transform 0.4s var(--ease);margin: 0 auto;}
+.modal-overlay.show .modal-box-price{transform:translateY(0);}
 
 .m-handle{width:40px;height:4px;background:var(--b);border-radius:4px;margin:0 auto 20px;}
 .m-title{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:8px;}
@@ -247,16 +247,23 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
     <input type="hidden" id="paymentMethod" value="CB">
 
     <label class="f-lbl">Musique</label>
-    <div class="chips-grid">
-      <div class="chip sel" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
-      <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
-      <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
-      <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+    <div class="chips-grid" id="musicPref">
+      <div class="chip sel" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
+      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
+      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
+      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+    </div>
+
+    <label class="f-lbl">Climatisation</label>
+    <div class="chips-grid" id="climPref">
+      <div class="chip" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
+      <div class="chip sel" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
+      <div class="chip" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
     </div>
 
     <label class="f-lbl">Services Inclus</label>
     <div class="services-grid">
-      <div class="srv-item"><div class="srv-ic">💧</div>Bouteille d'eau</div>
+      <div class="srv-item"><div class="srv-ic">💧</div>Eau</div>
       <div class="srv-item"><div class="srv-ic">🍬</div>Bonbons</div>
       <div class="srv-item"><div class="srv-ic">🔋</div>Chargeurs</div>
       <div class="srv-item"><div class="srv-ic">📶</div>Wifi 5G</div>
@@ -312,7 +319,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 <!-- MODAL PRIX CALCULE -->
 <div class="modal-overlay" id="customModal" onclick="if(event.target===this) hideModal()">
-  <div class="modal-box">
+  <div class="modal-box-price">
     <div class="m-handle"></div>
     <h3 class="m-title">Tarif Fixe Garanti</h3>
     <p class="m-subtitle">Prix net pour une Berline Premium.</p>
@@ -378,6 +385,11 @@ flatpickr('#timepick', {
 });
 
 let coords = { dep: null, arr: null };
+
+function toggleChip(containerId, element) {
+  document.querySelectorAll('#' + containerId + ' .chip').forEach(c => c.classList.remove('sel'));
+  element.classList.add('sel');
+}
 
 function nextStep(step) {
   if (!coords.dep || !coords.arr) {
@@ -457,24 +469,43 @@ function sendWhatsApp() {
   const price = document.getElementById('finalPrice').innerText;
   const payment = document.getElementById('paymentMethod').value;
 
-  let msg = `✅ Demande de réservation I&N RUN
+  // Extraction des préférences (Musique / Climatisation)
+  const musicChip = document.querySelector('#musicPref .chip.sel');
+  const music = musicChip ? musicChip.innerText.trim() : 'Non précisé';
+
+  const climChip = document.querySelector('#climPref .chip.sel');
+  const clim = climChip ? climChip.innerText.trim() : 'Non précisé';
+
+  // Création du Bon de Commande (Format officiel VTC)
+  let msg = `*BON DE RÉSERVATION VTC - I&N RUN*
 
 `;
-  msg += `🕒 Date : ${time || 'Dès que possible'}
+  msg += `🕒 Prise en charge : ${time || 'Dès que possible'}
 `;
   msg += `📍 Départ : ${dep}
 `;
   msg += `🏁 Arrivée : ${arr}
 `;
-  msg += `💳 Tarif validé : ${price}
+  msg += `💳 Tarif fixé : ${price}
 `;
-  msg += `💶 Mode de paiement : ${payment}
+  msg += `💶 Paiement : ${payment}
 
 `;
+
+  msg += `✨ *Préférences à bord :*
+`;
+  msg += `- Musique : ${music}
+`;
+  msg += `- Climatisation : ${clim}
+
+`;
+
   if(note) msg += `📝 Note : ${note}
 
 `;
-  msg += `Pouvez-vous confirmer ma réservation ?`;
+
+  // Question pour que le client donne son nom (Obligation légale pour le Bon de commande)
+  msg += `Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
 
   const link = `https://wa.me/33767742220?text=${encodeURIComponent(msg)}`;
   window.open(link, '_blank');

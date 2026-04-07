@@ -1,1 +1,1 @@
-V35 - Mentions légales et CGV développées (Corporate)
+V36 - Format Bon de Commande Officiel, Préférences récupérées et demande de Nom Client
