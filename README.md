@@ -1,4 +1,18 @@
-# I&N RUN — Chauffeur Privé Paris v19
+# I&N RUN — Chauffeur Privé Paris
+
+## Informations officielles (INSEE/SIRENE)
+
+| Champ | Valeur |
+|---|---|
+| Enseigne | I&N RUN |
+| Exploitant | BRAHA Nourdine |
+| SIREN | 993 776 467 |
+| SIRET | 993 776 467 00017 |
+| APE | 49.32Z — Transports de voyageurs par taxis |
+| Adresse | 7 Avenue du Parc, 91130 Ris-Orangis |
+| Activité depuis | 20 décembre 2025 |
+| Tél | +33 7 67 74 22 20 |
+| Email | contact.inrun@gmail.com |
 
 ## Structure du dépôt
 
@@ -6,27 +20,11 @@
 inrunparis/
 ├── index.html             ← Site principal
 ├── mentions-legales.html  ← Mentions légales + RGPD + CGV
-├── voiture.jpg            ← Photo véhicule (à ajouter à la RACINE)
+├── voiture.jpg            ← Photo véhicule (à la RACINE)
 └── README.md
 ```
 
-## ⚠️ À compléter AVANT mise en ligne
+## ✅ Version finale — rien à compléter
 
-1. Remplacer `[À COMPLÉTER AVANT MISE EN LIGNE]` par votre SIRET dans :
-   - `index.html` (pied de page)
-   - `mentions-legales.html` (section 1)
-2. Uploader `voiture.jpg` à la **racine** du dépôt (PAS dans un sous-dossier)
-
-## Météo v3 — 100% fiable
-
-- Géoloc avec timeout 3s → fallback automatique Paris
-- Retry automatique si erreur API
-- Cache sessionStorage 15 min
-- Widget TOUJOURS affiché (jamais invisible)
-
-## Correctifs v19
-
-- Photo : `src="voiture.jpg"` racine (pas `img/` ni `image/`)
-- Météo : IIFE isolée, fallback garanti, retry, cache
-- Toutes les API : AbortController + timeout
-- Mentions légales complètes : LCEN + RGPD + CGV
+Tous les champs légaux sont renseignés.
+Seule action restante : uploader voiture.jpg à la racine.

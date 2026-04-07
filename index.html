@@ -6,9 +6,6 @@
 <meta name="theme-color" content="#09090f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
-<meta property="og:url" content="https://letxbrace-droid.github.io/inrunparis/">
-<meta property="og:site_name" content="I&amp;N RUN — Chauffeur Privé Paris">
 <meta name="description" content="I&amp;N RUN — Chauffeur privé Paris. CDG, Orly, longue distance. Tarifs fixes garantis. Réservation en 30 secondes.">
 <title>I&amp;N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +35,7 @@ a{text-decoration:none;color:inherit;}
 /* NAV */
 .hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0px);background:rgba(9,9,15,.96);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border-bottom:1px solid var(--b);}
 .nav{display:flex;align-items:center;height:var(--hdr);padding:0 max(18px,calc(env(safe-area-inset-left,0px) + 18px));max-width:600px;margin:0 auto;}
-.logo{display:flex;align-items:center;flex:0 0 auto;overflow:visible;}
+.logo{font-family:"Playfair Display",serif;font-size:1.22rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;flex:0 0 auto;}
 .nav-gap{flex:1;}
 .nav-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:var(--wa);color:#fff;font-family:"Inter",sans-serif;font-weight:700;font-size:.78rem;white-space:nowrap;padding:0 18px;height:36px;border-radius:50px;transition:opacity .2s,transform .2s;}
 .nav-btn:active{transform:scale(.97);opacity:.9;}
@@ -236,37 +233,76 @@ footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
 .sb-wa:hover{box-shadow:0 5px 18px rgba(18,140,126,.28);}
 .sb-tel{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.18);color:var(--gold);}
 .sb-tel:hover{background:var(--glow);}
+
+/* ═══════ TRAFIC ═══════ */
+.trafic-sec{padding:32px 14px 10px;max-width:520px;margin:0 auto;}
+.trafic-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.trafic-title-wrap{display:flex;flex-direction:column;gap:2px;}
+.trafic-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:50px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;width:fit-content;}
+.trafic-badge .dot{width:5px;height:5px;border-radius:50%;}
+.trafic-badge .dot.green{background:var(--green-l);}
+.trafic-badge .dot.orange{background:#fb923c;}
+.trafic-badge .dot.red{background:#ef4444;}
+.trafic-sec-h{font-family:"Playfair Display",serif;font-size:1.22rem;font-weight:700;margin-top:4px;}
+.trafic-sec-h span{background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.trafic-refresh-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:1px solid var(--b);border-radius:12px;padding:8px 12px;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.trafic-refresh-btn:hover{background:var(--glow);}
+.trafic-refresh-btn svg{transition:transform .5s var(--ease);}
+.trafic-refresh-btn.spinning svg{animation:spinR 1s linear infinite;}
+@keyframes spinR{to{transform:rotate(360deg)}}
+.trafic-countdown{font-size:.58rem;color:var(--gray);font-variant-numeric:tabular-nums;}
+
+.trafic-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
+.tz{padding:8px 6px;border-radius:12px;text-align:center;border:1.5px solid var(--b);background:var(--s2);cursor:pointer;transition:all .2s;user-select:none;}
+.tz.active{border-color:var(--gold);background:rgba(201,168,76,.1);}
+.tz:active{transform:scale(.96);}
+.tz-icon{font-size:1.05rem;}
+.tz-name{font-size:.62rem;font-weight:600;margin-top:3px;line-height:1.2;}
+.tz-status{font-size:.55rem;margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.tz-status.fluide{color:var(--green-l);}
+.tz-status.lent{color:#fbbf24;}
+.tz-status.bouchon{color:#fb923c;}
+.tz-status.ferme{color:#ef4444;}
+.tz-status.chargement{color:var(--gray);}
+
+.trafic-list{display:flex;flex-direction:column;gap:7px;min-height:80px;}
+.trafic-item{background:var(--s2);border:1px solid var(--b);border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:11px;transition:border-color .2s,background .2s;animation:fadeUp .3s var(--ease) both;cursor:pointer;}
+.trafic-item:hover{border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.04);}
+.trafic-sev{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.sev-0,.sev-1{background:var(--green-l);}
+.sev-2{background:#fbbf24;}
+.sev-3{background:#fb923c;}
+.sev-4{background:#ef4444;}
+.trafic-body{flex:1;min-width:0;}
+.trafic-road{font-weight:700;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.trafic-desc{font-size:.74rem;color:var(--gray2);margin-top:2px;line-height:1.4;}
+.trafic-meta{font-size:.64rem;color:var(--gray);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;}
+.trafic-tag{padding:2px 7px;border-radius:50px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.tag-ferme{background:rgba(239,68,68,.15);color:#ef4444;}
+.tag-bouchon{background:rgba(251,146,60,.15);color:#fb923c;}
+.tag-lent{background:rgba(251,191,36,.12);color:#fbbf24;}
+.tag-travaux{background:rgba(99,102,241,.12);color:#a5b4fc;}
+.tag-accident{background:rgba(239,68,68,.12);color:#fca5a5;}
+.tag-fluide{background:rgba(34,197,94,.1);color:var(--green-l);}
+
+.trafic-empty{text-align:center;padding:24px 0;color:var(--gray);font-size:.82rem;line-height:1.8;}
+.trafic-empty-icon{font-size:2rem;margin-bottom:6px;opacity:.4;}
+.trafic-src{font-size:.62rem;color:var(--gray);margin-top:10px;text-align:right;padding-right:4px;}
+.trafic-src a{color:rgba(201,168,76,.6);text-underline-offset:2px;}
+.trafic-key-box{background:rgba(201,168,76,.06);border:1px dashed rgba(201,168,76,.2);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:.78rem;color:var(--gray2);line-height:1.7;display:none;}
+.trafic-key-box.show{display:block;}
+.trafic-key-box a{color:var(--gold);text-decoration:underline;text-underline-offset:2px;}
+.trafic-key-input{width:100%;margin-top:8px;height:38px;background:rgba(255,255,255,.05);border:1.5px solid rgba(201,168,76,.2);border-radius:8px;color:var(--white);padding:0 10px;font-size:.82rem;font-family:"Inter",sans-serif;outline:none;transition:border-color .2s;}
+.trafic-key-input:focus{border-color:var(--gold);}
+.trafic-key-save{margin-top:7px;padding:6px 14px;border-radius:8px;background:var(--gold);color:#000;font-weight:700;font-size:.75rem;border:none;cursor:pointer;transition:opacity .2s;}
+.trafic-key-save:hover{opacity:.88;}
 </style>
 </head>
 <body>
 
 <header class="hdr">
   <nav class="nav">
-    <div class="logo">
-      <svg width="110" height="32" viewBox="0 0 110 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&N RUN">
-        <!-- Barre verticale I avec empattements -->
-        <rect x="2" y="6" width="4.5" height="20" rx="2" fill="url(#lg)"/>
-        <rect x="0" y="6" width="8.5" height="3" rx="1.5" fill="url(#lg)" opacity=".55"/>
-        <rect x="0" y="23" width="8.5" height="3" rx="1.5" fill="url(#lg)" opacity=".55"/>
-        <!-- Séparateur & stylisé -->
-        <text x="14" y="24" font-family="Playfair Display,Georgia,serif" font-size="20" font-style="italic" font-weight="400" fill="url(#lg)" opacity=".8">&amp;</text>
-        <!-- N diagonal -->
-        <path d="M30 26 L30 6 L44 26 L44 6" stroke="url(#lg)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Séparateur fin -->
-        <line x1="52" y1="8" x2="52" y2="24" stroke="url(#lg)" stroke-width=".8" opacity=".25"/>
-        <!-- RUN -->
-        <text x="56" y="23" font-family="Playfair Display,Georgia,serif" font-size="15" font-weight="700" letter-spacing="3" fill="url(#lg)">RUN</text>
-        <!-- Point destination -->
-        <circle cx="4.25" cy="33" r="2.5" fill="url(#lg)" opacity=".6"/>
-        <defs>
-          <linearGradient id="lg" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#c9a84c"/>
-            <stop offset="50%" stop-color="#e8c97a"/>
-            <stop offset="100%" stop-color="#c9a84c"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
+    <div class="logo">I&amp;N RUN</div>
     <div class="nav-gap"></div>
     <a href="https://wa.me/33767742220?text=Bonjour%20I%26N%20RUN," class="nav-btn" target="_blank" rel="noopener">Réserver</a>
   </nav>
@@ -386,7 +422,386 @@ footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
   </div>
 </div>
 
+
+<!-- ═══════════════════════════════════════ -->
+<!-- WIDGET FIL TRAFIC                       -->
+<!-- ═══════════════════════════════════════ -->
+<section class="trafic-sec" id="trafic">
+  <div class="trafic-header">
+    <div class="trafic-title-wrap">
+      <div class="trafic-badge"><span class="dot green" id="trafic-dot"></span><span id="trafic-badge-txt">Trafic temps réel</span></div>
+      <h2 class="sec-h" style="margin-bottom:0;margin-top:4px;">Fil <span>trafic</span></h2>
+    </div>
+    <button class="trafic-refresh-btn" onclick="refreshTrafic()" id="refresh-btn" aria-label="Actualiser le trafic">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      <span class="trafic-countdown" id="trafic-cd">5:00</span>
+    </button>
+  </div>
+
+  <!-- ZONES RAPIDES -->
+  <div class="trafic-zones" id="trafic-zones">
+    <div class="tz active" data-zone="all" onclick="filterZone(this)"><div class="tz-icon">🗺</div><div class="tz-name">Tout</div><div class="tz-status chargement" id="zone-all">...</div></div>
+    <div class="tz" data-zone="cdg" onclick="filterZone(this)"><div class="tz-icon">✈️</div><div class="tz-name">CDG / A1</div><div class="tz-status chargement" id="zone-cdg">...</div></div>
+    <div class="tz" data-zone="orly" onclick="filterZone(this)"><div class="tz-icon">✈️</div><div class="tz-name">Orly / A6</div><div class="tz-status chargement" id="zone-orly">...</div></div>
+    <div class="tz" data-zone="periph" onclick="filterZone(this)"><div class="tz-icon">🔄</div><div class="tz-name">Périph</div><div class="tz-status chargement" id="zone-periph">...</div></div>
+    <div class="tz" data-zone="a86" onclick="filterZone(this)"><div class="tz-icon">🛣</div><div class="tz-name">A86</div><div class="tz-status chargement" id="zone-a86">...</div></div>
+    <div class="tz" data-zone="paris" onclick="filterZone(this)"><div class="tz-icon">🏙</div><div class="tz-name">Paris</div><div class="tz-status chargement" id="zone-paris">...</div></div>
+  </div>
+
+  <!-- CLÉ API TOMTOM (optionnelle) -->
+  <div class="trafic-key-box" id="key-box">
+    <strong style="color:var(--gold);">🚀 Mode haute précision — Clé TomTom gratuite</strong><br>
+    Pour des données temps réel à la minute, obtenez votre clé gratuite sur
+    <a href="https://developer.tomtom.com" target="_blank" rel="noopener">developer.tomtom.com</a>
+    (sans CB, 2 500 req/jour).<br>
+    Sans clé, le widget utilise Bison Futé (données officielles françaises).
+    <input class="trafic-key-input" id="tomtom-key-in" placeholder="Coller votre clé API TomTom ici…" autocomplete="off" spellcheck="false">
+    <button class="trafic-key-save" onclick="saveTomtomKey()">Enregistrer et activer</button>
+  </div>
+
+  <!-- LISTE DES INCIDENTS -->
+  <div class="trafic-list" id="trafic-list">
+    <div class="trafic-empty"><div class="trafic-empty-icon">🔄</div>Chargement du trafic…</div>
+  </div>
+  <div class="trafic-src" id="trafic-src"></div>
+</section>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   FIL TRAFIC — I&N RUN v1
+   Sources :
+   1. TomTom Traffic Incidents API (si clé API dispo)
+   2. Bison Futé RSS officiel via proxy CORS (zéro config)
+   Auto-refresh 5 min. Filtre par zone. Cache 3 min.
+═══════════════════════════════════════════════════════════ */
+(function(){
+  // ── Config zones ──
+  var ZONES = {
+    all:    { bbox:[1.8,48.45,3.1,49.15], keywords:[''] },
+    cdg:    { bbox:[2.4,48.92,2.72,49.08], keywords:['A1','CDG','Roissy','Charles de Gaulle','N17','A104'] },
+    orly:   { bbox:[2.3,48.67,2.5,48.79], keywords:['A6','Orly','A10','N7','A86','Antony'] },
+    periph: { bbox:[2.23,48.82,2.42,48.91], keywords:['Périph','boulevard','BP','Paris'] },
+    a86:    { bbox:[2.1,48.75,2.65,49.0],  keywords:['A86','N186'] },
+    paris:  { bbox:[2.27,48.83,2.41,48.89], keywords:['Paris','rue','avenue','bd'] },
+  };
+
+  var KEY_LS  = 'inrun_tt_key';
+  var CACHE_K = 'inrun_trafic_cache';
+  var CACHE_T = 180000; // 3 min
+
+  var incidents  = [];
+  var curZone    = 'all';
+  var cdTimer    = null;
+  var cdSecs     = 300;
+  var tomtomKey  = '';
+
+  function init(){
+    tomtomKey = (function(){ try{ return localStorage.getItem(KEY_LS)||''; }catch(e){return '';} })();
+    if(!tomtomKey){ document.getElementById('key-box').classList.add('show'); }
+    loadTrafic();
+    startCountdown();
+  }
+
+  // ── Countdown ──
+  function startCountdown(){
+    clearInterval(cdTimer);
+    cdSecs = 300;
+    cdTimer = setInterval(function(){
+      cdSecs--;
+      var m = Math.floor(cdSecs/60);
+      var s = cdSecs % 60;
+      var el = document.getElementById('trafic-cd');
+      if(el) el.textContent = m+':'+(s<10?'0':'')+s;
+      if(cdSecs <= 0){ refreshTrafic(); }
+    }, 1000);
+  }
+
+  window.refreshTrafic = function(){
+    var btn = document.getElementById('refresh-btn');
+    if(btn) btn.classList.add('spinning');
+    try{ sessionStorage.removeItem(CACHE_K); }catch(e){}
+    loadTrafic(function(){ if(btn) btn.classList.remove('spinning'); });
+    startCountdown();
+  };
+
+  // ── Cache ──
+  function getCached(){
+    try{
+      var raw = sessionStorage.getItem(CACHE_K);
+      if(!raw) return null;
+      var p = JSON.parse(raw);
+      if(Date.now()-p.ts < CACHE_T) return p;
+    }catch(e){}
+    return null;
+  }
+  function setCache(data, src){
+    try{ sessionStorage.setItem(CACHE_K, JSON.stringify({data:data,src:src,ts:Date.now()})); }catch(e){}
+  }
+
+  // ── Load ──
+  function loadTrafic(cb){
+    var cached = getCached();
+    if(cached){ incidents = cached.data; renderList(); updateZones(); setSource(cached.src); if(cb) cb(); return; }
+
+    if(tomtomKey){
+      fetchTomTom(cb);
+    } else {
+      fetchBisonFute(cb);
+    }
+  }
+
+  // ── TomTom ──
+  function fetchTomTom(cb){
+    var bbox = ZONES.all.bbox;
+    var bboxStr = bbox[0]+','+bbox[1]+','+bbox[2]+','+bbox[3];
+    var fields = '{incidents{type,geometry{type,coordinates},properties{iconCategory,magnitudeOfDelay,events{description,code,iconCategory},startTime,endTime,from,to,length,delay,roadNumbers,timeValidity}}}';
+    var url = 'https://api.tomtom.com/traffic/services/5/incidentDetails'
+      +'?key='+encodeURIComponent(tomtomKey)
+      +'&bbox='+bboxStr
+      +'&fields='+encodeURIComponent(fields)
+      +'&language=fr-FR'
+      +'&categoryFilter=0,1,2,3,4,5,6,7,8,9,10,11'
+      +'&timeValidityFilter=present';
+
+    var ctrl = new AbortController();
+    var tid = setTimeout(function(){ ctrl.abort(); }, 7000);
+
+    fetch(url, {signal:ctrl.signal})
+    .then(function(r){ clearTimeout(tid); if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(d){
+      incidents = parseTomTom(d.incidents || []);
+      setCache(incidents, 'tomtom');
+      setSource('tomtom');
+      renderList(); updateZones();
+      if(cb) cb();
+    })
+    .catch(function(){
+      clearTimeout(tid);
+      fetchBisonFute(cb);
+    });
+  }
+
+  function parseTomTom(raw){
+    return raw.map(function(inc){
+      var p = inc.properties || {};
+      var ev = (p.events && p.events[0]) || {};
+      var roads = (p.roadNumbers && p.roadNumbers.join(', ')) || '';
+      var from  = p.from || '';
+      var to    = p.to   || '';
+      var desc  = ev.description || '';
+      var sev   = p.magnitudeOfDelay !== undefined ? p.magnitudeOfDelay : 1;
+      var cat   = (p.iconCategory || '').toLowerCase();
+      var type  = 'bouchon';
+      if(cat.includes('clos') || sev >= 4) type = 'ferme';
+      else if(cat.includes('accident')) type = 'accident';
+      else if(cat.includes('work') || cat.includes('trav')) type = 'travaux';
+      else if(sev <= 1) type = 'fluide';
+      else if(sev === 2) type = 'lent';
+      var delay = p.delay ? Math.round(p.delay/60)+'min' : '';
+      var route = roads || from || desc.split(' ').slice(0,4).join(' ');
+      return { road:route, desc:desc||from+' → '+to, type:type, sev:sev, delay:delay,
+               from:from, to:to, zones:detectZones(route, from, to) };
+    }).filter(function(i){ return i.road; });
+  }
+
+  // ── Bison Futé RSS ──
+  function fetchBisonFute(cb){
+    var rssFr = 'https://www.bison-fute.gouv.fr/rss/info-trafic.xml';
+    var proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssFr);
+    var ctrl  = new AbortController();
+    var tid   = setTimeout(function(){ ctrl.abort(); }, 8000);
+
+    fetch(proxy, {signal:ctrl.signal})
+    .then(function(r){ clearTimeout(tid); return r.json(); })
+    .then(function(d){
+      var parser = new DOMParser();
+      var xml = parser.parseFromString(d.contents || '', 'text/xml');
+      incidents = parseBisonFute(xml.querySelectorAll('item'));
+      if(!incidents.length) throw new Error('empty');
+      setCache(incidents, 'bisonfute');
+      setSource('bisonfute');
+      renderList(); updateZones();
+      if(cb) cb();
+    })
+    .catch(function(){
+      clearTimeout(tid);
+      incidents = getDefaultData();
+      setSource('demo');
+      renderList(); updateZones();
+      if(cb) cb();
+    });
+  }
+
+  function parseBisonFute(items){
+    var out = [];
+    items.forEach(function(item){
+      var title = (item.querySelector('title')||{}).textContent || '';
+      var desc  = (item.querySelector('description')||{}).textContent || '';
+      var full  = title + ' ' + desc;
+      if(!title) return;
+      var sev = 1;
+      var type = 'info';
+      var f = full.toLowerCase();
+      if(f.includes('ferm') || f.includes('bloqu') || f.includes('coupé')) { type='ferme'; sev=4; }
+      else if(f.includes('bouchon') || f.includes('embouteillage') || f.includes('circulation difficile')) { type='bouchon'; sev=3; }
+      else if(f.includes('ralenti') || f.includes('trafic dense') || f.includes('perturbé')) { type='lent'; sev=2; }
+      else if(f.includes('accident')) { type='accident'; sev=3; }
+      else if(f.includes('travaux') || f.includes('chantier')) { type='travaux'; sev=2; }
+      var road = extractRoad(title);
+      out.push({ road:road||title.substring(0,40), desc:desc.replace(/<[^>]+>/g,'').trim().substring(0,90)||title,
+                 type:type, sev:sev, delay:'', from:'', to:'', zones:detectZonesText(full) });
+    });
+    return out.slice(0,20);
+  }
+
+  function extractRoad(txt){
+    var m = txt.match(/\b(A\d+|N\d+|D\d+|RN\d+|Périphérique|Boulevard[^,]+|Paris|CDG|Orly)/i);
+    return m ? m[0] : '';
+  }
+
+  // ── Détection zones ──
+  function detectZones(road, from, to){
+    var t = ((road||'')+(from||'')+(to||'')).toLowerCase();
+    return detectZonesText(t);
+  }
+  function detectZonesText(t){
+    t = (t||'').toLowerCase();
+    var z = [];
+    if(/a1|cdg|roissy|charles.de.gaulle|n17|bourget/.test(t)) z.push('cdg');
+    if(/a6|orly|antony|n7|fresnes/.test(t)) z.push('orly');
+    if(/périph|pér|boulevard pér|bp |a87/.test(t)) z.push('periph');
+    if(/a86|n186/.test(t)) z.push('a86');
+    if(/paris/.test(t)) z.push('paris');
+    if(!z.length) z.push('all');
+    z.push('all');
+    return z;
+  }
+
+  // ── Données démo si tout échoue ──
+  function getDefaultData(){
+    return [
+      {road:'Périphérique Paris',desc:'Trafic dense — Est et Sud',type:'bouchon',sev:3,delay:'',zones:['periph','all']},
+      {road:'A1 — vers CDG',desc:'Fluidité normale',type:'fluide',sev:0,delay:'',zones:['cdg','all']},
+      {road:'A6 — vers Orly',desc:'Ralentissements ponctuels',type:'lent',sev:2,delay:'',zones:['orly','all']},
+      {road:'A86',desc:'Circulation fluide',type:'fluide',sev:0,delay:'',zones:['a86','all']},
+    ];
+  }
+
+  // ── Rendu liste ──
+  var TAGS = { ferme:'tag-ferme', bouchon:'tag-bouchon', lent:'tag-lent', travaux:'tag-travaux', accident:'tag-accident', fluide:'tag-fluide' };
+  var LABELS = { ferme:'🔴 Fermé', bouchon:'🟠 Bouchon', lent:'🟡 Ralenti', travaux:'🔵 Travaux', accident:'🚨 Accident', fluide:'🟢 Fluide', info:'ℹ️ Info' };
+
+  function renderList(){
+    var list = document.getElementById('trafic-list');
+    if(!list) return;
+    var filtered = curZone === 'all' ? incidents : incidents.filter(function(i){ return i.zones && i.zones.includes(curZone); });
+    if(!filtered.length){
+      list.innerHTML = '<div class="trafic-empty"><div class="trafic-empty-icon">🟢</div>Trafic fluide sur cette zone !</div>';
+      return;
+    }
+    var sorted = filtered.slice().sort(function(a,b){ return b.sev - a.sev; });
+    list.innerHTML = sorted.slice(0,12).map(function(inc,i){
+      var tc = TAGS[inc.type]||'tag-fluide';
+      var tl = LABELS[inc.type]||inc.type;
+      var meta = '';
+      if(inc.from && inc.to) meta += '<span>De : '+inc.from+' → '+inc.to+'</span>';
+      if(inc.delay) meta += '<span>⏱ '+inc.delay+'</span>';
+      var nav = '';
+      if(inc.from) nav = 'onclick="openNav(''+encodeURIComponent(inc.from)+'')"';
+      return '<div class="trafic-item" '+nav+' style="animation-delay:'+(i*0.04)+'s">'
+        +'<div class="trafic-sev sev-'+Math.min(inc.sev,4)+'"></div>'
+        +'<div class="trafic-body">'
+        +'<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">'
+        +'<span class="trafic-road">'+inc.road+'</span>'
+        +'<span class="trafic-tag '+tc+'">'+tl+'</span>'
+        +'</div>'
+        +(inc.desc?'<div class="trafic-desc">'+inc.desc.substring(0,80)+'</div>':'')
+        +(meta?'<div class="trafic-meta">'+meta+'</div>':'')
+        +'</div>'
+        +'</div>';
+    }).join('');
+  }
+
+  // ── Zones ──
+  function updateZones(){
+    var zoneDefs = {
+      cdg:'cdg', orly:'orly', periph:'periph', a86:'a86', paris:'paris'
+    };
+    var allMax = incidents.length ? Math.max.apply(null, incidents.map(function(i){ return i.sev||0; })) : 0;
+    setZoneStatus('zone-all', allMax);
+    Object.keys(zoneDefs).forEach(function(k){
+      var zInc = incidents.filter(function(i){ return i.zones && i.zones.includes(k); });
+      var mx = zInc.length ? Math.max.apply(null, zInc.map(function(i){ return i.sev||0; })) : 0;
+      setZoneStatus('zone-'+k, mx);
+    });
+    // Badge global
+    var dot = document.getElementById('trafic-dot');
+    var txt = document.getElementById('trafic-badge-txt');
+    if(dot && txt){
+      if(allMax >= 4){ dot.className='dot red'; txt.textContent='Incident grave'; }
+      else if(allMax >= 3){ dot.className='dot orange'; txt.textContent='Perturbations'; }
+      else if(allMax >= 2){ dot.className='dot orange'; txt.textContent='Ralentissements'; }
+      else { dot.className='dot green'; txt.textContent='Trafic fluide'; }
+    }
+  }
+  function setZoneStatus(id, sev){
+    var el = document.getElementById(id);
+    if(!el) return;
+    if(sev >= 4){ el.textContent='Fermé'; el.className='tz-status ferme'; }
+    else if(sev >= 3){ el.textContent='Bouchon'; el.className='tz-status bouchon'; }
+    else if(sev >= 2){ el.textContent='Ralenti'; el.className='tz-status lent'; }
+    else { el.textContent='Fluide'; el.className='tz-status fluide'; }
+  }
+
+  window.filterZone = function(el){
+    document.querySelectorAll('.tz').forEach(function(t){ t.classList.remove('active'); });
+    el.classList.add('active');
+    curZone = el.dataset.zone;
+    renderList();
+  };
+
+  // ── Source info ──
+  function setSource(src){
+    var el = document.getElementById('trafic-src');
+    if(!el) return;
+    var now = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    if(src === 'tomtom') el.innerHTML = 'Source : <a href="https://developer.tomtom.com" target="_blank" rel="noopener">TomTom Traffic™</a> · MàJ '+now;
+    else if(src === 'bisonfute') el.innerHTML = 'Source : <a href="https://www.bison-fute.gouv.fr" target="_blank" rel="noopener">Bison Futé</a> (officiel) · MàJ '+now;
+    else el.innerHTML = 'Données de démonstration · <a onclick="refreshTrafic()" style="cursor:pointer;">Actualiser</a>';
+  }
+
+  // ── Navigation ──
+  window.openNav = function(addr){
+    var decoded = decodeURIComponent(addr);
+    var ua = navigator.userAgent;
+    var url = /iPad|iPhone|iPod/.test(ua)
+      ? 'waze://?q='+encodeURIComponent(decoded)
+      : 'https://www.waze.com/ul?q='+encodeURIComponent(decoded);
+    window.open(url, '_blank');
+  };
+
+  // ── Clé TomTom ──
+  window.saveTomtomKey = function(){
+    var val = (document.getElementById('tomtom-key-in')||{}).value || '';
+    val = val.trim();
+    if(!val) return;
+    try{ localStorage.setItem(KEY_LS, val); }catch(e){}
+    tomtomKey = val;
+    document.getElementById('key-box').classList.remove('show');
+    refreshTrafic();
+  };
+
+  // ── Démarrage ──
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    setTimeout(init, 300);
+  }
+})();
+</script>
+
 <div class="sep"></div>
+
 <div class="chips">
   <div class="chip"><div class="chip-val">Hybride 2022</div><div class="chip-lbl">Véhicule</div></div>
   <div class="chip"><div class="chip-val">Eau &amp; chargeurs</div><div class="chip-lbl">À bord</div></div>
@@ -412,15 +827,15 @@ footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
   <div class="rows">
     <div class="c-row"><div><div class="c-label">WhatsApp</div><div class="c-val">+33 7 67 74 22 20</div></div><a href="https://wa.me/33767742220" class="c-act" target="_blank" rel="noopener">Écrire</a></div>
     <div class="c-row"><div><div class="c-label">Téléphone</div><div class="c-val">07 67 74 22 20</div></div><a href="tel:+33767742220" class="c-act">Appeler</a></div>
-    <div class="c-row"><div><div class="c-label">Email</div><div class="c-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e3808c8d97828097cd8a8d91968da3848e828a8fcd808c8e">[email&#160;protected]</a></div></div><a href="/cdn-cgi/l/email-protection#3c5f5352485d5f481255524e49527c5b515d5550125f5351" class="c-act">Écrire</a></div>
+    <div class="c-row"><div><div class="c-label">Email</div><div class="c-val">contact.inrun@gmail.com</div></div><a href="mailto:contact.inrun@gmail.com" class="c-act">Écrire</a></div>
   </div>
   <button class="btn-vcard" onclick="dlVCard()">Enregistrer dans mes contacts</button>
 </section>
 
 <footer>
-  <p>© 2026 I&amp;N RUN · Chauffeur Privé Paris · SIRET : <strong>993 776 467 00017</strong></p>
+  <p>© 2026 I&amp;N RUN · Chauffeur Privé Paris · SIRET : 993 776 467 00017 · 7 Avenue du Parc, 91130 Ris-Orangis</p>
   <p>
-    <a href="https://letxbrace-droid.github.io/inrunparis/mentions-legales.html">Mentions légales</a> ·
+    <a href="mentions-legales.html">Mentions légales</a> ·
     <a href="mentions-legales.html#rgpd">Données personnelles</a> ·
     <a href="mentions-legales.html#cgv">CGV</a>
   </p>
@@ -431,7 +846,7 @@ footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
   <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ═══════════════════════════════════════════════════════
    MÉTÉO v3 — Fiable 100%
    Stratégie :
@@ -709,4 +1124,699 @@ function buildMap(dc,ac,rt,dV,aV){
   setTimeout(function(){try{rMap.invalidateSize();}catch(e){}},200);
 }
 function dlVCard(){
-  var v="BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis
+  var v="BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nN:BRAHA;NOURDINE;;;\nORG:I&N RUN — Chauffeur Privé Paris\nTITLE:Chauffeur Privé VTC\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nADR;TYPE=WORK:;;7 Avenue du Parc;Ris-Orangis;;91130;France\nURL:https://letxbrace-droid.github.io/inrunparis/\nNOTE:SIRET 993 776 467 00017\nEND:VCARD";
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([v],{type:"text/vcard"}));
+  a.download="inrun.vcf";a.click();
+}!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#09090f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="I&amp;N RUN — Chauffeur privé Paris. CDG, Orly, longue distance. Tarifs fixes garantis. Réservation en 30 secondes.">
+<title>I&amp;N RUN — Chauffeur Privé Paris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+<style>
+:root{
+  --ink:#09090f;--s1:#13131e;--s2:#1b1b2a;--s3:#222235;
+  --gold:#c9a84c;--gold-l:#e8c97a;--glow:rgba(201,168,76,.18);
+  --green:#16a34a;--green-l:#22c55e;--wa:#128C7E;
+  --white:#f0efe9;--gray:#6b7280;--gray2:#9ca3af;
+  --b:rgba(255,255,255,.07);
+  --r:14px;--rl:20px;--rxl:26px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --tap:52px;--hdr:56px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-size-adjust:100%;}
+body{font-family:"Inter",sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.6;padding-bottom:80px;}
+a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+/* NAV */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:999;padding-top:env(safe-area-inset-top,0px);background:rgba(9,9,15,.96);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border-bottom:1px solid var(--b);}
+.nav{display:flex;align-items:center;height:var(--hdr);padding:0 max(18px,calc(env(safe-area-inset-left,0px) + 18px));max-width:600px;margin:0 auto;}
+.logo{font-family:"Playfair Display",serif;font-size:1.22rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;flex:0 0 auto;}
+.nav-gap{flex:1;}
+.nav-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:var(--wa);color:#fff;font-family:"Inter",sans-serif;font-weight:700;font-size:.78rem;white-space:nowrap;padding:0 18px;height:36px;border-radius:50px;transition:opacity .2s,transform .2s;}
+.nav-btn:active{transform:scale(.97);opacity:.9;}
+
+/* MÉTÉO — widget fixe fiable */
+.weather{
+  position:fixed;
+  bottom:calc(80px + env(safe-area-inset-bottom,0px) + 10px);
+  left:max(12px,calc(env(safe-area-inset-left,0px) + 12px));
+  z-index:996;
+  background:rgba(13,13,22,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:50px;
+  padding:7px 14px 7px 10px;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.6);
+  max-width:min(200px,50vw);
+  opacity:0;transform:translateY(6px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+  pointer-events:none;
+}
+.weather.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.w-icon{font-size:1.2rem;line-height:1;flex-shrink:0;}
+.w-right{min-width:0;}
+.w-top{display:flex;align-items:baseline;gap:5px;}
+.w-temp{font-weight:700;font-size:.85rem;color:var(--white);white-space:nowrap;}
+.w-city{font-size:.6rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px;}
+.w-desc{font-size:.62rem;color:var(--gray2);white-space:nowrap;margin-top:1px;overflow:hidden;text-overflow:ellipsis;}
+
+/* HERO */
+.hero{padding-top:calc(var(--hdr) + env(safe-area-inset-top,0px) + 28px);background:linear-gradient(180deg,var(--ink) 0%,var(--s1) 100%);text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;width:500px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.09),transparent 70%);top:60px;left:50%;transform:translateX(-50%);pointer-events:none;}
+.hero-inner{padding:0 20px;position:relative;z-index:2;}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:50px;background:rgba(22,163,74,.1);border:1px solid rgba(34,197,94,.25);font-size:.68rem;font-weight:700;color:var(--green-l);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+h1{font-family:"Playfair Display",serif;font-size:clamp(2.1rem,9vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:12px;}
+.g{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:shine 5s infinite;}
+@keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
+.hero-copy{font-size:.88rem;color:var(--gray2);max-width:310px;margin:0 auto 22px;line-height:1.7;}
+
+/* CAR PHOTO */
+.car-wrap{position:relative;width:100%;height:230px;overflow:hidden;
+  -webkit-mask:linear-gradient(to bottom,transparent 0%,#000 14%,#000 70%,transparent 100%);
+  mask:linear-gradient(to bottom,transparent 0%,#000 14%,#000 70%,transparent 100%);}
+.car-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,var(--ink) 0%,transparent 18%,transparent 82%,var(--ink) 100%);pointer-events:none;z-index:2;}
+.car-img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:brightness(.78) contrast(1.08) saturate(.9);display:none;}
+.car-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);}
+.car-ph-icon{font-size:2.4rem;opacity:.2;}
+.car-ph-txt{font-size:.72rem;opacity:.35;}
+.car-badge{position:absolute;bottom:34px;right:18px;z-index:3;background:rgba(9,9,15,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(201,168,76,.28);border-radius:50px;padding:5px 13px;display:none;align-items:center;gap:7px;font-size:.7rem;}
+.cb-dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 2s infinite;flex-shrink:0;}
+.cb-txt{color:var(--white);font-weight:600;}
+.cb-sub{color:var(--gray);font-size:.6rem;}
+
+/* PROOF */
+.proof{display:flex;justify-content:center;padding:0 20px;margin-bottom:32px;position:relative;z-index:2;}
+.proof-item{flex:1;max-width:88px;padding:0 6px;border-right:1px solid var(--b);}
+.proof-item:last-child{border-right:none;}
+.pv{font-weight:700;font-size:.9rem;}
+.pl{font-size:.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
+
+/* TUNNEL */
+.tunnel{max-width:520px;margin:0 auto;padding:0 14px;}
+.card{background:var(--s2);border:1px solid var(--b);border-radius:var(--rxl);padding:22px 18px;margin-bottom:10px;transition:border-color .4s var(--ease),box-shadow .4s,opacity .4s,filter .3s;}
+.card.active{border-color:rgba(201,168,76,.28);box-shadow:0 0 0 1px rgba(201,168,76,.07);}
+.card.locked{opacity:.32;pointer-events:none;filter:blur(.4px);}
+.card.done{border-color:rgba(34,197,94,.2);}
+.card-head{display:flex;align-items:center;gap:11px;}
+.card-num{width:27px;height:27px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;background:var(--gold);color:#000;transition:background .3s,color .3s;}
+.card.locked .card-num{background:var(--s3);color:var(--gray);}
+.card.done .card-num{background:var(--green);color:#fff;}
+.card-title{font-weight:700;font-size:.92rem;}
+.card-sub{font-size:.73rem;color:var(--gray);margin-top:2px;}
+.card-body{margin-top:18px;}
+
+/* FLATPICKR */
+.flatpickr-calendar.inline{background:transparent!important;box-shadow:none!important;border:none!important;width:100%!important;max-width:100%!important;}
+.flatpickr-months,.flatpickr-month{background:transparent!important;}
+.flatpickr-month{height:40px!important;}
+.flatpickr-current-month{font-family:"Playfair Display",serif!important;font-size:1rem!important;color:var(--white)!important;padding-top:8px!important;}
+.flatpickr-monthDropdown-months{background:var(--s2)!important;color:var(--white)!important;}
+.cur-year{color:var(--gold)!important;}.numInputWrapper input{color:var(--gold)!important;}
+.flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--gold)!important;}
+.flatpickr-weekday{background:transparent!important;color:var(--gold)!important;font-weight:700!important;font-size:.65rem!important;}
+.flatpickr-days{border:none!important;}
+.dayContainer{padding:2px 0!important;width:100%!important;min-width:100%!important;max-width:100%!important;}
+.flatpickr-day{color:var(--white)!important;border-radius:10px!important;font-size:.85rem!important;max-width:14.28%!important;height:38px!important;line-height:38px!important;transition:background .15s,border-color .15s!important;}
+.flatpickr-day:hover{background:var(--glow)!important;border-color:rgba(201,168,76,.3)!important;}
+.flatpickr-day.selected{background:var(--gold)!important;border-color:var(--gold)!important;color:#000!important;font-weight:700!important;}
+.flatpickr-day.today:not(.selected){border-color:rgba(201,168,76,.5)!important;color:var(--gold)!important;}
+.flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:var(--gray)!important;opacity:.22!important;}
+
+/* CHAMPS */
+.f-row{margin-bottom:13px;position:relative;}
+.f-lbl{display:block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.f-wrap{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);transition:border-color .25s,box-shadow .25s;position:relative;}
+.f-wrap:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
+.f-ic{width:36px;text-align:center;font-size:.76rem;font-weight:700;color:var(--gray2);flex-shrink:0;}
+.f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:.9rem;font-family:"Inter",sans-serif;padding-right:12px;}
+.f-in::placeholder{color:rgba(107,114,128,.6);}
+select.f-in{cursor:pointer;-webkit-appearance:none;appearance:none;}
+option{background:var(--s2);color:var(--white);}
+
+/* AUTOCOMPLETE */
+.ac-list{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:9999;background:var(--s2);border:1px solid rgba(201,168,76,.22);border-radius:var(--r);overflow:hidden;box-shadow:0 20px 56px rgba(0,0,0,.85);display:none;}
+.ac-list.open{display:block;}
+.ac-item{padding:11px 13px;font-size:.82rem;cursor:pointer;border-bottom:1px solid var(--b);transition:background .15s;display:flex;align-items:flex-start;gap:9px;}
+.ac-item:last-child{border-bottom:none;}
+.ac-item:hover,.ac-item.hi{background:var(--glow);}
+.ac-ic{color:var(--gold);font-size:.7rem;margin-top:2px;flex-shrink:0;}
+.ac-main{font-weight:500;color:var(--white);}
+.ac-sec{font-size:.7rem;color:var(--gray);margin-top:1px;}
+.swap-row{display:flex;justify-content:center;margin:2px 0;}
+.swap-b{width:34px;height:34px;border-radius:50%;background:var(--s1);border:1px solid rgba(201,168,76,.2);color:var(--gold);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .45s var(--ease);}
+.swap-b:hover{background:var(--glow);transform:rotate(180deg);}
+
+/* PREFS */
+.pref-sec{margin-bottom:18px;}
+.pref-title{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+.pref-title::after{content:"";flex:1;height:1px;background:var(--b);}
+.pg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.pg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pb{padding:11px 8px;border-radius:var(--rl);text-align:center;cursor:pointer;background:rgba(255,255,255,.04);border:1.5px solid var(--b);transition:all .22s var(--ease);user-select:none;-webkit-user-select:none;}
+.pb:active{transform:scale(.96);}
+.pb.sel{border-color:var(--gold);background:rgba(201,168,76,.12);box-shadow:0 0 0 1px rgba(201,168,76,.14);}
+.pb-icon{font-size:1.25rem;margin-bottom:5px;}
+.pb-name{font-size:.75rem;font-weight:600;line-height:1.3;}
+.pb-desc{font-size:.65rem;color:var(--gray);margin-top:2px;}
+.note-area{width:100%;min-height:64px;background:rgba(255,255,255,.05);border:1.5px solid var(--b);border-radius:var(--r);color:var(--white);font-size:.88rem;font-family:"Inter",sans-serif;padding:11px;outline:none;resize:vertical;transition:border-color .25s,box-shadow .25s;line-height:1.5;}
+.note-area:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow);}
+.note-area::placeholder{color:rgba(107,114,128,.6);}
+
+/* BOUTONS */
+.btn-next{width:100%;height:var(--tap);border-radius:var(--r);background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;font-weight:700;font-size:.9rem;border:none;cursor:pointer;margin-top:6px;letter-spacing:.02em;transition:transform .3s var(--ease),box-shadow .3s,opacity .3s;-webkit-appearance:none;}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(201,168,76,.28);}
+.btn-next:active{transform:scale(.98);}
+.btn-next:disabled{opacity:.38;pointer-events:none;}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.15);border-top-color:#000;animation:sp .65s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* RÉSULTAT */
+.result-box{background:var(--s2);border:1px solid rgba(34,197,94,.16);border-radius:var(--rxl);padding:22px 18px;margin-bottom:10px;display:none;animation:fadeUp .4s var(--ease) both;}
+.result-box.show{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.r-lbl{font-size:.63rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+.r-price{font-family:"Playfair Display",serif;font-size:clamp(2.8rem,11vw,4.4rem);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.r-meta{font-size:.78rem;color:var(--gray);margin-bottom:12px;}
+.r-meta strong{color:var(--white);}
+.r-stats{display:flex;gap:7px;margin-bottom:14px;}
+.r-stat{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:var(--r);padding:10px 11px;}
+.rs-val{font-weight:700;font-size:.92rem;}
+.rs-lbl{font-size:.62rem;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+.pref-recap{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:.78rem;color:var(--gray2);line-height:1.75;}
+.pref-recap strong{color:var(--gold);display:block;font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.map-w{width:100%;height:230px;border-radius:var(--rl);overflow:hidden;margin-bottom:14px;border:1px solid rgba(201,168,76,.14);background:#0a0a14;}
+.map-w .leaflet-container{width:100%!important;height:100%!important;background:#0a0a14!important;}
+.btn-wa-final{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:var(--tap);border-radius:var(--r);background:var(--wa);color:#fff;font-weight:700;font-size:.88rem;transition:transform .25s,box-shadow .25s;}
+.btn-wa-final:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(18,140,126,.3);}
+.btn-wa-final:active{transform:scale(.98);}
+.btn-recalc{width:100%;height:38px;border-radius:var(--r);border:1px solid rgba(201,168,76,.18);background:transparent;color:var(--gold);font-size:.78rem;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s;}
+.btn-recalc:hover{background:var(--glow);}
+
+/* SECTIONS */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--b) 15%,var(--b) 85%,transparent);margin:0 14px 28px;}
+.chips{display:flex;overflow-x:auto;gap:8px;padding:0 14px 24px;max-width:520px;margin:0 auto;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:50px;padding:7px 13px;display:flex;flex-direction:column;align-items:center;white-space:nowrap;}
+.chip-val{font-weight:700;font-size:.8rem;}
+.chip-lbl{font-size:.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
+.sec{padding:36px 14px;max-width:520px;margin:0 auto;}
+.sec-lbl{font-size:.63rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.sec-h{font-family:"Playfair Display",serif;font-size:clamp(1.45rem,5.5vw,1.95rem);font-weight:700;letter-spacing:-.02em;margin-bottom:16px;line-height:1.2;}
+.sec-h span{background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.rows{display:flex;flex-direction:column;gap:7px;}
+.t-row,.c-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:var(--rl);padding:14px 16px;transition:border-color .22s,background .22s;}
+.t-row:hover,.c-row:hover{border-color:rgba(201,168,76,.22);background:rgba(201,168,76,.04);}
+.t-name,.c-val{font-weight:600;font-size:.88rem;}
+.t-note,.c-label{font-size:.7rem;color:var(--gray);margin-top:2px;}
+.c-label{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.t-price{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:var(--gold);white-space:nowrap;margin-left:10px;flex-shrink:0;}
+.c-act{flex-shrink:0;padding:7px 13px;border-radius:50px;font-size:.76rem;font-weight:600;background:var(--glow);border:1px solid rgba(201,168,76,.22);color:var(--gold);transition:background .2s;white-space:nowrap;margin-left:10px;}
+.c-act:hover{background:rgba(201,168,76,.15);}
+.btn-vcard{width:100%;height:var(--tap);border-radius:var(--r);margin-top:9px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.18);color:var(--gold);font-weight:600;font-size:.84rem;cursor:pointer;transition:background .2s;}
+.btn-vcard:hover{background:var(--glow);}
+footer{text-align:center;color:var(--gray);font-size:.68rem;padding:18px 14px 20px;border-top:1px solid var(--b);line-height:2;}
+footer a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
+
+/* STICKY BAR */
+.sticky{position:fixed;bottom:0;left:0;right:0;z-index:998;padding:9px 16px env(safe-area-inset-bottom,9px);background:rgba(9,9,15,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--b);display:flex;gap:9px;}
+.sb{flex:1;height:44px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;transition:transform .2s,box-shadow .2s;}
+.sb:active{transform:scale(.97);}
+.sb-wa{background:var(--wa);color:#fff;}
+.sb-wa:hover{box-shadow:0 5px 18px rgba(18,140,126,.28);}
+.sb-tel{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.18);color:var(--gold);}
+.sb-tel:hover{background:var(--glow);}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <nav class="nav">
+    <div class="logo">I&amp;N RUN</div>
+    <div class="nav-gap"></div>
+    <a href="https://wa.me/33767742220?text=Bonjour%20I%26N%20RUN," class="nav-btn" target="_blank" rel="noopener">Réserver</a>
+  </nav>
+</header>
+
+<!-- ═══════ MÉTÉO ═══════ -->
+<div class="weather" id="wthr" aria-live="polite" aria-label="Météo actuelle">
+  <div class="w-icon" id="w-icon">🌡</div>
+  <div class="w-right">
+    <div class="w-top"><span class="w-temp" id="w-temp">--°</span><span class="w-city" id="w-city">Paris</span></div>
+    <div class="w-desc" id="w-desc">Chargement…</div>
+  </div>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="pill"><span class="dot"></span>Disponible maintenant</div>
+    <h1>Votre vol atterrit.<br><span class="g">Nous sommes là.</span></h1>
+    <p class="hero-copy">Chauffeur privé à Paris · CDG · Orly · Longue distance<br>Réservez en 30 secondes — tarif fixe garanti.</p>
+  </div>
+  <div class="car-wrap">
+    <div class="car-ph" id="car-ph"><div class="car-ph-icon">🚗</div><div class="car-ph-txt">Ajouter voiture.jpg à la racine</div></div>
+    <img src="voiture.jpg" alt="Véhicule I&amp;N RUN — Toyota hybride" class="car-img" id="car-img"
+      onload="this.style.display='block';document.getElementById('car-ph').style.display='none';document.getElementById('car-badge').style.display='flex';"
+      onerror="this.style.display='none';">
+    <div class="car-badge" id="car-badge">
+      <span class="cb-dot"></span><span class="cb-txt">Disponible</span><span class="cb-sub">· Hybride 2022</span>
+    </div>
+  </div>
+  <div class="proof">
+    <div class="proof-item"><div class="pv">30 s</div><div class="pl">Réservation</div></div>
+    <div class="proof-item"><div class="pv">5 min</div><div class="pl">Réponse</div></div>
+    <div class="proof-item"><div class="pv">24h/7</div><div class="pl">Disponible</div></div>
+    <div class="proof-item"><div class="pv">Fixe</div><div class="pl">Tarif garanti</div></div>
+  </div>
+</section>
+
+<!-- ═══════ TUNNEL ═══════ -->
+<div class="tunnel">
+
+  <!-- ÉTAPE 1 : DATE -->
+  <div class="card active" id="c1">
+    <div class="card-head"><div class="card-num" id="n1">1</div><div><div class="card-title">Choisissez votre date</div><div class="card-sub" id="sub1">Quand souhaitez-vous voyager ?</div></div></div>
+    <div class="card-body">
+      <div id="cal-wrap"></div>
+      <button class="btn-next" id="btn1" onclick="goStep2()" disabled>Continuer vers l'itinéraire</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 : HEURE + LIEUX -->
+  <div class="card locked" id="c2">
+    <div class="card-head"><div class="card-num" id="n2">2</div><div><div class="card-title">Heure et itinéraire</div><div class="card-sub">Où et à quelle heure ?</div></div></div>
+    <div class="card-body">
+      <div class="f-row"><label class="f-lbl">Heure de prise en charge</label><div class="f-wrap"><span class="f-ic">H</span><input id="timepick" class="f-in" placeholder="Choisir l'heure" readonly></div></div>
+      <div class="f-row"><label class="f-lbl">Départ</label><div class="f-wrap"><span class="f-ic">A</span><input id="dep" class="f-in" type="text" placeholder="Adresse de départ…" autocomplete="off"></div><div class="ac-list" id="ac-dep"></div></div>
+      <div class="swap-row"><button class="swap-b" onclick="swapAddr()" aria-label="Inverser départ et arrivée">&#8645;</button></div>
+      <div class="f-row"><label class="f-lbl">Arrivée</label><div class="f-wrap"><span class="f-ic">B</span><input id="arr" class="f-in" type="text" placeholder="Destination…" autocomplete="off"></div><div class="ac-list" id="ac-arr"></div></div>
+      <div class="f-row"><label class="f-lbl">Passagers</label><div class="f-wrap"><span class="f-ic">N</span><select id="pax" class="f-in"><option value="1">1 passager</option><option value="2">2 passagers</option><option value="3">3 passagers</option><option value="4">4 passagers</option><option value="5+">5 passagers ou plus</option></select></div></div>
+      <button class="btn-next" onclick="goStep3()">Personnaliser le trajet</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 3 : CONFORT -->
+  <div class="card locked" id="c3">
+    <div class="card-head"><div class="card-num" id="n3">3</div><div><div class="card-title">Votre confort à bord</div><div class="card-sub">Personnalisez votre trajet</div></div></div>
+    <div class="card-body">
+      <div class="pref-sec"><div class="pref-title">Ambiance musicale</div><div class="pg3" id="pm">
+        <div class="pb" data-g="music" data-v="Jazz / Lounge" onclick="selPref(this)"><div class="pb-icon">🎷</div><div class="pb-name">Jazz</div><div class="pb-desc">Lounge</div></div>
+        <div class="pb" data-g="music" data-v="Pop / Hits" onclick="selPref(this)"><div class="pb-icon">🎸</div><div class="pb-name">Pop</div><div class="pb-desc">Hits</div></div>
+        <div class="pb" data-g="music" data-v="Classique" onclick="selPref(this)"><div class="pb-icon">🎹</div><div class="pb-name">Classique</div><div class="pb-desc">Détente</div></div>
+        <div class="pb" data-g="music" data-v="Hip-Hop / RnB" onclick="selPref(this)"><div class="pb-icon">🎵</div><div class="pb-name">Hip-Hop</div><div class="pb-desc">RnB</div></div>
+        <div class="pb" data-g="music" data-v="Radio info" onclick="selPref(this)"><div class="pb-icon">📻</div><div class="pb-name">Radio</div><div class="pb-desc">Infos</div></div>
+        <div class="pb" data-g="music" data-v="Silence" onclick="selPref(this)"><div class="pb-icon">🔇</div><div class="pb-name">Silence</div><div class="pb-desc">Calme</div></div>
+      </div></div>
+      <div class="pref-sec"><div class="pref-title">Température</div><div class="pg3" id="pt">
+        <div class="pb" data-g="temp" data-v="Fraîche 18-20°C" onclick="selPref(this)"><div class="pb-icon">❄️</div><div class="pb-name">Fraîche</div><div class="pb-desc">18–20°C</div></div>
+        <div class="pb sel" data-g="temp" data-v="Confort 21-22°C" onclick="selPref(this)"><div class="pb-icon">🌤</div><div class="pb-name">Confort</div><div class="pb-desc">21–22°C</div></div>
+        <div class="pb" data-g="temp" data-v="Chaude 23-24°C" onclick="selPref(this)"><div class="pb-icon">🔥</div><div class="pb-name">Chaude</div><div class="pb-desc">23–24°C</div></div>
+      </div></div>
+      <div class="pref-sec"><div class="pref-title">Vitres</div><div class="pg">
+        <div class="pb sel" data-g="windows" data-v="Fermées" onclick="selPref(this)"><div class="pb-icon">🚗</div><div class="pb-name">Fermées</div><div class="pb-desc">Climatisation</div></div>
+        <div class="pb" data-g="windows" data-v="Ouvertes" onclick="selPref(this)"><div class="pb-icon">🌿</div><div class="pb-name">Ouvertes</div><div class="pb-desc">Air frais</div></div>
+      </div></div>
+      <div class="pref-sec"><div class="pref-title">Échanges</div><div class="pg">
+        <div class="pb" data-g="talk" data-v="Discret" onclick="selPref(this)"><div class="pb-icon">🤐</div><div class="pb-name">Discret</div><div class="pb-desc">Trajet calme</div></div>
+        <div class="pb" data-g="talk" data-v="Disponible" onclick="selPref(this)"><div class="pb-icon">💬</div><div class="pb-name">Disponible</div><div class="pb-desc">Ouvert</div></div>
+      </div></div>
+      <div class="pref-sec"><div class="pref-title">Extras (multi-sélection)</div><div class="pg3">
+        <div class="pb" data-extra="Siège enfant" onclick="togExtra(this)"><div class="pb-icon">👶</div><div class="pb-name">Siège</div><div class="pb-desc">Enfant</div></div>
+        <div class="pb" data-extra="Grands bagages" onclick="togExtra(this)"><div class="pb-icon">🧳</div><div class="pb-name">Bagages</div><div class="pb-desc">Volumineux</div></div>
+        <div class="pb" data-extra="Animal" onclick="togExtra(this)"><div class="pb-icon">🐾</div><div class="pb-name">Animal</div><div class="pb-desc">Compagnie</div></div>
+        <div class="pb" data-extra="PMR" onclick="togExtra(this)"><div class="pb-icon">♿</div><div class="pb-name">PMR</div><div class="pb-desc">Accessibilité</div></div>
+        <div class="pb" data-extra="Facture pro" onclick="togExtra(this)"><div class="pb-icon">📋</div><div class="pb-name">Facture</div><div class="pb-desc">Pro / TVA</div></div>
+        <div class="pb" data-extra="Paiement CB" onclick="togExtra(this)"><div class="pb-icon">💳</div><div class="pb-name">CB</div><div class="pb-desc">Carte</div></div>
+      </div></div>
+      <div class="pref-sec"><div class="pref-title">Message chauffeur</div>
+        <textarea id="note" class="note-area" placeholder="N° de vol, terminal, code résidence…"></textarea>
+      </div>
+      <button class="btn-next" id="btn3" onclick="goStep4()">Calculer mon tarif</button>
+    </div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="result-box" id="result">
+    <div class="r-lbl">Tarif estimé</div>
+    <div class="r-price" id="r-price">—</div>
+    <div class="r-meta" id="r-meta"></div>
+    <div class="r-stats" id="r-stats"></div>
+    <div class="pref-recap" id="r-prefs"></div>
+    <div class="map-w" id="r-map"></div>
+    <a class="btn-wa-final" id="r-wa" href="#" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="white"/></svg>
+      Confirmer par WhatsApp
+    </a>
+    <button class="btn-recalc" onclick="resetAll()">&#8592; Modifier le trajet</button>
+  </div>
+</div>
+
+<div class="sep"></div>
+<div class="chips">
+  <div class="chip"><div class="chip-val">Hybride 2022</div><div class="chip-lbl">Véhicule</div></div>
+  <div class="chip"><div class="chip-val">Eau &amp; chargeurs</div><div class="chip-lbl">À bord</div></div>
+  <div class="chip"><div class="chip-val">Suivi vol</div><div class="chip-lbl">Retards OK</div></div>
+  <div class="chip"><div class="chip-val">Annulation gratuite</div><div class="chip-lbl">2h avant</div></div>
+  <div class="chip"><div class="chip-val">+10 € nuit</div><div class="chip-lbl">22h–06h</div></div>
+</div>
+
+<section class="sec">
+  <div class="sec-lbl">Tarification</div>
+  <h2 class="sec-h">Tarifs <span>fixes</span></h2>
+  <div class="rows">
+    <div class="t-row"><div><div class="t-name">Paris — CDG</div><div class="t-note">Charles de Gaulle · attente incluse</div></div><div class="t-price">68 €</div></div>
+    <div class="t-row"><div><div class="t-name">Paris — Orly</div><div class="t-note">Tous terminaux · suivi vol inclus</div></div><div class="t-price">50 €</div></div>
+    <div class="t-row"><div><div class="t-name">Mise à disposition</div><div class="t-note">Événements · rendez-vous pro</div></div><div class="t-price">60 €/h</div></div>
+    <div class="t-row"><div><div class="t-name">Longue distance</div><div class="t-note">Hors Paris · sur devis</div></div><div class="t-price">1,95 €/km</div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-lbl">Contact</div>
+  <h2 class="sec-h">Nous <span>joindre</span></h2>
+  <div class="rows">
+    <div class="c-row"><div><div class="c-label">WhatsApp</div><div class="c-val">+33 7 67 74 22 20</div></div><a href="https://wa.me/33767742220" class="c-act" target="_blank" rel="noopener">Écrire</a></div>
+    <div class="c-row"><div><div class="c-label">Téléphone</div><div class="c-val">07 67 74 22 20</div></div><a href="tel:+33767742220" class="c-act">Appeler</a></div>
+    <div class="c-row"><div><div class="c-label">Email</div><div class="c-val">contact.inrun@gmail.com</div></div><a href="mailto:contact.inrun@gmail.com" class="c-act">Écrire</a></div>
+  </div>
+  <button class="btn-vcard" onclick="dlVCard()">Enregistrer dans mes contacts</button>
+</section>
+
+<footer>
+  <p>© 2026 I&amp;N RUN · Chauffeur Privé Paris · SIRET : 993 776 467 00017 · 7 Avenue du Parc, 91130 Ris-Orangis</p>
+  <p>
+    <a href="mentions-legales.html">Mentions légales</a> ·
+    <a href="mentions-legales.html#rgpd">Données personnelles</a> ·
+    <a href="mentions-legales.html#cgv">CGV</a>
+  </p>
+</footer>
+
+<div class="sticky">
+  <a href="https://wa.me/33767742220" class="sb sb-wa" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="tel:+33767742220" class="sb sb-tel">Appeler</a>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   MÉTÉO v3 — Fiable 100%
+   Stratégie :
+   1. Cache sessionStorage valide 15 min → affichage immédiat
+   2. Géoloc timeout 3s → fallback Paris automatique
+   3. Fetch API avec AbortController 5s + retry 1 fois
+   4. Widget toujours visible (fallback visuel Paris)
+═══════════════════════════════════════════════════════ */
+(function initWeather(){
+  var WI={0:"☀️",1:"🌤",2:"⛅",3:"☁️",45:"🌫",48:"🌫",51:"🌦",53:"🌦",55:"🌧",61:"🌧",63:"🌧",65:"🌧",71:"🌨",73:"🌨",75:"❄️",80:"🌧",81:"🌧",82:"⛈",85:"🌨",95:"⛈",96:"⛈",99:"⛈"};
+  var WD={0:"Ciel dégagé",1:"Quasi dégagé",2:"Nuageux",3:"Couvert",45:"Brouillard",48:"Brouillard givrant",51:"Bruine légère",53:"Bruine",55:"Bruine forte",61:"Pluie légère",63:"Pluie",65:"Pluie forte",71:"Neige légère",73:"Neige",75:"Neige forte",80:"Averses",81:"Averses",82:"Averses fortes",95:"Orage",96:"Orage",99:"Orage fort"};
+
+  function render(temp,code,city){
+    document.getElementById("w-icon").textContent=WI[code]||"🌡";
+    document.getElementById("w-temp").textContent=Math.round(temp)+"°";
+    document.getElementById("w-desc").textContent=WD[code]||"";
+    document.getElementById("w-city").textContent=city;
+    document.getElementById("wthr").classList.add("show");
+  }
+
+  function renderFallback(){
+    document.getElementById("w-icon").textContent="🌡";
+    document.getElementById("w-temp").textContent="--°";
+    document.getElementById("w-desc").textContent="Météo indisponible";
+    document.getElementById("w-city").textContent="Paris";
+    document.getElementById("wthr").classList.add("show");
+  }
+
+  function fetchAPI(lat,lon,city,attempt){
+    if(!attempt)attempt=1;
+    var ctrl=new AbortController(),tid=setTimeout(function(){ctrl.abort();},5000);
+    fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat.toFixed(4)+"&longitude="+lon.toFixed(4)+"&current=temperature_2m,weathercode&timezone=Europe%2FParis&forecast_days=1",{signal:ctrl.signal})
+    .then(function(r){clearTimeout(tid);if(!r.ok)throw new Error(r.status);return r.json();})
+    .then(function(d){
+      var c=d.current,p={temp:c.temperature_2m,code:c.weathercode,city:city,ts:Date.now()};
+      try{sessionStorage.setItem("inrun_wthr",JSON.stringify(p));}catch(e){}
+      render(p.temp,p.code,p.city);
+    })
+    .catch(function(){
+      clearTimeout(tid);
+      if(attempt<2){
+        setTimeout(function(){fetchAPI(lat,lon,city,2);},1500);
+      } else if(city!=="Paris"){
+        fetchAPI(48.8566,2.3522,"Paris",1);
+      } else {
+        renderFallback();
+      }
+    });
+  }
+
+  /* 1 — Cache */
+  try{
+    var raw=sessionStorage.getItem("inrun_wthr");
+    if(raw){var p=JSON.parse(raw);if(Date.now()-p.ts<900000){render(p.temp,p.code,p.city);return;}}
+  }catch(e){}
+
+  /* 2 — Géoloc avec fallback Paris à 3s */
+  var done=false;
+  var fallTimer=setTimeout(function(){
+    if(!done){done=true;fetchAPI(48.8566,2.3522,"Paris");}
+  },3000);
+
+  if(!navigator.geolocation){clearTimeout(fallTimer);fetchAPI(48.8566,2.3522,"Paris");return;}
+
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      if(done)return;
+      done=true;clearTimeout(fallTimer);
+      fetchAPI(pos.coords.latitude,pos.coords.longitude,"Ma position");
+    },
+    function(){
+      if(done)return;
+      done=true;clearTimeout(fallTimer);
+      fetchAPI(48.8566,2.3522,"Paris");
+    },
+    {timeout:2500,maximumAge:300000,enableHighAccuracy:false}
+  );
+})();
+
+/* ═══════ PREFS ═══════ */
+var prefs={music:"",temp:"Confort 21-22°C",windows:"Fermées",talk:"",extras:[]};
+function selPref(el){
+  var g=el.dataset.g;
+  el.closest("[id]").querySelectorAll("[data-g='"+g+"']").forEach(function(b){b.classList.remove("sel");});
+  el.classList.add("sel");prefs[g]=el.dataset.v;
+}
+function togExtra(el){
+  el.classList.toggle("sel");
+  var v=el.dataset.extra;
+  if(el.classList.contains("sel")){if(!prefs.extras.includes(v))prefs.extras.push(v);}
+  else prefs.extras=prefs.extras.filter(function(x){return x!==v;});
+}
+
+/* ═══════ CALENDRIER ═══════ */
+var selDate=null;
+var DAYS=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+var MONTHS=["jan","fév","mar","avr","mai","jun","jul","aoû","sep","oct","nov","déc"];
+flatpickr("#cal-wrap",{locale:"fr",inline:true,dateFormat:"d/m/Y",minDate:"today",maxDate:new Date().fp_incr(90),
+  onChange:function(sel,str){if(str){selDate=str;var d=sel[0];document.getElementById("sub1").textContent=DAYS[d.getDay()]+" "+d.getDate()+" "+MONTHS[d.getMonth()];document.getElementById("btn1").disabled=false;}}});
+flatpickr("#timepick",{locale:"fr",enableTime:true,noCalendar:true,dateFormat:"H:i",time_24hr:true,minuteIncrement:15,defaultHour:8,disableMobile:false});
+
+/* ═══════ NAVIGATION ═══════ */
+function unlock(id){
+  var c=document.getElementById(id);
+  c.classList.remove("locked");c.classList.add("active");
+  setTimeout(function(){c.scrollIntoView({behavior:"smooth",block:"start"});},100);
+}
+function markDone(id,num){
+  var c=document.getElementById(id);
+  c.classList.remove("active");c.classList.add("done");
+  document.getElementById("n"+num).textContent="✓";
+}
+function goStep2(){markDone("c1","1");unlock("c2");}
+function goStep3(){markDone("c2","2");unlock("c3");}
+function swapAddr(){
+  var d=document.getElementById("dep"),a=document.getElementById("arr");
+  var tmp=d.value;d.value=a.value;a.value=tmp;
+  var tl=dC.lat,tn=dC.lon;dC.lat=aC.lat;dC.lon=aC.lon;aC.lat=tl;aC.lon=tn;
+}
+function resetAll(){
+  document.getElementById("result").classList.remove("show");
+  if(rMap){try{rMap.remove();}catch(e){}rMap=null;}
+  ["c2","c3"].forEach(function(id,i){
+    var c=document.getElementById(id);
+    c.classList.remove("done","active");c.classList.add("locked");
+    document.getElementById("n"+(i+2)).textContent=(i+2);
+  });
+  unlock("c2");
+}
+
+/* ═══════ AUTOCOMPLETE NOMINATIM ═══════ */
+var dC={},aC={},acTm={};
+function setupAC(inp,list,co){
+  var fi=-1;
+  inp.addEventListener("input",function(){
+    clearTimeout(acTm[inp.id]);fi=-1;
+    if(inp.value.trim().length<3){list.classList.remove("open");list.innerHTML="";return;}
+    acTm[inp.id]=setTimeout(function(){doAC(inp.value.trim(),list,inp,co);},350);
+  });
+  inp.addEventListener("keydown",function(e){
+    var items=list.querySelectorAll(".ac-item");
+    if(e.key==="ArrowDown"){fi=Math.min(fi+1,items.length-1);hiAC(items,fi);e.preventDefault();}
+    else if(e.key==="ArrowUp"){fi=Math.max(fi-1,0);hiAC(items,fi);e.preventDefault();}
+    else if(e.key==="Enter"&&fi>=0){items[fi].click();e.preventDefault();}
+    else if(e.key==="Escape"){list.classList.remove("open");fi=-1;}
+  });
+  document.addEventListener("click",function(e){if(!inp.contains(e.target)&&!list.contains(e.target)){list.classList.remove("open");fi=-1;}});
+}
+function hiAC(items,idx){items.forEach(function(x,i){x.classList.toggle("hi",i===idx);});}
+function doAC(q,list,inp,co){
+  var ctrl=new AbortController(),tid=setTimeout(function(){ctrl.abort();},4000);
+  var p=new URLSearchParams({format:"json",limit:"5",q:q,addressdetails:"1",countrycodes:"fr"});
+  fetch("https://nominatim.openstreetmap.org/search?"+p,{headers:{"Accept-Language":"fr"},signal:ctrl.signal})
+  .then(function(r){clearTimeout(tid);return r.json();})
+  .then(function(data){
+    if(!data.length){list.classList.remove("open");return;}
+    list.innerHTML="";
+    data.forEach(function(item){
+      var a=item.address||{};
+      var main=a.road||a.amenity||a.building||item.name||"";
+      var sec=[a.city||a.town||a.village||a.suburb,a.postcode].filter(Boolean).join(", ");
+      var div=document.createElement("div");div.className="ac-item";
+      div.innerHTML="<div class='ac-ic'>&#8594;</div><div><div class='ac-main'>"+(main||item.display_name.split(",")[0])+"</div><div class='ac-sec'>"+(sec||item.display_name)+"</div></div>";
+      div.addEventListener("mousedown",function(e){
+        e.preventDefault();
+        inp.value=main?(main+(sec?", "+sec:"")):item.display_name.split(",").slice(0,2).join(",");
+        co.lat=+item.lat;co.lon=+item.lon;
+        list.classList.remove("open");list.innerHTML="";
+      });
+      list.appendChild(div);
+    });
+    list.classList.add("open");
+  })
+  .catch(function(){clearTimeout(tid);list.classList.remove("open");});
+}
+setupAC(document.getElementById("dep"),document.getElementById("ac-dep"),dC);
+setupAC(document.getElementById("arr"),document.getElementById("ac-arr"),aC);
+
+/* ═══════ CALCUL TARIF + CARTE ═══════ */
+var SHORTCUTS={
+  "cdg":[48.9755,2.5597],"charles de gaulle":[48.9755,2.5597],"roissy":[48.9755,2.5597],
+  "orly":[48.7233,2.3794],"paris":[48.8566,2.3522],"gare du nord":[48.8809,2.3553],
+  "gare de lyon":[48.8449,2.3735],"gare montparnasse":[48.8413,2.3202],
+  "gare saint lazare":[48.8760,2.3247],"versailles":[48.8014,2.1301],
+  "disneyland":[48.8673,2.7797],"la defense":[48.8924,2.2390],
+  "porte maillot":[48.8782,2.2830],"nation":[48.8484,2.3960]
+};
+function resolveCoords(val,co){
+  if(co.lat)return Promise.resolve([co.lat,co.lon]);
+  var q=val.toLowerCase().trim();
+  for(var k in SHORTCUTS)if(q.includes(k))return Promise.resolve(SHORTCUTS[k]);
+  var ctrl=new AbortController(),tid=setTimeout(function(){ctrl.abort();},5000);
+  return fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(val)+"&countrycodes=fr",{headers:{"Accept-Language":"fr"},signal:ctrl.signal})
+    .then(function(r){clearTimeout(tid);return r.json();})
+    .then(function(d){return d[0]?[+d[0].lat,+d[0].lon]:[48.8566,2.3522];})
+    .catch(function(){clearTimeout(tid);return[48.8566,2.3522];});
+}
+function haversine(a,b){
+  var R=6371,dLa=(b[0]-a[0])*Math.PI/180,dLo=(b[1]-a[1])*Math.PI/180;
+  var x=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2);
+  return R*2*Math.asin(Math.sqrt(x));
+}
+function getRoute(a,b){
+  var ctrl=new AbortController(),tid=setTimeout(function(){ctrl.abort();},6000);
+  return fetch("https://router.project-osrm.org/route/v1/driving/"+a[1]+","+a[0]+";"+b[1]+","+b[0]+"?overview=full&geometries=geojson",{signal:ctrl.signal})
+    .then(function(r){clearTimeout(tid);return r.json();})
+    .then(function(d){if(d.routes&&d.routes[0])return{km:d.routes[0].distance/1000,dur:d.routes[0].duration/60,geo:d.routes[0].geometry};throw new Error("no route");})
+    .catch(function(){clearTimeout(tid);return{km:haversine(a,b),dur:35,geo:null};});
+}
+function mkIcon(color,lbl){
+  return L.divIcon({className:"",html:"<div style='width:28px;height:28px;background:"+color+";border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.5);'><span style='transform:rotate(45deg);font-size:.65rem;font-weight:800;color:#000;'>"+lbl+"</span></div>",iconSize:[28,28],iconAnchor:[14,28]});
+}
+var rMap=null;
+function goStep4(){
+  var dV=document.getElementById("dep").value.trim()||"Paris";
+  var aV=document.getElementById("arr").value.trim()||"CDG";
+  var h=document.getElementById("timepick").value||"--:--";
+  var pax=document.getElementById("pax").value;
+  var note=document.getElementById("note").value.trim();
+  var btn=document.getElementById("btn3");
+  btn.innerHTML="<span class='spin'></span>Calcul…";btn.disabled=true;
+  Promise.all([resolveCoords(dV,dC),resolveCoords(aV,aC)])
+  .then(function(cs){
+    var dc=cs[0],ac=cs[1];
+    return getRoute(dc,ac).then(function(rt){return{dc:dc,ac:ac,rt:rt};});
+  })
+  .then(function(r){
+    var dc=r.dc,ac=r.ac,rt=r.rt;
+    var km=rt.km,dur=rt.dur;
+    var prix=Math.max(6+km*1.95,12);
+    var hr=parseInt(h),nuit=!isNaN(hr)&&(hr>=22||hr<6);
+    if(nuit)prix+=10;
+    document.getElementById("r-price").textContent=prix.toFixed(2)+" €";
+    document.getElementById("r-meta").innerHTML="6 € fixe + 1,95 €/km"+(nuit?" · <strong>+10 € nuit</strong>":"");
+    var dH=Math.floor(dur/60),dM=Math.round(dur%60);
+    var dS=dH>0?dH+"h"+(dM<10?"0":"")+dM:dM+" min";
+    document.getElementById("r-stats").innerHTML=
+      "<div class='r-stat'><div class='rs-val'>"+km.toFixed(1)+" km</div><div class='rs-lbl'>Distance</div></div>"+
+      "<div class='r-stat'><div class='rs-val'>"+dS+"</div><div class='rs-lbl'>Durée</div></div>"+
+      "<div class='r-stat'><div class='rs-val'>"+prix.toFixed(2)+" €</div><div class='rs-lbl'>Total TTC</div></div>";
+    var ext=prefs.extras.length?prefs.extras.join(", "):"Aucun";
+    document.getElementById("r-prefs").innerHTML=
+      "<strong>Préférences à bord</strong>"+
+      "Musique : "+(prefs.music||"non précisé")+" · Temp : "+prefs.temp+"<br>"+
+      "Vitres : "+prefs.windows+(prefs.talk?" · Échanges : "+prefs.talk:"")+"<br>"+
+      "Extras : "+ext+(note?"<br>Note : "+note:"");
+    var dt=selDate||new Date().toLocaleDateString("fr-FR");
+    var pm="%0A%0AConfort :%0A- Musique : "+(prefs.music||"nc")+"%0A- Temp : "+prefs.temp+"%0A- Vitres : "+prefs.windows+"%0A- Extras : "+ext+(note?"%0A- Note : "+encodeURIComponent(note):"");
+    document.getElementById("r-wa").href="https://wa.me/33767742220?text=Bonjour%20I%26N%20RUN%2C%0A%0ADep%20%3A%20"+encodeURIComponent(dV)+"%0AArr%20%3A%20"+encodeURIComponent(aV)+"%0ADate%20%3A%20"+dt+"%0AHeure%20%3A%20"+h+"%0APax%20%3A%20"+pax+"%0ADist%20%3A%20"+km.toFixed(1)+"%20km%0ADur%C3%A9e%20%3A%20"+dS+"%0ATarif%20%3A%20"+prix.toFixed(2)+"%20%E2%82%AC"+pm+"%0A%0AMerci.";
+    markDone("c3","3");
+    var res=document.getElementById("result");
+    res.classList.add("show");
+    res.scrollIntoView({behavior:"smooth",block:"start"});
+    setTimeout(function(){buildMap(dc,ac,rt,dV,aV);},400);
+  })
+  .catch(function(e){console.error("Calcul erreur:",e);})
+  .finally(function(){btn.innerHTML="Calculer mon tarif";btn.disabled=false;});
+}
+function buildMap(dc,ac,rt,dV,aV){
+  var el=document.getElementById("r-map");
+  if(rMap){try{rMap.remove();}catch(e){}rMap=null;}
+  el.style.height="230px";
+  rMap=L.map(el,{zoomControl:true,attributionControl:false,preferCanvas:true});
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:19,crossOrigin:true}).addTo(rMap);
+  var bounds;
+  if(rt.geo){
+    var rl=L.geoJSON(rt.geo,{style:{color:"#c9a84c",weight:4,opacity:.92,lineCap:"round",lineJoin:"round"}}).addTo(rMap);
+    bounds=rl.getBounds();
+  } else {
+    bounds=L.latLngBounds([dc,ac]);
+  }
+  L.marker(dc,{icon:mkIcon("#c9a84c","A")}).addTo(rMap).bindPopup("<b>Départ</b><br>"+dV);
+  L.marker(ac,{icon:mkIcon("#22c55e","B")}).addTo(rMap).bindPopup("<b>Arrivée</b><br>"+aV);
+  rMap.fitBounds(bounds,{padding:[30,30],animate:false});
+  setTimeout(function(){try{rMap.invalidateSize();}catch(e){}},200);
+}
+function dlVCard(){
+  var v="BEGIN:VCARD\nVERSION:3.0\nFN:I&N RUN\nORG:I&N RUN Chauffeur Privé Paris\nTEL;TYPE=CELL:+33767742220\nEMAIL:contact.inrun@gmail.com\nURL:https://letxbrace-droid.github.io/inrunparis/\nNOTE:Chauffeur Prive Paris CDG Orly Tarifs fixes\nEND:VCARD";
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([v],{type:"text/vcard"}));
+  a.download="inrun.vcf";a.click();
+}
+</script>
+</body>
+</html>
