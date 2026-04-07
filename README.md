@@ -1,1 +1,1 @@
-V36 - Format Bon de Commande Officiel, Préférences récupérées et demande de Nom Client
+V37 - API Recherche Photon (tolère "Aéroport Orly"), Météo Live et Trafic Dynamique Heure de Pointe
