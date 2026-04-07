@@ -1,1 +1,1 @@
-V40 - Correction de l'alignement vertical
+V42 - Typographie ultra-luxe (Marcellus + Jost) et ajustement colorimétrique pour la conversion (bouton lumineux, chiffres en évidence).
