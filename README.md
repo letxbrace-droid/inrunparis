@@ -1,1 +1,1 @@
-V33 - Calcul de prix auto via OSRM, adresse complète corrigée, ajout services à bord
+V34 - Mentions légales propres (Braha), Paiement CB/Especes ajouté, WhatsApp en nouvel onglet

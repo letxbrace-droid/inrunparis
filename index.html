@@ -24,6 +24,7 @@
 body{font-family:"Inter",sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;padding-bottom:100px;margin:0;}
 input,textarea,button{font-family:inherit;}
 
+/* Header Premium */
 #hdr{position:sticky;top:0;z-index:990;background:rgba(9,9,15,.90);backdrop-filter:blur(24px);border-bottom:1px solid rgba(201,168,76,.15);}
 .nav{display:flex;align-items:center;justify-content:space-between;height:var(--hdr);padding:0 max(20px,calc(env(safe-area-inset-left,0px)+20px));max-width:640px;margin:0 auto;}
 .nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,var(--gold) 20%,var(--gold-l) 50%,var(--gold) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;}
@@ -31,18 +32,22 @@ input,textarea,button{font-family:inherit;}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
+/* Hero Section */
 .hero{padding:50px 20px 30px;text-align:center;position:relative;}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:radial-gradient(circle at top, rgba(201,168,76,.08) 0%, transparent 70%);pointer-events:none;}
-h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-height:1.15;margin:0 0 16px;font-weight:700;}
+h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-height:1.15;margin:0 0 16px;font-weight:700;position:relative;}
+h1 span{display:inline-block;}
 .g{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:shine 5s linear infinite;}
 @keyframes shine{0%{background-position:100%}100%{background-position:-100%}}
 .hero-p{color:var(--gray2);font-size:0.95rem;margin:0 auto 30px;line-height:1.5;max-width:440px;font-weight:300;}
 
+/* Proof Grid */
 .proof{display:flex;justify-content:center;gap:30px;margin-bottom:40px;position:relative;z-index:1;}
 .proof-item{text-align:center;}
 .pv{font-weight:700;font-size:1.1rem;color:var(--white);}
 .pl{font-size:0.65rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
 
+/* Tunnel de réservation */
 .tunnel{max-width:540px;margin:0 auto;padding:0 16px;position:relative;z-index:1;}
 .card{background:linear-gradient(145deg, var(--s2), var(--s1));border:1px solid rgba(255,255,255,.05);border-radius:var(--rxl);padding:28px 22px;margin-bottom:16px;transition:all .4s var(--ease);box-shadow:0 10px 30px rgba(0,0,0,.2);}
 .card.active{border-color:rgba(201,168,76,.4);box-shadow:0 0 0 1px rgba(201,168,76,.15), 0 10px 40px rgba(0,0,0,.4);}
@@ -53,6 +58,7 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .c-title{font-weight:700;font-size:1.1rem;letter-spacing:-0.02em;}
 .c-sub{font-size:0.8rem;color:var(--gray2);margin-top:2px;}
 
+/* Form Fields */
 .f-lbl{display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;margin-top:16px;}
 .f-wrap{display:flex;align-items:center;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);position:relative;transition:border-color 0.3s;}
 .f-wrap:focus-within{border-color:var(--gold);background:rgba(0,0,0,.5);}
@@ -60,6 +66,7 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:0.95rem;padding:0 14px 0 0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
 .f-in::placeholder{color:rgba(255,255,255,.25);}
 
+/* Autocomplete Popup */
 .ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--s2);border:1px solid var(--b);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:220px;overflow-y:auto;z-index:20;display:none;padding:6px;}
 .ac.open{display:block;animation:fadeDown 0.2s var(--ease);}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
@@ -68,12 +75,14 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .ac-main{font-weight:600;font-size:0.85rem;color:var(--white);line-height:1.3;}
 .ac-sec{font-size:0.7rem;color:var(--gray);margin-top:4px;}
 
+/* Boutons d'action */
 .btn{width:100%;height:var(--tap);border-radius:var(--r);cursor:pointer;font-weight:700;font-size:1rem;border:none;margin-top:24px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease);}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;box-shadow:0 4px 15px rgba(201,168,76,.2);}
 .btn-gold:hover{box-shadow:0 6px 20px rgba(201,168,76,.3);transform:translateY(-2px);}
 .btn-gold:active{transform:scale(0.98);}
 .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none;}
 
+/* Chips Premium */
 .chips-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
 .chip{padding:10px 16px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:50px;font-size:0.85rem;font-weight:500;color:var(--gray2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s;}
 .chip svg {width: 16px; height: 16px; stroke: currentColor; opacity:0.8;}
@@ -81,11 +90,18 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .chip.sel{background:var(--glow);border-color:var(--gold);color:var(--gold);}
 .chip.sel svg {opacity:1; stroke: var(--gold);}
 
+/* Paiement */
+.payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.pay-btn{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center;color:var(--gray2);font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.pay-btn.sel{background:var(--glow);border-color:var(--gold);color:var(--gold);}
+.pay-btn-ic{font-size:1.4rem;margin-bottom:6px;display:block;}
+
 /* Services à bord */
 .services-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;padding:16px;background:rgba(0,0,0,.2);border-radius:var(--r);border:1px dashed rgba(201,168,76,.2);}
 .srv-item{display:flex;align-items:center;gap:10px;font-size:0.8rem;color:var(--white);}
 .srv-ic{width:28px;height:28px;background:rgba(201,168,76,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.9rem;}
 
+/* Fil Trafic & Météo */
 .infos-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;padding:0 16px;max-width:540px;margin-left:auto;margin-right:auto;}
 .info-card{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:16px;}
 .i-hd{font-size:0.65rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
@@ -102,6 +118,15 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .w-temp{font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:700;color:var(--white);}
 .w-desc{font-size:0.8rem;color:var(--gray2);}
 
+/* Mentions Légales Modale (Remplace l'alert) */
+.legal-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.legal-modal.show{opacity:1;pointer-events:auto;}
+.legal-box{background:var(--s1);border:1px solid rgba(201,168,76,.3);border-radius:var(--rxl);padding:30px;max-width:400px;width:100%;text-align:center;}
+.legal-title{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--gold);margin-bottom:20px;}
+.legal-text{color:var(--white);font-size:0.9rem;line-height:1.6;margin-bottom:30px;text-align:left;}
+.legal-text span{color:var(--gray);font-size:0.8rem;display:block;}
+
+/* Modal Prix OSRM */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
 .modal-overlay.show{opacity:1;pointer-events:auto;}
 .modal-box{background:var(--s1);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:30px 24px 40px;border-top:1px solid rgba(201,168,76,.3);transform:translateY(100%);transition:transform 0.4s var(--ease);}
@@ -118,11 +143,13 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(2rem, 8vw, 2.6rem);line-
 .btn-wa{background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
 .btn-close{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);margin-top:10px;}
 
+/* Footer */
 footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7rem;line-height:1.6;}
 .legal-links{display:flex;justify-content:center;gap:16px;margin-bottom:12px;}
-.legal-links a{color:var(--gray2);text-decoration:none;}
+.legal-links a{color:var(--gray2);text-decoration:none;cursor:pointer;}
 .legal-links a:hover{color:var(--gold);}
 
+/* Sticky Footer */
 .sticky{position:fixed;bottom:0;left:0;right:0;z-index:990;padding:12px 16px max(16px,env(safe-area-inset-bottom,16px));background:linear-gradient(0deg, rgba(9,9,15,1) 40%, rgba(9,9,15,0.8) 100%);display:flex;gap:12px;max-width:640px;margin:0 auto;}
 .sb{flex:1;height:50px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.95rem;text-decoration:none;transition:transform 0.2s;}
 .sb:active{transform:scale(0.96);}
@@ -201,9 +228,20 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
       <div class="c-num">2</div>
       <div>
         <div class="c-title">Préférences à bord</div>
-        <div class="c-sub">Ambiance et détails du vol</div>
+        <div class="c-sub">Ambiance et options</div>
       </div>
     </div>
+
+    <label class="f-lbl">Moyen de Paiement à bord</label>
+    <div class="payment-grid">
+      <div class="pay-btn sel" onclick="selectPayment(this, 'CB')">
+        <span class="pay-btn-ic">💳</span>Carte Bancaire
+      </div>
+      <div class="pay-btn" onclick="selectPayment(this, 'Espèces')">
+        <span class="pay-btn-ic">💶</span>Espèces
+      </div>
+    </div>
+    <input type="hidden" id="paymentMethod" value="CB">
 
     <label class="f-lbl">Musique</label>
     <div class="chips-grid">
@@ -211,13 +249,6 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
       <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
       <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
       <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
-    </div>
-
-    <label class="f-lbl">Climatisation</label>
-    <div class="chips-grid">
-      <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
-      <div class="chip sel" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
-      <div class="chip" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
     </div>
 
     <label class="f-lbl">Services Inclus</label>
@@ -228,9 +259,9 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
       <div class="srv-item"><div class="srv-ic">📶</div>Wifi 5G</div>
     </div>
 
-    <label class="f-lbl">Note au chauffeur</label>
+    <label class="f-lbl">Note au chauffeur (Optionnel)</label>
     <div class="f-wrap" style="height:auto;padding:8px;">
-      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N° de vol, terminal, bagages encombrants..."></textarea>
+      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N° de vol, bagages encombrants..."></textarea>
     </div>
 
     <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
@@ -264,7 +295,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 <footer>
   <div class="legal-links">
-    <a href="#" onclick="alert('I&N RUN\nSIRET : 993 776 467 00017\nResponsable : M. IBRAHIM\nContact : contact@inrun.fr'); return false;">Mentions Légales & CGV</a>
+    <a onclick="showLegal()">Mentions Légales & CGV</a>
     <span>|</span>
     <a href="https://wa.me/33767742220">Contactez-nous</a>
   </div>
@@ -296,6 +327,23 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
   </div>
 </div>
 
+<!-- MODAL MENTIONS LEGALES PROPRES -->
+<div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
+  <div class="legal-box">
+    <h3 class="legal-title">Mentions Légales</h3>
+    <div class="legal-text">
+      <strong>I&N RUN</strong><br>
+      <span>Service de transport VTC</span><br><br>
+      <strong>Dirigeant :</strong> M. BRAHA<br>
+      <strong>SIRET :</strong> 993 776 467 00017<br>
+      <strong>Email :</strong> contact@inrun.fr<br>
+      <strong>Téléphone :</strong> 07 67 74 22 20<br><br>
+      Les tarifs indiqués sont fixes et définitifs. Aucun supplément bagage ou approche n'est facturé.
+    </div>
+    <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:0;">Fermer</button>
+  </div>
+</div>
+
 <script>
 // Initialisation Flatpickr
 flatpickr('#timepick', {
@@ -305,7 +353,6 @@ flatpickr('#timepick', {
   locale: "fr"
 });
 
-// Coordonnées stockées pour le calcul OSRM
 let coords = { dep: null, arr: null };
 
 function nextStep(step) {
@@ -322,7 +369,16 @@ function nextStep(step) {
   target.scrollIntoView({behavior: 'smooth', block: 'center'});
 }
 
-// Calcul de tarif OSRM Open Source
+function selectPayment(element, method) {
+  document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('sel'));
+  element.classList.add('sel');
+  document.getElementById('paymentMethod').value = method;
+}
+
+function showLegal() {
+  document.getElementById('legalModal').classList.add('show');
+}
+
 async function calculatePrice() {
   if (!coords.dep || !coords.arr) return;
 
@@ -334,7 +390,6 @@ async function calculatePrice() {
   document.getElementById('calcBtn').disabled = true;
 
   try {
-    // API OSRM Route
     const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
     const data = await response.json();
 
@@ -342,22 +397,12 @@ async function calculatePrice() {
       const distanceKm = data.routes[0].distance / 1000;
       const durationMin = data.routes[0].duration / 60;
 
-      // ALGORITHME DE PRIX RENTABLE (VTC Premium)
-      // Prise en charge : 15€
-      // Prix au km : 1.70€
-      // Prix à la minute : 0.40€
-      // Minimum de commande : 35€
-
       const baseFare = 15.0;
       const pricePerKm = 1.70;
       const pricePerMin = 0.40;
 
       let price = baseFare + (distanceKm * pricePerKm) + (durationMin * pricePerMin);
-
-      // Minimum VTC
-      if (price < 35) price = 35;
-
-      // Arrondi à l'euro supérieur
+      if (price < 35) price = 35; // Minimum de course
       price = Math.ceil(price);
 
       document.getElementById('finalPrice').innerText = price + ' €';
@@ -368,7 +413,7 @@ async function calculatePrice() {
       alert("Impossible de calculer l'itinéraire. Vérifiez les adresses.");
     }
   } catch (error) {
-    alert("Erreur de connexion pour le calcul du tarif.");
+    alert("Erreur réseau pour le calcul du tarif.");
   } finally {
     btnText.style.display = 'block';
     loader.style.display = 'none';
@@ -380,12 +425,14 @@ function hideModal() {
   document.getElementById('customModal').classList.remove('show');
 }
 
+// WhatsApp Open in New Tab (Target Blank fix)
 function sendWhatsApp() {
   const time = document.getElementById('timepick').value;
   const dep = document.getElementById('dep').value;
   const arr = document.getElementById('arr').value;
   const note = document.getElementById('note').value;
   const price = document.getElementById('finalPrice').innerText;
+  const payment = document.getElementById('paymentMethod').value;
 
   let msg = `✅ Demande de réservation I&N RUN
 
@@ -397,16 +444,21 @@ function sendWhatsApp() {
   msg += `🏁 Arrivée : ${arr}
 `;
   msg += `💳 Tarif validé : ${price}
+`;
+  msg += `💶 Mode de paiement : ${payment}
 
 `;
   if(note) msg += `📝 Note : ${note}
+
 `;
   msg += `Pouvez-vous confirmer ma réservation ?`;
 
-  window.location.href = `https://wa.me/33767742220?text=${encodeURIComponent(msg)}`;
+  const link = `https://wa.me/33767742220?text=${encodeURIComponent(msg)}`;
+
+  // Ouvre WhatsApp dans un nouvel onglet, pour ne pas fermer le site.
+  window.open(link, '_blank');
 }
 
-// Autocomplete OSM Nominatim (Corrections d'affichage d'adresse)
 const NOMINATIM = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=fr&limit=5&addressdetails=1&q=';
 
 function setupAutocomplete(inputId, dropdownId, type) {
@@ -416,7 +468,7 @@ function setupAutocomplete(inputId, dropdownId, type) {
 
   input.addEventListener('input', function() {
     clearTimeout(timeout);
-    coords[type] = null; // Reset coord si l'utilisateur modifie
+    coords[type] = null; 
 
     const query = this.value.trim();
     if (query.length < 3) {
@@ -432,12 +484,10 @@ function setupAutocomplete(inputId, dropdownId, type) {
             dropdown.innerHTML = '<div class="ac-item"><div class="ac-main">Aucun résultat</div></div>';
           } else {
             dropdown.innerHTML = data.map(item => {
-              // Extraction intelligente de l'adresse pour qu'elle s'affiche PROPREMENT dans le champ input
               const addr = item.address;
               const street = addr.road || addr.pedestrian || addr.suburb || item.name;
               const houseNumber = addr.house_number ? addr.house_number + ' ' : '';
               const city = addr.city || addr.town || addr.village || addr.municipality || '';
-              const postcode = addr.postcode || '';
 
               const shortName = `${houseNumber}${street}, ${city}`.trim().replace(/^,|,$/g, '');
               const fullDisplayName = item.display_name;
@@ -462,8 +512,8 @@ function setupAutocomplete(inputId, dropdownId, type) {
 }
 
 function selectLocation(inputId, dropdownId, type, shortName, lat, lon) {
-  document.getElementById(inputId).value = shortName; // Met l'adresse propre dans le champ
-  coords[type] = { lat: lat, lon: lon }; // Sauvegarde les GPS
+  document.getElementById(inputId).value = shortName;
+  coords[type] = { lat: lat, lon: lon };
   document.getElementById(dropdownId).classList.remove('open');
 }
 
