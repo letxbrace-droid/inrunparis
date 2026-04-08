@@ -1,1 +1,1 @@
-V44 - Correction de la structure, du fond et du contenu de la modale des Mentions Légales.
+V45 - Correction de la visibilité des particules dorées sur mobile (plus nombreuses, légèrement plus grandes et plus lumineuses).
