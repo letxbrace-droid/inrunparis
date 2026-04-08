@@ -181,32 +181,56 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 .loader{border:3px solid rgba(212,175,55,.2);border-top:3px solid var(--gold);border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:none;margin:0 auto;}
 @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-/* ── CANVAS GRILLE PERSPECTIVE TRON ── */
-#grid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 2s ease;}
-#grid-canvas.ready{opacity:1;}
+/* ── CANVAS CONSTELLATION ── */
+#constellation-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 3s ease;}
+#constellation-canvas.ready{opacity:1;}
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}</style><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 </head>
 <body>
 
-<canvas id="grid-canvas"></canvas>
+<canvas id="constellation-canvas"></canvas>
 
 <header id="hdr">
   <div class="nav">
     <div class="nav-logo">
-      <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
-      <defs><linearGradient id="lgLogo" x1="0" y1="0" x2="148" y2="0" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stop-color="#9A7A1A"/><stop offset="35%" stop-color="#D4AF37"/>
-        <stop offset="55%" stop-color="#F0D870"/><stop offset="75%" stop-color="#D4AF37"/>
-        <stop offset="100%" stop-color="#9A7A1A"/>
-      </linearGradient></defs>
-      <rect x="2" y="5" width="7" height="30" fill="url(#lgLogo)"/>
-      <rect x="17" y="5" width="7" height="30" fill="url(#lgLogo)"/>
-      <path d="M 24 12 C 24 5,33 3,40 7 C 47 11,47 21,40 25 C 36 27,30 26,26 22 L 24 27" stroke="url(#lgLogo)" stroke-width="7" stroke-linecap="round" fill="none"/>
-      <path d="M 24 5 L 55 35" stroke="url(#lgLogo)" stroke-width="7" stroke-linecap="square" fill="none"/>
-      <rect x="48" y="5" width="7" height="30" fill="url(#lgLogo)"/>
-      <rect x="65" y="10" width="1" height="20" fill="url(#lgLogo)" opacity="0.22"/>
-      <text x="72" y="27" font-family="'Jost',Arial,sans-serif" font-size="13.5" font-weight="400" fill="url(#lgLogo)" letter-spacing="5.5">RUN</text>
+      <svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
+        <defs>
+          <linearGradient id="lgL" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#9A7A1A"/>
+            <stop offset="40%"  stop-color="#F0D870"/>
+            <stop offset="60%"  stop-color="#F0D870"/>
+            <stop offset="100%" stop-color="#9A7A1A"/>
+          </linearGradient>
+          <linearGradient id="lgL2" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="rgba(154,122,26,0)"/>
+            <stop offset="30%"  stop-color="#D4AF37"/>
+            <stop offset="70%"  stop-color="#D4AF37"/>
+            <stop offset="100%" stop-color="rgba(154,122,26,0)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- I & N  R U N  — Cinzel, serré, luxe -->
+        <text x="55" y="22"
+              font-family="'Cinzel','Georgia',serif"
+              font-size="19"
+              font-weight="700"
+              fill="url(#lgL)"
+              text-anchor="middle"
+              letter-spacing="3">I&amp;N</text>
+
+        <!-- Filet horizontal doré ultra-fin -->
+        <line x1="8" y1="27" x2="102" y2="27"
+              stroke="url(#lgL2)" stroke-width="0.6" opacity="0.8"/>
+
+        <!-- RUN — Jost 300 lowercase, très espacé -->
+        <text x="55" y="40"
+              font-family="'Jost','Helvetica Neue',Arial,sans-serif"
+              font-size="8.5"
+              font-weight="300"
+              fill="url(#lgL)"
+              text-anchor="middle"
+              letter-spacing="6">RUN</text>
       </svg>
     </div>
     <div class="nav-status"><div class="dot"></div> Disponible</div>
@@ -595,123 +619,84 @@ fetchTrafic();
 setInterval(fetchMeteo, 300000);
 setInterval(fetchTrafic, 180000);
 
-// ── GRILLE PERSPECTIVE TRON (fond animé premium) ──
+// ── CONSTELLATION PREMIUM (remplace les particules) ──
 (()=>{
-  const cv = document.getElementById('grid-canvas');
-  const ctx = cv.getContext('2d');
-  let W, H, offset = 0, scrollY = 0;
-  const SPEED = 0.4;          // vitesse d'avancement de la grille
-  const GOLD   = '#d4af37';
-  const GOLD2  = '#f0d870';
-  const H_LINES = 18;         // nombre de lignes horizontales visibles
-  const V_LINES = 14;         // nombre de colonnes verticales
-  const HORIZON = 0.42;       // hauteur du point de fuite (42% du haut)
-  const GLOW_ALPHA = 0.55;    // intensité du glow latéral
+  const cv=document.getElementById('constellation-canvas');
+  const ctx=cv.getContext('2d');
+  let W, H, nodes=[];
+  const MAX_DIST=120;
+  const DENSITY=8000;
 
-  function resize() {
-    W = cv.width  = window.innerWidth;
-    H = cv.height = window.innerHeight;
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+
+  function mkNode(){
+    return{
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.2, vy:(Math.random()-.5)*.2,
+      r:Math.random()*1.6+0.5,
+      o:Math.random()*.55+0.25,
+      pulse:Math.random()*Math.PI*2,
+      pulseSpeed:0.01+Math.random()*0.01
+    };
   }
 
-  // Écoute du scroll pour parallaxe subtil
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+  function init(){resize();nodes=Array.from({length:Math.floor(W*H/DENSITY)},mkNode);}
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
+  function loop(){
+    ctx.clearRect(0,0,W,H);
 
-  function drawGrid() {
-    ctx.clearRect(0, 0, W, H);
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      n.pulse+=n.pulseSpeed;
+      if(n.x<0)n.x=W; if(n.x>W)n.x=0;
+      if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+    });
 
-    const vy = H * HORIZON;           // point de fuite Y
-    const vx = W * 0.5;               // point de fuite X (centre)
-    const bottom = H;
-    const scrollShift = scrollY * 0.08; // parallaxe léger au scroll
-
-    // ── Lignes HORIZONTALES ──
-    for (let i = 0; i <= H_LINES; i++) {
-      // Progression exponentielle : lignes compressées près du point de fuite
-      const t = Math.pow(i / H_LINES, 2.2);
-      const y = lerp(vy, bottom + scrollShift, t);
-
-      // Opacité : faible près du point de fuite, forte vers le bas
-      const alpha = Math.pow(t, 0.6) * 0.55;
-      if (alpha < 0.01) continue;
-
-      // Largeur ligne : fine à l'horizon, épaisse devant
-      const lw = lerp(0.3, 1.4, t);
-
-      // Dégradé horizontal doré
-      const grad = ctx.createLinearGradient(0, y, W, y);
-      grad.addColorStop(0,   `rgba(154,122,26,0)`);
-      grad.addColorStop(0.2, `rgba(212,175,55,${alpha * 0.6})`);
-      grad.addColorStop(0.5, `rgba(240,216,112,${alpha})`);
-      grad.addColorStop(0.8, `rgba(212,175,55,${alpha * 0.6})`);
-      grad.addColorStop(1,   `rgba(154,122,26,0)`);
-
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = lw;
-      ctx.stroke();
+    // Connexions entre noeuds proches
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<MAX_DIST){
+          const alpha=(1-dist/MAX_DIST)*0.15;
+          const grad=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+          grad.addColorStop(0,`rgba(212,175,55,${alpha})`);
+          grad.addColorStop(0.5,`rgba(240,216,112,${alpha*1.4})`);
+          grad.addColorStop(1,`rgba(212,175,55,${alpha})`);
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=grad;
+          ctx.lineWidth=0.6;
+          ctx.stroke();
+        }
+      }
     }
 
-    // ── Lignes VERTICALES (convergent vers vx, vy) ──
-    for (let i = 0; i <= V_LINES; i++) {
-      const t_x = i / V_LINES; // 0 = gauche, 1 = droite
-      // Position X en bas de l'écran
-      const xBottom = lerp(-W * 0.3, W * 1.3, t_x);
-      // Opacité : moins intense sur les bords
-      const edgeFade = Math.sin(t_x * Math.PI);
-      const alpha = edgeFade * 0.35;
-      if (alpha < 0.01) continue;
-
-      const grad = ctx.createLinearGradient(vx, vy, xBottom, bottom);
-      grad.addColorStop(0,   `rgba(212,175,55,0)`);
-      grad.addColorStop(0.35,`rgba(212,175,55,${alpha * 0.5})`);
-      grad.addColorStop(1,   `rgba(240,216,112,${alpha})`);
-
+    // Points étoilés avec halo pulsant
+    nodes.forEach(n=>{
+      const pulseFactor=0.85+Math.sin(n.pulse)*0.15;
+      const currentO=n.o*pulseFactor;
+      // Halo externe
+      const halo=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*5);
+      halo.addColorStop(0,`rgba(212,175,55,${currentO*0.25})`);
+      halo.addColorStop(1,'rgba(212,175,55,0)');
       ctx.beginPath();
-      ctx.moveTo(vx, vy);
-      ctx.lineTo(xBottom, bottom + scrollShift);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = lerp(0.3, 1.2, edgeFade);
-      ctx.stroke();
-    }
+      ctx.arc(n.x,n.y,n.r*5,0,Math.PI*2);
+      ctx.fillStyle=halo; ctx.fill();
+      // Point central
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,n.r*pulseFactor,0,Math.PI*2);
+      ctx.fillStyle=`rgba(240,216,112,${currentO})`;
+      ctx.fill();
+    });
 
-    // ── Lueur centrale au point de fuite ──
-    const halo = ctx.createRadialGradient(vx, vy, 0, vx, vy, W * 0.45);
-    halo.addColorStop(0,    `rgba(212,175,55,0.07)`);
-    halo.addColorStop(0.4,  `rgba(212,175,55,0.03)`);
-    halo.addColorStop(1,    `rgba(212,175,55,0)`);
-    ctx.fillStyle = halo;
-    ctx.fillRect(0, 0, W, H);
-
-    // ── Ligne d'horizon lumineuse ──
-    const horizGrad = ctx.createLinearGradient(0, vy, W, vy);
-    horizGrad.addColorStop(0,    'rgba(212,175,55,0)');
-    horizGrad.addColorStop(0.25, `rgba(240,216,112,${GLOW_ALPHA * 0.4})`);
-    horizGrad.addColorStop(0.5,  `rgba(255,235,140,${GLOW_ALPHA})`);
-    horizGrad.addColorStop(0.75, `rgba(240,216,112,${GLOW_ALPHA * 0.4})`);
-    horizGrad.addColorStop(1,    'rgba(212,175,55,0)');
-    ctx.beginPath();
-    ctx.moveTo(0, vy); ctx.lineTo(W, vy);
-    ctx.strokeStyle = horizGrad;
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-
-    // ── Animation : décalage progressif des lignes horizontales ──
-    offset = (offset + SPEED) % (H / H_LINES);
-  }
-
-  function loop() {
-    drawGrid();
     requestAnimationFrame(loop);
   }
 
-  window.addEventListener('resize', resize);
-  resize();
-  loop();
-  setTimeout(() => cv.classList.add('ready'), 300);
+  window.addEventListener('resize',init);
+  init(); loop();
+  setTimeout(()=>cv.classList.add('ready'),500);
 })();
 </script>
 </body>
