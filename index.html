@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#09090f">
+<link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
+<meta property="og:url" content="https://letxbrace-droid.github.io/inrunparis/">
+<meta property="og:title" content="I&amp;N RUN — Chauffeur Privé Paris">
+<meta property="og:description" content="Chauffeur privé VTC Paris CDG Orly. Tarif fixe garanti. Réservation en 30 secondes.">
 <meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -238,10 +242,93 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 .loader {border: 3px solid rgba(212,175,55,.2);border-top: 3px solid var(--gold);border-radius: 50%;width: 20px;height: 20px;animation: spin 1s linear infinite;display:none;margin: 0 auto;}
 @keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
+
+/* ── CANVAS PARTICULES ── */
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 2s ease;}
+#particles-canvas.ready{opacity:1;}
+.hero{position:relative;z-index:1;}
+.tunnel{position:relative;z-index:1;}
+
+/* ── CARDS GLASSMORPHISM ── */
+.info-card{
+  background:rgba(27,27,42,0.55);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(212,175,55,0.18);
+  border-radius:20px;padding:18px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(212,175,55,0.08);
+  transition:border-color .3s, box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.info-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);
+}
+.info-card:hover{border-color:rgba(212,175,55,0.35);box-shadow:0 12px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(212,175,55,0.12);}
+
+/* ── MÉTÉO ENRICHIE ── */
+.w-top-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.w-ic{font-size:2.2rem;line-height:1;}
+.w-temp-block{}
+.w-temp{font-family:"Marcellus",serif;font-size:2.2rem;color:var(--white);line-height:1;}
+.w-feels{font-size:0.72rem;color:var(--gray);margin-top:2px;font-weight:300;}
+.w-details{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.w-detail-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gray2);font-weight:300;}
+.w-detail-icon{font-size:0.85rem;flex-shrink:0;}
+.w-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:5px 10px;border-radius:50px;font-size:0.68rem;font-weight:600;letter-spacing:0.05em;}
+.w-badge.bon{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#22c55e;}
+.w-badge.moyen{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
+.w-badge.bad{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;}
+
+/* ── TRAFIC OSRM ── */
+.t-item{display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.t-item:last-child{border-bottom:none;}
+.t-route-info{display:flex;flex-direction:column;}
+.t-route{color:var(--white);font-weight:500;}
+.t-via{font-size:0.62rem;color:var(--gray);margin-top:1px;font-weight:300;}
+.t-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.t-tag{font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.05em;}
+.t-tag.ok{color:var(--green-l);background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.2);}
+.t-tag.bad{color:#ef4444;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.2);}
+.t-tag.warn{color:#fbbf24;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);}
+.t-dur{font-size:0.62rem;color:var(--gray);font-weight:300;}
+.t-updated{font-size:0.6rem;color:var(--gray);text-align:right;margin-top:8px;opacity:0.6;}
+
+/* ── BADGE IDÉAL PARTIR ── */
+.conseil-box{
+  max-width:540px;margin:14px auto 0;padding:0 16px;
+}
+.conseil-inner{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-radius:14px;
+  background:rgba(212,175,55,.07);
+  border:1px solid rgba(212,175,55,.2);
+  font-size:0.82rem;color:var(--white);font-weight:300;
+  animation:fadeUp 0.5s var(--ease) both;
+}
+.conseil-icon{font-size:1.2rem;flex-shrink:0;}
+.conseil-text strong{color:var(--gold);font-weight:600;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── COUNTUP PRIX ── */
+.m-price{
+  font-family:"Marcellus",serif;font-size:3.8rem;color:var(--gold);
+  margin-bottom:10px;letter-spacing:-1px;
+  text-shadow:0 0 40px rgba(212,175,55,.3);
+}
+.m-price-detail{display:flex;justify-content:center;gap:16px;margin-top:8px;}
+.m-price-item{text-align:center;}
+.m-price-val{font-family:"Marcellus",serif;font-size:1.1rem;color:var(--white);}
+.m-price-lbl{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+
+/* ── HAPTIQUE FEEDBACK VISUEL ── */
+@keyframes ripple-gold{0%{transform:scale(0);opacity:.5;}100%{transform:scale(3);opacity:0;}}
+.chip{position:relative;overflow:hidden;}
+.chip-ripple{position:absolute;width:20px;height:20px;border-radius:50%;background:rgba(212,175,55,0.4);transform:scale(0);animation:ripple-gold .4s ease-out;pointer-events:none;transform-origin:center;}
 </style>
 </head>
 <body>
 
+<canvas id="particles-canvas"></canvas>
 <header id="hdr">
   <div class="nav">
     <div class="nav-logo">
@@ -362,23 +449,44 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 <!-- INFOS METEO / TRAFIC -->
 <div class="infos-row">
   <div class="info-card">
-    <div class="i-hd">Météo Locale (Live)</div>
-    <div class="w-main">
+    <div class="i-hd">🌡 Météo Live <span id="w-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
+    <div class="w-top-row">
       <div class="w-ic" id="wIcon">⏳</div>
-      <div class="w-temp" id="wTemp">--°</div>
+      <div class="w-temp-block">
+        <div class="w-temp" id="wTemp">--°</div>
+        <div class="w-feels" id="wFeels">Ressenti --°</div>
+      </div>
     </div>
-    <div class="w-desc" id="wDesc">Chargement...</div>
+    <div class="w-details">
+      <div class="w-detail-item"><span class="w-detail-icon">💨</span><span id="wWind">-- km/h</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">💧</span><span id="wHumid">--%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">🌂</span><span id="wRain">Pluie: --%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">☁️</span><span id="wCloud">--%</span></div>
+    </div>
+    <div id="wBadge"></div>
   </div>
 
   <div class="info-card">
-    <div class="i-hd">Trafic IDF (Live)</div>
+    <div class="i-hd">🚦 Trafic IDF <span id="t-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
     <div class="t-list" id="traficList">
-      <div class="t-item"><span class="t-route">CDG</span><span class="t-tag ok" id="t-cdg">FLUIDE</span></div>
-      <div class="t-item"><span class="t-route">Orly</span><span class="t-tag ok" id="t-orly">FLUIDE</span></div>
-      <div class="t-item"><span class="t-route">Paris</span><span class="t-tag ok" id="t-paris">FLUIDE</span></div>
+      <div class="t-item">
+        <div class="t-route-info"><span class="t-route">CDG</span><span class="t-via">A1 · Roissy</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-cdg">...</span><span class="t-dur" id="td-cdg"></span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-route-info"><span class="t-route">Orly</span><span class="t-via">A6 · 91</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-orly">...</span><span class="t-dur" id="td-orly"></span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-route-info"><span class="t-route">Paris</span><span class="t-via">N7 · Périph</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-paris">...</span><span class="t-dur" id="td-paris"></span></div>
+      </div>
     </div>
+    <div class="t-updated" id="t-source">Calcul en cours…</div>
   </div>
 </div>
+
+<div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
 
 <footer>
   <div class="legal-links">
@@ -409,7 +517,12 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
     <div class="m-recap">
       <div class="m-price" id="finalPrice">-- €</div>
-      <div class="m-calc-info" id="calcDetails">Distance estimée : -- km<br>Durée estimée : -- min</div>
+      <div class="m-price-detail">
+        <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilomètres</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Durée est.</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-base">15€</div><div class="m-price-lbl">Prise en charge</div></div>
+      </div>
+      <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
     </div>
 
     <button class="btn btn-gold" onclick="sendWhatsApp()" style="margin-bottom:10px;">
@@ -430,9 +543,9 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
       <div class="legal-text">
         <strong>Raison sociale :</strong> I&N RUN<br>
         <strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br>
-        <strong>Dirigeant :</strong> M. BRAHA<br>
+        <strong>Dirigeant :</strong> M. BRAHA Nourdine<br>
         <strong>SIRET :</strong> 993 776 467 00017<br>
-        <strong>Contact :</strong> contact@inrun.fr<br>
+        <strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br>
         <strong>Téléphone :</strong> 07 67 74 22 20<br>
         <strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.
       </div>
@@ -472,7 +585,11 @@ flatpickr('#timepick', {
   enableTime: true,
   dateFormat: "d/m/Y à H:i",
   time_24hr: true,
-  locale: "fr"
+  locale: "fr",
+  minDate: "today",
+  defaultHour: new Date().getHours() < 22 ? new Date().getHours() + 1 : 8,
+  minuteIncrement: 15,
+  disableMobile: false
 });
 
 let coords = { dep: null, arr: null };
@@ -493,7 +610,7 @@ function hideModal() { document.getElementById('customModal').classList.remove('
 
 function nextStep(step) {
   if (!coords.dep || !coords.arr) {
-    alert("Veuillez sélectionner les adresses dans la liste des suggestions.");
+    alert("⚠️ Veuillez choisir les adresses depuis la liste de suggestions (icône 📍).");
     return;
   }
   document.getElementById('step1').classList.remove('active');
@@ -530,9 +647,15 @@ async function calculatePrice() {
       if (price < 35) price = 35;
       price = Math.ceil(price);
 
-      document.getElementById('finalPrice').innerText = price + ' €';
-      document.getElementById('calcDetails').innerHTML = `Distance : ${distanceKm.toFixed(1)} km<br>Durée estimée : ${Math.round(durationMin)} min`;
+      document.getElementById('m-km').innerText = distanceKm.toFixed(1) + ' km';
+      document.getElementById('m-dur').innerText = Math.round(durationMin) + ' min';
+      const tval = document.getElementById('timepick').value || '';
+      const hh = parseInt(tval.substring(tval.indexOf('à')+2,tval.indexOf('à')+4)||'10');
+      const nightSup = (!isNaN(hh)&&(hh>=22||hh<6));
+      document.getElementById('calcDetails').innerHTML = '15€ base + '+distanceKm.toFixed(1)+'km × 1,70€ + '+Math.round(durationMin)+'min × 0,40€'+(nightSup?' · <strong style="color:var(--gold)">+10€ nuit</strong>':'');
+      document.getElementById('finalPrice').innerText = '0 €';
       document.getElementById('customModal').classList.add('show');
+      setTimeout(function(){ countUpPrice(document.getElementById('finalPrice'), price, 900); }, 180);
     } else {
       alert("Impossible de calculer l'itinéraire.");
     }
@@ -564,7 +687,8 @@ function sendWhatsApp() {
   msg += `💶 Paiement : ${payment}\n\n`;
   msg += `✨ *Préférences à bord :*\n- Musique : ${musicChip ? musicChip.innerText.trim() : 'Non'}\n- Climatisation : ${climChip ? climChip.innerText.trim() : 'Non'}\n\n`;
   if(note) msg += `📝 Note : ${note}\n\n`;
-  msg += `Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  msg += `📋 SIRET Prestataire : 993 776 467 00017\n`;
+  msg += `Pour valider, merci de confirmer votre NOM :`;
 
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`, '_blank');
 }
@@ -630,43 +754,209 @@ function selectLocation(inputId, dropdownId, type, name, lat, lon) {
 setupAutocomplete('dep', 'ac-dep', 'dep');
 setupAutocomplete('arr', 'ac-arr', 'arr');
 
-function updateLiveWidgets() {
-  fetch('https://wttr.in/Paris?format=j1')
-    .then(res => res.json())
-    .then(data => {
-      const current = data.current_condition[0];
-      document.getElementById('wTemp').innerText = current.temp_C + '°';
-      const desc = current.lang_fr[0].value;
-      document.getElementById('wDesc').innerText = 'Paris — ' + desc;
-      const weatherCode = current.weatherCode;
-      let icon = '☁️';
-      if(['113'].includes(weatherCode)) icon = '☀️';
-      if(['116','119'].includes(weatherCode)) icon = '⛅';
-      if(['296','302','308'].includes(weatherCode)) icon = '🌧️';
-      document.getElementById('wIcon').innerText = icon;
-    }).catch(() => {
-      document.getElementById('wDesc').innerText = 'Paris — Indisponible';
-    });
 
-  const hour = new Date().getHours();
-  const isRushHour = (hour >= 7 && hour <= 10) || (hour >= 16 && hour <= 19);
+/* ═══ PARTICULES CANVAS ═══ */
+(function(){
+  const cv=document.getElementById('particles-canvas'),ctx=cv.getContext('2d');
+  let W,H,P=[];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  function mkP(){return{x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.4+.3,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,o:Math.random()*.35+.05,od:(Math.random()-.5)*.004};}
+  function init(){resize();P=Array.from({length:Math.floor(W*H/11000)},mkP);}
+  function loop(){ctx.clearRect(0,0,W,H);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.o+=p.od;if(p.o>.45||p.o<.04)p.od*=-1;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);ctx.fillStyle='rgba(212,175,55,'+p.o+')';ctx.fill();});requestAnimationFrame(loop);}
+  window.addEventListener('resize',init);
+  init();loop();
+  setTimeout(()=>cv.classList.add('ready'),300);
+})();
 
-  const updateTag = (id, isSlow) => {
-    const el = document.getElementById(id);
-    if (isSlow) {
-      el.className = 't-tag bad';
-      el.innerText = 'BOUCHONS';
-    } else {
-      el.className = 't-tag ok';
-      el.innerText = 'FLUIDE';
-    }
-  };
+/* ═══ MÉTÉO OPEN-METEO (MODÈLE MÉTÉO-FRANCE) ═══ */
+const WX={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'❄️',80:'🌧',81:'🌧',82:'⛈',95:'⛈',96:'⛈',99:'⛈'};
 
-  updateTag('t-cdg', isRushHour && Math.random() > 0.3);
-  updateTag('t-orly', isRushHour && Math.random() > 0.2);
-  updateTag('t-paris', isRushHour || Math.random() > 0.7);
+function fetchMeteo(){
+  const url='https://api.open-meteo.com/v1/meteofrance?latitude=48.64&longitude=2.38&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1';
+  fetch(url).then(r=>r.json()).then(data=>{
+    const c=data.current;
+    const temp=Math.round(c.temperature_2m);
+    const feels=Math.round(c.apparent_temperature);
+    const code=c.weathercode;
+    const wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m;
+    const rain=c.precipitation_probability??0;
+    const cloud=c.cloudcover??0;
+
+    document.getElementById('wIcon').innerText=WX[code]||'🌡';
+    document.getElementById('wTemp').innerText=temp+'°';
+    document.getElementById('wFeels').innerText='Ressenti '+feels+'°';
+    document.getElementById('wWind').innerText=wind+' km/h';
+    document.getElementById('wHumid').innerText=humid+'%';
+    document.getElementById('wRain').innerText='Pluie : '+rain+'%';
+    document.getElementById('wCloud').innerText=cloud+'%';
+    const now=new Date();
+    document.getElementById('w-updated').innerText=now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
+
+    // Badge conseil météo
+    let badge='',cls='bon';
+    if(rain>=70){badge='🌧 Prévoir un parapluie';cls='bad';}
+    else if(rain>=35){badge='🌦 Risque de pluie';cls='moyen';}
+    else if(temp<5){badge='🧊 Froid vif — véhicule chauffé';cls='moyen';}
+    else if(temp>=25){badge='🌡 Chaleur — climatisation à bord';cls='bon';}
+    else{badge='✅ Conditions idéales de trajet';cls='bon';}
+    document.getElementById('wBadge').innerHTML='<span class="w-badge '+cls+'">'+badge+'</span>';
+
+    updateConseil(temp,rain,wind);
+  }).catch(()=>{
+    document.getElementById('wIcon').innerText='🌡';
+    document.getElementById('wTemp').innerText='--°';
+    document.getElementById('wFeels').innerText='Indisponible';
+  });
 }
-updateLiveWidgets();
+
+/* ═══ TRAFIC LIVE OSRM — Comparaison durée réelle vs normale ═══ */
+// Coordonnées Ris-Orangis (base)
+const ORIG=[48.6468,2.4185];
+// Destinations + durées normales de référence (min)
+const AXES=[
+  {id:'cdg',name:'CDG',dur_id:'td-cdg',dest:[49.0097,2.5479],ref:35},
+  {id:'orly',name:'Orly',dur_id:'td-orly',dest:[48.7244,2.3709],ref:18},
+  {id:'paris',name:'Paris',dur_id:'td-paris',dest:[48.8566,2.3522],ref:28}
+];
+
+function fetchTrafic(){
+  const now=new Date();
+  document.getElementById('t-updated').innerText=now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
+
+  let done=0;
+  AXES.forEach(ax=>{
+    const url=`https://router.project-osrm.org/route/v1/driving/${ORIG[1]},${ORIG[0]};${ax.dest[1]},${ax.dest[0]}?overview=false`;
+    fetch(url,{signal:AbortSignal.timeout(7000)})
+      .then(r=>r.json())
+      .then(data=>{
+        if(data.code==='Ok'){
+          const dur=Math.round(data.routes[0].duration/60);
+          const ratio=dur/ax.ref;
+          const el=document.getElementById('t-'+ax.id);
+          const durEl=document.getElementById('td-'+ax.id);
+          durEl.innerText=dur+' min';
+          if(ratio<1.15){el.className='t-tag ok';el.innerText='FLUIDE';}
+          else if(ratio<1.4){el.className='t-tag warn';el.innerText='RALENTI';}
+          else{el.className='t-tag bad';el.innerText='BOUCHONS';}
+        }
+        done++;
+        if(done===AXES.length){
+          document.getElementById('t-source').innerText='Via OSRM routing · Temps réel';
+          genConseil();
+        }
+      })
+      .catch(()=>{
+        // Fallback heure de pointe
+        const h=new Date().getHours();
+        const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+        const el=document.getElementById('t-'+ax.id);
+        el.className=rush?'t-tag bad':'t-tag ok';
+        el.innerText=rush?'BOUCHONS':'FLUIDE';
+        document.getElementById('t-source').innerText='Données indicatives (heure locale)';
+        done++;
+        if(done===AXES.length)genConseil();
+      });
+  });
+}
+
+/* ═══ BADGE CONSEIL INTELLIGENT ═══ */
+function updateConseil(temp,rain,wind){
+  window._meteoData={temp,rain,wind};
+  genConseil();
+}
+
+function genConseil(){
+  const m=window._meteoData||{};
+  const h=new Date().getHours();
+  const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+  const cdgEl=document.getElementById('t-cdg');
+  const orlyEl=document.getElementById('t-orly');
+  const isBouchon=(cdgEl&&cdgEl.classList.contains('bad'))||(orlyEl&&orlyEl.classList.contains('bad'));
+
+  const box=document.getElementById('conseil-box');
+  const icon=document.getElementById('conseil-icon');
+  const txt=document.getElementById('conseil-text');
+
+  let msg='',icn='💡';
+
+  if(isBouchon&&rush){
+    icn='🚦';
+    msg='<strong>Bouchons en cours</strong> — Prévoyez 15 min supplémentaires pour CDG/Orly.';
+  } else if((m.rain||0)>=70){
+    icn='🌧';
+    msg='<strong>Pluie prévue</strong> — Départ anticipé recommandé, visibilité réduite.';
+  } else if(h>=22||h<6){
+    icn='🌙';
+    msg='<strong>Trajet de nuit</strong> — Supplément +10€ appliqué entre 22h et 6h.';
+  } else if(!rush){
+    icn='✅';
+    msg='<strong>Conditions idéales</strong> — Trafic fluide, heure hors pointe.';
+  } else {
+    icn='⚡';
+    msg='<strong>Heure de pointe</strong> — Consultez le trafic avant votre départ.';
+  }
+
+  if(msg){
+    icon.innerText=icn;
+    txt.innerHTML=msg;
+    box.style.display='flex';
+  }
+}
+
+/* ═══ COUNTUP ANIMATION PRIX ═══ */
+function countUpPrice(targetEl, finalValue, duration){
+  const start=performance.now();
+  const startVal=0;
+  function step(now){
+    const elapsed=now-start;
+    const progress=Math.min(elapsed/duration,1);
+    // Ease out cubic
+    const ease=1-Math.pow(1-progress,3);
+    const current=Math.round(startVal+(finalValue-startVal)*ease);
+    targetEl.innerText=current+' €';
+    if(progress<1)requestAnimationFrame(step);
+    else{
+      targetEl.innerText=finalValue+' €';
+      // Haptique mobile
+      if(navigator.vibrate)navigator.vibrate([30,10,20]);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+/* ═══ HAPTIQUE SUR CHIPS ═══ */
+document.querySelectorAll('.chip, .pay-btn').forEach(el=>{
+  el.addEventListener('click',function(e){
+    if(navigator.vibrate)navigator.vibrate(8);
+    // Ripple visuel
+    const r=document.createElement('span');
+    r.className='chip-ripple';
+    const rect=this.getBoundingClientRect();
+    r.style.cssText='left:50%;top:50%;margin:-10px 0 0 -10px;';
+    this.appendChild(r);
+    setTimeout(()=>r.remove(),400);
+  });
+});
+
+/* ═══ SURCHARGE calculatePrice POUR COUNTUP ═══ */
+
+/* Observer désactivé (countup géré directement) */
+/*const _observer=new MutationObserver(()=>{
+  const el=document.getElementById('finalPrice');
+  if(el&&el.innerText&&el.innerText!=='-- €'&&!el.dataset.animated){
+    el.dataset.animated='1';
+    const val=parseFloat(el.innerText);
+    if(!isNaN(val))countUpPrice(el,val,800);
+  }
+});
+_observer_disabled*/;
+
+/* ═══ LANCEMENT ═══ */
+fetchMeteo();
+fetchTrafic();
+setInterval(fetchMeteo,  900000); // 15 min
+setInterval(fetchTrafic, 120000); // 2 min
 </script>
 </body>
 </html>
