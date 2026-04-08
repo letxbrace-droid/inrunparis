@@ -406,6 +406,89 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 </div>
 
 <script>
+// ── SONS WEB AUDIO API ──
+const _AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _ac = null;
+function getAC() {
+  if (!_ac) _ac = new _AudioCtx();
+  return _ac;
+}
+
+// Son "ding" de caisse — lancement du countup
+function playCashStart() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    // Bruit blanc court (mécanique caisse)
+    const buf = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = ac.createBufferSource();
+    noise.buffer = buf;
+    const noiseG = ac.createGain();
+    noiseG.gain.setValueAtTime(0.4, t);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    noise.connect(noiseG); noiseG.connect(ac.destination);
+    noise.start(t);
+    // Ding métallique principal
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.5);
+  } catch(e){}
+}
+
+// Son "tick" discret — pendant chaque chiffre du countup
+function playTick() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.04);
+  } catch(e){}
+}
+
+// Son final "chime luxe" — accord doré 3 notes au prix final
+function playCashFinal() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const notes = [523.25, 659.25, 783.99]; // Do Mi Sol — accord majeur
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + i * 0.09);
+      g.gain.setValueAtTime(0, t + i * 0.09);
+      g.gain.linearRampToValueAtTime(0.22, t + i * 0.09 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.8);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(t + i * 0.09); osc.stop(t + i * 0.09 + 0.9);
+      // Harmonique douce
+      const osc2 = ac.createOscillator();
+      const g2 = ac.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2, t + i * 0.09);
+      g2.gain.setValueAtTime(0, t + i * 0.09);
+      g2.gain.linearRampToValueAtTime(0.07, t + i * 0.09 + 0.03);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.4);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc2.start(t + i * 0.09); osc2.stop(t + i * 0.09 + 0.5);
+    });
+  } catch(e){}
+}
+
 // ── FLATPICKR ──
 flatpickr('#timepick', {
   enableTime:true, dateFormat:"d/m/Y à H:i", time_24hr:true, locale:"fr",
@@ -441,12 +524,17 @@ function nextStep(step) {
 }
 
 function countUpPrice(el, final, dur) {
+  playCashStart();
   const start = performance.now();
+  let lastVal = 0;
   function step(now) {
     const p = Math.min((now-start)/dur, 1);
     const ease = 1-Math.pow(1-p,3);
-    el.innerText = Math.round(ease*final)+' €';
-    if(p<1) requestAnimationFrame(step);
+    const current = Math.round(ease*final);
+    if (current !== lastVal) { playTick(); lastVal = current; }
+    el.innerText = current+' €';
+    if(p<1) { requestAnimationFrame(step); }
+    else { playCashFinal(); }
   }
   requestAnimationFrame(step);
 }
