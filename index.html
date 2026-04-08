@@ -185,7 +185,41 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 #constellation-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 3s ease;}
 #constellation-canvas.ready{opacity:1;}
 </style>
-<noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}</style><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
+<noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
+/* ── CINEMATIC REVEAL ── */
+#reveal-line {
+  position:fixed;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent 0%,#9a7a1a 20%,#f0d870 50%,#d4af37 80%,transparent 100%);
+  z-index:9999;
+  box-shadow:0 0 20px 5px rgba(212,175,55,0.65),0 0 40px 10px rgba(212,175,55,0.25);
+  animation:revealSweep 1.7s cubic-bezier(.77,0,.18,1) forwards;
+  pointer-events:none;
+}
+@keyframes revealSweep {
+  0%   { top:-4px; opacity:1; }
+  88%  { top:100vh; opacity:1; }
+  100% { top:100vh; opacity:0; }
+}
+
+/* États initiaux masqués */
+.ai-logo  { opacity:0; transform:translateY(-22px); }
+.ai-h1    { opacity:0; transform:translateY(18px); }
+.ai-p     { opacity:0; transform:translateY(14px); }
+.ai-proof { opacity:0; transform:translateY(10px); }
+.ai-s1    { opacity:0; transform:translateY(32px); }
+.ai-s2    { opacity:0; transform:translateY(32px); }
+.ai-bl    { opacity:0; transform:translateX(-28px); }
+.ai-br    { opacity:0; transform:translateX(28px); }
+.ai-fab   { opacity:0; transform:translateY(20px); }
+
+/* Classe d'activation */
+.ai-in {
+  opacity:1 !important;
+  transform:translate(0,0) !important;
+  transition:opacity 0.65s ease, transform 0.65s cubic-bezier(.34,1.45,.64,1);
+}
+
+</style><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 </head>
 <body>
 
@@ -193,7 +227,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 <header id="hdr">
   <div class="nav">
-    <div class="nav-logo">
+    <div class="nav-logo ai-logo">
       <svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
         <defs>
           <linearGradient id="lgL" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
@@ -238,9 +272,9 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 </header>
 
 <div class="hero">
-  <h1>Votre vol atterrit.<br><span class="g">Nous sommes l&agrave;.</span></h1>
-  <p class="hero-p">Chauffeur priv&eacute; Paris &middot; CDG &middot; Orly &middot; Gares &middot; Longue distance.<br>Prix fix&eacute; avant le d&eacute;part &mdash; z&eacute;ro surprise.</p>
-  <div class="proof">
+  <h1 class="ai-h1">Votre vol atterrit.<br><span class="g">Nous sommes l&agrave;.</span></h1>
+  <p class="hero-p ai-p">Chauffeur priv&eacute; Paris &middot; CDG &middot; Orly &middot; Gares &middot; Longue distance.<br>Prix fix&eacute; avant le d&eacute;part &mdash; z&eacute;ro surprise.</p>
+  <div class="proof ai-proof">
     <div class="proof-item"><div class="pv">5/5</div><div class="pl">Avis v&eacute;rifi&eacute;s</div></div>
     <div class="proof-item"><div class="pv">30s</div><div class="pl">R&eacute;servation</div></div>
     <div class="proof-item"><div class="pv">&lt;5&rsquo;</div><div class="pl">R&eacute;ponse</div></div>
@@ -249,7 +283,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 </div>
 
 <div class="tunnel">
-  <div class="card active" id="step1">
+  <div class="card active ai-s1" id="step1">
     <div class="card-hd">
       <div class="c-num">1</div>
       <div><div class="c-title">Planifiez votre d&eacute;part</div><div class="c-sub">Heure et itin&eacute;raire</div></div>
@@ -274,7 +308,7 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
     <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Personnaliser mon confort</button>
   </div>
 
-  <div class="card locked" id="step2">
+  <div class="card locked ai-s2" id="step2">
     <div class="card-hd">
       <div class="c-num">2</div>
       <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
@@ -787,5 +821,34 @@ setInterval(fetchTrafic, 180000);
   setTimeout(()=>cv.classList.add('ready'),500);
 })();
 </script>
+
+<!-- CINEMATIC REVEAL -->
+<div id="reveal-line"></div>
+<script>
+(function(){
+  var seq = [
+    { sel: '.ai-logo',  delay: 380  },
+    { sel: '.ai-h1',    delay: 600  },
+    { sel: '.ai-p',     delay: 800  },
+    { sel: '.ai-proof', delay: 980  },
+    { sel: '.ai-s1',    delay: 1180 },
+    { sel: '.ai-s2',    delay: 1400 },
+    { sel: '.ai-fab',   delay: 1550 },
+  ];
+  seq.forEach(function(item){
+    var el = document.querySelector(item.sel);
+    if(!el) return;
+    setTimeout(function(){ el.classList.add('ai-in'); }, item.delay);
+  });
+
+  // Ajouter classe fab sur les boutons flottants
+  var fabs = document.querySelectorAll('.fab-msg, .fab-tel, .fab-bar');
+  fabs.forEach(function(f){ f.classList.add('ai-fab'); });
+  setTimeout(function(){
+    fabs.forEach(function(f){ f.classList.add('ai-in'); });
+  }, 1550);
+})();
+</script>
+
 </body>
 </html>
