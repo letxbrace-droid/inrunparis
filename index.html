@@ -7,11 +7,16 @@
 <link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
 <meta property="og:url" content="https://letxbrace-droid.github.io/inrunparis/">
 <meta property="og:title" content="I&amp;N RUN — Chauffeur Privé Paris">
+<meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIj48cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9IiMwOTA5MGYiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9Im9nIiB4MT0iMCIgeTE9IjAiIHgyPSIxMjAwIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QTdBMUEiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI0YwRDg3MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjx0ZXh0IHg9IjYwMCIgeT0iMjkwIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9InVybCgjb2cpIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iOCI+SSZhbXA7TiBSVU48L3RleHQ+PHRleHQgeD0iNjAwIiB5PSIzNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM2IiBmaWxsPSIjRDRBRjM3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iNiI+Q0hBVUZGRVVSIFBSSVbDiSBQQVJJUzwvdGV4dD48L3N2Zz4=">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
 <meta property="og:description" content="Chauffeur privé VTC Paris CDG Orly. Tarif fixe garanti. Réservation en 30 secondes.">
 <meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsIiB4MT0iMCIgeTE9IjAiIHgyPSIzMiIgeTI9IjMyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRDRBRjM3Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRjVFMDlBIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iNSIgeT0iMyIgd2lkdGg9IjQuNSIgaGVpZ2h0PSIyNiIgZmlsbD0idXJsKCNmbCkiLz48L3N2Zz4=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
@@ -28,61 +33,39 @@
 body{font-family:"Jost",sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;padding-bottom:100px;margin:0;}
 input,textarea,button{font-family:inherit;}
 
-/* Header Premium */
 #hdr{position:sticky;top:0;z-index:990;background:rgba(9,9,15,.90);backdrop-filter:blur(24px);border-bottom:1px solid rgba(212,175,55,.15);}
 .nav{display:flex;align-items:center;justify-content:space-between;height:var(--hdr);padding:0 max(20px,calc(env(safe-area-inset-left,0px)+20px));max-width:640px;margin:0 auto;}
-
-.nav-logo{
-  font-family:"Marcellus",serif;
-  font-size:1.6rem;
-  letter-spacing: 2px;
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.logo-run {
-  color: var(--gold);
-}
-
-.nav-status{display:flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:500;color:var(--green-l);background:rgba(34,197,94,.1);padding:6px 12px;border-radius:50px;border:1px solid rgba(34,197,94,.2); letter-spacing:0.5px;}
+.nav-logo{display:flex;align-items:center;line-height:1;gap:0;}
+.nav-status{display:flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:500;color:var(--green-l);background:rgba(34,197,94,.1);padding:6px 12px;border-radius:50px;border:1px solid rgba(34,197,94,.2);letter-spacing:0.5px;}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* Hero Section */
-.hero{padding:50px 20px 30px;text-align:center;position:relative;}
+.hero{padding:50px 20px 30px;text-align:center;position:relative;z-index:1;}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:radial-gradient(circle at top, rgba(212,175,55,.08) 0%, transparent 70%);pointer-events:none;}
-h1{font-family:"Marcellus",serif;font-size:clamp(1.9rem, 8vw, 2.5rem);line-height:1.2;margin:0 0 16px;font-weight:400;position:relative; letter-spacing: 1px;}
-h1 span{display:inline-block;}
-.g{color: var(--gold);}
+h1{font-family:"Marcellus",serif;font-size:clamp(1.9rem, 8vw, 2.5rem);line-height:1.2;margin:0 0 16px;font-weight:400;position:relative;letter-spacing:1px;}
+.g{color:var(--gold);}
 .hero-p{color:var(--gray2);font-size:1rem;margin:0 auto 30px;line-height:1.5;max-width:440px;font-weight:300;}
-
-/* Proof Grid */
-.proof{display:flex;justify-content:center;gap:30px;margin-bottom:40px;position:relative;z-index:1;}
+.proof{display:flex;justify-content:center;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
 .proof-item{text-align:center;}
 .pv{font-family:"Marcellus",serif;font-size:1.4rem;color:var(--gold);}
-.pl{font-size:0.7rem;color:var(--white);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px; opacity:0.8;}
+.pl{font-size:0.7rem;color:var(--white);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;opacity:0.8;}
 
-/* Tunnel de réservation */
 .tunnel{max-width:540px;margin:0 auto;padding:0 16px;position:relative;z-index:1;}
 .card{background:linear-gradient(145deg, var(--s2), var(--s1));border:1px solid rgba(255,255,255,.05);border-radius:var(--rxl);padding:28px 22px;margin-bottom:16px;transition:all .4s var(--ease);box-shadow:0 10px 30px rgba(0,0,0,.2);}
 .card.active{border-color:rgba(212,175,55,.4);box-shadow:0 0 0 1px rgba(212,175,55,.15), 0 10px 40px rgba(0,0,0,.4);}
 .card.locked{opacity:0.5;pointer-events:none;filter:grayscale(0.5);}
-
 .card-hd{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .c-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:500;background:var(--gold);color:#000;box-shadow:0 4px 10px rgba(212,175,55,.3);}
 .c-title{font-family:"Marcellus",serif;font-size:1.2rem;letter-spacing:0.02em;}
-.c-sub{font-size:0.85rem;color:var(--gray2);margin-top:2px; font-weight:300;}
+.c-sub{font-size:0.85rem;color:var(--gray2);margin-top:2px;font-weight:300;}
 
-/* Form Fields */
 .f-lbl{display:block;font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;margin-top:16px;}
 .f-wrap{display:flex;align-items:center;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);position:relative;transition:border-color 0.3s;}
 .f-wrap:focus-within{border-color:var(--gold);background:rgba(0,0,0,.6);}
 .f-ic{width:44px;text-align:center;font-size:1.1rem;color:var(--gray2);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:1rem;padding:0 14px 0 0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
-.f-in::placeholder{color:rgba(255,255,255,.25); font-weight:300;}
+.f-in::placeholder{color:rgba(255,255,255,.25);font-weight:300;}
 
-/* Autocomplete Popup */
 .ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--s2);border:1px solid var(--b);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:220px;overflow-y:auto;z-index:20;display:none;padding:6px;}
 .ac.open{display:block;animation:fadeDown 0.2s var(--ease);}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
@@ -91,195 +74,37 @@ h1 span{display:inline-block;}
 .ac-main{font-weight:500;font-size:0.9rem;color:var(--white);line-height:1.3;}
 .ac-sec{font-size:0.75rem;color:var(--gray);margin-top:4px;}
 
-/* Boutons d'action */
-.btn{width:100%;height:var(--tap);border-radius:var(--r);cursor:pointer;font-weight:500;font-size:0.95rem;border:none;margin-top:24px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease); text-transform: uppercase; letter-spacing: 1.5px;}
+.btn{width:100%;height:var(--tap);border-radius:var(--r);cursor:pointer;font-weight:500;font-size:0.95rem;border:none;margin-top:24px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease);text-transform:uppercase;letter-spacing:1.5px;}
 .btn-gold{background:linear-gradient(135deg, var(--gold), var(--gold-l));color:#000;box-shadow:0 4px 15px rgba(212,175,55,.2);}
-.btn-gold:hover{background:var(--gold-l); box-shadow:0 6px 20px rgba(212,175,55,.4);transform:translateY(-2px);}
+.btn-gold:hover{background:var(--gold-l);box-shadow:0 6px 20px rgba(212,175,55,.4);transform:translateY(-2px);}
 .btn-gold:active{transform:scale(0.98);}
 .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none;}
 
-/* Chips Premium */
 .chips-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
-.chip{padding:10px 16px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:50px;font-size:0.9rem;font-weight:400;color:var(--gray2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s;}
-.chip svg {width: 16px; height: 16px; stroke: currentColor; opacity:0.8;}
+.chip{padding:10px 16px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:50px;font-size:0.9rem;font-weight:400;color:var(--gray2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s;position:relative;overflow:hidden;}
+.chip svg{width:16px;height:16px;stroke:currentColor;opacity:0.8;}
 .chip:hover{background:rgba(255,255,255,.05);color:var(--white);}
 .chip.sel{background:var(--glow);border-color:var(--gold);color:var(--gold);}
-.chip.sel svg {opacity:1; stroke: var(--gold);}
+.chip.sel svg{opacity:1;stroke:var(--gold);}
+@keyframes ripple-gold{0%{transform:scale(0);opacity:.5;}100%{transform:scale(3);opacity:0;}}
+.chip-ripple{position:absolute;width:20px;height:20px;border-radius:50%;background:rgba(212,175,55,0.4);transform:scale(0);animation:ripple-gold .4s ease-out;pointer-events:none;transform-origin:center;}
 
-/* Paiement */
 .payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
 .pay-btn{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center;color:var(--gray2);font-weight:400;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
 .pay-btn.sel{background:var(--glow);border-color:var(--gold);color:var(--gold);}
 .pay-btn-ic{font-size:1.4rem;margin-bottom:6px;display:block;}
 
-/* Services à bord */
 .services-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;padding:16px;background:rgba(0,0,0,.2);border-radius:var(--r);border:1px dashed rgba(212,175,55,.2);}
 .srv-item{display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--white);font-weight:300;}
 .srv-ic{width:28px;height:28px;background:rgba(212,175,55,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.9rem;}
 
-/* Fil Trafic & Météo */
+/* INFOS ROW */
 .infos-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;padding:0 16px;max-width:540px;margin-left:auto;margin-right:auto;}
-.info-card{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:16px;}
-.i-hd{font-size:0.7rem;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
-
-.t-list{display:flex;flex-direction:column;gap:12px;}
-.t-item{display:flex;align-items:center;justify-content:space-between;font-size:0.85rem;}
-.t-route{color:var(--white);font-weight:400;}
-.t-tag{font-size:0.65rem;font-weight:500;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.1);}
-.t-tag.ok{color:var(--green-l);background:rgba(34,197,94,.15);}
-.t-tag.bad{color:#ef4444;background:rgba(239,68,68,.15);}
-
-.w-main{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
-.w-ic{font-size:2rem;}
-.w-temp{font-family:"Marcellus",serif;font-size:2rem;color:var(--white);}
-.w-desc{font-size:0.85rem;color:var(--gray2);font-weight:300;}
-
-/* Modal Prix OSRM */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
-.modal-overlay.show{opacity:1;pointer-events:auto;}
-.modal-box-price{background:var(--s1);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:30px 24px 40px;border-top:1px solid rgba(212,175,55,.3);transform:translateY(100%);transition:transform 0.4s var(--ease);margin: 0 auto;}
-.modal-overlay.show .modal-box-price{transform:translateY(0);}
-
-.m-handle{width:40px;height:4px;background:var(--b);border-radius:4px;margin:0 auto 20px;}
-.m-title{font-family:"Marcellus",serif;font-size:1.6rem;text-align:center;margin-bottom:8px; letter-spacing:1px;}
-.m-subtitle{text-align:center;color:var(--gray2);font-size:0.95rem;margin-bottom:24px;font-weight:300;}
-
-.m-recap{background:rgba(0,0,0,.4);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;}
-.m-price{font-family:"Marcellus",serif;font-size:3.5rem;color:var(--gold);margin-bottom:10px;}
-.m-calc-info{font-size:0.85rem;color:var(--gray2);line-height:1.5;font-weight:300;}
-
-.btn-close{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);margin-top:10px;}
-
-/* CORRECTION DE LA MODALE MENTIONS LÉGALES (V44) */
-.legal-modal{
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  background:rgba(9,9,15,0.95); /* Fond plus opaque pour masquer le site derrière */
-  backdrop-filter: blur(10px);
-  z-index:10000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.3s;
-}
-.legal-modal.show{
-  opacity:1;
-  pointer-events:auto;
-}
-.legal-box{
-  background:var(--s1);
-  border:1px solid rgba(212,175,55,.3);
-  border-radius:var(--rxl);
-  padding:30px 24px;
-  max-width:500px;
-  width:100%;
-  max-height:85vh;
-  overflow-y:auto;
-  text-align:left;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Ombre pour bien la détacher */
-}
-.legal-title{
-  font-family:"Marcellus",serif;
-  font-size:1.8rem;
-  color:var(--gold);
-  margin:0 0 24px 0;
-  text-align:center;
-}
-.legal-section{
-  margin-bottom:24px;
-}
-.legal-section h4{
-  color:var(--white);
-  font-size:1.1rem;
-  margin:0 0 12px;
-  border-bottom:1px solid rgba(255,255,255,.1);
-  padding-bottom:8px;
-  font-weight:500;
-}
-.legal-text{
-  color:var(--gray2);
-  font-size:0.95rem;
-  line-height:1.6;
-  font-weight:300;
-}
-.legal-text strong{
-  color:var(--white);
-  font-weight:500;
-}
-
-/* Footer */
-footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.75rem;line-height:1.6;}
-.legal-links{display:flex;justify-content:center;gap:16px;margin-bottom:12px;}
-.legal-links a{color:var(--gray2);text-decoration:none;cursor:pointer;}
-.legal-links a:hover{color:var(--gold);}
-
-/* Sticky Footer */
-.sticky{position:fixed;bottom:0;left:0;right:0;z-index:990;padding:12px 16px max(16px,env(safe-area-inset-bottom,16px));background:linear-gradient(0deg, rgba(9,9,15,1) 40%, rgba(9,9,15,0.8) 100%);display:flex;gap:12px;max-width:640px;margin:0 auto;}
-.sb{
-  flex:1;
-  height:50px;
-  border-radius:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  text-align:center;
-  font-weight:500;
-  font-size:0.95rem;
-  text-decoration:none;
-  transition:transform 0.2s;
-  letter-spacing:0.5px;
-  padding:0 10px;
-}
-.sb:active{transform:scale(0.96);}
-.sb svg { flex-shrink: 0; }
-
-.sb-wa{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:var(--white);}
-.sb-tel{background:rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.3); color:var(--gold);}
-
-.loader {border: 3px solid rgba(212,175,55,.2);border-top: 3px solid var(--gold);border-radius: 50%;width: 20px;height: 20px;animation: spin 1s linear infinite;display:none;margin: 0 auto;}
-@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
-
-/* ── CANVAS PARTICULES ── */
-#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 2s ease;}
-#particles-canvas.ready{opacity:1;}
-.hero{position:relative;z-index:1;}
-.tunnel{position:relative;z-index:1;}
-
-/* ── CARDS GLASSMORPHISM ── */
-.info-card{
-  background:rgba(27,27,42,0.55);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(212,175,55,0.18);
-  border-radius:20px;padding:18px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(212,175,55,0.08);
-  transition:border-color .3s, box-shadow .3s;
-  position:relative;overflow:hidden;
-}
-.info-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);
-}
+.info-card{background:rgba(27,27,42,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18);border-radius:20px;padding:18px;box-shadow:0 8px 32px rgba(0,0,0,0.35),inset 0 1px 0 rgba(212,175,55,0.08);transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);}
 .info-card:hover{border-color:rgba(212,175,55,0.35);box-shadow:0 12px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(212,175,55,0.12);}
-
-/* ── MÉTÉO ENRICHIE ── */
-.w-top-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.w-ic{font-size:2.2rem;line-height:1;}
-.w-temp-block{}
-.w-temp{font-family:"Marcellus",serif;font-size:2.2rem;color:var(--white);line-height:1;}
-.w-feels{font-size:0.72rem;color:var(--gray);margin-top:2px;font-weight:300;}
-.w-details{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
-.w-detail-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gray2);font-weight:300;}
-.w-detail-icon{font-size:0.85rem;flex-shrink:0;}
-.w-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:5px 10px;border-radius:50px;font-size:0.68rem;font-weight:600;letter-spacing:0.05em;}
-.w-badge.bon{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#22c55e;}
-.w-badge.moyen{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
-.w-badge.bad{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;}
-
-/* ── TRAFIC OSRM ── */
+.i-hd{font-size:0.7rem;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.t-list{display:flex;flex-direction:column;gap:0;}
 .t-item{display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .t-item:last-child{border-bottom:none;}
 .t-route-info{display:flex;flex-direction:column;}
@@ -293,169 +118,186 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 .t-dur{font-size:0.62rem;color:var(--gray);font-weight:300;}
 .t-updated{font-size:0.6rem;color:var(--gray);text-align:right;margin-top:8px;opacity:0.6;}
 
-/* ── BADGE IDÉAL PARTIR ── */
-.conseil-box{
-  max-width:540px;margin:14px auto 0;padding:0 16px;
-}
-.conseil-inner{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 16px;border-radius:14px;
-  background:rgba(212,175,55,.07);
-  border:1px solid rgba(212,175,55,.2);
-  font-size:0.82rem;color:var(--white);font-weight:300;
-  animation:fadeUp 0.5s var(--ease) both;
-}
+.w-top-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.w-ic{font-size:2.2rem;line-height:1;}
+.w-temp{font-family:"Marcellus",serif;font-size:2.2rem;color:var(--white);line-height:1;}
+.w-feels{font-size:0.72rem;color:var(--gray);margin-top:2px;font-weight:300;}
+.w-details{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.w-detail-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--gray2);font-weight:300;}
+.w-detail-icon{font-size:0.85rem;flex-shrink:0;}
+.w-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:5px 10px;border-radius:50px;font-size:0.68rem;font-weight:600;letter-spacing:0.05em;}
+.w-badge.bon{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#22c55e;}
+.w-badge.moyen{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
+.w-badge.bad{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;}
+
+/* CONSEIL */
+.conseil-box{max-width:540px;margin:14px auto 0;padding:0 16px;}
+.conseil-inner{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);font-size:0.82rem;color:var(--white);font-weight:300;animation:fadeUp 0.5s var(--ease) both;}
 .conseil-icon{font-size:1.2rem;flex-shrink:0;}
 .conseil-text strong{color:var(--gold);font-weight:600;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── COUNTUP PRIX ── */
-.m-price{
-  font-family:"Marcellus",serif;font-size:3.8rem;color:var(--gold);
-  margin-bottom:10px;letter-spacing:-1px;
-  text-shadow:0 0 40px rgba(212,175,55,.3);
-}
+/* MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s var(--ease);}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box-price{background:var(--s1);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:30px 24px 40px;border-top:1px solid rgba(212,175,55,.3);transform:translateY(100%);transition:transform 0.4s var(--ease);margin:0 auto;}
+.modal-overlay.show .modal-box-price{transform:translateY(0);}
+.m-handle{width:40px;height:4px;background:var(--b);border-radius:4px;margin:0 auto 20px;}
+.m-title{font-family:"Marcellus",serif;font-size:1.6rem;text-align:center;margin-bottom:8px;letter-spacing:1px;}
+.m-subtitle{text-align:center;color:var(--gray2);font-size:0.95rem;margin-bottom:24px;font-weight:300;}
+.m-recap{background:rgba(0,0,0,.4);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;}
+.m-price{font-family:"Marcellus",serif;font-size:3.8rem;color:var(--gold);margin-bottom:10px;letter-spacing:-1px;text-shadow:0 0 40px rgba(212,175,55,.3);}
 .m-price-detail{display:flex;justify-content:center;gap:16px;margin-top:8px;}
 .m-price-item{text-align:center;}
 .m-price-val{font-family:"Marcellus",serif;font-size:1.1rem;color:var(--white);}
 .m-price-lbl{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+.m-calc-info{font-size:0.85rem;color:var(--gray2);line-height:1.5;font-weight:300;}
+.btn-close{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);margin-top:10px;}
 
-/* ── HAPTIQUE FEEDBACK VISUEL ── */
-@keyframes ripple-gold{0%{transform:scale(0);opacity:.5;}100%{transform:scale(3);opacity:0;}}
-.chip{position:relative;overflow:hidden;}
-.chip-ripple{position:absolute;width:20px;height:20px;border-radius:50%;background:rgba(212,175,55,0.4);transform:scale(0);animation:ripple-gold .4s ease-out;pointer-events:none;transform-origin:center;}
+/* LEGAL MODAL */
+.legal-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(9,9,15,0.95);backdrop-filter:blur(10px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.legal-modal.show{opacity:1;pointer-events:auto;}
+.legal-box{background:var(--s1);border:1px solid rgba(212,175,55,.3);border-radius:var(--rxl);padding:30px 24px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;text-align:left;box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+.legal-title{font-family:"Marcellus",serif;font-size:1.8rem;color:var(--gold);margin:0 0 24px;text-align:center;}
+.legal-section{margin-bottom:24px;}
+.legal-section h4{color:var(--white);font-size:1.1rem;margin:0 0 12px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:8px;font-weight:500;}
+.legal-text{color:var(--gray2);font-size:0.95rem;line-height:1.6;font-weight:300;}
+.legal-text strong{color:var(--white);font-weight:500;}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.75rem;line-height:1.6;}
+.legal-links{display:flex;justify-content:center;gap:16px;margin-bottom:12px;}
+.legal-links a{color:var(--gray2);text-decoration:none;cursor:pointer;}
+.legal-links a:hover{color:var(--gold);}
+
+/* STICKY */
+.sticky{position:fixed;bottom:0;left:0;right:0;z-index:990;padding:12px 16px max(16px,env(safe-area-inset-bottom,16px));background:linear-gradient(0deg, rgba(9,9,15,1) 40%, rgba(9,9,15,0.8) 100%);display:flex;gap:12px;max-width:640px;margin:0 auto;}
+.sb{flex:1;height:50px;border-radius:50px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:500;font-size:0.95rem;text-decoration:none;transition:transform 0.2s;letter-spacing:0.5px;padding:0 10px;}
+.sb:active{transform:scale(0.96);}
+.sb svg{flex-shrink:0;}
+.sb-wa{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--white);}
+.sb-tel{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);}
+
+.loader{border:3px solid rgba(212,175,55,.2);border-top:3px solid var(--gold);border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:none;margin:0 auto;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+/* ── CANVAS CONSTELLATION ── */
+#constellation-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 3s ease;}
+#constellation-canvas.ready{opacity:1;}
 </style>
+<noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}</style><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 </head>
 <body>
 
-<canvas id="particles-canvas"></canvas>
+<canvas id="constellation-canvas"></canvas>
+
 <header id="hdr">
   <div class="nav">
     <div class="nav-logo">
-      I&N <span class="logo-run">RUN</span>
+      <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
+      <defs><linearGradient id="lgLogo" x1="0" y1="0" x2="148" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#9A7A1A"/><stop offset="35%" stop-color="#D4AF37"/>
+        <stop offset="55%" stop-color="#F0D870"/><stop offset="75%" stop-color="#D4AF37"/>
+        <stop offset="100%" stop-color="#9A7A1A"/>
+      </linearGradient></defs>
+      <rect x="2" y="5" width="7" height="30" fill="url(#lgLogo)"/>
+      <rect x="17" y="5" width="7" height="30" fill="url(#lgLogo)"/>
+      <path d="M 24 12 C 24 5,33 3,40 7 C 47 11,47 21,40 25 C 36 27,30 26,26 22 L 24 27" stroke="url(#lgLogo)" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M 24 5 L 55 35" stroke="url(#lgLogo)" stroke-width="7" stroke-linecap="square" fill="none"/>
+      <rect x="48" y="5" width="7" height="30" fill="url(#lgLogo)"/>
+      <rect x="65" y="10" width="1" height="20" fill="url(#lgLogo)" opacity="0.22"/>
+      <text x="72" y="27" font-family="'Jost',Arial,sans-serif" font-size="13.5" font-weight="400" fill="url(#lgLogo)" letter-spacing="5.5">RUN</text>
+      </svg>
     </div>
     <div class="nav-status"><div class="dot"></div> Disponible</div>
   </div>
 </header>
 
 <div class="hero">
-  <h1>Votre Chauffeur Privé<br><span class="g">Paris & Île-de-France</span></h1>
-  <p class="hero-p">Réservation immédiate ou à l'avance. Berline premium, tarif fixe garanti sans approche.</p>
-
+  <h1>Votre vol atterrit.<br><span class="g">Nous sommes l&agrave;.</span></h1>
+  <p class="hero-p">Chauffeur priv&eacute; Paris &middot; CDG &middot; Orly &middot; Gares &middot; Longue distance.<br>Prix fix&eacute; avant le d&eacute;part &mdash; z&eacute;ro surprise.</p>
   <div class="proof">
-    <div class="proof-item"><div class="pv">5/5</div><div class="pl">Avis Clients</div></div>
-    <div class="proof-item"><div class="pv">100%</div><div class="pl">Discrétion</div></div>
-    <div class="proof-item"><div class="pv">Fixe</div><div class="pl">Prix Garanti</div></div>
+    <div class="proof-item"><div class="pv">5/5</div><div class="pl">Avis v&eacute;rifi&eacute;s</div></div>
+    <div class="proof-item"><div class="pv">30s</div><div class="pl">R&eacute;servation</div></div>
+    <div class="proof-item"><div class="pv">&lt;5&rsquo;</div><div class="pl">R&eacute;ponse</div></div>
+    <div class="proof-item"><div class="pv">0&euro;</div><div class="pl">Commission</div></div>
   </div>
 </div>
 
 <div class="tunnel">
-  <!-- ETAPE 1 -->
   <div class="card active" id="step1">
     <div class="card-hd">
       <div class="c-num">1</div>
-      <div>
-        <div class="c-title">Planifiez votre départ</div>
-        <div class="c-sub">Heure et itinéraire</div>
-      </div>
+      <div><div class="c-title">Planifiez votre d&eacute;part</div><div class="c-sub">Heure et itin&eacute;raire</div></div>
     </div>
-
     <label class="f-lbl">Prise en charge</label>
     <div class="f-wrap">
-      <div class="f-ic">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      </div>
+      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
       <input type="text" id="timepick" class="f-in" placeholder="Date et heure..." readonly>
     </div>
-
-    <label class="f-lbl">Lieu de départ</label>
+    <label class="f-lbl">Lieu de d&eacute;part</label>
     <div class="f-wrap">
-      <div class="f-ic" style="color:var(--gold)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-      </div>
-      <input type="text" id="dep" class="f-in" placeholder="Aéroport d'Orly, Gare de Lyon, Adresse..." autocomplete="off">
+      <div class="f-ic" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport d'Orly, Gare de Lyon, Adresse..." autocomplete="off">
       <div class="ac" id="ac-dep"></div>
     </div>
-
     <label class="f-lbl">Destination finale</label>
     <div class="f-wrap">
-      <div class="f-ic">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
-      </div>
-      <input type="text" id="arr" class="f-in" placeholder="Où allez-vous ?" autocomplete="off">
+      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+      <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
       <div class="ac" id="ac-arr"></div>
     </div>
-
     <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Personnaliser mon confort</button>
   </div>
 
-  <!-- ETAPE 2 -->
   <div class="card locked" id="step2">
     <div class="card-hd">
       <div class="c-num">2</div>
-      <div>
-        <div class="c-title">Ambiance et options</div>
-        <div class="c-sub">Préférences à bord</div>
-      </div>
+      <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
     </div>
-
-    <label class="f-lbl">Moyen de Paiement à bord</label>
+    <label class="f-lbl">Moyen de Paiement &agrave; bord</label>
     <div class="payment-grid">
-      <div class="pay-btn sel" onclick="selectPayment(this, 'CB')">
-        <span class="pay-btn-ic">💳</span>Carte Bancaire
-      </div>
-      <div class="pay-btn" onclick="selectPayment(this, 'Espèces')">
-        <span class="pay-btn-ic">💶</span>Espèces
-      </div>
+      <div class="pay-btn sel" onclick="selectPayment(this,'CB')"><span class="pay-btn-ic">💳</span>Carte Bancaire</div>
+      <div class="pay-btn" onclick="selectPayment(this,'Esp&egrave;ces')"><span class="pay-btn-ic">💶</span>Esp&egrave;ces</div>
     </div>
     <input type="hidden" id="paymentMethod" value="CB">
-
     <label class="f-lbl">Musique</label>
     <div class="chips-grid" id="musicPref">
-      <div class="chip sel" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
-      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
-      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
-      <div class="chip" onclick="toggleChip('musicPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+      <div class="chip sel" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
     </div>
-
     <label class="f-lbl">Climatisation</label>
     <div class="chips-grid" id="climPref">
-      <div class="chip" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
-      <div class="chip sel" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
-      <div class="chip" onclick="toggleChip('climPref', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
+      <div class="chip sel" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
     </div>
-
     <label class="f-lbl">Services Inclus</label>
     <div class="services-grid">
-      <div class="srv-item"><div class="srv-ic">💧</div>Eau</div>
-      <div class="srv-item"><div class="srv-ic">🍬</div>Bonbons</div>
-      <div class="srv-item"><div class="srv-ic">🔋</div>Chargeurs</div>
-      <div class="srv-item"><div class="srv-ic">📶</div>Wifi 5G</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5c0 5 5 11 5 11s5-6 5-11a5 5 0 0 0-5-5z"/><circle cx="12" cy="7" r="2"/></svg></div>Eau min&eacute;rale</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2.5"/></svg></div>Confiseries</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/><path d="M9 6h6M9 10h4"/></svg></div>Chargeurs USB</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg></div>Wifi 5G</div>
     </div>
-
     <label class="f-lbl">Note au chauffeur (Optionnel)</label>
     <div class="f-wrap" style="height:auto;padding:8px;">
-      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N° de vol, bagages encombrants..."></textarea>
+      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
     </div>
-
     <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
       <span id="btnText">Calculer le tarif exact</span>
       <div class="loader" id="calcLoader"></div>
     </button>
   </div>
-
 </div>
 
-<!-- INFOS METEO / TRAFIC -->
 <div class="infos-row">
   <div class="info-card">
-    <div class="i-hd">🌡 Météo Live <span id="w-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
+    <div class="i-hd">🌡 M&eacute;t&eacute;o Live <span id="w-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
     <div class="w-top-row">
       <div class="w-ic" id="wIcon">⏳</div>
-      <div class="w-temp-block">
-        <div class="w-temp" id="wTemp">--°</div>
-        <div class="w-feels" id="wFeels">Ressenti --°</div>
-      </div>
+      <div><div class="w-temp" id="wTemp">--°</div><div class="w-feels" id="wFeels">Ressenti --°</div></div>
     </div>
     <div class="w-details">
       <div class="w-detail-item"><span class="w-detail-icon">💨</span><span id="wWind">-- km/h</span></div>
@@ -465,22 +307,12 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
     </div>
     <div id="wBadge"></div>
   </div>
-
   <div class="info-card">
     <div class="i-hd">🚦 Trafic IDF <span id="t-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
-    <div class="t-list" id="traficList">
-      <div class="t-item">
-        <div class="t-route-info"><span class="t-route">CDG</span><span class="t-via">A1 · Roissy</span></div>
-        <div class="t-right"><span class="t-tag ok" id="t-cdg">...</span><span class="t-dur" id="td-cdg"></span></div>
-      </div>
-      <div class="t-item">
-        <div class="t-route-info"><span class="t-route">Orly</span><span class="t-via">A6 · 91</span></div>
-        <div class="t-right"><span class="t-tag ok" id="t-orly">...</span><span class="t-dur" id="td-orly"></span></div>
-      </div>
-      <div class="t-item">
-        <div class="t-route-info"><span class="t-route">Paris</span><span class="t-via">N7 · Périph</span></div>
-        <div class="t-right"><span class="t-tag ok" id="t-paris">...</span><span class="t-dur" id="td-paris"></span></div>
-      </div>
+    <div class="t-list">
+      <div class="t-item"><div class="t-route-info"><span class="t-route">CDG</span><span class="t-via">A1 · Roissy</span></div><div class="t-right"><span class="t-tag ok" id="t-cdg">...</span><span class="t-dur" id="td-cdg"></span></div></div>
+      <div class="t-item"><div class="t-route-info"><span class="t-route">Orly</span><span class="t-via">A6 · 91</span></div><div class="t-right"><span class="t-tag ok" id="t-orly">...</span><span class="t-dur" id="td-orly"></span></div></div>
+      <div class="t-item"><div class="t-route-info"><span class="t-route">Paris</span><span class="t-via">N7 · P&eacute;riph</span></div><div class="t-right"><span class="t-tag ok" id="t-paris">...</span><span class="t-dur" id="td-paris"></span></div></div>
     </div>
     <div class="t-updated" id="t-source">Calcul en cours…</div>
   </div>
@@ -490,11 +322,11 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
 
 <footer>
   <div class="legal-links">
-    <a onclick="showLegal()">Mentions Légales & CGV</a>
+    <a onclick="showLegal()">Mentions L&eacute;gales &amp; CGV</a>
     <span>|</span>
     <a href="https://wa.me/33767742220">Contactez-nous</a>
   </div>
-  <p>© 2026 I&N RUN. Tous droits réservés.<br>Service de Voiture de Tourisme avec Chauffeur (VTC).</p>
+  <p>&copy; 2026 I&amp;N RUN. Tous droits r&eacute;serv&eacute;s.<br>Service de Voiture de Tourisme avec Chauffeur (VTC).</p>
 </footer>
 
 <div class="sticky">
@@ -504,459 +336,344 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
   </a>
   <a href="tel:+33767742220" class="sb sb-tel">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-    Téléphone
+    T&eacute;l&eacute;phone
   </a>
 </div>
 
-<!-- MODAL PRIX CALCULE -->
 <div class="modal-overlay" id="customModal" onclick="if(event.target===this) hideModal()">
   <div class="modal-box-price">
     <div class="m-handle"></div>
     <h3 class="m-title">Tarif Fixe Garanti</h3>
     <p class="m-subtitle">Prix net pour une Berline Premium.</p>
-
     <div class="m-recap">
-      <div class="m-price" id="finalPrice">-- €</div>
+      <div class="m-price" id="finalPrice">-- &euro;</div>
       <div class="m-price-detail">
-        <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilomètres</div></div>
-        <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Durée est.</div></div>
-        <div class="m-price-item"><div class="m-price-val" id="m-base">15€</div><div class="m-price-lbl">Prise en charge</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilom&egrave;tres</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Dur&eacute;e est.</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Prise en charge</div></div>
       </div>
       <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
     </div>
-
     <button class="btn btn-gold" onclick="sendWhatsApp()" style="margin-bottom:10px;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#000" style="margin-right:10px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Valider la réservation
+      Valider la r&eacute;servation
     </button>
-    <button class="btn btn-close" onclick="hideModal()" style="background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);">Modifier le trajet</button>
+    <button class="btn btn-close" onclick="hideModal()">Modifier le trajet</button>
   </div>
 </div>
 
-<!-- MODAL MENTIONS LEGALES CORRECTEMENT STRUCTUREE -->
 <div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
   <div class="legal-box">
-    <h3 class="legal-title">Mentions Légales & CGV</h3>
-
-    <div class="legal-section">
-      <h4>1. Éditeur du Service</h4>
-      <div class="legal-text">
-        <strong>Raison sociale :</strong> I&N RUN<br>
-        <strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br>
-        <strong>Dirigeant :</strong> M. BRAHA Nourdine<br>
-        <strong>SIRET :</strong> 993 776 467 00017<br>
-        <strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br>
-        <strong>Téléphone :</strong> 07 67 74 22 20<br>
-        <strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.
-      </div>
+    <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
+    <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
     </div>
-
-    <div class="legal-section">
-      <h4>2. Hébergement</h4>
-      <div class="legal-text">
-        <strong>Hébergeur :</strong> GitHub Pages<br>
-        <strong>Éditeur :</strong> GitHub Inc.<br>
-        <strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.
-      </div>
+    <div class="legal-section"><h4>2. H&eacute;bergement</h4>
+      <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
     </div>
-
-    <div class="legal-section">
-      <h4>3. Conditions de Transport (CGV)</h4>
-      <div class="legal-text">
-        <strong>Tarification :</strong> Les prix indiqués lors de la réservation sont fixes et garantis. Ils incluent la prise en charge, le trajet, l'attente aux aéroports, et la gestion des bagages.<br><br>
-        <strong>Réservation :</strong> Toute réservation est soumise à confirmation de la part du chauffeur. <br><br>
-        <strong>Assurance :</strong> Le transporteur est couvert par une assurance Responsabilité Civile Professionnelle pour le transport de personnes à titre onéreux.
-      </div>
+    <div class="legal-section"><h4>3. Conditions de Transport (CGV)</h4>
+      <div class="legal-text"><strong>Tarification :</strong> Les prix indiqu&eacute;s lors de la r&eacute;servation sont fixes et garantis.<br><br><strong>R&eacute;servation :</strong> Toute r&eacute;servation est soumise &agrave; confirmation de la part du chauffeur.<br><br><strong>Assurance :</strong> Le transporteur est couvert par une assurance RC Professionnelle.</div>
     </div>
-
-    <div class="legal-section">
-      <h4>4. Données Personnelles</h4>
-      <div class="legal-text">
-        Les données collectées (nom, téléphone, adresses de départ et d'arrivée) sont strictement utilisées pour la bonne exécution de la course. Elles ne font l'objet d'aucune revente à des tiers.
-      </div>
+    <div class="legal-section"><h4>4. Donn&eacute;es Personnelles</h4>
+      <div class="legal-text">Les donn&eacute;es collect&eacute;es sont strictement utilis&eacute;es pour la bonne ex&eacute;cution de la course. Elles ne font l'objet d'aucune revente &agrave; des tiers.</div>
     </div>
-
     <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer</button>
   </div>
 </div>
 
 <script>
+// ── FLATPICKR ──
 flatpickr('#timepick', {
-  enableTime: true,
-  dateFormat: "d/m/Y à H:i",
-  time_24hr: true,
-  locale: "fr",
-  minDate: "today",
-  defaultHour: new Date().getHours() < 22 ? new Date().getHours() + 1 : 8,
-  minuteIncrement: 15,
-  disableMobile: false
+  enableTime:true, dateFormat:"d/m/Y à H:i", time_24hr:true, locale:"fr",
+  minDate:"today", defaultHour:new Date().getHours()<22?new Date().getHours()+1:8,
+  minuteIncrement:15, disableMobile:false
 });
 
 let coords = { dep: null, arr: null };
 
-function toggleChip(containerId, element) {
-  document.querySelectorAll('#' + containerId + ' .chip').forEach(c => c.classList.remove('sel'));
-  element.classList.add('sel');
+function toggleChip(id, el) {
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const r = document.createElement('div');
+  r.className = 'chip-ripple';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(), 400);
 }
-
-function selectPayment(element, method) {
-  document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('sel'));
-  element.classList.add('sel');
-  document.getElementById('paymentMethod').value = method;
+function selectPayment(el, m) {
+  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = m;
 }
-
-function showLegal() { document.getElementById('legalModal').classList.add('show'); }
-function hideModal() { document.getElementById('customModal').classList.remove('show'); }
+function showLegal(){document.getElementById('legalModal').classList.add('show');}
+function hideModal(){document.getElementById('customModal').classList.remove('show');}
 
 function nextStep(step) {
-  if (!coords.dep || !coords.arr) {
-    alert("⚠️ Veuillez choisir les adresses depuis la liste de suggestions (icône 📍).");
-    return;
-  }
+  if (!coords.dep || !coords.arr) {alert("Veuillez sélectionner les adresses dans la liste des suggestions.");return;}
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step1').classList.add('locked');
+  const t = document.getElementById('step'+step);
+  t.classList.remove('locked'); t.classList.add('active');
+  t.scrollIntoView({behavior:'smooth',block:'center'});
+}
 
-  const target = document.getElementById('step' + step);
-  target.classList.remove('locked');
-  target.classList.add('active');
-  target.scrollIntoView({behavior: 'smooth', block: 'center'});
+function countUpPrice(el, final, dur) {
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1-Math.pow(1-p,3);
+    el.innerText = Math.round(ease*final)+' €';
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 async function calculatePrice() {
-  if (!coords.dep || !coords.arr) return;
-  const btnText = document.getElementById('btnText');
-  const loader = document.getElementById('calcLoader');
-
-  btnText.style.display = 'none';
-  loader.style.display = 'block';
-  document.getElementById('calcBtn').disabled = true;
-
+  if(!coords.dep||!coords.arr) return;
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('calcLoader').style.display='block';
+  document.getElementById('calcBtn').disabled=true;
   try {
-    const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
-    const data = await response.json();
-
-    if (data.code === 'Ok') {
-      const distanceKm = data.routes[0].distance / 1000;
-      const durationMin = data.routes[0].duration / 60;
-
-      const baseFare = 15.0;
-      const pricePerKm = 1.70;
-      const pricePerMin = 0.40;
-
-      let price = baseFare + (distanceKm * pricePerKm) + (durationMin * pricePerMin);
-      if (price < 35) price = 35;
-      price = Math.ceil(price);
-
-      document.getElementById('m-km').innerText = distanceKm.toFixed(1) + ' km';
-      document.getElementById('m-dur').innerText = Math.round(durationMin) + ' min';
-      const tval = document.getElementById('timepick').value || '';
-      const hh = parseInt(tval.substring(tval.indexOf('à')+2,tval.indexOf('à')+4)||'10');
-      const nightSup = (!isNaN(hh)&&(hh>=22||hh<6));
-      document.getElementById('calcDetails').innerHTML = '15€ base + '+distanceKm.toFixed(1)+'km × 1,70€ + '+Math.round(durationMin)+'min × 0,40€'+(nightSup?' · <strong style="color:var(--gold)">+10€ nuit</strong>':'');
-      document.getElementById('finalPrice').innerText = '0 €';
+    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
+    const d = await r.json();
+    if(d.code==='Ok') {
+      const km=d.routes[0].distance/1000, min=d.routes[0].duration/60;
+      let price=15+(km*1.70)+(min*0.40);
+      if(price<35) price=35;
+      price=Math.ceil(price);
+      document.getElementById('m-km').innerText=km.toFixed(1)+' km';
+      document.getElementById('m-dur').innerText=Math.round(min)+' min';
       document.getElementById('customModal').classList.add('show');
-      setTimeout(function(){ countUpPrice(document.getElementById('finalPrice'), price, 900); }, 180);
-    } else {
-      alert("Impossible de calculer l'itinéraire.");
-    }
-  } catch (error) {
-    alert("Erreur de connexion.");
-  } finally {
-    btnText.style.display = 'block';
-    loader.style.display = 'none';
-    document.getElementById('calcBtn').disabled = false;
+      countUpPrice(document.getElementById('finalPrice'), price, 1200);
+    } else { alert("Impossible de calculer l'itinéraire."); }
+  } catch(e){ alert("Erreur de connexion."); }
+  finally {
+    document.getElementById('btnText').style.display='block';
+    document.getElementById('calcLoader').style.display='none';
+    document.getElementById('calcBtn').disabled=false;
   }
 }
 
 function sendWhatsApp() {
-  const time = document.getElementById('timepick').value;
-  const dep = document.getElementById('dep').value;
-  const arr = document.getElementById('arr').value;
-  const note = document.getElementById('note').value;
-  const price = document.getElementById('finalPrice').innerText;
-  const payment = document.getElementById('paymentMethod').value;
+  const time=document.getElementById('timepick').value;
+  const dep=document.getElementById('dep').value;
+  const arr=document.getElementById('arr').value;
+  const note=document.getElementById('note').value;
+  const price=document.getElementById('finalPrice').innerText;
+  const pay=document.getElementById('paymentMethod').value;
+  const music=document.querySelector('#musicPref .chip.sel');
+  const clim=document.querySelector('#climPref .chip.sel');
+  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
 
-  const musicChip = document.querySelector('#musicPref .chip.sel');
-  const climChip = document.querySelector('#climPref .chip.sel');
+`;
+  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+`;
+  msg+=`📍 Départ : ${dep}
+🏁 Arrivée : ${arr}
+`;
+  msg+=`💳 Tarif fixé : ${price}
+💶 Paiement : ${pay}
 
-  let msg = `*BON DE RÉSERVATION VTC - I&N RUN*\n\n`;
-  msg += `🕒 Prise en charge : ${time || 'Dès que possible'}\n`;
-  msg += `📍 Départ : ${dep}\n`;
-  msg += `🏁 Arrivée : ${arr}\n`;
-  msg += `💳 Tarif fixé : ${price}\n`;
-  msg += `💶 Paiement : ${payment}\n\n`;
-  msg += `✨ *Préférences à bord :*\n- Musique : ${musicChip ? musicChip.innerText.trim() : 'Non'}\n- Climatisation : ${climChip ? climChip.innerText.trim() : 'Non'}\n\n`;
-  if(note) msg += `📝 Note : ${note}\n\n`;
-  msg += `📋 SIRET Prestataire : 993 776 467 00017\n`;
-  msg += `Pour valider, merci de confirmer votre NOM :`;
+`;
+  msg+=`✨ *Préférences à bord :*
+- Musique : ${music?music.innerText.trim():'Non'}
+- Climatisation : ${clim?clim.innerText.trim():'Non'}
 
-  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`, '_blank');
+`;
+  if(note) msg+=`📝 Note : ${note}
+
+`;
+  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-const PHOTON = 'https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=5&q=';
-
-function setupAutocomplete(inputId, dropdownId, type) {
-  const input = document.getElementById(inputId);
-  const dropdown = document.getElementById(dropdownId);
-  let timeout = null;
-
-  input.addEventListener('input', function() {
-    clearTimeout(timeout);
-    coords[type] = null; 
-    const query = this.value.trim();
-    if (query.length < 3) {
-      dropdown.classList.remove('open');
-      return;
-    }
-    timeout = setTimeout(() => {
-      fetch(PHOTON + encodeURIComponent(query))
-        .then(res => res.json())
-        .then(data => {
-          if(!data.features || data.features.length === 0) {
-            dropdown.innerHTML = '<div class="ac-item"><div class="ac-main">Aucun résultat trouvé</div></div>';
-          } else {
-            dropdown.innerHTML = data.features.map(item => {
-              const props = item.properties;
-              let name = props.name || '';
-              let street = props.street || '';
-              let city = props.city || props.town || props.state || '';
-              let shortName = name;
-              if (street && name !== street) shortName += ', ' + street;
-              if (!shortName) shortName = street;
-              let fullName = `${shortName}, ${city}`.replace(/^, /, '').trim();
-              let sec = `${props.postcode || ''} ${city}`.trim();
-
-              return `<div class="ac-item" onclick="selectLocation('${inputId}', '${dropdownId}', '${type}', '${fullName.replace(/'/g,"\\'")}', ${item.geometry.coordinates[1]}, ${item.geometry.coordinates[0]})">
-                <div>
-                  <div class="ac-main">📍 ${fullName}</div>
-                  <div class="ac-sec">${sec}</div>
-                </div>
-              </div>`;
-            }).join('');
-          }
-          dropdown.classList.add('open');
-        })
-        .catch(() => {});
+// ── AUTOCOMPLETE PHOTON ──
+const PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=5&q=';
+function setupAutocomplete(inputId, dropId, type) {
+  const input=document.getElementById(inputId), drop=document.getElementById(dropId);
+  let t=null;
+  input.addEventListener('input', function(){
+    clearTimeout(t); coords[type]=null;
+    const q=this.value.trim();
+    if(q.length<3){drop.classList.remove('open');return;}
+    t=setTimeout(()=>{
+      fetch(PHOTON+encodeURIComponent(q)).then(r=>r.json()).then(data=>{
+        if(!data.features||!data.features.length){
+          drop.innerHTML='<div class="ac-item"><div class="ac-main">Aucun résultat</div></div>';
+        } else {
+          drop.innerHTML=data.features.map(item=>{
+            const p=item.properties;
+            let name=p.name||'', city=p.city||p.town||p.state||'';
+            let full=`${name}${p.street&&name!==p.street?', '+p.street:''}`;
+            if(!full) full=p.street||'';
+            full=`${full}, ${city}`.replace(/^, /,'').trim();
+            return `<div class="ac-item" onclick="selectLocation('${inputId}','${dropId}','${type}','${full.replace(/'/g,"\'")}',${item.geometry.coordinates[1]},${item.geometry.coordinates[0]})">
+              <div><div class="ac-main">📍 ${full}</div><div class="ac-sec">${(p.postcode||'')+' '+city}</div></div></div>`;
+          }).join('');
+        }
+        drop.classList.add('open');
+      }).catch(()=>{});
     }, 400);
   });
-
-  document.addEventListener('click', (e) => {
-    if(e.target !== input && !dropdown.contains(e.target)) dropdown.classList.remove('open');
-  });
+  document.addEventListener('click', e=>{if(e.target!==input&&!drop.contains(e.target)) drop.classList.remove('open');});
 }
-
-function selectLocation(inputId, dropdownId, type, name, lat, lon) {
-  document.getElementById(inputId).value = name;
-  coords[type] = { lat: lat, lon: lon };
-  document.getElementById(dropdownId).classList.remove('open');
+function selectLocation(iId, dId, type, name, lat, lon){
+  document.getElementById(iId).value=name;
+  coords[type]={lat,lon};
+  document.getElementById(dId).classList.remove('open');
 }
+setupAutocomplete('dep','ac-dep','dep');
+setupAutocomplete('arr','ac-arr','arr');
 
-setupAutocomplete('dep', 'ac-dep', 'dep');
-setupAutocomplete('arr', 'ac-arr', 'arr');
-
-
-/* ═══ PARTICULES CANVAS ═══ */
-(function(){
-  const cv=document.getElementById('particles-canvas'),ctx=cv.getContext('2d');
-  let W,H,P=[];
-  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
-  function mkP(){return{x:Math.random()*W,y:Math.random()*H,s:Math.random()*2.0+.8,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,o:Math.random()*.6+.1,od:(Math.random()-.5)*.004};}
-  function init(){resize();P=Array.from({length:Math.floor(W*H/6000)},mkP);}
-  function loop(){ctx.clearRect(0,0,W,H);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.o+=p.od;if(p.o>.45||p.o<.04)p.od*=-1;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);ctx.fillStyle='rgba(212,175,55,'+p.o+')';ctx.fill();});requestAnimationFrame(loop);}
-  window.addEventListener('resize',init);
-  init();loop();
-  setTimeout(()=>cv.classList.add('ready'),300);
-})();
-
-/* ═══ MÉTÉO OPEN-METEO (MODÈLE MÉTÉO-FRANCE) ═══ */
-const WX={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'❄️',80:'🌧',81:'🌧',82:'⛈',95:'⛈',96:'⛈',99:'⛈'};
-
+// ── MÉTÉO OPEN-METEO ──
+const WX={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',80:'🌦',81:'🌧',95:'⛈'};
 function fetchMeteo(){
-  const url='https://api.open-meteo.com/v1/meteofrance?latitude=48.64&longitude=2.38&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1';
-  fetch(url).then(r=>r.json()).then(data=>{
+  fetch('https://api.open-meteo.com/v1/meteofrance?latitude=48.64&longitude=2.38&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1')
+  .then(r=>r.json()).then(data=>{
     const c=data.current;
-    const temp=Math.round(c.temperature_2m);
-    const feels=Math.round(c.apparent_temperature);
-    const code=c.weathercode;
-    const wind=Math.round(c.windspeed_10m);
-    const humid=c.relativehumidity_2m;
-    const rain=c.precipitation_probability??0;
-    const cloud=c.cloudcover??0;
-
+    const temp=Math.round(c.temperature_2m), feels=Math.round(c.apparent_temperature);
+    const rain=c.precipitation_probability, wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m, cloud=c.cloudcover, code=c.weathercode;
     document.getElementById('wIcon').innerText=WX[code]||'🌡';
     document.getElementById('wTemp').innerText=temp+'°';
     document.getElementById('wFeels').innerText='Ressenti '+feels+'°';
     document.getElementById('wWind').innerText=wind+' km/h';
     document.getElementById('wHumid').innerText=humid+'%';
-    document.getElementById('wRain').innerText='Pluie : '+rain+'%';
+    document.getElementById('wRain').innerText='Pluie: '+rain+'%';
     document.getElementById('wCloud').innerText=cloud+'%';
-    const now=new Date();
-    document.getElementById('w-updated').innerText=now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
-
-    // Badge conseil météo
-    let badge='',cls='bon';
-    if(rain>=70){badge='🌧 Prévoir un parapluie';cls='bad';}
-    else if(rain>=35){badge='🌦 Risque de pluie';cls='moyen';}
-    else if(temp<5){badge='🧊 Froid vif — véhicule chauffé';cls='moyen';}
-    else if(temp>=25){badge='🌡 Chaleur — climatisation à bord';cls='bon';}
-    else{badge='✅ Conditions idéales de trajet';cls='bon';}
-    document.getElementById('wBadge').innerHTML='<span class="w-badge '+cls+'">'+badge+'</span>';
-
-    updateConseil(temp,rain,wind);
-  }).catch(()=>{
-    document.getElementById('wIcon').innerText='🌡';
-    document.getElementById('wTemp').innerText='--°';
-    document.getElementById('wFeels').innerText='Indisponible';
-  });
+    document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+    const b=document.getElementById('wBadge');
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    window._meteoData={rain,wind,code,temp};
+    genConseil();
+  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
 }
 
-/* ═══ TRAFIC LIVE OSRM — Comparaison durée réelle vs normale ═══ */
-// Coordonnées Ris-Orangis (base)
-const ORIG=[48.6468,2.4185];
-// Destinations + durées normales de référence (min)
-const AXES=[
-  {id:'cdg',name:'CDG',dur_id:'td-cdg',dest:[49.0097,2.5479],ref:35},
-  {id:'orly',name:'Orly',dur_id:'td-orly',dest:[48.7244,2.3709],ref:18},
-  {id:'paris',name:'Paris',dur_id:'td-paris',dest:[48.8566,2.3522],ref:28}
+// ── TRAFIC OSRM ──
+const ROUTES=[
+  {id:'cdg',dur:'td-cdg',from:[48.8566,2.3522],to:[49.0097,2.5479]},
+  {id:'orly',dur:'td-orly',from:[48.8566,2.3522],to:[48.7262,2.3652]},
+  {id:'paris',dur:'td-paris',from:[48.9000,2.3000],to:[48.8300,2.3800]}
 ];
-
 function fetchTrafic(){
-  const now=new Date();
-  document.getElementById('t-updated').innerText=now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
-
-  let done=0;
-  AXES.forEach(ax=>{
-    const url=`https://router.project-osrm.org/route/v1/driving/${ORIG[1]},${ORIG[0]};${ax.dest[1]},${ax.dest[0]}?overview=false`;
-    fetch(url,{signal:AbortSignal.timeout(7000)})
-      .then(r=>r.json())
-      .then(data=>{
-        if(data.code==='Ok'){
-          const dur=Math.round(data.routes[0].duration/60);
-          const ratio=dur/ax.ref;
-          const el=document.getElementById('t-'+ax.id);
-          const durEl=document.getElementById('td-'+ax.id);
-          durEl.innerText=dur+' min';
-          if(ratio<1.15){el.className='t-tag ok';el.innerText='FLUIDE';}
-          else if(ratio<1.4){el.className='t-tag warn';el.innerText='RALENTI';}
-          else{el.className='t-tag bad';el.innerText='BOUCHONS';}
-        }
-        done++;
-        if(done===AXES.length){
-          document.getElementById('t-source').innerText='Via OSRM routing · Temps réel';
-          genConseil();
-        }
-      })
-      .catch(()=>{
-        // Fallback heure de pointe
-        const h=new Date().getHours();
-        const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
-        const el=document.getElementById('t-'+ax.id);
-        el.className=rush?'t-tag bad':'t-tag ok';
-        el.innerText=rush?'BOUCHONS':'FLUIDE';
-        document.getElementById('t-source').innerText='Données indicatives (heure locale)';
-        done++;
-        if(done===AXES.length)genConseil();
-      });
+  ROUTES.forEach(route=>{
+    fetch(`https://router.project-osrm.org/route/v1/driving/${route.from[1]},${route.from[0]};${route.to[1]},${route.to[0]}?overview=false`)
+    .then(r=>r.json()).then(d=>{
+      if(d.code!=='Ok') return;
+      const min=Math.round(d.routes[0].duration/60);
+      const el=document.getElementById('t-'+route.id), dur=document.getElementById(route.dur);
+      dur.innerText=min+' min';
+      if(min>40){el.className='t-tag bad';el.innerText='BOUCHONS';}
+      else if(min>25){el.className='t-tag warn';el.innerText='DENSE';}
+      else{el.className='t-tag ok';el.innerText='FLUIDE';}
+    }).catch(()=>{});
   });
-}
-
-/* ═══ BADGE CONSEIL INTELLIGENT ═══ */
-function updateConseil(temp,rain,wind){
-  window._meteoData={temp,rain,wind};
-  genConseil();
+  document.getElementById('t-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('t-source').innerText='Mis à jour: '+new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
 }
 
 function genConseil(){
   const m=window._meteoData||{};
   const h=new Date().getHours();
   const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
-  const cdgEl=document.getElementById('t-cdg');
-  const orlyEl=document.getElementById('t-orly');
-  const isBouchon=(cdgEl&&cdgEl.classList.contains('bad'))||(orlyEl&&orlyEl.classList.contains('bad'));
-
   const box=document.getElementById('conseil-box');
   const icon=document.getElementById('conseil-icon');
-  const txt=document.getElementById('conseil-text');
-
-  let msg='',icn='💡';
-
-  if(isBouchon&&rush){
-    icn='🚦';
-    msg='<strong>Bouchons en cours</strong> — Prévoyez 15 min supplémentaires pour CDG/Orly.';
-  } else if((m.rain||0)>=70){
-    icn='🌧';
-    msg='<strong>Pluie prévue</strong> — Départ anticipé recommandé, visibilité réduite.';
-  } else if(h>=22||h<6){
-    icn='🌙';
-    msg='<strong>Trajet de nuit</strong> — Supplément +10€ appliqué entre 22h et 6h.';
-  } else if(!rush){
-    icn='✅';
-    msg='<strong>Conditions idéales</strong> — Trafic fluide, heure hors pointe.';
-  } else {
-    icn='⚡';
-    msg='<strong>Heure de pointe</strong> — Consultez le trafic avant votre départ.';
-  }
-
-  if(msg){
-    icon.innerText=icn;
-    txt.innerHTML=msg;
-    box.style.display='flex';
-  }
+  const text=document.getElementById('conseil-text');
+  let msg='',ic='💡';
+  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  icon.innerText=ic; text.innerHTML=msg;
+  box.style.display='flex';
 }
 
-/* ═══ COUNTUP ANIMATION PRIX ═══ */
-function countUpPrice(targetEl, finalValue, duration){
-  const start=performance.now();
-  const startVal=0;
-  function step(now){
-    const elapsed=now-start;
-    const progress=Math.min(elapsed/duration,1);
-    // Ease out cubic
-    const ease=1-Math.pow(1-progress,3);
-    const current=Math.round(startVal+(finalValue-startVal)*ease);
-    targetEl.innerText=current+' €';
-    if(progress<1)requestAnimationFrame(step);
-    else{
-      targetEl.innerText=finalValue+' €';
-      // Haptique mobile
-      if(navigator.vibrate)navigator.vibrate([30,10,20]);
-    }
-  }
-  requestAnimationFrame(step);
-}
-
-/* ═══ HAPTIQUE SUR CHIPS ═══ */
-document.querySelectorAll('.chip, .pay-btn').forEach(el=>{
-  el.addEventListener('click',function(e){
-    if(navigator.vibrate)navigator.vibrate(8);
-    // Ripple visuel
-    const r=document.createElement('span');
-    r.className='chip-ripple';
-    const rect=this.getBoundingClientRect();
-    r.style.cssText='left:50%;top:50%;margin:-10px 0 0 -10px;';
-    this.appendChild(r);
-    setTimeout(()=>r.remove(),400);
-  });
-});
-
-/* ═══ SURCHARGE calculatePrice POUR COUNTUP ═══ */
-
-/* Observer désactivé (countup géré directement) */
-/*const _observer=new MutationObserver(()=>{
-  const el=document.getElementById('finalPrice');
-  if(el&&el.innerText&&el.innerText!=='-- €'&&!el.dataset.animated){
-    el.dataset.animated='1';
-    const val=parseFloat(el.innerText);
-    if(!isNaN(val))countUpPrice(el,val,800);
-  }
-});
-_observer_disabled*/;
-
-/* ═══ LANCEMENT ═══ */
 fetchMeteo();
 fetchTrafic();
-setInterval(fetchMeteo,  900000); // 15 min
-setInterval(fetchTrafic, 120000); // 2 min
+setInterval(fetchMeteo, 300000);
+setInterval(fetchTrafic, 180000);
+
+// ── CONSTELLATION PREMIUM (remplace les particules) ──
+(()=>{
+  const cv=document.getElementById('constellation-canvas');
+  const ctx=cv.getContext('2d');
+  let W, H, nodes=[];
+  const MAX_DIST=120;
+  const DENSITY=8000;
+
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+
+  function mkNode(){
+    return{
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.2, vy:(Math.random()-.5)*.2,
+      r:Math.random()*1.6+0.5,
+      o:Math.random()*.55+0.25,
+      pulse:Math.random()*Math.PI*2,
+      pulseSpeed:0.01+Math.random()*0.01
+    };
+  }
+
+  function init(){resize();nodes=Array.from({length:Math.floor(W*H/DENSITY)},mkNode);}
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      n.pulse+=n.pulseSpeed;
+      if(n.x<0)n.x=W; if(n.x>W)n.x=0;
+      if(n.y<0)n.y=H; if(n.y>H)n.y=0;
+    });
+
+    // Connexions entre noeuds proches
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<MAX_DIST){
+          const alpha=(1-dist/MAX_DIST)*0.15;
+          const grad=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+          grad.addColorStop(0,`rgba(212,175,55,${alpha})`);
+          grad.addColorStop(0.5,`rgba(240,216,112,${alpha*1.4})`);
+          grad.addColorStop(1,`rgba(212,175,55,${alpha})`);
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=grad;
+          ctx.lineWidth=0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Points étoilés avec halo pulsant
+    nodes.forEach(n=>{
+      const pulseFactor=0.85+Math.sin(n.pulse)*0.15;
+      const currentO=n.o*pulseFactor;
+      // Halo externe
+      const halo=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*5);
+      halo.addColorStop(0,`rgba(212,175,55,${currentO*0.25})`);
+      halo.addColorStop(1,'rgba(212,175,55,0)');
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,n.r*5,0,Math.PI*2);
+      ctx.fillStyle=halo; ctx.fill();
+      // Point central
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,n.r*pulseFactor,0,Math.PI*2);
+      ctx.fillStyle=`rgba(240,216,112,${currentO})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize',init);
+  init(); loop();
+  setTimeout(()=>cv.classList.add('ready'),500);
+})();
 </script>
 </body>
 </html>
