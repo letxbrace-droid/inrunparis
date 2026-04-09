@@ -534,6 +534,77 @@ h1 .g {
   background-clip: text !important;
 }
 
+
+/* ── PROOF HALOS COLORÉS PAR ITEM ── */
+
+/* Item 1 — Étoile : or acier */
+.proof-item:nth-child(1) {
+  box-shadow: -3px 3px 20px rgba(155,168,171,0.08) !important;
+}
+.proof-item:nth-child(1)::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, rgba(204,208,207,0.14) 0%, transparent 70%);
+  border-radius: 0 12px 0 12px;
+  pointer-events: none;
+}
+
+/* Item 2 — Horloge : bleu acier froid */
+.proof-item:nth-child(2) {
+  box-shadow: -3px 3px 20px rgba(74,92,106,0.12) !important;
+}
+.proof-item:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, rgba(74,92,106,0.22) 0%, transparent 70%);
+  border-radius: 0 12px 0 12px;
+  pointer-events: none;
+}
+
+/* Item 3 — WhatsApp : vert */
+.proof-item:nth-child(3) {
+  box-shadow: -3px 3px 20px rgba(37,211,102,0.07) !important;
+}
+.proof-item:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, rgba(37,211,102,0.18) 0%, transparent 70%);
+  border-radius: 0 12px 0 12px;
+  pointer-events: none;
+}
+
+/* Item 4 — Bouclier : blanc nacré = confiance */
+.proof-item:nth-child(4) {
+  box-shadow: -3px 3px 20px rgba(204,208,207,0.06) !important;
+}
+.proof-item:nth-child(4)::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, rgba(204,208,207,0.12) 0%, transparent 70%);
+  border-radius: 0 12px 0 12px;
+  pointer-events: none;
+}
+
+/* S'assurer que proof-item est bien en position relative */
+.proof-item { position: relative !important; overflow: hidden !important; }
+
+/* ── GRADIENT "vous attend." avec point inclus ── */
+h1 .g {
+  background: linear-gradient(135deg, #9BA8AB 0%, #CCD0CF 60%, #e8eceb 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  display: inline !important;
+}
+
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
 /* ── CINEMATIC REVEAL ── */
@@ -871,7 +942,7 @@ body {
     <div class="pl">Confirmation</div>
   </div>
   <div class="proof-item">
-    <div class="proof-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BA8AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+    <div class="proof-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BA8AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
     <div class="pv">0&euro; <span class="pv-sm">comm.</span></div>
     <div class="pl">Prix direct</div>
   </div>
