@@ -1075,4 +1075,89 @@ setInterval(fetchTrafic, 180000);
   RAF = requestAnimationFrame(draw);
 })();
 
->
+</script>
+
+<script>
+/* ── REVEAL V2 + LUXURY JS ── */
+(function(){
+  var lock=document.getElementById('al');
+  if(lock){document.body.style.visibility='visible';document.body.style.opacity='1';lock.remove();}
+  [{sel:'#hdr .nav-logo',d:350},{sel:'.hero h1',d:580},{sel:'.hero .hero-p',d:780},
+   {sel:'.proof',d:960},{sel:'#step1',d:1150},{sel:'#step2',d:1380},{sel:'.sticky',d:1520}
+  ].forEach(function(i){var e=document.querySelector(i.sel);if(e)setTimeout(function(){e.classList.add('ai-in');},i.d);});
+
+  window.nextStep2=function(){
+    var s1=document.getElementById('step1'),s2=document.getElementById('step2');
+    if(!s1||!s2)return;
+    if(!window.coords||!coords.dep||!coords.arr){alert('Veuillez sélectionner les adresses dans la liste.');return;}
+    s1.style.transition='opacity .3s ease,transform .3s ease';
+    s1.style.opacity='0';s1.style.transform='translateY(-12px) scale(.98)';
+    setTimeout(function(){
+      s1.classList.remove('active');s1.classList.add('locked');s1.style.cssText='';
+      s2.classList.remove('locked');s2.classList.add('active','slide-in');
+      s2.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(function(){s2.classList.remove('slide-in');},600);
+      if(!s1.querySelector('.success-checkmark')){
+        var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('viewBox','0 0 56 56');svg.classList.add('success-checkmark','show');
+        svg.innerHTML='<circle class="check-circle" cx="28" cy="28" r="26"/><polyline class="check-mark" points="16,28 24,36 40,20"/>';
+        var hd=s1.querySelector('.card-hd');if(hd)hd.appendChild(svg);
+      }
+    },280);
+  };
+
+  if(window.matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.info-card').forEach(function(c){
+      c.addEventListener('mousemove',function(e){
+        var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        c.style.transform='perspective(600px) rotateY('+(x*6)+'deg) rotateX('+(-y*6)+'deg) translateZ(4px)';
+      });
+      c.addEventListener('mouseleave',function(){c.style.transition='transform .4s ease';c.style.transform='';setTimeout(function(){c.style.transition='';},400);});
+    });
+  }
+
+  var modal=document.getElementById('customModal'),box=modal&&modal.querySelector('.modal-box-price');
+  if(box){
+    var sy=0,drag=false;
+    box.addEventListener('touchstart',function(e){sy=e.touches[0].clientY;drag=true;},{passive:true});
+    box.addEventListener('touchmove',function(e){if(drag&&e.touches[0].clientY-sy>0)box.style.transform='translateY('+(e.touches[0].clientY-sy)+'px)';},{passive:true});
+    box.addEventListener('touchend',function(e){
+      drag=false;var dy=e.changedTouches[0].clientY-sy;
+      if(dy>90){box.style.transition='transform .3s ease';box.style.transform='translateY(100%)';setTimeout(function(){modal.classList.remove('show');box.style.cssText='';},320);}
+      else{box.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';box.style.transform='';setTimeout(function(){box.style.transition='';},350);}
+    },{passive:true});
+  }
+
+  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(el){
+    el.addEventListener('pointerdown',function(e){
+      var r=this.getBoundingClientRect(),sz=Math.max(r.width,r.height)*2;
+      var rpl=document.createElement('span');
+      rpl.style.cssText='position:absolute;width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:rgba(212,175,55,.18);transform:scale(0);top:'+((e.clientY-r.top)-sz/2)+'px;left:'+((e.clientX-r.left)-sz/2)+'px;pointer-events:none;animation:ripplePop .5s ease-out forwards;';
+      this.style.position='relative';this.style.overflow='hidden';this.appendChild(rpl);
+      setTimeout(function(){rpl.remove();},550);
+    });
+  });
+
+  window.addEventListener('scroll',function(){
+    var h=document.getElementById('hdr');
+    if(h)h.style.background='rgba(0,0,0,'+Math.min(.92,.45+window.scrollY/300)+')';
+  },{passive:true});
+
+  var oc=window.calculatePrice;
+  window.calculatePrice=async function(){
+    var fp=document.getElementById('finalPrice');
+    if(fp)fp.innerHTML='<span class="skeleton skeleton-price"></span>';
+    if(oc)return oc.apply(this,arguments);
+  };
+})();
+</script>
+
+<script>
+if('serviceWorker' in navigator){try{
+  var _sw="const CACHE='inrun-v1';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET')caches.open(CACHE).then(c=>c.put(e.request,res.clone()));return res;})));});";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
+}catch(e){}}
+</script>
+
+</body>
+</html>
