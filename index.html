@@ -212,6 +212,111 @@ footer{text-align:center;padding:40px 20px 120px;color:var(--gray);font-size:0.7
   transform: translateZ(0);
 }
 
+
+/* ════ PALETTE NIGHT CRIMSON V53 ════ */
+:root {
+  --ink:       #1B1E2F;
+  --s1:        #242F49;
+  --s2:        #384358;
+  --s3:        #2a2040;
+  --accent:    #B51A2B;
+  --accent-l:  #d42035;
+  --peach:     #FFA586;
+  --deep:      #241A2B;
+  --gold:      #FFA586;
+  --gold-l:    #ffb89a;
+  --glow:      rgba(181,26,43,0.15);
+  --white:     #f5ede8;
+  --gray:      #9a8f8f;
+  --gray2:     #b8a8a8;
+  --green-l:   #4ade80;
+  --b:         rgba(255,165,134,0.10);
+  --r:         12px;
+  --rl:        20px;
+  --rxl:       24px;
+  --ease:      cubic-bezier(.23,1,.32,1);
+  --tap:       54px;
+  --hdr:       64px;
+}
+
+body { background: var(--ink) !important; }
+
+/* Header teinté rouge profond */
+#hdr {
+  background: rgba(27,30,47,0.85) !important;
+  border-bottom: 1px solid rgba(181,26,43,0.25) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+/* Hero : dégradé rouge en fond */
+.hero::before {
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(181,26,43,0.18) 0%, transparent 70%) !important;
+}
+
+/* Bouton : rouge profond */
+.btn-gold {
+  background: linear-gradient(135deg, #B51A2B, #d42035) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(181,26,43,0.35) !important;
+  border: none !important;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #d42035, #e8293d) !important;
+  box-shadow: 0 8px 28px rgba(181,26,43,0.5) !important;
+}
+
+/* Cards : fond bleu nuit */
+.card {
+  background: rgba(36,47,73,0.70) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(181,26,43,0.15) !important;
+}
+.card.active {
+  border-color: rgba(181,26,43,0.4) !important;
+  box-shadow: 0 0 0 1px rgba(181,26,43,0.1), 0 20px 60px rgba(0,0,0,0.5) !important;
+}
+.card::before {
+  background: linear-gradient(90deg, transparent, rgba(181,26,43,0.2), transparent) !important;
+}
+
+/* Accent couleur pêche/rouge sur éléments dorés */
+.g { color: #FFA586 !important; }
+.pv { color: #FFA586 !important; font-family: Marcellus, serif !important; }
+.f-lbl { color: #FFA586 !important; }
+.c-num { background: #B51A2B !important; color: #fff !important; box-shadow: 0 4px 10px rgba(181,26,43,0.4) !important; }
+.nav-status { color: var(--green-l) !important; border-color: rgba(74,222,128,0.3) !important; }
+
+/* Chips */
+.chip.sel { background: rgba(181,26,43,0.15) !important; border-color: #B51A2B !important; color: #FFA586 !important; }
+.pay-btn.sel { background: rgba(181,26,43,0.15) !important; border-color: #B51A2B !important; color: #FFA586 !important; }
+
+/* Modal */
+.m-price { color: #FFA586 !important; text-shadow: 0 0 30px rgba(181,26,43,0.4) !important; }
+.modal-box-price { border-top: 1px solid rgba(181,26,43,0.3) !important; }
+
+/* Sticky tel */
+.sb-tel { background: rgba(181,26,43,0.12) !important; border-color: rgba(181,26,43,0.3) !important; color: #FFA586 !important; }
+
+/* Trafic & météo accent */
+.i-hd { color: #FFA586 !important; }
+.info-card { border-color: rgba(181,26,43,0.15) !important; }
+.info-card:hover { border-color: rgba(181,26,43,0.35) !important; }
+
+/* Fond sections alternées sombres */
+.infos-row { background: transparent; }
+.conseil-inner { background: rgba(181,26,43,0.07) !important; border-color: rgba(181,26,43,0.2) !important; }
+
+/* Input focus */
+.f-wrap:focus-within { border-color: rgba(181,26,43,0.6) !important; }
+
+/* Shimmer bouton rouge */
+@keyframes shimmer { 0%{left:-120%} 60%{left:140%} 100%{left:140%} }
+
+/* Constellation canvas teinte rouge */
+#constellation-canvas { opacity: 0; transition: opacity 3s; }
+
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
 /* ── CINEMATIC REVEAL ── */
