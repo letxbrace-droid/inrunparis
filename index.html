@@ -314,6 +314,168 @@ body { background: var(--ink) !important; color: var(--white) !important; }
 .proof .pv { color: #CCD0CF !important; }
 .proof .pl { color: #4A5C6A !important; }
 
+
+/* ════ V54 CORRECTIONS VISUELLES ════ */
+
+/* ── 1. HERO : Proof items plus impactants ── */
+.proof {
+  gap: 20px !important;
+  justify-content: center !important;
+  margin-bottom: 28px !important;
+}
+.pv {
+  font-size: 1.8rem !important;
+  font-family: Marcellus, serif !important;
+  color: #CCD0CF !important;
+  line-height: 1 !important;
+}
+.pl {
+  font-size: 0.6rem !important;
+  letter-spacing: 0.16em !important;
+  color: #4A5C6A !important;
+  opacity: 1 !important;
+  margin-top: 5px !important;
+}
+
+/* ── 2. COMMISSION : mise en valeur ── */
+.proof-item:last-child .pv {
+  font-size: 2rem !important;
+  color: #9BA8AB !important;
+}
+
+/* ── 3. HERO texte : meilleure hiérarchie ── */
+h1 {
+  font-size: clamp(2rem, 9vw, 2.8rem) !important;
+  letter-spacing: 0.5px !important;
+  color: #f0eeeb !important;
+}
+.hero-p {
+  font-size: 0.88rem !important;
+  line-height: 1.7 !important;
+  color: #7a8e98 !important;
+  opacity: 1 !important;
+  max-width: 320px !important;
+  margin: 0 auto 28px !important;
+}
+
+/* ── 4. CARD : contraste amélioré ── */
+.card {
+  background: rgba(17,33,45,0.95) !important;
+  border: 1px solid rgba(74,92,106,0.45) !important;
+  box-shadow: 0 2px 40px rgba(0,0,0,0.5) !important;
+}
+.card.active {
+  background: rgba(20,38,52,0.98) !important;
+  border-color: rgba(155,168,171,0.4) !important;
+  box-shadow: 0 0 0 1px rgba(155,168,171,0.1), 0 20px 60px rgba(0,0,0,0.7) !important;
+}
+
+/* ── 5. NUMÉRO d'étape cohérent palette steel ── */
+.c-num {
+  background: transparent !important;
+  border: 1.5px solid rgba(155,168,171,0.5) !important;
+  color: #9BA8AB !important;
+  box-shadow: none !important;
+  font-size: 0.9rem !important;
+}
+
+/* ── 6. LABELS plus lisibles ── */
+.f-lbl {
+  font-size: 0.65rem !important;
+  letter-spacing: 0.18em !important;
+  color: #9BA8AB !important;
+  opacity: 1 !important;
+  margin-top: 20px !important;
+}
+
+/* ── 7. PLACEHOLDER champ input plus visible ── */
+.f-in::placeholder {
+  color: rgba(155,168,171,0.45) !important;
+  font-weight: 300 !important;
+}
+.f-wrap {
+  background: rgba(6,20,27,0.8) !important;
+  border: 1px solid rgba(74,92,106,0.4) !important;
+}
+.f-ic {
+  color: #4A5C6A !important;
+}
+.f-in {
+  color: #CCD0CF !important;
+}
+
+/* ── 8. LOGO header plus grand ── */
+#hdr .nav-logo svg {
+  width: 120px !important;
+  height: 48px !important;
+}
+
+/* ── 9. CONSTELLATION visible en fond ── */
+#constellation-canvas {
+  opacity: 0;
+  transition: opacity 4s ease !important;
+}
+#constellation-canvas.ready {
+  opacity: 0.55 !important;
+}
+
+/* ── 10. SÉPARATION hero / card ── */
+.hero {
+  padding-bottom: 20px !important;
+}
+.tunnel {
+  padding-top: 8px !important;
+}
+
+/* ── 11. STICKY BAR plus contrastée ── */
+.sticky {
+  background: linear-gradient(0deg, rgba(6,20,27,1) 50%, rgba(6,20,27,0.85) 100%) !important;
+  border-top: 1px solid rgba(74,92,106,0.2) !important;
+}
+.sb-wa {
+  background: rgba(74,92,106,0.15) !important;
+  border: 1px solid rgba(74,92,106,0.35) !important;
+  color: #CCD0CF !important;
+}
+.sb-tel {
+  background: rgba(37,55,69,0.6) !important;
+  border: 1px solid rgba(155,168,171,0.35) !important;
+  color: #9BA8AB !important;
+  font-weight: 500 !important;
+}
+
+/* ── 12. TITRE card plus lisible ── */
+.c-title {
+  color: #CCD0CF !important;
+  font-size: 1.15rem !important;
+  letter-spacing: 0.03em !important;
+}
+.c-sub {
+  color: #4A5C6A !important;
+  font-size: 0.8rem !important;
+}
+
+/* ── 13. INPUT icône horloge ── */
+.f-wrap .f-ic svg {
+  opacity: 0.6;
+}
+
+/* ── 14. NAV STATUS badge ── */
+.nav-status {
+  font-size: 0.68rem !important;
+  padding: 5px 12px !important;
+}
+
+/* ── 15. HERO filet décoratif sous le titre ── */
+h1::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, #4A5C6A, transparent);
+  margin: 14px auto 0;
+}
+
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
 /* ── CINEMATIC REVEAL ── */
