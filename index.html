@@ -770,6 +770,41 @@ h1 .g {
   color: #4A5C6A !important;
 }
 
+
+/* ════ V55B — COPYWRITING FIXES ════ */
+
+/* pv-sm plus lisible */
+.pv-sm {
+  font-size: 0.72rem !important;
+  color: #7a8e98 !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Proof item 4 : texte "Zéro" bien visible */
+.proof-item:nth-child(4) .pv {
+  font-size: 1.15rem !important;
+  color: #CCD0CF !important;
+}
+.proof-item:nth-child(4) .pl {
+  font-size: 0.52rem !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1.4 !important;
+}
+
+/* Bouton plus court = plus cliquable psychologiquement */
+.btn-gold {
+  letter-spacing: 0.14em !important;
+  font-size: 0.88rem !important;
+}
+
+/* Scroll bouton visible quand clavier ouvert */
+@supports (-webkit-overflow-scrolling: touch) {
+  .f-in:focus ~ .btn-gold,
+  .f-wrap:focus-within ~ .btn-gold {
+    scroll-margin-bottom: 20px;
+  }
+}
+
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
 /* ── CINEMATIC REVEAL ── */
@@ -1089,7 +1124,7 @@ body {
 
 <div class="hero">
   <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
-  <p class="hero-p">CDG &middot; Orly &middot; Paris &middot; Province<br>Prix fixe confirm&eacute; en 30&nbsp;secondes.</p>
+  <p class="hero-p">A&eacute;roports, Paris &amp; Province.<br>Votre tarif fixe confirm&eacute; en 30s.</p>
   <div class="proof">
   <div class="proof-item">
     <div class="proof-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BA8AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
@@ -1108,8 +1143,8 @@ body {
   </div>
   <div class="proof-item">
     <div class="proof-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BA8AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-    <div class="pv">0&euro; <span class="pv-sm">comm.</span></div>
-    <div class="pl">Prix direct</div>
+    <div class="pv">Z&eacute;ro <span class="pv-sm">comm.</span></div>
+    <div class="pl">Tarif direct chauffeur</div>
   </div>
 </div>
 </div>
@@ -1137,7 +1172,7 @@ body {
       <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
       <div class="ac" id="ac-arr"></div>
     </div>
-    <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Personnaliser mon confort</button>
+    <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Voir mon tarif fixe</button>
   </div>
 
   <div class="card locked" id="step2">
@@ -1778,6 +1813,19 @@ if('serviceWorker' in navigator){try{
   var _sw="const CACHE='inrun-v1';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET')caches.open(CACHE).then(c=>c.put(e.request,res.clone()));return res;})));});";
   navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
 }catch(e){}}
+</script>
+
+
+<script>
+// Scroll bouton visible sur mobile quand clavier s'ouvre
+document.querySelectorAll('.f-in').forEach(inp => {
+  inp.addEventListener('focus', () => {
+    setTimeout(() => {
+      const btn = inp.closest('.card')?.querySelector('.btn-gold');
+      if (btn) btn.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 400);
+  });
+});
 </script>
 
 </body>
