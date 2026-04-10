@@ -1592,7 +1592,7 @@ body {
   <div class="legal-box">
     <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
     <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
-      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection#25464a4b514446510b4c4b57504b654248444c490b464a48" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="5c3f3332283d3f287235322e29321c3b313d3530723f3331">[email&#160;protected]</span></a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
     </div>
     <div class="legal-section"><h4>2. H&eacute;bergement</h4>
       <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
@@ -1607,6 +1607,617 @@ body {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+// ── SONS WEB AUDIO API ──
+const _AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _ac = null;
+function getAC() {
+  if (!_ac) _ac = new _AudioCtx();
+  return _ac;
+}
+
+// Son "ding" de caisse — lancement du countup
+function playCashStart() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    // Bruit blanc court (mécanique caisse)
+    const buf = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = ac.createBufferSource();
+    noise.buffer = buf;
+    const noiseG = ac.createGain();
+    noiseG.gain.setValueAtTime(0.4, t);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    noise.connect(noiseG); noiseG.connect(ac.destination);
+    noise.start(t);
+    // Ding métallique principal
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.5);
+  } catch(e){}
+}
+
+// Son "tick" discret — pendant chaque chiffre du countup
+function playTick() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.04);
+  } catch(e){}
+}
+
+// Son final "chime luxe" — accord doré 3 notes au prix final
+function playCashFinal() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const notes = [523.25, 659.25, 783.99]; // Do Mi Sol — accord majeur
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + i * 0.09);
+      g.gain.setValueAtTime(0, t + i * 0.09);
+      g.gain.linearRampToValueAtTime(0.22, t + i * 0.09 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.8);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(t + i * 0.09); osc.stop(t + i * 0.09 + 0.9);
+      // Harmonique douce
+      const osc2 = ac.createOscillator();
+      const g2 = ac.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2, t + i * 0.09);
+      g2.gain.setValueAtTime(0, t + i * 0.09);
+      g2.gain.linearRampToValueAtTime(0.07, t + i * 0.09 + 0.03);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.4);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc2.start(t + i * 0.09); osc2.stop(t + i * 0.09 + 0.5);
+    });
+  } catch(e){}
+}
+
+// ── FLATPICKR ──
+(function(){
+  var el = document.getElementById('timepick');
+  if (!el) return;
+  // Init immédiate — pas d'attente focus
+  var fp = flatpickr(el, {
+    enableTime: true,
+    dateFormat: 'd/m/Y H:i',
+    time_24hr: true,
+    locale: 'fr',
+    minDate: 'today',
+    defaultHour: (new Date().getHours() >= 22 ? 8 : Math.max(new Date().getHours() + 1, 8)),
+    minuteIncrement: 15,
+    disableMobile: false,
+    allowInput: false
+  });
+  // Ouvrir au moindre tap sur le champ ou son parent
+  el.addEventListener('click', function(e) { e.preventDefault(); fp.open(); });
+  var wrap = el.closest('.f-wrap');
+  if (wrap) wrap.addEventListener('click', function(e) { e.preventDefault(); fp.open(); });
+})();
+
+let coords = { dep: null, arr: null };
+
+function toggleChip(id, el) {
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const r = document.createElement('div');
+  r.className = 'chip-ripple';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(), 250);
+}
+function selectPayment(el, m) {
+  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = m;
+}
+function showLegal(){document.getElementById('legalModal').classList.add('show');}
+function hideModal(){document.getElementById('customModal').classList.remove('show');}
+
+function nextStep(step) {
+  if (!coords.dep || !coords.arr) {alert("Veuillez sélectionner les adresses dans la liste des suggestions.");return;}
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('locked');
+  const t = document.getElementById('step'+step);
+  t.classList.remove('locked'); t.classList.add('active');
+  t.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function countUpPrice(el, final, dur) {
+  playCashStart();
+  const start = performance.now();
+  let lastVal = 0;
+  function step(now) {
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1-Math.pow(1-p,3);
+    const current = Math.round(ease*final);
+    if (current !== lastVal) { playTick(); lastVal = current; }
+    el.innerText = current+' €';
+    if(p<1) { requestAnimationFrame(step); }
+    else { playCashFinal(); }
+  }
+  requestAnimationFrame(step);
+}
+
+async function calculatePrice() {
+  if(!coords.dep||!coords.arr) return;
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('calcLoader').style.display='block';
+  document.getElementById('calcBtn').disabled=true;
+  try {
+    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
+    const d = await r.json();
+    if(d.code==='Ok') {
+      const km=d.routes[0].distance/1000, min=d.routes[0].duration/60;
+      let price=15+(km*1.70)+(min*0.40);
+      if(price<35) price=35;
+
+      // Supplément nuit : +10€ entre 22h et 6h
+      const tval=document.getElementById('timepick').value||'';
+      const hmatch=tval.match(/(\d{2}):(\d{2})$/)||tval.match(/(\d{2})\/\d{2}\/\d{4}\s+(\d{2}):\d{2}/);
+      const heure=hmatch?parseInt(hmatch[hmatch.length-2]):new Date().getHours();
+      const isNuit=(heure>=22||heure<6);
+      if(isNuit) price+=10;
+      price=Math.ceil(price);
+
+      document.getElementById('m-km').innerText=km.toFixed(1)+' km';
+      document.getElementById('m-dur').innerText=Math.round(min)+' min';
+
+      // Badge nuit dans la modal
+      const calcDet=document.getElementById('calcDetails');
+      if(isNuit){
+        calcDet.innerHTML='<span class="nuit-badge">🌙 Tarif nuit inclus (+10€ · 22h&ndash;6h)</span>';
+      } else {
+        calcDet.innerHTML='';
+      }
+
+      document.getElementById('customModal').classList.add('show');
+      countUpPrice(document.getElementById('finalPrice'), price, 1200);
+    } else { alert("Impossible de calculer l'itinéraire."); }
+  } catch(e){ alert("Erreur de connexion."); }
+  finally {
+    document.getElementById('btnText').style.display='block';
+    document.getElementById('calcLoader').style.display='none';
+    document.getElementById('calcBtn').disabled=false;
+  }
+}
+
+function sendWhatsApp() {
+  const time=document.getElementById('timepick').value;
+  const dep=document.getElementById('dep').value;
+  const arr=document.getElementById('arr').value;
+  const note=document.getElementById('note').value;
+  const price=document.getElementById('finalPrice').innerText;
+  const pay=document.getElementById('paymentMethod').value;
+  const music=document.querySelector('#musicPref .chip.sel');
+  const clim=document.querySelector('#climPref .chip.sel');
+  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
+
+`;
+  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+`;
+  msg+=`📍 Départ : ${dep}
+🏁 Arrivée : ${arr}
+`;
+  const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
+  msg+=`💳 Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}\n💶 Paiement : ${pay}\n\n`;
+  msg+=`✨ *Préférences à bord :*
+- Musique : ${music?music.innerText.trim():'Non'}
+- Climatisation : ${clim?clim.innerText.trim():'Non'}
+
+`;
+  if(note) msg+=`📝 Note : ${note}
+
+`;
+  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ── AUTOCOMPLETE — Robuste, sans onclick inline ──
+
+// Normaliser : supprimer accents, pluriels, casse
+function norm(s) {
+  return s.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/s\b/g,'') // dépluraliser basique
+    .replace(/[-_]/g,' ');
+}
+
+// Lieux prédéfinis — aéroports, gares, centres clés
+var PRESETS = [
+  {n:'Aéroport Paris-Orly — Terminal 1 & 2',s:'Orly · RER C · OrlyBus',lat:48.7262,lon:2.3652},
+  {n:'Aéroport Paris-Orly — Terminal 3 & 4',s:'Orly · RER C · OrlyBus',lat:48.7244,lon:2.3709},
+  {n:'Aéroport CDG — Terminal 1',s:'Roissy · RER B',lat:49.0097,lon:2.5479},
+  {n:'Aéroport CDG — Terminal 2 (A/B/C/D/E/F/G)',s:'Roissy · RER B · TGV',lat:49.0060,lon:2.5720},
+  {n:'Aéroport CDG — Terminal 3',s:'Roissy · Low Cost',lat:49.0035,lon:2.5598},
+  {n:'Aéroport Le Bourget',s:'Aviation d\'affaires',lat:48.9694,lon:2.4414},
+  {n:'Gare de Lyon — Paris',s:'Paris 12e · TGV',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord — Paris',s:'Paris 10e · Eurostar · RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse — Paris',s:'Paris 15e · TGV Atlantique',lat:48.8408,lon:2.3209},
+  {n:'Gare de l\'Est — Paris',s:'Paris 10e · TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare — Paris',s:'Paris 8e · Transilien',lat:48.8754,lon:2.3253},
+  {n:'Gare Massy TGV',s:'Massy 91300 · RER B & C',lat:48.7233,lon:2.2716},
+  {n:'Gare d\'Évry-Courcouronnes',s:'Évry 91000 · RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 · RER C & D',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 · RER D',lat:48.6100,lon:2.4797},
+  {n:'Centre Commercial Évry 2',s:'Évry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:'Centre Commercial Agora d\'Évry',s:'Évry-Courcouronnes 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carré Sénart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle Épine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial Vélizy 2',s:'Vélizy 78140',lat:48.7832,lon:2.1722},
+  {n:'La Défense — Grande Arche',s:'Puteaux 92800 · RER A',lat:48.8926,lon:2.2360},
+  {n:'Palais des Congrès de Paris',s:'Paris 17e · Porte Maillot',lat:48.8789,lon:2.2830},
+];
+
+function matchPresets(q) {
+  var qn = norm(q);
+  var words = qn.split(' ').filter(function(w){ return w.length > 1; });
+  if (!words.length) return [];
+  return PRESETS.filter(function(p) {
+    var pn = norm(p.n + ' ' + p.s);
+    // Un seul mot suffit pour les requêtes courtes (orly, cdg, evry...)
+    var needed = words.length <= 2 ? 1 : Math.ceil(words.length * 0.6);
+    var matched = words.filter(function(w){ return pn.indexOf(w) > -1; }).length;
+    return matched >= needed;
+  }).slice(0, 5);
+}
+
+function buildItem(item, inputId, dropId, type) {
+  var el = document.createElement('div');
+  el.className = 'ac-item';
+  el.innerHTML = '<div><div class="ac-main">📍 ' + item.n + '</div>'
+    + '<div class="ac-sec">' + item.s + '</div></div>';
+  // Données en propriétés JS — zéro problème d\'apostrophe
+  el._loc = {name: item.n, lat: item.lat, lon: item.lon, iid: inputId, did: dropId, type: type};
+  el.addEventListener('mousedown', function(e) { e.preventDefault(); }); // éviter blur avant click
+  el.addEventListener('click', function() {
+    var d = this._loc;
+    selectLocation(d.iid, d.did, d.type, d.name, d.lat, d.lon);
+  });
+  return el;
+}
+
+function renderDrop(drop, items, inputId, dropId, type) {
+  drop.innerHTML = '';
+  if (!items.length) {
+    drop.innerHTML = '<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun résultat — essayez un terme différent</div></div>';
+  } else {
+    items.forEach(function(item) {
+      drop.appendChild(buildItem(item, inputId, dropId, type));
+    });
+  }
+  drop.classList.add('open');
+}
+
+var PHOTON = 'https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=8&bbox=0.5,47.5,4.0,50.5&q=';
+
+function setupAutocomplete(inputId, dropId, type) {
+  var input = document.getElementById(inputId);
+  var drop  = document.getElementById(dropId);
+  if (!input || !drop) return;
+  var timer = null, ctrl = null;
+
+  input.addEventListener('input', function() {
+    clearTimeout(timer);
+    coords[type] = null;
+    var q = this.value.trim();
+    if (q.length < 2) { drop.classList.remove('open'); return; }
+
+    // Presets instantanément
+    var presets = matchPresets(q);
+    if (presets.length) {
+      renderDrop(drop, presets, inputId, dropId, type);
+    } else {
+      drop.innerHTML = '<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';
+      drop.classList.add('open');
+    }
+
+    // Photon en parallèle
+    timer = setTimeout(function() {
+      if (ctrl) ctrl.abort();
+      ctrl = new AbortController();
+      fetch(PHOTON + encodeURIComponent(q), {signal: ctrl.signal})
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.features || !data.features.length) return;
+          var photon = [];
+          data.features.forEach(function(f) {
+            var p = f.properties;
+            if (!p.name && !p.street) return;
+            var name = p.name || '';
+            var city = p.city || p.town || p.village || p.state || '';
+            var label = name || p.street || '';
+            if (name && p.street && name !== p.street) label = name + ', ' + p.street;
+            label = (label + ', ' + city).replace(/^, |, $/g,'').trim();
+            if (!label || label.length < 3) return;
+            photon.push({
+              n: label,
+              s: (p.postcode || '') + (city ? ' ' + city : ''),
+              lat: f.geometry.coordinates[1],
+              lon: f.geometry.coordinates[0]
+            });
+          });
+          // Fusionner : presets d\'abord, puis Photon sans doublons
+          var merged = presets.slice();
+          photon.forEach(function(pi) {
+            var dup = merged.some(function(m) {
+              return Math.abs(m.lat - pi.lat) < 0.002 && Math.abs(m.lon - pi.lon) < 0.002;
+            });
+            if (!dup) merged.push(pi);
+          });
+          if (merged.length) renderDrop(drop, merged.slice(0, 7), inputId, dropId, type);
+        })
+        .catch(function() {});
+    }, 200);
+  });
+
+  // Fermer au clic extérieur — mousedown pour éviter conflit avec la sélection
+  document.addEventListener('mousedown', function(e) {
+    if (e.target !== input && !drop.contains(e.target)) drop.classList.remove('open');
+  });
+  document.addEventListener('touchstart', function(e) {
+    if (e.target !== input && !drop.contains(e.target)) drop.classList.remove('open');
+  }, {passive: true});
+}
+/* ── ESTIMATION TEMPS D'ATTENTE ── */
+var BASE_LAT = 48.6468, BASE_LON = 2.4185; // Ris-Orangis
+
+function fetchETA(depLat, depLon) {
+  var widget = document.getElementById('eta-widget');
+  var loading = document.getElementById('eta-loading');
+  var result = document.getElementById('eta-result');
+
+  // Afficher le widget en état chargement
+  widget.style.display = 'block';
+  loading.style.display = 'flex';
+  result.style.display = 'none';
+
+  var url = 'https://router.project-osrm.org/route/v1/driving/'
+    + BASE_LON + ',' + BASE_LAT + ';'
+    + depLon + ',' + depLat
+    + '?overview=false';
+
+  fetch(url, {signal: AbortSignal.timeout(7000)})
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.code !== 'Ok') throw new Error('OSRM error');
+      var dur = Math.round(data.routes[0].duration / 60);
+      var km  = (data.routes[0].distance / 1000).toFixed(1);
+
+      // Arrondir à la tranche de 5min pour ne pas sur-promettre
+      var durDisplay = Math.max(3, Math.ceil(dur / 5) * 5);
+
+      document.getElementById('eta-min').innerHTML =
+        durDisplay + '<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText = km + ' km depuis la base';
+
+      // Message contextuel selon distance
+      var zone = 'depuis Ris-Orangis';
+      if (dur <= 8)  zone = 'Disponible — très proche';
+      else if (dur <= 18) zone = 'Zone 91 — trajet rapide';
+      else if (dur <= 35) zone = 'Paris & proche banlieue';
+      else           zone = 'Longue distance — confirmation WA';
+      document.getElementById('eta-zone').innerText = zone;
+
+      loading.style.display = 'none';
+      result.style.display = 'flex';
+
+      // Haptique léger
+      if (navigator.vibrate) navigator.vibrate(6);
+    })
+    .catch(function() {
+      // Fallback discret si OSRM fail
+      loading.style.display = 'none';
+      result.style.display = 'flex';
+      document.getElementById('eta-min').innerHTML =
+        '&lt;20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText = 'Disponibilité sur confirmation';
+      document.getElementById('eta-zone').innerText = 'Ris-Orangis & environs';
+    });
+}
+
+
+function selectLocation(iId, dId, type, name, lat, lon){
+  document.getElementById(iId).value=name;
+  coords[type]={lat,lon};
+  document.getElementById(dId).classList.remove('open');
+  // Déclencher ETA quand le départ est sélectionné
+  if (type === 'dep') fetchETA(lat, lon);
+}
+
+setupAutocomplete('dep','ac-dep','dep');
+setupAutocomplete('arr','ac-arr','arr');
+
+// ── MÉTÉO OPEN-METEO ──
+const WX={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'⛈️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WX_LABEL={0:'Ensoleillé',1:'Peu nuageux',2:'Nuageux',3:'Couvert',45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',61:'Pluie légère',63:'Pluie',65:'Pluie forte',71:'Neige légère',73:'Neige',75:'Neige forte',80:'Averses légères',81:'Averses',82:'Averses fortes',95:'Orage',96:'Orage grêle',99:'Orage violent'};
+function fetchMeteo(){
+  var _lat=(coords&&coords.dep&&coords.dep.lat)||48.64,_lon=(coords&&coords.dep&&coords.dep.lon)||2.38;
+  fetch('https://api.open-meteo.com/v1/meteofrance?latitude='+_lat+'&longitude='+_lon+'&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1')
+  .then(r=>r.json()).then(data=>{
+    const c=data.current;
+    const temp=Math.round(c.temperature_2m), feels=Math.round(c.apparent_temperature);
+    const rain=c.precipitation_probability, wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m, cloud=c.cloudcover, code=c.weathercode;
+    var _lbl=WX_LABEL[code]||'';
+    document.getElementById('wIcon').innerText=(WX[code]||'🌡');
+    document.getElementById('wTemp').innerText=temp+'°';
+    document.getElementById('wFeels').innerText=(_lbl?_lbl+' — ':'')+' Ressenti '+feels+'°';
+    document.getElementById('wWind').innerText=wind+' km/h';
+    document.getElementById('wHumid').innerText=humid+'%';
+    document.getElementById('wRain').innerText='Pluie: '+rain+'%';
+    document.getElementById('wCloud').innerText=cloud+'%';
+    document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+    const b=document.getElementById('wBadge');
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    window._meteoData={rain,wind,code,temp};
+    genConseil();
+  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
+}
+
+// ── TRAFIC OSRM ──
+const ROUTES=[
+  {id:'cdg',dur:'td-cdg',from:[48.8566,2.3522],to:[49.0097,2.5479]},
+  {id:'orly',dur:'td-orly',from:[48.8566,2.3522],to:[48.7262,2.3652]},
+  {id:'paris',dur:'td-paris',from:[48.9000,2.3000],to:[48.8300,2.3800]}
+];
+function fetchTrafic(){
+  ROUTES.forEach(route=>{
+    fetch(`https://router.project-osrm.org/route/v1/driving/${route.from[1]},${route.from[0]};${route.to[1]},${route.to[0]}?overview=false`)
+    .then(r=>r.json()).then(d=>{
+      if(d.code!=='Ok') return;
+      const min=Math.round(d.routes[0].duration/60);
+      const km=(d.routes[0].distance/1000).toFixed(0);
+      const el=document.getElementById('t-'+route.id),dur=document.getElementById(route.dur);
+      dur.innerText=min+' min · '+km+' km';
+      var thr=route.id==='cdg'?35:route.id==='orly'?25:20;
+      if(min>Math.round(thr*1.3)){el.className='t-tag bad';el.innerText='BOUCHONS';}
+      else if(min>thr){el.className='t-tag warn';el.innerText='DENSE';}
+      else{el.className='t-tag ok';el.innerText='FLUIDE';}
+    }).catch(()=>{});
+  });
+  document.getElementById('t-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('t-source').innerText='Mis à jour: '+new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+}
+
+function genConseil(){
+  const m=window._meteoData||{};
+  const h=new Date().getHours();
+  const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+  const box=document.getElementById('conseil-box');
+  const icon=document.getElementById('conseil-icon');
+  const text=document.getElementById('conseil-text');
+  let msg='',ic='💡';
+  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  icon.innerText=ic; text.innerHTML=msg;
+  box.style.display='flex';
+}
+
+fetchMeteo();
+fetchTrafic();
+setInterval(fetchMeteo, 300000);
+setInterval(fetchTrafic, 180000);
+
+// ── CONSTELLATION 60FPS OPTIMISÉE ──
+(function(){
+  var canvas = document.getElementById('constellation-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, pts = [], RAF;
+  var mouse = {x:-999, y:-999};
+  var scrollY = 0;
+  var DPR = Math.min(window.devicePixelRatio||1, 2);
+
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width  = W+'px';
+    canvas.style.height = H+'px';
+    ctx.scale(DPR, DPR);
+    initPts();
+  }
+
+  function initPts(){
+    var count = Math.min(Math.floor(W*H/14000), 80);
+    pts = [];
+    for(var i=0;i<count;i++){
+      pts.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx:(Math.random()-0.5)*0.18,
+        vy:(Math.random()-0.5)*0.18,
+        r: Math.random()*1.2+0.3,
+        a: Math.random()*0.6+0.2
+      });
+    }
+  }
+
+  var DIST = 130, DIST2 = DIST*DIST;
+  var lastT = 0;
+
+  function draw(ts){
+    RAF = requestAnimationFrame(draw);
+    var dt = Math.min(ts - lastT, 32); lastT = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      p.x += p.vx*(dt/16);
+      p.y += p.vy*(dt/16);
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+
+      // Légère attraction vers la souris
+      var mdx=mouse.x-p.x, mdy=mouse.y-p.y;
+      var md2=mdx*mdx+mdy*mdy;
+      if(md2<22500){ // 150px
+        var f=0.00003;
+        p.vx+=mdx*f*(dt/16); p.vy+=mdy*f*(dt/16);
+      }
+      // Friction
+      p.vx*=0.999; p.vy*=0.999;
+
+      // Dessiner point
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,175,55,'+p.a+')';
+      ctx.fill();
+
+      // Lignes entre points proches
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j];
+        var dx=p.x-q.x, dy=p.y-q.y;
+        var d2=dx*dx+dy*dy;
+        if(d2<DIST2){
+          var alpha=(1-d2/DIST2)*0.18;
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle='rgba(212,175,55,'+alpha+')';
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    canvas.classList.add('ready');
+  }
+
+  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  window.addEventListener('touchmove',function(e){
+    mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY;
+  },{passive:true});
+  window.addEventListener('resize', function(){cancelAnimationFrame(RAF);resize();lastT=0;RAF=requestAnimationFrame(draw);});
+
+  resize();
+  RAF = requestAnimationFrame(draw);
+})();
+
+</script>
+
+
 </body>
 </html>
