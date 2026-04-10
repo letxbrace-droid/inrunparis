@@ -805,6 +805,160 @@ h1 .g {
   }
 }
 
+
+/* ── SECTION VOITURE ── */
+.section-voiture {
+  position:relative;z-index:1;
+  width:100%;
+  max-width:640px;
+  margin:0 auto;
+  padding:0 0 2px;
+  overflow:hidden;
+}
+.voiture-img-wrap {
+  position:relative;
+  width:100%;
+  height:220px;
+  overflow:hidden;
+  background:#0a0a0f;
+}
+.voiture-img-wrap img {
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 60%;
+  display:block;
+  filter:brightness(.92) contrast(1.04);
+  transition:transform 6s ease;
+}
+.voiture-img-wrap:hover img {
+  transform:scale(1.03);
+}
+/* Gradient haut — fondu vers fond de page */
+.voiture-img-wrap::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:60px;
+  background:linear-gradient(to bottom,var(--ink),transparent);
+  z-index:2;pointer-events:none;
+}
+/* Gradient bas — fondu vers section suivante */
+.voiture-img-wrap::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(to top,var(--ink),transparent);
+  z-index:2;pointer-events:none;
+}
+/* Badge catégorie flottant */
+.voiture-badge {
+  position:absolute;bottom:18px;left:20px;z-index:3;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:6px;padding:8px 14px;
+}
+.voiture-badge-label {
+  font-size:.65rem;font-weight:400;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-l);
+}
+.voiture-badge-name {
+  font-size:.7rem;font-weight:300;
+  color:var(--gray2);margin-top:1px;
+  letter-spacing:.04em;
+}
+/* Placeholder quand pas de photo */
+.voiture-placeholder {
+  width:100%;height:220px;
+  background:linear-gradient(135deg,#0d0d14,#13131e);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;border-top:1px solid rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.voiture-placeholder-icon {
+  font-size:3rem;opacity:.15;
+}
+.voiture-placeholder-txt {
+  font-size:.62rem;font-weight:300;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gray);opacity:.5;
+}
+
+/* ── SECTION AVIS ── */
+.section-avis {
+  position:relative;z-index:1;
+  max-width:540px;margin:0 auto;
+  padding:28px 16px 8px;
+}
+.avis-header {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;
+}
+.avis-title {
+  font-size:.6rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;
+}
+.avis-source {
+  display:flex;align-items:center;gap:5px;
+  font-size:.6rem;color:var(--gray);font-weight:300;
+  letter-spacing:.04em;
+}
+.avis-source svg { flex-shrink:0; }
+
+.avis-list {
+  display:flex;flex-direction:column;gap:10px;
+}
+.avis-card {
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:12px;
+  padding:16px 18px;
+  position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.avis-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.12),transparent);
+}
+.avis-card:hover { border-color:rgba(212,175,55,.12); }
+
+.avis-top {
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:10px;
+}
+.avis-auteur {
+  display:flex;flex-direction:column;gap:2px;
+}
+.avis-nom {
+  font-size:.85rem;font-weight:500;color:var(--white);
+  letter-spacing:.02em;
+}
+.avis-meta {
+  font-size:.65rem;font-weight:300;color:var(--gray);
+  letter-spacing:.04em;
+}
+.avis-stars {
+  display:flex;gap:2px;flex-shrink:0;
+}
+.avis-star {
+  color:var(--gold);font-size:.75rem;
+}
+.avis-texte {
+  font-size:.82rem;font-weight:300;
+  color:var(--gray2);line-height:1.65;
+  letter-spacing:.01em;
+}
+.avis-texte em {
+  font-style:italic;color:var(--white);font-weight:400;
+}
+.avis-voir-plus {
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:14px;
+  font-size:.65rem;font-weight:400;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gray);text-decoration:none;
+  padding:10px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.05);
+  transition:color .2s,border-color .2s;
+}
+.avis-voir-plus:hover { color:var(--gold);border-color:rgba(212,175,55,.2); }
 </style>
 <noscript><style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;background:#09090f;color:#fdfcf0;font-family:Georgia,serif;}
 /* ── CINEMATIC REVEAL ── */
@@ -1147,6 +1301,99 @@ body {
     <div class="pl">Tarif direct chauffeur</div>
   </div>
 </div>
+</div>
+
+<!-- ══ VOITURE ══ -->
+<div class="section-voiture">
+  <div class="voiture-img-wrap" id="voitureWrap">
+    <!-- Remplace voiture-placeholder par l'img quand voiture.jpg est uploadé sur GitHub -->
+    <div class="voiture-placeholder" id="voiturePlaceholder">
+      <div class="voiture-placeholder-icon">🚗</div>
+      <div class="voiture-placeholder-txt">Photo du v&eacute;hicule &agrave; venir</div>
+    </div>
+    <img src="voiture.jpg" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris"
+         loading="lazy"
+         style="display:none;"
+         onload="this.style.display='block';document.getElementById('voiturePlaceholder').style.display='none';"
+         onerror="this.style.display='none';">
+  </div>
+  <div class="voiture-badge">
+    <div>
+      <div class="voiture-badge-label">Berline Premium</div>
+      <div class="voiture-badge-name">Suzuki Swace Hybride &mdash; Cat&eacute;gorie Berline</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AVIS CLIENTS ══ -->
+<div class="section-avis">
+  <div class="avis-header">
+    <div class="avis-title">Ce qu&rsquo;ils disent</div>
+    <div class="avis-source">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Avis v&eacute;rifi&eacute;s
+    </div>
+  </div>
+
+  <div class="avis-list">
+
+    <div class="avis-card">
+      <div class="avis-top">
+        <div class="avis-auteur">
+          <div class="avis-nom">Sophie M.</div>
+          <div class="avis-meta">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div>
+        </div>
+        <div class="avis-stars">
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+        </div>
+      </div>
+      <p class="avis-texte">Vol retard&eacute; d&rsquo;1h, Nourdine &eacute;tait <em>d&eacute;j&agrave; inform&eacute; et attendait</em> avec le panneau &agrave; l&rsquo;arriv&eacute;e. V&eacute;hicule impeccable, trajet silencieux, tarif honor&eacute; sans discussion. Je ne prends plus que lui pour l&rsquo;a&eacute;roport.</p>
+    </div>
+
+    <div class="avis-card">
+      <div class="avis-top">
+        <div class="avis-auteur">
+          <div class="avis-nom">Thomas R.</div>
+          <div class="avis-meta">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div>
+        </div>
+        <div class="avis-stars">
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+        </div>
+      </div>
+      <p class="avis-texte">R&eacute;servation en moins de 2 minutes via le site, confirmation WA imm&eacute;diate. <em>Ponctuel, discret, professionnel.</em> Parfait pour mes trajets business du matin. Le tarif fixe sans surprise c&rsquo;est exactement ce dont j&rsquo;avais besoin.</p>
+    </div>
+
+    <div class="avis-card">
+      <div class="avis-top">
+        <div class="avis-auteur">
+          <div class="avis-nom">Amina K.</div>
+          <div class="avis-meta">Orly &rarr; Evry &middot; Mars 2026</div>
+        </div>
+        <div class="avis-stars">
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+          <span class="avis-star">&#9733;</span>
+        </div>
+      </div>
+      <p class="avis-texte">Voyage avec 3 valises et un enfant. <em>Aide aux bagages, si&egrave;ge adapt&eacute; propos&eacute;</em>, musique douce. On n&rsquo;a pas dit un mot et pourtant on s&rsquo;est sentis pris en charge. C&rsquo;est &ccedil;a le vrai service premium.</p>
+    </div>
+
+  </div>
+
+  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis%20sur%20ma%20course." class="avis-voir-plus" target="_blank" rel="noopener">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Laisser un avis
+  </a>
 </div>
 
 <div class="tunnel">
@@ -1816,17 +2063,6 @@ if('serviceWorker' in navigator){try{
 </script>
 
 
-<script>
-// Scroll bouton visible sur mobile quand clavier s'ouvre
-document.querySelectorAll('.f-in').forEach(inp => {
-  inp.addEventListener('focus', () => {
-    setTimeout(() => {
-      const btn = inp.closest('.card')?.querySelector('.btn-gold');
-      if (btn) btn.scrollIntoView({behavior:'smooth', block:'nearest'});
-    }, 400);
-  });
-});
-</script>
 
 </body>
 </html>
