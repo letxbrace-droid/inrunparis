@@ -1057,7 +1057,8 @@ h1 .g {
 }
 
 </style><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
-<style id="al">/* ═══════════════════════════════════════════════
+<style id="al">body{visibility:hidden;opacity:0}
+/* ═══════════════════════════════════════════════
    LUXURY UPGRADE V51 — Design System Premium
    ═══════════════════════════════════════════════ */
 
@@ -1843,38 +1844,159 @@ function sendWhatsApp() {
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-// ── AUTOCOMPLETE PHOTON ──
-const PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=7&bbox=1.0,48.0,3.5,49.5&q=';
-function setupAutocomplete(inputId, dropId, type) {
-  const input=document.getElementById(inputId), drop=document.getElementById(dropId);
-  let t=null,ctrl=null;
-  input.addEventListener('input', function(){
-    clearTimeout(t); coords[type]=null;
-    const q=this.value.trim();
-    if(q.length<2){drop.classList.remove('open');return;}
-    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-weight:300;">Recherche...</div></div>';drop.classList.add('open');
-    t=setTimeout(()=>{
-      if(ctrl)ctrl.abort();
-      ctrl=new AbortController();
-      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal}).then(r=>r.json()).then(data=>{
-        if(!data.features||!data.features.length){
-          drop.innerHTML='<div class="ac-item"><div class="ac-main">Aucun résultat</div></div>';
-        } else {
-          drop.innerHTML=data.features.map(item=>{
-            const p=item.properties;
-            let name=p.name||'', city=p.city||p.town||p.state||'';
-            let full=`${name}${p.street&&name!==p.street?', '+p.street:''}`;
-            if(!full) full=p.street||'';
-            full=`${full}, ${city}`.replace(/^, /,'').trim();
-            return `<div class="ac-item" onclick="selectLocation('${inputId}','${dropId}','${type}','${full.replace(/'/g,"\'")}',${item.geometry.coordinates[1]},${item.geometry.coordinates[0]})">
-              <div><div class="ac-main">📍 ${full}</div><div class="ac-sec">${(p.postcode||'')+' '+city}</div></div></div>`;
-          }).join('');
-        }
-        drop.classList.add('open');
-      }).catch(()=>{});
-    }, 220);
+// ── AUTOCOMPLETE — Architecture robuste sans onclick inline ──
+// Lieux prédéfinis : aéroports, gares, centres commerciaux IDF
+var PRESETS = [
+  // Aéroports — terminaux précis
+  {n:'Aéroport Paris-Orly — Terminal 1 & 2',s:'Orly · RER C · Orlybus',lat:48.7262,lon:2.3652},
+  {n:'Aéroport Paris-Orly — Terminal 3 & 4',s:'Orly · RER C · Orlybus',lat:48.7244,lon:2.3709},
+  {n:'Aéroport CDG — Terminal 1',s:'Roissy · RER B · CDG1',lat:49.0097,lon:2.5479},
+  {n:'Aéroport CDG — Terminal 2 (A/B/C/D/E/F/G)',s:'Roissy · RER B · CDG2',lat:49.0060,lon:2.5720},
+  {n:'Aéroport CDG — Terminal 3',s:'Roissy · Terminal Low Cost',lat:49.0035,lon:2.5598},
+  {n:'Aéroport Le Bourget',s:'Le Bourget · Aviation d'affaires',lat:48.9694,lon:2.4414},
+  // Gares Paris
+  {n:'Gare de Lyon — Paris',s:'Paris 12e · TGV · Grandes Lignes',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord — Paris',s:'Paris 10e · Eurostar · Thalys · RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse — Paris',s:'Paris 15e · TGV Atlantique',lat:48.8408,lon:2.3209},
+  {n:'Gare de l'Est — Paris',s:'Paris 10e · TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare — Paris',s:'Paris 8e · Transilien · RER E',lat:48.8754,lon:2.3253},
+  {n:'Gare d'Austerlitz — Paris',s:'Paris 13e · Intercités',lat:48.8427,lon:2.3656},
+  // Gares 91
+  {n:'Gare de Massy TGV',s:'Massy · TGV · RER B & C',lat:48.7233,lon:2.2716},
+  {n:'Gare d'Évry-Courcouronnes',s:'Évry · RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy · RER C & D · Transilien',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil · RER D',lat:48.6100,lon:2.4797},
+  // Centres commerciaux 91
+  {n:'Centre Commercial Évry 2 (Courcouronnes)',s:'Évry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:'Centre Commercial Agora d'Évry',s:'Évry-Courcouronnes 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carré Sénart',s:'Lieusaint 77127 · Seine-et-Marne',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940 · Essonne',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle Épine',s:'Thiais 94320 · Val-de-Marne',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial Vélizy 2',s:'Vélizy-Villacoublay 78140',lat:48.7832,lon:2.1722},
+  // Paris landmarks
+  {n:'Tour Eiffel',s:'Paris 7e · Champ-de-Mars',lat:48.8584,lon:2.2945},
+  {n:'La Défense — Grande Arche',s:'Puteaux 92800 · RER A',lat:48.8926,lon:2.2360},
+  {n:'Palais des Congrès de Paris',s:'Paris 17e · Porte Maillot',lat:48.8789,lon:2.2830},
+];
+
+function matchPresets(q) {
+  var ql = q.toLowerCase().replace(/[-]/g,' ');
+  return PRESETS.filter(function(p) {
+    var nl = (p.n + ' ' + p.s).toLowerCase();
+    // Chercher chaque mot de la requête
+    var words = ql.split(' ').filter(function(w){return w.length>1;});
+    return words.every(function(w){ return nl.indexOf(w) > -1; });
+  }).slice(0, 4);
+}
+
+function renderDrop(drop, items, inputId, dropId, type) {
+  if (!items.length) {
+    drop.innerHTML = '<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-weight:300;">Aucun résultat</div></div>';
+    drop.classList.add('open');
+    return;
+  }
+  drop.innerHTML = '';
+  items.forEach(function(item) {
+    var el = document.createElement('div');
+    el.className = 'ac-item';
+    el.innerHTML = '<div><div class="ac-main">📍 ' + item.n + '</div><div class="ac-sec">' + item.s + '</div></div>';
+    // Stocker les données en dataset — zéro injection JS
+    el.dataset.name = item.n;
+    el.dataset.lat  = item.lat;
+    el.dataset.lon  = item.lon;
+    el.dataset.iid  = inputId;
+    el.dataset.did  = dropId;
+    el.dataset.type = type;
+    el.addEventListener('click', function() {
+      selectLocation(
+        this.dataset.iid, this.dataset.did, this.dataset.type,
+        this.dataset.name,
+        parseFloat(this.dataset.lat), parseFloat(this.dataset.lon)
+      );
+    });
+    drop.appendChild(el);
   });
-  document.addEventListener('click', e=>{if(e.target!==input&&!drop.contains(e.target)) drop.classList.remove('open');});
+  drop.classList.add('open');
+}
+
+const PHOTON = 'https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=8&bbox=0.5,47.5,4.0,50.0&q=';
+
+function setupAutocomplete(inputId, dropId, type) {
+  var input = document.getElementById(inputId);
+  var drop  = document.getElementById(dropId);
+  var timer = null, ctrl = null;
+
+  input.addEventListener('input', function() {
+    clearTimeout(timer);
+    coords[type] = null;
+    var q = this.value.trim();
+    if (q.length < 2) { drop.classList.remove('open'); return; }
+
+    // 1. Afficher les presets correspondants immédiatement
+    var presets = matchPresets(q);
+    if (presets.length) {
+      renderDrop(drop, presets, inputId, dropId, type);
+    } else {
+      drop.innerHTML = '<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-weight:300;">Recherche...</div></div>';
+      drop.classList.add('open');
+    }
+
+    // 2. Requête Photon en parallèle
+    timer = setTimeout(function() {
+      if (ctrl) ctrl.abort();
+      ctrl = new AbortController();
+      fetch(PHOTON + encodeURIComponent(q), {signal: ctrl.signal})
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.features || !data.features.length) {
+            if (!presets.length) renderDrop(drop, [], inputId, dropId, type);
+            return;
+          }
+          // Construire les items Photon
+          var photonItems = [];
+          data.features.forEach(function(item) {
+            var p = item.properties;
+            // Filtrer : privilégier les vrais POI, pas les rues génériques
+            var type_ok = ['aerodrome','bus_stop','railway','mall','commercial','tourism',
+                           'amenity','leisure','building','city','town','village','suburb',
+                           'house','street','neighbourhood'].indexOf(p.osm_value) > -1
+                          || p.name;
+            if (!type_ok && !p.name) return;
+            var name = p.name || '';
+            var city = p.city || p.town || p.village || p.state || '';
+            var street = p.street || '';
+            var label = name;
+            if (street && name !== street) label += ', ' + street;
+            if (!label) label = street;
+            label = (label + ', ' + city).replace(/^, /,'').replace(/, $/,'').trim();
+            if (!label) return;
+            photonItems.push({
+              n: label,
+              s: (p.postcode || '') + ' ' + city,
+              lat: item.geometry.coordinates[1],
+              lon: item.geometry.coordinates[0]
+            });
+          });
+          // Fusionner : presets en premier, Photon ensuite (sans doublons)
+          var merged = presets.slice();
+          photonItems.forEach(function(pi) {
+            var exists = merged.some(function(m) {
+              return Math.abs(m.lat - pi.lat) < 0.001 && Math.abs(m.lon - pi.lon) < 0.001;
+            });
+            if (!exists) merged.push(pi);
+          });
+          renderDrop(drop, merged.slice(0, 7), inputId, dropId, type);
+        })
+        .catch(function() {
+          // Photon fail → garder les presets si dispo
+          if (!presets.length) renderDrop(drop, [], inputId, dropId, type);
+        });
+    }, 200);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (e.target !== input && !drop.contains(e.target)) drop.classList.remove('open');
+  });
 }
 /* ── ESTIMATION TEMPS D'ATTENTE ── */
 var BASE_LAT = 48.6468, BASE_LON = 2.4185; // Ris-Orangis
