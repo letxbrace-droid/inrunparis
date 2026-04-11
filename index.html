@@ -1026,8 +1026,8 @@ h1 .g {
 
 /* ── FLATPICKR DARK GOLD ── */
 .flatpickr-calendar{background:#0e0e16!important;border:1px solid rgba(212,175,55,.25)!important;border-radius:16px!important;box-shadow:0 20px 60px rgba(0,0,0,.7)!important;font-family:"Jost",sans-serif!important;padding:8px!important;overflow:hidden!important;}
-.flatpickr-months{background:transparent!important;padding:6px 0 2px!important;}
-.flatpickr-month{background:transparent!important;color:#f3e5ab!important;height:38px!important;}
+.flatpickr-months,.flatpickr-month{background:transparent!important;}
+.flatpickr-month{color:#f3e5ab!important;height:38px!important;}
 .flatpickr-current-month{font-family:"Marcellus",serif!important;font-size:1rem!important;color:#f3e5ab!important;padding-top:4px!important;}
 .flatpickr-current-month .numInputWrapper input,.flatpickr-current-month select{color:#f3e5ab!important;font-family:"Marcellus",serif!important;}
 .flatpickr-prev-month,.flatpickr-next-month{color:rgba(212,175,55,.6)!important;fill:rgba(212,175,55,.6)!important;top:8px!important;}
@@ -1036,7 +1036,7 @@ h1 .g {
 .flatpickr-weekday{background:transparent!important;color:rgba(212,175,55,.5)!important;font-size:.65rem!important;font-weight:500!important;letter-spacing:.1em!important;}
 .flatpickr-day{color:#c8c8d4!important;border-radius:8px!important;border:1px solid transparent!important;font-size:.85rem!important;height:36px!important;line-height:36px!important;transition:all .15s!important;}
 .flatpickr-day:hover{background:rgba(212,175,55,.1)!important;border-color:rgba(212,175,55,.2)!important;color:#f3e5ab!important;}
-.flatpickr-day.selected,.flatpickr-day.selected:hover{background:#d4af37!important;border-color:#d4af37!important;color:#000!important;font-weight:600!important;box-shadow:0 4px 12px rgba(212,175,55,.35)!important;}
+.flatpickr-day.selected,.flatpickr-day.selected:hover{background:#d4af37!important;border-color:#d4af37!important;color:#000!important;font-weight:600!important;}
 .flatpickr-day.today{border-color:rgba(212,175,55,.4)!important;color:#d4af37!important;font-weight:600!important;}
 .flatpickr-day.flatpickr-disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:rgba(255,255,255,.15)!important;}
 .flatpickr-time{background:rgba(212,175,55,.05)!important;border-top:1px solid rgba(212,175,55,.15)!important;border-radius:0!important;margin:6px -8px 0!important;padding:8px!important;height:44px!important;}
@@ -1044,79 +1044,20 @@ h1 .g {
 .flatpickr-time .flatpickr-time-separator{color:rgba(212,175,55,.5)!important;font-family:"Marcellus",serif!important;font-size:1.3rem!important;line-height:44px!important;}
 .flatpickr-time .numInputWrapper span{border-color:rgba(212,175,55,.15)!important;}
 #timepick{color:#f3e5ab!important;letter-spacing:.04em!important;}
-
-/* ── BLOC COMPARATIF STEP2 ── */
-.compare-block{
-  display:flex;flex-direction:column;gap:8px;
-  padding:14px 16px;
-  background:rgba(212,175,55,.05);
-  border:1px solid rgba(212,175,55,.18);
-  border-radius:12px;
-  margin:20px 0 4px;
-}
-.compare-title{
-  font-size:.62rem;font-weight:600;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:4px;
-}
-.compare-item{
-  display:flex;align-items:center;gap:8px;
-  font-size:.82rem;font-weight:300;color:var(--white);
-}
-.compare-check{
-  width:18px;height:18px;border-radius:50%;
-  background:rgba(34,197,94,.15);
-  border:1px solid rgba(34,197,94,.3);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;font-size:.6rem;
-}
-
-/* ── BADGE -10% dans modal ── */
-.badge-promo{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 14px;
-  background:rgba(34,197,94,.1);
-  border:1px solid rgba(34,197,94,.25);
-  border-radius:50px;
-  font-size:.72rem;font-weight:600;
-  color:#22c55e;
-  letter-spacing:.04em;
-  cursor:pointer;
-  margin-top:10px;
-  transition:background .2s;
-  position:relative;
-}
+/* ── HERO ── */
+.hero-tagline{font-size:.6rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:12px;}
+.hero-p{color:#d0d0d8!important;opacity:1!important;}
+.hero-p strong[style*="gold"]{font-size:1.05em!important;text-shadow:0 0 20px rgba(212,175,55,.4)!important;}
+/* ── COMPARATIF ── */
+.compare-block{display:flex;flex-direction:column;gap:8px;padding:14px 16px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.18);border-radius:12px;margin:20px 0 4px;}
+.compare-title{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.compare-item{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:300;color:var(--white);}
+.compare-check{width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.6rem;}
+/* ── BADGE -10% ── */
+.badge-promo{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:50px;font-size:.72rem;font-weight:600;color:#22c55e;letter-spacing:.04em;cursor:pointer;margin-top:10px;transition:background .2s;position:relative;}
 .badge-promo:hover{background:rgba(34,197,94,.18);}
-.badge-tooltip{
-  display:none;
-  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
-  width:240px;
-  background:#111118;
-  border:1px solid rgba(212,175,55,.2);
-  border-radius:10px;
-  padding:12px 14px;
-  font-size:.72rem;font-weight:300;
-  color:var(--gray2);line-height:1.5;
-  text-align:left;
-  box-shadow:0 8px 24px rgba(0,0,0,.6);
-  z-index:10;
-  pointer-events:none;
-}
+.badge-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:240px;background:#111118;border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;font-size:.72rem;font-weight:300;color:var(--gray2);line-height:1.5;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.6);z-index:10;pointer-events:none;}
 .badge-promo.open .badge-tooltip{display:block;}
-
-/* ── HERO SOUS-TITRE ── */
-.hero-tagline{
-  font-size:.6rem;font-weight:400;
-  letter-spacing:.28em;text-transform:uppercase;
-  color:var(--gold);opacity:.65;
-  margin-bottom:12px;
-}
-
-/* ── HERO 10% — lisibilité renforcée ── */
-.hero-p strong[style*="gold"] {
-  font-size: 1.05em !important;
-  text-shadow: 0 0 20px rgba(212,175,55,.4) !important;
-}
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 <style id="al">/* ═══════════════════════════════════════════════
@@ -1169,7 +1110,7 @@ body { background: var(--ink); }
 
 /* ── 4. TYPOGRAPHIE LUXE ── */
 h1 { letter-spacing: 0.5px !important; }
-.hero-p { font-weight: 300 !important; font-size: 0.95rem !important; letter-spacing: 0.02em !important; opacity: 1; color: #d0d0d8 !important; }
+.hero-p { font-weight: 300 !important; font-size: 0.95rem !important; letter-spacing: 0.02em !important; opacity: 0.85; }
 .f-lbl { font-weight: 400 !important; letter-spacing: 0.15em !important; font-size: 0.65rem !important; }
 .c-sub { font-weight: 200 !important; opacity: 0.7; letter-spacing: 0.05em !important; }
 .proof .pl { font-weight: 300 !important; letter-spacing: 0.12em !important; }
@@ -1432,7 +1373,7 @@ body {
 <!-- ══ VOITURE ══ -->
 <div class="section-voiture">
   <div class="voiture-img-wrap">
-    <img src="voiture.jpg" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris">
+    <img src="voiture.jpg" loading="lazy" decoding="async" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris">
   </div>
   <div class="voiture-badge">
     <div>
@@ -1489,7 +1430,7 @@ body {
     <label class="f-lbl">Prise en charge</label>
     <div class="f-wrap">
       <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-      <input type="text" id="timepick" class="f-in" placeholder="Date et heure..." readonly>
+      <input type="text" id="timepick" class="f-in" placeholder="Date et heure..." readonly inputmode="none" autocomplete="off">
     </div>
     <label class="f-lbl">Lieu de d&eacute;part</label>
     <div class="f-wrap">
@@ -1536,7 +1477,7 @@ body {
     </div>
     <!-- Photo intérieur -->
     <div class="interieur-wrap">
-      <img src="interieur.jpg" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
+      <img src="interieur.jpg" loading="lazy" decoding="async" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
       <div class="interieur-caption">
         <span class="interieur-label">Int&eacute;rieur Berline</span>
         <div class="interieur-tags">
@@ -1576,12 +1517,7 @@ body {
     <div class="f-wrap" style="height:auto;padding:8px;">
       <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
     </div>
-    <div class="compare-block">
-      <div class="compare-title">Mieux qu&rsquo;une application</div>
-      <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
-      <div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div>
-      <div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> plateforme &mdash; tout va au chauffeur</div>
-    </div>
+    <div class="compare-block"><div class="compare-title">Mieux qu&rsquo;une application</div><div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div><div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div><div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> &mdash; tout va au chauffeur</div></div>
     <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
       <span id="btnText">Calculer le tarif exact</span>
       <div class="loader" id="calcLoader"></div>
@@ -1680,13 +1616,7 @@ body {
         <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Inclus dans le total</div></div>
       </div>
       <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
-      <div style="text-align:center;">
-        <div class="badge-promo" id="badgePromo" onclick="this.classList.toggle('open')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          &minus;10&nbsp;% vs Applications
-          <div class="badge-tooltip">En supprimant les commissions des plateformes (jusqu&rsquo;&agrave;&nbsp;45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div>
-        </div>
-      </div>
+      <div style="text-align:center;"><div class="badge-promo" id="badgePromo" onclick="this.classList.toggle('open')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>&minus;10&nbsp;% vs Applications<div class="badge-tooltip">En supprimant les commissions des plateformes (jusqu'&agrave;&nbsp;45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div></div></div>
     </div>
     <button class="btn btn-gold" onclick="sendWhatsApp()" style="margin-bottom:10px;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#000" style="margin-right:10px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1700,7 +1630,7 @@ body {
   <div class="legal-box">
     <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
     <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
-      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection#bdded2d3c9dcdec993d4d3cfc8d3fddad0dcd4d193ded2d0" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="35565a5b415456411b5c5b47405b755258545c591b565a58">[email&#160;protected]</span></a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
     </div>
     <div class="legal-section"><h4>2. H&eacute;bergement</h4>
       <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
@@ -1715,6 +1645,541 @@ body {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+// ── SONS WEB AUDIO API ──
+const _AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _ac = null;
+function getAC() {
+  if (!_ac) _ac = new _AudioCtx();
+  return _ac;
+}
+
+// Son "ding" de caisse — lancement du countup
+function playCashStart() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    // Bruit blanc court (mécanique caisse)
+    const buf = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = ac.createBufferSource();
+    noise.buffer = buf;
+    const noiseG = ac.createGain();
+    noiseG.gain.setValueAtTime(0.4, t);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    noise.connect(noiseG); noiseG.connect(ac.destination);
+    noise.start(t);
+    // Ding métallique principal
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.5);
+  } catch(e){}
+}
+
+// Son "tick" discret — pendant chaque chiffre du countup
+function playTick() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.04);
+  } catch(e){}
+}
+
+// Son final "chime luxe" — accord doré 3 notes au prix final
+function playCashFinal() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const notes = [523.25, 659.25, 783.99]; // Do Mi Sol — accord majeur
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + i * 0.09);
+      g.gain.setValueAtTime(0, t + i * 0.09);
+      g.gain.linearRampToValueAtTime(0.22, t + i * 0.09 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.8);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(t + i * 0.09); osc.stop(t + i * 0.09 + 0.9);
+      // Harmonique douce
+      const osc2 = ac.createOscillator();
+      const g2 = ac.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2, t + i * 0.09);
+      g2.gain.setValueAtTime(0, t + i * 0.09);
+      g2.gain.linearRampToValueAtTime(0.07, t + i * 0.09 + 0.03);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.4);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc2.start(t + i * 0.09); osc2.stop(t + i * 0.09 + 0.5);
+    });
+  } catch(e){}
+}
+
+// ── FLATPICKR ──
+(function(){
+  var el=document.getElementById('timepick');
+  if(!el)return;
+  el.setAttribute('inputmode','none');
+  var fp=flatpickr(el,{
+    enableTime:true,dateFormat:'d/m/Y H:i',time_24hr:true,locale:'fr',
+    minDate:'today',
+    defaultHour:(new Date().getHours()>=22?8:Math.max(new Date().getHours()+1,8)),
+    minuteIncrement:15,disableMobile:true,allowInput:false,
+    onOpen:function(){
+      el.setAttribute('inputmode','none');
+      setTimeout(function(){el.blur();},10);
+    },
+    onReady:function(sel,str,instance){
+      var btn=document.createElement('button');
+      btn.type='button';btn.textContent='Confirmer \u2714';
+      btn.style.cssText='width:calc(100% - 16px);margin:8px 8px 6px;display:block;height:42px;background:linear-gradient(135deg,#d4af37,#f3e5ab);color:#000;font-family:"Jost",sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(212,175,55,.3)';
+      btn.addEventListener('click',function(){fp.close();});
+      instance.calendarContainer.appendChild(btn);
+    }
+  });
+  ['click','touchend'].forEach(function(ev){
+    el.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();fp.open();});
+    var w=el.closest('.f-wrap');
+    if(w)w.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();fp.open();});
+  });
+})();
+
+let coords = { dep: null, arr: null };
+
+function toggleChip(id, el) {
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const r = document.createElement('div');
+  r.className = 'chip-ripple';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(), 250);
+}
+function selectPayment(el, m) {
+  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = m;
+}
+function showLegal(){document.getElementById('legalModal').classList.add('show');}
+function hideModal(){document.getElementById('customModal').classList.remove('show');}
+
+function nextStep(step) {
+  if (!coords.dep || !coords.arr) {alert("Veuillez sélectionner les adresses dans la liste des suggestions.");return;}
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('locked');
+  const t = document.getElementById('step'+step);
+  t.classList.remove('locked'); t.classList.add('active');
+  t.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function countUpPrice(el, final, dur) {
+  playCashStart();
+  const start = performance.now();
+  let lastVal = 0;
+  function step(now) {
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1-Math.pow(1-p,3);
+    const current = Math.round(ease*final);
+    if (current !== lastVal) { playTick(); lastVal = current; }
+    el.innerText = current+' €';
+    if(p<1) { requestAnimationFrame(step); }
+    else { playCashFinal(); }
+  }
+  requestAnimationFrame(step);
+}
+
+async function calculatePrice() {
+  if(!coords.dep||!coords.arr) return;
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('calcLoader').style.display='block';
+  document.getElementById('calcBtn').disabled=true;
+  try {
+    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
+    const d = await r.json();
+    if(d.code==='Ok') {
+      const km=d.routes[0].distance/1000, min=d.routes[0].duration/60;
+      let price = 15 + (km * 0.84) + (min * 0.17);
+      if(price<35) price=35;
+
+      // Supplément nuit : +10€ entre 22h et 6h
+      const tval=document.getElementById('timepick').value||'';
+      const hmatch=tval.match(/(\d{2}):(\d{2})$/)||tval.match(/(\d{2})\/\d{2}\/\d{4}\s+(\d{2}):\d{2}/);
+      const heure=hmatch?parseInt(hmatch[hmatch.length-2]):new Date().getHours();
+      const isNuit=(heure>=22||heure<6);
+      if(isNuit) price+=10;
+      price=Math.ceil(price);
+
+      document.getElementById('m-km').innerText=km.toFixed(1)+' km';
+      document.getElementById('m-dur').innerText=Math.round(min)+' min';
+
+      // Badge nuit dans la modal
+      const calcDet=document.getElementById('calcDetails');
+      if(isNuit){
+        calcDet.innerHTML='<span class="nuit-badge">🌙 Tarif nuit inclus (+10€ · 22h&ndash;6h)</span>';
+      } else {
+        calcDet.innerHTML='';
+      }
+
+      document.getElementById('customModal').classList.add('show');
+      countUpPrice(document.getElementById('finalPrice'), price, 1200);
+    } else { alert("Impossible de calculer l'itinéraire."); }
+  } catch(e){ alert("Erreur de connexion."); }
+  finally {
+    document.getElementById('btnText').style.display='block';
+    document.getElementById('calcLoader').style.display='none';
+    document.getElementById('calcBtn').disabled=false;
+  }
+}
+
+function sendWhatsApp() {
+  const time=document.getElementById('timepick').value;
+  const dep=document.getElementById('dep').value;
+  const arr=document.getElementById('arr').value;
+  const note=document.getElementById('note').value;
+  const price=document.getElementById('finalPrice').innerText;
+  const pay=document.getElementById('paymentMethod').value;
+  const music=document.querySelector('#musicPref .chip.sel');
+  const clim=document.querySelector('#climPref .chip.sel');
+  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
+
+`;
+  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+`;
+  msg+=`📍 Départ : ${dep}
+🏁 Arrivée : ${arr}
+`;
+  const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
+  msg+=`💳 Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}\n💶 Paiement : ${pay}\n\n`;
+  msg+=`✨ *Préférences à bord :*
+- Musique : ${music?music.innerText.trim():'Non'}
+- Climatisation : ${clim?clim.innerText.trim():'Non'}
+
+`;
+  if(note) msg+=`📝 Note : ${note}
+
+`;
+  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ── AUTOCOMPLETE + ETA ──
+var BASE_LAT=48.6468,BASE_LON=2.4185;
+function fetchETA(depLat,depLon){
+  var widget=document.getElementById('eta-widget'),loading=document.getElementById('eta-loading'),result=document.getElementById('eta-result');
+  if(!widget)return;
+  widget.style.display='block';loading.style.display='flex';result.style.display='none';
+  fetch('https://router.project-osrm.org/route/v1/driving/'+BASE_LON+','+BASE_LAT+';'+depLon+','+depLat+'?overview=false',{signal:AbortSignal.timeout(7000)})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d.code!=='Ok')throw new Error();
+      var dur=Math.round(d.routes[0].duration/60),km=(d.routes[0].distance/1000).toFixed(1);
+      var dd=Math.max(3,Math.ceil(dur/5)*5);
+      document.getElementById('eta-min').innerHTML=dd+'<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText=km+' km depuis la base';
+      var z='depuis Ris-Orangis';
+      if(dur<=8)z='Disponible \u2014 tr\u00e8s proche';
+      else if(dur<=18)z='Zone 91 \u2014 trajet rapide';
+      else if(dur<=35)z='Paris & proche banlieue';
+      else z='Longue distance \u2014 confirmation WA';
+      document.getElementById('eta-zone').innerText=z;
+      loading.style.display='none';result.style.display='flex';
+      if(navigator.vibrate)navigator.vibrate(6);
+    }).catch(function(){
+      loading.style.display='none';result.style.display='flex';
+      document.getElementById('eta-min').innerHTML='<20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText='Disponibilit\u00e9 sur confirmation';
+      document.getElementById('eta-zone').innerText='Ris-Orangis & environs';
+    });
+}
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/s\b/g,'').replace(/[-_]/g,' ');}
+var PRESETS=[
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 1&2',s:'Orly \xb7 RER C',lat:48.7262,lon:2.3652},
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 3&4',s:'Orly \xb7 RER C',lat:48.7244,lon:2.3709},
+  {n:'A\u00e9roport CDG \u2014 Terminal 1',s:'Roissy \xb7 RER B',lat:49.0097,lon:2.5479},
+  {n:'A\u00e9roport CDG \u2014 Terminal 2',s:'Roissy \xb7 RER B \xb7 TGV',lat:49.0060,lon:2.5720},
+  {n:'A\u00e9roport CDG \u2014 Terminal 3',s:'Roissy \xb7 Low Cost',lat:49.0035,lon:2.5598},
+  {n:"A\u00e9roport Le Bourget",s:"Aviation d'affaires",lat:48.9694,lon:2.4414},
+  {n:'Gare de Lyon \u2014 Paris',s:'Paris 12e \xb7 TGV',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord \u2014 Paris',s:'Paris 10e \xb7 Eurostar \xb7 RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse \u2014 Paris',s:'Paris 15e \xb7 TGV',lat:48.8408,lon:2.3209},
+  {n:"Gare de l'Est \u2014 Paris",s:'Paris 10e \xb7 TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare \u2014 Paris',s:'Paris 8e \xb7 Transilien',lat:48.8754,lon:2.3253},
+  {n:'Gare Massy TGV',s:'Massy 91300 \xb7 RER B&C',lat:48.7233,lon:2.2716},
+  {n:"Gare d'\u00c9vry-Courcouronnes",s:'\u00c9vry 91000 \xb7 RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 \xb7 RER C&D',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 \xb7 RER D',lat:48.6100,lon:2.4797},
+  {n:'Centre Commercial \u00c9vry 2',s:'\u00c9vry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:"Centre Commercial Agora d'\u00c9vry",s:'\u00c9vry 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carr\u00e9 S\u00e9nart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle \u00c9pine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial V\u00e9lizy 2',s:'V\u00e9lizy 78140',lat:48.7832,lon:2.1722},
+  {n:'La D\u00e9fense \u2014 Grande Arche',s:'Puteaux 92800 \xb7 RER A',lat:48.8926,lon:2.2360},
+];
+function matchPresets(q){
+  var qn=norm(q),words=qn.split(' ').filter(function(w){return w.length>1;});
+  if(!words.length)return[];
+  return PRESETS.filter(function(p){
+    var pn=norm(p.n+' '+p.s);
+    var needed=words.length<=2?1:Math.ceil(words.length*.6);
+    return words.filter(function(w){return pn.indexOf(w)>-1;}).length>=needed;
+  }).slice(0,5);
+}
+function buildItem(item,inputId,dropId,type){
+  var el=document.createElement('div');
+  el.className='ac-item';
+  el.innerHTML='<div><div class="ac-main">'+item.n+'</div><div class="ac-sec">'+item.s+'</div></div>';
+  el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
+  el.addEventListener('mousedown',function(e){e.preventDefault();});
+  el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
+  return el;
+}
+function renderDrop(drop,items,inputId,dropId,type){
+  drop.innerHTML='';
+  if(!items.length){drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun r\u00e9sultat</div></div>';}
+  else{items.forEach(function(item){drop.appendChild(buildItem(item,inputId,dropId,type));});}
+  drop.classList.add('open');
+}
+var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=8&bbox=0.5,47.5,4.0,50.5&q=';
+function setupAutocomplete(inputId,dropId,type){
+  var input=document.getElementById(inputId),drop=document.getElementById(dropId);
+  if(!input||!drop)return;
+  var timer=null,ctrl=null;
+  input.addEventListener('input',function(){
+    clearTimeout(timer);coords[type]=null;
+    var q=this.value.trim();
+    if(q.length<2){drop.classList.remove('open');return;}
+    var presets=matchPresets(q);
+    if(presets.length){renderDrop(drop,presets,inputId,dropId,type);}
+    else{drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';drop.classList.add('open');}
+    timer=setTimeout(function(){
+      if(ctrl)ctrl.abort();ctrl=new AbortController();
+      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal}).then(function(r){return r.json();}).then(function(data){
+        if(!data.features||!data.features.length)return;
+        var photon=[];
+        data.features.forEach(function(f){
+          var p=f.properties;if(!p.name&&!p.street)return;
+          var name=p.name||'',city=p.city||p.town||p.village||p.state||'';
+          var label=name||p.street||'';
+          if(name&&p.street&&name!==p.street)label=name+', '+p.street;
+          label=(label+', '+city).replace(/^, |, $/g,'').trim();
+          if(!label||label.length<3)return;
+          photon.push({n:label,s:(p.postcode||'')+(city?' '+city:''),lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
+        });
+        var merged=presets.slice();
+        photon.forEach(function(pi){
+          if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
+        });
+        if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
+      }).catch(function(){});
+    },200);
+  });
+  document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
+  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
+}
+function selectLocation(iId, dId, type, name, lat, lon){
+  document.getElementById(iId).value=name;
+  coords[type]={lat,lon};
+  document.getElementById(dId).classList.remove('open');
+  // Déclencher ETA quand le départ est sélectionné
+  if (type === 'dep') fetchETA(lat, lon);
+}
+
+setupAutocomplete('dep','ac-dep','dep');
+setupAutocomplete('arr','ac-arr','arr');
+
+// ── MÉTÉO OPEN-METEO ──
+const WX={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'⛈️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WX_LABEL={0:'Ensoleillé',1:'Peu nuageux',2:'Nuageux',3:'Couvert',45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',61:'Pluie légère',63:'Pluie',65:'Pluie forte',71:'Neige légère',73:'Neige',75:'Neige forte',80:'Averses légères',81:'Averses',82:'Averses fortes',95:'Orage',96:'Orage grêle',99:'Orage violent'};
+function fetchMeteo(){
+  var _lat=(coords&&coords.dep&&coords.dep.lat)||48.64,_lon=(coords&&coords.dep&&coords.dep.lon)||2.38;
+  fetch('https://api.open-meteo.com/v1/meteofrance?latitude='+_lat+'&longitude='+_lon+'&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1')
+  .then(r=>r.json()).then(data=>{
+    const c=data.current;
+    const temp=Math.round(c.temperature_2m), feels=Math.round(c.apparent_temperature);
+    const rain=c.precipitation_probability, wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m, cloud=c.cloudcover, code=c.weathercode;
+    var _lbl=WX_LABEL[code]||'';
+    document.getElementById('wIcon').innerText=(WX[code]||'🌡');
+    document.getElementById('wTemp').innerText=temp+'°';
+    document.getElementById('wFeels').innerText=(_lbl?_lbl+' — ':'')+' Ressenti '+feels+'°';
+    document.getElementById('wWind').innerText=wind+' km/h';
+    document.getElementById('wHumid').innerText=humid+'%';
+    document.getElementById('wRain').innerText='Pluie: '+rain+'%';
+    document.getElementById('wCloud').innerText=cloud+'%';
+    document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+    const b=document.getElementById('wBadge');
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    window._meteoData={rain,wind,code,temp};
+    genConseil();
+  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
+}
+
+// ── TRAFIC OSRM ──
+const ROUTES=[
+  {id:'cdg',dur:'td-cdg',from:[48.8566,2.3522],to:[49.0097,2.5479]},
+  {id:'orly',dur:'td-orly',from:[48.8566,2.3522],to:[48.7262,2.3652]},
+  {id:'paris',dur:'td-paris',from:[48.9000,2.3000],to:[48.8300,2.3800]}
+];
+function fetchTrafic(){
+  ROUTES.forEach(route=>{
+    fetch(`https://router.project-osrm.org/route/v1/driving/${route.from[1]},${route.from[0]};${route.to[1]},${route.to[0]}?overview=false`)
+    .then(r=>r.json()).then(d=>{
+      if(d.code!=='Ok') return;
+      const min=Math.round(d.routes[0].duration/60);
+      const km=(d.routes[0].distance/1000).toFixed(0);
+      const el=document.getElementById('t-'+route.id),dur=document.getElementById(route.dur);
+      dur.innerText=min+' min · '+km+' km';
+      var thr=route.id==='cdg'?35:route.id==='orly'?25:20;
+      if(min>Math.round(thr*1.3)){el.className='t-tag bad';el.innerText='BOUCHONS';}
+      else if(min>thr){el.className='t-tag warn';el.innerText='DENSE';}
+      else{el.className='t-tag ok';el.innerText='FLUIDE';}
+    }).catch(()=>{});
+  });
+  document.getElementById('t-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('t-source').innerText='Mis à jour: '+new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+}
+
+function genConseil(){
+  const m=window._meteoData||{};
+  const h=new Date().getHours();
+  const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+  const box=document.getElementById('conseil-box');
+  const icon=document.getElementById('conseil-icon');
+  const text=document.getElementById('conseil-text');
+  let msg='',ic='💡';
+  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  icon.innerText=ic; text.innerHTML=msg;
+  box.style.display='flex';
+}
+
+fetchMeteo();
+fetchTrafic();
+setInterval(fetchMeteo, 300000);
+setInterval(fetchTrafic, 180000);
+
+// ── CONSTELLATION 60FPS OPTIMISÉE ──
+(function(){
+  var canvas = document.getElementById('constellation-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, pts = [], RAF;
+  var mouse = {x:-999, y:-999};
+  var scrollY = 0;
+  var DPR = Math.min(window.devicePixelRatio||1, 2);
+
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width  = W+'px';
+    canvas.style.height = H+'px';
+    ctx.scale(DPR, DPR);
+    initPts();
+  }
+
+  function initPts(){
+    var count = Math.min(Math.floor(W*H/14000), 80);
+    pts = [];
+    for(var i=0;i<count;i++){
+      pts.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx:(Math.random()-0.5)*0.18,
+        vy:(Math.random()-0.5)*0.18,
+        r: Math.random()*1.2+0.3,
+        a: Math.random()*0.6+0.2
+      });
+    }
+  }
+
+  var DIST = 130, DIST2 = DIST*DIST;
+  var lastT = 0;
+
+  function draw(ts){
+    RAF = requestAnimationFrame(draw);
+    var dt = Math.min(ts - lastT, 32); lastT = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      p.x += p.vx*(dt/16);
+      p.y += p.vy*(dt/16);
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+
+      // Légère attraction vers la souris
+      var mdx=mouse.x-p.x, mdy=mouse.y-p.y;
+      var md2=mdx*mdx+mdy*mdy;
+      if(md2<22500){ // 150px
+        var f=0.00003;
+        p.vx+=mdx*f*(dt/16); p.vy+=mdy*f*(dt/16);
+      }
+      // Friction
+      p.vx*=0.999; p.vy*=0.999;
+
+      // Dessiner point
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,175,55,'+p.a+')';
+      ctx.fill();
+
+      // Lignes entre points proches
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j];
+        var dx=p.x-q.x, dy=p.y-q.y;
+        var d2=dx*dx+dy*dy;
+        if(d2<DIST2){
+          var alpha=(1-d2/DIST2)*0.18;
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle='rgba(212,175,55,'+alpha+')';
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    canvas.classList.add('ready');
+  }
+
+  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  window.addEventListener('touchmove',function(e){
+    mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY;
+  },{passive:true});
+  window.addEventListener('resize', function(){cancelAnimationFrame(RAF);resize();lastT=0;RAF=requestAnimationFrame(draw);});
+
+  resize();
+  RAF = requestAnimationFrame(draw);
+})();
+
+</script>
+
+
+
+<script>
+if('serviceWorker' in navigator){try{
+  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}return res;})));});";
+  var blob=new Blob([_sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+}catch(e){}}
+</script>
 </body>
 </html>
