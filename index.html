@@ -24,9 +24,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
 <style>
 :root {
   --ink:#09090f; --s1:#13131e; --s2:#1b1b2a; --s3:#222235;
@@ -1024,40 +1021,174 @@ h1 .g {
   letter-spacing:.04em;
 }
 
-/* ── FLATPICKR DARK GOLD ── */
-.flatpickr-calendar{background:#0e0e16!important;border:1px solid rgba(212,175,55,.25)!important;border-radius:16px!important;box-shadow:0 20px 60px rgba(0,0,0,.7)!important;font-family:"Jost",sans-serif!important;padding:8px!important;overflow:hidden!important;}
-.flatpickr-months,.flatpickr-month{background:transparent!important;}
-.flatpickr-month{color:#f3e5ab!important;height:38px!important;}
-.flatpickr-current-month{font-family:"Marcellus",serif!important;font-size:1rem!important;color:#f3e5ab!important;padding-top:4px!important;}
-.flatpickr-current-month .numInputWrapper input,.flatpickr-current-month select{color:#f3e5ab!important;font-family:"Marcellus",serif!important;}
-.flatpickr-prev-month,.flatpickr-next-month{color:rgba(212,175,55,.6)!important;fill:rgba(212,175,55,.6)!important;top:8px!important;}
-.flatpickr-prev-month:hover,.flatpickr-next-month:hover{color:#d4af37!important;fill:#d4af37!important;}
-.flatpickr-weekdays{background:transparent!important;border-bottom:1px solid rgba(212,175,55,.1)!important;}
-.flatpickr-weekday{background:transparent!important;color:rgba(212,175,55,.5)!important;font-size:.65rem!important;font-weight:500!important;letter-spacing:.1em!important;}
-.flatpickr-day{color:#c8c8d4!important;border-radius:8px!important;border:1px solid transparent!important;font-size:.85rem!important;height:36px!important;line-height:36px!important;transition:all .15s!important;}
-.flatpickr-day:hover{background:rgba(212,175,55,.1)!important;border-color:rgba(212,175,55,.2)!important;color:#f3e5ab!important;}
-.flatpickr-day.selected,.flatpickr-day.selected:hover{background:#d4af37!important;border-color:#d4af37!important;color:#000!important;font-weight:600!important;}
-.flatpickr-day.today{border-color:rgba(212,175,55,.4)!important;color:#d4af37!important;font-weight:600!important;}
-.flatpickr-day.flatpickr-disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:rgba(255,255,255,.15)!important;}
-.flatpickr-time{background:rgba(212,175,55,.05)!important;border-top:1px solid rgba(212,175,55,.15)!important;border-radius:0!important;margin:6px -8px 0!important;padding:8px!important;height:44px!important;}
-.flatpickr-time input{background:transparent!important;border:none!important;color:#f3e5ab!important;font-family:"Marcellus",serif!important;font-size:1.3rem!important;}
-.flatpickr-time .flatpickr-time-separator{color:rgba(212,175,55,.5)!important;font-family:"Marcellus",serif!important;font-size:1.3rem!important;line-height:44px!important;}
-.flatpickr-time .numInputWrapper span{border-color:rgba(212,175,55,.15)!important;}
-#timepick{color:#f3e5ab!important;letter-spacing:.04em!important;}
-/* ── HERO ── */
-.hero-tagline{font-size:.6rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:12px;}
-.hero-p{color:#d0d0d8!important;opacity:1!important;}
-.hero-p strong[style*="gold"]{font-size:1.05em!important;text-shadow:0 0 20px rgba(212,175,55,.4)!important;}
-/* ── COMPARATIF ── */
-.compare-block{display:flex;flex-direction:column;gap:8px;padding:14px 16px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.18);border-radius:12px;margin:20px 0 4px;}
+/* ── AUTOCOMPLETE PREMIUM ── */
+.ac{position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:rgba(13,13,20,0.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(212,175,55,.22);border-radius:14px;
+  box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 0 1px rgba(212,175,55,.06);
+  max-height:240px;overflow-y:auto;z-index:9500;display:none;padding:6px;}
+.ac.open{display:block;animation:fadeDown .18s var(--ease);}
+.ac-item{padding:12px 14px;border-radius:8px;cursor:pointer;margin-bottom:1px;transition:background .12s;}
+.ac-item:hover,.ac-item:active{background:rgba(212,175,55,.1);}
+.ac-main{font-weight:500;font-size:.88rem;color:var(--white);line-height:1.3;}
+.ac-sec{font-size:.7rem;color:#9BA8AB;margin-top:3px;font-weight:300;}
+/* Spinner doré */
+.f-spinner{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;border:2px solid rgba(212,175,55,.2);border-top:2px solid var(--gold);
+  border-radius:50%;animation:spin 0.8s linear infinite;display:none;z-index:2;}
+.f-spinner.active{display:block;}
+/* Check vert */
+.f-check{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:#22c55e;font-size:.9rem;display:none;z-index:2;pointer-events:none;}
+.f-wrap.selected{border-color:rgba(34,197,94,.4)!important;}
+.f-wrap.selected .f-check{display:block;}
+.f-wrap.selected .f-spinner{display:none!important;}
+/* Recap datetime */
+.recap-datetime{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);
+  border-radius:12px;margin-bottom:18px;cursor:pointer;transition:background .2s,border-color .2s;gap:12px;}
+.recap-datetime:hover{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.35);}
+.recap-dt-left{display:flex;align-items:center;gap:10px;}
+.recap-dt-icon{color:rgba(212,175,55,.6);flex-shrink:0;display:flex;align-items:center;}
+.recap-dt-label{font-size:.58rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+.recap-dt-value{font-family:"Marcellus",serif;font-size:1rem;color:#f3e5ab;letter-spacing:.04em;line-height:1;}
+.recap-dt-value.empty{color:var(--gray);font-family:"Jost",sans-serif;font-size:.82rem;}
+.recap-nuit{display:inline-block;margin-left:8px;padding:1px 7px;
+  background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);
+  border-radius:4px;font-size:.6rem;font-weight:500;color:#a5b4fc;vertical-align:middle;}
+.recap-dt-edit{display:flex;align-items:center;gap:5px;font-size:.62rem;font-weight:400;
+  letter-spacing:.12em;color:rgba(212,175,55,.5);flex-shrink:0;text-transform:uppercase;}
+/* Bouton modifier trajet */
+.btn-modifier{display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:10px;background:transparent;border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;color:var(--gray2);font-size:.72rem;font-weight:400;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-bottom:18px;}
+.btn-modifier:hover{border-color:rgba(212,175,55,.25);color:var(--gold);}
+/* Sticky mini-banner */
+#sticky-datetime{position:fixed;top:64px;left:0;right:0;z-index:980;display:none;
+  background:rgba(9,9,15,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(212,175,55,.12);padding:6px 20px;}
+#sticky-datetime.visible{display:block;}
+.sticky-dt-inner{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.sticky-dt-info{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:300;color:var(--gray2);}
+.sticky-dt-time{font-family:"Marcellus",serif;font-size:.82rem;color:#f3e5ab;}
+.sticky-dt-btn{display:flex;align-items:center;gap:5px;font-size:.65rem;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(212,175,55,.7);
+  background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);
+  border-radius:50px;padding:4px 10px;cursor:pointer;transition:all .2s;}
+.sticky-dt-btn:hover{background:rgba(212,175,55,.15);color:var(--gold);}
+/* datetime-local natif */
+input[type="datetime-local"]#timepick{-webkit-appearance:none;appearance:none;
+  background:transparent!important;border:none!important;outline:none!important;
+  color:#f3e5ab!important;-webkit-text-fill-color:#f3e5ab!important;
+  font-family:"Jost",sans-serif!important;font-size:.9rem!important;font-weight:300!important;
+  width:100%!important;height:var(--tap)!important;padding:0 14px 0 0!important;
+  cursor:pointer!important;letter-spacing:.04em!important;}
+input[type="datetime-local"]#timepick::-webkit-calendar-picker-indicator{
+  opacity:0;width:100%;height:100%;position:absolute;top:0;left:0;cursor:pointer;}
+input[type="datetime-local"]#timepick::-webkit-datetime-edit{color:#f3e5ab!important;padding:0!important;}
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-fields-wrapper{background:transparent!important;}
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-text,
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-day-field,
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-month-field,
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-year-field,
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-hour-field,
+input[type="datetime-local"]#timepick::-webkit-datetime-edit-minute-field{
+  color:#f3e5ab!important;background:transparent!important;-webkit-text-fill-color:#f3e5ab!important;}
+input[type="datetime-local"]#timepick:focus{outline:none!important;box-shadow:none!important;}
+/* Nuit badge modal */
+.nuit-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 12px;
+  border-radius:4px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);
+  font-size:.7rem;font-weight:400;color:#a5b4fc;letter-spacing:.04em;}
+/* Hero tagline */
+.hero-tagline{font-size:.6rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);opacity:.65;margin-bottom:12px;}
+/* Compare block */
+.compare-block{display:flex;flex-direction:column;gap:8px;padding:14px 16px;
+  background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.18);
+  border-radius:12px;margin:20px 0 4px;}
 .compare-title{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
 .compare-item{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:300;color:var(--white);}
-.compare-check{width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.6rem;}
-/* ── BADGE -10% ── */
-.badge-promo{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:50px;font-size:.72rem;font-weight:600;color:#22c55e;letter-spacing:.04em;cursor:pointer;margin-top:10px;transition:background .2s;position:relative;}
+.compare-check{width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,.15);
+  border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:.6rem;}
+/* Badge -10% */
+.badge-promo{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:50px;
+  font-size:.72rem;font-weight:600;color:#22c55e;letter-spacing:.04em;cursor:pointer;
+  margin-top:10px;transition:background .2s;position:relative;}
 .badge-promo:hover{background:rgba(34,197,94,.18);}
-.badge-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:240px;background:#111118;border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;font-size:.72rem;font-weight:300;color:var(--gray2);line-height:1.5;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.6);z-index:10;pointer-events:none;}
+.badge-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);width:240px;background:#111118;
+  border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;
+  font-size:.72rem;font-weight:300;color:var(--gray2);line-height:1.5;text-align:left;
+  box-shadow:0 8px 24px rgba(0,0,0,.6);z-index:10;pointer-events:none;}
 .badge-promo.open .badge-tooltip{display:block;}
+/* ETA widget */
+#eta-widget{display:none;max-width:540px;margin:0 auto;padding:0 0 6px;}
+.eta-loading{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  font-size:.75rem;color:var(--gray);font-weight:300;letter-spacing:.04em;}
+.eta-spinner{width:14px;height:14px;border:1.5px solid rgba(34,197,94,.2);
+  border-top:1.5px solid #22c55e;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;}
+.eta-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
+  border-radius:14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);}
+.eta-left{display:flex;align-items:center;gap:12px;}
+.eta-icon-wrap{width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,.1);
+  border:1px solid rgba(34,197,94,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.eta-label{font-size:.65rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--gray2);margin-bottom:3px;}
+.eta-value{font-family:"Marcellus",serif;font-size:1.3rem;color:#22c55e;line-height:1;}
+.eta-value-unit{font-size:.72rem;font-weight:300;color:var(--gray2);margin-left:4px;}
+.eta-right{text-align:right;}
+.eta-dist{font-size:.7rem;font-weight:300;color:var(--gray);margin-bottom:2px;}
+.eta-since{font-size:.58rem;font-weight:200;color:var(--gray);letter-spacing:.04em;}
+/* interieur */
+.interieur-wrap{position:relative;width:100%;height:180px;overflow:hidden;border-radius:12px;margin-bottom:16px;background:#050508;}
+.interieur-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;filter:brightness(.88);}
+.interieur-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(to top,rgba(27,27,42,.9),transparent);}
+.interieur-caption{position:absolute;bottom:10px;left:14px;right:14px;z-index:2;display:flex;align-items:center;justify-content:space-between;}
+.interieur-label{font-size:.58rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:rgba(243,229,171,.7);}
+.interieur-tags{display:flex;gap:6px;}
+.interieur-tag{font-size:.55rem;font-weight:400;color:var(--gray2);letter-spacing:.06em;padding:2px 7px;background:rgba(0,0,0,.5);border-radius:3px;border:1px solid rgba(255,255,255,.08);}
+/* section avis */
+.section-voiture{position:relative;z-index:1;width:100%;max-width:640px;margin:0 auto;padding:0 0 2px;overflow:hidden;}
+.voiture-img-wrap{position:relative;width:100%;height:260px;overflow:hidden;background:#000;}
+.voiture-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 55%;display:block;filter:brightness(.92);}
+.voiture-img-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,var(--ink),transparent);z-index:2;pointer-events:none;}
+.voiture-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,var(--ink),transparent);z-index:2;pointer-events:none;}
+.voiture-badge{position:absolute;bottom:18px;left:20px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.72);backdrop-filter:blur(12px);border:1px solid rgba(212,175,55,.2);border-radius:6px;padding:8px 14px;}
+.voiture-badge-label{font-size:.65rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-l);}
+.voiture-badge-name{font-size:.7rem;font-weight:300;color:var(--gray2);margin-top:1px;letter-spacing:.04em;}
+.section-avis{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:28px 16px 8px;}
+.avis-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.avis-title{font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);opacity:.7;}
+.avis-source{display:flex;align-items:center;gap:5px;font-size:.6rem;color:var(--gray);font-weight:300;letter-spacing:.04em;}
+.avis-list{display:flex;flex-direction:column;gap:10px;}
+.avis-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .3s;}
+.avis-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.12),transparent);}
+.avis-card:hover{border-color:rgba(212,175,55,.12);}
+.avis-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.avis-auteur{display:flex;flex-direction:column;gap:2px;}
+.avis-nom{font-size:.85rem;font-weight:500;color:var(--white);letter-spacing:.02em;}
+.avis-meta{font-size:.65rem;font-weight:300;color:var(--gray);letter-spacing:.04em;}
+.avis-stars{display:flex;gap:2px;flex-shrink:0;}
+.avis-star{color:var(--gold);font-size:.75rem;}
+.avis-texte{font-size:.82rem;font-weight:300;color:var(--gray2);line-height:1.65;letter-spacing:.01em;}
+.avis-texte em{font-style:italic;color:var(--white);font-weight:400;}
+.avis-voir-plus{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:.65rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);text-decoration:none;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,.05);transition:color .2s,border-color .2s;}
+.avis-voir-plus:hover{color:var(--gold);border-color:rgba(212,175,55,.2);}
+/* zones */
+.section-zones{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:20px 16px 24px;}
+.zones-title{font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:16px;}
+.zones-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.zone-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px;position:relative;overflow:hidden;transition:border-color .25s;}
+.zone-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.1),transparent);}
+.zone-card:hover{border-color:rgba(212,175,55,.12);}
+.zone-icon{font-size:1.2rem;margin-bottom:8px;line-height:1;}
+.zone-name{font-size:.82rem;font-weight:500;color:var(--white);margin-bottom:3px;letter-spacing:.01em;}
+.zone-detail{font-size:.65rem;font-weight:300;color:var(--gray2);line-height:1.5;}
+.zone-price{display:inline-block;margin-top:6px;font-size:.62rem;font-weight:500;color:var(--gold);letter-spacing:.04em;}
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 <style id="al">/* ═══════════════════════════════════════════════
@@ -1342,6 +1473,16 @@ body {
   </div>
 </header>
 
+<div id="sticky-datetime">
+  <div class="sticky-dt-inner">
+    <div class="sticky-dt-info">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Prise en charge&nbsp;:&nbsp;<span class="sticky-dt-time" id="sticky-dt-text">--</span>
+    </div>
+    <div class="sticky-dt-btn" onclick="scrollToDateTime()">&#9998;&ensp;Modifier</div>
+  </div>
+</div>
+
 <div class="hero">
   <p class="hero-tagline">Le luxe au prix juste</p>
   <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
@@ -1373,7 +1514,7 @@ body {
 <!-- ══ VOITURE ══ -->
 <div class="section-voiture">
   <div class="voiture-img-wrap">
-    <img src="voiture.jpg" loading="lazy" decoding="async" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris">
+    <img src="voiture.jpg" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris">
   </div>
   <div class="voiture-badge">
     <div>
@@ -1421,6 +1562,26 @@ body {
   </a>
 </div>
 
+<div class="section-voiture">
+  <div class="voiture-img-wrap">
+    <img src="voiture.jpg" alt="Suzuki Swace Hybride I&amp;N RUN">
+  </div>
+  <div class="voiture-badge">
+    <div><div class="voiture-badge-label">Berline Premium</div><div class="voiture-badge-name">Suzuki Swace Hybride &mdash; Cat&eacute;gorie Berline</div></div>
+  </div>
+</div>
+<div class="section-avis">
+  <div class="avis-header">
+    <div class="avis-title">Ce qu&rsquo;ils disent</div>
+    <div class="avis-source"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Avis v&eacute;rifi&eacute;s</div>
+  </div>
+  <div class="avis-list">
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Sophie M.</div><div class="avis-meta">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Vol retard&eacute; d&rsquo;1h, Nourdine &eacute;tait <em>d&eacute;j&agrave; inform&eacute; et attendait</em> avec le panneau &agrave; l&rsquo;arriv&eacute;e. V&eacute;hicule impeccable, trajet silencieux, tarif honor&eacute; sans discussion.</p></div>
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Thomas R.</div><div class="avis-meta">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">R&eacute;servation en 2 minutes, confirmation WA imm&eacute;diate. <em>Ponctuel, discret, professionnel.</em> Le tarif fixe sans surprise c&rsquo;est exactement ce dont j&rsquo;avais besoin.</p></div>
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Amina K.</div><div class="avis-meta">Orly &rarr; Evry &middot; Mars 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Voyage avec 3 valises et un enfant. <em>Aide aux bagages, si&egrave;ge adapt&eacute; propos&eacute;</em>, musique douce. C&rsquo;est &ccedil;a le vrai service premium.</p></div>
+  </div>
+  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis." class="avis-voir-plus" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Laisser un avis</a>
+</div>
 <div class="tunnel">
   <div class="card active" id="step1">
     <div class="card-hd">
@@ -1429,19 +1590,23 @@ body {
     </div>
     <label class="f-lbl">Prise en charge</label>
     <div class="f-wrap">
-      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-      <input type="text" id="timepick" class="f-in" placeholder="Date et heure..." readonly inputmode="none" autocomplete="off">
+      <div class="f-ic" style="color:rgba(212,175,55,.55)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+      <input type="datetime-local" id="timepick" class="f-in" style="color-scheme:dark;">
     </div>
     <label class="f-lbl">Lieu de d&eacute;part</label>
     <div class="f-wrap">
       <div class="f-ic" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport d'Orly, Gare de Lyon, Adresse..." autocomplete="off">
+      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport, gare, adresse..." autocomplete="off">
+      <div class="f-spinner" id="spin-dep"></div>
+      <div class="f-check" id="check-dep">&#10003;</div>
       <div class="ac" id="ac-dep"></div>
     </div>
     <label class="f-lbl">Destination finale</label>
     <div class="f-wrap">
       <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
       <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
+      <div class="f-spinner" id="spin-arr"></div>
+      <div class="f-check" id="check-arr">&#10003;</div>
       <div class="ac" id="ac-arr"></div>
     </div>
     <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Voir mon tarif fixe</button>
@@ -1471,13 +1636,27 @@ body {
 </div>
 
   <div class="card locked" id="step2">
+    <div class="recap-datetime" onclick="scrollToDateTime()" id="recapDatetime">
+      <div class="recap-dt-left">
+        <div class="recap-dt-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+        <div>
+          <div class="recap-dt-label">Prise en charge</div>
+          <div class="recap-dt-value empty" id="recap-dt-value">Non renseign&eacute;e &mdash; cliquez pour choisir</div>
+        </div>
+      </div>
+      <div class="recap-dt-edit">&#9998;&ensp;Modifier</div>
+    </div>
+    <button class="btn-modifier" onclick="scrollToDateTime()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Modifier mon trajet
+    </button>
     <div class="card-hd">
       <div class="c-num">2</div>
       <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
     </div>
     <!-- Photo intérieur -->
     <div class="interieur-wrap">
-      <img src="interieur.jpg" loading="lazy" decoding="async" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
+      <img src="interieur.jpg" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
       <div class="interieur-caption">
         <span class="interieur-label">Int&eacute;rieur Berline</span>
         <div class="interieur-tags">
@@ -1517,7 +1696,12 @@ body {
     <div class="f-wrap" style="height:auto;padding:8px;">
       <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
     </div>
-    <div class="compare-block"><div class="compare-title">Mieux qu&rsquo;une application</div><div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div><div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div><div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> &mdash; tout va au chauffeur</div></div>
+    <div class="compare-block">
+      <div class="compare-title">Mieux qu&rsquo;une application</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> plateforme</div>
+    </div>
     <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
       <span id="btnText">Calculer le tarif exact</span>
       <div class="loader" id="calcLoader"></div>
@@ -1581,6 +1765,15 @@ body {
     </div>
   </div>
 </div>
+<div class="section-zones">
+  <div class="zones-title">Zone d&rsquo;intervention</div>
+  <div class="zones-grid">
+    <div class="zone-card"><div class="zone-icon">&#9992;&#65039;</div><div class="zone-name">A&eacute;roports</div><div class="zone-detail">CDG, Orly<br>Attente incluse</div><span class="zone-price">D&egrave;s 35&#8364;</span></div>
+    <div class="zone-card"><div class="zone-icon">&#127961;&#65039;</div><div class="zone-name">Paris &amp; IDF</div><div class="zone-detail">Toutes gares<br>Paris intramuros</div><span class="zone-price">D&egrave;s 35&#8364;</span></div>
+    <div class="zone-card"><div class="zone-icon">&#128205;</div><div class="zone-name">Essonne (91)</div><div class="zone-detail">Ris-Orangis, &Eacute;vry<br>Massy, Corbeil</div><span class="zone-price">Zone locale</span></div>
+    <div class="zone-card"><div class="zone-icon">&#128739;&#65039;</div><div class="zone-name">Longue Distance</div><div class="zone-detail">Province, Lyon<br>Marseille, Bruxelles</div><span class="zone-price">Sur devis</span></div>
+  </div>
+</div>
 <div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
 
 <footer>
@@ -1613,10 +1806,10 @@ body {
       <div class="m-price-detail">
         <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilom&egrave;tres</div></div>
         <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Dur&eacute;e est.</div></div>
-        <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Inclus dans le total</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Prise en charge</div></div>
       </div>
       <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
-      <div style="text-align:center;"><div class="badge-promo" id="badgePromo" onclick="this.classList.toggle('open')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>&minus;10&nbsp;% vs Applications<div class="badge-tooltip">En supprimant les commissions des plateformes (jusqu'&agrave;&nbsp;45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div></div></div>
+      <div style="text-align:center;"><div class="badge-promo" onclick="this.classList.toggle('open')">&minus;10&nbsp;% vs Applications<div class="badge-tooltip">En supprimant les commissions (jusqu&rsquo;&agrave; 45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div></div></div>
     </div>
     <button class="btn btn-gold" onclick="sendWhatsApp()" style="margin-bottom:10px;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#000" style="margin-right:10px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1730,33 +1923,207 @@ function playCashFinal() {
 }
 
 // ── FLATPICKR ──
+// ── DATETIME NATIVE — préremplissage & sync ──
 (function(){
   var el=document.getElementById('timepick');
   if(!el)return;
-  el.setAttribute('inputmode','none');
-  var fp=flatpickr(el,{
-    enableTime:true,dateFormat:'d/m/Y H:i',time_24hr:true,locale:'fr',
-    minDate:'today',
-    defaultHour:(new Date().getHours()>=22?8:Math.max(new Date().getHours()+1,8)),
-    minuteIncrement:15,disableMobile:true,allowInput:false,
-    onOpen:function(){
-      el.setAttribute('inputmode','none');
-      setTimeout(function(){el.blur();},10);
-    },
-    onReady:function(sel,str,instance){
-      var btn=document.createElement('button');
-      btn.type='button';btn.textContent='Confirmer \u2714';
-      btn.style.cssText='width:calc(100% - 16px);margin:8px 8px 6px;display:block;height:42px;background:linear-gradient(135deg,#d4af37,#f3e5ab);color:#000;font-family:"Jost",sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(212,175,55,.3)';
-      btn.addEventListener('click',function(){fp.close();});
-      instance.calendarContainer.appendChild(btn);
-    }
-  });
-  ['click','touchend'].forEach(function(ev){
-    el.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();fp.open();});
-    var w=el.closest('.f-wrap');
-    if(w)w.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();fp.open();});
-  });
+  var pad=function(n){return n<10?'0'+n:''+n;};
+  var d=new Date(); d.setDate(d.getDate()+1); d.setHours(8,0,0,0);
+  el.value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T08:00';
+  var now=new Date(Date.now()+30*60*1000);
+  el.min=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+'T'+pad(now.getHours())+':'+pad(now.getMinutes());
+  el.addEventListener('change',updateDatetimeUI);
+  setTimeout(updateDatetimeUI,200);
 })();
+
+function formatDTDisplay(val){
+  if(!val)return null;
+  var p=val.split('T'); if(p.length<2)return val;
+  var d=p[0].split('-'); var h=p[1].replace(':','h');
+  return d[2]+'/'+d[1]+' \u00b7 '+h;
+}
+function updateDatetimeUI(){
+  var el=document.getElementById('timepick');
+  var val=el?el.value:'';
+  var display=val?formatDTDisplay(val):null;
+  // Recap card
+  var rv=document.getElementById('recap-dt-value');
+  if(rv){
+    if(display){
+      // Détecter tarif nuit
+      var hm=val.match(/T(\d{2}):\d{2}$/);
+      var h=hm?parseInt(hm[1]):-1;
+      var isN=(h>=22||h<6);
+      rv.textContent=display;
+      rv.classList.remove('empty');
+      var nb=document.getElementById('recap-nuit-badge');
+      if(!nb){nb=document.createElement('span');nb.id='recap-nuit-badge';nb.className='recap-nuit';nb.textContent='\ud83c\udf19 Tarif nuit';rv.parentNode.appendChild(nb);}
+      nb.style.display=isN?'inline-block':'none';
+    } else {
+      rv.textContent='Non renseign\u00e9e \u2014 cliquez pour choisir';
+      rv.classList.add('empty');
+    }
+  }
+  // Sticky banner
+  var st=document.getElementById('sticky-dt-text');
+  if(st&&display)st.textContent=display;
+}
+function scrollToDateTime(){
+  var s1=document.getElementById('step1');
+  var el=document.getElementById('timepick');
+  if(s1)s1.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(function(){if(el)el.click();},350);
+}
+function checkStickyDT(){
+  var s2=document.getElementById('step2');
+  var sd=document.getElementById('sticky-datetime');
+  var tp=document.getElementById('timepick');
+  if(!s2||!sd)return;
+  var rect=s2.getBoundingClientRect();
+  if(rect.top<window.innerHeight*0.6&&tp&&tp.value)sd.classList.add('visible');
+  else sd.classList.remove('visible');
+}
+window.addEventListener('scroll',checkStickyDT,{passive:true});
+
+// ── ETA ──
+var BASE_LAT=48.6468,BASE_LON=2.4185;
+function fetchETA(depLat,depLon){
+  var widget=document.getElementById('eta-widget'),loading=document.getElementById('eta-loading'),result=document.getElementById('eta-result');
+  if(!widget)return;
+  widget.style.display='block';loading.style.display='flex';result.style.display='none';
+  fetch('https://router.project-osrm.org/route/v1/driving/'+BASE_LON+','+BASE_LAT+';'+depLon+','+depLat+'?overview=false',{signal:AbortSignal.timeout(7000)})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.code!=='Ok')throw new Error();
+      var dur=Math.round(d.routes[0].duration/60),km=(d.routes[0].distance/1000).toFixed(1);
+      var dd=Math.max(3,Math.ceil(dur/5)*5);
+      document.getElementById('eta-min').innerHTML=dd+'<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText=km+' km depuis la base';
+      var z='depuis Ris-Orangis';
+      if(dur<=8)z='Disponible \u2014 tr\u00e8s proche';
+      else if(dur<=18)z='Zone 91 \u2014 trajet rapide';
+      else if(dur<=35)z='Paris & proche banlieue';
+      else z='Longue distance \u2014 confirmation WA';
+      document.getElementById('eta-zone').innerText=z;
+      loading.style.display='none';result.style.display='flex';
+      if(navigator.vibrate)navigator.vibrate(6);
+    }).catch(function(){
+      loading.style.display='none';result.style.display='flex';
+      document.getElementById('eta-min').innerHTML='<20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText='Disponibilit\u00e9 sur confirmation';
+      document.getElementById('eta-zone').innerText='Ris-Orangis & environs';
+    });
+}
+
+// ── AUTOCOMPLETE SMART ──
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/s\b/g,'').replace(/[-_]/g,' ');}
+var PRESETS=[
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 1&2',s:'Orly \xb7 94390',lat:48.7262,lon:2.3652},
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 3&4',s:'Orly \xb7 94390',lat:48.7244,lon:2.3709},
+  {n:'A\u00e9roport CDG \u2014 Terminal 1',s:'Roissy \xb7 95700',lat:49.0097,lon:2.5479},
+  {n:'A\u00e9roport CDG \u2014 Terminal 2',s:'Roissy \xb7 RER B \xb7 TGV',lat:49.0060,lon:2.5720},
+  {n:'A\u00e9roport CDG \u2014 Terminal 3',s:'Roissy \xb7 Low Cost',lat:49.0035,lon:2.5598},
+  {n:"A\u00e9roport Le Bourget",s:"Aviation d'affaires \xb7 93350",lat:48.9694,lon:2.4414},
+  {n:'Gare de Lyon \u2014 Paris',s:'Paris 12e \xb7 TGV',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord \u2014 Paris',s:'Paris 10e \xb7 Eurostar \xb7 RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse \u2014 Paris',s:'Paris 15e \xb7 TGV',lat:48.8408,lon:2.3209},
+  {n:"Gare de l'Est \u2014 Paris",s:'Paris 10e \xb7 TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare \u2014 Paris',s:'Paris 8e \xb7 Transilien',lat:48.8754,lon:2.3253},
+  {n:'Gare Massy TGV',s:'Massy 91300 \xb7 RER B&C',lat:48.7233,lon:2.2716},
+  {n:"Gare d'\u00c9vry-Courcouronnes",s:'\u00c9vry 91000 \xb7 RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 \xb7 RER C&D',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 \xb7 RER D',lat:48.6100,lon:2.4797},
+  {n:'Centre Commercial \u00c9vry 2',s:'\u00c9vry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:"Centre Commercial Agora d'\u00c9vry",s:'\u00c9vry 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carr\u00e9 S\u00e9nart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle \u00c9pine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial V\u00e9lizy 2',s:'V\u00e9lizy 78140',lat:48.7832,lon:2.1722},
+  {n:'La D\u00e9fense \u2014 Grande Arche',s:'Puteaux 92800 \xb7 RER A',lat:48.8926,lon:2.2360},
+];
+function matchPresets(q){
+  var qn=norm(q),words=qn.split(' ').filter(function(w){return w.length>1;});
+  if(!words.length)return[];
+  return PRESETS.filter(function(p){
+    var pn=norm(p.n+' '+p.s);
+    var needed=words.length<=2?1:Math.ceil(words.length*.6);
+    return words.filter(function(w){return pn.indexOf(w)>-1;}).length>=needed;
+  }).slice(0,5);
+}
+function cleanPhotonLabel(p){
+  var name=p.name||'',city=p.city||p.town||p.village||p.state||'';
+  var label=name||p.street||'';
+  if(name&&p.street&&name!==p.street)label=name+', '+p.street;
+  // Supprimer "France" systématique et doublons code postal
+  label=(label+', '+city).replace(/^, |, $/g,'').replace(/, France$/i,'').trim();
+  var sub=(p.postcode||'');
+  if(city&&sub)sub=sub+' '+city; else sub=sub||city;
+  sub=sub.replace(/ France$/i,'').trim();
+  return {n:label,s:sub};
+}
+function buildItem(item,inputId,dropId,type){
+  var el=document.createElement('div');
+  el.className='ac-item';
+  el.innerHTML='<div><div class="ac-main">'+item.n+'</div>'+(item.s?'<div class="ac-sec">'+item.s+'</div>':'')+'</div>';
+  el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
+  el.addEventListener('mousedown',function(e){e.preventDefault();});
+  el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
+  return el;
+}
+function renderDrop(drop,items,inputId,dropId,type){
+  drop.innerHTML='';
+  if(!items.length){
+    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun r\u00e9sultat</div></div>';
+  }else{items.forEach(function(item){drop.appendChild(buildItem(item,inputId,dropId,type));});}
+  drop.classList.add('open');
+}
+// Photon : priorité IDF (lat/lon Paris), bbox France
+var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=7&bbox=-5.0,41.0,10.0,51.5&q=';
+function setupAutocomplete(inputId,dropId,type){
+  var input=document.getElementById(inputId),drop=document.getElementById(dropId);
+  var spinner=document.getElementById('spin-'+type);
+  var fwrap=input?input.closest('.f-wrap'):null;
+  if(!input||!drop)return;
+  var timer=null,ctrl=null;
+  input.addEventListener('input',function(){
+    clearTimeout(timer);coords[type]=null;
+    if(fwrap)fwrap.classList.remove('selected');
+    var q=this.value.trim();
+    if(q.length<2){drop.classList.remove('open');if(spinner)spinner.classList.remove('active');return;}
+    var presets=matchPresets(q);
+    if(presets.length){
+      renderDrop(drop,presets,inputId,dropId,type);
+      if(spinner)spinner.classList.remove('active');
+    }else{
+      drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';
+      drop.classList.add('open');
+      if(spinner)spinner.classList.add('active');
+    }
+    timer=setTimeout(function(){
+      if(ctrl)ctrl.abort();ctrl=new AbortController();
+      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(spinner)spinner.classList.remove('active');
+          if(!data.features||!data.features.length)return;
+          var photon=[];
+          data.features.forEach(function(f){
+            var p=f.properties;if(!p.name&&!p.street)return;
+            var cl=cleanPhotonLabel(p);
+            if(!cl.n||cl.n.length<3)return;
+            photon.push({n:cl.n,s:cl.s,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
+          });
+          var merged=presets.slice();
+          photon.forEach(function(pi){
+            if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
+          });
+          if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
+        }).catch(function(){if(spinner)spinner.classList.remove('active');});
+    },250);
+  });
+  document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
+  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
+}
 
 let coords = { dep: null, arr: null };
 
@@ -1801,53 +2168,56 @@ function countUpPrice(el, final, dur) {
   requestAnimationFrame(step);
 }
 
-async function calculatePrice() {
-  if(!coords.dep||!coords.arr) return;
+async function calculatePrice(){
+  if(!coords.dep||!coords.arr)return;
   document.getElementById('btnText').style.display='none';
   document.getElementById('calcLoader').style.display='block';
   document.getElementById('calcBtn').disabled=true;
-  try {
-    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords.dep.lon},${coords.dep.lat};${coords.arr.lon},${coords.arr.lat}?overview=false`);
-    const d = await r.json();
-    if(d.code==='Ok') {
-      const km=d.routes[0].distance/1000, min=d.routes[0].duration/60;
-      let price = 15 + (km * 0.84) + (min * 0.17);
-      if(price<35) price=35;
-
-      // Supplément nuit : +10€ entre 22h et 6h
+  try{
+    const r=await fetch('https://router.project-osrm.org/route/v1/driving/'+coords.dep.lon+','+coords.dep.lat+';'+coords.arr.lon+','+coords.arr.lat+'?overview=false&geometries=polyline');
+    const d=await r.json();
+    if(d.code==='Ok'){
+      const km=d.routes[0].distance/1000,min=d.routes[0].duration/60;
+      // Formule -10% vs Uber Berline
+      let price=15+(km*0.84)+(min*0.17);
+      if(price<35)price=35;
+      // Tarif nuit
       const tval=document.getElementById('timepick').value||'';
-      const hmatch=tval.match(/(\d{2}):(\d{2})$/)||tval.match(/(\d{2})\/\d{2}\/\d{4}\s+(\d{2}):\d{2}/);
-      const heure=hmatch?parseInt(hmatch[hmatch.length-2]):new Date().getHours();
+      const hm=tval.match(/T(\d{2}):\d{2}$/);
+      const heure=hm?parseInt(hm[1]):new Date().getHours();
       const isNuit=(heure>=22||heure<6);
-      if(isNuit) price+=10;
+      if(isNuit)price+=10;
       price=Math.ceil(price);
-
       document.getElementById('m-km').innerText=km.toFixed(1)+' km';
       document.getElementById('m-dur').innerText=Math.round(min)+' min';
-
-      // Badge nuit dans la modal
       const calcDet=document.getElementById('calcDetails');
-      if(isNuit){
-        calcDet.innerHTML='<span class="nuit-badge">🌙 Tarif nuit inclus (+10€ · 22h&ndash;6h)</span>';
-      } else {
-        calcDet.innerHTML='';
-      }
-
+      if(isNuit){calcDet.innerHTML='<span class="nuit-badge">������ Tarif nuit inclus (+10€ · 22h–6h)</span>';}
+      else{calcDet.innerHTML='';}
       document.getElementById('customModal').classList.add('show');
-      countUpPrice(document.getElementById('finalPrice'), price, 1200);
-    } else { alert("Impossible de calculer l'itinéraire."); }
-  } catch(e){ alert("Erreur de connexion."); }
-  finally {
+      countUpPrice(document.getElementById('finalPrice'),price,1200);
+    }else{
+      // Erreur élégante — pas de alert brutal
+      document.getElementById('customModal').classList.add('show');
+      document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Itinéraire complexe</span>';
+      document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Prix sujet à ajustement direct — contactez-nous sur WhatsApp</span>';
+    }
+  }catch(e){
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Connexion impossible</span>';
+    document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Veuillez réessayer ou nous contacter directement</span>';
+  }finally{
     document.getElementById('btnText').style.display='block';
     document.getElementById('calcLoader').style.display='none';
     document.getElementById('calcBtn').disabled=false;
   }
 }
 
-function sendWhatsApp() {
-  const time=document.getElementById('timepick').value;
-  const dep=document.getElementById('dep').value;
-  const arr=document.getElementById('arr').value;
+function sendWhatsApp(){
+  const _tv=document.getElementById('timepick').value;
+  var time=(function(){if(!_tv)return'Dès que possible';var p=_tv.split('T');if(p.length<2)return _tv;var d=p[0].split('-');var h=p[1];return d[2]+'/'+d[1]+'/'+d[0]+' '+h;})();
+  // Utiliser l'adresse complète de l'API (coords.dep/arr.name) si disponible
+  const dep=(coords&&coords.dep&&coords.dep.name)||document.getElementById('dep').value;
+  const arr=(coords&&coords.arr&&coords.arr.name)||document.getElementById('arr').value;
   const note=document.getElementById('note').value;
   const price=document.getElementById('finalPrice').innerText;
   const pay=document.getElementById('paymentMethod').value;
@@ -1875,126 +2245,112 @@ function sendWhatsApp() {
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-// ── AUTOCOMPLETE + ETA ──
-var BASE_LAT=48.6468,BASE_LON=2.4185;
-function fetchETA(depLat,depLon){
-  var widget=document.getElementById('eta-widget'),loading=document.getElementById('eta-loading'),result=document.getElementById('eta-result');
-  if(!widget)return;
-  widget.style.display='block';loading.style.display='flex';result.style.display='none';
-  fetch('https://router.project-osrm.org/route/v1/driving/'+BASE_LON+','+BASE_LAT+';'+depLon+','+depLat+'?overview=false',{signal:AbortSignal.timeout(7000)})
-    .then(function(r){return r.json();}).then(function(d){
-      if(d.code!=='Ok')throw new Error();
-      var dur=Math.round(d.routes[0].duration/60),km=(d.routes[0].distance/1000).toFixed(1);
-      var dd=Math.max(3,Math.ceil(dur/5)*5);
-      document.getElementById('eta-min').innerHTML=dd+'<span class="eta-value-unit">&nbsp;min</span>';
-      document.getElementById('eta-km').innerText=km+' km depuis la base';
-      var z='depuis Ris-Orangis';
-      if(dur<=8)z='Disponible \u2014 tr\u00e8s proche';
-      else if(dur<=18)z='Zone 91 \u2014 trajet rapide';
-      else if(dur<=35)z='Paris & proche banlieue';
-      else z='Longue distance \u2014 confirmation WA';
-      document.getElementById('eta-zone').innerText=z;
-      loading.style.display='none';result.style.display='flex';
-      if(navigator.vibrate)navigator.vibrate(6);
-    }).catch(function(){
-      loading.style.display='none';result.style.display='flex';
-      document.getElementById('eta-min').innerHTML='<20<span class="eta-value-unit">&nbsp;min</span>';
-      document.getElementById('eta-km').innerText='Disponibilit\u00e9 sur confirmation';
-      document.getElementById('eta-zone').innerText='Ris-Orangis & environs';
+// ── AUTOCOMPLETE PHOTON ──
+const PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=7&bbox=1.0,48.0,3.5,49.5&q=';
+function setupAutocomplete(inputId, dropId, type) {
+  const input=document.getElementById(inputId), drop=document.getElementById(dropId);
+  let t=null,ctrl=null;
+  input.addEventListener('input', function(){
+    clearTimeout(t); coords[type]=null;
+    const q=this.value.trim();
+    if(q.length<2){drop.classList.remove('open');return;}
+    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-weight:300;">Recherche...</div></div>';drop.classList.add('open');
+    t=setTimeout(()=>{
+      if(ctrl)ctrl.abort();
+      ctrl=new AbortController();
+      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal}).then(r=>r.json()).then(data=>{
+        if(!data.features||!data.features.length){
+          drop.innerHTML='<div class="ac-item"><div class="ac-main">Aucun résultat</div></div>';
+        } else {
+          drop.innerHTML=data.features.map(item=>{
+            const p=item.properties;
+            let name=p.name||'', city=p.city||p.town||p.state||'';
+            let full=`${name}${p.street&&name!==p.street?', '+p.street:''}`;
+            if(!full) full=p.street||'';
+            full=`${full}, ${city}`.replace(/^, /,'').trim();
+            return `<div class="ac-item" onclick="selectLocation('${inputId}','${dropId}','${type}','${full.replace(/'/g,"\'")}',${item.geometry.coordinates[1]},${item.geometry.coordinates[0]})">
+              <div><div class="ac-main">📍 ${full}</div><div class="ac-sec">${(p.postcode||'')+' '+city}</div></div></div>`;
+          }).join('');
+        }
+        drop.classList.add('open');
+      }).catch(()=>{});
+    }, 220);
+  });
+  document.addEventListener('click', e=>{if(e.target!==input&&!drop.contains(e.target)) drop.classList.remove('open');});
+}
+/* ── ESTIMATION TEMPS D'ATTENTE ── */
+var BASE_LAT = 48.6468, BASE_LON = 2.4185; // Ris-Orangis
+
+function fetchETA(depLat, depLon) {
+  var widget = document.getElementById('eta-widget');
+  var loading = document.getElementById('eta-loading');
+  var result = document.getElementById('eta-result');
+
+  // Afficher le widget en état chargement
+  widget.style.display = 'block';
+  loading.style.display = 'flex';
+  result.style.display = 'none';
+
+  var url = 'https://router.project-osrm.org/route/v1/driving/'
+    + BASE_LON + ',' + BASE_LAT + ';'
+    + depLon + ',' + depLat
+    + '?overview=false';
+
+  fetch(url, {signal: AbortSignal.timeout(7000)})
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.code !== 'Ok') throw new Error('OSRM error');
+      var dur = Math.round(data.routes[0].duration / 60);
+      var km  = (data.routes[0].distance / 1000).toFixed(1);
+
+      // Arrondir à la tranche de 5min pour ne pas sur-promettre
+      var durDisplay = Math.max(3, Math.ceil(dur / 5) * 5);
+
+      document.getElementById('eta-min').innerHTML =
+        durDisplay + '<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText = km + ' km depuis la base';
+
+      // Message contextuel selon distance
+      var zone = 'depuis Ris-Orangis';
+      if (dur <= 8)  zone = 'Disponible — très proche';
+      else if (dur <= 18) zone = 'Zone 91 — trajet rapide';
+      else if (dur <= 35) zone = 'Paris & proche banlieue';
+      else           zone = 'Longue distance — confirmation WA';
+      document.getElementById('eta-zone').innerText = zone;
+
+      loading.style.display = 'none';
+      result.style.display = 'flex';
+
+      // Haptique léger
+      if (navigator.vibrate) navigator.vibrate(6);
+    })
+    .catch(function() {
+      // Fallback discret si OSRM fail
+      loading.style.display = 'none';
+      result.style.display = 'flex';
+      document.getElementById('eta-min').innerHTML =
+        '&lt;20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText = 'Disponibilité sur confirmation';
+      document.getElementById('eta-zone').innerText = 'Ris-Orangis & environs';
     });
 }
-function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/s\b/g,'').replace(/[-_]/g,' ');}
-var PRESETS=[
-  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 1&2',s:'Orly \xb7 RER C',lat:48.7262,lon:2.3652},
-  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 3&4',s:'Orly \xb7 RER C',lat:48.7244,lon:2.3709},
-  {n:'A\u00e9roport CDG \u2014 Terminal 1',s:'Roissy \xb7 RER B',lat:49.0097,lon:2.5479},
-  {n:'A\u00e9roport CDG \u2014 Terminal 2',s:'Roissy \xb7 RER B \xb7 TGV',lat:49.0060,lon:2.5720},
-  {n:'A\u00e9roport CDG \u2014 Terminal 3',s:'Roissy \xb7 Low Cost',lat:49.0035,lon:2.5598},
-  {n:"A\u00e9roport Le Bourget",s:"Aviation d'affaires",lat:48.9694,lon:2.4414},
-  {n:'Gare de Lyon \u2014 Paris',s:'Paris 12e \xb7 TGV',lat:48.8445,lon:2.3739},
-  {n:'Gare du Nord \u2014 Paris',s:'Paris 10e \xb7 Eurostar \xb7 RER B',lat:48.8809,lon:2.3553},
-  {n:'Gare Montparnasse \u2014 Paris',s:'Paris 15e \xb7 TGV',lat:48.8408,lon:2.3209},
-  {n:"Gare de l'Est \u2014 Paris",s:'Paris 10e \xb7 TGV Est',lat:48.8765,lon:2.3591},
-  {n:'Gare Saint-Lazare \u2014 Paris',s:'Paris 8e \xb7 Transilien',lat:48.8754,lon:2.3253},
-  {n:'Gare Massy TGV',s:'Massy 91300 \xb7 RER B&C',lat:48.7233,lon:2.2716},
-  {n:"Gare d'\u00c9vry-Courcouronnes",s:'\u00c9vry 91000 \xb7 RER D',lat:48.6325,lon:2.4408},
-  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 \xb7 RER C&D',lat:48.6883,lon:2.3836},
-  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 \xb7 RER D',lat:48.6100,lon:2.4797},
-  {n:'Centre Commercial \u00c9vry 2',s:'\u00c9vry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
-  {n:"Centre Commercial Agora d'\u00c9vry",s:'\u00c9vry 91000',lat:48.6314,lon:2.4397},
-  {n:'Centre Commercial Carr\u00e9 S\u00e9nart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
-  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
-  {n:'Centre Commercial Belle \u00c9pine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
-  {n:'Centre Commercial V\u00e9lizy 2',s:'V\u00e9lizy 78140',lat:48.7832,lon:2.1722},
-  {n:'La D\u00e9fense \u2014 Grande Arche',s:'Puteaux 92800 \xb7 RER A',lat:48.8926,lon:2.2360},
-];
-function matchPresets(q){
-  var qn=norm(q),words=qn.split(' ').filter(function(w){return w.length>1;});
-  if(!words.length)return[];
-  return PRESETS.filter(function(p){
-    var pn=norm(p.n+' '+p.s);
-    var needed=words.length<=2?1:Math.ceil(words.length*.6);
-    return words.filter(function(w){return pn.indexOf(w)>-1;}).length>=needed;
-  }).slice(0,5);
-}
-function buildItem(item,inputId,dropId,type){
-  var el=document.createElement('div');
-  el.className='ac-item';
-  el.innerHTML='<div><div class="ac-main">'+item.n+'</div><div class="ac-sec">'+item.s+'</div></div>';
-  el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
-  el.addEventListener('mousedown',function(e){e.preventDefault();});
-  el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
-  return el;
-}
-function renderDrop(drop,items,inputId,dropId,type){
-  drop.innerHTML='';
-  if(!items.length){drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun r\u00e9sultat</div></div>';}
-  else{items.forEach(function(item){drop.appendChild(buildItem(item,inputId,dropId,type));});}
-  drop.classList.add('open');
-}
-var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=8&bbox=0.5,47.5,4.0,50.5&q=';
-function setupAutocomplete(inputId,dropId,type){
-  var input=document.getElementById(inputId),drop=document.getElementById(dropId);
-  if(!input||!drop)return;
-  var timer=null,ctrl=null;
-  input.addEventListener('input',function(){
-    clearTimeout(timer);coords[type]=null;
-    var q=this.value.trim();
-    if(q.length<2){drop.classList.remove('open');return;}
-    var presets=matchPresets(q);
-    if(presets.length){renderDrop(drop,presets,inputId,dropId,type);}
-    else{drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';drop.classList.add('open');}
-    timer=setTimeout(function(){
-      if(ctrl)ctrl.abort();ctrl=new AbortController();
-      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal}).then(function(r){return r.json();}).then(function(data){
-        if(!data.features||!data.features.length)return;
-        var photon=[];
-        data.features.forEach(function(f){
-          var p=f.properties;if(!p.name&&!p.street)return;
-          var name=p.name||'',city=p.city||p.town||p.village||p.state||'';
-          var label=name||p.street||'';
-          if(name&&p.street&&name!==p.street)label=name+', '+p.street;
-          label=(label+', '+city).replace(/^, |, $/g,'').trim();
-          if(!label||label.length<3)return;
-          photon.push({n:label,s:(p.postcode||'')+(city?' '+city:''),lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
-        });
-        var merged=presets.slice();
-        photon.forEach(function(pi){
-          if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
-        });
-        if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
-      }).catch(function(){});
-    },200);
-  });
-  document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
-  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
-}
-function selectLocation(iId, dId, type, name, lat, lon){
-  document.getElementById(iId).value=name;
-  coords[type]={lat,lon};
+
+
+function selectLocation(iId,dId,type,name,lat,lon){
+  var inp=document.getElementById(iId);
+  var fwrap=inp?inp.closest('.f-wrap'):null;
+  inp.value=name;
+  coords[type]={lat:lat,lon:lon,name:name};
   document.getElementById(dId).classList.remove('open');
-  // Déclencher ETA quand le départ est sélectionné
-  if (type === 'dep') fetchETA(lat, lon);
+  if(fwrap)fwrap.classList.add('selected');
+  if(type==='dep'){
+    fetchETA(lat,lon);
+    // Auto-focus sur l'arrivée
+    setTimeout(function(){
+      var arr=document.getElementById('arr');
+      if(arr){arr.focus();arr.select();}
+    },200);
+  }
 }
 
 setupAutocomplete('dep','ac-dep','dep');
@@ -2173,12 +2529,10 @@ setInterval(fetchTrafic, 180000);
 </script>
 
 
-
 <script>
 if('serviceWorker' in navigator){try{
-  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}return res;})));});";
-  var blob=new Blob([_sw],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET')caches.open(CACHE).then(c=>c.put(e.request,res.clone()));return res;})));});";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
 }catch(e){}}
 </script>
 </body>
