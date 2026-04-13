@@ -70,7 +70,7 @@ h1{font-family:"Marcellus",serif;font-size:clamp(1.9rem, 8vw, 2.5rem);line-heigh
 .f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:1rem;padding:0 14px 0 0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
 .f-in::placeholder{color:rgba(255,255,255,.25);font-weight:300;}
 
-.ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--s2);border:1px solid var(--b);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:220px;overflow-y:auto;z-index:20;display:none;padding:6px;}
+.ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:rgba(10,10,18,0.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(212,175,55,.22);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.75),0 0 0 1px rgba(212,175,55,.06);max-height:240px;overflow-y:auto;z-index:9500;display:none;padding:6px;animation:fadeDown .18s ease both;}
 .ac.open{display:block;animation:fadeDown 0.2s var(--ease);}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .ac-item{padding:12px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:2px;}
@@ -1098,9 +1098,7 @@ input[type="datetime-local"]#timepick::-webkit-datetime-edit-minute-field{
   color:#f3e5ab!important;background:transparent!important;-webkit-text-fill-color:#f3e5ab!important;}
 input[type="datetime-local"]#timepick:focus{outline:none!important;box-shadow:none!important;}
 /* Nuit badge modal */
-.nuit-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 12px;
-  border-radius:4px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);
-  font-size:.7rem;font-weight:400;color:#a5b4fc;letter-spacing:.04em;}
+
 /* Hero tagline */
 .hero-tagline{font-size:.6rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
   color:var(--gold);opacity:.65;margin-bottom:12px;}
@@ -1429,7 +1427,7 @@ body {
 
 <header id="hdr">
   <div class="nav">
-    <div class="nav-logo">
+    <div class="nav-logo ai-in">
       <svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
         <defs>
           <linearGradient id="lgL" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
@@ -1512,56 +1510,6 @@ body {
 </div>
 
 <!-- ══ VOITURE ══ -->
-<div class="section-voiture">
-  <div class="voiture-img-wrap">
-    <img src="voiture.jpg" alt="Suzuki Swace Hybride — I&amp;N RUN Chauffeur Priv&eacute; Paris">
-  </div>
-  <div class="voiture-badge">
-    <div>
-      <div class="voiture-badge-label">Berline Premium</div>
-      <div class="voiture-badge-name">Suzuki Swace Hybride &mdash; Cat&eacute;gorie Berline</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ AVIS ══ -->
-<div class="section-avis">
-  <div class="avis-header">
-    <div class="avis-title">Ce qu&rsquo;ils disent</div>
-    <div class="avis-source">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Avis v&eacute;rifi&eacute;s
-    </div>
-  </div>
-  <div class="avis-list">
-    <div class="avis-card">
-      <div class="avis-top">
-        <div class="avis-auteur"><div class="avis-nom">Sophie M.</div><div class="avis-meta">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div></div>
-        <div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div>
-      </div>
-      <p class="avis-texte">Vol retard&eacute; d&rsquo;1h, Nourdine &eacute;tait <em>d&eacute;j&agrave; inform&eacute; et attendait</em> avec le panneau &agrave; l&rsquo;arriv&eacute;e. V&eacute;hicule impeccable, trajet silencieux, tarif honor&eacute; sans discussion. Je ne prends plus que lui pour l&rsquo;a&eacute;roport.</p>
-    </div>
-    <div class="avis-card">
-      <div class="avis-top">
-        <div class="avis-auteur"><div class="avis-nom">Thomas R.</div><div class="avis-meta">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div></div>
-        <div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div>
-      </div>
-      <p class="avis-texte">R&eacute;servation en moins de 2 minutes via le site, confirmation WA imm&eacute;diate. <em>Ponctuel, discret, professionnel.</em> Parfait pour mes trajets business du matin. Le tarif fixe sans surprise c&rsquo;est exactement ce dont j&rsquo;avais besoin.</p>
-    </div>
-    <div class="avis-card">
-      <div class="avis-top">
-        <div class="avis-auteur"><div class="avis-nom">Amina K.</div><div class="avis-meta">Orly &rarr; Evry &middot; Mars 2026</div></div>
-        <div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div>
-      </div>
-      <p class="avis-texte">Voyage avec 3 valises et un enfant. <em>Aide aux bagages, si&egrave;ge adapt&eacute; propos&eacute;</em>, musique douce. On n&rsquo;a pas dit un mot et pourtant on s&rsquo;est sentis pris en charge. C&rsquo;est &ccedil;a le vrai service premium.</p>
-    </div>
-  </div>
-  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis%20sur%20ma%20course." class="avis-voir-plus" target="_blank" rel="noopener">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    Laisser un avis
-  </a>
-</div>
-
 <div class="section-voiture">
   <div class="voiture-img-wrap">
     <img src="voiture.jpg" alt="Suzuki Swace Hybride I&amp;N RUN">
@@ -1765,15 +1713,7 @@ body {
     </div>
   </div>
 </div>
-<div class="section-zones">
-  <div class="zones-title">Zone d&rsquo;intervention</div>
-  <div class="zones-grid">
-    <div class="zone-card"><div class="zone-icon">&#9992;&#65039;</div><div class="zone-name">A&eacute;roports</div><div class="zone-detail">CDG, Orly<br>Attente incluse</div><span class="zone-price">D&egrave;s 35&#8364;</span></div>
-    <div class="zone-card"><div class="zone-icon">&#127961;&#65039;</div><div class="zone-name">Paris &amp; IDF</div><div class="zone-detail">Toutes gares<br>Paris intramuros</div><span class="zone-price">D&egrave;s 35&#8364;</span></div>
-    <div class="zone-card"><div class="zone-icon">&#128205;</div><div class="zone-name">Essonne (91)</div><div class="zone-detail">Ris-Orangis, &Eacute;vry<br>Massy, Corbeil</div><span class="zone-price">Zone locale</span></div>
-    <div class="zone-card"><div class="zone-icon">&#128739;&#65039;</div><div class="zone-name">Longue Distance</div><div class="zone-detail">Province, Lyon<br>Marseille, Bruxelles</div><span class="zone-price">Sur devis</span></div>
-  </div>
-</div>
+
 <div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
 
 <footer>
@@ -1823,7 +1763,7 @@ body {
   <div class="legal-box">
     <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
     <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
-      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection#a4c7cbcad0c5c7d08acdcad6d1cae4c3c9c5cdc88ac7cbc9" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="d5b6babba1b4b6a1fbbcbba7a0bb95b2b8b4bcb9fbb6bab8">[email&#160;protected]</span></a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
     </div>
     <div class="legal-section"><h4>2. H&eacute;bergement</h4>
       <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
@@ -1838,7 +1778,7 @@ body {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── SONS WEB AUDIO API ──
 const _AudioCtx = window.AudioContext || window.webkitAudioContext;
 let _ac = null;
@@ -2526,14 +2466,47 @@ setInterval(fetchTrafic, 180000);
   RAF = requestAnimationFrame(draw);
 })();
 
+
+/* ── REVEAL SÉQUENCE ── */
+(function(){
+  // Logo déjà visible via .ai-in en HTML
+  // Animer les autres éléments hero
+  var seq = [
+    {sel:'.hero h1',  d:200},
+    {sel:'.hero .hero-p', d:360},
+    {sel:'.hero .proof',  d:520},
+    {sel:'#step1',        d:700},
+    {sel:'.sticky',       d:850}
+  ];
+  seq.forEach(function(item){
+    var el = document.querySelector(item.sel);
+    if(el) setTimeout(function(){ el.classList.add('ai-in'); }, item.d);
+  });
+
+  // Ripple sur boutons
+  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(btn){
+    btn.addEventListener('pointerdown', function(e){
+      var r = this.getBoundingClientRect();
+      var sz = Math.max(r.width, r.height) * 2;
+      var rpl = document.createElement('span');
+      rpl.style.cssText = [
+        'position:absolute','width:'+sz+'px','height:'+sz+'px',
+        'border-radius:50%','background:rgba(212,175,55,.18)',
+        'transform:scale(0)','pointer-events:none',
+        'top:'+((e.clientY-r.top)-sz/2)+'px',
+        'left:'+((e.clientX-r.left)-sz/2)+'px',
+        'animation:ripplePop .5s ease-out forwards'
+      ].join(';');
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(rpl);
+      setTimeout(function(){ rpl.remove(); }, 550);
+    });
+  });
+})();
 </script>
 
 
 <script>
 if('serviceWorker' in navigator){try{
-  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET')caches.open(CACHE).then(c=>c.put(e.request,res.clone()));return res;})));});";
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
-}catch(e){}}
-</script>
-</body>
-</html>
+  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res
