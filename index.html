@@ -70,7 +70,7 @@ h1{font-family:"Marcellus",serif;font-size:clamp(1.9rem, 8vw, 2.5rem);line-heigh
 .f-in{flex:1;height:var(--tap);background:transparent;border:none;outline:none;color:var(--white);font-size:1rem;padding:0 14px 0 0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
 .f-in::placeholder{color:rgba(255,255,255,.25);font-weight:300;}
 
-.ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:rgba(10,10,18,0.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(212,175,55,.22);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.75),0 0 0 1px rgba(212,175,55,.06);max-height:240px;overflow-y:auto;z-index:9500;display:none;padding:6px;animation:fadeDown .18s ease both;}
+.ac{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--s2);border:1px solid var(--b);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:220px;overflow-y:auto;z-index:20;display:none;padding:6px;}
 .ac.open{display:block;animation:fadeDown 0.2s var(--ease);}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .ac-item{padding:12px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:2px;}
@@ -1098,7 +1098,9 @@ input[type="datetime-local"]#timepick::-webkit-datetime-edit-minute-field{
   color:#f3e5ab!important;background:transparent!important;-webkit-text-fill-color:#f3e5ab!important;}
 input[type="datetime-local"]#timepick:focus{outline:none!important;box-shadow:none!important;}
 /* Nuit badge modal */
-
+.nuit-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 12px;
+  border-radius:4px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);
+  font-size:.7rem;font-weight:400;color:#a5b4fc;letter-spacing:.04em;}
 /* Hero tagline */
 .hero-tagline{font-size:.6rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
   color:var(--gold);opacity:.65;margin-bottom:12px;}
@@ -1427,7 +1429,7 @@ body {
 
 <header id="hdr">
   <div class="nav">
-    <div class="nav-logo ai-in">
+    <div class="nav-logo">
       <svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
         <defs>
           <linearGradient id="lgL" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
@@ -1763,7 +1765,7 @@ body {
   <div class="legal-box">
     <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
     <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
-      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="/cdn-cgi/l/email-protection#a4c7cbcad0c5c7d08acdcad6d1cae4c3c9c5cdc88ac7cbc9" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="d5b6babba1b4b6a1fbbcbba7a0bb95b2b8b4bcb9fbb6bab8">[email&#160;protected]</span></a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
     </div>
     <div class="legal-section"><h4>2. H&eacute;bergement</h4>
       <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
@@ -1778,7 +1780,7 @@ body {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── SONS WEB AUDIO API ──
 const _AudioCtx = window.AudioContext || window.webkitAudioContext;
 let _ac = null;
@@ -2184,98 +2186,6 @@ function sendWhatsApp(){
   msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
   window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
 }
-
-// ── AUTOCOMPLETE PHOTON ──
-const PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.75&lon=2.35&limit=7&bbox=1.0,48.0,3.5,49.5&q=';
-function setupAutocomplete(inputId, dropId, type) {
-  const input=document.getElementById(inputId), drop=document.getElementById(dropId);
-  let t=null,ctrl=null;
-  input.addEventListener('input', function(){
-    clearTimeout(t); coords[type]=null;
-    const q=this.value.trim();
-    if(q.length<2){drop.classList.remove('open');return;}
-    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-weight:300;">Recherche...</div></div>';drop.classList.add('open');
-    t=setTimeout(()=>{
-      if(ctrl)ctrl.abort();
-      ctrl=new AbortController();
-      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal}).then(r=>r.json()).then(data=>{
-        if(!data.features||!data.features.length){
-          drop.innerHTML='<div class="ac-item"><div class="ac-main">Aucun résultat</div></div>';
-        } else {
-          drop.innerHTML=data.features.map(item=>{
-            const p=item.properties;
-            let name=p.name||'', city=p.city||p.town||p.state||'';
-            let full=`${name}${p.street&&name!==p.street?', '+p.street:''}`;
-            if(!full) full=p.street||'';
-            full=`${full}, ${city}`.replace(/^, /,'').trim();
-            return `<div class="ac-item" onclick="selectLocation('${inputId}','${dropId}','${type}','${full.replace(/'/g,"\'")}',${item.geometry.coordinates[1]},${item.geometry.coordinates[0]})">
-              <div><div class="ac-main">📍 ${full}</div><div class="ac-sec">${(p.postcode||'')+' '+city}</div></div></div>`;
-          }).join('');
-        }
-        drop.classList.add('open');
-      }).catch(()=>{});
-    }, 220);
-  });
-  document.addEventListener('click', e=>{if(e.target!==input&&!drop.contains(e.target)) drop.classList.remove('open');});
-}
-/* ── ESTIMATION TEMPS D'ATTENTE ── */
-var BASE_LAT = 48.6468, BASE_LON = 2.4185; // Ris-Orangis
-
-function fetchETA(depLat, depLon) {
-  var widget = document.getElementById('eta-widget');
-  var loading = document.getElementById('eta-loading');
-  var result = document.getElementById('eta-result');
-
-  // Afficher le widget en état chargement
-  widget.style.display = 'block';
-  loading.style.display = 'flex';
-  result.style.display = 'none';
-
-  var url = 'https://router.project-osrm.org/route/v1/driving/'
-    + BASE_LON + ',' + BASE_LAT + ';'
-    + depLon + ',' + depLat
-    + '?overview=false';
-
-  fetch(url, {signal: AbortSignal.timeout(7000)})
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      if (data.code !== 'Ok') throw new Error('OSRM error');
-      var dur = Math.round(data.routes[0].duration / 60);
-      var km  = (data.routes[0].distance / 1000).toFixed(1);
-
-      // Arrondir à la tranche de 5min pour ne pas sur-promettre
-      var durDisplay = Math.max(3, Math.ceil(dur / 5) * 5);
-
-      document.getElementById('eta-min').innerHTML =
-        durDisplay + '<span class="eta-value-unit">&nbsp;min</span>';
-      document.getElementById('eta-km').innerText = km + ' km depuis la base';
-
-      // Message contextuel selon distance
-      var zone = 'depuis Ris-Orangis';
-      if (dur <= 8)  zone = 'Disponible — très proche';
-      else if (dur <= 18) zone = 'Zone 91 — trajet rapide';
-      else if (dur <= 35) zone = 'Paris & proche banlieue';
-      else           zone = 'Longue distance — confirmation WA';
-      document.getElementById('eta-zone').innerText = zone;
-
-      loading.style.display = 'none';
-      result.style.display = 'flex';
-
-      // Haptique léger
-      if (navigator.vibrate) navigator.vibrate(6);
-    })
-    .catch(function() {
-      // Fallback discret si OSRM fail
-      loading.style.display = 'none';
-      result.style.display = 'flex';
-      document.getElementById('eta-min').innerHTML =
-        '&lt;20<span class="eta-value-unit">&nbsp;min</span>';
-      document.getElementById('eta-km').innerText = 'Disponibilité sur confirmation';
-      document.getElementById('eta-zone').innerText = 'Ris-Orangis & environs';
-    });
-}
-
-
 function selectLocation(iId,dId,type,name,lat,lon){
   var inp=document.getElementById(iId);
   var fwrap=inp?inp.closest('.f-wrap'):null;
@@ -2466,47 +2376,14 @@ setInterval(fetchTrafic, 180000);
   RAF = requestAnimationFrame(draw);
 })();
 
-
-/* ── REVEAL SÉQUENCE ── */
-(function(){
-  // Logo déjà visible via .ai-in en HTML
-  // Animer les autres éléments hero
-  var seq = [
-    {sel:'.hero h1',  d:200},
-    {sel:'.hero .hero-p', d:360},
-    {sel:'.hero .proof',  d:520},
-    {sel:'#step1',        d:700},
-    {sel:'.sticky',       d:850}
-  ];
-  seq.forEach(function(item){
-    var el = document.querySelector(item.sel);
-    if(el) setTimeout(function(){ el.classList.add('ai-in'); }, item.d);
-  });
-
-  // Ripple sur boutons
-  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(btn){
-    btn.addEventListener('pointerdown', function(e){
-      var r = this.getBoundingClientRect();
-      var sz = Math.max(r.width, r.height) * 2;
-      var rpl = document.createElement('span');
-      rpl.style.cssText = [
-        'position:absolute','width:'+sz+'px','height:'+sz+'px',
-        'border-radius:50%','background:rgba(212,175,55,.18)',
-        'transform:scale(0)','pointer-events:none',
-        'top:'+((e.clientY-r.top)-sz/2)+'px',
-        'left:'+((e.clientX-r.left)-sz/2)+'px',
-        'animation:ripplePop .5s ease-out forwards'
-      ].join(';');
-      this.style.position = 'relative';
-      this.style.overflow = 'hidden';
-      this.appendChild(rpl);
-      setTimeout(function(){ rpl.remove(); }, 550);
-    });
-  });
-})();
 </script>
 
 
 <script>
 if('serviceWorker' in navigator){try{
-  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res
+  var _sw="const CACHE='inrun-v3';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}return res;})));});";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
+}catch(e){}}
+</script>
+</body>
+</html>
