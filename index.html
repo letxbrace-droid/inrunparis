@@ -1243,6 +1243,56 @@ input[type="datetime-local"]#timepick:focus{outline:none!important;box-shadow:no
 .zone-name{font-size:.82rem;font-weight:500;color:var(--white);margin-bottom:3px;letter-spacing:.01em;}
 .zone-detail{font-size:.65rem;font-weight:300;color:var(--gray2);line-height:1.5;}
 .zone-price{display:inline-block;margin-top:6px;font-size:.62rem;font-weight:500;color:var(--gold);letter-spacing:.04em;}
+
+/* ── ÉTATS INITIAUX REVEAL ── */
+body.loading #hdr .nav-logo{opacity:0;transform:translateY(-16px);}
+body.loading .hero h1{opacity:0;transform:translateY(20px);}
+body.loading .hero .hero-p{opacity:0;transform:translateY(14px);}
+body.loading .hero .proof{opacity:0;transform:translateY(10px);}
+body.loading #step1{opacity:0;transform:translateY(32px);}
+body.loading .sticky{opacity:0;transform:translateY(16px);}
+.ai-in{
+  opacity:1 !important;
+  transform:translate(0,0) !important;
+  transition:opacity .7s cubic-bezier(.23,1,.32,1),
+             transform .8s cubic-bezier(.34,1.45,.64,1) !important;
+}
+/* ── REVEAL LINE cinématique ── */
+#reveal-line{
+  position:fixed;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent 0%,#9a7a1a 20%,#f0d870 50%,#d4af37 80%,transparent 100%);
+  z-index:9999;
+  box-shadow:0 0 20px 5px rgba(212,175,55,.6);
+  animation:revealSweep 1.6s cubic-bezier(.77,0,.18,1) forwards;
+  pointer-events:none;
+}
+@keyframes revealSweep{
+  0%{top:-4px;opacity:1;}
+  90%{top:100vh;opacity:1;}
+  100%{top:100vh;opacity:0;}
+}
+/* ── TOAST NOTIFICATION ── */
+.notif-toast{
+  position:fixed;bottom:96px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:rgba(19,19,30,.97);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:12px;
+  padding:12px 22px;
+  font-size:.82rem;font-weight:400;
+  color:var(--white);
+  letter-spacing:.02em;
+  z-index:9998;opacity:0;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+  white-space:nowrap;max-width:90vw;
+  box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 0 1px rgba(212,175,55,.08);
+}
+.notif-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 <style id="al">/* ═══════════════════════════════════════════════
@@ -1477,7 +1527,8 @@ body {
 
 </style>
 </head>
-<body>
+<body class="loading">
+<div id="reveal-line"></div>
 
 <canvas id="constellation-canvas"></canvas>
 
@@ -2160,7 +2211,7 @@ function showLegal(){document.getElementById('legalModal').classList.add('show')
 function hideModal(){document.getElementById('customModal').classList.remove('show');}
 
 function nextStep(step) {
-  if (!coords.dep || !coords.arr) {alert("Veuillez sélectionner les adresses dans la liste des suggestions.");return;}
+  if (!coords.dep || !coords.arr) {showToast("Sélectionnez les adresses dans la liste de suggestions");return;}
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step1').classList.add('locked');
   const t = document.getElementById('step'+step);
@@ -2482,6 +2533,55 @@ setInterval(fetchTrafic, 180000);
   }, {threshold: 0.6});
   obs.observe(badges);
 })();
+
+/* ── REVEAL SEQUENCE + RIPPLE + TOAST ── */
+(function(){
+  // Retirer loading + lancer séquence
+  document.body.classList.remove('loading');
+  var seq = [
+    {sel:'#hdr .nav-logo', d:150},
+    {sel:'.hero h1',       d:320},
+    {sel:'.hero .hero-p',  d:480},
+    {sel:'.hero .proof',   d:640},
+    {sel:'#step1',         d:820},
+    {sel:'.sticky',        d:950}
+  ];
+  seq.forEach(function(it){
+    var el = document.querySelector(it.sel);
+    if(el) setTimeout(function(){ el.classList.add('ai-in'); }, it.d);
+  });
+  // Fallback logo : garanti visible après 1.5s
+  setTimeout(function(){
+    var lg = document.querySelector('#hdr .nav-logo');
+    if(lg) lg.classList.add('ai-in');
+  }, 1500);
+
+  // Ripple tactile sur boutons
+  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(btn){
+    btn.addEventListener('pointerdown', function(e){
+      var r = this.getBoundingClientRect();
+      var sz = Math.max(r.width, r.height) * 2;
+      var rpl = document.createElement('span');
+      rpl.style.cssText = 'position:absolute;width:' + sz + 'px;height:' + sz + 'px;border-radius:50%;background:rgba(212,175,55,.18);transform:scale(0);top:' + ((e.clientY - r.top) - sz/2) + 'px;left:' + ((e.clientX - r.left) - sz/2) + 'px;pointer-events:none;animation:ripplePop .5s ease-out forwards;';
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(rpl);
+      setTimeout(function(){ rpl.remove(); }, 550);
+    });
+  });
+})();
+
+// Toast global — utilisable partout
+function showToast(msg, duration){
+  var t = document.getElementById('notif-toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function(){
+    t.classList.remove('show');
+  }, duration || 2600);
+}
 </script>
 
 
@@ -2491,5 +2591,6 @@ if('serviceWorker' in navigator){try{
   navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
 }catch(e){}}
 </script>
+<div id="notif-toast" class="notif-toast"></div>
 </body>
 </html>
