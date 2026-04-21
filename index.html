@@ -22,8 +22,8 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsIiB4MT0iMCIgeTE9IjAiIHgyPSIzMiIgeTI9IjMyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRDRBRjM3Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRjVFMDlBIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iNSIgeT0iMyIgd2lkdGg9IjQuNSIgaGVpZ2h0PSIyNiIgZmlsbD0idXJsKCNmbCkiLz48L3N2Zz4=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink:#09090f; --s1:#13131e; --s2:#1b1b2a; --s3:#222235;
@@ -1307,6 +1307,1632 @@ body.loading .sticky{opacity:0;transform:translateY(16px);}
 .w-detail-icon{display:inline-flex;align-items:center;margin-right:4px;}
 .t-ic-box{width:30px;height:30px;border-radius:50%;background:rgba(212,175,55,.07);border:0.5px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:2px;}
 .t-ic-box svg{width:15px;height:15px;}
+
+/* ── CODE PROMO ── */
+.promo-wrap{
+  position:relative;
+  margin-bottom:14px;
+}
+.promo-input{
+  width:100%;
+  background:rgba(0,0,0,.3);
+  border:0.5px solid rgba(212,175,55,.25);
+  border-radius:10px;
+  padding:11px 46px 11px 44px;
+  color:var(--white);
+  font-family:'Jost',sans-serif;
+  font-size:.82rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:border-color .25s,background .25s;
+  outline:none;
+  font-weight:500;
+}
+.promo-input::placeholder{
+  color:var(--gray);
+  font-weight:300;
+  letter-spacing:.08em;
+  text-transform:none;
+}
+.promo-input:focus{
+  border-color:rgba(212,175,55,.55);
+  background:rgba(0,0,0,.45);
+}
+.promo-input.valid{
+  border-color:#22c55e;
+  background:rgba(34,197,94,.06);
+  color:#22c55e;
+}
+.promo-input.invalid{
+  border-color:#ef4444;
+  background:rgba(239,68,68,.06);
+}
+.promo-ic{
+  position:absolute;
+  left:14px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;
+  pointer-events:none;
+  opacity:.7;
+}
+.promo-status{
+  position:absolute;
+  right:12px;top:50%;transform:translateY(-50%);
+  font-size:.9rem;
+  display:none;
+}
+.promo-status.show{display:block;}
+.promo-info{
+  margin-top:6px;
+  font-size:.68rem;
+  color:var(--gray);
+  letter-spacing:.04em;
+  min-height:14px;
+  transition:color .2s;
+}
+.promo-info.valid{color:#22c55e;}
+.promo-info.invalid{color:#ef4444;}
+.promo-info strong{font-weight:500;}
+
+/* Badge promo dans la modal de prix */
+.promo-badge{
+  display:inline-block;
+  background:rgba(34,197,94,.12);
+  color:#22c55e;
+  border:0.5px solid rgba(34,197,94,.3);
+  padding:4px 10px;
+  border-radius:14px;
+  font-size:.68rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-top:6px;
+}
+.promo-old-price{
+  text-decoration:line-through;
+  color:var(--gray);
+  font-size:.8rem;
+  margin-right:8px;
+  opacity:.65;
+}
+
+/* ══ ORNEMENTS ART DÉCO ENTRE SECTIONS ══ */
+.ornament{
+  display:flex;align-items:center;justify-content:center;
+  gap:14px;padding:36px 20px;opacity:0;
+  transition:opacity .8s ease;
+}
+.ornament.in{opacity:1;}
+.ornament-line{
+  flex:1;max-width:80px;height:0.5px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.6;
+}
+.ornament-center{
+  display:flex;align-items:center;gap:8px;
+  color:var(--gold);opacity:.7;
+}
+.ornament-diamond{
+  width:6px;height:6px;
+  background:var(--gold);
+  transform:rotate(45deg);
+}
+.ornament-diamond.small{width:3px;height:3px;opacity:.5;}
+
+/* ══ CAROUSEL AVIS ══ */
+.avis-carousel{
+  position:relative;margin-top:16px;
+  overflow:hidden;border-radius:14px;
+}
+.avis-track{
+  display:flex;transition:transform .6s cubic-bezier(.34,1.1,.64,1);
+}
+.avis-slide{
+  min-width:100%;padding:26px 22px;
+  background:rgba(255,255,255,.025);
+  border:0.5px solid rgba(212,175,55,.15);
+  border-radius:14px;
+  box-sizing:border-box;
+}
+.avis-quote-mark{
+  font-family:'Marcellus',serif;
+  font-size:4rem;line-height:.6;
+  color:var(--gold);opacity:.35;
+  height:28px;margin-bottom:8px;
+}
+.avis-quote{
+  font-family:'Marcellus',serif;
+  font-size:1.1rem;line-height:1.55;
+  color:var(--gold-l);
+  font-weight:400;letter-spacing:.01em;
+  margin-bottom:14px;min-height:90px;
+}
+.avis-quote strong{color:var(--gold);font-weight:500;font-style:italic;}
+.avis-author{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:0.5px solid rgba(212,175,55,.12);
+  padding-top:12px;
+}
+.avis-name{
+  font-size:.8rem;color:var(--white);
+  font-weight:500;letter-spacing:.03em;
+}
+.avis-route{
+  font-size:.66rem;color:var(--gray);
+  margin-top:2px;letter-spacing:.04em;
+}
+.avis-stars{
+  color:var(--gold);letter-spacing:.1em;
+  font-size:.82rem;
+}
+.avis-dots{
+  display:flex;justify-content:center;gap:6px;
+  margin-top:14px;
+}
+.avis-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(212,175,55,.2);
+  cursor:pointer;transition:all .3s;
+}
+.avis-dot.active{background:var(--gold);width:20px;border-radius:3px;}
+
+/* ══ BILLET / VOUCHER PREMIUM ══ */
+.modal-box-price{position:relative;}
+.voucher-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:12px;
+  border-bottom:0.5px dashed rgba(212,175,55,.3);
+  margin-bottom:16px;
+  position:relative;
+}
+.voucher-header::before,
+.voucher-header::after{
+  content:'';position:absolute;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--ink);
+  bottom:-9px;
+}
+.voucher-header::before{left:-26px;}
+.voucher-header::after{right:-26px;}
+.voucher-brand{
+  font-family:'Cinzel',serif;font-size:.72rem;
+  color:var(--gold);letter-spacing:.3em;font-weight:700;
+}
+.voucher-ref{
+  font-family:'Jost',monospace;font-size:.62rem;
+  color:var(--gray2);letter-spacing:.08em;
+}
+.voucher-stamp{
+  position:absolute;top:48%;right:12px;
+  transform:translateY(-50%) rotate(-12deg);
+  border:1px solid var(--gold);
+  padding:3px 10px;border-radius:3px;
+  font-size:.58rem;letter-spacing:.2em;
+  color:var(--gold);font-weight:600;
+  opacity:.45;pointer-events:none;
+  font-family:'Cinzel',serif;
+}
+.voucher-divider{
+  margin:16px 0;
+  display:flex;align-items:center;gap:10px;
+}
+.voucher-divider::before,
+.voucher-divider::after{
+  content:'';flex:1;height:0.5px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent);
+}
+.voucher-divider-text{
+  font-size:.56rem;letter-spacing:.25em;color:var(--gray);
+  text-transform:uppercase;
+}
+
+/* ══ INPUTS : FOCUS DORÉ ANIMÉ ══ */
+.f-wrap{position:relative;}
+.f-wrap::after{
+  content:'';position:absolute;
+  bottom:0;left:50%;right:50%;
+  height:1px;background:var(--gold);
+  transition:left .35s ease,right .35s ease;
+  pointer-events:none;
+  border-radius:1px;
+}
+.f-wrap:focus-within::after{left:8px;right:8px;}
+
+/* ══ CHIPS : PULSE AU CLIC ══ */
+.chip.sel{position:relative;}
+.chip.sel::before{
+  content:'';position:absolute;
+  top:50%;left:50%;
+  width:100%;height:100%;
+  border:1px solid var(--gold);
+  border-radius:inherit;
+  transform:translate(-50%,-50%) scale(1);
+  opacity:0;
+  animation:chipPulse .6s ease-out;
+  pointer-events:none;
+}
+@keyframes chipPulse{
+  0%{transform:translate(-50%,-50%) scale(1);opacity:.6;}
+  100%{transform:translate(-50%,-50%) scale(1.4);opacity:0;}
+}
+
+/* Masquer ancienne liste avis statique */
+.avis-list-old{display:none !important;}
+
+/* ════════════════════════════════════════════════════════════
+   DESIGN SYSTEM APPLE PREMIUM — I&N RUN v2.0
+   ════════════════════════════════════════════════════════════ */
+
+/* ── AURORA BACKGROUND (par-dessus constellation) ── */
+#aurora-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;opacity:.55;
+  background:
+    radial-gradient(ellipse 600px 400px at 15% 20%, rgba(212,175,55,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 800px 500px at 85% 60%, rgba(255,215,0,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 300px at 50% 95%, rgba(243,229,171,0.06) 0%, transparent 55%);
+  animation:auroraFloat 20s ease-in-out infinite;
+}
+@keyframes auroraFloat{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(-40px,-30px) scale(1.08);}
+}
+#aurora-traces{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;opacity:.4;
+  background:
+    linear-gradient(105deg,transparent 30%,rgba(212,175,55,0.05) 45%,rgba(255,215,0,0.08) 50%,rgba(212,175,55,0.05) 55%,transparent 70%),
+    linear-gradient(115deg,transparent 40%,rgba(243,229,171,0.04) 50%,transparent 60%);
+  animation:traceMove 25s linear infinite;
+}
+@keyframes traceMove{
+  from{transform:translateX(-20%);}
+  to{transform:translateX(20%);}
+}
+
+/* ── STEPPER LUMINEUX EN HAUT DU TUNNEL ── */
+.stepper{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 14px 24px;margin:0 auto 8px;
+  max-width:440px;
+  position:relative;z-index:2;
+}
+.stepper-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  flex-shrink:0;position:relative;z-index:3;
+}
+.stepper-circle{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Marcellus',serif;font-size:.95rem;font-weight:600;
+  transition:all .5s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.stepper-item.future .stepper-circle{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--gray);
+}
+.stepper-item.active .stepper-circle{
+  background:radial-gradient(circle,var(--gold) 0%,#9a7a1a 100%);
+  border:2px solid var(--gold-l);
+  color:var(--ink);font-weight:700;
+  box-shadow:
+    0 0 0 4px rgba(212,175,55,.15),
+    0 0 28px rgba(212,175,55,.55),
+    0 0 56px rgba(255,215,0,.28),
+    inset 0 1px 2px rgba(255,255,255,.3);
+  animation:stepPulse 2.4s ease-in-out infinite;
+}
+@keyframes stepPulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(212,175,55,.15),0 0 28px rgba(212,175,55,.55),0 0 56px rgba(255,215,0,.28),inset 0 1px 2px rgba(255,255,255,.3);}
+  50%{box-shadow:0 0 0 8px rgba(212,175,55,.1),0 0 48px rgba(212,175,55,.75),0 0 96px rgba(255,215,0,.38),inset 0 1px 2px rgba(255,255,255,.3);}
+}
+.stepper-item.done .stepper-circle{
+  background:rgba(212,175,55,.18);
+  border:1.5px solid var(--gold);
+  color:var(--gold);
+  box-shadow:0 0 18px rgba(212,175,55,.28);
+}
+.stepper-item.done .stepper-circle svg{
+  width:16px;height:16px;stroke:var(--gold);
+  stroke-width:2.5;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.stepper-label{
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;font-weight:400;white-space:nowrap;
+}
+.stepper-item.future .stepper-label{color:var(--gray);}
+.stepper-item.active .stepper-label{color:var(--gold-l);font-weight:500;}
+.stepper-item.done .stepper-label{color:var(--gold);}
+.stepper-line{
+  flex:1;height:2px;margin:0 -6px;margin-top:-18px;
+  position:relative;z-index:1;border-radius:2px;
+}
+.stepper-line.done{
+  background:linear-gradient(90deg,var(--gold),var(--gold-l));
+  box-shadow:0 0 8px rgba(212,175,55,.4);
+}
+.stepper-line.future{background:rgba(255,255,255,.08);}
+
+/* ── GLASSMORPHISM PROFOND SUR CARDS ── */
+.card{
+  background:rgba(15,15,22,.55) !important;
+  backdrop-filter:blur(32px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(32px) saturate(160%) !important;
+  border:1px solid rgba(212,175,55,.22) !important;
+  border-radius:24px !important;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    0 0 0 .5px rgba(212,175,55,.12),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  position:relative;
+  overflow:visible;
+}
+.card::before{
+  content:'';position:absolute;inset:0;border-radius:24px;
+  background:radial-gradient(ellipse at top left,rgba(212,175,55,.08),transparent 50%);
+  pointer-events:none;
+}
+
+/* ── INPUTS avec FOCUS GLOW doré ── */
+.f-wrap{
+  background:rgba(0,0,0,.4) !important;
+  border:0.5px solid rgba(212,175,55,.22) !important;
+  border-radius:14px !important;
+  transition:all .35s cubic-bezier(.34,1.3,.64,1) !important;
+  backdrop-filter:blur(8px);
+  position:relative;
+}
+.f-wrap:focus-within{
+  border-color:var(--gold) !important;
+  box-shadow:
+    0 0 0 4px rgba(212,175,55,.12),
+    0 0 25px rgba(212,175,55,.28) !important;
+  background:rgba(0,0,0,.55) !important;
+}
+.f-wrap.selected{
+  border-color:rgba(34,197,94,.5) !important;
+  box-shadow:0 0 18px rgba(34,197,94,.15) !important;
+}
+
+/* ── CHIPS GLASS PREMIUM ── */
+.chip{
+  background:rgba(15,15,22,.55) !important;
+  backdrop-filter:blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%) !important;
+  border:0.5px solid rgba(255,255,255,.08) !important;
+  border-radius:14px !important;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1) !important;
+  box-shadow:
+    0 4px 16px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+  position:relative;
+  overflow:hidden;
+}
+.chip:hover{
+  border-color:rgba(212,175,55,.25) !important;
+  transform:translateY(-1px);
+}
+.chip.sel{
+  background:linear-gradient(135deg,rgba(212,175,55,.25),rgba(212,175,55,.1)) !important;
+  border:1px solid var(--gold) !important;
+  color:var(--gold-l) !important;
+  box-shadow:
+    0 0 22px rgba(212,175,55,.35),
+    0 4px 20px rgba(0,0,0,.4),
+    inset 0 1px 2px rgba(255,255,255,.15) !important;
+}
+.chip.sel svg{stroke:var(--gold) !important;}
+.chip.sel::after{
+  content:'';position:absolute;top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(circle,rgba(255,215,0,.18) 0%,transparent 40%);
+  animation:chipGlow 2.2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes chipGlow{
+  0%,100%{opacity:.6;}
+  50%{opacity:1;}
+}
+
+/* ── PAY BTN GLASS ── */
+.pay-btn{
+  background:rgba(15,15,22,.55) !important;
+  backdrop-filter:blur(18px) !important;
+  -webkit-backdrop-filter:blur(18px) !important;
+  border:0.5px solid rgba(255,255,255,.08) !important;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1) !important;
+}
+.pay-btn.sel{
+  background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(212,175,55,.08)) !important;
+  border:1px solid var(--gold) !important;
+  box-shadow:0 0 20px rgba(212,175,55,.3),inset 0 1px 2px rgba(255,255,255,.1) !important;
+}
+
+/* ── CTA BOUTON GLOW PULSANT ── */
+.btn-gold{
+  background:linear-gradient(135deg,#9a7a1a 0%,var(--gold) 50%,#9a7a1a 100%) !important;
+  box-shadow:
+    0 8px 24px rgba(212,175,55,.4),
+    0 0 40px rgba(212,175,55,.22),
+    inset 0 1px 0 rgba(255,255,255,.3) !important;
+  animation:btnGlowPulse 3.2s ease-in-out infinite;
+  position:relative;
+  overflow:hidden;
+}
+@keyframes btnGlowPulse{
+  0%,100%{box-shadow:0 8px 24px rgba(212,175,55,.4),0 0 40px rgba(212,175,55,.22),inset 0 1px 0 rgba(255,255,255,.3);}
+  50%{box-shadow:0 8px 32px rgba(212,175,55,.6),0 0 80px rgba(255,215,0,.4),inset 0 1px 0 rgba(255,255,255,.3);}
+}
+
+/* ── MODAL TARIF PROFONDEUR MAX ── */
+.modal-box-price{
+  background:rgba(12,12,20,.75) !important;
+  backdrop-filter:blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(40px) saturate(180%) !important;
+  border:1px solid rgba(212,175,55,.28) !important;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.8),
+    0 0 0 .5px rgba(212,175,55,.15),
+    0 0 60px rgba(212,175,55,.12),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+/* Prix en dégradé lumineux */
+.m-price{
+  font-family:'Marcellus',serif !important;
+  font-size:3.8rem !important;
+  font-weight:400 !important;
+  background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 40%,var(--gold-l) 80%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(212,175,55,.35));
+  text-shadow:0 0 40px rgba(212,175,55,.2);
+  line-height:1 !important;
+}
+
+/* ── STICKY DATETIME BANNER GLASS ── */
+#sticky-datetime{
+  background:rgba(10,10,18,.75) !important;
+  backdrop-filter:blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%) !important;
+  border:0.5px solid rgba(212,175,55,.22) !important;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.5),
+    0 0 20px rgba(212,175,55,.08) !important;
+}
+
+/* ── ETA WIDGET GLASS ── */
+#eta-widget{
+  background:rgba(15,15,22,.5) !important;
+  backdrop-filter:blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%) !important;
+  border:0.5px solid rgba(212,175,55,.18) !important;
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+/* ── INFO CARDS (météo / trafic) GLASS ── */
+.info-card{
+  background:rgba(15,15,22,.48) !important;
+  backdrop-filter:blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%) !important;
+  border:0.5px solid rgba(212,175,55,.18) !important;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+/* ── AUTOCOMPLETE DROPDOWN encore plus profond ── */
+.ac{
+  background:rgba(8,8,14,.88) !important;
+  backdrop-filter:blur(28px) saturate(170%) !important;
+  -webkit-backdrop-filter:blur(28px) saturate(170%) !important;
+  border:1px solid rgba(212,175,55,.28) !important;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.75),
+    0 0 0 .5px rgba(212,175,55,.1),
+    0 0 30px rgba(212,175,55,.1) !important;
+}
+
+/* ── SERVICES GRID cards glass ── */
+.srv-item{
+  background:rgba(0,0,0,.3) !important;
+  backdrop-filter:blur(12px);
+  border:0.5px solid rgba(212,175,55,.1) !important;
+  transition:all .3s;
+}
+.srv-item:hover{
+  border-color:rgba(212,175,55,.25) !important;
+  background:rgba(212,175,55,.04) !important;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   I&N RUN — 3D CLAY DESIGN SYSTEM
+   Cards sculptées · Ombres multi-couches · Palette Cuir & Or
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Fond cuir profond (chaleur + luxe) */
+  --ink: #1a1612;
+  --bg-leather-deep: #1a1612;
+  --bg-leather: #252018;
+  --bg-leather-warm: #2e281e;
+
+  /* Cards — papier ivoire chaud */
+  --paper-light: #fdfbf5;
+  --paper: #f6f2e8;
+  --paper-shadow: #eae2d0;
+  --paper-deep: #d9cfb8;
+  --paper-border: rgba(138, 110, 76, 0.08);
+
+  /* Texte (encre chaude) */
+  --text-ink: #1c1812;
+  --text-soft: #5a4f3f;
+  --text-mute: #8a7c6a;
+
+  /* Or patiné authentique (remplace gold flashy) */
+  --gold-dark: #8b6f1a;
+  --gold: #c4a548;
+  --gold-l: #edd888;
+  --gold-light: #edd888;
+  --gold-glow: #f9e6a8;
+
+  /* Vert sauge (confiance calme, remplace vert SaaS) */
+  --sage: #4a6b5a;
+  --sage-light: #6d8a7a;
+  --sage-glow: rgba(74, 107, 90, 0.3);
+  --success: #4a6b5a;
+
+  /* Rouge brique (urgence douce) */
+  --brick: #8b3d2e;
+
+  /* Conservé pour compat */
+  --white: #f6f2e8;
+  --gray: #8a7c6a;
+  --gray2: #a89986;
+  --gold-l2: #edd888;
+}
+
+/* Body : fond cuir profond */
+html, body {
+  background: var(--bg-leather-deep) !important;
+  color: #d4cdbf !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+}
+
+/* Fond cuir avec traces cinétiques dorées */
+body::before {
+  content: '' !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background:
+    radial-gradient(ellipse 900px 600px at 50% 0%, var(--bg-leather-warm) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 400px at 80% 100%, var(--bg-leather) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-leather-deep) 0%, var(--bg-leather) 100%) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+
+/* Traces cinétiques dorées animées */
+#aurora-bg {
+  background:
+    linear-gradient(98deg,
+      transparent 20%,
+      rgba(196, 165, 72, 0.07) 30%,
+      rgba(237, 216, 136, 0.12) 38%,
+      rgba(249, 230, 168, 0.16) 42%,
+      rgba(237, 216, 136, 0.12) 46%,
+      rgba(196, 165, 72, 0.07) 54%,
+      transparent 64%),
+    linear-gradient(105deg,
+      transparent 10%,
+      rgba(196, 165, 72, 0.05) 25%,
+      rgba(237, 216, 136, 0.08) 35%,
+      transparent 50%) !important;
+  animation: traceSlide 20s ease-in-out infinite !important;
+  filter: blur(1px);
+  opacity: 1 !important;
+  z-index: 1 !important;
+}
+
+@keyframes traceSlide {
+  0%, 100% { transform: translateX(-8%) translateY(0); }
+  50% { transform: translateX(8%) translateY(-10px); }
+}
+
+#aurora-traces {
+  background: none !important;
+  display: none !important;
+}
+
+/* Noise overlay global */
+body::after {
+  content: '' !important;
+  position: fixed !important;
+  inset: 0 !important;
+  opacity: 0.05 !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  mix-blend-mode: overlay !important;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") !important;
+}
+
+/* Canvas constellation derrière */
+#constellation-canvas {
+  z-index: 0 !important;
+  opacity: 0.5 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LA CLASSE MAGIQUE 3D — Appliquée à toutes les cards
+   ═══════════════════════════════════════════════════════════════ */
+.card,
+.info-card,
+.modal-box-price,
+#eta-widget,
+.avis-slide {
+  background: linear-gradient(145deg,
+    var(--paper-light) 0%,
+    var(--paper) 50%,
+    var(--paper-shadow) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 24px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(90, 79, 63, 0.08),
+    0 1px 2px rgba(28, 24, 18, 0.15),
+    0 3px 6px rgba(28, 24, 18, 0.12),
+    0 10px 20px rgba(28, 24, 18, 0.25),
+    0 20px 40px rgba(28, 24, 18, 0.3) !important;
+  color: var(--text-ink) !important;
+  position: relative !important;
+  transition: transform 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.card::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: none !important;
+  pointer-events: none !important;
+}
+
+/* Texte dans les cards → encre sombre */
+.card h1, .card h2, .card h3, .card h4,
+.card p, .card label, .card span,
+.info-card h3, .info-card p, .info-card span, .info-card div,
+.modal-box-price h3, .modal-box-price p,
+.avis-slide p, .avis-slide span, .avis-slide div {
+  color: var(--text-ink);
+}
+
+.card p, .card label { color: var(--text-soft); }
+
+/* Sticky datetime → card claire */
+#sticky-datetime {
+  background: linear-gradient(145deg,
+    var(--paper-light) 0%,
+    var(--paper) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--text-ink) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 4px 12px rgba(28, 24, 18, 0.25),
+    0 8px 24px rgba(28, 24, 18, 0.3) !important;
+}
+
+#sticky-datetime * { color: var(--text-ink) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   INPUTS / F-WRAP → mini-cards 3D
+   ═══════════════════════════════════════════════════════════════ */
+.f-wrap {
+  background: linear-gradient(145deg, #ffffff 0%, var(--paper-light) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 14px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(90, 79, 63, 0.05),
+    0 1px 2px rgba(28, 24, 18, 0.08),
+    0 2px 4px rgba(28, 24, 18, 0.06) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+}
+
+.f-wrap:focus-within {
+  border-color: var(--gold) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 3px rgba(196, 165, 72, 0.15),
+    0 4px 16px rgba(196, 165, 72, 0.2) !important;
+}
+
+.f-wrap.selected {
+  border-color: var(--sage) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 3px rgba(74, 107, 90, 0.15),
+    0 4px 16px rgba(74, 107, 90, 0.2) !important;
+}
+
+.f-in, input.f-in, textarea.f-in {
+  background: transparent !important;
+  color: var(--text-ink) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.f-in::placeholder { color: var(--text-mute) !important; }
+
+.f-lbl {
+  color: var(--text-soft) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.72rem !important;
+  text-transform: uppercase !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHIPS 3D — Le chef d'œuvre (comme l'icône Notes de l'image)
+   ═══════════════════════════════════════════════════════════════ */
+.chip {
+  background: linear-gradient(145deg,
+    var(--paper-light) 0%,
+    var(--paper) 50%,
+    var(--paper-shadow) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 16px !important;
+  padding: 12px 14px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--text-ink) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(90, 79, 63, 0.05),
+    0 2px 4px rgba(28, 24, 18, 0.12),
+    0 6px 12px rgba(28, 24, 18, 0.18),
+    0 12px 24px rgba(28, 24, 18, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.chip:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 4px 8px rgba(28, 24, 18, 0.15),
+    0 10px 20px rgba(28, 24, 18, 0.25),
+    0 20px 40px rgba(28, 24, 18, 0.2) !important;
+}
+
+.chip svg {
+  stroke: var(--text-ink) !important;
+}
+
+/* Chip sélectionné = GALET D'OR LUMINEUX (cœur du design) */
+.chip.sel {
+  background: radial-gradient(circle at 30% 25%,
+    var(--gold-l) 0%,
+    var(--gold) 50%,
+    var(--gold-dark) 100%) !important;
+  color: var(--text-ink) !important;
+  border: 1px solid var(--gold-dark) !important;
+  font-weight: 800 !important;
+  box-shadow:
+    0 0 50px rgba(237, 216, 136, 0.6),
+    0 0 25px rgba(249, 230, 168, 0.5),
+    0 8px 20px rgba(139, 111, 26, 0.5),
+    0 4px 10px rgba(28, 24, 18, 0.25),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 6px rgba(139, 111, 26, 0.35) !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.chip.sel svg {
+  stroke: var(--text-ink) !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+
+.chip.sel::after {
+  content: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAY BUTTONS (Espèces / CB / Virement)
+   ═══════════════════════════════════════════════════════════════ */
+.pay-btn {
+  background: linear-gradient(145deg,
+    var(--paper-light) 0%,
+    var(--paper) 50%,
+    var(--paper-shadow) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 16px !important;
+  color: var(--text-ink) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(90, 79, 63, 0.05),
+    0 2px 4px rgba(28, 24, 18, 0.12),
+    0 6px 12px rgba(28, 24, 18, 0.18),
+    0 12px 24px rgba(28, 24, 18, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.pay-btn:hover {
+  transform: translateY(-2px);
+}
+
+.pay-btn.sel {
+  background: radial-gradient(circle at 30% 25%,
+    var(--gold-l) 0%,
+    var(--gold) 50%,
+    var(--gold-dark) 100%) !important;
+  color: var(--text-ink) !important;
+  border: 1px solid var(--gold-dark) !important;
+  font-weight: 800 !important;
+  box-shadow:
+    0 0 50px rgba(237, 216, 136, 0.6),
+    0 0 25px rgba(249, 230, 168, 0.5),
+    0 8px 20px rgba(139, 111, 26, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 6px rgba(139, 111, 26, 0.35) !important;
+}
+
+.pay-btn svg { stroke: var(--text-ink) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   BTN GOLD — Le lingot pulsant
+   ═══════════════════════════════════════════════════════════════ */
+.btn-gold {
+  background: radial-gradient(circle at 30% 25%,
+    var(--gold-l) 0%,
+    var(--gold) 45%,
+    var(--gold-dark) 100%) !important;
+  color: var(--text-ink) !important;
+  border: none !important;
+  border-radius: 100px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow:
+    0 0 60px rgba(237, 216, 136, 0.5),
+    0 0 30px rgba(249, 230, 168, 0.4),
+    0 10px 24px rgba(139, 111, 26, 0.45),
+    0 4px 8px rgba(28, 24, 18, 0.25),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 6px rgba(139, 111, 26, 0.3) !important;
+  animation: btnPulse 3.2s ease-in-out infinite !important;
+  transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+}
+
+@keyframes btnPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 60px rgba(237, 216, 136, 0.5),
+      0 0 30px rgba(249, 230, 168, 0.4),
+      0 10px 24px rgba(139, 111, 26, 0.45),
+      0 4px 8px rgba(28, 24, 18, 0.25),
+      inset 0 2px 4px rgba(255, 255, 255, 0.5),
+      inset 0 -3px 6px rgba(139, 111, 26, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 80px rgba(237, 216, 136, 0.7),
+      0 0 40px rgba(249, 230, 168, 0.55),
+      0 10px 24px rgba(139, 111, 26, 0.5),
+      0 4px 8px rgba(28, 24, 18, 0.25),
+      inset 0 2px 4px rgba(255, 255, 255, 0.5),
+      inset 0 -3px 6px rgba(139, 111, 26, 0.3);
+  }
+}
+
+.btn-gold:hover { transform: translateY(-2px); }
+.btn-gold:active { transform: translateY(1px); }
+
+.btn-gold svg {
+  fill: var(--text-ink) !important;
+}
+
+/* Btn close / modifier → style secondaire */
+.btn-close {
+  background: linear-gradient(145deg,
+    var(--paper-light) 0%,
+    var(--paper) 100%) !important;
+  color: var(--text-ink) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 100px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 4px rgba(28, 24, 18, 0.1),
+    0 6px 12px rgba(28, 24, 18, 0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRIX DANS LA MODAL — Or lumineux
+   ═══════════════════════════════════════════════════════════════ */
+.m-price {
+  font-family: 'Marcellus', serif !important;
+  background: linear-gradient(135deg, var(--gold-l) 0%, var(--gold) 40%, var(--gold-dark) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 4px 12px rgba(196, 165, 72, 0.3)) !important;
+  text-shadow: none !important;
+}
+
+.m-title {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.m-subtitle {
+  color: var(--text-soft) !important;
+}
+
+.m-price-val {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.m-price-lbl {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.15em !important;
+}
+
+.m-calc-info, #calcDetails {
+  color: var(--text-soft) !important;
+}
+
+.nuit-badge {
+  background: rgba(139, 61, 46, 0.1) !important;
+  color: var(--brick) !important;
+  border: 1px solid rgba(139, 61, 46, 0.25) !important;
+  font-weight: 600 !important;
+}
+
+.badge-promo {
+  background: rgba(196, 165, 72, 0.12) !important;
+  color: var(--gold-dark) !important;
+  border: 1px solid rgba(196, 165, 72, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+.promo-badge {
+  background: rgba(74, 107, 90, 0.12) !important;
+  color: var(--sage) !important;
+  border: 1px solid rgba(74, 107, 90, 0.3) !important;
+}
+
+/* Voucher header */
+.voucher-header {
+  border-bottom: 1px dashed rgba(138, 110, 76, 0.3) !important;
+}
+
+.voucher-brand {
+  color: var(--text-ink) !important;
+  font-family: 'Cinzel', serif !important;
+}
+
+.voucher-ref {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.08em !important;
+}
+
+.voucher-stamp {
+  color: var(--gold-dark) !important;
+  border-color: var(--gold-dark) !important;
+  font-family: 'Cinzel', serif !important;
+}
+
+.voucher-divider-text {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.2em !important;
+}
+
+/* Modal overlay fond */
+.modal-overlay {
+  background: rgba(26, 22, 18, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.m-handle {
+  background: rgba(138, 110, 76, 0.2) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STEPPER — 4 billes dorées sculptées
+   ═══════════════════════════════════════════════════════════════ */
+.stepper {
+  background: rgba(26, 22, 18, 0.4) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(196, 165, 72, 0.1);
+  border-radius: 20px;
+  padding: 14px 16px;
+}
+
+.stepper-circle {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 700 !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.stepper-item.done .stepper-circle {
+  background: radial-gradient(circle at 30% 25%,
+    var(--gold-l), var(--gold) 50%, var(--gold-dark)) !important;
+  color: var(--paper-light) !important;
+  border: none !important;
+  box-shadow:
+    0 0 20px rgba(196, 165, 72, 0.4),
+    0 4px 10px rgba(139, 111, 26, 0.4),
+    inset 0 2px 3px rgba(255, 255, 255, 0.45),
+    inset 0 -2px 4px rgba(139, 111, 26, 0.35) !important;
+}
+
+.stepper-item.done .stepper-circle svg {
+  stroke: var(--paper-light) !important;
+}
+
+.stepper-item.active .stepper-circle {
+  background: radial-gradient(circle at 30% 25%,
+    var(--gold-l), var(--gold) 45%, var(--gold-dark)) !important;
+  color: var(--paper-light) !important;
+  border: none !important;
+  box-shadow:
+    0 0 0 4px rgba(196, 165, 72, 0.2),
+    0 0 40px rgba(237, 216, 136, 0.6),
+    0 0 60px rgba(249, 230, 168, 0.35),
+    0 6px 16px rgba(139, 111, 26, 0.5),
+    inset 0 2px 3px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(139, 111, 26, 0.35) !important;
+  animation: stepPulse 2.4s ease-in-out infinite !important;
+}
+
+@keyframes stepPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(196, 165, 72, 0.2),
+      0 0 40px rgba(237, 216, 136, 0.6),
+      0 0 60px rgba(249, 230, 168, 0.35),
+      0 6px 16px rgba(139, 111, 26, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.5),
+      inset 0 -2px 4px rgba(139, 111, 26, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(196, 165, 72, 0.12),
+      0 0 60px rgba(237, 216, 136, 0.8),
+      0 0 90px rgba(249, 230, 168, 0.45),
+      0 6px 16px rgba(139, 111, 26, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.5),
+      inset 0 -2px 4px rgba(139, 111, 26, 0.35);
+  }
+}
+
+.stepper-item.future .stepper-circle {
+  background: linear-gradient(145deg, var(--paper-light), var(--paper-shadow)) !important;
+  color: var(--text-mute) !important;
+  border: 1px solid rgba(138, 110, 76, 0.1) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(28, 24, 18, 0.15),
+    0 4px 8px rgba(28, 24, 18, 0.1) !important;
+}
+
+.stepper-item.done .stepper-label,
+.stepper-item.active .stepper-label { color: var(--gold-l) !important; }
+
+.stepper-line.done {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%) !important;
+  box-shadow: 0 0 8px rgba(196, 165, 72, 0.4) !important;
+}
+
+.stepper-line.future {
+  background: rgba(138, 110, 76, 0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AUTOCOMPLETE DROPDOWN
+   ═══════════════════════════════════════════════════════════════ */
+.ac {
+  background: linear-gradient(145deg, var(--paper-light) 0%, var(--paper) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 12px 32px rgba(28, 24, 18, 0.3),
+    0 24px 48px rgba(28, 24, 18, 0.25) !important;
+  border-radius: 14px !important;
+}
+
+.ac > div, .ac div {
+  color: var(--text-ink) !important;
+  border-bottom-color: rgba(138, 110, 76, 0.08) !important;
+}
+
+.ac > div:hover {
+  background: rgba(196, 165, 72, 0.08) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO — Texte + proof badges
+   ═══════════════════════════════════════════════════════════════ */
+.hero-tagline {
+  color: var(--gold-l) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.3em !important;
+  text-transform: uppercase !important;
+  font-size: 0.62rem !important;
+  font-weight: 500 !important;
+}
+
+.hero h1 {
+  color: var(--paper-light) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.hero h1 .g {
+  color: var(--gold-l) !important;
+  font-style: italic;
+}
+
+.hero-p {
+  color: #c8bfa9 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300;
+}
+
+.hero-p strong {
+  color: var(--gold-l) !important;
+}
+
+/* Proof badges — mini cards 3D */
+.proof {
+  gap: 10px !important;
+}
+
+.proof-item {
+  background: linear-gradient(145deg, var(--paper-light) 0%, var(--paper) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 16px !important;
+  padding: 12px 10px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 4px rgba(28, 24, 18, 0.12),
+    0 6px 12px rgba(28, 24, 18, 0.18),
+    0 12px 24px rgba(28, 24, 18, 0.15) !important;
+  transition: transform 0.3s !important;
+}
+
+.proof-item:hover {
+  transform: translateY(-2px);
+}
+
+.proof-ic {
+  background: linear-gradient(145deg,
+    rgba(237, 216, 136, 0.25),
+    rgba(196, 165, 72, 0.1)) !important;
+  border: 1px solid rgba(196, 165, 72, 0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 1px 2px rgba(139, 111, 26, 0.1) !important;
+}
+
+.proof-ic svg {
+  stroke: var(--gold-dark) !important;
+}
+
+.proof-num {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.proof-label {
+  color: var(--text-soft) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.52rem !important;
+  font-weight: 600 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════ */
+#hdr {
+  background: rgba(26, 22, 18, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 1px solid rgba(196, 165, 72, 0.15) !important;
+}
+
+.nav-logo .ai-in .g,
+.nav-logo span {
+  color: var(--gold-l) !important;
+}
+
+.nav a {
+  color: #c8bfa9 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
+}
+
+.nav a:hover { color: var(--gold-l) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ETA WIDGET — petit bloc 3D
+   ═══════════════════════════════════════════════════════════════ */
+#eta-widget {
+  padding: 12px 16px !important;
+}
+
+#eta-widget * {
+  color: var(--text-ink) !important;
+}
+
+#eta-widget .eta-label,
+#eta-widget [class*="label"] {
+  color: var(--text-soft) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+#eta-time, #eta-dist, #eta-widget span.value {
+  color: var(--gold-dark) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INFO CARDS — Météo / Trafic
+   ═══════════════════════════════════════════════════════════════ */
+.info-card {
+  padding: 16px 14px !important;
+}
+
+.i-hd-wrap {
+  margin-bottom: 12px !important;
+}
+
+.i-hd-ic {
+  background: linear-gradient(145deg,
+    rgba(237, 216, 136, 0.25),
+    rgba(196, 165, 72, 0.08)) !important;
+  border: 1px solid rgba(196, 165, 72, 0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 1px 2px rgba(139, 111, 26, 0.1) !important;
+}
+
+.i-hd-ic svg { stroke: var(--gold-dark) !important; }
+
+.i-hd-text {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+  font-size: 0.92rem !important;
+}
+
+.i-hd-meta {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.w-top-row * { color: var(--text-ink) !important; }
+
+.w-ic {
+  background: linear-gradient(145deg, rgba(237, 216, 136, 0.3), rgba(196, 165, 72, 0.1)) !important;
+  border: 1px solid rgba(196, 165, 72, 0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 2px 4px rgba(139, 111, 26, 0.1) !important;
+}
+
+.w-temp {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.w-feels {
+  color: var(--text-soft) !important;
+}
+
+.w-detail-item {
+  color: var(--text-soft) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.62rem !important;
+  font-weight: 500 !important;
+}
+
+.w-detail-item svg { stroke: var(--gold-dark) !important; }
+
+/* Trafic items = mini cards */
+.t-item {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(234, 226, 208, 0.3) 100%) !important;
+  border: 1px solid rgba(138, 110, 76, 0.08) !important;
+  border-radius: 11px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 1px 2px rgba(28, 24, 18, 0.05) !important;
+}
+
+.t-item:hover {
+  background: rgba(196, 165, 72, 0.08) !important;
+  border-color: rgba(196, 165, 72, 0.25) !important;
+}
+
+.t-ic-box {
+  background: linear-gradient(145deg, rgba(237, 216, 136, 0.25), rgba(196, 165, 72, 0.1)) !important;
+  border: 1px solid rgba(196, 165, 72, 0.2) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+.t-ic-box svg { stroke: var(--gold-dark) !important; }
+
+.t-route { color: var(--text-ink) !important; }
+.t-via { color: var(--text-mute) !important; font-family: 'JetBrains Mono', monospace !important; }
+
+.t-tag {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 700 !important;
+  font-size: 0.56rem !important;
+}
+
+.t-tag.ok {
+  background: rgba(74, 107, 90, 0.12) !important;
+  color: var(--sage) !important;
+  border: 1px solid rgba(74, 107, 90, 0.3) !important;
+}
+
+.t-tag.warn {
+  background: rgba(196, 165, 72, 0.12) !important;
+  color: var(--gold-dark) !important;
+  border: 1px solid rgba(196, 165, 72, 0.3) !important;
+}
+
+.t-tag.bad {
+  background: rgba(139, 61, 46, 0.12) !important;
+  color: var(--brick) !important;
+  border: 1px solid rgba(139, 61, 46, 0.3) !important;
+}
+
+.t-dur {
+  color: var(--gold-dark) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.t-updated {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION VOITURE & INTERIEUR (fond sombre préservé)
+   ═══════════════════════════════════════════════════════════════ */
+.section-voiture h2, .section-voiture .section-title,
+.section-avis h2, .section-avis .section-title {
+  color: var(--gold-l) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.section-voiture p, .section-voiture .subtitle {
+  color: #c8bfa9 !important;
+}
+
+.voiture-img-wrap, .interieur-wrap {
+  border-radius: 24px !important;
+  box-shadow:
+    0 10px 30px rgba(28, 24, 18, 0.4),
+    0 24px 60px rgba(28, 24, 18, 0.35) !important;
+}
+
+.voiture-badge, .interieur-tag {
+  background: linear-gradient(145deg, rgba(196, 165, 72, 0.95), rgba(139, 111, 26, 0.95)) !important;
+  color: var(--text-ink) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  box-shadow:
+    0 4px 12px rgba(139, 111, 26, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AVIS CAROUSEL — slides = cards claires
+   ═══════════════════════════════════════════════════════════════ */
+.avis-slide {
+  padding: 26px 22px !important;
+}
+
+.avis-quote-mark {
+  color: var(--gold) !important;
+  opacity: 0.5 !important;
+}
+
+.avis-quote {
+  color: var(--text-ink) !important;
+  font-family: 'Marcellus', serif !important;
+}
+
+.avis-quote strong {
+  color: var(--gold-dark) !important;
+}
+
+.avis-name {
+  color: var(--text-ink) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.avis-route {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.08em !important;
+}
+
+.avis-stars {
+  color: var(--gold) !important;
+}
+
+.avis-author {
+  border-top: 1px solid rgba(138, 110, 76, 0.15) !important;
+}
+
+.avis-dot {
+  background: rgba(138, 110, 76, 0.2) !important;
+}
+
+.avis-dot.active {
+  background: var(--gold) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ORNEMENTS
+   ═══════════════════════════════════════════════════════════════ */
+.ornament-line {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent) !important;
+  opacity: 0.6 !important;
+}
+
+.ornament-diamond {
+  background: var(--gold) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════════════ */
+#notif-toast {
+  background: linear-gradient(145deg, var(--paper-light), var(--paper)) !important;
+  border: 1px solid var(--paper-border) !important;
+  color: var(--text-ink) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 10px 24px rgba(28, 24, 18, 0.35),
+    0 20px 48px rgba(28, 24, 18, 0.3) !important;
+}
+
+#notif-toast * { color: var(--text-ink) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ZONES DESSERVIES (zones-list)
+   ═══════════════════════════════════════════════════════════════ */
+.zone-item {
+  background: linear-gradient(145deg, var(--paper-light), var(--paper-shadow)) !important;
+  border: 1px solid var(--paper-border) !important;
+  color: var(--text-ink) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 6px rgba(28, 24, 18, 0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROMO INPUT
+   ═══════════════════════════════════════════════════════════════ */
+.promo-wrap {
+  position: relative;
+}
+
+.promo-input {
+  background: linear-gradient(145deg, #ffffff 0%, var(--paper-light) 100%) !important;
+  border: 1px solid var(--paper-border) !important;
+  color: var(--text-ink) !important;
+  border-radius: 14px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 1px 2px rgba(28, 24, 18, 0.08) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+}
+
+.promo-input::placeholder {
+  color: var(--text-mute) !important;
+  letter-spacing: 0.08em !important;
+}
+
+.promo-input:focus {
+  border-color: var(--gold) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 3px rgba(196, 165, 72, 0.15) !important;
+}
+
+.promo-input.valid {
+  border-color: var(--sage) !important;
+  background: linear-gradient(145deg, #ffffff, rgba(74, 107, 90, 0.05)) !important;
+  color: var(--sage) !important;
+}
+
+.promo-input.invalid {
+  border-color: var(--brick) !important;
+  background: linear-gradient(145deg, #ffffff, rgba(139, 61, 46, 0.05)) !important;
+}
+
+.promo-ic svg { stroke: var(--gold-dark) !important; }
+
+.promo-info {
+  color: var(--text-mute) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.promo-info.valid { color: var(--sage) !important; }
+.promo-info.invalid { color: var(--brick) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+#ftr, footer {
+  background: rgba(26, 22, 18, 0.9) !important;
+  border-top: 1px solid rgba(196, 165, 72, 0.15) !important;
+}
+
+#ftr *, footer * {
+  color: #c8bfa9 !important;
+}
+
+#ftr a:hover, footer a:hover {
+  color: var(--gold-l) !important;
+}
+
+/* Glass cards anciennes */
+.glass-card, [class*="glass"] {
+  background: linear-gradient(145deg, var(--paper-light), var(--paper)) !important;
+  border: 1px solid var(--paper-border) !important;
+  color: var(--text-ink) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-leather-deep); }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 5px;
+}
+
+
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 <style id="al">/* ═══════════════════════════════════════════════
@@ -1545,6 +3171,8 @@ body {
 <div id="reveal-line"></div>
 
 <canvas id="constellation-canvas"></canvas>
+<div id="aurora-bg"></div>
+<div id="aurora-traces"></div>
 
 <header id="hdr">
   <div class="nav">
@@ -1604,7 +3232,7 @@ body {
 
 <div class="hero">
   <p class="hero-tagline">Le luxe au prix juste</p>
-  <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
+    <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
   <p class="hero-p">En direct, sans commission &mdash; vous payez <strong style="color:var(--gold);font-weight:700;">10&nbsp;% de moins</strong> qu&rsquo;<strong style="color:var(--white);font-weight:500;">UBER</strong> ou <strong style="color:var(--white);font-weight:500;">BOLT</strong> pour un service Berline Premium.</p>
   <div class="proof" id="proof-badges">
 
@@ -1679,6 +3307,16 @@ body {
 </div>
 </div>
 
+<div class="ornament" data-ornament>
+  <div class="ornament-line"></div>
+  <div class="ornament-center">
+    <div class="ornament-diamond small"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-diamond small"></div>
+  </div>
+  <div class="ornament-line"></div>
+</div>
+
 <!-- ══ VOITURE ══ -->
 <div class="section-voiture">
   <div class="voiture-img-wrap">
@@ -1693,14 +3331,85 @@ body {
     <div class="avis-title">Ce qu&rsquo;ils disent</div>
     <div class="avis-source"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Avis v&eacute;rifi&eacute;s</div>
   </div>
-  <div class="avis-list">
-    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Sophie M.</div><div class="avis-meta">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Vol retard&eacute; d&rsquo;1h, Nourdine &eacute;tait <em>d&eacute;j&agrave; inform&eacute; et attendait</em> avec le panneau &agrave; l&rsquo;arriv&eacute;e. V&eacute;hicule impeccable, trajet silencieux, tarif honor&eacute; sans discussion.</p></div>
-    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Thomas R.</div><div class="avis-meta">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">R&eacute;servation en 2 minutes, confirmation WA imm&eacute;diate. <em>Ponctuel, discret, professionnel.</em> Le tarif fixe sans surprise c&rsquo;est exactement ce dont j&rsquo;avais besoin.</p></div>
-    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Amina K.</div><div class="avis-meta">Orly &rarr; Evry &middot; Mars 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Voyage avec 3 valises et un enfant. <em>Aide aux bagages, si&egrave;ge adapt&eacute; propos&eacute;</em>, musique douce. C&rsquo;est &ccedil;a le vrai service premium.</p></div>
+  <div class="avis-carousel" id="avisCarousel">
+    <div class="avis-track" id="avisTrack">
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Vol retardé d'1h, Nourdine était <strong>déjà informé et attendait</strong> avec le panneau à l'arrivée. Véhicule impeccable, trajet silencieux, tarif honoré sans discussion.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Sophie M.</div>
+            <div class="avis-route">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Réservation en moins de 2 minutes via le site, confirmation WA immédiate. <strong>Ponctuel, discret, professionnel.</strong> Parfait pour mes trajets business du matin. Tarif fixe sans surprise exactement ce qu'il me fallait.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Thomas R.</div>
+            <div class="avis-route">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Voyage avec 3 valises et un enfant. <strong>Aide aux bagages, siège adapté proposé</strong>, musique douce. On n'a pas dit un mot et pourtant on s'est sentis pris en charge. C'est ça le vrai service premium.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Amina K.</div>
+            <div class="avis-route">Orly &rarr; Evry &middot; Mars 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="avis-dots" id="avisDots">
+      <div class="avis-dot active" onclick="goToAvis(0)"></div>
+      <div class="avis-dot" onclick="goToAvis(1)"></div>
+      <div class="avis-dot" onclick="goToAvis(2)"></div>
+    </div>
   </div>
   <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis." class="avis-voir-plus" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Laisser un avis</a>
 </div>
+<div class="ornament" data-ornament>
+  <div class="ornament-line"></div>
+  <div class="ornament-center">
+    <div class="ornament-diamond small"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-diamond small"></div>
+  </div>
+  <div class="ornament-line"></div>
+</div>
 <div class="tunnel">
+  <div class="stepper" id="stepper">
+    <div class="stepper-item active" id="stepper-1">
+      <div class="stepper-circle">1</div>
+      <div class="stepper-label">Trajet</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-1"></div>
+    <div class="stepper-item future" id="stepper-2">
+      <div class="stepper-circle">2</div>
+      <div class="stepper-label">Pr&eacute;f.</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-2"></div>
+    <div class="stepper-item future" id="stepper-3">
+      <div class="stepper-circle">3</div>
+      <div class="stepper-label">Tarif</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-3"></div>
+    <div class="stepper-item future" id="stepper-4">
+      <div class="stepper-circle">4</div>
+      <div class="stepper-label">Valid&eacute;</div>
+    </div>
+  </div>
   <div class="card active" id="step1">
     <div class="card-hd">
       <div class="c-num">1</div>
@@ -1814,6 +3523,19 @@ body {
     <div class="f-wrap" style="height:auto;padding:8px;">
       <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
     </div>
+
+    <label class="f-lbl">Code Promo (Optionnel)</label>
+    <div class="promo-wrap">
+      <svg class="promo-ic" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v5a2 2 0 0 1 0 4v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 1 0-4z"/>
+        <line x1="13" y1="5" x2="13" y2="8"/>
+        <line x1="13" y1="11" x2="13" y2="14"/>
+        <line x1="13" y1="16" x2="13" y2="19"/>
+      </svg>
+      <input type="text" id="promoCode" class="promo-input" placeholder="Entrez votre code (ex: BIENVENUE10)" maxlength="20" autocomplete="off" oninput="validatePromoLive()" />
+      <span class="promo-status" id="promoStatus"></span>
+    </div>
+    <div class="promo-info" id="promoInfo">&nbsp;</div>
     <div class="compare-block">
       <div class="compare-title">Mieux qu&rsquo;une application</div>
       <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
@@ -1900,8 +3622,14 @@ body {
 <div class="modal-overlay" id="customModal" onclick="if(event.target===this) hideModal()">
   <div class="modal-box-price">
     <div class="m-handle"></div>
+    <div class="voucher-header">
+      <span class="voucher-brand">I&amp;N RUN</span>
+      <span class="voucher-ref" id="voucherRef">INR &mdash; &hellip;</span>
+    </div>
+    <div class="voucher-stamp">Confirm&eacute;</div>
     <h3 class="m-title">Tarif Fixe Garanti</h3>
     <p class="m-subtitle">Tarif direct chauffeur &mdash; <strong style="color:var(--gold)">z&eacute;ro commission</strong></p>
+    <div class="voucher-divider"><span class="voucher-divider-text">Votre course</span></div>
     <div class="m-recap">
       <div class="m-price" id="finalPrice">-- &euro;</div>
       <div class="m-price-detail">
@@ -2269,6 +3997,91 @@ function countUpPrice(el, final, dur) {
   requestAnimationFrame(step);
 }
 
+
+/* ── SYSTÈME CODES PROMO ── */
+// Définition centralisée des codes valides
+var PROMO_CODES = {
+  'BIENVENUE10': {
+    discount: 0.10,
+    label: '✓ Code découverte appliqué — 10% de remise',
+    type: 'percent'
+  },
+  'MERCI15': {
+    discount: 0.15,
+    label: '✓ Code fidélité appliqué — 15% de remise',
+    type: 'percent'
+  },
+  'VIP20': {
+    discount: 0.20,
+    label: '✓ Code VIP appliqué — 20% de remise',
+    type: 'percent'
+  },
+  'AMI10': {
+    discount: 10,
+    label: '✓ Code parrainage appliqué — 10€ offerts',
+    type: 'flat'
+  }
+};
+
+var activePromo = null;
+
+function validatePromoLive(){
+  var input = document.getElementById('promoCode');
+  var info = document.getElementById('promoInfo');
+  var status = document.getElementById('promoStatus');
+  var code = input.value.trim().toUpperCase();
+  input.value = code;
+
+  // Reset visuel
+  input.classList.remove('valid','invalid');
+  info.classList.remove('valid','invalid');
+  status.classList.remove('show');
+  status.textContent = '';
+
+  if(code.length === 0){
+    info.innerHTML = '&nbsp;';
+    activePromo = null;
+    return;
+  }
+
+  if(PROMO_CODES[code]){
+    // Valide
+    input.classList.add('valid');
+    info.classList.add('valid');
+    info.innerHTML = PROMO_CODES[code].label;
+    status.textContent = '✓';
+    status.style.color = '#22c55e';
+    status.classList.add('show');
+    activePromo = {code: code, rule: PROMO_CODES[code]};
+  } else if(code.length >= 4){
+    // Invalide mais assez long pour juger
+    input.classList.add('invalid');
+    info.classList.add('invalid');
+    info.innerHTML = 'Code inconnu ou expiré';
+    status.textContent = '✗';
+    status.style.color = '#ef4444';
+    status.classList.add('show');
+    activePromo = null;
+  } else {
+    info.innerHTML = '&nbsp;';
+    activePromo = null;
+  }
+}
+
+// Fonction utilitaire : applique le code au prix
+function applyPromo(price){
+  if(!activePromo) return {price: price, original: price, discount: 0};
+  var rule = activePromo.rule;
+  var discount = 0;
+  if(rule.type === 'percent'){
+    discount = Math.round(price * rule.discount);
+  } else if(rule.type === 'flat'){
+    discount = rule.discount;
+  }
+  var newPrice = Math.max(Math.ceil(price - discount), 25); // Prix plancher 25€
+  return {price: newPrice, original: price, discount: price - newPrice};
+}
+
 async function calculatePrice(){
   if(!coords.dep||!coords.arr)return;
   document.getElementById('btnText').style.display='none';
@@ -2289,13 +4102,23 @@ async function calculatePrice(){
       const isNuit=(heure>=22||heure<6);
       if(isNuit)price+=10;
       price=Math.ceil(price);
+      // Application du code promo
+      var promoResult = applyPromo(price);
+      var finalPrice = promoResult.price;
+      var discountAmount = promoResult.discount;
+
       document.getElementById('m-km').innerText=km.toFixed(1)+' km';
       document.getElementById('m-dur').innerText=Math.round(min)+' min';
       const calcDet=document.getElementById('calcDetails');
-      if(isNuit){calcDet.innerHTML='<span class="nuit-badge">������ Tarif nuit inclus (+10€ · 22h–6h)</span>';}
-      else{calcDet.innerHTML='';}
+      var details = '';
+      if(isNuit){details += '<span class="nuit-badge">\u{1F319} Tarif nuit inclus (+10€ · 22h–6h)</span>';}
+      if(activePromo && discountAmount > 0){
+        if(details) details += '<br>';
+        details += '<span class="promo-badge">Code ' + activePromo.code + ' — −' + discountAmount + '€</span>';
+      }
+      calcDet.innerHTML = details;
       document.getElementById('customModal').classList.add('show');
-      countUpPrice(document.getElementById('finalPrice'),price,1200);
+      countUpPrice(document.getElementById('finalPrice'), finalPrice, 1200);
     }else{
       // Erreur élégante — pas de alert brutal
       document.getElementById('customModal').classList.add('show');
@@ -2333,7 +4156,11 @@ function sendWhatsApp(){
 🏁 Arrivée : ${arr}
 `;
   const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
-  msg+=`💳 Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}\n💶 Paiement : ${pay}\n\n`;
+  var _promoSuffix = '';
+  if(activePromo){
+    _promoSuffix = '\n������ Code promo : *' + activePromo.code + '*';
+  }
+  msg+=`������ Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}${_promoSuffix}\n������ Paiement : ${pay}\n\n`;
   msg+=`✨ *Préférences à bord :*
 - Musique : ${music?music.innerText.trim():'Non'}
 - Climatisation : ${clim?clim.innerText.trim():'Non'}
@@ -2473,9 +4300,8 @@ setInterval(fetchTrafic, 180000);
   var canvas = document.getElementById('constellation-canvas');
   if(!canvas) return;
   var ctx = canvas.getContext('2d');
-  var W, H, pts = [], RAF;
+  var W, H, pts = [], shootingStars = [], RAF;
   var mouse = {x:-999, y:-999};
-  var scrollY = 0;
   var DPR = Math.min(window.devicePixelRatio||1, 2);
 
   function resize(){
@@ -2484,6 +4310,7 @@ setInterval(fetchTrafic, 180000);
     canvas.height = H * DPR;
     canvas.style.width  = W+'px';
     canvas.style.height = H+'px';
+    ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(DPR, DPR);
     initPts();
   }
@@ -2503,6 +4330,48 @@ setInterval(fetchTrafic, 180000);
     }
   }
 
+  // ═══ ÉTOILES FILANTES ═══
+  function createShootingStar(){
+    // Angle : diagonale descendante (entre -30° et -50° depuis la gauche)
+    var angle = (Math.random()*20 + 25) * Math.PI / 180; // 25-45°
+    var speed = Math.random()*4 + 6; // 6-10 px/frame
+    // Point de départ : quelque part en haut ou sur le côté gauche
+    var startX, startY;
+    if(Math.random() < 0.6){
+      // Depuis le haut
+      startX = Math.random() * W * 0.7 + W * 0.1;
+      startY = -20;
+    } else {
+      // Depuis la gauche
+      startX = -20;
+      startY = Math.random() * H * 0.4;
+    }
+    shootingStars.push({
+      x: startX,
+      y: startY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      trail: [],
+      maxTrail: 18
+    });
+  }
+
+  // Planifier la prochaine étoile filante (8-14s aléatoire)
+  function scheduleNextStar(){
+    var delay = Math.random() * 6000 + 8000;
+    setTimeout(function(){
+      // Ne pas créer si onglet caché (économie batterie)
+      if(!document.hidden) createShootingStar();
+      scheduleNextStar();
+    }, delay);
+  }
+  // Première étoile après 3-5s (accroche visuelle précoce)
+  setTimeout(function(){
+    if(!document.hidden) createShootingStar();
+    scheduleNextStar();
+  }, Math.random()*2000 + 3000);
+
   var DIST = 130, DIST2 = DIST*DIST;
   var lastT = 0;
 
@@ -2511,6 +4380,7 @@ setInterval(fetchTrafic, 180000);
     var dt = Math.min(ts - lastT, 32); lastT = ts;
     ctx.clearRect(0, 0, W, H);
 
+    // ═══ Points constellation ═══
     for(var i=0;i<pts.length;i++){
       var p=pts[i];
       p.x += p.vx*(dt/16);
@@ -2518,23 +4388,19 @@ setInterval(fetchTrafic, 180000);
       if(p.x<0)p.x=W; if(p.x>W)p.x=0;
       if(p.y<0)p.y=H; if(p.y>H)p.y=0;
 
-      // Légère attraction vers la souris
       var mdx=mouse.x-p.x, mdy=mouse.y-p.y;
       var md2=mdx*mdx+mdy*mdy;
-      if(md2<22500){ // 150px
+      if(md2<22500){
         var f=0.00003;
         p.vx+=mdx*f*(dt/16); p.vy+=mdy*f*(dt/16);
       }
-      // Friction
       p.vx*=0.999; p.vy*=0.999;
 
-      // Dessiner point
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
       ctx.fillStyle = 'rgba(212,175,55,'+p.a+')';
       ctx.fill();
 
-      // Lignes entre points proches
       for(var j=i+1;j<pts.length;j++){
         var q=pts[j];
         var dx=p.x-q.x, dy=p.y-q.y;
@@ -2549,6 +4415,58 @@ setInterval(fetchTrafic, 180000);
         }
       }
     }
+
+    // ═══ Étoiles filantes ═══
+    for(var s=shootingStars.length-1; s>=0; s--){
+      var star = shootingStars[s];
+      // Ajouter position actuelle à la traînée
+      star.trail.push({x: star.x, y: star.y});
+      if(star.trail.length > star.maxTrail) star.trail.shift();
+      // Déplacer
+      star.x += star.vx;
+      star.y += star.vy;
+      // Vie décroît quand elle sort de l'écran
+      if(star.x > W + 50 || star.y > H + 50 || star.x < -50){
+        star.life -= 0.08;
+      }
+      // Dessiner la traînée (gradient doré)
+      if(star.trail.length > 1){
+        for(var t=0; t<star.trail.length-1; t++){
+          var t1 = star.trail[t];
+          var t2 = star.trail[t+1];
+          var trailAlpha = (t / star.trail.length) * 0.85 * star.life;
+          ctx.beginPath();
+          ctx.moveTo(t1.x, t1.y);
+          ctx.lineTo(t2.x, t2.y);
+          ctx.strokeStyle = 'rgba(243, 229, 171, ' + trailAlpha + ')';
+          ctx.lineWidth = (t / star.trail.length) * 2.2;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+      }
+      // Dessiner la tête brillante (halo + point central)
+      if(star.life > 0 && star.x > -50 && star.x < W+50 && star.y < H+50){
+        // Halo externe doux
+        var grad = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, 8);
+        grad.addColorStop(0, 'rgba(255, 240, 200, ' + (star.life * 0.9) + ')');
+        grad.addColorStop(0.4, 'rgba(212, 175, 55, ' + (star.life * 0.5) + ')');
+        grad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, 8, 0, Math.PI*2);
+        ctx.fill();
+        // Point central net
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, 1.2, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(255, 245, 220, ' + star.life + ')';
+        ctx.fill();
+      }
+      // Supprimer si hors-écran et traînée disparue
+      if(star.life <= 0){
+        shootingStars.splice(s, 1);
+      }
+    }
+
     canvas.classList.add('ready');
   }
 
@@ -2643,6 +4561,172 @@ function showToast(msg, duration){
     t.classList.remove('show');
   }, duration || 2600);
 }
+
+
+/* ── CARROUSEL AVIS ── */
+(function(){
+  var track = document.getElementById('avisTrack');
+  var dots = document.getElementById('avisDots');
+  if(!track || !dots) return;
+  var current = 0;
+  var total = 3;
+  var autoplayTimer = null;
+
+  function goTo(idx){
+    current = (idx + total) % total;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    var dotEls = dots.querySelectorAll('.avis-dot');
+    dotEls.forEach(function(d, i){
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function startAutoplay(){
+    stopAutoplay();
+    autoplayTimer = setInterval(function(){
+      goTo(current + 1);
+    }, 6500);
+  }
+  function stopAutoplay(){
+    if(autoplayTimer){ clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+
+  window.goToAvis = function(idx){
+    goTo(idx);
+    startAutoplay(); // reset timer sur interaction
+  };
+
+  startAutoplay();
+
+  // Pause autoplay si utilisateur survole
+  track.addEventListener('mouseenter', stopAutoplay);
+  track.addEventListener('mouseleave', startAutoplay);
+
+  // Swipe tactile
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e){
+    touchStartX = e.touches[0].clientX;
+    stopAutoplay();
+  }, {passive:true});
+  track.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 40){
+      goTo(current + (dx < 0 ? 1 : -1));
+    }
+    startAutoplay();
+  }, {passive:true});
+})();
+
+/* ── ORNEMENTS : reveal au scroll ── */
+(function(){
+  var ornaments = document.querySelectorAll('[data-ornament]');
+  if(!ornaments.length || !('IntersectionObserver' in window)) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  }, {threshold: 0.4});
+  ornaments.forEach(function(o){ obs.observe(o); });
+})();
+
+/* ── VOUCHER REF : généré à l'ouverture de la modal ── */
+(function(){
+  var origShowModal = null;
+  // Intercepter l'ouverture de la modal
+  var modal = document.getElementById('customModal');
+  if(!modal) return;
+  var observer = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      if(m.attributeName === 'class' && modal.classList.contains('show')){
+        var refEl = document.getElementById('voucherRef');
+        if(refEl){
+          var d = new Date();
+          var pad = function(n){ return n < 10 ? '0' + n : n; };
+          var ref = 'INR-' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds() % 60).substring(0,2);
+          refEl.textContent = ref;
+        }
+      }
+    });
+  });
+  observer.observe(modal, {attributes: true, attributeFilter: ['class']});
+})();
+
+
+/* ── STEPPER LUMINEUX : gestion d'état ── */
+function setStepperState(stepNum){
+  // stepNum: 1-4
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById('stepper-'+i);
+    if(!el)continue;
+    el.classList.remove('active','done','future');
+    var circle=el.querySelector('.stepper-circle');
+    if(i<stepNum){
+      el.classList.add('done');
+      circle.innerHTML='<svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>';
+    }else if(i===stepNum){
+      el.classList.add('active');
+      circle.textContent=i;
+    }else{
+      el.classList.add('future');
+      circle.textContent=i;
+    }
+  }
+  // Lignes
+  for(var j=1;j<=3;j++){
+    var line=document.getElementById('stepper-line-'+j);
+    if(!line)continue;
+    line.classList.remove('done','future');
+    line.classList.add(j<stepNum?'done':'future');
+  }
+}
+
+// Hook sur les événements existants
+(function(){
+  // Quand dep+arr sélectionnés → animer vers step 1 consolidé
+  var origSelectLocation = window.selectLocation;
+  if(typeof origSelectLocation === 'function'){
+    window.selectLocation = function(iId,dId,type,name,lat,lon){
+      origSelectLocation.apply(this,arguments);
+      // Si dep ET arr sont remplis, on peut considérer step 1 "prêt"
+      if(window.coords && window.coords.dep && window.coords.arr){
+        // Step 1 toujours actif, mais on pourrait le marquer "ready"
+      }
+    };
+  }
+
+  // Quand nextStep(2) appelé → step 2 actif
+  var origNextStep = window.nextStep;
+  if(typeof origNextStep === 'function'){
+    window.nextStep = function(step){
+      origNextStep.apply(this,arguments);
+      if(step === 2) setStepperState(2);
+    };
+  }
+
+  // Quand modal tarif s'ouvre → step 3 actif
+  var modal = document.getElementById('customModal');
+  if(modal){
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.attributeName === 'class'){
+          if(modal.classList.contains('show')){
+            setStepperState(3);
+          }
+        }
+      });
+    });
+    obs.observe(modal, {attributes:true, attributeFilter:['class']});
+  }
+
+  // Quand sendWhatsApp appelé → step 4 (validé)
+  var origSendWhatsApp = window.sendWhatsApp;
+  if(typeof origSendWhatsApp === 'function'){
+    window.sendWhatsApp = function(){
+      setStepperState(4);
+      return origSendWhatsApp.apply(this, arguments);
+    };
+  }
+})();
 </script>
 
 
