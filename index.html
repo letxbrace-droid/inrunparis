@@ -3555,6 +3555,169 @@ body { background: var(--ink) !important; }
 .w-3d-feels{font-family:'Inter',-apple-system,sans-serif;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.62);margin-top:2px;}
 /* ═══════════════════════════════════════════════════════════════ */
 
+
+/* ════════════════════════════════════════════════════════════════
+   FIX GLOBAL — Anti-chevauchement + Météo compacte propre
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Espace entre cards info ── */
+.infos-row { display: flex; flex-direction: column; gap: 12px !important; }
+.info-card { overflow: hidden !important; position: relative; }
+.info-card * { position: relative; z-index: 1; }
+
+/* ── Header météo sans overlap ── */
+.i-hd-wrap { 
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
+}
+.i-hd-text {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.i-hd-meta {
+  margin-left: auto !important;
+  font-size: 0.55rem !important;
+  opacity: 0.45 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── NOUVEAU widget météo compact ── */
+/* Supprimer l'ancien 3D avec fond coloré */
+.w-3d-card, .w-top-row { display: none !important; }
+
+.meteo-compact {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 4px 0 2px !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+.meteo-icon-wrap {
+  width: 52px !important;
+  height: 52px !important;
+  flex-shrink: 0 !important;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)) !important;
+}
+.meteo-icon-wrap svg { width: 52px !important; height: 52px !important; display: block !important; }
+.meteo-body {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex: 1 !important;
+  overflow: hidden !important;
+}
+.meteo-temp {
+  font-family: 'Marcellus', 'Inter', serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--white, #CDD2D8) !important;
+  flex-shrink: 0 !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: unset !important;
+  background: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+.meteo-temp sup {
+  font-size: 1rem !important;
+  vertical-align: super !important;
+  font-family: 'Inter', sans-serif !important;
+  opacity: 0.7 !important;
+}
+.meteo-right {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  overflow: hidden !important;
+}
+.meteo-cond {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--white, #CDD2D8) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  -webkit-text-fill-color: unset !important;
+}
+.meteo-feels {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 400 !important;
+  opacity: 0.5 !important;
+  white-space: nowrap !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+/* ── wBadge propre ── */
+#wBadge {
+  margin-top: 8px !important;
+  overflow: hidden !important;
+}
+.w-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.62rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: 50px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.w-badge.bon  { background: rgba(52,211,153,0.1); color: #34D399; border: 1px solid rgba(52,211,153,0.2); }
+.w-badge.moyen{ background: rgba(251,191,36,0.1); color: #FBB924; border: 1px solid rgba(251,191,36,0.2); }
+.w-badge.bad  { background: rgba(239,68,68,0.1);  color: #EF4444; border: 1px solid rgba(239,68,68,0.2);  }
+
+/* ── Anti-chevauchement général ── */
+.card { overflow: visible !important; }
+.card > * { position: relative; z-index: 1; }
+.f-lbl { display: block !important; clear: both !important; position: relative !important; z-index: 1 !important; }
+.tog-grid { position: relative !important; z-index: 1 !important; }
+.tog-shell { position: relative !important; }
+
+/* ── Services grid no overflow ── */
+.services-grid { overflow: hidden !important; }
+.srv-item { overflow: hidden !important; }
+.srv-ic { flex-shrink: 0 !important; }
+
+/* ── Card step2 spacing ── */
+#step2 .card-hd { margin-bottom: 14px !important; }
+#step2 label.f-lbl { margin-top: 14px !important; }
+
+/* ── Photo intérieur ── */
+.interieur-wrap { 
+  margin-bottom: 18px !important; 
+  border-radius: 14px !important;
+  overflow: hidden !important;
+}
+
+/* ── Récap datetime ── */
+.recap-datetime { 
+  position: relative !important; 
+  z-index: 2 !important; 
+  margin-bottom: 16px !important; 
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+
 </style>
 </head>
 <body class="loading">
@@ -3966,12 +4129,14 @@ body { background: var(--ink) !important; }
       <span class="i-hd-text">M&eacute;t&eacute;o Live</span>
       <span class="i-hd-meta" id="w-updated"></span>
     </div>
-    <div class="w-3d-card" id="wCard3d" data-wx="partly">
-      <div class="w-3d-svg-wrap" id="wSvg3d"></div>
-      <div class="w-3d-info">
-        <div class="w-3d-temp" id="wTemp3d">--<sup>&deg;</sup></div>
-        <div class="w-3d-cond" id="wCond3d">Chargement&hellip;</div>
-        <div class="w-3d-feels" id="wFeels3d">Ressenti --&deg;</div>
+    <div class="meteo-compact" id="wCard3d" data-wx="partly">
+      <div class="meteo-icon-wrap" id="wSvg3d"></div>
+      <div class="meteo-body">
+        <div class="meteo-temp" id="wTemp3d">--<sup>&deg;</sup></div>
+        <div class="meteo-right">
+          <div class="meteo-cond" id="wCond3d">Chargement&hellip;</div>
+          <div class="meteo-feels" id="wFeels3d">Ressenti --&deg;</div>
+        </div>
       </div>
     </div>
     <div id="wBadge"></div>
@@ -5173,6 +5338,21 @@ function update3DWeather(code,temp,feels){
 document.addEventListener('DOMContentLoaded',function(){update3DWeather(2,14,12);});
 // ─────────────────────────────────────────────────────────────────────────────
 
+
+function update3DWeather(code,temp,feels){
+  var wx=W3D_WX[code]||"partly";
+  var svgEl=document.getElementById("wSvg3d");
+  var tempEl=document.getElementById("wTemp3d");
+  var condEl=document.getElementById("wCond3d");
+  var feelsEl=document.getElementById("wFeels3d");
+  var card=document.getElementById("wCard3d");
+  if(card) card.setAttribute("data-wx",wx);
+  if(svgEl) svgEl.innerHTML=W3D[wx]||W3D.partly;
+  if(tempEl) tempEl.innerHTML=Math.round(temp)+"<sup>&deg;</sup>";
+  if(condEl&&window.WX_LABEL) condEl.textContent=WX_LABEL[code]||wx;
+  if(feelsEl) feelsEl.textContent="Ressenti "+Math.round(feels)+"\u00b0";
+}
+document.addEventListener("DOMContentLoaded",function(){update3DWeather(2,14,12);});
 </script>
 <div id="notif-toast" class="notif-toast"></div>
 </body>
