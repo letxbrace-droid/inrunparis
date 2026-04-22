@@ -3,242 +3,2750 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080616">
-<title>I&N RUN — Elite Executive Interface</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&family=Marcellus&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#020810">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="I&amp;N RUN">
+<link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
+<meta property="og:title" content="I&amp;N RUN — Chauffeur Privé Paris">
+<meta property="og:description" content="Chauffeur privé VTC Paris CDG Orly. Tarif fixe garanti. Réservation en 30 secondes.">
+<meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
+<title>I&N RUN — Chauffeur Privé Paris</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsIiB4MT0iMCIgeTE9IjAiIHgyPSIzMiIgeTI9IjMyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZFQjEyMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRDQ2RSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjUiIHk9IjMiIHdpZHRoPSI0LjUiIGhlaWdodD0iMjYiIGZpbGw9InVybCgjZmwpIi8+PC9zdmc+">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Marcellus&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════
+   I&N RUN — APP TECH DESIGN v3.0
+   Fond #020810 · Or #FEB122 · Glass Dark
+   ═══════════════════════════════════════════ */
 :root {
-  --bg: #080616;
-  --surface: rgba(255, 255, 255, 0.03);
-  --blue: #1e90ff;
-  --blue-glow: rgba(30, 144, 255, 0.5);
-  --green: #00ff85;
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-dim: #a0a0b0;
-  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --bg:        #020810;
+  --bg1:       #060D1A;
+  --bg2:       #0A1628;
+  --bg3:       #0F1E35;
+  --gold:      #FEB122;
+  --gold-l:    #FFD46E;
+  --gold-d:    #C8850A;
+  --cyan:      #83F9FF;
+  --blue:      #4F8EF7;
+  --green:     #34D399;
+  --red:       #F87171;
+  --amber:     #FBB124;
+  --white:     #F0F4F8;
+  --g1:        #B8C8D8;
+  --g2:        #6A8099;
+  --g3:        #3A5068;
+  --glass:     rgba(10,22,40,0.72);
+  --glass2:    rgba(6,13,26,0.85);
+  --border:    rgba(79,142,247,0.14);
+  --border-g:  rgba(254,177,34,0.22);
+  --r:         14px;
+  --rl:        20px;
+  --rxl:       26px;
+  --tap:       52px;
+  --hdr:       60px;
+  --ease:      cubic-bezier(0.34,1.3,0.64,1);
+  --ease2:     cubic-bezier(0.23,1,0.32,1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+*, *::before, *::after { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding-bottom: 90px;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+input, textarea, button, select { font-family: inherit; }
 
-body { 
-    font-family: 'Inter', sans-serif; 
-    background: var(--bg);
-    background-image: 
-        radial-gradient(circle at 50% -20%, #1a1953 0%, transparent 80%),
-        radial-gradient(circle at 0% 100%, #0d0c22 0%, transparent 40%);
-    color: #fff;
-    min-height: 100vh;
-    overflow-y: auto!important;
-    padding-bottom: 120px;
+/* ── BG AMBIANCE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 700px 500px at 10% 0%, rgba(79,142,247,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 400px at 90% 85%, rgba(131,249,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 300px at 50% 40%, rgba(254,177,34,0.025) 0%, transparent 55%);
 }
 
-/* ── DYNAMIC ISLAND (PERSISTENT UI) ── */
-#sticky-widget {
-    position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-120px);
-    z-index: 999; width: calc(100% - 30px); max-width: 460px;
-    padding: 10px 18px; display: flex; justify-content: space-between; align-items: center;
-    background: rgba(8, 6, 22, 0.85); backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border); border-radius: 22px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    opacity: 0; transition: all 0.5s var(--ease);
+/* ════════════════════════════════════════════
+   HEADER — Dynamic Island style
+   ════════════════════════════════════════════ */
+#hdr {
+  position: sticky; top: 0; z-index: 980;
+  background: rgba(2,8,16,0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom: 1px solid rgba(79,142,247,0.08);
 }
-#sticky-widget.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ── TECH CARDS ── */
-.container { max-width: 500px; margin: 0 auto; padding: 20px; }
-.glass-card {
-    background: var(--surface); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-    border: 1px solid var(--glass-border); border-radius: 30px;
-    padding: 30px; margin-bottom: 25px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-    transition: all 0.5s var(--ease);
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--hdr); padding: 0 20px;
+  max-width: 640px; margin: 0 auto;
 }
-.card.active { border-color: var(--blue); box-shadow: 0 0 50px var(--blue-glow); }
-.card.locked { opacity: 0.2; filter: grayscale(1) blur(4px); pointer-events: none; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.logo-mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #FEC443, #FEB122 55%, #C8850A);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 16px rgba(254,177,34,0.3);
+}
+.logo-mark span { font-family: 'Marcellus', serif; font-size: 0.9rem; color: #020810; font-weight: 700; }
+.logo-text { font-family: 'Marcellus', serif; font-size: 1rem; color: var(--white); letter-spacing: 0.04em; }
+.logo-text em { color: var(--gold); font-style: normal; }
+.nav-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 50px;
+  background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.2);
+  font-size: 0.68rem; font-weight: 600; color: var(--green);
+  letter-spacing: 0.06em;
+}
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-/* ── ETA BUBBLE (REAL LOGIC) ── */
-#eta-bubble {
-    position: absolute; right: 10px; top: -18px;
-    background: var(--blue); color: #fff; font-size: 0.6rem; font-weight: 700;
-    padding: 5px 12px; border-radius: 50px; box-shadow: 0 0 20px var(--blue);
-    display: none; font-family: 'JetBrains Mono';
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: var(--hdr); left: 0; height: 2px; z-index: 981;
+  background: linear-gradient(90deg, var(--gold), var(--gold-l));
+  width: 25%; transition: width 0.6s var(--ease2);
+  box-shadow: 0 0 8px rgba(254,177,34,0.4);
 }
 
-/* ── AUTOCOMPLETE OVERRIDE ── */
-.f-wrap { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--glass-border); border-radius: 18px; display: flex; align-items: center; padding: 0 20px; margin-bottom: 15px; position: relative; }
-input { background: transparent; border: none; outline: none; height: 60px; color: #fff; font-size: 1rem; width: 100%; font-weight: 300; }
-.ac-results { position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; background: #0a0a1a; border: 1px solid var(--blue); border-radius: 14px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,1); }
-.ac-item { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 0.85rem; color: var(--text-dim); transition: 0.2s; }
-.ac-item:hover { background: var(--blue); color: #fff; }
+/* ════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════ */
+.hero {
+  padding: 44px 20px 28px;
+  text-align: center; position: relative; z-index: 1;
+}
+.hero-tagline {
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.8;
+  margin: 0 0 14px;
+}
+h1 {
+  font-family: 'Marcellus', serif;
+  font-size: clamp(1.9rem,8vw,2.6rem);
+  line-height: 1.2; margin: 0 0 14px; font-weight: 400;
+  color: var(--white);
+}
+.g {
+  background: linear-gradient(135deg, #FFD46E 0%, #FEB122 50%, #C8850A 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-p {
+  font-size: 0.88rem; line-height: 1.7; color: var(--g2);
+  margin: 0 auto 28px; max-width: 320px; font-weight: 300;
+}
+.hero-p strong { color: var(--white); font-weight: 600; -webkit-text-fill-color: var(--white); }
+.hero-p .gold { color: var(--gold); font-weight: 700; -webkit-text-fill-color: var(--gold); }
 
-/* ── REASSURANCE (COPYWRITING ÉLITE) ── */
-.review-box { padding: 25px; background: rgba(255,255,255,0.02); border-radius: 24px; margin-bottom: 20px; border: 1px solid var(--glass-border); position: relative; }
-.review-box::before { content: "“"; position: absolute; top: 10px; left: 20px; font-size: 4rem; color: var(--blue); opacity: 0.2; }
-.review-name { color: var(--blue); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; display: block; }
-.review-content { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
+/* ── PROOF BUBBLES ── */
+.proof {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; max-width: 360px; margin: 0 auto 32px;
+}
+.proof-item {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 16px 14px 14px;
+  text-align: left;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative; overflow: hidden;
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+.proof-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,142,247,0.3), transparent);
+}
+.proof-item:hover { transform: translateY(-2px); border-color: var(--border-g); }
+.proof-ic {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(254,177,34,0.1); border: 1px solid rgba(254,177,34,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+}
+.proof-ic svg { width: 18px; height: 18px; }
+.pv {
+  font-family: 'Marcellus', serif; font-size: 1.3rem;
+  color: var(--white); line-height: 1.1; display: block;
+}
+.pv-sm { font-size: 0.65rem; color: var(--g3); font-weight: 400; letter-spacing: 0.02em; }
+.pl {
+  font-size: 0.55rem; color: var(--g3); text-transform: uppercase;
+  letter-spacing: 0.14em; margin-top: 4px; line-height: 1.4;
+}
 
-/* ── DOCK IOS 3D ── */
-.dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; height: 75px; background: rgba(8,6,22,0.8); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 28px; display: flex; padding: 10px; gap: 15px; z-index: 2000; box-shadow: 0 40px 80px rgba(0,0,0,0.8); }
-.dock-btn { flex: 1; border-radius: 20px; display: flex; align-items: center; justify-content: center; transition: 0.4s var(--ease); border: 1px solid transparent; }
-.dock-btn:active { transform: scale(0.9); }
-.wa-style { background: rgba(0,255,133,0.1); border-color: rgba(0,255,133,0.2); color: var(--green); }
-.tel-style { background: rgba(30,144,255,0.1); border-color: rgba(30,144,255,0.2); color: var(--blue); }
+/* ════════════════════════════════════════════
+   STICKY DATE/HEURE — pill dynamique
+   ════════════════════════════════════════════ */
+#sticky-datetime {
+  position: sticky; top: calc(var(--hdr) + 2px); z-index: 970;
+  padding: 8px 16px;
+  pointer-events: none;
+}
+.sticky-dt-inner {
+  max-width: 540px; margin: 0 auto;
+  background: rgba(6,13,26,0.80);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(254,177,34,0.2);
+  border-radius: 50px;
+  padding: 8px 14px 8px 10px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+  pointer-events: auto;
+  display: none;
+}
+#sticky-datetime.visible .sticky-dt-inner { display: flex; }
+.sticky-dt-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #FFD46E, #FEB122);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; box-shadow: 0 0 10px rgba(254,177,34,0.3);
+}
+.sticky-dt-icon svg { stroke: #020810; }
+.sticky-dt-kicker {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(254,177,34,0.7);
+  display: block; line-height: 1;
+}
+.sticky-dt-time {
+  font-family: 'Marcellus', serif; font-size: 0.9rem;
+  color: var(--white); display: block; line-height: 1.3;
+}
+.sticky-dt-btn {
+  margin-left: auto; padding: 5px 12px; border-radius: 50px;
+  background: rgba(254,177,34,0.1); border: 1px solid rgba(254,177,34,0.25);
+  font-size: 0.62rem; font-weight: 600; color: var(--gold);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.sticky-dt-btn:hover { background: rgba(254,177,34,0.18); }
+.sticky-dt-btn svg { width: 12px; height: 12px; stroke: currentColor; }
 
-/* ── SVG ICONS ── */
-.icon-svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+/* ════════════════════════════════════════════
+   TUNNEL — formulaire en cards
+   ════════════════════════════════════════════ */
+.tunnel {
+  max-width: 540px; margin: 0 auto; padding: 0 16px;
+  position: relative; z-index: 1;
+}
+
+/* ── STEPPER ── */
+.stepper {
+  display: flex; align-items: center;
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 50px; padding: 10px 16px;
+  margin-bottom: 18px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.stepper-item {
+  display: flex; align-items: center; gap: 6px;
+  flex: 1; justify-content: center;
+}
+.stepper-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+  transition: all 0.4s var(--ease);
+  border: 1.5px solid var(--g3); color: var(--g3);
+  background: transparent;
+}
+.stepper-item.active .stepper-circle {
+  background: linear-gradient(135deg, #FFD46E, #FEB122 55%, #C8850A);
+  border: none; color: #020810;
+  box-shadow: 0 0 0 3px rgba(254,177,34,0.15), 0 0 20px rgba(254,177,34,0.4);
+  animation: stepGlow 2.4s ease-in-out infinite;
+}
+@keyframes stepGlow {
+  0%,100% { box-shadow: 0 0 0 3px rgba(254,177,34,0.15), 0 0 20px rgba(254,177,34,0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(254,177,34,0.08), 0 0 32px rgba(254,177,34,0.6); }
+}
+.stepper-item.done .stepper-circle {
+  background: rgba(254,177,34,0.12); border-color: rgba(254,177,34,0.5); color: var(--gold);
+}
+.stepper-label {
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--g3);
+  transition: color 0.3s;
+}
+.stepper-item.active .stepper-label,
+.stepper-item.done .stepper-label { color: var(--gold-l); }
+.stepper-line {
+  flex: 1; height: 1px; max-width: 24px;
+  background: var(--g3); border-radius: 1px;
+  transition: background 0.4s;
+}
+.stepper-line.done { background: linear-gradient(90deg, var(--gold), var(--gold-l)); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--rxl);
+  padding: 24px 20px;
+  margin-bottom: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.4s, box-shadow 0.4s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.card.active {
+  border-color: rgba(254,177,34,0.28);
+  box-shadow: 0 0 0 1px rgba(254,177,34,0.08), 0 12px 40px rgba(0,0,0,0.4);
+}
+.card.locked { opacity: 0.45; pointer-events: none; filter: blur(0.3px); }
+.card-hd {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(79,142,247,0.1);
+}
+.c-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-family: 'Marcellus', serif;
+  border: 1.5px solid rgba(79,142,247,0.3); color: var(--g2);
+  flex-shrink: 0; transition: all 0.3s;
+}
+.card.active .c-num {
+  border-color: rgba(254,177,34,0.5); color: var(--gold-l);
+  background: rgba(254,177,34,0.08);
+}
+.c-title {
+  font-family: 'Marcellus', serif; font-size: 1.05rem;
+  color: var(--white); letter-spacing: 0.02em;
+}
+.c-sub { font-size: 0.72rem; color: var(--g2); margin-top: 2px; font-weight: 300; }
+
+/* ── INPUTS ── */
+.f-lbl {
+  display: block; font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--g3); margin: 18px 0 8px;
+}
+.f-wrap {
+  position: relative; display: flex; align-items: center;
+  background: rgba(6,13,26,0.75);
+  border: 1px solid rgba(79,142,247,0.2);
+  border-radius: 12px; padding: 0 14px; height: var(--tap);
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.f-wrap:focus-within {
+  border-color: rgba(254,177,34,0.55);
+  background: rgba(10,22,40,0.9);
+  box-shadow: 0 0 0 3px rgba(254,177,34,0.07), 0 4px 16px rgba(0,0,0,0.3);
+}
+.f-wrap.selected {
+  border-color: rgba(52,211,153,0.4);
+  box-shadow: 0 0 0 2px rgba(52,211,153,0.07);
+}
+.f-ic {
+  color: var(--g3); margin-right: 10px; flex-shrink: 0;
+  display: flex; align-items: center; transition: color 0.25s;
+}
+.f-wrap:focus-within .f-ic { color: var(--gold); }
+.f-in {
+  flex: 1; height: 100%; background: transparent; border: none; outline: none;
+  color: var(--gold-l); font-size: 0.9rem; font-weight: 400;
+  caret-color: var(--gold);
+}
+.f-in::placeholder { color: var(--g3); font-weight: 300; }
+input[type="datetime-local"] {
+  color: var(--gold-l) !important; color-scheme: dark;
+}
+input[type="datetime-local"]::-webkit-datetime-edit { color: var(--gold-l); }
+input[type="datetime-local"]::-webkit-datetime-edit-text,
+input[type="datetime-local"]::-webkit-datetime-edit-day-field,
+input[type="datetime-local"]::-webkit-datetime-edit-month-field,
+input[type="datetime-local"]::-webkit-datetime-edit-year-field,
+input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
+input[type="datetime-local"]::-webkit-datetime-edit-minute-field {
+  color: var(--gold-l) !important; background: transparent;
+}
+.f-spinner {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px;
+  border: 2px solid rgba(254,177,34,0.2); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  display: none; z-index: 2;
+}
+.f-spinner.active { display: block; }
+.f-check {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--green); font-size: 0.9rem; display: none; z-index: 2;
+}
+.f-wrap.selected .f-check { display: block; }
+.f-wrap.selected .f-spinner { display: none !important; }
+@keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* ── AUTOCOMPLETE ── */
+.ac {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+  background: rgba(6,13,26,0.97);
+  border: 1px solid rgba(254,177,34,0.2);
+  border-radius: var(--r); overflow: hidden; z-index: 99;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  display: none; padding: 4px;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+}
+.ac.open { display: block; animation: fadeDown 0.18s var(--ease2); }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+.ac-item {
+  padding: 11px 14px; border-radius: 8px; cursor: pointer;
+  margin-bottom: 2px; transition: background 0.12s;
+}
+.ac-item:hover, .ac-item.active { background: rgba(254,177,34,0.07); }
+.ac-main { font-size: 0.88rem; color: var(--white); font-weight: 500; line-height: 1.3; }
+.ac-sec { font-size: 0.7rem; color: var(--g2); margin-top: 3px; font-weight: 300; }
+
+/* ── CHIPS ── */
+.chips-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.chip {
+  padding: 9px 16px; background: rgba(6,13,26,0.8);
+  border: 1px solid rgba(79,142,247,0.18); border-radius: 50px;
+  font-size: 0.82rem; color: var(--g2); cursor: pointer;
+  display: flex; align-items: center; gap: 7px;
+  transition: all 0.25s var(--ease);
+}
+.chip svg { width: 15px; height: 15px; stroke: currentColor; }
+.chip:hover { border-color: rgba(254,177,34,0.3); color: var(--white); }
+.chip.sel {
+  background: rgba(254,177,34,0.08);
+  border-color: rgba(254,177,34,0.45); color: var(--gold-l);
+  box-shadow: 0 0 12px rgba(254,177,34,0.1);
+}
+.chip.sel svg { stroke: var(--gold); }
+
+/* ── PAYMENT GRID ── */
+.payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.pay-btn {
+  background: rgba(6,13,26,0.8);
+  border: 1px solid rgba(79,142,247,0.18); border-radius: 14px;
+  padding: 12px 10px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.25s var(--ease);
+  position: relative; overflow: hidden; min-height: 52px;
+}
+.pay-btn.sel {
+  background: rgba(254,177,34,0.08);
+  border-color: rgba(254,177,34,0.45);
+  box-shadow: 0 0 0 1px rgba(254,177,34,0.15);
+}
+.pay-btn-ic { font-size: 1.3rem; flex-shrink: 0; }
+.pay-btn-text { flex: 1; min-width: 0; }
+.pay-btn-title {
+  font-size: 0.8rem; font-weight: 600; color: var(--white);
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pay-btn-sub {
+  font-size: 0.6rem; color: var(--g3);
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;
+}
+.pay-check-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 14px; height: 14px; border-radius: 50%; background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0.3);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.pay-btn.sel .pay-check-dot { opacity: 1; transform: scale(1); }
+.pay-check-dot::after { content: '✓'; font-size: 0.5rem; color: #020810; font-weight: 800; }
+
+/* ── BTN GOLD ── */
+.btn {
+  width: 100%; height: var(--tap); border-radius: var(--r);
+  cursor: pointer; font-weight: 600; font-size: 0.88rem; border: none;
+  margin-top: 20px; display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: all 0.2s var(--ease);
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.btn-gold {
+  background: linear-gradient(135deg, #FEC443 0%, #FEB122 55%, #C8850A 100%);
+  color: #020810; font-weight: 700;
+  box-shadow: 0 6px 20px rgba(254,177,34,0.25), 0 0 30px rgba(254,177,34,0.1);
+  animation: btnPulse 3.2s ease-in-out infinite;
+}
+@keyframes btnPulse {
+  0%,100% { box-shadow: 0 6px 20px rgba(254,177,34,0.25), 0 0 30px rgba(254,177,34,0.1); }
+  50%      { box-shadow: 0 6px 28px rgba(254,177,34,0.45), 0 0 45px rgba(254,177,34,0.2); }
+}
+.btn-gold:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.btn-gold:active { transform: scale(0.98); animation: none; }
+.btn-gold:disabled { opacity: 0.55; cursor: not-allowed; animation: none; transform: none; }
+.btn-close {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--g2); margin-top: 10px;
+}
+
+/* ── SERVICES ── */
+.services-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-top: 20px; padding: 14px;
+  background: rgba(6,13,26,0.6);
+  border: 1px dashed rgba(254,177,34,0.15); border-radius: var(--r);
+}
+.srv-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--g1); }
+.srv-ic {
+  width: 26px; height: 26px; background: rgba(254,177,34,0.08);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 0.8rem; flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   BUBBLE WIDGETS — météo + trafic flottants
+   ══════════════════════════════════════════ */
+.infos-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin: 20px auto 0;
+  padding: 0 16px; max-width: 540px;
+}
+.info-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--rxl);
+  padding: 16px 14px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.3s, transform 0.3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.info-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(254,177,34,0.2), transparent);
+}
+.info-card:hover { border-color: var(--border-g); transform: translateY(-2px); }
+.i-hd-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.i-hd-ic {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(254,177,34,0.1); border: 1px solid rgba(254,177,34,0.2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.i-hd-ic svg { width: 15px; height: 15px; stroke: var(--gold); }
+.i-hd-text { font-size: 0.78rem; font-weight: 600; color: var(--white); }
+.i-hd-meta { font-size: 0.58rem; color: var(--g3); margin-top: 1px; letter-spacing: 0.06em; }
+
+/* Météo */
+.w-top-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.w-ic { font-size: 2rem; line-height: 1; }
+.w-temp {
+  font-family: 'Marcellus', serif; font-size: 2rem;
+  color: var(--white); line-height: 1;
+}
+.w-feels { font-size: 0.65rem; color: var(--g3); font-weight: 300; margin-top: 2px; }
+.w-details { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 8px; }
+.w-detail-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.65rem; color: var(--g2); font-weight: 300;
+  background: rgba(6,13,26,0.5); border-radius: 6px; padding: 5px 7px;
+}
+.w-detail-icon { font-size: 0.75rem; flex-shrink: 0; }
+.w-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 8px; padding: 4px 10px; border-radius: 50px;
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em;
+}
+.w-badge.bon { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
+.w-badge.moyen { background: rgba(251,177,36,0.1); border: 1px solid rgba(251,177,36,0.2); color: var(--amber); }
+.w-badge.bad { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); color: var(--red); }
+
+/* Trafic */
+.t-list { display: flex; flex-direction: column; gap: 0; }
+.t-item {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.78rem; padding: 7px 0;
+  border-bottom: 1px solid rgba(79,142,247,0.07);
+}
+.t-item:last-child { border-bottom: none; }
+.t-route-info { display: flex; flex-direction: column; }
+.t-route { color: var(--white); font-weight: 500; font-size: 0.78rem; }
+.t-via { font-size: 0.58rem; color: var(--g3); margin-top: 1px; }
+.t-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.t-tag {
+  font-size: 0.58rem; font-weight: 700; padding: 2px 7px;
+  border-radius: 4px; letter-spacing: 0.04em;
+}
+.t-tag.ok { color: var(--green); background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.18); }
+.t-tag.bad { color: var(--red); background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.18); }
+.t-tag.warn { color: var(--amber); background: rgba(251,177,36,0.1); border: 1px solid rgba(251,177,36,0.18); }
+.t-dur { font-size: 0.58rem; color: var(--g3); }
+.t-updated { font-size: 0.56rem; color: var(--g3); text-align: right; margin-top: 6px; opacity: 0.6; }
+
+/* ── CONSEIL ── */
+.conseil-box { max-width: 540px; margin: 12px auto 0; padding: 0 16px; }
+.conseil-inner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: 12px;
+  background: rgba(254,177,34,0.05); border: 1px solid rgba(254,177,34,0.15);
+  font-size: 0.8rem; color: var(--g1); font-weight: 300;
+  animation: fadeUp 0.5s var(--ease2) both;
+}
+.conseil-icon { font-size: 1.1rem; flex-shrink: 0; }
+.conseil-text strong { color: var(--gold); font-weight: 600; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── ETA ── */
+#eta-widget { max-width: 540px; margin: 0 auto; padding: 0 16px 6px; }
+.eta-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px; border-radius: 12px;
+  background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.15);
+  position: relative; overflow: hidden;
+}
+.eta-inner::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(52,211,153,0.25), transparent);
+}
+.eta-left { display: flex; align-items: center; gap: 10px; }
+.eta-icon-wrap {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.eta-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g2); margin-bottom: 2px; }
+.eta-value { font-family: 'Marcellus', serif; font-size: 1.25rem; color: var(--green); line-height: 1; }
+.eta-value-unit { font-size: 0.7rem; font-weight: 300; color: var(--g2); margin-left: 3px; }
+.eta-right { text-align: right; }
+.eta-dist { font-size: 0.68rem; color: var(--g2); margin-bottom: 2px; }
+.eta-since { font-size: 0.56rem; color: var(--g3); }
+.eta-loading {
+  display: flex; align-items: center; gap: 8px; padding: 11px 16px;
+  border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.72rem; color: var(--g3);
+}
+.eta-spinner { width: 14px; height: 14px; border: 1.5px solid rgba(52,211,153,0.2); border-top-color: var(--green); border-radius: 50%; animation: spin 1s linear infinite; flex-shrink: 0; }
+.eta-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); position: relative; flex-shrink: 0; }
+.eta-pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--green); animation: etaPulse 2s ease-out infinite; }
+@keyframes etaPulse { 0%{transform:scale(1);opacity:.6;} 100%{transform:scale(2);opacity:0;} }
+
+/* ════════════════════════════════════════════
+   SECTION VOITURE
+   ════════════════════════════════════════════ */
+.section-voiture {
+  position: relative; z-index: 1; width: 100%;
+  max-width: 640px; margin: 24px auto 0; overflow: hidden;
+}
+.voiture-img-wrap {
+  position: relative; width: 100%; height: 240px;
+  overflow: hidden; background: #000;
+}
+.voiture-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 55%;
+  display: block; filter: brightness(0.88) contrast(1.04);
+  transition: transform 6s ease;
+}
+.voiture-img-wrap:hover img { transform: scale(1.03); }
+.voiture-img-wrap::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(to bottom, var(--bg), transparent); z-index: 2;
+}
+.voiture-img-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+  background: linear-gradient(to top, var(--bg), transparent); z-index: 2;
+}
+.voiture-badge {
+  position: absolute; bottom: 16px; left: 18px; z-index: 3;
+  background: rgba(2,8,16,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(254,177,34,0.25); border-radius: 8px; padding: 7px 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.voiture-badge-label {
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); display: block;
+}
+.voiture-badge-name { font-size: 0.68rem; color: var(--g1); margin-top: 2px; display: block; font-weight: 300; }
+
+/* Intérieur */
+.interieur-wrap {
+  position: relative; width: 100%; height: 160px; overflow: hidden;
+  border-radius: 12px; margin: 12px 16px 0; width: calc(100% - 32px);
+  background: #050508;
+}
+.interieur-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; filter: brightness(0.85); }
+.interieur-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50px;
+  background: linear-gradient(to top, rgba(2,8,16,0.9), transparent);
+}
+.interieur-caption {
+  position: absolute; bottom: 10px; left: 14px; right: 14px; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.interieur-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(254,177,34,0.75); }
+.interieur-tags { display: flex; gap: 5px; }
+.interieur-tag {
+  font-size: 0.54rem; color: var(--g2); letter-spacing: 0.05em;
+  padding: 2px 7px; background: rgba(6,13,26,0.75); border-radius: 3px;
+  border: 1px solid rgba(79,142,247,0.15);
+}
+
+/* ════════════════════════════════════════════
+   SECTION AVIS
+   ════════════════════════════════════════════ */
+.section-avis {
+  position: relative; z-index: 1; max-width: 540px;
+  margin: 0 auto; padding: 24px 16px 8px;
+}
+.avis-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+}
+.avis-title { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); opacity: 0.7; }
+.avis-source { display: flex; align-items: center; gap: 4px; font-size: 0.58rem; color: var(--g2); }
+.avis-list { display: flex; flex-direction: column; gap: 10px; }
+.avis-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 15px 16px;
+  position: relative; overflow: hidden; transition: border-color 0.3s;
+}
+.avis-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(254,177,34,0.1), transparent);
+}
+.avis-card:hover { border-color: rgba(254,177,34,0.15); }
+.avis-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.avis-auteur { display: flex; flex-direction: column; gap: 2px; }
+.avis-nom { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+.avis-meta { font-size: 0.62rem; color: var(--g3); }
+.avis-stars { display: flex; gap: 2px; flex-shrink: 0; }
+.avis-star { color: var(--gold); font-size: 0.72rem; }
+.avis-texte { font-size: 0.82rem; color: var(--g2); line-height: 1.65; font-weight: 300; }
+.avis-texte em { font-style: italic; color: var(--white); font-weight: 400; }
+.avis-voir-plus {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  margin-top: 12px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--g3); text-decoration: none;
+  padding: 9px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+  transition: color 0.2s, border-color 0.2s;
+}
+.avis-voir-plus:hover { color: var(--gold); border-color: rgba(254,177,34,0.2); }
+
+/* ════════════════════════════════════════════
+   SECTION ZONES
+   ════════════════════════════════════════════ */
+.section-zones {
+  position: relative; z-index: 1; max-width: 540px;
+  margin: 0 auto; padding: 18px 16px 22px;
+}
+.zones-title { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 14px; }
+.zones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.zone-card {
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px; position: relative; overflow: hidden;
+  transition: border-color 0.25s;
+}
+.zone-card:hover { border-color: rgba(254,177,34,0.2); }
+.zone-icon { font-size: 1.1rem; margin-bottom: 7px; line-height: 1; }
+.zone-name { font-size: 0.8rem; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.zone-detail { font-size: 0.62rem; color: var(--g3); line-height: 1.5; }
+.zone-price { display: inline-block; margin-top: 5px; font-size: 0.6rem; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; }
+
+/* ── COMPARE BLOCK ── */
+.compare-block {
+  background: rgba(254,177,34,0.04); border: 1px solid rgba(254,177,34,0.14);
+  border-radius: 12px; padding: 13px 14px; margin: 18px 0 4px;
+}
+.compare-title { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.compare-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--white); margin-top: 4px; font-weight: 300; }
+.compare-check { width: 16px; height: 16px; border-radius: 50%; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.55rem; }
+.badge-promo {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.2); border-radius: 50px;
+  font-size: 0.7rem; font-weight: 600; color: var(--green);
+  cursor: pointer; margin-top: 8px; position: relative;
+}
+.badge-tooltip {
+  display: none; position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%); width: 220px; background: var(--bg1);
+  border: 1px solid rgba(254,177,34,0.18); border-radius: 10px;
+  padding: 11px 13px; font-size: 0.72rem; color: var(--g2);
+  line-height: 1.5; text-align: left; box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 10;
+}
+.badge-promo.open .badge-tooltip { display: block; }
+
+/* ── NUIT BADGE ── */
+.nuit-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 8px; padding: 4px 10px; border-radius: 4px;
+  background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+  font-size: 0.68rem; color: #a5b4fc;
+}
+
+/* ── PROMO INPUT ── */
+.promo-wrap { position: relative; margin-top: 10px; }
+.promo-input {
+  width: 100%; height: 44px; background: rgba(6,13,26,0.75);
+  border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;
+  padding: 0 14px; color: var(--gold-l); font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  letter-spacing: 0.1em; outline: none;
+  transition: border-color 0.25s;
+}
+.promo-input::placeholder { color: var(--g3); font-weight: 400; letter-spacing: 0.06em; }
+.promo-input:focus { border-color: rgba(254,177,34,0.45); }
+.promo-input.valid { border-color: rgba(52,211,153,0.5); color: var(--green); }
+.promo-input.invalid { border-color: rgba(248,113,113,0.5); }
+.promo-ic { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+.promo-info { font-size: 0.68rem; color: var(--g3); margin-top: 5px; }
+.promo-info.valid { color: var(--green); }
+.promo-info.invalid { color: var(--red); }
+
+/* ── MODAL PRIX ── */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(2,8,16,0.85); backdrop-filter: blur(10px);
+  z-index: 9999; display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease2);
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-box-price {
+  background: var(--bg1); width: 100%; max-width: 540px;
+  border-radius: 24px 24px 0 0; padding: 28px 22px 40px;
+  border-top: 1px solid rgba(254,177,34,0.25);
+  transform: translateY(100%); transition: transform 0.4s var(--ease2);
+  box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
+}
+.modal-overlay.show .modal-box-price { transform: translateY(0); }
+.m-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin: 0 auto 18px; }
+.m-title { font-family: 'Marcellus', serif; font-size: 1.5rem; text-align: center; margin-bottom: 6px; color: var(--white); }
+.m-subtitle { text-align: center; color: var(--g2); font-size: 0.9rem; margin-bottom: 20px; font-weight: 300; }
+.m-recap { background: rgba(0,0,0,0.3); border: 1px solid rgba(79,142,247,0.1); border-radius: 14px; padding: 18px; margin-bottom: 20px; text-align: center; }
+.m-price {
+  font-family: 'Marcellus', serif; font-size: 3.6rem;
+  background: linear-gradient(135deg, #FFD46E, #FEB122);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px; line-height: 1;
+}
+.m-price-detail { display: flex; justify-content: center; gap: 14px; margin-top: 8px; }
+.m-price-item { text-align: center; }
+.m-price-val { font-family: 'Marcellus', serif; font-size: 1.05rem; color: var(--white); }
+.m-price-lbl { font-size: 0.6rem; color: var(--g3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.m-calc-info { font-size: 0.82rem; color: var(--g2); line-height: 1.6; font-weight: 300; }
+
+/* ── LEGAL MODAL ── */
+.legal-modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(2,8,16,0.96); backdrop-filter: blur(10px);
+  z-index: 10000; display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.legal-modal.show { opacity: 1; pointer-events: auto; }
+.legal-box {
+  background: var(--bg1); border: 1px solid rgba(254,177,34,0.2);
+  border-radius: var(--rxl); padding: 28px 22px; max-width: 500px; width: 100%;
+  max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+.legal-title { font-family: 'Marcellus', serif; font-size: 1.7rem; color: var(--gold); margin: 0 0 22px; text-align: center; }
+.legal-section { margin-bottom: 22px; }
+.legal-section h4 { color: var(--white); font-size: 1rem; margin: 0 0 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 7px; font-weight: 600; }
+.legal-text { color: var(--g2); font-size: 0.9rem; line-height: 1.65; font-weight: 300; }
+.legal-text strong { color: var(--white); font-weight: 500; }
+
+/* ══════════════════════════════════════════
+   NAV BAR APP — floating island bottom
+   ══════════════════════════════════════════ */
+.sticky {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 990;
+  padding: 8px 16px max(16px, env(safe-area-inset-bottom, 16px));
+  background: linear-gradient(to top, rgba(2,8,16,0.98) 50%, transparent);
+  display: flex; gap: 10px; max-width: 640px; margin: 0 auto;
+  left: 50%; transform: translateX(-50%); width: 100%;
+}
+.sb {
+  flex: 1; height: 48px; border-radius: 50px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 7px; font-weight: 600; font-size: 0.82rem;
+  text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.04em; padding: 0 12px;
+}
+.sb:active { transform: scale(0.95); }
+.sb svg { flex-shrink: 0; width: 16px; height: 16px; }
+.sb-wa {
+  background: rgba(37,211,102,0.1);
+  border: 1px solid rgba(37,211,102,0.25); color: #34D399;
+}
+.sb-wa:hover { background: rgba(37,211,102,0.16); box-shadow: 0 0 16px rgba(37,211,102,0.15); }
+.sb-tel {
+  background: rgba(254,177,34,0.08);
+  border: 1px solid rgba(254,177,34,0.25); color: var(--gold-l);
+  font-weight: 700;
+}
+.sb-tel:hover { background: rgba(254,177,34,0.14); box-shadow: 0 0 16px rgba(254,177,34,0.15); }
+
+/* ── LOADER ── */
+.loader {
+  border: 3px solid rgba(254,177,34,0.2); border-top-color: var(--gold);
+  border-radius: 50%; width: 20px; height: 20px;
+  animation: spin 1s linear infinite; display: none; margin: 0 auto;
+}
+
+/* ── CANVAS ── */
+#constellation-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none; opacity: 0; transition: opacity 4s ease;
+}
+#constellation-canvas.ready { opacity: 0.45; }
+
+/* ── TOAST ── */
+.notif-toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: rgba(6,13,26,0.97); backdrop-filter: blur(16px);
+  border: 1px solid rgba(254,177,34,0.25); border-radius: 10px;
+  padding: 11px 20px; font-size: 0.8rem; color: var(--white);
+  z-index: 9998; opacity: 0; transition: all 0.35s var(--ease);
+  pointer-events: none; white-space: nowrap; max-width: 90vw;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.notif-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── REVEAL LINE ── */
+.reveal-line {
+  position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-d) 20%, var(--gold-l) 50%, var(--gold-d) 80%, transparent 100%);
+  z-index: 9999; box-shadow: 0 0 20px 5px rgba(254,177,34,0.5);
+  animation: revealSweep 1.6s cubic-bezier(.77,0,.18,1) forwards; pointer-events: none;
+}
+@keyframes revealSweep { 0%{top:-4px;opacity:1} 90%{top:100vh;opacity:1} 100%{top:100vh;opacity:0} }
+
+/* ── INITIAL STATES ── */
+body.loading #hdr .nav-logo { opacity: 0; transform: translateY(-10px); }
+body.loading .hero h1 { opacity: 0; transform: translateY(16px); }
+body.loading .hero .hero-p { opacity: 0; transform: translateY(12px); }
+body.loading .hero .proof { opacity: 0; transform: translateY(8px); }
+body.loading #step1 { opacity: 0; transform: translateY(24px); }
+body.loading .sticky { opacity: 0; transform: translateY(12px); }
+.ai-in {
+  opacity: 1 !important; transform: translate(0,0) !important;
+  transition: opacity .65s var(--ease2), transform .7s var(--ease) !important;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(79,142,247,0.2); border-radius: 3px; }
+
+/* ── FOOTER ── */
+footer { text-align: center; padding: 36px 20px 100px; color: var(--g3); font-size: 0.72rem; line-height: 1.6; }
+.legal-links { display: flex; justify-content: center; gap: 14px; margin-bottom: 10px; }
+.legal-links a { color: var(--g2); text-decoration: none; cursor: pointer; }
+.legal-links a:hover { color: var(--gold); }
+
+/* ── RECAP DATETIME ── */
+.recap-datetime {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; background: rgba(254,177,34,0.05);
+  border: 1px solid rgba(254,177,34,0.18); border-radius: 12px;
+  margin-bottom: 16px; cursor: pointer; transition: background 0.2s, border-color 0.2s; gap: 10px;
+}
+.recap-datetime:hover { background: rgba(254,177,34,0.08); border-color: rgba(254,177,34,0.3); }
+.recap-dt-left { display: flex; align-items: center; gap: 8px; }
+.recap-dt-icon { color: rgba(254,177,34,0.6); flex-shrink: 0; display: flex; align-items: center; }
+.recap-dt-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--g3); margin-bottom: 2px; }
+.recap-dt-value { font-family: 'Marcellus', serif; font-size: 0.95rem; color: var(--gold-l); line-height: 1; }
+.recap-dt-value.empty { color: var(--g3); font-family: 'Inter', sans-serif; font-size: 0.8rem; }
+.recap-nuit { display: inline-block; margin-left: 7px; padding: 1px 6px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 4px; font-size: 0.58rem; font-weight: 500; color: #a5b4fc; vertical-align: middle; }
+.recap-dt-edit { display: flex; align-items: center; gap: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em; color: rgba(254,177,34,0.5); flex-shrink: 0; text-transform: uppercase; }
+.btn-modifier {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 100%; padding: 9px; background: transparent;
+  border: 1px solid rgba(79,142,247,0.12); border-radius: 10px;
+  color: var(--g3); font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 16px;
+}
+.btn-modifier:hover { border-color: rgba(254,177,34,0.25); color: var(--gold); }
+
+/* ── VOUCHER MODAL ── */
+.voucher-box { background: var(--bg2); border: 1px solid rgba(254,177,34,0.2); border-radius: 18px; padding: 20px; margin-bottom: 16px; }
+.voucher-header { border-bottom: 1px dashed rgba(254,177,34,0.2); padding-bottom: 12px; margin-bottom: 14px; }
+.voucher-brand { font-family: 'Marcellus', serif; font-size: 1.2rem; color: var(--white); }
+.voucher-ref { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--g3); letter-spacing: 0.08em; }
+.voucher-stamp { border: 1.5px solid var(--gold); color: var(--gold); font-family: 'Marcellus', serif; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 6px; }
+.voucher-divider { text-align: center; margin: 14px 0; position: relative; }
+.voucher-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; border-top: 1px dashed rgba(79,142,247,0.15); }
+.voucher-divider-text { position: relative; background: var(--bg2); padding: 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--g3); letter-spacing: 0.2em; }
+
 </style>
 </head>
-<body>
+<body class="loading">
 
-<div id="sticky-widget">
-    <div>
-        <div id="sum-time" style="font-size:0.85rem; font-weight:700; color:var(--blue);">TRAJET DÉFINI</div>
-        <div id="sum-route" style="font-size:0.6rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">Cliquez pour modifier</div>
+<div class="reveal-line"></div>
+<canvas id="constellation-canvas"></canvas>
+<div id="progress-bar"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header id="hdr">
+  <div class="nav">
+    <a href="#" class="nav-logo ai-in">
+      <div class="logo-mark"><span>I</span></div>
+      <span class="logo-text"><em>I&amp;N</em> RUN</span>
+    </a>
+    <div class="nav-pill">
+      <span class="nav-dot"></span>
+      Disponible
     </div>
-    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" style="background:var(--blue); border:none; color:#fff; padding:8px 16px; border-radius:50px; font-size:0.7rem; font-weight:700; cursor:pointer;">MODIFIER</button>
-</div>
-
-<header style="padding: 30px; text-align: center;">
-    <svg width="120" height="45" viewBox="0 0 110 44">
-        <text x="55" y="20" font-family="Marcellus" font-size="24" fill="#fff" text-anchor="middle" letter-spacing="3">I&N</text>
-        <line x1="20" y1="28" x2="90" y2="28" stroke="#1e90ff" stroke-width="2"/>
-        <text x="55" y="38" font-family="Inter" font-size="9" fill="#1e90ff" text-anchor="middle" letter-spacing="5">ELITE RUN</text>
-    </svg>
+  </div>
 </header>
 
-<div class="container">
-    <div class="glass-card card active" id="step1">
-        <div class="f-wrap">
-            <div id="eta-bubble">CALCUL...</div>
-            <input type="text" id="dep" placeholder="Départ (Aéroport, Gare, Domicile...)" oninput="neuralSearch(this, 'ac-dep')">
-            <div class="ac-results" id="ac-dep"></div>
-        </div>
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <p class="hero-tagline">Le luxe au prix juste</p>
+  <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
+  <p class="hero-p">En direct, sans commission &mdash; vous payez <strong class="gold">10&nbsp;% de moins</strong> qu&rsquo;<strong>UBER</strong> ou <strong>BOLT</strong> pour un service Berline Premium.</p>
 
-        <div class="f-wrap">
-            <input type="text" id="arr" placeholder="Destination finale..." oninput="neuralSearch(this, 'ac-arr')">
-            <div class="ac-results" id="ac-arr"></div>
-        </div>
-
-        <div class="f-wrap">
-            <input type="datetime-local" id="timepick" style="color-scheme:dark;" onchange="syncWidget()">
-        </div>
-
-        <button class="btn-ignite" onclick="unlockConfort()">PARAMÉTRER MON HABITACLE</button>
+  <div class="proof" id="proof-badges">
+    <div class="proof-item">
+      <div class="proof-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L20 5.5L20 11C20 16 16 20 12 22C8 20 4 16 4 11L4 5.5Z"/><polygon points="12,7.5 12.9,10.1 15.6,10.1 13.5,11.8 14.3,14.4 12,12.8 9.7,14.4 10.5,11.8 8.4,10.1 11.1,10.1" fill="var(--gold)" stroke="none"/></svg></div>
+      <div class="pv"><span class="count-up" data-target="5" data-decimal="1">0</span>/5</div>
+      <div class="pl">Excellence<br>v&eacute;rifi&eacute;e</div>
     </div>
-
-    <div class="glass-card card locked" id="step2">
-        <h3 style="font-family:Marcellus; margin-bottom:25px; letter-spacing:1px;">Expérience à bord</h3>
-        
-        <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--blue); font-family:'JetBrains Mono'; margin-bottom:10px;">
-            <span>CLIMATISATION</span>
-            <span id="temp-val">21°C</span>
-        </div>
-        <input type="range" min="16" max="28" value="21" oninput="updateVal('temp', this.value, '°C')" style="width:100%; background:linear-gradient(90deg, #1e90ff, #ff4500)">
-        
-        <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--blue); font-family:'JetBrains Mono'; margin-top:20px; margin-bottom:10px;">
-            <span>SONORISATION</span>
-            <span id="vol-val">60%</span>
-        </div>
-        <input type="range" min="0" max="100" value="60" oninput="updateVal('vol', this.value, '%')" style="width:100%">
-
-        <button class="btn-ignite" style="margin-top:25px" onclick="alert('Analyse Neural-Price en cours...')">FIXER MON TARIF</button>
+    <div class="proof-item">
+      <div class="proof-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/><line x1="12" y1="3" x2="12" y2="1.5" stroke-width="2.5"/></svg></div>
+      <div class="pv"><span class="count-up" data-target="30" data-decimal="0">0</span>s</div>
+      <div class="pl">R&eacute;servation<br>express</div>
     </div>
-
-    <div style="margin: 50px 0 30px;">
-        <h4 style="font-family:Marcellus; color:var(--blue); text-align:center; margin-bottom:25px;">SÉCURITÉ & CONFIANCE</h4>
-        
-        <div class="review-box">
-            <span class="review-name">Mélanie D. // Orly → Paris 8</span>
-            <p class="review-content">"Mon vol avait 45 min de retard. Je pensais avoir perdu mon chauffeur, mais Nourdine suivait le vol en temps réel. Sa berline est un vrai cocon de calme. Service irréprochable."</p>
-        </div>
-
-        <div class="review-box">
-            <span class="review-name">Jean-Baptiste R. // Business Travel</span>
-            <p class="review-content">"Enfin un VTC qui respecte le silence quand on a besoin de travailler. La température était réglée exactement comme demandé. Ponctuel et extrêmement discret."</p>
-        </div>
+    <div class="proof-item">
+      <div class="proof-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--green)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M13 0C5.8 0 0 5.8 0 13s5.8 13 13 13 13-5.8 13-13S20.2 0 13 0zm0 24C6.9 24 2 19.1 2 13S6.9 2 13 2s11 4.9 11 11-4.9 11-11 11z" opacity=".3"/></svg></div>
+      <div class="pv" style="font-size:1rem;">WA<br><span style="font-size:.65rem;color:var(--g2);font-family:Inter,sans-serif;">direct</span></div>
+      <div class="pl">Confirmation<br>imm&eacute;diate</div>
     </div>
+    <div class="proof-item">
+      <div class="proof-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9,12 11,14 15,10"/></svg></div>
+      <div class="pv" style="font-size:0.92rem;">Z&eacute;ro<br><span style="font-size:.65rem;color:var(--g2);font-family:Inter,sans-serif;">commission</span></div>
+      <div class="pl">Prix fixe<br>garanti</div>
+    </div>
+  </div>
 </div>
 
-<div class="dock">
-    <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20un%20VTC." target="_blank" class="dock-btn wa-style">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 0.16 5.335 0.157 11.892c0 2.096 0.547 4.142 1.588 5.945L0.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
-    <a href="tel:+33767742220" class="dock-btn tel-style">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0.7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    </a>
+<!-- ═══ ETA WIDGET ═══ -->
+<div id="eta-widget" style="display:none;">
+  <div class="eta-loading" id="eta-loading">
+    <div class="eta-spinner"></div>
+    Calcul de votre position&hellip;
+  </div>
+  <div class="eta-inner" id="eta-inner" style="display:none;">
+    <div class="eta-left">
+      <div class="eta-icon-wrap">
+        <div class="eta-pulse"></div>
+      </div>
+      <div>
+        <div class="eta-label">Votre chauffeur</div>
+        <div class="eta-value" id="eta-time">—<span class="eta-value-unit">min</span></div>
+      </div>
+    </div>
+    <div class="eta-right">
+      <div class="eta-dist" id="eta-dist">—</div>
+      <div class="eta-since" id="eta-since">—</div>
+    </div>
+  </div>
 </div>
+
+<!-- ═══ STICKY DATETIME ═══ -->
+<div id="sticky-datetime">
+  <div class="sticky-dt-inner">
+    <div class="sticky-dt-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+    <div>
+      <span class="sticky-dt-kicker">Prise en charge</span>
+      <span class="sticky-dt-time" id="sticky-dt-text">—</span>
+    </div>
+    <button class="sticky-dt-btn" onclick="document.getElementById('step1').scrollIntoView({behavior:'smooth'});document.getElementById('timepick').focus();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Modifier
+    </button>
+  </div>
+</div>
+
+<!-- ═══ TUNNEL ═══ -->
+<div class="tunnel">
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="stepper-item active" id="stepper-1">
+      <div class="stepper-circle">1</div>
+      <div class="stepper-label">Trajet</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-1"></div>
+    <div class="stepper-item future" id="stepper-2">
+      <div class="stepper-circle">2</div>
+      <div class="stepper-label">Pr&eacute;f.</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-2"></div>
+    <div class="stepper-item future" id="stepper-3">
+      <div class="stepper-circle">3</div>
+      <div class="stepper-label">Tarif</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-3"></div>
+    <div class="stepper-item future" id="stepper-4">
+      <div class="stepper-circle">4</div>
+      <div class="stepper-label">Valid&eacute;</div>
+    </div>
+  </div>
+<div class="card active" id="step1">
+    <div class="card-hd">
+      <div class="c-num">1</div>
+      <div><div class="c-title">Planifiez votre d&eacute;part</div><div class="c-sub">Heure et itin&eacute;raire</div></div>
+    </div>
+    <label class="f-lbl">Prise en charge</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:rgba(212,175,55,.55)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+      <input type="datetime-local" id="timepick" class="f-in" style="color-scheme:dark;">
+    </div>
+    <label class="f-lbl">Lieu de d&eacute;part</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport, gare, adresse..." autocomplete="off">
+      <div class="f-spinner" id="spin-dep"></div>
+      <div class="f-check" id="check-dep">&#10003;</div>
+      <div class="ac" id="ac-dep"></div>
+    </div>
+    <label class="f-lbl">Destination finale</label>
+    <div class="f-wrap">
+      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+      <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
+      <div class="f-spinner" id="spin-arr"></div>
+      <div class="f-check" id="check-arr">&#10003;</div>
+      <div class="ac" id="ac-arr"></div>
+    </div>
+    <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Voir mon tarif fixe</button>
+  </div>
+
+<!-- ── WIDGET TEMPS D'ATTENTE — hors card pour éviter overflow:hidden ── -->
+<div id="eta-widget" style="display:none;padding:0 0 6px;">
+  <div class="eta-loading" id="eta-loading" style="display:flex;">
+    <div class="eta-spinner"></div>
+    Calcul de la disponibilit&eacute;...
+  </div>
+  <div class="eta-inner" id="eta-result" style="display:none;">
+    <div class="eta-left">
+      <div class="eta-icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="eta-label">Chauffeur disponible</div>
+        <div class="eta-value" id="eta-min">--<span class="eta-value-unit">&nbsp;min</span></div>
+      </div>
+    </div>
+    <div class="eta-right">
+      <div class="eta-dist" id="eta-km"></div>
+      <div class="eta-since" id="eta-zone">depuis Ris-Orangis</div>
+    </div>
+  </div>
+</div>
+
+  <div class="card locked" id="step2">
+    <div class="recap-datetime" onclick="scrollToDateTime()" id="recapDatetime">
+      <div class="recap-dt-left">
+        <div class="recap-dt-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+        <div>
+          <div class="recap-dt-label">Prise en charge</div>
+          <div class="recap-dt-value empty" id="recap-dt-value">Non renseign&eacute;e &mdash; cliquez pour choisir</div>
+        </div>
+      </div>
+      <div class="recap-dt-edit">&#9998;&ensp;Modifier</div>
+    </div>
+    <button class="btn-modifier" onclick="scrollToDateTime()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Modifier mon trajet
+    </button>
+    <div class="card-hd">
+      <div class="c-num">2</div>
+      <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
+    </div>
+    <!-- Photo intérieur -->
+    <div class="interieur-wrap">
+      <img src="interieur.jpg" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
+      <div class="interieur-caption">
+        <span class="interieur-label">Int&eacute;rieur Berline</span>
+        <div class="interieur-tags">
+          <span class="interieur-tag">Cuir</span>
+          <span class="interieur-tag">USB</span>
+          <span class="interieur-tag">Clim</span>
+        </div>
+      </div>
+    </div>
+    <label class="f-lbl">Paiement &agrave; bord &mdash; directement au chauffeur</label>
+    <div class="payment-grid">
+      <div class="pay-btn sel" onclick="selectPayment(this,'CB')"><span class="pay-btn-ic">💳</span>Carte Bancaire</div>
+      <div class="pay-btn" onclick="selectPayment(this,'Esp&egrave;ces')"><span class="pay-btn-ic">💶</span>Esp&egrave;ces</div>
+    </div>
+    <input type="hidden" id="paymentMethod" value="CB">
+    <label class="f-lbl">Musique</label>
+    <div class="chips-grid" id="musicPref">
+      <div class="chip sel" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+    </div>
+    <label class="f-lbl">Climatisation</label>
+    <div class="chips-grid" id="climPref">
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
+      <div class="chip sel" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
+    </div>
+    <label class="f-lbl">Services Inclus</label>
+    <div class="services-grid">
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5c0 5 5 11 5 11s5-6 5-11a5 5 0 0 0-5-5z"/><circle cx="12" cy="7" r="2"/></svg></div>Eau min&eacute;rale</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2.5"/></svg></div>Confiseries</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/><path d="M9 6h6M9 10h4"/></svg></div>Chargeurs USB</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg></div>Wifi 5G</div>
+    </div>
+    <label class="f-lbl">Note au chauffeur (Optionnel)</label>
+    <div class="f-wrap" style="height:auto;padding:8px;">
+      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
+    </div>
+
+    <label class="f-lbl">Code Promo (Optionnel)</label>
+    <div class="promo-wrap">
+      <svg class="promo-ic" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v5a2 2 0 0 1 0 4v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 1 0-4z"/>
+        <line x1="13" y1="5" x2="13" y2="8"/>
+        <line x1="13" y1="11" x2="13" y2="14"/>
+        <line x1="13" y1="16" x2="13" y2="19"/>
+      </svg>
+      <input type="text" id="promoCode" class="promo-input" placeholder="Entrez votre code (ex: BIENVENUE10)" maxlength="20" autocomplete="off" oninput="validatePromoLive()" />
+      <span class="promo-status" id="promoStatus"></span>
+    </div>
+    <div class="promo-info" id="promoInfo">&nbsp;</div>
+    <div class="compare-block">
+      <div class="compare-title">Mieux qu&rsquo;une application</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> plateforme</div>
+    </div>
+    <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
+      <span id="btnText">Calculer le tarif exact</span>
+      <div class="loader" id="calcLoader"></div>
+    </button>
+  </div>
+</div>
+
+
+</div>
+
+<!-- ═══ INFOS ROW ═══ -->
+<div class="infos-row">
+  <div class="info-card">
+    <div class="i-hd-wrap">
+      <div class="i-hd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 a2 2 0 0 1 4 0 V14 a4 4 0 1 1 -4 0 z" fill="rgba(212,175,55,.12)"/><line x1="12" y1="7" x2="12" y2="14"/><circle cx="12" cy="17.5" r="1.5" fill="var(--gold)" stroke="none"/></svg></div>
+      <span class="i-hd-text">M&eacute;t&eacute;o Live</span>
+      <span class="i-hd-meta" id="w-updated"></span>
+    </div>
+    <div class="w-top-row">
+      <div class="w-ic" id="wIcon"></div>
+      <div><div class="w-temp" id="wTemp">--&deg;</div><div class="w-feels" id="wFeels">Ressenti --&deg;</div></div>
+    </div>
+    <div class="w-details">
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M2 12 h13 a3 3 0 1 0 -3 -3 M2 17 h17 a2 2 0 1 0 -2 -2"/></svg></span><span id="wWind">-- km/h</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M12 3 C8 9 5 12 5 15.5 a7 7 0 1 0 14 0 C19 12 16 9 12 3 z" fill="rgba(212,175,55,.12)"/></svg></span><span id="wHumid">--%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M6 11 a3 3 0 0 1 0-6 4 4 0 0 1 7 1 3 3 0 0 1 1 5.8 H6 z" fill="rgba(212,175,55,.1)"/><line x1="8" y1="15" x2="7" y2="18"/><line x1="12" y1="15" x2="11" y2="18"/><line x1="16" y1="15" x2="15" y2="18"/></svg></span><span id="wRain">Pluie: --%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M6 17 a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5 1 3.5 3.5 0 0 1 1.5 6.9 H6 z" fill="rgba(212,175,55,.1)"/></svg></span><span id="wCloud">--%</span></div>
+    </div>
+    <div id="wBadge"></div>
+  </div>
+  <div class="info-card">
+    <div class="i-hd-wrap">
+      <div class="i-hd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="18" rx="3"/><circle cx="12" cy="7.5" r="1.3" fill="var(--gold)" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="var(--gold)" fill-opacity=".5" stroke="none"/><circle cx="12" cy="16.5" r="1.3" fill="var(--gold)" fill-opacity=".25" stroke="none"/></svg></div>
+      <span class="i-hd-text">Trafic IDF</span>
+      <span class="i-hd-meta" id="t-updated"></span>
+    </div>
+    <div class="t-list">
+      <div class="t-item">
+        <div class="t-ic
+</div>
+
+<!-- ═══ CONSEIL ═══ -->
+<div class="conseil-box" id="conseil-box" style="display:none;">
+  <div class="conseil-inner">
+    <span class="conseil-icon">💡</span>
+    <span class="conseil-text" id="conseil-text"></span>
+  </div>
+</div>
+
+<!-- ═══ VOITURE ═══ -->
+<div class="section-voiture">
+  <div class="voiture-img-wrap">
+    <img src="voiture.jpg" alt="Suzuki Swace Hybride I&amp;N RUN">
+  </div>
+  <div class="voiture-badge">
+    <div><div class="voiture-badge-label">Berline Premium</div><div class="voiture-badge-name">Suzuki Swace Hybride &mdash; Cat&eacute;gorie Berline</div></div>
+  </div>
+</div>
+
+<div class="interieur-wrap">
+  <img src="interieur.jpg" alt="Intérieur Suzuki Swace Hybride">
+  <div class="interieur-caption">
+    <span class="interieur-label">Intérieur</span>
+    <div class="interieur-tags">
+      <span class="interieur-tag">Cuir</span>
+      <span class="interieur-tag">Climatisation</span>
+      <span class="interieur-tag">USB-C</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-avis">
+  <div class="avis-header">
+    <div class="avis-title">Ce qu&rsquo;ils disent</div>
+    <div class="avis-source"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Avis v&eacute;rifi&eacute;s</div>
+  </div>
+  <div class="avis-carousel" id="avisCarousel">
+    <div class="avis-track" id="avisTrack">
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Vol retardé d'1h, Nourdine était <strong>déjà informé et attendait</strong> avec le panneau à l'arrivée. Véhicule impeccable, trajet silencieux, tarif honoré sans discussion.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Sophie M.</div>
+            <div class="avis-route">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Réservation en moins de 2 minutes via le site, confirmation WA immédiate. <strong>Ponctuel, discret, professionnel.</strong> Parfait pour mes trajets business du matin. Tarif fixe sans surprise exactement ce qu'il me fallait.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Thomas R.</div>
+            <div class="avis-route">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+      <div class="avis-slide">
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Voyage avec 3 valises et un enfant. <strong>Aide aux bagages, siège adapté proposé</strong>, musique douce. On n'a pas dit un mot et pourtant on s'est sentis pris en charge. C'est ça le vrai service premium.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Amina K.</div>
+            <div class="avis-route">Orly &rarr; Evry &middot; Mars 2026</div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="avis-dots" id="avisDots">
+      <div class="avis-dot active" onclick="goToAvis(0)"></div>
+      <div class="avis-dot" onclick="goToAvis(1)"></div>
+      <div class="avis-dot" onclick="goToAvis(2)"></div>
+    </div>
+  </div>
+  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis." class="avis-voir-plus" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Laisser un avis</a>
+</div>
+<div class="ornament" data-ornament>
+  <div class="ornament-line"></div>
+  <div class="ornament-center">
+    <div class="ornament-diamond small"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-diamond small"></div>
+  </div>
+  <div class="ornament-line"></div>
+</div>
+<div class="tunnel">
+  <div class="stepper" id="stepper">
+    <div class="stepper-item active" id="stepper-1">
+      <div class="stepper-circle">1</div>
+      <div class="stepper-label">Trajet</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-1"></div>
+    <div class="stepper-item future" id="stepper-2">
+      <div class="stepper-circle">2</div>
+      <div class="stepper-label">Pr&eacute;f.</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-2"></div>
+    <div class="stepper-item future" id="stepper-3">
+      <div class="stepper-circle">3</div>
+      <div class="stepper-label">Tarif</div>
+    </div>
+    <div class="stepper-line future" id="stepper-line-3"></div>
+    <div class="stepper-item future" id="stepper-4">
+      <div class="stepper-circle">4</div>
+      <div class="stepper-label">Valid&eacute;</div>
+    </div>
+  </div>
+  <div class="card active" id="step1">
+    <div class="card-hd">
+      <div class="c-num">1</div>
+      <div><div class="c-title">Planifiez votre d&eacute;part</div><div class="c-sub">Heure et itin&eacute;raire</div></div>
+    </div>
+    <label class="f-lbl">Prise en charge</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:rgba(212,175,55,.55)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+      <input type="datetime-local" id="timepick" class="f-in" style="color-scheme:dark;">
+    </div>
+    <label class="f-lbl">Lieu de d&eacute;part</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport, gare, adresse..." autocomplete="off">
+      <div class="f-spinner" id="spin-dep"></div>
+      <div class="f-check" id="check-dep">&#10003;</div>
+      <div class="ac" id="ac-dep"></div>
+    </div>
+    <label class="f-lbl">Destination finale</label>
+    <div class="f-wrap">
+      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+      <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
+      <div class="f-spinner" id="spin-arr"></div>
+      <div class="f-check" id="check-arr">&#10003;</div>
+      <div class="ac" id="ac-arr"></div>
+    </div>
+    <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Voir mon tarif fixe</button>
+  </div>
+
+<!-- ── WIDGET TEMPS D'ATTENTE — hors card pour éviter overflow:hidden ── -->
+<div id="eta-widget" style="display:none;padding:0 0 6px;">
+  <div class="eta-loading" id="eta-loading" style="display:flex;">
+    <div class="eta-spinner"></div>
+    Calcul de la disponibilit&eacute;...
+  </div>
+  <div class="eta-inner" id="eta-result" style="display:none;">
+    <div class="eta-left">
+      <div class="eta-icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="eta-label">Chauffeur disponible</div>
+        <div class="eta-value" id="eta-min">--<span class="eta-value-unit">&nbsp;min</span></div>
+      </div>
+    </div>
+    <div class="eta-right">
+      <div class="eta-dist" id="eta-km"></div>
+      <div class="eta-since" id="eta-zone">depuis Ris-Orangis</div>
+    </div>
+  </div>
+</div>
+
+  <div class="card locked" id="step2">
+    <div class="recap-datetime" onclick="scrollToDateTime()" id="recapDatetime">
+      <div class="recap-dt-left">
+        <div class="recap-dt-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+        <div>
+          <div class="recap-dt-label">Prise en charge</div>
+          <div class="recap-dt-value empty" id="recap-dt-value">Non renseign&eacute;e &mdash; cliquez pour choisir</div>
+        </div>
+      </div>
+      <div class="recap-dt-edit">&#9998;&ensp;Modifier</div>
+    </div>
+    <button class="btn-modifier" onclick="scrollToDateTime()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Modifier mon trajet
+    </button>
+    <div class="card-hd">
+      <div class="c-num">2</div>
+      <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
+    </div>
+    <!-- Photo intérieur -->
+    <div class="interieur-wrap">
+      <img src="interieur.jpg" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
+      <div class="interieur-caption">
+        <span class="interieur-label">Int&eacute;rieur Berline</span>
+        <div class="interieur-tags">
+          <span class="interieur-tag">Cuir</span>
+          <span class="interieur-tag">USB</span>
+          <span class="interieur-tag">Clim</span>
+        </div>
+      </div>
+    </div>
+    <label class="f-lbl">Paiement &agrave; bord &mdash; directement au chauffeur</label>
+    <div class="payment-grid">
+      <div class="pay-btn sel" onclick="selectPayment(this,'CB')"><span class="pay-btn-ic">💳</span>Carte Bancaire</div>
+      <div class="pay-btn" onclick="selectPayment(this,'Esp&egrave;ces')"><span class="pay-btn-ic">💶</span>Esp&egrave;ces</div>
+    </div>
+    <input type="hidden" id="paymentMethod" value="CB">
+    <label class="f-lbl">Musique</label>
+    <div class="chips-grid" id="musicPref">
+      <div class="chip sel" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
+      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+    </div>
+    <label class="f-lbl">Climatisation</label>
+    <div class="chips-grid" id="climPref">
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
+      <div class="chip sel" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
+      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
+    </div>
+    <label class="f-lbl">Services Inclus</label>
+    <div class="services-grid">
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5c0 5 5 11 5 11s5-6 5-11a5 5 0 0 0-5-5z"/><circle cx="12" cy="7" r="2"/></svg></div>Eau min&eacute;rale</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2.5"/></svg></div>Confiseries</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/><path d="M9 6h6M9 10h4"/></svg></div>Chargeurs USB</div>
+      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg></div>Wifi 5G</div>
+    </div>
+    <label class="f-lbl">Note au chauffeur (Optionnel)</label>
+    <div class="f-wrap" style="height:auto;padding:8px;">
+      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
+    </div>
+
+    <label class="f-lbl">Code Promo (Optionnel)</label>
+    <div class="promo-wrap">
+      <svg class="promo-ic" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v5a2 2 0 0 1 0 4v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 1 0-4z"/>
+        <line x1="13" y1="5" x2="13" y2="8"/>
+        <line x1="13" y1="11" x2="13" y2="14"/>
+        <line x1="13" y1="16" x2="13" y2="19"/>
+      </svg>
+      <input type="text" id="promoCode" class="promo-input" placeholder="Entrez votre code (ex: BIENVENUE10)" maxlength="20" autocomplete="off" oninput="validatePromoLive()" />
+      <span class="promo-status" id="promoStatus"></span>
+    </div>
+    <div class="promo-info" id="promoInfo">&nbsp;</div>
+    <div class="compare-block">
+      <div class="compare-title">Mieux qu&rsquo;une application</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> plateforme</div>
+    </div>
+    <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
+      <span id="btnText">Calculer le tarif exact</span>
+      <div class="loader" id="calcLoader"></div>
+    </button>
+  </div>
+</div>
+
+<div class="infos-row">
+  <div class="info-card">
+    <div class="i-hd-wrap">
+      <div class="i-hd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 a2 2 0 0 1 4 0 V14 a4 4 0 1 1 -4 0 z" fill="rgba(212,175,55,.12)"/><line x1="12" y1="7" x2="12" y2="14"/><circle cx="12" cy="17.5" r="1.5" fill="var(--gold)" stroke="none"/></svg></div>
+      <span class="i-hd-text">M&eacute;t&eacute;o Live</span>
+      <span class="i-hd-meta" id="w-updated"></span>
+    </div>
+    <div class="w-top-row">
+      <div class="w-ic" id="wIcon"></div>
+      <div><div class="w-temp" id="wTemp">--&deg;</div><div class="w-feels" id="wFeels">Ressenti --&deg;</div></div>
+    </div>
+    <div class="w-details">
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M2 12 h13 a3 3 0 1 0 -3 -3 M2 17 h17 a2 2 0 1 0 -2 -2"/></svg></span><span id="wWind">-- km/h</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M12 3 C8 9 5 12 5 15.5 a7 7 0 1 0 14 0 C19 12 16 9 12 3 z" fill="rgba(212,175,55,.12)"/></svg></span><span id="wHumid">--%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M6 11 a3 3 0 0 1 0-6 4 4 0 0 1 7 1 3 3 0 0 1 1 5.8 H6 z" fill="rgba(212,175,55,.1)"/><line x1="8" y1="15" x2="7" y2="18"/><line x1="12" y1="15" x2="11" y2="18"/><line x1="16" y1="15" x2="15" y2="18"/></svg></span><span id="wRain">Pluie: --%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"><path d="M6 17 a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5 1 3.5 3.5 0 0 1 1.5 6.9 H6 z" fill="rgba(212,175,55,.1)"/></svg></span><span id="wCloud">--%</span></div>
+    </div>
+    <div id="wBadge"></div>
+  </div>
+  <div class="info-card">
+    <div class="i-hd-wrap">
+      <div class="i-hd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="18" rx="3"/><circle cx="12" cy="7.5" r="1.3" fill="var(--gold)" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="var(--gold)" fill-opacity=".5" stroke="none"/><circle cx="12" cy="16.5" r="1.3" fill="var(--gold)" fill-opacity=".25" stroke="none"/></svg></div>
+      <span class="i-hd-text">Trafic IDF</span>
+      <span class="i-hd-meta" id="t-updated"></span>
+    </div>
+    <div class="t-list">
+      <div class="t-item">
+        <div class="t-ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5 L10 7.5 L3 11.5 L3 14 L10 12 L10 18 L7.5 19.5 L7.5 21 L12 20 L16.5 21 L16.5 19.5 L14 18 L14 12 L21 14 L21 11.5 L14 7.5 L14 2.5 C14 1.5 13.5 1 12 1 C10.5 1 10 1.5 10 2.5 z" fill="rgba(212,175,55,.15)"/></svg></div>
+        <div class="t-route-info"><span class="t-route">CDG Terminal 2</span><span class="t-via">via A1 &middot; Roissy</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-cdg">...</span><span class="t-dur" id="td-cdg"></span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5 L10 7.5 L3 11.5 L3 14 L10 12 L10 18 L7.5 19.5 L7.5 21 L12 20 L16.5 21 L16.5 19.5 L14 18 L14 12 L21 14 L21 11.5 L14 7.5 L14 2.5 C14 1.5 13.5 1 12 1 C10.5 1 10 1.5 10 2.5 z" fill="rgba(212,175,55,.15)"/></svg></div>
+        <div class="t-route-info"><span class="t-route">Orly T1 &amp; T2</span><span class="t-via">via A6 &middot; Essonne</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-orly">...</span><span class="t-dur" id="td-orly"></span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-ic-box"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 22 M12 2 L17 22 M8.5 14 L15.5 14 M9.5 10 L14.5 10 M6 22 L18 22"/><circle cx="12" cy="6" r="0.6" fill="var(--gold)" stroke="none"/></svg></div>
+        <div class="t-route-info"><span class="t-route">Paris centre</span><span class="t-via">via N7 &middot; P&eacute;riph</span></div>
+        <div class="t-right"><span class="t-tag ok" id="t-paris">...</span><span class="t-dur" id="td-paris"></span></div>
+      </div>
+    </div>
+    <div class="t-updated" id="t-source">Calcul en cours&hellip;</div>
+  </div>
+</div>
+
+<!-- ══ ZONES DE COUVERTURE ══ -->
+
+
+
+<footer>
+  <div class="legal-links">
+    <a onclick="showLegal()">Mentions L&eacute;gales &amp; CGV</a>
+    <span>|</span>
+    <a href="https://wa.me/33767742220">Contactez-nous</a>
+  </div>
+  <p>&copy; 2026 I&amp;N RUN. Tous droits r&eacute;serv&eacute;s.<br>Service de Voiture de Tourisme avec Chauffeur (VTC).</p>
+</footer>
+
+<!-- ═══ STICKY CTA ═══ -->
+<div class="sticky">
+  <a href="https://wa.me/33767742220" class="sb sb-wa">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.144 1.546 5.879L.044 23.156a.75.75 0 00.916.916l5.277-1.502A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" opacity=".85"/></svg>
+    Messages
+  </a>
+  <a href="tel:+33767742220" class="sb sb-tel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/></svg>
+    Appeler
+  </a>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+<div class="modal-overlay" id="customModal" onclick="if(event.target===this) hideModal()">
+  <div class="modal-box-price">
+    <div class="m-handle"></div>
+    <div class="voucher-header">
+      <span class="voucher-brand">I&amp;N RUN</span>
+      <span class="voucher-ref" id="voucherRef">INR &mdash; &hellip;</span>
+    </div>
+    <div class="voucher-stamp">Confirm&eacute;</div>
+    <h3 class="m-title">Tarif Fixe Garanti</h3>
+    <p class="m-subtitle">Tarif direct chauffeur &mdash; <strong style="color:var(--gold)">z&eacute;ro commission</strong></p>
+    <div class="voucher-divider"><span class="voucher-divider-text">Votre course</span></div>
+    <div class="m-recap">
+      <div class="m-price" id="finalPrice">-- &euro;</div>
+      <div class="m-price-detail">
+        <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilom&egrave;tres</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Dur&eacute;e est.</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Prise en charge</div></div>
+      </div>
+      <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
+      <div style="text-align:center;"><div class="badge-promo" onclick="this.classList.toggle('open')">&minus;10&nbsp;% vs Applications<div class="badge-tooltip">En supprimant les commissions (jusqu&rsquo;&agrave; 45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div></div></div>
+    </div>
+    <button class="btn btn-gold" onclick="sendWhatsApp()" style="margin-bottom:10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#000" style="margin-right:10px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Valider la r&eacute;servation
+    </button>
+    <button class="btn btn-close" onclick="hideModal()">Modifier le trajet</button>
+  </div>
+</div>
+
+<div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
+  <div class="legal-box">
+    <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
+    <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+    </div>
+    <div class="legal-section"><h4>2. H&eacute;bergement</h4>
+      <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
+    </div>
+    <div class="legal-section"><h4>3. Conditions de Transport (CGV)</h4>
+      <div class="legal-text"><strong>Tarification :</strong> Les prix indiqu&eacute;s lors de la r&eacute;servation sont fixes et garantis.<br><br><strong>R&eacute;servation :</strong> Toute r&eacute;servation est soumise &agrave; confirmation de la part du chauffeur.<br><br><strong>Assurance :</strong> Le transporteur est couvert par une assurance RC Professionnelle.</div>
+    </div>
+    <div class="legal-section"><h4>4. Donn&eacute;es Personnelles</h4>
+      <div class="legal-text">Les donn&eacute;es collect&eacute;es sont strictement utilis&eacute;es pour la bonne ex&eacute;cution de la course. Elles ne font l'objet d'aucune revente &agrave; des tiers.</div>
+    </div>
+    <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer</button>
+  </div>
+</div>
+
+
+
+<div class="notif-toast" id="notif-toast">✓ Confirmation envoyée</div>
 
 <script>
-const BASE = [2.4147, 48.6508]; // Ta base : Ris-Orangis
+// ── SONS WEB AUDIO API ──
+const _AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _ac = null;
+function getAC() {
+  if (!_ac) _ac = new _AudioCtx();
+  return _ac;
+}
 
-// ── MOTEUR NEURAL D'AUTOCOMPLÉTION ──
-async function neuralSearch(input, listId) {
-    const query = input.value;
-    const list = document.getElementById(listId);
-    if(query.length < 3) { list.style.display = 'none'; return; }
+// Son "ding" de caisse — lancement du countup
+function playCashStart() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    // Bruit blanc court (mécanique caisse)
+    const buf = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = ac.createBufferSource();
+    noise.buffer = buf;
+    const noiseG = ac.createGain();
+    noiseG.gain.setValueAtTime(0.4, t);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    noise.connect(noiseG); noiseG.connect(ac.destination);
+    noise.start(t);
+    // Ding métallique principal
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.5);
+  } catch(e){}
+}
 
-    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=48.85&lon=2.35&limit=5`);
-    const data = await res.json();
+// Son "tick" discret — pendant chaque chiffre du countup
+function playTick() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.04);
+  } catch(e){}
+}
 
-    list.innerHTML = ''; list.style.display = 'block';
-    data.features.forEach(f => {
-        const item = document.createElement('div');
-        item.className = 'ac-item';
-        const label = `${f.properties.name |
+// Son final "chime luxe" — accord doré 3 notes au prix final
+function playCashFinal() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const notes = [523.25, 659.25, 783.99]; // Do Mi Sol — accord majeur
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + i * 0.09);
+      g.gain.setValueAtTime(0, t + i * 0.09);
+      g.gain.linearRampToValueAtTime(0.22, t + i * 0.09 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.8);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(t + i * 0.09); osc.stop(t + i * 0.09 + 0.9);
+      // Harmonique douce
+      const osc2 = ac.createOscillator();
+      const g2 = ac.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2, t + i * 0.09);
+      g2.gain.setValueAtTime(0, t + i * 0.09);
+      g2.gain.linearRampToValueAtTime(0.07, t + i * 0.09 + 0.03);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.4);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc2.start(t + i * 0.09); osc2.stop(t + i * 0.09 + 0.5);
+    });
+  } catch(e){}
+}
 
-| ''} ${f.properties.city |
-| ''} (${f.properties.postcode |
-| ''})`.trim();
-        item.innerText = label;
-        item.onclick = () => {
-            input.value = label;
-            list.style.display = 'none';
-            if(input.id === 'dep') getRealETA(f.geometry.coordinates);
-            syncWidget();
-        };
-        list.appendChild(item);
+// ── FLATPICKR ──
+// ── DATETIME NATIVE — préremplissage & sync ──
+(function(){
+  var el=document.getElementById('timepick');
+  if(!el)return;
+  var pad=function(n){return n<10?'0'+n:''+n;};
+  var d=new Date(); d.setDate(d.getDate()+1); d.setHours(8,0,0,0);
+  el.value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T08:00';
+  var now=new Date(Date.now()+30*60*1000);
+  el.min=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+'T'+pad(now.getHours())+':'+pad(now.getMinutes());
+  el.addEventListener('change',updateDatetimeUI);
+  setTimeout(updateDatetimeUI,200);
+})();
+
+function formatDTDisplay(val){
+  if(!val)return null;
+  var p=val.split('T'); if(p.length<2)return val;
+  var d=p[0].split('-'); var h=p[1].replace(':','h');
+  return d[2]+'/'+d[1]+' \u00b7 '+h;
+}
+function updateDatetimeUI(){
+  var el=document.getElementById('timepick');
+  var val=el?el.value:'';
+  var display=val?formatDTDisplay(val):null;
+  // Recap card
+  var rv=document.getElementById('recap-dt-value');
+  if(rv){
+    if(display){
+      // Détecter tarif nuit
+      var hm=val.match(/T(\d{2}):\d{2}$/);
+      var h=hm?parseInt(hm[1]):-1;
+      var isN=(h>=22||h<6);
+      rv.textContent=display;
+      rv.classList.remove('empty');
+      var nb=document.getElementById('recap-nuit-badge');
+      if(!nb){nb=document.createElement('span');nb.id='recap-nuit-badge';nb.className='recap-nuit';nb.textContent='\ud83c\udf19 Tarif nuit';rv.parentNode.appendChild(nb);}
+      nb.style.display=isN?'inline-block':'none';
+    } else {
+      rv.textContent='Non renseign\u00e9e \u2014 cliquez pour choisir';
+      rv.classList.add('empty');
+    }
+  }
+  // Sticky banner
+  var st=document.getElementById('sticky-dt-text');
+  if(st&&display)st.textContent=display;
+}
+function scrollToDateTime(){
+  var s1=document.getElementById('step1');
+  var el=document.getElementById('timepick');
+  if(s1)s1.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(function(){if(el)el.click();},350);
+}
+function checkStickyDT(){
+  var s2=document.getElementById('step2');
+  var sd=document.getElementById('sticky-datetime');
+  var tp=document.getElementById('timepick');
+  if(!s2||!sd)return;
+  var rect=s2.getBoundingClientRect();
+  if(rect.top<window.innerHeight*0.6&&tp&&tp.value)sd.classList.add('visible');
+  else sd.classList.remove('visible');
+}
+window.addEventListener('scroll',checkStickyDT,{passive:true});
+
+// ── ETA ──
+var BASE_LAT=48.6468,BASE_LON=2.4185;
+function fetchETA(depLat,depLon){
+  var widget=document.getElementById('eta-widget'),loading=document.getElementById('eta-loading'),result=document.getElementById('eta-result');
+  if(!widget)return;
+  widget.style.display='block';loading.style.display='flex';result.style.display='none';
+  fetch('https://router.project-osrm.org/route/v1/driving/'+BASE_LON+','+BASE_LAT+';'+depLon+','+depLat+'?overview=false',{signal:AbortSignal.timeout(7000)})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.code!=='Ok')throw new Error();
+      var dur=Math.round(d.routes[0].duration/60),km=(d.routes[0].distance/1000).toFixed(1);
+      var dd=Math.max(3,Math.ceil(dur/5)*5);
+      document.getElementById('eta-min').innerHTML=dd+'<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText=km+' km depuis la base';
+      var z='depuis Ris-Orangis';
+      if(dur<=8)z='Disponible \u2014 tr\u00e8s proche';
+      else if(dur<=18)z='Zone 91 \u2014 trajet rapide';
+      else if(dur<=35)z='Paris & proche banlieue';
+      else z='Longue distance \u2014 confirmation WA';
+      document.getElementById('eta-zone').innerText=z;
+      loading.style.display='none';result.style.display='flex';
+      if(navigator.vibrate)navigator.vibrate(6);
+    }).catch(function(){
+      loading.style.display='none';result.style.display='flex';
+      document.getElementById('eta-min').innerHTML='<20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText='Disponibilit\u00e9 sur confirmation';
+      document.getElementById('eta-zone').innerText='Ris-Orangis & environs';
     });
 }
 
-// ── CALCUL ETA RÉEL (OSRM) ──
-async function getRealETA(coords) {
-    const bubble = document.getElementById('eta-bubble');
-    bubble.style.display = 'block';
-    bubble.innerText = 'CALCUL...';
-
-    const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${BASE},${BASE[1]};${coords},${coords[1]}?overview=false`);
-    const data = await res.json();
-    
-    if(data.code === 'Ok') {
-        const time = Math.round(data.routes.duration / 60) + 5; // +5min de marge
-        bubble.innerText = `CHAUFFEUR À ${time} MIN`;
-        bubble.style.background = 'var(--green)';
+// ── AUTOCOMPLETE SMART ──
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/s\b/g,'').replace(/[-_]/g,' ');}
+var PRESETS=[
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 1&2',s:'Orly \xb7 94390',lat:48.7262,lon:2.3652},
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 3&4',s:'Orly \xb7 94390',lat:48.7244,lon:2.3709},
+  {n:'A\u00e9roport CDG \u2014 Terminal 1',s:'Roissy \xb7 95700',lat:49.0097,lon:2.5479},
+  {n:'A\u00e9roport CDG \u2014 Terminal 2',s:'Roissy \xb7 RER B \xb7 TGV',lat:49.0060,lon:2.5720},
+  {n:'A\u00e9roport CDG \u2014 Terminal 3',s:'Roissy \xb7 Low Cost',lat:49.0035,lon:2.5598},
+  {n:"A\u00e9roport Le Bourget",s:"Aviation d'affaires \xb7 93350",lat:48.9694,lon:2.4414},
+  {n:'Gare de Lyon \u2014 Paris',s:'Paris 12e \xb7 TGV',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord \u2014 Paris',s:'Paris 10e \xb7 Eurostar \xb7 RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse \u2014 Paris',s:'Paris 15e \xb7 TGV',lat:48.8408,lon:2.3209},
+  {n:"Gare de l'Est \u2014 Paris",s:'Paris 10e \xb7 TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare \u2014 Paris',s:'Paris 8e \xb7 Transilien',lat:48.8754,lon:2.3253},
+  {n:'Gare Massy TGV',s:'Massy 91300 \xb7 RER B&C',lat:48.7233,lon:2.2716},
+  {n:"Gare d'\u00c9vry-Courcouronnes",s:'\u00c9vry 91000 \xb7 RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 \xb7 RER C&D',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 \xb7 RER D',lat:48.6100,lon:2.4797},
+  {n:'Centre Commercial \u00c9vry 2',s:'\u00c9vry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:"Centre Commercial Agora d'\u00c9vry",s:'\u00c9vry 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carr\u00e9 S\u00e9nart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle \u00c9pine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial V\u00e9lizy 2',s:'V\u00e9lizy 78140',lat:48.7832,lon:2.1722},
+  {n:'La D\u00e9fense \u2014 Grande Arche',s:'Puteaux 92800 \xb7 RER A',lat:48.8926,lon:2.2360},
+];
+function matchPresets(q){
+  var qn=norm(q),words=qn.split(' ').filter(function(w){return w.length>1;});
+  if(!words.length)return[];
+  return PRESETS.filter(function(p){
+    var pn=norm(p.n+' '+p.s);
+    var needed=words.length<=2?1:Math.ceil(words.length*.6);
+    return words.filter(function(w){return pn.indexOf(w)>-1;}).length>=needed;
+  }).slice(0,5);
+}
+function cleanPhotonLabel(p){
+  var name=p.name||'',city=p.city||p.town||p.village||p.state||'';
+  var label=name||p.street||'';
+  if(name&&p.street&&name!==p.street)label=name+', '+p.street;
+  // Supprimer "France" systématique et doublons code postal
+  label=(label+', '+city).replace(/^, |, $/g,'').replace(/, France$/i,'').trim();
+  var sub=(p.postcode||'');
+  if(city&&sub)sub=sub+' '+city; else sub=sub||city;
+  sub=sub.replace(/ France$/i,'').trim();
+  return {n:label,s:sub};
+}
+function buildItem(item,inputId,dropId,type){
+  var el=document.createElement('div');
+  el.className='ac-item';
+  el.innerHTML='<div><div class="ac-main">'+item.n+'</div>'+(item.s?'<div class="ac-sec">'+item.s+'</div>':'')+'</div>';
+  el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
+  el.addEventListener('mousedown',function(e){e.preventDefault();});
+  el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
+  return el;
+}
+function renderDrop(drop,items,inputId,dropId,type){
+  drop.innerHTML='';
+  if(!items.length){
+    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun r\u00e9sultat</div></div>';
+  }else{items.forEach(function(item){drop.appendChild(buildItem(item,inputId,dropId,type));});}
+  drop.classList.add('open');
+}
+// Photon : priorité IDF (lat/lon Paris), bbox France
+var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=7&bbox=-5.0,41.0,10.0,51.5&q=';
+function setupAutocomplete(inputId,dropId,type){
+  var input=document.getElementById(inputId),drop=document.getElementById(dropId);
+  var spinner=document.getElementById('spin-'+type);
+  var fwrap=input?input.closest('.f-wrap'):null;
+  if(!input||!drop)return;
+  var timer=null,ctrl=null;
+  input.addEventListener('input',function(){
+    clearTimeout(timer);coords[type]=null;
+    if(fwrap)fwrap.classList.remove('selected');
+    var q=this.value.trim();
+    if(q.length<2){drop.classList.remove('open');if(spinner)spinner.classList.remove('active');return;}
+    var presets=matchPresets(q);
+    if(presets.length){
+      renderDrop(drop,presets,inputId,dropId,type);
+      if(spinner)spinner.classList.remove('active');
+    }else{
+      drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';
+      drop.classList.add('open');
+      if(spinner)spinner.classList.add('active');
     }
+    timer=setTimeout(function(){
+      if(ctrl)ctrl.abort();ctrl=new AbortController();
+      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(spinner)spinner.classList.remove('active');
+          if(!data.features||!data.features.length)return;
+          var photon=[];
+          data.features.forEach(function(f){
+            var p=f.properties;if(!p.name&&!p.street)return;
+            var cl=cleanPhotonLabel(p);
+            if(!cl.n||cl.n.length<3)return;
+            photon.push({n:cl.n,s:cl.s,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
+          });
+          var merged=presets.slice();
+          photon.forEach(function(pi){
+            if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
+          });
+          if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
+        }).catch(function(){if(spinner)spinner.classList.remove('active');});
+    },250);
+  });
+  document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
+  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
 }
 
-function unlockConfort() {
-    if(!document.getElementById('dep').value) return alert("Précisez votre départ.");
-    document.getElementById('step1').classList.add('locked');
-    document.getElementById('step2').classList.remove('locked');
-    document.getElementById('step2').classList.add('active');
-    document.getElementById('sticky-widget').classList.add('visible');
+let coords = { dep: null, arr: null };
+
+function toggleChip(id, el) {
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const r = document.createElement('div');
+  r.className = 'chip-ripple';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(), 250);
+}
+function selectPayment(el, m) {
+  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = m;
+}
+function showLegal(){document.getElementById('legalModal').classList.add('show');}
+function hideModal(){document.getElementById('customModal').classList.remove('show');}
+
+function nextStep(step) {
+  if (!coords.dep || !coords.arr) {showToast("Sélectionnez les adresses dans la liste de suggestions");return;}
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('locked');
+  const t = document.getElementById('step'+step);
+  t.classList.remove('locked'); t.classList.add('active');
+  t.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-function syncWidget() {
-    const time = document.getElementById('timepick').value;
-    const dep = document.getElementById('dep').value;
-    if(time) document.getElementById('sum-time').innerText = time.replace('T', ' à ');
-    if(dep) document.getElementById('sum-route').innerText = "De : " + dep;
+function countUpPrice(el, final, dur) {
+  playCashStart();
+  const start = performance.now();
+  let lastVal = 0;
+  function step(now) {
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1-Math.pow(1-p,3);
+    const current = Math.round(ease*final);
+    if (current !== lastVal) { playTick(); lastVal = current; }
+    el.innerText = current+' €';
+    if(p<1) { requestAnimationFrame(step); }
+    else { playCashFinal(); }
+  }
+  requestAnimationFrame(step);
 }
 
-function updateVal(id, val, unit) {
-    document.getElementById(`${id}-val`).innerText = val + unit;
+
+/* ── SYSTÈME CODES PROMO ── */
+// Définition centralisée des codes valides
+var PROMO_CODES = {
+  'BIENVENUE10': {
+    discount: 0.10,
+    label: '✓ Code découverte appliqué — 10% de remise',
+    type: 'percent'
+  },
+  'MERCI15': {
+    discount: 0.15,
+    label: '✓ Code fidélité appliqué — 15% de remise',
+    type: 'percent'
+  },
+  'VIP20': {
+    discount: 0.20,
+    label: '✓ Code VIP appliqué — 20% de remise',
+    type: 'percent'
+  },
+  'AMI10': {
+    discount: 10,
+    label: '✓ Code parrainage appliqué — 10€ offerts',
+    type: 'flat'
+  }
+};
+
+var activePromo = null;
+
+function validatePromoLive(){
+  var input = document.getElementById('promoCode');
+  var info = document.getElementById('promoInfo');
+  var status = document.getElementById('promoStatus');
+  var code = input.value.trim().toUpperCase();
+  input.value = code;
+
+  // Reset visuel
+  input.classList.remove('valid','invalid');
+  info.classList.remove('valid','invalid');
+  status.classList.remove('show');
+  status.textContent = '';
+
+  if(code.length === 0){
+    info.innerHTML = '&nbsp;';
+    activePromo = null;
+    return;
+  }
+
+  if(PROMO_CODES[code]){
+    // Valide
+    input.classList.add('valid');
+    info.classList.add('valid');
+    info.innerHTML = PROMO_CODES[code].label;
+    status.textContent = '✓';
+    status.style.color = '#22c55e';
+    status.classList.add('show');
+    activePromo = {code: code, rule: PROMO_CODES[code]};
+  } else if(code.length >= 4){
+    // Invalide mais assez long pour juger
+    input.classList.add('invalid');
+    info.classList.add('invalid');
+    info.innerHTML = 'Code inconnu ou expiré';
+    status.textContent = '✗';
+    status.style.color = '#ef4444';
+    status.classList.add('show');
+    activePromo = null;
+  } else {
+    info.innerHTML = '&nbsp;';
+    activePromo = null;
+  }
 }
 
-window.addEventListener('scroll', () => {
-    const widget = document.getElementById('sticky-widget');
-    if(window.scrollY > 300) widget.style.top = '15px';
-    else widget.style.top = '70px';
-});
+// Fonction utilitaire : applique le code au prix
+function applyPromo(price){
+  if(!activePromo) return {price: price, original: price, discount: 0};
+  var rule = activePromo.rule;
+  var discount = 0;
+  if(rule.type === 'percent'){
+    discount = Math.round(price * rule.discount);
+  } else if(rule.type === 'flat'){
+    discount = rule.discount;
+  }
+  var newPrice = Math.max(Math.ceil(price - discount), 25); // Prix plancher 25€
+  return {price: newPrice, original: price, discount: price - newPrice};
+}
+
+async function calculatePrice(){
+  if(!coords.dep||!coords.arr)return;
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('calcLoader').style.display='block';
+  document.getElementById('calcBtn').disabled=true;
+  try{
+    const r=await fetch('https://router.project-osrm.org/route/v1/driving/'+coords.dep.lon+','+coords.dep.lat+';'+coords.arr.lon+','+coords.arr.lat+'?overview=false&geometries=polyline');
+    const d=await r.json();
+    if(d.code==='Ok'){
+      const km=d.routes[0].distance/1000,min=d.routes[0].duration/60;
+      // Formule -10% vs Uber Berline
+      let price=15+(km*0.84)+(min*0.17);
+      if(price<35)price=35;
+      // Tarif nuit
+      const tval=document.getElementById('timepick').value||'';
+      const hm=tval.match(/T(\d{2}):\d{2}$/);
+      const heure=hm?parseInt(hm[1]):new Date().getHours();
+      const isNuit=(heure>=22||heure<6);
+      if(isNuit)price+=10;
+      price=Math.ceil(price);
+      // Application du code promo
+      var promoResult = applyPromo(price);
+      var finalPrice = promoResult.price;
+      var discountAmount = promoResult.discount;
+
+      document.getElementById('m-km').innerText=km.toFixed(1)+' km';
+      document.getElementById('m-dur').innerText=Math.round(min)+' min';
+      const calcDet=document.getElementById('calcDetails');
+      var details = '';
+      if(isNuit){details += '<span class="nuit-badge">\u{1F319} Tarif nuit inclus (+10€ · 22h–6h)</span>';}
+      if(activePromo && discountAmount > 0){
+        if(details) details += '<br>';
+        details += '<span class="promo-badge">Code ' + activePromo.code + ' — −' + discountAmount + '€</span>';
+      }
+      calcDet.innerHTML = details;
+      document.getElementById('customModal').classList.add('show');
+      countUpPrice(document.getElementById('finalPrice'), finalPrice, 1200);
+    }else{
+      // Erreur élégante — pas de alert brutal
+      document.getElementById('customModal').classList.add('show');
+      document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Itinéraire complexe</span>';
+      document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Prix sujet à ajustement direct — contactez-nous sur WhatsApp</span>';
+    }
+  }catch(e){
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Connexion impossible</span>';
+    document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Veuillez réessayer ou nous contacter directement</span>';
+  }finally{
+    document.getElementById('btnText').style.display='block';
+    document.getElementById('calcLoader').style.display='none';
+    document.getElementById('calcBtn').disabled=false;
+  }
+}
+
+function sendWhatsApp(){
+  const _tv=document.getElementById('timepick').value;
+  var time=(function(){if(!_tv)return'Dès que possible';var p=_tv.split('T');if(p.length<2)return _tv;var d=p[0].split('-');var h=p[1];return d[2]+'/'+d[1]+'/'+d[0]+' '+h;})();
+  // Utiliser l'adresse complète de l'API (coords.dep/arr.name) si disponible
+  const dep=(coords&&coords.dep&&coords.dep.name)||document.getElementById('dep').value;
+  const arr=(coords&&coords.arr&&coords.arr.name)||document.getElementById('arr').value;
+  const note=document.getElementById('note').value;
+  const price=document.getElementById('finalPrice').innerText;
+  const pay=document.getElementById('paymentMethod').value;
+  const music=document.querySelector('#musicPref .chip.sel');
+  const clim=document.querySelector('#climPref .chip.sel');
+  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
+
+`;
+  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+`;
+  msg+=`📍 Départ : ${dep}
+🏁 Arrivée : ${arr}
+`;
+  const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
+  var _promoSuffix = '';
+  if(activePromo){
+    _promoSuffix = '\n������ Code promo : *' + activePromo.code + '*';
+  }
+  msg+=`������ Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}${_promoSuffix}\n������ Paiement : ${pay}\n\n`;
+  msg+=`✨ *Préférences à bord :*
+- Musique : ${music?music.innerText.trim():'Non'}
+- Climatisation : ${clim?clim.innerText.trim():'Non'}
+
+`;
+  if(note) msg+=`📝 Note : ${note}
+
+`;
+  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function selectLocation(iId,dId,type,name,lat,lon){
+  var inp=document.getElementById(iId);
+  var fwrap=inp?inp.closest('.f-wrap'):null;
+  inp.value=name;
+  coords[type]={lat:lat,lon:lon,name:name};
+  document.getElementById(dId).classList.remove('open');
+  if(fwrap)fwrap.classList.add('selected');
+  if(type==='dep'){
+    fetchETA(lat,lon);
+    // Auto-focus sur l'arrivée
+    setTimeout(function(){
+      var arr=document.getElementById('arr');
+      if(arr){arr.focus();arr.select();}
+    },200);
+  }
+}
+
+setupAutocomplete('dep','ac-dep','dep');
+setupAutocomplete('arr','ac-arr','arr');
+
+// ── MÉTÉO OPEN-METEO ──
+const WX_SVG = {
+  sun:       '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="rgba(212,175,55,.3)"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="6.7" y2="6.7"/><line x1="17.3" y1="17.3" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="6.7" y2="17.3"/><line x1="17.3" y1="6.7" x2="19.07" y2="4.93"/></svg>',
+  partcloud: '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3" fill="rgba(212,175,55,.25)"/><line x1="8" y1="3" x2="8" y2="4.5"/><line x1="2.5" y1="9" x2="4" y2="9"/><line x1="4.1" y1="5.1" x2="5.2" y2="6.2"/><path d="M11 17 a3.5 3.5 0 0 1 3.5-3.5 4 4 0 0 1 7.5 2 3 3 0 0 1-3 3 H11 a3.5 3.5 0 0 1-3.5-3.5 z" fill="rgba(212,175,55,.15)"/></svg>',
+  cloud:     '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 a4 4 0 0 1 0-8 5 5 0 0 1 9.5 1 4 4 0 0 1 1.5 7.8 H7 z" fill="rgba(212,175,55,.2)"/></svg>',
+  fog:       '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="5" y1="11" x2="19" y2="11" opacity=".85"/><line x1="3" y1="15" x2="21" y2="15" opacity=".7"/><line x1="6" y1="19" x2="18" y2="19" opacity=".55"/></svg>',
+  drizzle:   '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13 a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5 1 3.5 3.5 0 0 1 1.5 6.9 H6 z" fill="rgba(212,175,55,.18)"/><line x1="9" y1="17" x2="8" y2="20"/><line x1="13" y1="16.5" x2="12" y2="19.5"/><line x1="17" y1="17" x2="16" y2="20"/></svg>',
+  rain:      '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11 a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5 1 3.5 3.5 0 0 1 1.5 6.9 H6 z" fill="rgba(212,175,55,.18)"/><line x1="7" y1="15" x2="5.5" y2="20"/><line x1="11" y1="15" x2="9.5" y2="20"/><line x1="15" y1="15" x2="13.5" y2="20"/><line x1="19" y1="15" x2="17.5" y2="20"/></svg>',
+  storm:     '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11 a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5 1 3.5 3.5 0 0 1 1.5 6.9 H6 z" fill="rgba(212,175,55,.18)"/><polygon points="11,13 8,18 11.5,18 10,22 14,16 10.5,16" fill="#d4af37" stroke="none"/></svg>',
+  snow:      '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.3" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.5" y1="5.5" x2="18.5" y2="18.5"/><line x1="5.5" y1="18.5" x2="18.5" y2="5.5"/><circle cx="12" cy="12" r="1.5" fill="#d4af37" stroke="none"/></svg>'
+};
+const WX = {0:WX_SVG.sun,1:WX_SVG.partcloud,2:WX_SVG.partcloud,3:WX_SVG.cloud,45:WX_SVG.fog,48:WX_SVG.fog,51:WX_SVG.drizzle,53:WX_SVG.drizzle,55:WX_SVG.rain,61:WX_SVG.drizzle,63:WX_SVG.rain,65:WX_SVG.rain,71:WX_SVG.snow,73:WX_SVG.snow,75:WX_SVG.snow,80:WX_SVG.drizzle,81:WX_SVG.rain,82:WX_SVG.storm,95:WX_SVG.storm,96:WX_SVG.storm,99:WX_SVG.storm};
+const WX_LABEL={0:'Ensoleillé',1:'Peu nuageux',2:'Nuageux',3:'Couvert',45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',61:'Pluie légère',63:'Pluie',65:'Pluie forte',71:'Neige légère',73:'Neige',75:'Neige forte',80:'Averses légères',81:'Averses',82:'Averses fortes',95:'Orage',96:'Orage grêle',99:'Orage violent'};
+function fetchMeteo(){
+  var _lat=(coords&&coords.dep&&coords.dep.lat)||48.64,_lon=(coords&&coords.dep&&coords.dep.lon)||2.38;
+  fetch('https://api.open-meteo.com/v1/meteofrance?latitude='+_lat+'&longitude='+_lon+'&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1')
+  .then(r=>r.json()).then(data=>{
+    const c=data.current;
+    const temp=Math.round(c.temperature_2m), feels=Math.round(c.apparent_temperature);
+    const rain=c.precipitation_probability, wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m, cloud=c.cloudcover, code=c.weathercode;
+    var _lbl=WX_LABEL[code]||'';
+    document.getElementById('wIcon').innerHTML=(WX[code]||WX_SVG.cloud);
+    document.getElementById('wTemp').innerText=temp+'°';
+    document.getElementById('wFeels').innerText=(_lbl?_lbl+' — ':'')+' Ressenti '+feels+'°';
+    document.getElementById('wWind').innerText=wind+' km/h';
+    document.getElementById('wHumid').innerText=humid+'%';
+    document.getElementById('wRain').innerText='Pluie: '+rain+'%';
+    document.getElementById('wCloud').innerText=cloud+'%';
+    document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+    const b=document.getElementById('wBadge');
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    window._meteoData={rain,wind,code,temp};
+    genConseil();
+  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
+}
+
+// ── TRAFIC OSRM ──
+const ROUTES=[
+  {id:'cdg',dur:'td-cdg',from:[48.8566,2.3522],to:[49.0097,2.5479]},
+  {id:'orly',dur:'td-orly',from:[48.8566,2.3522],to:[48.7262,2.3652]},
+  {id:'paris',dur:'td-paris',from:[48.9000,2.3000],to:[48.8300,2.3800]}
+];
+function fetchTrafic(){
+  var now=new Date(),h=now.getHours(),dow=now.getDay();
+  var weekendBonus=(dow===0||dow===6)?0.82:1;
+  var peakMult=1;
+  if(h>=7&&h<=9)peakMult=1.45;
+  else if(h>=16&&h<=19)peakMult=1.55;
+  else if(h>=20&&h<=22)peakMult=1.15;
+  else if(h>=23||h<=5)peakMult=0.78;
+  var trafficFactor=peakMult*weekendBonus;
+
+  ROUTES.forEach(function(route){
+    fetch('https://router.project-osrm.org/route/v1/driving/'+route.from[1]+','+route.from[0]+';'+route.to[1]+','+route.to[0]+'?overview=false')
+    .then(function(r){return r.json();}).then(function(d){
+      if(d.code!=='Ok')return;
+      var minTheorique=Math.round(d.routes[0].duration/60);
+      var minReel=Math.round(minTheorique*trafficFactor);
+      var el=document.getElementById('t-'+route.id),dur=document.getElementById(route.dur);
+      dur.innerText=minReel+' min';
+      var ecart=minReel/minTheorique;
+      if(ecart>=1.4){el.className='t-tag bad';el.innerText='Bouchons';}
+      else if(ecart>=1.15){el.className='t-tag warn';el.innerText='Dense';}
+      else{el.className='t-tag ok';el.innerText='Fluide';}
+    }).catch(function(){
+      var el=document.getElementById('t-'+route.id);
+      if(el){el.className='t-tag ok';el.innerText='Fluide';}
+    });
+  });
+  var hhmm=now.toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('t-updated').innerText=hhmm;
+  var ctx='';
+  if(peakMult>=1.4)ctx=' \u00b7 heure de pointe';
+  else if(peakMult<=0.8)ctx=' \u00b7 trafic nuit';
+  else if(weekendBonus<1)ctx=' \u00b7 weekend';
+  document.getElementById('t-source').innerText='Mis \u00e0 jour '+hhmm+ctx;
+}
+
+function genConseil(){
+  const m=window._meteoData||{};
+  const h=new Date().getHours();
+  const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+  const box=document.getElementById('conseil-box');
+  const icon=document.getElementById('conseil-icon');
+  const text=document.getElementById('conseil-text');
+  let msg='',ic='💡';
+  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  icon.innerText=ic; text.innerHTML=msg;
+  box.style.display='flex';
+}
+
+fetchMeteo();
+fetchTrafic();
+setInterval(fetchMeteo, 300000);
+setInterval(fetchTrafic, 180000);
+
+// ── CONSTELLATION 60FPS OPTIMISÉE ──
+(function(){
+  var canvas = document.getElementById('constellation-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, pts = [], shootingStars = [], RAF;
+  var mouse = {x:-999, y:-999};
+  var DPR = Math.min(window.devicePixelRatio||1, 2);
+
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width  = W+'px';
+    canvas.style.height = H+'px';
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(DPR, DPR);
+    initPts();
+  }
+
+  function initPts(){
+    var count = Math.min(Math.floor(W*H/14000), 80);
+    pts = [];
+    for(var i=0;i<count;i++){
+      pts.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx:(Math.random()-0.5)*0.18,
+        vy:(Math.random()-0.5)*0.18,
+        r: Math.random()*1.2+0.3,
+        a: Math.random()*0.6+0.2
+      });
+    }
+  }
+
+  // ═══ ÉTOILES FILANTES ═══
+  function createShootingStar(){
+    // Angle : diagonale descendante (entre -30° et -50° depuis la gauche)
+    var angle = (Math.random()*20 + 25) * Math.PI / 180; // 25-45°
+    var speed = Math.random()*4 + 6; // 6-10 px/frame
+    // Point de départ : quelque part en haut ou sur le côté gauche
+    var startX, startY;
+    if(Math.random() < 0.6){
+      // Depuis le haut
+      startX = Math.random() * W * 0.7 + W * 0.1;
+      startY = -20;
+    } else {
+      // Depuis la gauche
+      startX = -20;
+      startY = Math.random() * H * 0.4;
+    }
+    shootingStars.push({
+      x: startX,
+      y: startY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      trail: [],
+      maxTrail: 18
+    });
+  }
+
+  // Planifier la prochaine étoile filante (8-14s aléatoire)
+  function scheduleNextStar(){
+    var delay = Math.random() * 6000 + 8000;
+    setTimeout(function(){
+      // Ne pas créer si onglet caché (économie batterie)
+      if(!document.hidden) createShootingStar();
+      scheduleNextStar();
+    }, delay);
+  }
+  // Première étoile après 3-5s (accroche visuelle précoce)
+  setTimeout(function(){
+    if(!document.hidden) createShootingStar();
+    scheduleNextStar();
+  }, Math.random()*2000 + 3000);
+
+  var DIST = 130, DIST2 = DIST*DIST;
+  var lastT = 0;
+
+  function draw(ts){
+    RAF = requestAnimationFrame(draw);
+    var dt = Math.min(ts - lastT, 32); lastT = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    // ═══ Points constellation ═══
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      p.x += p.vx*(dt/16);
+      p.y += p.vy*(dt/16);
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+
+      var mdx=mouse.x-p.x, mdy=mouse.y-p.y;
+      var md2=mdx*mdx+mdy*mdy;
+      if(md2<22500){
+        var f=0.00003;
+        p.vx+=mdx*f*(dt/16); p.vy+=mdy*f*(dt/16);
+      }
+      p.vx*=0.999; p.vy*=0.999;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,175,55,'+p.a+')';
+      ctx.fill();
+
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j];
+        var dx=p.x-q.x, dy=p.y-q.y;
+        var d2=dx*dx+dy*dy;
+        if(d2<DIST2){
+          var alpha=(1-d2/DIST2)*0.18;
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle='rgba(212,175,55,'+alpha+')';
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // ═══ Étoiles filantes ═══
+    for(var s=shootingStars.length-1; s>=0; s--){
+      var star = shootingStars[s];
+      // Ajouter position actuelle à la traînée
+      star.trail.push({x: star.x, y: star.y});
+      if(star.trail.length > star.maxTrail) star.trail.shift();
+      // Déplacer
+      star.x += star.vx;
+      star.y += star.vy;
+      // Vie décroît quand elle sort de l'écran
+      if(star.x > W + 50 || star.y > H + 50 || star.x < -50){
+        star.life -= 0.08;
+      }
+      // Dessiner la traînée (gradient doré)
+      if(star.trail.length > 1){
+        for(var t=0; t<star.trail.length-1; t++){
+          var t1 = star.trail[t];
+          var t2 = star.trail[t+1];
+          var trailAlpha = (t / star.trail.length) * 0.85 * star.life;
+          ctx.beginPath();
+          ctx.moveTo(t1.x, t1.y);
+          ctx.lineTo(t2.x, t2.y);
+          ctx.strokeStyle = 'rgba(243, 229, 171, ' + trailAlpha + ')';
+          ctx.lineWidth = (t / star.trail.length) * 2.2;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+      }
+      // Dessiner la tête brillante (halo + point central)
+      if(star.life > 0 && star.x > -50 && star.x < W+50 && star.y < H+50){
+        // Halo externe doux
+        var grad = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, 8);
+        grad.addColorStop(0, 'rgba(255, 240, 200, ' + (star.life * 0.9) + ')');
+        grad.addColorStop(0.4, 'rgba(212, 175, 55, ' + (star.life * 0.5) + ')');
+        grad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, 8, 0, Math.PI*2);
+        ctx.fill();
+        // Point central net
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, 1.2, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(255, 245, 220, ' + star.life + ')';
+        ctx.fill();
+      }
+      // Supprimer si hors-écran et traînée disparue
+      if(star.life <= 0){
+        shootingStars.splice(s, 1);
+      }
+    }
+
+    canvas.classList.add('ready');
+  }
+
+  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  window.addEventListener('touchmove',function(e){
+    mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY;
+  },{passive:true});
+  window.addEventListener('resize', function(){cancelAnimationFrame(RAF);resize();lastT=0;RAF=requestAnimationFrame(draw);});
+
+  resize();
+  RAF = requestAnimationFrame(draw);
+})();
+
+
+/* ── COUNTER-UP PROOF BADGES ── */
+(function(){
+  var badges = document.getElementById('proof-badges');
+  if(!badges) return;
+  var animated = false;
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting && !animated){
+      animated = true;
+      document.querySelectorAll('.count-up').forEach(function(el){
+        var target = parseFloat(el.dataset.target);
+        var suffix = el.dataset.suffix || '';
+        var decimal = el.dataset.decimal ? 1 : 0;
+        var start = 0;
+        var duration = 900;
+        var startTime = null;
+        function step(ts){
+          if(!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var ease = 1 - Math.pow(1 - progress, 3);
+          var val = target === 0 ? 0 : ease * target;
+          el.textContent = decimal ? val.toFixed(1) : Math.round(val);
+          el.textContent += suffix;
+          if(progress < 1) requestAnimationFrame(step);
+          else { el.textContent = (decimal ? target.toFixed(1) : target) + suffix; }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+  }, {threshold: 0.6});
+  obs.observe(badges);
+})();
+
+/* ── REVEAL SEQUENCE + RIPPLE + TOAST ── */
+(function(){
+  // Retirer loading + lancer séquence
+  document.body.classList.remove('loading');
+  var seq = [
+    {sel:'#hdr .nav-logo', d:150},
+    {sel:'.hero h1',       d:320},
+    {sel:'.hero .hero-p',  d:480},
+    {sel:'.hero .proof',   d:640},
+    {sel:'#step1',         d:820},
+    {sel:'.sticky',        d:950}
+  ];
+  seq.forEach(function(it){
+    var el = document.querySelector(it.sel);
+    if(el) setTimeout(function(){ el.classList.add('ai-in'); }, it.d);
+  });
+  // Fallback logo : garanti visible après 1.5s
+  setTimeout(function(){
+    var lg = document.querySelector('#hdr .nav-logo');
+    if(lg) lg.classList.add('ai-in');
+  }, 1500);
+
+  // Ripple tactile sur boutons
+  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(btn){
+    btn.addEventListener('pointerdown', function(e){
+      var r = this.getBoundingClientRect();
+      var sz = Math.max(r.width, r.height) * 2;
+      var rpl = document.createElement('span');
+      rpl.style.cssText = 'position:absolute;width:' + sz + 'px;height:' + sz + 'px;border-radius:50%;background:rgba(212,175,55,.18);transform:scale(0);top:' + ((e.clientY - r.top) - sz/2) + 'px;left:' + ((e.clientX - r.left) - sz/2) + 'px;pointer-events:none;animation:ripplePop .5s ease-out forwards;';
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(rpl);
+      setTimeout(function(){ rpl.remove(); }, 550);
+    });
+  });
+})();
+
+// Toast global — utilisable partout
+function showToast(msg, duration){
+  var t = document.getElementById('notif-toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function(){
+    t.classList.remove('show');
+  }, duration || 2600);
+}
+
+
+/* ── CARROUSEL AVIS ── */
+(function(){
+  var track = document.getElementById('avisTrack');
+  var dots = document.getElementById('avisDots');
+  if(!track || !dots) return;
+  var current = 0;
+  var total = 3;
+  var autoplayTimer = null;
+
+  function goTo(idx){
+    current = (idx + total) % total;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    var dotEls = dots.querySelectorAll('.avis-dot');
+    dotEls.forEach(function(d, i){
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function startAutoplay(){
+    stopAutoplay();
+    autoplayTimer = setInterval(function(){
+      goTo(current + 1);
+    }, 6500);
+  }
+  function stopAutoplay(){
+    if(autoplayTimer){ clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+
+  window.goToAvis = function(idx){
+    goTo(idx);
+    startAutoplay(); // reset timer sur interaction
+  };
+
+  startAutoplay();
+
+  // Pause autoplay si utilisateur survole
+  track.addEventListener('mouseenter', stopAutoplay);
+  track.addEventListener('mouseleave', startAutoplay);
+
+  // Swipe tactile
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e){
+    touchStartX = e.touches[0].clientX;
+    stopAutoplay();
+  }, {passive:true});
+  track.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 40){
+      goTo(current + (dx < 0 ? 1 : -1));
+    }
+    startAutoplay();
+  }, {passive:true});
+})();
+
+/* ── ORNEMENTS : reveal au scroll ── */
+(function(){
+  var ornaments = document.querySelectorAll('[data-ornament]');
+  if(!ornaments.length || !('IntersectionObserver' in window)) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  }, {threshold: 0.4});
+  ornaments.forEach(function(o){ obs.observe(o); });
+})();
+
+/* ── VOUCHER REF : généré à l'ouverture de la modal ── */
+(function(){
+  var origShowModal = null;
+  // Intercepter l'ouverture de la modal
+  var modal = document.getElementById('customModal');
+  if(!modal) return;
+  var observer = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      if(m.attributeName === 'class' && modal.classList.contains('show')){
+        var refEl = document.getElementById('voucherRef');
+        if(refEl){
+          var d = new Date();
+          var pad = function(n){ return n < 10 ? '0' + n : n; };
+          var ref = 'INR-' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds() % 60).substring(0,2);
+          refEl.textContent = ref;
+        }
+      }
+    });
+  });
+  observer.observe(modal, {attributes: true, attributeFilter: ['class']});
+})();
+
+
+/* ── STEPPER LUMINEUX : gestion d'état ── */
+function setStepperState(stepNum){
+  // stepNum: 1-4
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById('stepper-'+i);
+    if(!el)continue;
+    el.classList.remove('active','done','future');
+    var circle=el.querySelector('.stepper-circle');
+    if(i<stepNum){
+      el.classList.add('done');
+      circle.innerHTML='<svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>';
+    }else if(i===stepNum){
+      el.classList.add('active');
+      circle.textContent=i;
+    }else{
+      el.classList.add('future');
+      circle.textContent=i;
+    }
+  }
+  // Lignes
+  for(var j=1;j<=3;j++){
+    var line=document.getElementById('stepper-line-'+j);
+    if(!line)continue;
+    line.classList.remove('done','future');
+    line.classList.add(j<stepNum?'done':'future');
+  }
+}
+
+// Hook sur les événements existants
+(function(){
+  // Quand dep+arr sélectionnés → animer vers step 1 consolidé
+  var origSelectLocation = window.selectLocation;
+  if(typeof origSelectLocation === 'function'){
+    window.selectLocation = function(iId,dId,type,name,lat,lon){
+      origSelectLocation.apply(this,arguments);
+      // Si dep ET arr sont remplis, on peut considérer step 1 "prêt"
+      if(window.coords && window.coords.dep && window.coords.arr){
+        // Step 1 toujours actif, mais on pourrait le marquer "ready"
+      }
+    };
+  }
+
+  // Quand nextStep(2) appelé → step 2 actif
+  var origNextStep = window.nextStep;
+  if(typeof origNextStep === 'function'){
+    window.nextStep = function(step){
+      origNextStep.apply(this,arguments);
+      if(step === 2) setStepperState(2);
+    };
+  }
+
+  // Quand modal tarif s'ouvre → step 3 actif
+  var modal = document.getElementById('customModal');
+  if(modal){
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.attributeName === 'class'){
+          if(modal.classList.contains('show')){
+            setStepperState(3);
+          }
+        }
+      });
+    });
+    obs.observe(modal, {attributes:true, attributeFilter:['class']});
+  }
+
+  // Quand sendWhatsApp appelé → step 4 (validé)
+  var origSendWhatsApp = window.sendWhatsApp;
+  if(typeof origSendWhatsApp === 'function'){
+    window.sendWhatsApp = function(){
+      setStepperState(4);
+      return origSendWhatsApp.apply(this, arguments);
+    };
+  }
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){try{
+  var _sw="const CACHE='inrun-v4';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}return res;})));});";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
+}catch(e){}}
+</script>
+
+<script>
+/* ── selectPay — radio group v2 ── */
+function selectPay(el, method) {
+  document.querySelectorAll('.pay-btn').forEach(p => p.classList.remove('sel'));
+  el.classList.add('sel');
+  var m = method || el.dataset.method || 'CB';
+  window._payment = m;
+  var inp = document.getElementById('paymentMethod');
+  if(inp) inp.value = m;
+}
+function selectPayment(el, methodName) { selectPay(el, methodName); }
+
+/* ── Progress bar ── */
+function updateProgress(step) {
+  var pct = {1:25, 2:50, 3:75, 4:100};
+  var bar = document.getElementById('progress-bar');
+  if(bar) bar.style.width = (pct[step] || 25) + '%';
+}
+
+/* ── Sticky datetime ── */
+(function(){
+  var tp = document.getElementById('timepick');
+  var sd = document.getElementById('sticky-datetime');
+  var st = document.getElementById('sticky-dt-text');
+  if(!tp || !sd) return;
+  tp.addEventListener('change', function(){
+    var v = tp.value;
+    if(!v){ sd.classList.remove('visible'); return; }
+    var d = new Date(v);
+    var opts = {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'};
+    st.textContent = d.toLocaleDateString('fr-FR', opts);
+    sd.classList.add('visible');
+  });
+})();
 </script>
 
 </body>
