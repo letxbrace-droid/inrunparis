@@ -18,7 +18,7 @@
 <meta property="og:type" content="website">
 <meta property="og:description" content="Chauffeur privé VTC Paris CDG Orly. Tarif fixe garanti. Réservation en 30 secondes.">
 <meta name="robots" content="index, follow">
-<meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
+<meta name="description" content="I&N RUN — Chauffeur privé Paris sans application. Jusqu'à 30% moins cher qu'Uber. Tarif fixe garanti, réponse en 30 secondes. CDG, Orly, Île-de-France.">
 <title>I&N RUN — Chauffeur Privé Paris</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsIiB4MT0iMCIgeTE9IjAiIHgyPSIzMiIgeTI9IjMyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRDRBRjM3Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRjVFMDlBIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iNSIgeT0iMyIgd2lkdGg9IjQuNSIgaGVpZ2h0PSIyNiIgZmlsbD0idXJsKCNmbCkiLz48L3N2Zz4=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3331,10 +3331,162 @@ footer, footer * { color:#567A96!important; }
 .c-title,.zone-name,.avis-text,.trw-name,.mo2-name,.mb2-sel{word-break:break-word!important;min-width:0!important;}
 svg[width="110"]{max-width:min(110px,28vw)!important;height:auto!important;}
 
+
+/* ─── HERO KICKER + TAGLINE CONVERT ─── */
+.hero-kicker {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem; color:#567A96; letter-spacing:.28em;
+  text-transform:uppercase; margin-bottom:10px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.hero-kicker::before,.hero-kicker::after {
+  content:''; width:24px; height:.5px;
+  background:linear-gradient(90deg,transparent,#567A96);
+}
+.hero-kicker::after { transform:scaleX(-1); }
+.hero-tagline-convert {
+  font-family:'Inter',sans-serif; font-size:.82rem;
+  color:#7A9DB8; margin:6px 0 18px; line-height:1.5;
+}
+.hero-tagline-convert strong { color:#F0F4F8; }
+.hero-p-sub {
+  display:block; margin-top:6px;
+  font-size:.84rem; color:#7A9DB8;
+}
+.hero-p-sub strong { color:#F0F4F8; }
+
+/* ─── BANDEAU COMPARATIF ─── */
+.compare-banner {
+  max-width:520px; margin:0 auto 32px;
+  padding:0 16px;
+}
+.cb-title {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem; color:#567A96;
+  letter-spacing:.18em; text-transform:uppercase;
+  text-align:center; margin-bottom:12px;
+}
+.cb-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  margin-bottom:12px;
+}
+.cb-col {
+  border-radius:16px; padding:14px 13px;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+}
+.cb-col-bad {
+  background:linear-gradient(155deg,rgba(30,10,10,.85),rgba(20,8,8,.95));
+  border:.5px solid rgba(239,68,68,.18);
+  box-shadow:0 0 20px rgba(239,68,68,.06) inset;
+}
+.cb-col-good {
+  background:linear-gradient(155deg,rgba(10,26,20,.85),rgba(8,18,14,.95));
+  border:.5px solid rgba(52,211,153,.22);
+  box-shadow:0 0 20px rgba(52,211,153,.07) inset;
+}
+.cb-col-head {
+  display:flex; align-items:center; gap:7px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  margin-bottom:10px; padding-bottom:8px;
+  border-bottom:.5px solid rgba(255,255,255,.06);
+}
+.cb-col-bad  .cb-col-head { color:#f87171; }
+.cb-col-good .cb-col-head { color:#34d399; }
+.cb-logo-ic { width:14px; height:14px; flex-shrink:0; max-width:none!important; }
+.cb-col-bad  .cb-logo-ic { stroke:#f87171; }
+.cb-col-good .cb-logo-ic { stroke:#34d399; }
+.cb-list {
+  list-style:none; padding:0; margin:0;
+  display:flex; flex-direction:column; gap:6px;
+}
+.cb-list li {
+  display:flex; align-items:flex-start; gap:6px;
+  font-family:'Inter',sans-serif; font-size:.72rem;
+  color:#94B4CC; line-height:1.4;
+}
+.cb-col-bad  .cb-list li { color:#7A9DB8; }
+.cb-col-good .cb-list li { color:#94B4CC; }
+.cb-col-good .cb-list li strong { color:#F0F4F8; }
+.cb-x  { color:#f87171; flex-shrink:0; font-size:.7rem; margin-top:.5px; }
+.cb-ok { color:#34d399; flex-shrink:0; font-size:.7rem; margin-top:.5px; }
+.cb-cta {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 20px; border-radius:100px;
+  background:rgba(74,127,167,.1); border:.5px solid rgba(74,127,167,.28);
+  font-family:'Inter',sans-serif; font-size:.78rem;
+  font-weight:600; color:#94B4CC; cursor:pointer;
+  transition:all .22s; letter-spacing:.02em;
+  box-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+.cb-cta svg { stroke:#94B4CC; max-width:none!important; transition:transform .3s; }
+.cb-cta:hover { background:rgba(74,127,167,.22); color:#F0F4F8; border-color:#4A7FA7; }
+.cb-cta:hover svg { transform:translateY(3px); stroke:#F0F4F8; }
+
+/* ─── AVIS EX-UBER BADGE ─── */
+.avis-convert-badge {
+  display:inline-flex; align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.44rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:#34d399; padding:3px 9px; border-radius:100px;
+  background:rgba(52,211,153,.1); border:.5px solid rgba(52,211,153,.22);
+  margin-bottom:10px;
+}
+.avis-slide-convert {
+  border-color:rgba(52,211,153,.12)!important;
+  background:linear-gradient(155deg,rgba(10,26,20,.82),rgba(12,26,46,.92))!important;
+}
+
+/* ─── GRILLE RESPONSIVE comparateur ─── */
+@media(max-width:380px){
+  .cb-grid { grid-template-columns:1fr; }
+  .cb-list li { font-size:.68rem; }
+}
+
 </style>
-<noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p>
+<noscript><div><div class="hero-kicker">CHAUFFEUR PRIVÉ PARIS</div>
+    <h1 style="margin-bottom:8px;">I&amp;N <span class="g">RUN</span></h1>
+    <div class="hero-tagline-convert">Réservez <strong>directement</strong> — zéro commission, zéro algorithme</div><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p>
 <div class="courses-counter" id="coursesCounter">
   <div class="cc-dot"></div>
+<div class="compare-banner">
+  <div class="cb-title">Pourquoi ne pas rester sur Uber ?</div>
+  <div class="cb-grid">
+    <div class="cb-col cb-col-bad">
+      <div class="cb-col-head">
+        <svg class="cb-logo-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Uber / Bolt</span>
+      </div>
+      <ul class="cb-list">
+        <li><span class="cb-x">✗</span> Prix qui monte en heure de pointe</li>
+        <li><span class="cb-x">✗</span> Chauffeur inconnu à chaque fois</li>
+        <li><span class="cb-x">✗</span> Commission 25–30% sur le prix</li>
+        <li><span class="cb-x">✗</span> Annulation de dernière minute</li>
+        <li><span class="cb-x">✗</span> Service client automatisé</li>
+      </ul>
+    </div>
+    <div class="cb-col cb-col-good">
+      <div class="cb-col-head">
+        <svg class="cb-logo-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>I&amp;N RUN</span>
+      </div>
+      <ul class="cb-list">
+        <li><span class="cb-ok">✓</span> <strong>Tarif fixe garanti</strong>, jamais de surprise</li>
+        <li><span class="cb-ok">✓</span> <strong>Toujours le même chauffeur</strong></li>
+        <li><span class="cb-ok">✓</span> <strong>Zéro commission</strong> — prix direct</li>
+        <li><span class="cb-ok">✓</span> Réponse WhatsApp en <strong>30 secondes</strong></li>
+        <li><span class="cb-ok">✓</span> Suivi humain avant, pendant, après</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cb-cta" onclick="document.querySelector('.tunnel').scrollIntoView({behavior:'smooth'})">
+    Réserver directement — c'est gratuit
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+</div>
+
   <span class="cc-num" id="ccNum">4238</span>
   <span class="cc-label">courses effectuées</span>
   <div class="cc-sep"></div>
@@ -3578,7 +3730,7 @@ body {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "I&N RUN — Chauffeur Privé Paris",
-  "description": "Service VTC premium Paris. Tarif fixe garanti, réservation en 30 secondes. CDG, Orly, Île-de-France.",
+  "description": "Chauffeur privé VTC Paris sans commission. Tarif fixe garanti jusqu'à 30% moins cher qu'Uber. Réservation directe en 30 secondes. CDG, Orly, toute l'Île-de-France.",
   "url": "https://letxbrace-droid.github.io/inrunparis",
   "telephone": "+33767742220",
   "priceRange": "€€",
@@ -3692,7 +3844,10 @@ body {
 <div class="hero">
   <p class="hero-tagline">Le luxe au prix juste</p>
     <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
-  <p class="hero-p">En direct, sans commission &mdash; vous payez <strong style="color:var(--gold);font-weight:700;">10&nbsp;% de moins</strong> qu&rsquo;<strong style="color:var(--white);font-weight:500;">UBER</strong> ou <strong style="color:var(--white);font-weight:500;">BOLT</strong> pour un service Berline Premium.</p>
+  <p class="hero-p">
+  Réservez <strong>directement</strong> votre chauffeur — sans application, sans commission, sans surcharge dynamique.<br>
+  <span class="hero-p-sub">Vous payez jusqu'à <strong>30&nbsp;% de moins qu'Uber</strong>, avec un chauffeur attitré qui vous répond en 30 secondes.</span>
+</p>
   <div <div class="proof-tech" id="proof-badges">
 
   <!-- WIDGET NOTE 5/5 -->
@@ -3830,7 +3985,33 @@ body {
         </div>
       </div>
 
-    </div>
+    
+      <div class="avis-slide avis-slide-convert">
+        <div class="avis-convert-badge">Ex-utilisateur Uber</div>
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">J'utilisais Uber quotidiennement pour mes trajets CDG. Depuis que j'ai découvert I&N RUN, <strong>je paie 28€ au lieu de 42€</strong> pour le même trajet. Plus jamais d'appli.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Thomas R.</div>
+            <div class="avis-route">CDG &rarr; Paris 17e &middot; <span class="avis-date">il y a 3 semaines</span></div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+
+      <div class="avis-slide avis-slide-convert">
+        <div class="avis-convert-badge">Ex-utilisatrice Bolt</div>
+        <div class="avis-quote-mark">&ldquo;</div>
+        <p class="avis-quote">Bolt m'a annulé 2 fois à Orly avec mes valises sous la pluie. Nourdine est <strong>toujours là, toujours à l'heure</strong>. J'aurais dû faire ça bien avant.</p>
+        <div class="avis-author">
+          <div>
+            <div class="avis-name">Amina B.</div>
+            <div class="avis-route">Orly &rarr; Créteil &middot; <span class="avis-date">il y a 5 jours</span></div>
+          </div>
+          <div class="avis-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+      </div>
+</div>
     <div class="avis-dots" id="avisDots">
       <div class="avis-dot active" onclick="goToAvis(0)"></div>
       <div class="avis-dot" onclick="goToAvis(1)"></div>
@@ -4235,7 +4416,7 @@ body {
   <div class="sticky-inner">
     <a href="https://wa.me/33767742220" class="sb sb-wa" id="stickyWA" onclick="buildWALink(this)">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884z"/></svg>
-      <span class="sb-wa-txt">Réserver via WhatsApp</span>
+      <span class="sb-wa-txt">Réserver — Sans Uber, sans frais</span>
     </a>
     <a href="tel:+33767742220" class="sb sb-tel" aria-label="Appeler">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
