@@ -3496,6 +3496,88 @@ footer, footer * { color:#567A96 !important; font-size:.75rem !important; }
 
 /* ═══ FIN FINITION v9 ═══ */
 
+/* ─── PAY BUTTONS SVG ─── */
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.pay-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  background: linear-gradient(155deg,rgba(15,32,64,.55),rgba(9,20,38,.75));
+  border: .5px solid rgba(74,127,167,.18);
+  border-radius: 14px;
+  cursor: pointer;
+  color: #7A9DB8;
+  font-family: 'Inter', sans-serif;
+  font-size: .8rem;
+  font-weight: 500;
+  box-shadow: 0 1px 0 rgba(240,244,248,.04) inset, 0 4px 14px rgba(0,0,0,.3);
+  transition: all .22s cubic-bezier(.4,0,.2,1);
+}
+.pay-btn:hover {
+  border-color: rgba(74,127,167,.4);
+  color: #94B4CC;
+  transform: translateY(-1px);
+}
+.pay-btn.sel {
+  background: linear-gradient(155deg,rgba(26,61,99,.5),rgba(15,32,64,.8));
+  border-color: #4A7FA7;
+  color: #F0F4F8;
+  box-shadow:
+    0 1px 0 rgba(240,244,248,.07) inset,
+    0 0 18px rgba(74,127,167,.2),
+    0 4px 16px rgba(0,0,0,.35);
+}
+.pay-btn-ic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  background: rgba(74,127,167,.1);
+  border: .5px solid rgba(74,127,167,.2);
+  color: #567A96;
+  flex-shrink: 0;
+  transition: all .22s;
+}
+.pay-btn.sel .pay-btn-ic {
+  background: rgba(74,127,167,.18);
+  border-color: rgba(74,127,167,.45);
+  color: #94B4CC;
+  box-shadow: 0 0 12px rgba(74,127,167,.25);
+}
+.pay-btn-ic svg { width: 22px; height: 22px; }
+.pay-btn-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .56rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ─── e-svg inline emojis → SVG ─── */
+.e-svg {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em; height: 1em;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+/* Dans les srv-ic, les e-svg doivent être plus grands */
+.srv-ic .e-svg { width: 15px; height: 15px; }
+/* Dans les avis, checkmarks */
+.avis-text .e-svg, .conseil-text .e-svg { width: .9em; height: .9em; opacity: .8; }
+/* Dans les tags/badges */
+.t-tag .e-svg { width: .75em; height: .75em; }
+/* Dans les info-cards météo */
+.info-card .e-svg { width: 1.1em; height: 1.1em; }
+
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
 <style id="al">/* ═══════════════════════════════════════════════
@@ -4059,8 +4141,31 @@ body {
     </div>
     <label class="f-lbl">Paiement &agrave; bord &mdash; directement au chauffeur</label>
     <div class="payment-grid">
-      <div class="pay-btn sel" onclick="selectPayment(this,'CB')"><span class="pay-btn-ic">💳</span>Carte Bancaire</div>
-      <div class="pay-btn" onclick="selectPayment(this,'Esp&egrave;ces')"><span class="pay-btn-ic">💶</span>Esp&egrave;ces</div>
+      <div class="pay-btn sel" onclick="selectPayment(this,'CB')">
+        <span class="pay-btn-ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="6" width="24" height="16" rx="3" stroke="currentColor" stroke-width="1.4"/>
+  <rect x="2" y="11" width="24" height="3.5" fill="currentColor" opacity=".18"/>
+  <rect x="6" y="17" width="5" height="2.5" rx=".8" fill="currentColor" opacity=".55"/>
+  <rect x="13" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/>
+  <rect x="18" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/>
+  <rect x="6" y="8.5" width="4" height="3" rx=".6" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
+  <line x1="6" y1="10" x2="7.8" y2="10" stroke="currentColor" stroke-width=".8" opacity=".6"/>
+</svg></span>
+        <span class="pay-btn-label">Carte Bancaire</span>
+      </div>
+      <div class="pay-btn" onclick="selectPayment(this,'Espèces')">
+        <span class="pay-btn-ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="8" width="24" height="13" rx="2.5" stroke="currentColor" stroke-width="1.4"/>
+  <circle cx="14" cy="14.5" r="3.5" stroke="currentColor" stroke-width="1.3"/>
+  <line x1="14" y1="12.2" x2="14" y2="16.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="12" y1="14.5" x2="16" y2="14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+  <circle cx="5.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4"/>
+  <circle cx="22.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4"/>
+  <line x1="5" y1="10.5" x2="8" y2="10.5" stroke="currentColor" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
+  <line x1="20" y1="18.5" x2="23" y2="18.5" stroke="currentColor" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
+</svg></span>
+        <span class="pay-btn-label">Espèces</span>
+      </div>
     </div>
     <input type="hidden" id="paymentMethod" value="CB">
     <!-- ══ AMBIANCE & OPTIONS — Toggles · Sliders · Dropdown ══ -->
@@ -4305,7 +4410,7 @@ body {
 
 <!-- ══ ZONES DE COUVERTURE ══ -->
 
-<div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
+<div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon"><svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.4-1.3 4.5-3 5.7V17H9v-2.3C7.3 13.5 6 11.4 6 9a6 6 0 0 1 6-6z"/></svg></span><span class="conseil-text" id="conseil-text"></span></div></div>
 
 <footer>
   <div class="legal-links">
@@ -4711,22 +4816,22 @@ function countUpPrice(el, final, dur) {
 var PROMO_CODES = {
   'BIENVENUE10': {
     discount: 0.10,
-    label: '✓ Code découverte appliqué — 10% de remise',
+    label: '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Code découverte appliqué — 10% de remise',
     type: 'percent'
   },
   'MERCI15': {
     discount: 0.15,
-    label: '✓ Code fidélité appliqué — 15% de remise',
+    label: '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Code fidélité appliqué — 15% de remise',
     type: 'percent'
   },
   'VIP20': {
     discount: 0.20,
-    label: '✓ Code VIP appliqué — 20% de remise',
+    label: '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Code VIP appliqué — 20% de remise',
     type: 'percent'
   },
   'AMI10': {
     discount: 10,
-    label: '✓ Code parrainage appliqué — 10€ offerts',
+    label: '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Code parrainage appliqué — 10€ offerts',
     type: 'flat'
   }
 };
@@ -4757,7 +4862,7 @@ function validatePromoLive(){
     input.classList.add('valid');
     info.classList.add('valid');
     info.innerHTML = PROMO_CODES[code].label;
-    status.textContent = '✓';
+    status.textContent = '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     status.style.color = '#22c55e';
     status.classList.add('show');
     activePromo = {code: code, rule: PROMO_CODES[code]};
@@ -4766,7 +4871,7 @@ function validatePromoLive(){
     input.classList.add('invalid');
     info.classList.add('invalid');
     info.innerHTML = 'Code inconnu ou expiré';
-    status.textContent = '✗';
+    status.textContent = '<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     status.style.color = '#ef4444';
     status.classList.add('show');
     activePromo = null;
@@ -4858,10 +4963,10 @@ function sendWhatsApp(){
   let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
 
 `;
-  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+  msg+=`<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Prise en charge : ${time||'Dès que possible'}
 `;
-  msg+=`📍 Départ : ${dep}
-🏁 Arrivée : ${arr}
+  msg+=`<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Départ : ${dep}
+<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Arrivée : ${arr}
 `;
   const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
   var _promoSuffix = '';
@@ -4869,12 +4974,12 @@ function sendWhatsApp(){
     _promoSuffix = '\n������ Code promo : *' + activePromo.code + '*';
   }
   msg+=`������ Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}${_promoSuffix}\n������ Paiement : ${pay}\n\n`;
-  msg+=`✨ *Préférences à bord :*
+  msg+=`<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> *Préférences à bord :*
 - Musique : ${music?music.innerText.trim():'Non'}
 - Climatisation : ${clim?clim.innerText.trim():'Non'}
 
 `;
-  if(note) msg+=`📝 Note : ${note}
+  if(note) msg+=`<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Note : ${note}
 
 `;
   msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
@@ -4931,12 +5036,12 @@ function fetchMeteo(){
     document.getElementById('wCloud').innerText=cloud+'%';
     document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
     const b=document.getElementById('wBadge');
-    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
-    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
-    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad"><svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen"><svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon"><svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Bonnes conditions</span>';}
     window._meteoData={rain,wind,code,temp};
     genConseil();
-  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
+  }).catch(()=>{document.getElementById('wIcon').innerText='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>';document.getElementById('wTemp').innerText='--°';});
 }
 
 // ── TRAFIC OSRM ──
@@ -4988,12 +5093,12 @@ function genConseil(){
   const box=document.getElementById('conseil-box');
   const icon=document.getElementById('conseil-icon');
   const text=document.getElementById('conseil-text');
-  let msg='',ic='💡';
-  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
-  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
-  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
-  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
-  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  let msg='',ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.4-1.3 4.5-3 5.7V17H9v-2.3C7.3 13.5 6 11.4 6 9a6 6 0 0 1 6-6z"/></svg>';
+  if(m.rain>60){ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9.8A9 9 0 0 0 3.2 9.8"/><path d="M4 9.8A8 8 0 0 1 20 9.8"/><line x1="8" y1="14" x2="8" y2="18"/><line x1="12" y1="14" x2="12" y2="20"/><line x1="16" y1="14" x2="16" y2="18"/></svg>';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="12" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="17" r="2"/></svg>';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/><line x1="9" y1="2" x2="12" y2="5"/><line x1="15" y1="2" x2="12" y2="5"/></svg>️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='<svg class="e-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';msg='<strong>Conditions idéales.</strong> Bonne route !';}
   icon.innerText=ic; text.innerHTML=msg;
   box.style.display='flex';
 }
