@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink:#09090f; --s1:#13131e; --s2:#1b1b2a; --s3:#222235;
@@ -2935,6 +2935,207 @@ body::after {
 
 
 
+/* ════════════════════════════════════════════════════════════
+   CONTRASTE GLOBAL — texte blanc sur fond bleu nuit
+   ════════════════════════════════════════════════════════════ */
+
+/* Texte général */
+body { color: #F6FAFD !important; }
+
+/* Titres */
+h1, h2, h3, h4 { color: #F6FAFD !important; }
+
+/* Paragraphes et textes secondaires */
+p, span, div { color: inherit; }
+
+/* Forcer blanc sur tous les textes sombres */
+.hero-p { color: rgba(179,207,229,0.85) !important; }
+.proof-item .pl, .proof-item .pv-sm { color: #B3CFE5 !important; }
+.c-sub { color: #B3CFE5 !important; }
+.f-lbl { color: #4A7FA7 !important; font-family: 'JetBrains Mono', monospace !important; letter-spacing: 0.15em !important; font-size: 0.62rem !important; font-weight: 600 !important; }
+.stepper-label { color: #B3CFE5 !important; }
+.stepper-item.active .stepper-label, .stepper-item.done .stepper-label { color: #F6FAFD !important; }
+.avis-text { color: rgba(179,207,229,0.85) !important; }
+.avis-name { color: #F6FAFD !important; }
+.avis-route { color: #4A7FA7 !important; }
+.t-route { color: #F6FAFD !important; }
+.t-via { color: #4A7FA7 !important; }
+.t-dur { color: #B3CFE5 !important; }
+.w-detail-item { color: #B3CFE5 !important; }
+.zone-name { color: #F6FAFD !important; }
+.zone-detail { color: #B3CFE5 !important; }
+.zone-price { color: #B3CFE5 !important; }
+.legal-text { color: rgba(179,207,229,0.75) !important; }
+.legal-section h4 { color: #F6FAFD !important; }
+.m-subtitle { color: #B3CFE5 !important; }
+.m-price-val { color: #F6FAFD !important; }
+.voiture-badge-name { color: #F6FAFD !important; }
+.conseil-text { color: rgba(179,207,229,0.9) !important; }
+.hdr-name { color: #F6FAFD !important; }
+.hdr-sub { color: #4A7FA7 !important; font-family: 'JetBrains Mono', monospace !important; font-size: 0.52rem !important; letter-spacing: 0.1em !important; }
+.interieur-caption { color: #F6FAFD !important; }
+.interieur-label { color: #B3CFE5 !important; }
+.pay-btn { color: #B3CFE5 !important; }
+.pay-btn.sel { color: #F6FAFD !important; }
+.chip { color: #B3CFE5 !important; }
+.chip.sel { color: #F6FAFD !important; }
+.hero-tagline { color: #4A7FA7 !important; }
+/* Numéros stepper */
+.stepper-circle { color: #4A7FA7 !important; border-color: rgba(74,127,167,0.4) !important; }
+.stepper-item.done .stepper-circle { color: #F6FAFD !important; }
+.stepper-item.active .stepper-circle { color: #B3CFE5 !important; border-color: #4A7FA7 !important; }
+/* footer */
+footer, footer * { color: #4A7FA7 !important; }
+.legal-links a { color: #4A7FA7 !important; }
+.legal-links a:hover { color: #B3CFE5 !important; }
+/* Services grid */
+.srv-item { color: #B3CFE5 !important; }
+/* Textarea / input */
+textarea.f-in, input.f-in { color: #B3CFE5 !important; }
+textarea.f-in::placeholder, input.f-in::placeholder { color: rgba(74,127,167,0.5) !important; }
+/* Select date pickers */
+.f-in select, select.f-in { color: #B3CFE5 !important; background: transparent !important; }
+/* Promo input */
+.promo-input { color: #B3CFE5 !important; }
+.promo-input::placeholder { color: rgba(74,127,167,0.5) !important; }
+/* Modal prix */
+.m-recap-row { color: #B3CFE5 !important; }
+.m-recap-row .m-recap-val { color: #F6FAFD !important; }
+/* ETA */
+.eta-label { color: #4A7FA7 !important; }
+.eta-value { color: #B3CFE5 !important; }
+/* Sticky datetime */
+.sdt-time { color: #F6FAFD !important; }
+/* Badges interieur */
+.interieur-tag { color: #B3CFE5 !important; }
+/* Note texte hero */
+.section-label { color: #4A7FA7 !important; font-family: 'JetBrains Mono', monospace !important; letter-spacing: 0.2em !important; }
+
+/* ════════════════════════════════════════════════════════════
+   PROOF TECH WIDGETS — nouvelle section réassurance
+   ════════════════════════════════════════════════════════════ */
+
+.proof-tech {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto 36px;
+  max-width: 520px;
+  padding: 0 4px;
+}
+@media (max-width: 360px) {
+  .proof-tech { grid-template-columns: repeat(2,1fr); }
+  .pt-widget:last-child { grid-column: 1/-1; max-width: 160px; margin: 0 auto; }
+}
+
+.pt-widget {
+  position: relative;
+  padding: 14px 12px 12px;
+  background: rgba(13,28,48,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(74,127,167,0.25);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+  cursor: default;
+}
+.pt-widget::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(74,127,167,0.5), transparent);
+}
+.pt-widget:hover {
+  border-color: rgba(74,127,167,0.55);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(74,127,167,0.12);
+}
+
+.pt-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.pt-icon-wrap {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgba(26,61,99,0.9), rgba(74,127,167,0.2));
+  border: 0.5px solid rgba(74,127,167,0.3);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(179,207,229,0.08);
+}
+.pt-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: #4A7FA7 !important;
+  letter-spacing: 0.2em;
+  background: rgba(74,127,167,0.1);
+  border: 0.5px solid rgba(74,127,167,0.25);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.pt-value {
+  font-family: 'Marcellus', serif;
+  font-size: 1.55rem;
+  color: #F6FAFD !important;
+  line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.pt-unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #4A7FA7 !important;
+  font-weight: 600;
+}
+
+.pt-bar {
+  height: 2px;
+  background: rgba(74,127,167,0.15);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.pt-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1A3D63, #4A7FA7, #B3CFE5);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px rgba(74,127,167,0.5);
+}
+
+.pt-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  color: #4A7FA7 !important;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* Scan line déco */
+.pt-widget::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(74,127,167,0.04));
+  pointer-events: none;
+  border-radius: 0 0 14px 14px;
+}
+
+/* ═══ FIN CONTRASTE + WIDGETS ═══ */
+
+
+
 /* ══════════════════════════════════════════════════════════════
    AMBIANCE & OPTIONS — Palette Tech #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD
    ══════════════════════════════════════════════════════════════ */
@@ -3777,77 +3978,60 @@ body {
   <p class="hero-tagline">Le luxe au prix juste</p>
     <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
   <p class="hero-p">En direct, sans commission &mdash; vous payez <strong style="color:var(--gold);font-weight:700;">10&nbsp;% de moins</strong> qu&rsquo;<strong style="color:var(--white);font-weight:500;">UBER</strong> ou <strong style="color:var(--white);font-weight:500;">BOLT</strong> pour un service Berline Premium.</p>
-  <div class="proof" id="proof-badges">
+  <div class="proof-tech" id="proof-badges">
 
-  <div class="proof-item">
-    <div class="proof-ic">
-      <!-- Bouclier Certification + étoile centrale + 4 mini-étoiles -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Bouclier -->
-        <path d="M12 2 L20 5.5 L20 11 C20 16 16 20 12 22 C8 20 4 16 4 11 L4 5.5 Z"/>
-        <!-- Étoile centrale pleine -->
-        <polygon points="12,7.5 12.9,10.1 15.6,10.1 13.5,11.8 14.3,14.4 12,12.8 9.7,14.4 10.5,11.8 8.4,10.1 11.1,10.1" fill="var(--gold)" stroke="none"/>
-        <!-- 3 mini-étoiles en bas du bouclier -->
-        <polygon points="8,17 8.4,18.2 9.6,18.2 8.7,18.9 9,20 8,19.3 7,20 7.3,18.9 6.4,18.2 7.6,18.2" fill="var(--gold)" stroke="none" opacity="0.7"/>
-        <polygon points="12,17.5 12.3,18.5 13.3,18.5 12.5,19.1 12.8,20 12,19.4 11.2,20 11.5,19.1 10.7,18.5 11.7,18.5" fill="var(--gold)" stroke="none" opacity="0.9"/>
-        <polygon points="16,17 16.4,18.2 17.6,18.2 16.7,18.9 17,20 16,19.3 15,20 15.3,18.9 14.4,18.2 15.6,18.2" fill="var(--gold)" stroke="none" opacity="0.7"/>
-      </svg>
+  <!-- Widget 1 — Note -->
+  <div class="pt-widget">
+    <div class="pt-top">
+      <div class="pt-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.6" stroke-linecap="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="rgba(74,127,167,0.2)"/>
+        </svg>
+      </div>
+      <div class="pt-badge">VÉRIFIÉ</div>
     </div>
-    <div class="pv"><span class="count-up" data-target="5" data-decimal="1">0</span>/5</div>
-    <div class="pl">Excellence<br>v&eacute;rifi&eacute;e</div>
+    <div class="pt-value"><span class="count-up" data-target="5" data-decimal="1">0</span><span class="pt-unit">/5</span></div>
+    <div class="pt-bar"><div class="pt-bar-fill" style="width:100%"></div></div>
+    <div class="pt-label">Excellence<br>vérifiée</div>
   </div>
 
-  <div class="proof-item">
-    <div class="proof-ic">
-      <!-- Chrono minimaliste — aiguille à 30s + 3 traits de vitesse -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Corps chrono -->
-        <circle cx="12" cy="13.5" r="8.5"/>
-        <!-- Couronne / bouton -->
-        <line x1="10" y1="2" x2="14" y2="2" stroke-width="1.8"/>
-        <line x1="12" y1="2" x2="12" y2="4.5"/>
-        <!-- Bouton poussoir droite -->
-        <path d="M19 6.5 L21 4.5"/>
-        <!-- Aiguille → position 30s (bas) -->
-        <line x1="12" y1="13.5" x2="12" y2="19.5" stroke-width="1.6" stroke="var(--gold)"/>
-        <!-- Centre -->
-        <circle cx="12" cy="13.5" r="1" fill="var(--gold)" stroke="none"/>
-        <!-- Traits de vitesse à gauche -->
-        <line x1="0.5" y1="10" x2="4" y2="10" stroke-width="1.1" opacity="0.5"/>
-        <line x1="1.5" y1="13" x2="4" y2="13" stroke-width="1.1" opacity="0.7"/>
-        <line x1="0.5" y1="16" x2="4" y2="16" stroke-width="1.1" opacity="0.5"/>
-      </svg>
+  <!-- Widget 2 — Temps -->
+  <div class="pt-widget">
+    <div class="pt-top">
+      <div class="pt-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="12" cy="13" r="8"/>
+          <line x1="10" y1="2" x2="14" y2="2" stroke-width="1.8"/>
+          <line x1="12" y1="2" x2="12" y2="5"/>
+          <line x1="12" y1="13" x2="12" y2="18" stroke-width="2" stroke="#4A7FA7"/>
+          <circle cx="12" cy="13" r="1.2" fill="#B3CFE5" stroke="none"/>
+        </svg>
+      </div>
+      <div class="pt-badge">INSTANTANÉ</div>
     </div>
-    <div class="pv"><span class="count-up" data-target="30" data-suffix="s">0</span></div>
-    <div class="pl">Confirmation<br>directe</div>
+    <div class="pt-value"><span class="count-up" data-target="30" data-suffix="s">0</span></div>
+    <div class="pt-bar"><div class="pt-bar-fill" style="width:85%"></div></div>
+    <div class="pt-label">Confirmation<br>directe</div>
   </div>
 
-  <div class="proof-item">
-    <div class="proof-ic">
-      <!-- Poignée de main directe + € discret -->
-      <svg width="22" height="22" viewBox="0 0 26 22" fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Bras gauche (chauffeur) -->
-        <path d="M1 14 L7 10 L9 11 L11 10"/>
-        <!-- Bras droit (client) -->
-        <path d="M25 14 L19 10 L17 11 L15 10"/>
-        <!-- Poignée de main au centre -->
-        <path d="M11 10 C11 10 12 9 13 10 C14 9 15 10 15 10 L13 12 Z" fill="rgba(212,175,55,0.15)"/>
-        <line x1="11" y1="10" x2="15" y2="10"/>
-        <!-- Silhouette tête gauche -->
-        <circle cx="4" cy="7" r="2.2"/>
-        <!-- Silhouette tête droite -->
-        <circle cx="22" cy="7" r="2.2"/>
-        <!-- Symbole € au-dessus discret -->
-        <text x="13" y="5" text-anchor="middle" font-size="4.5" font-family="Georgia,serif" fill="var(--gold)" stroke="none" opacity="0.85">€</text>
-        <!-- Trait de connexion sous les mains -->
-        <line x1="8" y1="15" x2="18" y2="15" stroke-width="0.8" opacity="0.4"/>
-      </svg>
+  <!-- Widget 3 — Prix -->
+  <div class="pt-widget">
+    <div class="pt-top">
+      <div class="pt-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.6" stroke-linecap="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="pt-badge">DIRECT</div>
     </div>
-    <div class="pv"><span class="count-up" data-target="0" data-suffix="%">0</span></div>
-    <div class="pl">Prix direct<br>chauffeur</div>
+    <div class="pt-value"><span class="count-up" data-target="0" data-suffix="%">0</span></div>
+    <div class="pt-bar"><div class="pt-bar-fill" style="width:100%"></div></div>
+    <div class="pt-label">Commission<br>chauffeur</div>
   </div>
 
-</div>
+</div></div>
 </div>
 
 <div class="ornament" data-ornament>
@@ -5424,6 +5608,29 @@ if('serviceWorker' in navigator){try{
 }catch(e){}}
 </script>
 <div id="notif-toast" class="notif-toast"></div>
+
+<script>
+// Animer les barres proof-tech au scroll
+(function(){
+  const obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.pt-bar-fill').forEach(function(b){
+          const w = b.style.width;
+          b.style.width = '0';
+          requestAnimationFrame(function(){
+            requestAnimationFrame(function(){ b.style.width = w; });
+          });
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  const pt = document.querySelector('.proof-tech');
+  if(pt) obs.observe(pt);
+})();
+</script>
+
 
 <script>
 // ── Ambiance & Options JS ──
