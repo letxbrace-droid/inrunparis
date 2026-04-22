@@ -1,21 +1,12 @@
-# I&N RUN — Chauffeur Privé Paris
+# I&N RUN — Confort v1 + Palette Vibrante v5
+
+## Nouveautés Confort
+- 4x Toggle iOS ultra-design (éclairage, musique, discret, USB)
+- Slider volume + slider climatisation (16–28°C)
+- Dropdown ambiance sonore : Jazz · Classique · Lo-Fi · Ambient · Silence · Podcast
+- Palette #1A3D63 · #4A7FA7 · #B3CFE5 · #F6FAFD
 
 ## Déploiement GitHub Pages
-
-1. Push le fichier `index.html` à la racine du repo
-2. Settings → Pages → Source: main / root
-3. URL: https://letxbrace-droid.github.io/inrunparis/
-
-## Fichiers
-- index.html   → Page principale (tout-en-un, 0 dépendance externe)
-
-## Contacts intégrés
-- WhatsApp : https://wa.me/33767742220
-- Téléphone : +33 7 67 74 22 20
-
-## Stack technique
-- Fonts : Inter + Marcellus + JetBrains Mono (Google Fonts CDN)
-- Carte : OSRM API (calcul de trajet)
-- Météo : Open-Meteo API (gratuite, sans clé)
-- Trafic : Bing Maps API (clé intégrée)
-- Constellation : Canvas 2D générative
+1. Push index.html à la racine
+2. Settings → Pages → main / root
+3. https://letxbrace-droid.github.io/inrunparis/
