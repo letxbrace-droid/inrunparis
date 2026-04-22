@@ -8,296 +8,215 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&family=Marcellus&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep: #080616;
-  --surface: rgba(255, 255, 255, 0.03);
-  --accent-blue: #1e90ff;
-  --accent-glow: rgba(30, 144, 255, 0.4);
-  --accent-green: #00ff85;
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-med: #a0a0b0;
+  --bg: #080616;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --blue: #1e90ff;
+  --blue-glow: rgba(30, 144, 255, 0.5);
+  --green: #00ff85;
+  --text-dim: #a0a0b0;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body { 
     font-family: 'Inter', sans-serif; 
-    background: var(--bg-deep);
+    background: var(--bg);
     background-image: 
-        radial-gradient(circle at 50% -20%, #1a1953 0%, transparent 70%),
-        radial-gradient(circle at 100% 100%, #0d0c22 0%, transparent 50%);
+        radial-gradient(circle at 50% -20%, #1a1953 0%, transparent 80%),
+        radial-gradient(circle at 0% 100%, #0d0c22 0%, transparent 40%);
     color: #fff;
     min-height: 100vh;
-    overflow-y: auto!important; /* LIBERTÉ TOTALE DE SCROLL */
+    overflow-y: auto!important; /* SCROLL TOTAL */
     padding-bottom: 120px;
 }
 
-/* ── ARCHITECTURE GLASS D'ÉLITE ── */
+/* ── DYNAMIC ISLAND (STICKY SUMMARY) ── */
+#sticky-summary {
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    z-index: 999; width: calc(100% - 40px); max-width: 440px;
+    padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(8, 6, 22, 0.8); backdrop-filter: blur(20px);
+    border: 1px solid var(--blue); border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0; transition: all 0.5s var(--ease);
+}
+#sticky-summary.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── ETA BUBBLE ── */
+#eta-bubble {
+    position: absolute; right: 10px; top: -15px;
+    background: var(--green); color: #000; font-size: 0.65rem; font-weight: 800;
+    padding: 4px 10px; border-radius: 50px; box-shadow: 0 0 15px var(--green);
+    display: none; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+/* ── CARDS ── */
+.container { max-width: 500px; margin: 0 auto; padding: 20px; }
 .glass-panel {
-    background: var(--surface);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border); border-radius: 28px;
+    padding: 30px; margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
+.card.active { border-color: var(--blue); box-shadow: 0 0 40px var(--blue-glow); }
+.card.locked { opacity: 0.3; filter: grayscale(1) blur(2px); pointer-events: none; }
 
-.tunnel { max-width: 500px; margin: 20px auto; padding: 0 20px; }
+/* ── FORM & AUTOCOMPLETE ── */
+.input-wrap { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); border-radius: 16px; display: flex; align-items: center; padding: 0 18px; margin-bottom: 15px; position: relative; }
+input { background: transparent; border: none; outline: none; height: 56px; color: #fff; font-size: 1rem; width: 100%; font-weight: 300; }
+.ac-results { position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; background: #0a0a1a; border: 1px solid var(--blue); border-radius: 12px; display: none; max-height: 200px; overflow-y: auto; }
+.ac-item { padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 0.85rem; }
+.ac-item:hover { background: var(--blue); }
 
-.card { padding: 30px; margin-bottom: 30px; position: relative; }
-.card.active { border-color: var(--accent-blue); box-shadow: 0 0 40px var(--accent-glow); }
-.card.locked { opacity: 0.25; filter: grayscale(1) blur(2px); pointer-events: none; }
+/* ── REASSURANCE (AVIS) ── */
+.trust-section { margin: 40px 0; }
+.review-card { padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
+.review-user { font-weight: 600; color: var(--blue); font-size: 0.85rem; margin-bottom: 5px; }
+.review-text { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
-/* ── ICONOGRAPHIE VECTORIELLE PURE (SVG) ── */
-.icon-tech { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; fill: none; vertical-align: middle; }
-.blue-glow { color: var(--accent-blue); filter: drop-shadow(0 0 8px var(--accent-blue)); }
+/* ── DOCK NAV (WHATSAPP/PHONE) ── */
+.dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; height: 75px; background: rgba(8,6,22,0.8); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 25px; display: flex; padding: 10px; gap: 12px; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+.dock-item { flex: 1; border-radius: 18px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
+.dock-wa { background: rgba(0,255,133,0.1); color: var(--green); border: 1px solid rgba(0,255,133,0.2); }
+.dock-tel { background: rgba(30,144,255,0.1); color: var(--blue); border: 1px solid rgba(30,144,255,0.2); }
 
-/* ── AUTOCOMPLÉTION GÉOSPATIALE ── */
-.f-wrap {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    display: flex; align-items: center; padding: 0 18px;
-    margin-bottom: 15px; position: relative;
-}
-.f-wrap:focus-within { border-color: var(--accent-blue); }
-.f-in { background: transparent; border: none; outline: none; height: 56px; color: #fff; font-size: 1rem; width: 100%; font-weight: 300; }
+/* ── WIDGETS ── */
+.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+.w-tech { padding: 20px 10px; text-align: center; }
+.w-tech h6 { font-size: 0.6rem; letter-spacing: 2px; color: var(--blue); margin-bottom: 10px; }
+.w-val { font-size: 1.6rem; font-family: 'Marcellus'; }
 
-.ac-dropdown {
-    position: absolute; top: 100%; left: 0; right: 0; z-index: 9999;
-    background: #0a0a1a; border: 1px solid var(--accent-blue);
-    border-radius: 0 0 16px 16px; max-height: 220px; overflow-y: auto; display: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-}
-.ac-item { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 0.85rem; color: var(--text-med); transition: 0.2s; }
-.ac-item:hover { background: var(--accent-blue); color: #fff; }
-
-/* ── CONTRÔLES HABITACLE 3D ── */
-.segmented-bar { display: flex; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 50px; position: relative; border: 1px solid var(--glass-border); margin: 25px 0; }
-.seg-btn { flex: 1; text-align: center; padding: 12px 0; font-size: 0.75rem; font-weight: 700; color: var(--text-med); cursor: pointer; z-index: 2; }
-.seg-btn.active { color: #fff; }
-.seg-glow { position: absolute; left: 5px; top: 5px; height: calc(100% - 10px); width: calc(33.33% - 7px); background: var(--accent-blue); border-radius: 50px; box-shadow: 0 0 20px var(--accent-blue); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; outline: none; margin: 15px 0 25px; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border-radius: 50%; border: 5px solid var(--bg-deep); box-shadow: 0 0 15px var(--accent-blue); cursor: pointer; }
-
-/* ── NEURAL TRUST LOG (AVIS) ── */
-.trust-log { margin: 50px auto; max-width: 500px; padding: 0 20px; }
-.log-card { padding: 20px; margin-bottom: 15px; border-left: 3px solid var(--accent-blue); background: linear-gradient(90deg, rgba(30,144,255,0.05), transparent); }
-.log-header { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--accent-blue); letter-spacing: 2px; margin-bottom: 10px; display: flex; justify-content: space-between; }
-.log-body { font-size: 0.85rem; color: var(--text-med); line-height: 1.6; font-style: italic; }
-
-/* ── WIDGETS LIVE TÉLÉMÉTRIE ── */
-.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 500px; margin: 40px auto; padding: 0 20px; }
-.widget-tech { padding: 25px 15px; text-align: center; }
-.widget-tech h6 { font-size: 0.6rem; letter-spacing: 3px; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 15px; }
-.widget-val { font-size: 1.8rem; font-family: 'Marcellus'; color: #fff; }
-
-/* ── BOUTONS & STICKY ── */
-.btn-ignite { width: 100%; height: 65px; border: none; border-radius: 20px; background: linear-gradient(135deg, #1e90ff, #0052d4); color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: 0.3s; }
-.btn-ignite:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--accent-glow); }
-
-.dock { position: fixed; bottom: 25px; left: 25px; right: 25px; height: 70px; background: rgba(8,6,22,0.85); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 25px; display: flex; padding: 8px; gap: 10px; z-index: 10000; }
-.dock-item { flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 18px; text-decoration: none; font-weight: 700; font-size: 0.8rem; transition: 0.3s; }
-.dock-wa { background: rgba(0,255,133,0.1); color: var(--accent-green); border: 1px solid rgba(0,255,133,0.2); }
-.dock-tel { background: rgba(30,144,255,0.1); color: var(--accent-blue); border: 1px solid rgba(30,144,255,0.2); }
-
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; display: none; align-items: center; justify-content: center; padding: 20px; }
-.modal.show { display: flex; }
+/* ── BUTTONS ── */
+.btn-ignite { width: 100%; height: 64px; border: none; border-radius: 18px; background: linear-gradient(135deg, #1e90ff, #0052d4); color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.4s; }
 </style>
 </head>
 <body>
 
-<header style="padding: 30px; text-align: center;">
-    <svg width="130" height="50" viewBox="0 0 110 44">
-        <text x="55" y="22" font-family="Marcellus" font-size="25" fill="#fff" text-anchor="middle" letter-spacing="4">I&N</text>
-        <line x1="20" y1="30" x2="90" y2="30" stroke="#1e90ff" stroke-width="1.5" stroke-dasharray="2 2"/>
-        <text x="55" y="42" font-family="JetBrains Mono" font-size="8" fill="#1e90ff" text-anchor="middle" letter-spacing="6">TECH RUN</text>
+<div id="sticky-summary">
+    <div style="font-size: 0.8rem;">
+        <span id="sum-time" style="color:var(--blue); font-weight:700;">--/--</span>
+        <div id="sum-route" style="font-size:0.6rem; color:var(--text-dim);">Trajet en attente...</div>
+    </div>
+    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" style="background:transparent; border:1px solid var(--blue); color:var(--blue); padding:5px 12px; border-radius:50px; font-size:0.65rem; cursor:pointer;">MODIFIER</button>
+</div>
+
+<header style="padding: 25px; text-align: center;">
+    <svg width="110" height="40" viewBox="0 0 110 40">
+        <text x="55" y="20" font-family="Marcellus" font-size="22" fill="#fff" text-anchor="middle" letter-spacing="3">I&N</text>
+        <rect x="20" y="28" width="70" height="1" fill="#1e90ff" />
+        <text x="55" y="38" font-family="Inter" font-size="8" fill="#1e90ff" text-anchor="middle" letter-spacing="5">TECH RUN</text>
     </svg>
 </header>
 
-<div class="tunnel">
+<div class="container">
     <div class="glass-panel card active" id="step1">
-        <h2 style="font-family:Marcellus; font-weight:400; margin-bottom:25px; font-size:1.3rem; display:flex; align-items:center; gap:12px;">
-            <svg class="icon-tech blue-glow" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            TRAJECTOIRE SATELLITE
-        </h2>
-        
-        <div class="f-wrap">
-            <input type="text" id="dep" class="f-in" placeholder="Lieu de départ (ex: CDG, Paris...)" oninput="handleAutocomplete(this, 'ac-dep')">
-            <div class="ac-dropdown" id="ac-dep"></div>
+        <div class="input-wrap">
+            <div id="eta-bubble">CHAUFFEUR À 8 MIN</div>
+            <svg style="width:20px; color:var(--blue); margin-right:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <input type="text" id="dep" placeholder="Lieu de départ (ex: CDG, Paris...)" onfocus="document.getElementById('eta-bubble').style.display='block'" oninput="search(this, 'ac-dep')">
+            <div class="ac-results" id="ac-dep"></div>
         </div>
 
-        <div class="f-wrap">
-            <input type="text" id="arr" class="f-in" placeholder="Destination finale..." oninput="handleAutocomplete(this, 'ac-arr')">
-            <div class="ac-dropdown" id="ac-arr"></div>
+        <div class="input-wrap">
+            <svg style="width:20px; color:var(--blue); margin-right:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <input type="text" id="arr" placeholder="Destination..." oninput="search(this, 'ac-arr')">
+            <div class="ac-results" id="ac-arr"></div>
         </div>
 
-        <div class="f-wrap">
-            <input type="datetime-local" id="timepick" class="f-in" style="color-scheme:dark;">
+        <div class="input-wrap">
+            <input type="datetime-local" id="timepick" style="color-scheme:dark;" onchange="updateSummary()">
         </div>
 
-        <button class="btn-ignite" onclick="unlockStep2()">INITIALISER LE CONFORT</button>
+        <button class="btn-ignite" onclick="unlockStep2()">VÉRIFIER LE CONFORT</button>
     </div>
 
     <div class="glass-panel card locked" id="step2">
-        <h2 style="font-family:Marcellus; font-weight:400; margin-bottom:25px; font-size:1.3rem; display:flex; align-items:center; gap:12px;">
-            <svg class="icon-tech blue-glow" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0.73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 0.73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-            HABITACLE CONFIG
-        </h2>
+        <h3 style="font-family:Marcellus; margin-bottom:20px;">Configuration Habitacle</h3>
+        <div style="font-size:0.7rem; color:var(--blue); margin-bottom:10px;">TEMPÉRATURE : <span id="temp-val">21°C</span></div>
+        <input type="range" min="16" max="28" value="21" oninput="document.getElementById('temp-val').innerText = this.value + '°C'" style="width:100%">
+        
+        <div style="font-size:0.7rem; color:var(--blue); margin-top:20px; margin-bottom:10px;">VOLUME : <span id="vol-val">60%</span></div>
+        <input type="range" min="0" max="100" value="60" oninput="document.getElementById('vol-val').innerText = this.value + '%'" style="width:100%">
 
-        <div class="segmented-bar">
-            <div class="seg-btn active" onclick="setAmb(0, 'Musique')">MUSIQUE</div>
-            <div class="seg-btn" onclick="setAmb(1, 'RADIO')">RADIO</div>
-            <div class="seg-btn" onclick="setAmb(2, 'SILENCE')">SILENCE</div>
-            <div class="seg-glow" id="seg-glow"></div>
+        <button class="btn-ignite" style="margin-top:20px" onclick="alert('Calcul du prix Neural en cours...')">ESTIMER MON TARIF</button>
+    </div>
+
+    <div class="trust-section">
+        <h4 style="font-family:Marcellus; margin-bottom:20px; letter-spacing:1px;">L'avis de nos passagers</h4>
+        <div class="review-card">
+            <div class="review-user">JEAN-LUC // Aéroport CDG → Paris 16</div>
+            <p class="review-text">"Sortie d'un vol de 12h, j'avais besoin de calme. La voiture m'attendait déjà, température parfaite, silence total. Un service exemplaire."</p>
         </div>
-
-        <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--accent-blue); font-family:'JetBrains Mono'">
-            <span>VOLUME MASTER</span>
-            <span id="vol-txt">65%</span>
+        <div class="review-card">
+            <div class="review-user">SARAH.M // Ris-Orangis → Gare de Lyon</div>
+            <p class="review-text">"Enfin un chauffeur qui comprend le mot 'Premium'. Ponctuel, discret et le WiFi fonctionne à merveille pour mes emails de dernière minute."</p>
         </div>
-        <input type="range" min="0" max="100" value="65" oninput="updateHMI('vol', this.value, '%')">
+    </div>
 
-        <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--accent-blue); font-family:'JetBrains Mono'">
-            <span>THERMOSTAT</span>
-            <span id="clim-txt">21°C</span>
+    <div class="live-grid">
+        <div class="glass-panel w-tech">
+            <h6>MÉTÉO LIVE</h6>
+            <div class="w-val">12°C</div>
         </div>
-        <input type="range" min="16" max="28" value="21" oninput="updateHMI('clim', this.value, '°C')" style="background:linear-gradient(90deg, #1e90ff, #ff4500)">
-
-        <button class="btn-ignite" onclick="getNeuralPrice()">VERROUILLER LE TARIF</button>
-    </div>
-</div>
-
-<div class="trust-log">
-    <h3 style="font-family:JetBrains Mono; font-size:0.6rem; letter-spacing:4px; color:var(--accent-blue); margin-bottom:20px;">● NEURAL TRUST LOG</h3>
-    <div class="glass-panel log-card">
-        <div class="log-header"><span>ID: MISSION_882</span><span>STATUS: SUCCESS</span></div>
-        <div class="log-body">"Vol retardé CDG. Chauffeur présent avant mon atterrissage. Véhicule hybride silencieux. Configuration habitacle parfaite."</div>
-    </div>
-    <div class="glass-panel log-card">
-        <div class="log-header"><span>ID: MISSION_914</span><span>STATUS: SUCCESS</span></div>
-        <div class="log-body">"Trajet Orly-Paris. Silence total respecté pour réunion d'urgence. Ponctualité chirurgicale."</div>
-    </div>
-</div>
-
-<div class="live-grid">
-    <div class="glass-panel widget-tech">
-        <h6>METEO LIVE</h6>
-        <div class="widget-val" id="wx-temp">--°C</div>
-        <div id="wx-desc" style="font-size:0.6rem; color:var(--text-med); margin-top:5px; text-transform:uppercase;">SYNCHRONISATION...</div>
-    </div>
-    <div class="glass-panel widget-tech">
-        <h6>TRAFIC IDF</h6>
-        <div class="widget-val" style="color:var(--accent-green)">OK</div>
-        <div style="font-size:0.6rem; color:var(--text-med); margin-top:5px; text-transform:uppercase;">AXES FLUIDES</div>
+        <div class="glass-panel w-tech">
+            <h6>TRAFIC IDF</h6>
+            <div class="w-val" style="color:var(--green)">OK</div>
+        </div>
     </div>
 </div>
 
 <div class="dock">
-    <a href="#" class="dock-item dock-wa" onclick="sendFinal()">RÉSERVER (WA)</a>
-    <a href="tel:+33767742220" class="dock-item dock-tel">LIGNE DIRECTE</a>
-</div>
-
-<div class="modal" id="priceModal">
-    <div class="glass-panel" style="width:100%; max-width:380px; padding:40px; text-align:center;">
-        <h5 style="font-family:JetBrains Mono; font-size:0.7rem; color:var(--accent-blue); letter-spacing:4px;">PRIX FIXÉ</h5>
-        <div id="final-price" style="font-size:4rem; font-family:Marcellus; margin:20px 0; text-shadow:0 0 30px var(--accent-blue);">--€</div>
-        <p style="font-size:0.8rem; color:var(--text-med); margin-bottom:25px;">Zéro commission.<br>Service Premium Validé.</p>
-        <button class="btn-tech btn-ignite" onclick="sendFinal()">CONFIRMER</button>
-        <p style="margin-top:20px; font-size:0.6rem; color:var(--text-med); cursor:pointer;" onclick="document.getElementById('priceModal').classList.remove('show')">RETOUR</p>
-    </div>
+    <a href="#" class="dock-item dock-wa">
+        <svg style="width:24px" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <a href="tel:+33767742220" class="dock-item dock-tel">
+        <svg style="width:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0.7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
 </div>
 
 <script>
-let state = { dep: null, arr: null, media: "Musique", vol: 65, clim: 21 };
-
-// ── AUTOCOMPLETE (PHOTON API) ──
-async function handleAutocomplete(input, listId) {
-    const q = input.value;
+async function search(inp, listId) {
+    const q = inp.value;
     const list = document.getElementById(listId);
     if(q.length < 3) { list.style.display = 'none'; return; }
-
-    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&lat=48.8566&lon=2.3522&limit=5`);
+    const res = await fetch(`https://photon.komoot.io/api/?q=${q}&lat=48.85&lon=2.35&limit=5`);
     const data = await res.json();
-
-    list.innerHTML = '';
-    list.style.display = 'block';
+    list.innerHTML = ''; list.style.display = 'block';
     data.features.forEach(f => {
         const item = document.createElement('div');
         item.className = 'ac-item';
-        const label = `${f.properties.name |
+        item.innerText = `${f.properties.name |
 
 | ''} ${f.properties.city |
-| ''} (${f.properties.postcode |
-| ''})`.trim();
-        item.innerText = label;
-        item.onclick = () => {
-            input.value = label;
-            list.style.display = 'none';
-            if(input.id === 'dep') state.dep = f.geometry.coordinates;
-            else state.arr = f.geometry.coordinates;
-        };
+| ''}`;
+        item.onclick = () => { inp.value = item.innerText; list.style.display='none'; updateSummary(); };
         list.appendChild(item);
     });
 }
 
 function unlockStep2() {
-    if(!state.dep ||!state.arr) { alert("S'il vous plaît, sélectionnez une adresse dans les suggestions."); return; }
     document.getElementById('step1').classList.add('locked');
     document.getElementById('step2').classList.remove('locked');
-    document.getElementById('step2').classList.add('active');
+    document.getElementById('sticky-summary').classList.add('visible');
 }
 
-function setAmb(idx, val) {
-    state.media = val;
-    document.getElementById('seg-glow').style.transform = `translateX(${idx * 100}%)`;
-    document.querySelectorAll('.seg-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+function updateSummary() {
+    const time = document.getElementById('timepick').value;
+    const dep = document.getElementById('dep').value;
+    if(time) document.getElementById('sum-time').innerText = time.replace('T', ' · ');
+    if(dep) document.getElementById('sum-route').innerText = "Départ de : " + dep;
 }
 
-function updateHMI(id, val, unit) {
-    state[id] = val;
-    document.getElementById(`${id}-txt`).innerText = val + unit;
-}
-
-// ── BACKEND LOGIC (OSRM) ──
-async function getNeuralPrice() {
-    const [lon1, lat1] = state.dep;
-    const [lon2, lat2] = state.arr;
-    const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`);
-    const data = await res.json();
-    
-    if(data.code === 'Ok') {
-        const km = data.routes.distance / 1000;
-        const dur = data.routes.duration / 60;
-        let price = 15 + (km * 1.3) + (dur * 0.4); // Algorithme Premium
-        if(price < 35) price = 35;
-        
-        document.getElementById('final-price').innerText = Math.round(price) + "€";
-        document.getElementById('priceModal').classList.add('show');
+window.addEventListener('scroll', () => {
+    const sticky = document.getElementById('sticky-summary');
+    if(window.scrollY > 200 && document.getElementById('step2').classList.contains('locked') === false) {
+        sticky.style.top = '20px';
+    } else {
+        sticky.style.top = '80px';
     }
-}
-
-async function syncMeteo() {
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current_weather=true`);
-    const data = await res.json();
-    document.getElementById('wx-temp').innerText = Math.round(data.current_weather.temperature) + "°C";
-    document.getElementById('wx-desc').innerText = "CAPTEURS OPÉRATIONNELS";
-}
-
-function sendFinal() {
-    const msg = `*MISSION VTC : I&N RUN*%0A%0A` +
-                `📍 DÉPART: ${document.getElementById('dep').value}%0A` +
-                `🏁 ARRIVÉE: ${document.getElementById('arr').value}%0A%0A` +
-                `*CONFIG HABITACLE:*%0A` +
-                `🎵 AMBIANCE: ${state.media}%0A` +
-                `🔊 VOLUME: ${state.vol}%0A` +
-                `❄️ CLIM: ${state.clim}°C%0A%0A` +
-                `*TARIF SÉCURISÉ: ${document.getElementById('final-price').innerText}*`;
-    window.open(`https://wa.me/33767742220?text=${msg}`, '_blank');
-}
-
-syncMeteo();
+});
 </script>
 
 </body>
