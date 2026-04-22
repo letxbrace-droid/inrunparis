@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink:#09090f; --s1:#13131e; --s2:#1b1b2a; --s3:#222235;
@@ -2935,513 +2935,546 @@ body::after {
 
 
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION CONFORT — Palette Tech iOS
-   #A1931 gold · #B3CFE5 bleu clair · #4A7FA7 bleu mid · #1A3D63 bleu deep · #F6FAFD blanc
-   ═══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   AMBIANCE & OPTIONS — Palette Tech #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD
+   ══════════════════════════════════════════════════════════════ */
 
-.confort-section {
-  max-width: 540px;
-  margin: 28px auto 0;
-  padding: 0 16px;
-  position: relative;
-  z-index: 2;
-}
-
-.confort-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-.confort-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.confort-ic {
-  width: 38px; height: 38px;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #1A3D63, #4A7FA7);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 14px rgba(74,127,167,0.4), inset 0 1px 0 rgba(179,207,229,0.2);
-  flex-shrink: 0;
-}
-.confort-ic svg { width: 16px; height: 16px; stroke: #B3CFE5; }
-.confort-kicker {
+.amb-group-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.52rem;
+  font-size: 0.54rem;
   color: #4A7FA7;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   font-weight: 600;
-}
-.confort-title {
-  font-family: 'Marcellus', serif;
-  font-size: 1.1rem;
-  color: #F6FAFD;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-}
-.confort-live-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #4A7FA7;
-  box-shadow: 0 0 10px #4A7FA7, 0 0 20px rgba(74,127,167,0.4);
-  animation: confortLive 2s ease-in-out infinite;
-}
-@keyframes confortLive {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.85); }
-}
-
-.confort-group-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
-  color: #4A7FA7;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin: 20px 0 10px;
+  margin: 18px 0 10px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.confort-group-label::after {
+.amb-group-label svg { stroke: #4A7FA7; flex-shrink: 0; }
+.amb-group-label::after {
   content: '';
   flex: 1;
   height: 0.5px;
-  background: linear-gradient(90deg, rgba(74,127,167,0.3), transparent);
+  background: linear-gradient(90deg, rgba(74,127,167,0.35), transparent);
 }
 
-/* ── TOGGLES GRID ── */
-.toggles-grid {
+/* ── TOGGLES LIST ── */
+.toggles-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
-
-.toggle-item {
+.toggle-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 14px;
-  background: rgba(26,61,99,0.35);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 0.5px solid rgba(74,127,167,0.25);
-  border-radius: 14px;
-  transition: all 0.25s;
-  cursor: pointer;
+  padding: 11px 14px;
+  background: rgba(26,61,99,0.28);
+  border: 0.5px solid rgba(74,127,167,0.22);
+  border-radius: 13px;
+  transition: all 0.22s;
 }
-.toggle-item:hover {
-  border-color: rgba(74,127,167,0.5);
-  background: rgba(26,61,99,0.5);
+.toggle-row:hover {
+  border-color: rgba(74,127,167,0.45);
+  background: rgba(26,61,99,0.42);
 }
-.toggle-left {
+.toggle-row-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   flex: 1;
   min-width: 0;
 }
-.toggle-icon {
-  width: 34px; height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(145deg, rgba(26,61,99,0.8), rgba(74,127,167,0.2));
-  border: 0.5px solid rgba(74,127,167,0.3);
+.trw-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgba(26,61,99,0.9), rgba(74,127,167,0.25));
+  border: 0.5px solid rgba(74,127,167,0.28);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(179,207,229,0.08);
 }
-.toggle-icon svg { width: 15px; height: 15px; stroke: #B3CFE5; opacity: 0.8; }
-.toggle-info {
+.trw-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
-.toggle-name {
+.trw-name {
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #F6FAFD;
   letter-spacing: 0.01em;
 }
-.toggle-sub {
+.trw-sub {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.52rem;
+  font-size: 0.5rem;
   color: #4A7FA7;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: 0.06em;
 }
 
-/* ── iOS TOGGLE ── */
-.ios-toggle {
+/* ── iOS SWITCH ── */
+.ios-sw {
   position: relative;
-  width: 48px; height: 28px;
+  width: 46px; height: 26px;
   flex-shrink: 0;
   cursor: pointer;
+  display: block;
 }
-.ios-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-.ios-slider {
+.ios-sw input { opacity: 0; width: 0; height: 0; position: absolute; }
+.ios-sw-track {
   position: absolute;
   inset: 0;
-  border-radius: 28px;
-  background: rgba(74,127,167,0.2);
-  border: 0.5px solid rgba(74,127,167,0.3);
+  border-radius: 26px;
+  background: rgba(74,127,167,0.18);
+  border: 0.5px solid rgba(74,127,167,0.28);
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
   cursor: pointer;
 }
-.ios-slider::before {
-  content: '';
+.ios-sw-thumb {
   position: absolute;
-  width: 22px; height: 22px;
+  width: 20px; height: 20px;
   left: 3px; top: 2.5px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #B3CFE5, #8ab5d4);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.5);
+  background: linear-gradient(145deg, #c8dce8, #9cb8cc);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.45);
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-.ios-toggle input:checked + .ios-slider {
+.ios-sw input:checked ~ .ios-sw-track {
   background: linear-gradient(135deg, #1A3D63, #4A7FA7);
   border-color: #4A7FA7;
-  box-shadow: 0 0 14px rgba(74,127,167,0.5), inset 0 1px 0 rgba(179,207,229,0.15);
+  box-shadow: 0 0 12px rgba(74,127,167,0.5);
 }
-.ios-toggle input:checked + .ios-slider::before {
-  transform: translateX(20px);
+.ios-sw input:checked ~ .ios-sw-track .ios-sw-thumb {
+  transform: translateX(19px);
   background: linear-gradient(145deg, #F6FAFD, #B3CFE5);
-  box-shadow: 0 2px 8px rgba(26,61,99,0.5), 0 0 12px rgba(179,207,229,0.4), inset 0 1px 1px rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(26,61,99,0.55), 0 0 10px rgba(179,207,229,0.35), inset 0 1px 1px rgba(255,255,255,0.9);
 }
 
 /* ── SLIDER CARDS ── */
-.slider-card {
-  background: rgba(26,61,99,0.35);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 0.5px solid rgba(74,127,167,0.25);
-  border-radius: 16px;
-  padding: 14px 16px;
-  margin-bottom: 8px;
-  transition: border-color 0.25s;
+.slider-card-amb {
+  background: rgba(26,61,99,0.28);
+  border: 0.5px solid rgba(74,127,167,0.22);
+  border-radius: 13px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  transition: border-color 0.22s;
 }
-.slider-card:hover { border-color: rgba(74,127,167,0.45); }
+.slider-card-amb:hover { border-color: rgba(74,127,167,0.42); }
 
-.slider-header {
+.sca-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
-.slider-icon-wrap {
+.sca-icon {
   width: 26px; height: 26px;
   border-radius: 8px;
-  background: linear-gradient(145deg, rgba(26,61,99,0.9), rgba(74,127,167,0.3));
-  border: 0.5px solid rgba(74,127,167,0.3);
+  background: linear-gradient(145deg, rgba(26,61,99,0.95), rgba(74,127,167,0.3));
+  border: 0.5px solid rgba(74,127,167,0.28);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.slider-icon-wrap svg { stroke: #B3CFE5; }
-.slider-label {
+.sca-label {
   font-family: 'Inter', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   color: #F6FAFD;
   flex: 1;
 }
-.slider-value {
+.sca-val-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.sca-val {
   font-family: 'Marcellus', serif;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: #B3CFE5;
-  line-height: 1;
-  min-width: 28px;
+  min-width: 24px;
   text-align: right;
 }
-.slider-unit {
+.sca-unit {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.56rem;
   color: #4A7FA7;
-  letter-spacing: 0.05em;
-  align-self: flex-end;
-  margin-bottom: 2px;
+  letter-spacing: 0.04em;
 }
-
-.slider-track-wrap {
+.sca-track {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
-.slider-icon-sm {
-  width: 13px; height: 13px;
-  stroke: #4A7FA7;
-  flex-shrink: 0;
-  opacity: 0.7;
-}
-.slider-icon-sm.clim-cold { stroke: #B3CFE5; opacity: 0.9; }
-.slider-icon-sm.clim-hot { stroke: #FEB122; opacity: 0.9; }
+.sca-track svg { flex-shrink: 0; opacity: 0.8; }
 
-/* ── CUSTOM RANGE ── */
-.custom-range {
+.amb-range {
   -webkit-appearance: none;
   appearance: none;
   flex: 1;
-  height: 4px;
-  border-radius: 4px;
-  background: rgba(74,127,167,0.2);
+  height: 3px;
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
-  transition: all 0.2s;
 }
-.custom-range.vol-range {
-  background: linear-gradient(90deg, #4A7FA7 65%, rgba(74,127,167,0.2) 65%);
-}
-.custom-range.clim-range {
-  background: linear-gradient(90deg, #4A7FA7 46%, rgba(74,127,167,0.2) 46%);
-}
-.custom-range::-webkit-slider-thumb {
+.amb-range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 22px; height: 22px;
+  width: 20px; height: 20px;
   border-radius: 50%;
   background: linear-gradient(145deg, #F6FAFD, #B3CFE5);
-  box-shadow: 0 2px 8px rgba(26,61,99,0.6), 0 0 12px rgba(74,127,167,0.4), inset 0 1px 1px rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(26,61,99,0.6), 0 0 10px rgba(74,127,167,0.35), inset 0 1px 1px rgba(255,255,255,0.9);
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
 }
-.custom-range::-webkit-slider-thumb:active {
-  transform: scale(1.2);
-  box-shadow: 0 2px 12px rgba(26,61,99,0.7), 0 0 20px rgba(74,127,167,0.6), inset 0 1px 1px rgba(255,255,255,0.9);
+.amb-range::-webkit-slider-thumb:active {
+  transform: scale(1.25);
+  box-shadow: 0 2px 14px rgba(26,61,99,0.7), 0 0 18px rgba(74,127,167,0.55);
 }
-.custom-range::-moz-range-thumb {
-  width: 22px; height: 22px;
+.amb-range::-moz-range-thumb {
+  width: 20px; height: 20px;
   border-radius: 50%;
   background: linear-gradient(145deg, #F6FAFD, #B3CFE5);
   border: none;
-  box-shadow: 0 2px 8px rgba(26,61,99,0.6), 0 0 12px rgba(74,127,167,0.4);
+  box-shadow: 0 2px 8px rgba(26,61,99,0.6);
   cursor: pointer;
 }
 
-/* ── MUSIC DROPDOWN ── */
-.music-dropdown-wrap {
-  position: relative;
-  margin-bottom: 24px;
-}
+/* ── DROPDOWN MUSIQUE v2 ── */
+.music-wrap2 { position: relative; margin-bottom: 8px; }
 
-.music-dropdown-btn {
+.music-btn2 {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 13px 14px;
-  background: rgba(26,61,99,0.5);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 0.5px solid rgba(74,127,167,0.35);
-  border-radius: 16px;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(26,61,99,0.45);
+  border: 0.5px solid rgba(74,127,167,0.32);
+  border-radius: 13px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(179,207,229,0.08);
+  transition: all 0.25s;
+  box-shadow: inset 0 1px 0 rgba(179,207,229,0.06);
 }
-.music-dropdown-btn:hover {
+.music-btn2:hover {
   border-color: rgba(74,127,167,0.6);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 20px rgba(74,127,167,0.15), inset 0 1px 0 rgba(179,207,229,0.08);
+  background: rgba(26,61,99,0.6);
 }
-.music-dropdown-btn.open {
+.music-btn2.open {
   border-color: #4A7FA7;
-  border-radius: 16px 16px 0 0;
+  border-radius: 13px 13px 0 0;
   border-bottom-color: transparent;
-  box-shadow: 0 0 24px rgba(74,127,167,0.2), inset 0 1px 0 rgba(179,207,229,0.08);
+  box-shadow: 0 0 20px rgba(74,127,167,0.18);
 }
-
-.music-btn-left {
+.mb2-left {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
   min-width: 0;
 }
-
-/* Vinyle animé */
-.music-disc {
-  width: 34px; height: 34px;
+.vinyl2 {
+  width: 32px; height: 32px;
   border-radius: 50%;
-  background: conic-gradient(#1A3D63 0deg 60deg, #0d2240 60deg 120deg, #1A3D63 120deg 180deg, #0d2240 180deg 240deg, #1A3D63 240deg 300deg, #0d2240 300deg 360deg);
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
+  background: conic-gradient(#1A3D63 0deg 60deg, #0d2038 60deg 120deg, #1A3D63 120deg 180deg, #0d2038 180deg 240deg, #1A3D63 240deg 300deg, #0d2038 300deg 360deg);
   border: 1.5px solid rgba(74,127,167,0.4);
-  box-shadow: 0 0 12px rgba(74,127,167,0.3);
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  animation: discSpin 4s linear infinite;
-  animation-play-state: running;
+  box-shadow: 0 0 10px rgba(74,127,167,0.25);
+  animation: spin2 4s linear infinite;
 }
-.music-disc.paused { animation-play-state: paused; }
-@keyframes discSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.music-disc-inner {
-  width: 10px; height: 10px;
+.vinyl2.paused { animation-play-state: paused; }
+@keyframes spin2 { to { transform: rotate(360deg); } }
+.vinyl2-core {
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #B3CFE5, #4A7FA7);
-  box-shadow: 0 0 6px rgba(74,127,167,0.6);
+  box-shadow: 0 0 5px rgba(74,127,167,0.5);
 }
-
-.music-selected {
+.mb2-sel {
   font-family: 'Inter', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
   color: #F6FAFD;
   line-height: 1.2;
 }
-.music-selected-sub {
+.mb2-sub {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   color: #4A7FA7;
   letter-spacing: 0.08em;
   margin-top: 2px;
 }
-
-.music-btn-right {
+.mb2-right {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 }
-
-/* Equalizer animé */
-.music-equalizer {
+.eq2 {
   display: flex;
   align-items: flex-end;
   gap: 2px;
-  height: 16px;
-  opacity: 1;
-  transition: opacity 0.3s;
+  height: 14px;
 }
-.music-equalizer span {
+.eq2 span {
   width: 3px;
   border-radius: 2px;
   background: linear-gradient(180deg, #B3CFE5, #4A7FA7);
-  animation: eqBar 0.8s ease-in-out infinite alternate;
+  animation: eq2bar 0.75s ease-in-out infinite alternate;
 }
-.music-equalizer span:nth-child(1) { height: 8px; animation-delay: 0s; }
-.music-equalizer span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
-.music-equalizer span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
-.music-equalizer span:nth-child(4) { height: 11px; animation-delay: 0.45s; }
-@keyframes eqBar {
-  from { transform: scaleY(0.3); opacity: 0.5; }
-  to { transform: scaleY(1); opacity: 1; }
-}
-.music-equalizer.paused span { animation-play-state: paused; opacity: 0.3; }
-
-.music-chevron {
-  width: 14px; height: 14px;
-  stroke: #4A7FA7;
+.eq2 span:nth-child(1) { height: 7px; animation-delay: 0s; }
+.eq2 span:nth-child(2) { height: 13px; animation-delay: 0.15s; }
+.eq2 span:nth-child(3) { height: 5px; animation-delay: 0.3s; }
+.eq2 span:nth-child(4) { height: 10px; animation-delay: 0.45s; }
+@keyframes eq2bar { from { transform: scaleY(0.3); opacity: 0.5; } to { transform: scaleY(1); opacity: 1; } }
+.eq2.paused span { animation-play-state: paused; opacity: 0.3; }
+.mb2-chev {
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
   flex-shrink: 0;
 }
-.music-chevron.open { transform: rotate(180deg); }
+.mb2-chev.open { transform: rotate(180deg); }
 
-/* Dropdown options */
-.music-options {
+/* Options */
+.music-opts2 {
   position: absolute;
-  top: 100%;
-  left: 0; right: 0;
-  background: rgba(13,28,48,0.97);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  top: 100%; left: 0; right: 0;
+  background: rgba(9,20,38,0.98);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
   border: 0.5px solid #4A7FA7;
   border-top: none;
-  border-radius: 0 0 16px 16px;
-  overflow: hidden;
+  border-radius: 0 0 13px 13px;
   max-height: 0;
+  overflow: hidden;
   opacity: 0;
   pointer-events: none;
-  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+  transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
   z-index: 50;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.55);
 }
-.music-options.open {
-  max-height: 360px;
-  opacity: 1;
-  pointer-events: auto;
-}
+.music-opts2.open { max-height: 340px; opacity: 1; pointer-events: auto; }
 
-.music-option {
+.mo2 {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
+  gap: 11px;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.18s;
   border-bottom: 0.5px solid rgba(74,127,167,0.1);
   position: relative;
-  overflow: hidden;
 }
-.music-option:last-child { border-bottom: none; }
-.music-option:hover { background: rgba(74,127,167,0.12); }
-.music-option.active { background: rgba(74,127,167,0.15); }
-.music-option::before {
+.mo2:last-child { border-bottom: none; }
+.mo2:hover { background: rgba(74,127,167,0.1); }
+.mo2.active { background: rgba(74,127,167,0.14); }
+.mo2::before {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 2px;
   background: transparent;
+  border-radius: 0 2px 2px 0;
   transition: background 0.2s;
 }
-.music-option.active::before { background: linear-gradient(180deg, #B3CFE5, #4A7FA7); }
-
-.mo-icon {
-  font-size: 1.1rem;
-  width: 28px;
-  text-align: center;
-  flex-shrink: 0;
-  filter: drop-shadow(0 0 4px rgba(74,127,167,0.4));
-}
-.mo-text {
+.mo2.active::before { background: linear-gradient(180deg, #B3CFE5, #4A7FA7); }
+.mo2-ic { flex-shrink: 0; }
+.mo2-txt {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1px;
   min-width: 0;
 }
-.mo-name {
+.mo2-name {
   font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #F6FAFD;
   line-height: 1.2;
 }
-.mo-sub {
+.mo2.active .mo2-name { color: #B3CFE5; }
+.mo2-sub {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.48rem;
+  font-size: 0.46rem;
   color: #4A7FA7;
   letter-spacing: 0.06em;
 }
-.music-option.active .mo-name { color: #B3CFE5; }
-.music-option.active .mo-sub { color: #4A7FA7; }
-
-.mo-check {
-  width: 18px; height: 18px;
+.mo2-dot {
+  width: 6px; height: 6px;
   border-radius: 50%;
-  background: rgba(74,127,167,0.2);
-  border: 0.5px solid rgba(74,127,167,0.3);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  background: transparent;
+  border: 1.5px solid rgba(74,127,167,0.3);
   flex-shrink: 0;
+  transition: all 0.2s;
 }
-.music-option.active .mo-check {
-  display: flex;
-  background: linear-gradient(135deg, #1A3D63, #4A7FA7);
+.mo2.active .mo2-dot {
+  background: #4A7FA7;
   border-color: #4A7FA7;
-  box-shadow: 0 0 10px rgba(74,127,167,0.4);
-}
-.mo-check svg { width: 9px; height: 9px; stroke: #F6FAFD; stroke-width: 3; }
-
-@media (max-width: 380px) {
-  .toggle-name { font-size: 0.78rem; }
-  .slider-value { font-size: 1rem; }
+  box-shadow: 0 0 8px rgba(74,127,167,0.6);
 }
 
-/* ═══ FIN CONFORT CSS ═══ */
+/* ── PALETTE GLOBALE — surcharge vars ── */
+:root {
+  --ink-deep: #040811;
+  --ink: #0a0e18;
+  --gold: #FEB122;
+  --gold-l: #FFD76B;
+  --p-deep: #1A3D63;
+  --p-mid:  #4A7FA7;
+  --p-light: #B3CFE5;
+  --p-white: #F6FAFD;
+}
+
+/* Header palette blue */
+#hdr { background: rgba(4,8,17,0.88) !important; border-bottom: 0.5px solid rgba(74,127,167,0.2) !important; }
+
+/* Proof items */
+.proof-item {
+  background: rgba(26,61,99,0.28) !important;
+  border-color: rgba(74,127,167,0.2) !important;
+}
+.proof-ic { background: rgba(74,127,167,0.1) !important; border-color: rgba(74,127,167,0.25) !important; }
+
+/* Cards tunnel */
+.card {
+  background: rgba(13,28,48,0.82) !important;
+  border-color: rgba(74,127,167,0.2) !important;
+  backdrop-filter: blur(28px) !important;
+}
+.card.active { border-color: rgba(74,127,167,0.5) !important; box-shadow: 0 0 0 1px rgba(74,127,167,0.12), 0 12px 40px rgba(0,0,0,0.5) !important; }
+.c-num { background: linear-gradient(135deg, #1A3D63, #4A7FA7) !important; color: #F6FAFD !important; box-shadow: 0 4px 12px rgba(74,127,167,0.35) !important; border: none !important; }
+.c-title { color: #F6FAFD !important; }
+.c-sub { color: #4A7FA7 !important; }
+
+/* Inputs */
+.f-wrap { background: rgba(26,61,99,0.25) !important; border-color: rgba(74,127,167,0.2) !important; }
+.f-wrap:focus-within { border-color: #4A7FA7 !important; box-shadow: 0 0 0 3px rgba(74,127,167,0.15), 0 0 20px rgba(74,127,167,0.2) !important; }
+.f-in { color: #B3CFE5 !important; }
+.f-in::placeholder { color: rgba(74,127,167,0.5) !important; }
+.f-lbl { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; letter-spacing: 0.15em !important; }
+.f-ic svg { stroke: #4A7FA7 !important; }
+
+/* Bouton CTA */
+.btn-gold {
+  background: linear-gradient(135deg, #1A3D63, #4A7FA7) !important;
+  color: #F6FAFD !important;
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 30px rgba(74,127,167,0.4), 0 4px 15px rgba(26,61,99,0.5) !important;
+}
+.btn-gold:hover { background: linear-gradient(135deg, #4A7FA7, #B3CFE5) !important; color: #1A3D63 !important; box-shadow: 0 0 50px rgba(74,127,167,0.6) !important; }
+
+/* Chips (on garde gold pour la sélection price) */
+.chip { background: rgba(26,61,99,0.28) !important; border-color: rgba(74,127,167,0.2) !important; color: #B3CFE5 !important; }
+.chip:hover { border-color: rgba(74,127,167,0.5) !important; }
+.chip.sel { background: rgba(74,127,167,0.18) !important; border-color: #4A7FA7 !important; color: #F6FAFD !important; }
+.chip.sel svg { stroke: #B3CFE5 !important; }
+
+/* Paiement */
+.pay-btn { background: rgba(26,61,99,0.28) !important; border-color: rgba(74,127,167,0.2) !important; color: #B3CFE5 !important; }
+.pay-btn.sel { background: rgba(74,127,167,0.18) !important; border-color: #4A7FA7 !important; color: #F6FAFD !important; }
+
+/* Info cards météo + trafic */
+.info-card { background: rgba(13,28,48,0.75) !important; border-color: rgba(74,127,167,0.18) !important; }
+.i-hd { color: #4A7FA7 !important; font-family: 'JetBrains Mono', monospace !important; }
+.t-tag.ok { background: rgba(52,211,153,0.12) !important; color: #34d399 !important; border-color: rgba(52,211,153,0.3) !important; }
+.t-tag.bad { background: rgba(239,68,68,0.12) !important; color: #ef4444 !important; border-color: rgba(239,68,68,0.3) !important; }
+.t-tag.warn { background: rgba(74,127,167,0.15) !important; color: #B3CFE5 !important; border-color: rgba(74,127,167,0.35) !important; }
+.t-tag { font-family: 'JetBrains Mono', monospace !important; }
+.t-route { color: #F6FAFD !important; }
+.t-via { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; }
+.t-dur { font-family: 'Marcellus', serif !important; color: #B3CFE5 !important; }
+.w-temp { color: #F6FAFD !important; font-family: 'Marcellus', serif !important; }
+
+/* Sticky datetime */
+#sticky-datetime {
+  background: rgba(9,20,38,0.9) !important;
+  border-color: rgba(74,127,167,0.3) !important;
+  box-shadow: 0 0 20px rgba(74,127,167,0.15), 0 8px 20px rgba(0,0,0,0.4) !important;
+}
+.sdt-kicker { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; }
+.sdt-icon { background: linear-gradient(135deg, #1A3D63, #4A7FA7) !important; box-shadow: 0 0 12px rgba(74,127,167,0.4) !important; }
+.sdt-btn { background: rgba(74,127,167,0.1) !important; border-color: rgba(74,127,167,0.3) !important; color: #B3CFE5 !important; }
+.sdt-time { color: #F6FAFD !important; }
+
+/* Stepper */
+.stepper { background: rgba(9,20,38,0.6) !important; border-color: rgba(74,127,167,0.12) !important; }
+.stepper-item.done .stepper-circle { background: linear-gradient(135deg, #1A3D63, #4A7FA7) !important; color: #F6FAFD !important; border: none !important; box-shadow: 0 0 16px rgba(74,127,167,0.4) !important; }
+.stepper-item.active .stepper-circle { border-color: #4A7FA7 !important; color: #4A7FA7 !important; }
+
+/* Sticky CTA bottom */
+.sticky { background: linear-gradient(0deg, rgba(4,8,17,1) 50%, rgba(4,8,17,0.85) 100%) !important; }
+.sb-wa { background: linear-gradient(135deg, #25d366, #1a9949) !important; border: none !important; }
+.sb-tel { background: rgba(26,61,99,0.4) !important; border-color: rgba(74,127,167,0.35) !important; color: #B3CFE5 !important; }
+
+/* Modal */
+.modal-box-price { background: #040e1a !important; border-top-color: rgba(74,127,167,0.3) !important; }
+.m-price { color: #B3CFE5 !important; -webkit-text-fill-color: #B3CFE5 !important; background: none !important; text-shadow: 0 0 30px rgba(74,127,167,0.5) !important; }
+.m-title { color: #F6FAFD !important; }
+.m-subtitle { color: #4A7FA7 !important; }
+.m-price-lbl { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; }
+
+/* Zones */
+.zone-card { background: rgba(13,28,48,0.7) !important; border-color: rgba(74,127,167,0.18) !important; }
+.zone-price { color: #B3CFE5 !important; font-family: 'Marcellus', serif !important; }
+.zone-name { color: #F6FAFD !important; }
+.zone-detail { color: #4A7FA7 !important; }
+
+/* Section voiture */
+.voiture-badge { background: rgba(4,8,17,0.88) !important; border-color: rgba(74,127,167,0.35) !important; }
+.voiture-badge-label { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; font-size: 0.52rem !important; letter-spacing: 0.2em !important; }
+.voiture-badge-name { color: #F6FAFD !important; }
+
+/* Services grid existant */
+.srv-ic { background: rgba(74,127,167,0.1) !important; }
+.srv-ic svg { stroke: #4A7FA7 !important; }
+.srv-item { color: #B3CFE5 !important; }
+
+/* Hero */
+h1 .g {
+  background: linear-gradient(135deg, #4A7FA7, #B3CFE5, #F6FAFD) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+.hero-tagline { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; }
+.hero-p { color: rgba(179,207,229,0.7) !important; }
+.hero-p strong.accent { color: #B3CFE5 !important; -webkit-text-fill-color: #B3CFE5 !important; }
+
+/* Avis */
+.avis-slide { background: rgba(13,28,48,0.75) !important; border-color: rgba(74,127,167,0.18) !important; }
+.avis-name { color: #F6FAFD !important; }
+.avis-route { font-family: 'JetBrains Mono', monospace !important; color: #4A7FA7 !important; }
+
+/* Body bg */
+body { background: #040811 !important; }
+body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 0%, rgba(26,61,99,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 50%, rgba(74,127,167,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 120%, rgba(26,61,99,0.18) 0%, transparent 60%),
+    linear-gradient(180deg, #040811 0%, #060e1a 100%) !important;
+}
+
+/* Interieur tag */
+.interieur-tag { background: rgba(74,127,167,0.15) !important; border-color: rgba(74,127,167,0.3) !important; color: #B3CFE5 !important; }
+
+/* Conseil */
+.conseil-inner { background: rgba(26,61,99,0.2) !important; border-color: rgba(74,127,167,0.2) !important; }
+.conseil-text strong { color: #B3CFE5 !important; }
+
+/* Footer */
+footer { color: #4A7FA7 !important; }
+.legal-links a { color: #4A7FA7 !important; }
+.legal-links a:hover { color: #B3CFE5 !important; }
+
+/* Progress bar */
+#progress-bar { background: linear-gradient(90deg, #1A3D63, #4A7FA7, #B3CFE5) !important; }
+
+/* ═══ FIN PALETTE BLUE TECH ═══ */
 
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
@@ -4009,27 +4042,171 @@ body {
       <div class="pay-btn" onclick="selectPayment(this,'Esp&egrave;ces')"><span class="pay-btn-ic">💶</span>Esp&egrave;ces</div>
     </div>
     <input type="hidden" id="paymentMethod" value="CB">
-    <label class="f-lbl">Musique</label>
-    <div class="chips-grid" id="musicPref">
-      <div class="chip sel" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Jazz</div>
-      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11h8M8 15h8"></path></svg>Hip Hop</div>
-      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49"></path></svg>Infos</div>
-      <div class="chip" onclick="toggleChip('musicPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>Silence</div>
+    <!-- ══ AMBIANCE & OPTIONS — Toggles · Sliders · Dropdown ══ -->
+
+    <!-- ─ TOGGLES SERVICES ─ -->
+    <div class="amb-group-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="11" height="11"><circle cx="12" cy="12" r="3" fill="currentColor" opacity=".4"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Services à bord
     </div>
-    <label class="f-lbl">Climatisation</label>
-    <div class="chips-grid" id="climPref">
-      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16l-4-4 4-4"/><path d="M4 8l4 4-4 4"/></svg>Frais</div>
-      <div class="chip sel" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"></path></svg>Ambiant</div>
-      <div class="chip" onclick="toggleChip('climPref',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>Chaud</div>
+    <div class="toggles-list">
+
+      <div class="toggle-row">
+        <div class="toggle-row-left">
+          <div class="trw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.7" stroke-linecap="round" width="15" height="15"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1.5" fill="#B3CFE5" stroke="none"/></svg>
+          </div>
+          <div class="trw-info">
+            <span class="trw-name">Wi-Fi 5G</span>
+            <span class="trw-sub">Connexion incluse</span>
+          </div>
+        </div>
+        <label class="ios-sw"><input type="checkbox" checked onchange="onToggle(this,'wifi')"><span class="ios-sw-track"><span class="ios-sw-thumb"></span></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-row-left">
+          <div class="trw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.7" stroke-linecap="round" width="15" height="15"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M9 6h6"/><path d="M9 10h4"/><circle cx="12" cy="17" r="1.5" fill="#B3CFE5" stroke="none"/></svg>
+          </div>
+          <div class="trw-info">
+            <span class="trw-name">Chargeur USB-C</span>
+            <span class="trw-sub">Port disponible</span>
+          </div>
+        </div>
+        <label class="ios-sw"><input type="checkbox" checked onchange="onToggle(this,'usb')"><span class="ios-sw-track"><span class="ios-sw-thumb"></span></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-row-left">
+          <div class="trw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.7" stroke-linecap="round" width="15" height="15"><circle cx="12" cy="8" r="3"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/><circle cx="17" cy="13" r="2.5"/><path d="M19.5 18v-1a2.5 2.5 0 0 0-5 0v1"/></svg>
+          </div>
+          <div class="trw-info">
+            <span class="trw-name">Mode discret</span>
+            <span class="trw-sub">Pas de conversation</span>
+          </div>
+        </div>
+        <label class="ios-sw"><input type="checkbox" onchange="onToggle(this,'discret')"><span class="ios-sw-track"><span class="ios-sw-thumb"></span></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-row-left">
+          <div class="trw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.7" stroke-linecap="round" width="15" height="15"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
+          </div>
+          <div class="trw-info">
+            <span class="trw-name">Siège bébé</span>
+            <span class="trw-sub">Sur demande</span>
+          </div>
+        </div>
+        <label class="ios-sw"><input type="checkbox" onchange="onToggle(this,'siege')"><span class="ios-sw-track"><span class="ios-sw-thumb"></span></span></label>
+      </div>
+
     </div>
-    <label class="f-lbl">Services Inclus</label>
-    <div class="services-grid">
-      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a5 5 0 0 0-5 5c0 5 5 11 5 11s5-6 5-11a5 5 0 0 0-5-5z"/><circle cx="12" cy="7" r="2"/></svg></div>Eau min&eacute;rale</div>
-      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2.5"/></svg></div>Confiseries</div>
-      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/><path d="M9 6h6M9 10h4"/></svg></div>Chargeurs USB</div>
-      <div class="srv-item"><div class="srv-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg></div>Wifi 5G</div>
+
+    <!-- ─ SLIDER VOLUME ─ -->
+    <div class="amb-group-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="11" height="11"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      Volume &amp; Climatisation
     </div>
-    <label class="f-lbl">Note au chauffeur (Optionnel)</label>
+
+    <div class="slider-card-amb">
+      <div class="sca-header">
+        <div class="sca-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </div>
+        <span class="sca-label">Volume</span>
+        <div class="sca-val-wrap">
+          <span class="sca-val" id="vol-val2">65</span>
+          <span class="sca-unit">%</span>
+        </div>
+      </div>
+      <div class="sca-track">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4A7FA7" stroke-width="2" stroke-linecap="round" width="12" height="12"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <input type="range" class="amb-range" id="vol-r" min="0" max="100" value="65"
+          oninput="document.getElementById('vol-val2').textContent=this.value;updateAmbRange(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="2" stroke-linecap="round" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      </div>
+    </div>
+
+    <div class="slider-card-amb">
+      <div class="sca-header">
+        <div class="sca-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+        </div>
+        <span class="sca-label">Climatisation</span>
+        <div class="sca-val-wrap">
+          <span class="sca-val" id="clim-val2">22</span>
+          <span class="sca-unit">°C</span>
+        </div>
+      </div>
+      <div class="sca-track">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="2" stroke-linecap="round" width="12" height="12"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5-5-5 5"/><path d="M17 17l-5 5-5-5"/><path d="M2 12h20"/><path d="M7 7L2 12l5 5"/><path d="M17 7l5 5-5 5"/></svg>
+        <input type="range" class="amb-range clim-r" id="clim-r" min="16" max="28" value="22"
+          oninput="document.getElementById('clim-val2').textContent=this.value;updateAmbRange(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FEB122" stroke-width="2" stroke-linecap="round" width="13" height="13"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </div>
+    </div>
+
+    <!-- ─ DROPDOWN MUSIQUE ─ -->
+    <div class="amb-group-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="11" height="11"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      Ambiance musicale
+    </div>
+
+    <div class="music-wrap2" id="music-wrap2">
+      <button class="music-btn2" id="music-btn2" onclick="toggleDrop2()">
+        <div class="mb2-left">
+          <div class="vinyl2" id="vinyl2"><div class="vinyl2-core"></div></div>
+          <div>
+            <div class="mb2-sel" id="mb2-sel">Radio Jazz</div>
+            <div class="mb2-sub" id="mb2-sub">Smooth · Fréquence douce</div>
+          </div>
+        </div>
+        <div class="mb2-right">
+          <div class="eq2" id="eq2">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <svg class="mb2-chev" id="mb2-chev" viewBox="0 0 24 24" fill="none" stroke="#4A7FA7" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </button>
+      <div class="music-opts2" id="music-opts2">
+        <div class="mo2 active" data-v="jazz" data-l="Radio Jazz" data-s="Smooth · Fréquence douce" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Radio Jazz</span><span class="mo2-sub">Smooth · Ambiance feutrée</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+        <div class="mo2" data-v="classique" data-l="Classique" data-s="Piano · Orchestre · Sérénité" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M21 15V3"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Classique</span><span class="mo2-sub">Piano · Orchestre · Sérénité</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+        <div class="mo2" data-v="lofi" data-l="Lo-Fi Chill" data-s="Beats doux · Concentration" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Lo-Fi Chill</span><span class="mo2-sub">Beats doux · Concentration</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+        <div class="mo2" data-v="ambient" data-l="Ambient" data-s="Électronique · Atmosphère" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Ambient</span><span class="mo2-sub">Électronique · Atmosphère</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+        <div class="mo2" data-v="silence" data-l="Silence" data-s="Trajet zen · Aucun son" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Silence</span><span class="mo2-sub">Trajet zen · Aucun son</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+        <div class="mo2" data-v="podcast" data-l="Podcast" data-s="Actualités · Culture" onclick="pickMusic2(this)">
+          <svg class="mo2-ic" viewBox="0 0 24 24" fill="none" stroke="#B3CFE5" stroke-width="1.5" stroke-linecap="round" width="16" height="16"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          <div class="mo2-txt"><span class="mo2-name">Podcast</span><span class="mo2-sub">Actualités · Culture</span></div>
+          <div class="mo2-dot"></div>
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="musicPrefVal" value="jazz">
+
+        <label class="f-lbl">Note au chauffeur (Optionnel)</label>
     <div class="f-wrap" style="height:auto;padding:8px;">
       <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
     </div>
@@ -4108,192 +4285,6 @@ body {
 <!-- ══ ZONES DE COUVERTURE ══ -->
 
 <div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     SECTION CONFORT — Toggles · Sliders · Dropdown
-     Palette: #A1931 → on utilise #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD
-     ═══════════════════════════════════════════════════════════ -->
-<div class="confort-section" id="confort-section">
-
-  <div class="confort-header">
-    <div class="confort-title-wrap">
-      <div class="confort-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
-      </div>
-      <div>
-        <div class="confort-kicker">Personnalisation</div>
-        <div class="confort-title">Confort à bord</div>
-      </div>
-    </div>
-    <div class="confort-live-dot"></div>
-  </div>
-
-  <!-- ─── TOGGLES ─── -->
-  <div class="confort-group-label">Ambiance</div>
-  <div class="toggles-grid">
-
-    <div class="toggle-item">
-      <div class="toggle-left">
-        <div class="toggle-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </div>
-        <div class="toggle-info">
-          <span class="toggle-name">Éclairage habitacle</span>
-          <span class="toggle-sub">Veilleuse LED douce</span>
-        </div>
-      </div>
-      <label class="ios-toggle">
-        <input type="checkbox" checked onchange="updateToggle(this,'light')">
-        <span class="ios-slider"></span>
-      </label>
-    </div>
-
-    <div class="toggle-item">
-      <div class="toggle-left">
-        <div class="toggle-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
-        <div class="toggle-info">
-          <span class="toggle-name">Musique</span>
-          <span class="toggle-sub" id="music-status">Radio Jazz</span>
-        </div>
-      </div>
-      <label class="ios-toggle">
-        <input type="checkbox" checked onchange="updateToggle(this,'music')">
-        <span class="ios-slider"></span>
-      </label>
-    </div>
-
-    <div class="toggle-item">
-      <div class="toggle-left">
-        <div class="toggle-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div class="toggle-info">
-          <span class="toggle-name">Mode discret</span>
-          <span class="toggle-sub">Pas de conversation</span>
-        </div>
-      </div>
-      <label class="ios-toggle">
-        <input type="checkbox" onchange="updateToggle(this,'silent')">
-        <span class="ios-slider"></span>
-      </label>
-    </div>
-
-    <div class="toggle-item">
-      <div class="toggle-left">
-        <div class="toggle-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg>
-        </div>
-        <div class="toggle-info">
-          <span class="toggle-name">Chargeur USB</span>
-          <span class="toggle-sub">Port disponible</span>
-        </div>
-      </div>
-      <label class="ios-toggle">
-        <input type="checkbox" checked onchange="updateToggle(this,'usb')">
-        <span class="ios-slider"></span>
-      </label>
-    </div>
-
-  </div>
-
-  <!-- ─── SLIDERS ─── -->
-  <div class="confort-group-label">Réglages</div>
-
-  <div class="slider-card">
-    <div class="slider-header">
-      <div class="slider-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
-      </div>
-      <span class="slider-label">Volume</span>
-      <span class="slider-value" id="vol-val">65</span>
-      <span class="slider-unit">%</span>
-    </div>
-    <div class="slider-track-wrap">
-      <svg class="slider-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
-      <input type="range" class="custom-range vol-range" id="vol-range" min="0" max="100" value="65"
-        oninput="document.getElementById('vol-val').textContent=this.value;updateRangeGradient(this)">
-      <svg class="slider-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="15.54" y1="8.46" x2="15.54" y2="8.46"/><line x1="19.07" y1="4.93" x2="19.07" y2="4.93"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="19.07" y1="19.07" x2="19.07" y2="19.07"/><line x1="15.54" y1="15.54" x2="15.54" y2="15.54"/></svg>
-    </div>
-  </div>
-
-  <div class="slider-card">
-    <div class="slider-header">
-      <div class="slider-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
-      </div>
-      <span class="slider-label">Climatisation</span>
-      <span class="slider-value" id="clim-val">22</span>
-      <span class="slider-unit">°C</span>
-    </div>
-    <div class="slider-track-wrap">
-      <svg class="slider-icon-sm clim-cold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5-5-5 5"/><path d="M17 17l-5 5-5-5"/><path d="M2 12l20 0"/><path d="M7 7l-5 5 5 5"/><path d="M17 7l5 5-5 5"/></svg>
-      <input type="range" class="custom-range clim-range" id="clim-range" min="16" max="28" value="22"
-        oninput="document.getElementById('clim-val').textContent=this.value;updateRangeGradient(this)">
-      <svg class="slider-icon-sm clim-hot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
-    </div>
-  </div>
-
-  <!-- ─── DROPDOWN MUSIQUE ─── -->
-  <div class="confort-group-label">Ambiance sonore</div>
-
-  <div class="music-dropdown-wrap" id="music-wrap">
-    <button class="music-dropdown-btn" id="music-btn" onclick="toggleMusicDropdown()">
-      <div class="music-btn-left">
-        <div class="music-disc" id="music-disc">
-          <div class="music-disc-inner"></div>
-        </div>
-        <div>
-          <div class="music-selected" id="music-selected">Radio Jazz</div>
-          <div class="music-selected-sub" id="music-selected-sub">Smooth · Fréquence douce</div>
-        </div>
-      </div>
-      <div class="music-btn-right">
-        <div class="music-equalizer" id="music-eq">
-          <span></span><span></span><span></span><span></span>
-        </div>
-        <svg class="music-chevron" id="music-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </button>
-
-    <div class="music-options" id="music-options">
-      <div class="music-option active" data-value="jazz" data-label="Radio Jazz" data-sub="Smooth · Fréquence douce" onclick="selectMusic(this)">
-        <div class="mo-icon">🎷</div>
-        <div class="mo-text"><span class="mo-name">Radio Jazz</span><span class="mo-sub">Smooth · Ambiance feutrée</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-      <div class="music-option" data-value="classique" data-label="Classique" data-sub="Piano · Orchestre · Sérénité" onclick="selectMusic(this)">
-        <div class="mo-icon">🎻</div>
-        <div class="mo-text"><span class="mo-name">Classique</span><span class="mo-sub">Piano · Orchestre · Sérénité</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-      <div class="music-option" data-value="lofi" data-label="Lo-Fi Chill" data-sub="Beats doux · Concentration" onclick="selectMusic(this)">
-        <div class="mo-icon">🎧</div>
-        <div class="mo-text"><span class="mo-name">Lo-Fi Chill</span><span class="mo-sub">Beats doux · Concentration</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-      <div class="music-option" data-value="ambient" data-label="Ambient" data-sub="Electronique · Atmosphère" onclick="selectMusic(this)">
-        <div class="mo-icon">🌌</div>
-        <div class="mo-text"><span class="mo-name">Ambient</span><span class="mo-sub">Électronique · Atmosphère</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-      <div class="music-option" data-value="silence" data-label="Silence" data-sub="Trajet zen · Aucun son" onclick="selectMusic(this)">
-        <div class="mo-icon">🔇</div>
-        <div class="mo-text"><span class="mo-name">Silence</span><span class="mo-sub">Trajet zen · Aucun son</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-      <div class="music-option" data-value="podcast" data-label="Podcast" data-sub="Actualités · Culture" onclick="selectMusic(this)">
-        <div class="mo-icon">🎙️</div>
-        <div class="mo-text"><span class="mo-name">Podcast</span><span class="mo-sub">Actualités · Culture</span></div>
-        <div class="mo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="4 12 10 18 20 6"/></svg></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-<!-- ═══ FIN SECTION CONFORT ═══ -->
 
 <footer>
   <div class="legal-links">
@@ -5435,99 +5426,67 @@ if('serviceWorker' in navigator){try{
 <div id="notif-toast" class="notif-toast"></div>
 
 <script>
-// ── Confort Section JS ──
-function updateToggle(input, type) {
-  const item = input.closest('.toggle-item');
-  const sub = item.querySelector('.toggle-sub');
-  const icon = item.querySelector('.toggle-icon svg');
-  if (type === 'music') {
-    const ms = document.getElementById('music-status');
-    const disc = document.getElementById('music-disc');
-    const eq = document.getElementById('music-eq');
-    if (!input.checked) {
-      if (ms) ms.textContent = 'Désactivée';
-      if (disc) disc.classList.add('paused');
-      if (eq) eq.classList.add('paused');
-    } else {
-      if (ms) ms.textContent = document.getElementById('music-selected')?.textContent || 'Radio Jazz';
-      if (disc) disc.classList.remove('paused');
-      if (eq) eq.classList.remove('paused');
-    }
-  }
-  if (type === 'silent') {
-    if (input.checked) sub.textContent = 'Actif';
-    else sub.textContent = 'Pas de conversation';
-  }
-}
+// ── Ambiance & Options JS ──
 
-function updateRangeGradient(input) {
-  const min = parseFloat(input.min), max = parseFloat(input.max), val = parseFloat(input.value);
+// Init sliders gradient
+function updateAmbRange(inp) {
+  const min = +inp.min, max = +inp.max, val = +inp.value;
   const pct = ((val - min) / (max - min)) * 100;
-  if (input.classList.contains('vol-range')) {
-    input.style.background = `linear-gradient(90deg, #4A7FA7 ${pct}%, rgba(74,127,167,0.2) ${pct}%)`;
-  } else if (input.classList.contains('clim-range')) {
-    input.style.background = `linear-gradient(90deg, #4A7FA7 ${pct}%, rgba(74,127,167,0.2) ${pct}%)`;
-  }
+  inp.style.background = `linear-gradient(90deg, #4A7FA7 ${pct}%, rgba(74,127,167,0.18) ${pct}%)`;
 }
-
-// Init sliders au chargement
 document.addEventListener('DOMContentLoaded', function() {
-  const vr = document.getElementById('vol-range');
-  const cr = document.getElementById('clim-range');
-  if (vr) updateRangeGradient(vr);
-  if (cr) updateRangeGradient(cr);
+  ['vol-r','clim-r'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) updateAmbRange(el);
+  });
 });
 
-function toggleMusicDropdown() {
-  const opts = document.getElementById('music-options');
-  const btn  = document.getElementById('music-btn');
-  const chev = document.getElementById('music-chevron');
-  const isOpen = opts.classList.contains('open');
-  if (isOpen) {
-    opts.classList.remove('open');
-    btn.classList.remove('open');
-    chev.classList.remove('open');
-  } else {
-    opts.classList.add('open');
-    btn.classList.add('open');
-    chev.classList.add('open');
+function onToggle(inp, type) {
+  const row = inp.closest('.toggle-row');
+  if (type === 'wifi' || type === 'usb') {
+    row.querySelector('.trw-sub').textContent = inp.checked ? 'Actif' : 'Désactivé';
+  }
+  if (type === 'discret') {
+    row.querySelector('.trw-sub').textContent = inp.checked ? 'Mode actif' : 'Pas de conversation';
+  }
+  if (type === 'siege') {
+    row.querySelector('.trw-sub').textContent = inp.checked ? 'Siège réservé' : 'Sur demande';
   }
 }
 
-// Fermer dropdown au clic extérieur
+function toggleDrop2() {
+  const opts = document.getElementById('music-opts2');
+  const btn  = document.getElementById('music-btn2');
+  const chev = document.getElementById('mb2-chev');
+  const isOpen = opts.classList.contains('open');
+  opts.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+
 document.addEventListener('click', function(e) {
-  const wrap = document.getElementById('music-wrap');
+  const wrap = document.getElementById('music-wrap2');
   if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('music-options')?.classList.remove('open');
-    document.getElementById('music-btn')?.classList.remove('open');
-    document.getElementById('music-chevron')?.classList.remove('open');
+    document.getElementById('music-opts2')?.classList.remove('open');
+    document.getElementById('music-btn2')?.classList.remove('open');
+    document.getElementById('mb2-chev')?.classList.remove('open');
   }
 });
 
-function selectMusic(el) {
-  document.querySelectorAll('.music-option').forEach(o => o.classList.remove('active'));
+function pickMusic2(el) {
+  document.querySelectorAll('.mo2').forEach(o => o.classList.remove('active'));
   el.classList.add('active');
-  const label = el.dataset.label;
-  const sub   = el.dataset.sub;
-  document.getElementById('music-selected').textContent  = label;
-  document.getElementById('music-selected-sub').textContent = sub;
-  const ms = document.getElementById('music-status');
-  if (ms) ms.textContent = label;
-  const isSilence = el.dataset.value === 'silence';
-  const disc = document.getElementById('music-disc');
-  const eq   = document.getElementById('music-eq');
-  if (isSilence) {
-    disc?.classList.add('paused');
-    eq?.classList.add('paused');
-  } else {
-    disc?.classList.remove('paused');
-    eq?.classList.remove('paused');
-  }
+  document.getElementById('mb2-sel').textContent  = el.dataset.l;
+  document.getElementById('mb2-sub').textContent  = el.dataset.s;
+  document.getElementById('musicPrefVal').value   = el.dataset.v;
+  const isSilence = el.dataset.v === 'silence';
+  document.getElementById('vinyl2')?.classList.toggle('paused', isSilence);
+  document.getElementById('eq2')?.classList.toggle('paused', isSilence);
   setTimeout(() => {
-    document.getElementById('music-options')?.classList.remove('open');
-    document.getElementById('music-btn')?.classList.remove('open');
-    document.getElementById('music-chevron')?.classList.remove('open');
-  }, 150);
+    document.getElementById('music-opts2')?.classList.remove('open');
+    document.getElementById('music-btn2')?.classList.remove('open');
+    document.getElementById('mb2-chev')?.classList.remove('open');
+  }, 160);
 }
 </script>
 

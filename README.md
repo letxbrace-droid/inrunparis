@@ -1,12 +1,17 @@
-# I&N RUN — Confort v1 + Palette Vibrante v5
+# I&N RUN — Final v5
+## Palette Blue Tech
+- Deep:  #1A3D63
+- Mid:   #4A7FA7  
+- Light: #B3CFE5
+- White: #F6FAFD
+- Gold:  #FEB122 (accents)
 
-## Nouveautés Confort
-- 4x Toggle iOS ultra-design (éclairage, musique, discret, USB)
-- Slider volume + slider climatisation (16–28°C)
-- Dropdown ambiance sonore : Jazz · Classique · Lo-Fi · Ambient · Silence · Podcast
-- Palette #1A3D63 · #4A7FA7 · #B3CFE5 · #F6FAFD
+## Confort à bord (intégré dans card Étape 2)
+- 4 toggles iOS : Wi-Fi · USB-C · Mode discret · Siège bébé
+- Slider volume (0–100%)
+- Slider climatisation (16–28°C)
+- Dropdown musique : Jazz · Classique · Lo-Fi · Ambient · Silence · Podcast
 
-## Déploiement GitHub Pages
-1. Push index.html à la racine
-2. Settings → Pages → main / root
-3. https://letxbrace-droid.github.io/inrunparis/
+## Déploiement
+Push index.html → GitHub Pages → main / root
+https://letxbrace-droid.github.io/inrunparis/
