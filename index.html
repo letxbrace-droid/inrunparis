@@ -2934,6 +2934,144 @@ body::after {
 
 
 
+/* ════ ANTI-SCROLL HORIZONTAL — correctif global ════ */
+
+/* Règle fondamentale : rien ne dépasse la largeur viewport */
+html {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+}
+
+/* Tous les conteneurs directs restent dans le flux */
+*, *::before, *::after {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* EXCEPTION : éléments positionnés qui ne font pas déborder */
+.modal-overlay, .notif-toast,
+.music-opts2, .ac,
+body::before, body::after {
+  max-width: none !important;
+}
+
+/* Images et SVG inline ne débordent jamais */
+img, svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+/* Les SVG avec dimensions fixes dans les icônes gardent leur taille */
+.pay-btn-ic svg,
+.srv-ic svg,
+.trw-icon svg,
+.sca-icon svg,
+.mo2-ic svg,
+.e-svg,
+.ptw-icon-row svg {
+  max-width: none !important;
+  width: var(--svg-w, 22px) !important;
+  height: var(--svg-w, 22px) !important;
+}
+.pay-btn-ic svg { --svg-w: 22px; }
+.e-svg          { width: 1em !important; height: 1em !important; }
+
+/* Sections pleine largeur */
+.hero, .tunnel, .section-voiture,
+.section-avis, .section-zones,
+.infos-row, #hdr, footer,
+.sticky { width: 100% !important; }
+
+/* Grilles responsives — pas de colonnes fixes trop larges */
+.infos-row {
+  grid-template-columns: 1fr 1fr !important;
+  padding: 0 16px !important;
+  gap: 12px !important;
+}
+.payment-grid {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+.services-grid {
+  grid-template-columns: 1fr 1fr !important;
+}
+.proof-tech {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+@media (max-width: 360px) {
+  .proof-tech {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .ptw:last-child {
+    grid-column: 1 / -1 !important;
+    max-width: 160px !important;
+    margin: 0 auto !important;
+  }
+  .infos-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Chips grid sans overflow */
+.chips-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+.chip { flex-shrink: 0 !important; }
+
+/* Avis slider : pas de débordement */
+.avis-track {
+  overflow: hidden !important;
+  width: 100% !important;
+}
+.avis-slide {
+  min-width: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Zones grid */
+.zones-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+@media (max-width: 380px) {
+  .zones-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Contenu texte : pas de word-overflow */
+.c-title, .zone-name, .avis-text,
+.trw-name, .mo2-name, .mb2-sel {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  min-width: 0 !important;
+}
+
+/* Max-width carte principale */
+.card {
+  max-width: 640px !important;
+  width: 100% !important;
+}
+.tunnel {
+  padding-left: max(16px, env(safe-area-inset-left, 16px)) !important;
+  padding-right: max(16px, env(safe-area-inset-right, 16px)) !important;
+}
+
+/* Le SVG voiture/logo 110x44 — contraint */
+svg[width="110"] {
+  max-width: min(110px, 30vw) !important;
+  height: auto !important;
+}
+/* ════ FIN ANTI-SCROLL ════ */
+
+
 /* ════════════════════════════════════════════════════════════
    I&N RUN — HIÉRARCHIE TYPO + CONTRASTE WCAG v9
    Fond base:    #030912
@@ -3495,88 +3633,6 @@ footer, footer * { color:#567A96 !important; font-size:.75rem !important; }
 .mo2.active .mo2-dot{background:#4A7FA7;border-color:#4A7FA7;box-shadow:0 0 8px rgba(74,127,167,.55);}
 
 /* ═══ FIN FINITION v9 ═══ */
-
-/* ─── PAY BUTTONS SVG ─── */
-.payment-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 10px;
-}
-.pay-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 10px;
-  background: linear-gradient(155deg,rgba(15,32,64,.55),rgba(9,20,38,.75));
-  border: .5px solid rgba(74,127,167,.18);
-  border-radius: 14px;
-  cursor: pointer;
-  color: #7A9DB8;
-  font-family: 'Inter', sans-serif;
-  font-size: .8rem;
-  font-weight: 500;
-  box-shadow: 0 1px 0 rgba(240,244,248,.04) inset, 0 4px 14px rgba(0,0,0,.3);
-  transition: all .22s cubic-bezier(.4,0,.2,1);
-}
-.pay-btn:hover {
-  border-color: rgba(74,127,167,.4);
-  color: #94B4CC;
-  transform: translateY(-1px);
-}
-.pay-btn.sel {
-  background: linear-gradient(155deg,rgba(26,61,99,.5),rgba(15,32,64,.8));
-  border-color: #4A7FA7;
-  color: #F0F4F8;
-  box-shadow:
-    0 1px 0 rgba(240,244,248,.07) inset,
-    0 0 18px rgba(74,127,167,.2),
-    0 4px 16px rgba(0,0,0,.35);
-}
-.pay-btn-ic {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; height: 40px;
-  border-radius: 11px;
-  background: rgba(74,127,167,.1);
-  border: .5px solid rgba(74,127,167,.2);
-  color: #567A96;
-  flex-shrink: 0;
-  transition: all .22s;
-}
-.pay-btn.sel .pay-btn-ic {
-  background: rgba(74,127,167,.18);
-  border-color: rgba(74,127,167,.45);
-  color: #94B4CC;
-  box-shadow: 0 0 12px rgba(74,127,167,.25);
-}
-.pay-btn-ic svg { width: 22px; height: 22px; }
-.pay-btn-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .56rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-/* ─── e-svg inline emojis → SVG ─── */
-.e-svg {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em; height: 1em;
-  stroke: currentColor;
-  flex-shrink: 0;
-}
-/* Dans les srv-ic, les e-svg doivent être plus grands */
-.srv-ic .e-svg { width: 15px; height: 15px; }
-/* Dans les avis, checkmarks */
-.avis-text .e-svg, .conseil-text .e-svg { width: .9em; height: .9em; opacity: .8; }
-/* Dans les tags/badges */
-.t-tag .e-svg { width: .75em; height: .75em; }
-/* Dans les info-cards météo */
-.info-card .e-svg { width: 1.1em; height: 1.1em; }
 
 </style>
 <noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
@@ -4142,28 +4198,11 @@ body {
     <label class="f-lbl">Paiement &agrave; bord &mdash; directement au chauffeur</label>
     <div class="payment-grid">
       <div class="pay-btn sel" onclick="selectPayment(this,'CB')">
-        <span class="pay-btn-ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="2" y="6" width="24" height="16" rx="3" stroke="currentColor" stroke-width="1.4"/>
-  <rect x="2" y="11" width="24" height="3.5" fill="currentColor" opacity=".18"/>
-  <rect x="6" y="17" width="5" height="2.5" rx=".8" fill="currentColor" opacity=".55"/>
-  <rect x="13" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/>
-  <rect x="18" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/>
-  <rect x="6" y="8.5" width="4" height="3" rx=".6" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
-  <line x1="6" y1="10" x2="7.8" y2="10" stroke="currentColor" stroke-width=".8" opacity=".6"/>
-</svg></span>
+        <span class="pay-btn-ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="24" height="16" rx="3"/><rect x="2" y="11" width="24" height="3.5" fill="currentColor" opacity=".18"/><rect x="6" y="17" width="5" height="2.5" rx=".8" fill="currentColor" opacity=".55"/><rect x="13" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/><rect x="18" y="17" width="3.5" height="2.5" rx=".8" fill="currentColor" opacity=".35"/><rect x="6" y="8.5" width="4" height="3" rx=".6" stroke-width="1.2" opacity=".75"/><line x1="6" y1="10" x2="7.8" y2="10" stroke-width=".8" opacity=".6"/></svg></span>
         <span class="pay-btn-label">Carte Bancaire</span>
       </div>
       <div class="pay-btn" onclick="selectPayment(this,'Espèces')">
-        <span class="pay-btn-ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="2" y="8" width="24" height="13" rx="2.5" stroke="currentColor" stroke-width="1.4"/>
-  <circle cx="14" cy="14.5" r="3.5" stroke="currentColor" stroke-width="1.3"/>
-  <line x1="14" y1="12.2" x2="14" y2="16.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-  <line x1="12" y1="14.5" x2="16" y2="14.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-  <circle cx="5.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4"/>
-  <circle cx="22.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4"/>
-  <line x1="5" y1="10.5" x2="8" y2="10.5" stroke="currentColor" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
-  <line x1="20" y1="18.5" x2="23" y2="18.5" stroke="currentColor" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
-</svg></span>
+        <span class="pay-btn-ic"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="24" height="13" rx="2.5"/><circle cx="14" cy="14.5" r="3.5"/><line x1="14" y1="12.2" x2="14" y2="16.8" stroke-width="1.1"/><line x1="12" y1="14.5" x2="16" y2="14.5" stroke-width="1.1"/><circle cx="5.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4" stroke="none"/><circle cx="22.5" cy="14.5" r="1.2" fill="currentColor" opacity=".4" stroke="none"/></svg></span>
         <span class="pay-btn-label">Espèces</span>
       </div>
     </div>
