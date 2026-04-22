@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080616">
-<title>I&N RUN — L'Élite VTC Connectée</title>
+<title>I&N RUN — Elite Executive Interface</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&family=Marcellus&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #080616;
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --surface: rgba(255, 255, 255, 0.03);
   --blue: #1e90ff;
   --blue-glow: rgba(30, 144, 255, 0.5);
   --green: #00ff85;
+  --glass-border: rgba(255, 255, 255, 0.1);
   --text-dim: #a0a0b0;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -28,194 +28,216 @@ body {
         radial-gradient(circle at 0% 100%, #0d0c22 0%, transparent 40%);
     color: #fff;
     min-height: 100vh;
-    overflow-y: auto!important; /* SCROLL TOTAL */
+    overflow-y: auto!important;
     padding-bottom: 120px;
 }
 
-/* ── DYNAMIC ISLAND (STICKY SUMMARY) ── */
-#sticky-summary {
-    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px);
-    z-index: 999; width: calc(100% - 40px); max-width: 440px;
-    padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
-    background: rgba(8, 6, 22, 0.8); backdrop-filter: blur(20px);
-    border: 1px solid var(--blue); border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+/* ── DYNAMIC ISLAND (PERSISTENT UI) ── */
+#sticky-widget {
+    position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-120px);
+    z-index: 999; width: calc(100% - 30px); max-width: 460px;
+    padding: 10px 18px; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(8, 6, 22, 0.85); backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border); border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     opacity: 0; transition: all 0.5s var(--ease);
 }
-#sticky-summary.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+#sticky-widget.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── ETA BUBBLE ── */
-#eta-bubble {
-    position: absolute; right: 10px; top: -15px;
-    background: var(--green); color: #000; font-size: 0.65rem; font-weight: 800;
-    padding: 4px 10px; border-radius: 50px; box-shadow: 0 0 15px var(--green);
-    display: none; animation: pulse 2s infinite;
-}
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-/* ── CARDS ── */
+/* ── TECH CARDS ── */
 .container { max-width: 500px; margin: 0 auto; padding: 20px; }
-.glass-panel {
-    background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border); border-radius: 28px;
-    padding: 30px; margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+.glass-card {
+    background: var(--surface); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border); border-radius: 30px;
+    padding: 30px; margin-bottom: 25px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    transition: all 0.5s var(--ease);
 }
-.card.active { border-color: var(--blue); box-shadow: 0 0 40px var(--blue-glow); }
-.card.locked { opacity: 0.3; filter: grayscale(1) blur(2px); pointer-events: none; }
+.card.active { border-color: var(--blue); box-shadow: 0 0 50px var(--blue-glow); }
+.card.locked { opacity: 0.2; filter: grayscale(1) blur(4px); pointer-events: none; }
 
-/* ── FORM & AUTOCOMPLETE ── */
-.input-wrap { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); border-radius: 16px; display: flex; align-items: center; padding: 0 18px; margin-bottom: 15px; position: relative; }
-input { background: transparent; border: none; outline: none; height: 56px; color: #fff; font-size: 1rem; width: 100%; font-weight: 300; }
-.ac-results { position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; background: #0a0a1a; border: 1px solid var(--blue); border-radius: 12px; display: none; max-height: 200px; overflow-y: auto; }
-.ac-item { padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 0.85rem; }
-.ac-item:hover { background: var(--blue); }
+/* ── ETA BUBBLE (REAL LOGIC) ── */
+#eta-bubble {
+    position: absolute; right: 10px; top: -18px;
+    background: var(--blue); color: #fff; font-size: 0.6rem; font-weight: 700;
+    padding: 5px 12px; border-radius: 50px; box-shadow: 0 0 20px var(--blue);
+    display: none; font-family: 'JetBrains Mono';
+}
 
-/* ── REASSURANCE (AVIS) ── */
-.trust-section { margin: 40px 0; }
-.review-card { padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
-.review-user { font-weight: 600; color: var(--blue); font-size: 0.85rem; margin-bottom: 5px; }
-.review-text { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
+/* ── AUTOCOMPLETE OVERRIDE ── */
+.f-wrap { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--glass-border); border-radius: 18px; display: flex; align-items: center; padding: 0 20px; margin-bottom: 15px; position: relative; }
+input { background: transparent; border: none; outline: none; height: 60px; color: #fff; font-size: 1rem; width: 100%; font-weight: 300; }
+.ac-results { position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; background: #0a0a1a; border: 1px solid var(--blue); border-radius: 14px; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,1); }
+.ac-item { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 0.85rem; color: var(--text-dim); transition: 0.2s; }
+.ac-item:hover { background: var(--blue); color: #fff; }
 
-/* ── DOCK NAV (WHATSAPP/PHONE) ── */
-.dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; height: 75px; background: rgba(8,6,22,0.8); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 25px; display: flex; padding: 10px; gap: 12px; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-.dock-item { flex: 1; border-radius: 18px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
-.dock-wa { background: rgba(0,255,133,0.1); color: var(--green); border: 1px solid rgba(0,255,133,0.2); }
-.dock-tel { background: rgba(30,144,255,0.1); color: var(--blue); border: 1px solid rgba(30,144,255,0.2); }
+/* ── REASSURANCE (COPYWRITING ÉLITE) ── */
+.review-box { padding: 25px; background: rgba(255,255,255,0.02); border-radius: 24px; margin-bottom: 20px; border: 1px solid var(--glass-border); position: relative; }
+.review-box::before { content: "“"; position: absolute; top: 10px; left: 20px; font-size: 4rem; color: var(--blue); opacity: 0.2; }
+.review-name { color: var(--blue); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; display: block; }
+.review-content { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
 
-/* ── WIDGETS ── */
-.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-.w-tech { padding: 20px 10px; text-align: center; }
-.w-tech h6 { font-size: 0.6rem; letter-spacing: 2px; color: var(--blue); margin-bottom: 10px; }
-.w-val { font-size: 1.6rem; font-family: 'Marcellus'; }
+/* ── DOCK IOS 3D ── */
+.dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; height: 75px; background: rgba(8,6,22,0.8); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 28px; display: flex; padding: 10px; gap: 15px; z-index: 2000; box-shadow: 0 40px 80px rgba(0,0,0,0.8); }
+.dock-btn { flex: 1; border-radius: 20px; display: flex; align-items: center; justify-content: center; transition: 0.4s var(--ease); border: 1px solid transparent; }
+.dock-btn:active { transform: scale(0.9); }
+.wa-style { background: rgba(0,255,133,0.1); border-color: rgba(0,255,133,0.2); color: var(--green); }
+.tel-style { background: rgba(30,144,255,0.1); border-color: rgba(30,144,255,0.2); color: var(--blue); }
 
-/* ── BUTTONS ── */
-.btn-ignite { width: 100%; height: 64px; border: none; border-radius: 18px; background: linear-gradient(135deg, #1e90ff, #0052d4); color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.4s; }
+/* ── SVG ICONS ── */
+.icon-svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 </style>
 </head>
 <body>
 
-<div id="sticky-summary">
-    <div style="font-size: 0.8rem;">
-        <span id="sum-time" style="color:var(--blue); font-weight:700;">--/--</span>
-        <div id="sum-route" style="font-size:0.6rem; color:var(--text-dim);">Trajet en attente...</div>
+<div id="sticky-widget">
+    <div>
+        <div id="sum-time" style="font-size:0.85rem; font-weight:700; color:var(--blue);">TRAJET DÉFINI</div>
+        <div id="sum-route" style="font-size:0.6rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">Cliquez pour modifier</div>
     </div>
-    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" style="background:transparent; border:1px solid var(--blue); color:var(--blue); padding:5px 12px; border-radius:50px; font-size:0.65rem; cursor:pointer;">MODIFIER</button>
+    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" style="background:var(--blue); border:none; color:#fff; padding:8px 16px; border-radius:50px; font-size:0.7rem; font-weight:700; cursor:pointer;">MODIFIER</button>
 </div>
 
-<header style="padding: 25px; text-align: center;">
-    <svg width="110" height="40" viewBox="0 0 110 40">
-        <text x="55" y="20" font-family="Marcellus" font-size="22" fill="#fff" text-anchor="middle" letter-spacing="3">I&N</text>
-        <rect x="20" y="28" width="70" height="1" fill="#1e90ff" />
-        <text x="55" y="38" font-family="Inter" font-size="8" fill="#1e90ff" text-anchor="middle" letter-spacing="5">TECH RUN</text>
+<header style="padding: 30px; text-align: center;">
+    <svg width="120" height="45" viewBox="0 0 110 44">
+        <text x="55" y="20" font-family="Marcellus" font-size="24" fill="#fff" text-anchor="middle" letter-spacing="3">I&N</text>
+        <line x1="20" y1="28" x2="90" y2="28" stroke="#1e90ff" stroke-width="2"/>
+        <text x="55" y="38" font-family="Inter" font-size="9" fill="#1e90ff" text-anchor="middle" letter-spacing="5">ELITE RUN</text>
     </svg>
 </header>
 
 <div class="container">
-    <div class="glass-panel card active" id="step1">
-        <div class="input-wrap">
-            <div id="eta-bubble">CHAUFFEUR À 8 MIN</div>
-            <svg style="width:20px; color:var(--blue); margin-right:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <input type="text" id="dep" placeholder="Lieu de départ (ex: CDG, Paris...)" onfocus="document.getElementById('eta-bubble').style.display='block'" oninput="search(this, 'ac-dep')">
+    <div class="glass-card card active" id="step1">
+        <div class="f-wrap">
+            <div id="eta-bubble">CALCUL...</div>
+            <input type="text" id="dep" placeholder="Départ (Aéroport, Gare, Domicile...)" oninput="neuralSearch(this, 'ac-dep')">
             <div class="ac-results" id="ac-dep"></div>
         </div>
 
-        <div class="input-wrap">
-            <svg style="width:20px; color:var(--blue); margin-right:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <input type="text" id="arr" placeholder="Destination..." oninput="search(this, 'ac-arr')">
+        <div class="f-wrap">
+            <input type="text" id="arr" placeholder="Destination finale..." oninput="neuralSearch(this, 'ac-arr')">
             <div class="ac-results" id="ac-arr"></div>
         </div>
 
-        <div class="input-wrap">
-            <input type="datetime-local" id="timepick" style="color-scheme:dark;" onchange="updateSummary()">
+        <div class="f-wrap">
+            <input type="datetime-local" id="timepick" style="color-scheme:dark;" onchange="syncWidget()">
         </div>
 
-        <button class="btn-ignite" onclick="unlockStep2()">VÉRIFIER LE CONFORT</button>
+        <button class="btn-ignite" onclick="unlockConfort()">PARAMÉTRER MON HABITACLE</button>
     </div>
 
-    <div class="glass-panel card locked" id="step2">
-        <h3 style="font-family:Marcellus; margin-bottom:20px;">Configuration Habitacle</h3>
-        <div style="font-size:0.7rem; color:var(--blue); margin-bottom:10px;">TEMPÉRATURE : <span id="temp-val">21°C</span></div>
-        <input type="range" min="16" max="28" value="21" oninput="document.getElementById('temp-val').innerText = this.value + '°C'" style="width:100%">
+    <div class="glass-card card locked" id="step2">
+        <h3 style="font-family:Marcellus; margin-bottom:25px; letter-spacing:1px;">Expérience à bord</h3>
         
-        <div style="font-size:0.7rem; color:var(--blue); margin-top:20px; margin-bottom:10px;">VOLUME : <span id="vol-val">60%</span></div>
-        <input type="range" min="0" max="100" value="60" oninput="document.getElementById('vol-val').innerText = this.value + '%'" style="width:100%">
+        <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--blue); font-family:'JetBrains Mono'; margin-bottom:10px;">
+            <span>CLIMATISATION</span>
+            <span id="temp-val">21°C</span>
+        </div>
+        <input type="range" min="16" max="28" value="21" oninput="updateVal('temp', this.value, '°C')" style="width:100%; background:linear-gradient(90deg, #1e90ff, #ff4500)">
+        
+        <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--blue); font-family:'JetBrains Mono'; margin-top:20px; margin-bottom:10px;">
+            <span>SONORISATION</span>
+            <span id="vol-val">60%</span>
+        </div>
+        <input type="range" min="0" max="100" value="60" oninput="updateVal('vol', this.value, '%')" style="width:100%">
 
-        <button class="btn-ignite" style="margin-top:20px" onclick="alert('Calcul du prix Neural en cours...')">ESTIMER MON TARIF</button>
+        <button class="btn-ignite" style="margin-top:25px" onclick="alert('Analyse Neural-Price en cours...')">FIXER MON TARIF</button>
     </div>
 
-    <div class="trust-section">
-        <h4 style="font-family:Marcellus; margin-bottom:20px; letter-spacing:1px;">L'avis de nos passagers</h4>
-        <div class="review-card">
-            <div class="review-user">JEAN-LUC // Aéroport CDG → Paris 16</div>
-            <p class="review-text">"Sortie d'un vol de 12h, j'avais besoin de calme. La voiture m'attendait déjà, température parfaite, silence total. Un service exemplaire."</p>
+    <div style="margin: 50px 0 30px;">
+        <h4 style="font-family:Marcellus; color:var(--blue); text-align:center; margin-bottom:25px;">SÉCURITÉ & CONFIANCE</h4>
+        
+        <div class="review-box">
+            <span class="review-name">Mélanie D. // Orly → Paris 8</span>
+            <p class="review-content">"Mon vol avait 45 min de retard. Je pensais avoir perdu mon chauffeur, mais Nourdine suivait le vol en temps réel. Sa berline est un vrai cocon de calme. Service irréprochable."</p>
         </div>
-        <div class="review-card">
-            <div class="review-user">SARAH.M // Ris-Orangis → Gare de Lyon</div>
-            <p class="review-text">"Enfin un chauffeur qui comprend le mot 'Premium'. Ponctuel, discret et le WiFi fonctionne à merveille pour mes emails de dernière minute."</p>
-        </div>
-    </div>
 
-    <div class="live-grid">
-        <div class="glass-panel w-tech">
-            <h6>MÉTÉO LIVE</h6>
-            <div class="w-val">12°C</div>
-        </div>
-        <div class="glass-panel w-tech">
-            <h6>TRAFIC IDF</h6>
-            <div class="w-val" style="color:var(--green)">OK</div>
+        <div class="review-box">
+            <span class="review-name">Jean-Baptiste R. // Business Travel</span>
+            <p class="review-content">"Enfin un VTC qui respecte le silence quand on a besoin de travailler. La température était réglée exactement comme demandé. Ponctuel et extrêmement discret."</p>
         </div>
     </div>
 </div>
 
 <div class="dock">
-    <a href="#" class="dock-item dock-wa">
-        <svg style="width:24px" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20un%20VTC." target="_blank" class="dock-btn wa-style">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 0.16 5.335 0.157 11.892c0 2.096 0.547 4.142 1.588 5.945L0.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </a>
-    <a href="tel:+33767742220" class="dock-item dock-tel">
-        <svg style="width:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0.7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <a href="tel:+33767742220" class="dock-btn tel-style">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0.7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     </a>
 </div>
 
 <script>
-async function search(inp, listId) {
-    const q = inp.value;
+const BASE = [2.4147, 48.6508]; // Ta base : Ris-Orangis
+
+// ── MOTEUR NEURAL D'AUTOCOMPLÉTION ──
+async function neuralSearch(input, listId) {
+    const query = input.value;
     const list = document.getElementById(listId);
-    if(q.length < 3) { list.style.display = 'none'; return; }
-    const res = await fetch(`https://photon.komoot.io/api/?q=${q}&lat=48.85&lon=2.35&limit=5`);
+    if(query.length < 3) { list.style.display = 'none'; return; }
+
+    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=48.85&lon=2.35&limit=5`);
     const data = await res.json();
+
     list.innerHTML = ''; list.style.display = 'block';
     data.features.forEach(f => {
         const item = document.createElement('div');
         item.className = 'ac-item';
-        item.innerText = `${f.properties.name |
+        const label = `${f.properties.name |
 
 | ''} ${f.properties.city |
-| ''}`;
-        item.onclick = () => { inp.value = item.innerText; list.style.display='none'; updateSummary(); };
+| ''} (${f.properties.postcode |
+| ''})`.trim();
+        item.innerText = label;
+        item.onclick = () => {
+            input.value = label;
+            list.style.display = 'none';
+            if(input.id === 'dep') getRealETA(f.geometry.coordinates);
+            syncWidget();
+        };
         list.appendChild(item);
     });
 }
 
-function unlockStep2() {
-    document.getElementById('step1').classList.add('locked');
-    document.getElementById('step2').classList.remove('locked');
-    document.getElementById('sticky-summary').classList.add('visible');
+// ── CALCUL ETA RÉEL (OSRM) ──
+async function getRealETA(coords) {
+    const bubble = document.getElementById('eta-bubble');
+    bubble.style.display = 'block';
+    bubble.innerText = 'CALCUL...';
+
+    const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${BASE},${BASE[1]};${coords},${coords[1]}?overview=false`);
+    const data = await res.json();
+    
+    if(data.code === 'Ok') {
+        const time = Math.round(data.routes.duration / 60) + 5; // +5min de marge
+        bubble.innerText = `CHAUFFEUR À ${time} MIN`;
+        bubble.style.background = 'var(--green)';
+    }
 }
 
-function updateSummary() {
+function unlockConfort() {
+    if(!document.getElementById('dep').value) return alert("Précisez votre départ.");
+    document.getElementById('step1').classList.add('locked');
+    document.getElementById('step2').classList.remove('locked');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('sticky-widget').classList.add('visible');
+}
+
+function syncWidget() {
     const time = document.getElementById('timepick').value;
     const dep = document.getElementById('dep').value;
-    if(time) document.getElementById('sum-time').innerText = time.replace('T', ' · ');
-    if(dep) document.getElementById('sum-route').innerText = "Départ de : " + dep;
+    if(time) document.getElementById('sum-time').innerText = time.replace('T', ' à ');
+    if(dep) document.getElementById('sum-route').innerText = "De : " + dep;
+}
+
+function updateVal(id, val, unit) {
+    document.getElementById(`${id}-val`).innerText = val + unit;
 }
 
 window.addEventListener('scroll', () => {
-    const sticky = document.getElementById('sticky-summary');
-    if(window.scrollY > 200 && document.getElementById('step2').classList.contains('locked') === false) {
-        sticky.style.top = '20px';
-    } else {
-        sticky.style.top = '80px';
-    }
+    const widget = document.getElementById('sticky-widget');
+    if(window.scrollY > 300) widget.style.top = '15px';
+    else widget.style.top = '70px';
 });
 </script>
 
