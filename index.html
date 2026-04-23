@@ -1,33 +1,3292 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#000000"><title>I&N RUN — Chauffeur privé Paris</title><meta name="description" content="Réservez directement votre chauffeur privé à Paris. Tarif fixe, zéro commission, réponse en 30 secondes."><style>:root{--bg:#000;--surface:rgba(255,255,255,.05);--border:rgba(255,255,255,.09);--text:#F5F5F7;--muted:rgba(245,245,247,.72);--dim:rgba(245,245,247,.5);--good:#34d399;--warn:#fbbf24;--bad:#f87171}*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at top,#111 0,#000 45%);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif}body{min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-bottom:24px}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}#hdr{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(0,0,0,.72);backdrop-filter:blur(22px);border-bottom:1px solid rgba(255,255,255,.08)}.nav-status{display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 12px rgba(52,211,153,.8)}.tesla-layout{max-width:1180px;margin:0 auto;padding:18px 16px 42px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:24px;align-items:start}.hero{padding:10px 0 8px}.hero-tagline{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}.hero h1{font-size:clamp(2.3rem,5vw,4.9rem);line-height:.94;margin:0 0 10px;font-weight:900;letter-spacing:-.07em}.hero-p{max-width:700px;font-size:.98rem;line-height:1.55;color:var(--muted);margin:0 0 14px}.step-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);margin:14px 0 10px}.stepper{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;opacity:.9}.step-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.16)}.step-dot.active{background:#fff;box-shadow:0 0 12px rgba(255,255,255,.8)}.grid-card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:28px;backdrop-filter:blur(24px);box-shadow:0 18px 60px rgba(0,0,0,.42)}.card{padding:18px}.card h2{margin:0 0 6px;font-size:1.05rem}.sub{color:var(--dim);font-size:.78rem;margin:0 0 14px;line-height:1.5}.left-stack{display:flex;flex-direction:column;gap:14px}.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.f-wrap{display:flex;align-items:center;gap:10px;padding:14px 14px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.04);position:relative}.f-ic svg{width:18px;height:18px}.f-in{width:100%;background:transparent;border:0;color:var(--text);outline:none}.f-in::placeholder{color:rgba(245,245,247,.35)}.full{grid-column:1/-1}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip,.pay-btn,.sb,.btn-close{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--text);border-radius:999px;padding:10px 14px;cursor:pointer;transition:.22s cubic-bezier(.16,1,.3,1)}.chip.sel,.pay-btn.sel{background:#fff;color:#000;font-weight:800}.btn-gold{width:100%;padding:16px 18px;border:0;border-radius:999px;background:#fff;color:#000;font-weight:900;letter-spacing:.04em;cursor:pointer;box-shadow:0 16px 40px rgba(255,255,255,.08)}.right-col{position:sticky;top:78px;display:flex;flex-direction:column;gap:12px}.recap{padding:18px}.recap-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-end}.recap-price{font-size:3.15rem;font-weight:900;line-height:.9;letter-spacing:-.09em}.recap-route{color:var(--muted);font-size:.8rem;margin-top:8px}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.badge{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:.7rem;color:var(--muted)}.cards-info-wrap{display:grid;gap:12px}.ios-widget{padding:14px;border-radius:22px;background:rgba(255,255,255,.042);border:1px solid rgba(255,255,255,.075);position:relative}.ios-w-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}.ios-w-icon{width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center}.ios-w-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}.ios-w-temp{font-size:2rem;font-weight:800;letter-spacing:-.06em}.ios-w-main{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ios-w-pills{display:flex;flex-wrap:wrap;gap:6px}.ios-pill{font-size:.68rem;color:var(--muted);padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}.ios-trafic-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0}.ios-tr-left{display:flex;align-items:center;gap:10px}.ios-tr-dot{width:8px;height:8px;border-radius:50%}.ios-ok{background:var(--good)}.ios-warn{background:var(--warn)}.ios-bad{background:var(--bad)}.ios-tr-name{font-size:.84rem;font-weight:700}.ios-tr-via{font-size:.64rem;color:var(--dim)}.ios-tr-dur{font-size:.98rem;font-weight:800;letter-spacing:-.04em}.ios-tr-tag,.ios-w-tag{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08)}.section-sep{display:flex;align-items:center;gap:12px;margin:10px 0;padding:14px 16px;opacity:.4}.section-sep-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent)}.section-sep-diamond{width:6px;height:6px;transform:rotate(45deg);background:#fff;border-radius:1px}.avis-track{display:grid;gap:12px}.avis-card{padding:18px;border-radius:22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}.avis-name{font-weight:800}.avis-meta{font-size:.72rem;color:var(--dim)}.avis-texte{color:var(--muted);line-height:1.7}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(14px);display:none;z-index:50}.modal-overlay.show{display:block}.modal-box-price{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,460px);background:#0a0a0b;border:1px solid rgba(255,255,255,.09);border-radius:28px;padding:22px;display:none;z-index:60}.modal-box-price.show{display:block}.count-up{font-size:clamp(2.8rem,9vw,4.2rem);font-weight:900;letter-spacing:-.08em;margin:10px 0 6px}.m-subtitle,.m-calc-info{color:var(--dim)}.notif-toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(18px);padding:10px 14px;border-radius:999px;color:var(--text);font-size:.78rem;display:none;z-index:70;max-width:92vw}@media(max-width:980px){.tesla-layout{grid-template-columns:1fr}.right-col{position:relative;top:auto}}@media(max-width:720px){.f-grid{grid-template-columns:1fr}.hero h1{font-size:2.4rem}.recap-price{font-size:2.6rem}}</style>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="I&amp;N RUN">
+<meta name="mobile-web-app-capable" content="yes">
+
+<link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
+<meta property="og:url" content="https://letxbrace-droid.github.io/inrunparis/">
+<meta property="og:title" content="I&amp;N RUN — Chauffeur Privé Paris">
+<meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIj48cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9IiMwOTA5MGYiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9Im9nIiB4MT0iMCIgeTE9IjAiIHgyPSIxMjAwIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QTdBMUEiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI0YwRDg3MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjx0ZXh0IHg9IjYwMCIgeT0iMjkwIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9InVybCgjb2cpIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iOCI+SSZhbXA7TiBSVU48L3RleHQ+PHRleHQgeD0iNjAwIiB5PSIzNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM2IiBmaWxsPSIjRDRBRjM3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iNiI+Q0hBVUZGRVVSIFBSSVbDiSBQQVJJUzwvdGV4dD48L3N2Zz4=">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Chauffeur privé VTC Paris CDG Orly. Tarif fixe garanti. Réservation en 30 secondes.">
+<meta name="description" content="I&N RUN — Chauffeur privé VTC Paris CDG Orly. Réservation immédiate, tarif fixe garanti.">
+<title>I&N RUN — Chauffeur Privé Paris</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsIiB4MT0iMCIgeTE9IjAiIHgyPSIzMiIgeTI9IjMyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzlBN0ExQSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRDRBRjM3Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRjVFMDlBIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iNSIgeT0iMyIgd2lkdGg9IjQuNSIgaGVpZ2h0PSIyNiIgZmlsbD0idXJsKCNmbCkiLz48L3N2Zz4=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-.sug-card{position:absolute;left:0;right:0;top:100%;margin-top:8px;background:#0a0a0b;border:1px solid rgba(255,255,255,.09);border-radius:16px;overflow:hidden;z-index:40;display:none;box-shadow:0 16px 48px rgba(0,0,0,.45)}
-.sug-card div:hover{background:rgba(255,255,255,.06)}
-.slider{width:100%}
-.toggle,.switch{display:inline-flex;align-items:center;justify-content:space-between;gap:10px}
-</style>
-</head><body><div id="hdr"><div class="nav-logo"><svg width="90" height="28" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="55" y="22" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Inter,Arial">I&N</text><text x="55" y="38" text-anchor="middle" fill="#fff" font-size="8" letter-spacing="5" font-family="Inter,Arial">RUN</text></svg></div><div class="nav-status"><span class="dot"></span><span>Disponible · Paris</span></div></div><div id="notif-toast" class="notif-toast"></div><div class="tesla-layout"><div class="left-stack"><section class="hero"><div class="hero-tagline">RÉSERVATION DIRECTE</div><h1>Votre chauffeur privé à Paris.<br><span style="color:#bdbdbd">Tarif fixe, réponse rapide.</span></h1><p class="hero-p"><span style="display:block;color:#fff;font-weight:700;letter-spacing:.02em;margin-bottom:6px">Réservation directe pour Paris, Orly, CDG et l’Île-de-France.</span>Un site pensé d'abord pour convertir les clients Uber/Bolt vers une réservation directe, plus simple, plus rapide et plus rentable. Le design est volontairement sobre, ultra lisible et orienté action.</p></section><div class="step-line"></div><div class="stepper"><span class="step-dot active"></span><span>Trajet</span><span class="step-dot"></span><span>Personnaliser</span><span class="step-dot"></span><span>Tarif</span><span class="step-dot"></span><span>Validation</span></div><section id="step1" class="grid-card card"><h2>Planifier le trajet</h2><p class="sub">Indiquez votre trajet et votre heure. Le tarif s’affiche tout de suite, sans étape inutile.</p><div class="f-grid"><div class="f-wrap full"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><input id="dep" class="f-in" placeholder="Ex : CDG, Gare de Lyon, domicile…" autocomplete="off"></div><div class="f-wrap full"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22V3"/></svg></div><input id="arr" class="f-in" placeholder="Ex : Paris 8e, Orly, La Défense…" autocomplete="off"></div><div class="f-wrap"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></div><input id="timepick" class="f-in" type="datetime-local"></div><div class="f-wrap"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><input id="note" class="f-in" placeholder="Ex : bagages, siège enfant, trajet silencieux…"></div></div><div style="font-size:.72rem;color:rgba(245,245,247,.55);margin:0 0 10px">Réponse rapide, tarif clair, réservation directe.</div><div style="font-size:.7rem;color:rgba(245,245,247,.52);margin:0 0 10px">Réservation en quelques secondes, sans friction.</div><button id="calcBtn" class="btn-gold" onclick="calculatePrice()"><span id="btnText">Voir mon tarif</span><span id="calcLoader" style="display:none">Calcul…</span></button></section><section id="step2" class="grid-card card"><h2>Personnaliser</h2><p class="sub">Quelques préférences suffisent.</p><div class="full"><div class="chips" id="musicPref"><button class="chip sel">Jazz</button><button class="chip">Lo-fi</button><button class="chip">Silence</button></div></div><div style="height:8px"></div><div class="full"><div class="chips" id="climPref"><button class="chip sel">22°C</button><button class="chip">21°C</button><button class="chip">24°C</button></div></div><div style="height:8px"></div><div class="f-wrap full"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h16"/></svg></div><input id="promoCode" class="f-in" placeholder="Code promo"></div><div class="f-wrap full"><div class="f-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><select id="paymentMethod" class="f-in"><option>Espèces</option><option>Carte</option><option>Virement</option></select></div><button class="btn-gold" onclick="sendWhatsApp()">Réserver</button></section></div><div class="right-col"><section class="grid-card recap"><div class="recap-top"><div><div style="font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)">Votre tarif</div><div class="recap-price" id="finalPrice">—</div></div><div style="text-align:right"><div style="font-size:.72rem;color:var(--dim)">Réservation directe · sans commission</div><div class="recap-route" id="m-km">-- km</div><div class="recap-route" id="m-dur">-- min</div></div></div><div id="calcDetails" class="m-calc-info" style="margin-top:10px"></div><div class="badges"><span class="badge">Réponse rapide</span><span class="badge">Prix fixe</span><span class="badge">Sans commission</span></div><div class="benefit-line" style="margin-top:12px;font-size:.76rem;line-height:1.55;color:rgba(245,245,247,.68)">Réservation directe, tarif fixe, chauffeur premium — sans commission ni algorithme.</div></section><div class="cards-info-wrap"><div class="ios-widget ios-meteo"><div class="ios-w-header"><div class="ios-w-icon">☁️</div><div class="ios-w-label">MÉTÉO · <span id="wCity">Paris</span></div><div class="ios-w-refresh" onclick="fetchMeteo()">↻</div></div><div class="ios-w-main"><div class="ios-w-temp-block"><span id="wIcon">🌤️</span> <span class="ios-w-temp" id="wTemp">--°</span></div><div class="ios-w-pills"><span class="ios-pill">Ressenti <b id="wFeels">--°</b></span><span class="ios-pill">Humidité <b id="wHumidity">--%</b></span><span class="ios-pill">Vent <b id="wWind">-- km/h</b></span><span class="ios-pill">Pluie <b id="wRain">--%</b></span></div></div><div class="ios-w-status" id="wStatus">En attente…</div></div><div class="ios-widget ios-trafic"><div class="ios-w-header"><div class="ios-w-icon">⏱️</div><div class="ios-w-label">TRAFIC <span id="trafCtx"></span></div><span class="ios-w-tag ios-ok" id="trafGlobal">FLUIDE</span></div><div class="ios-trafic-row"><div class="ios-tr-left"><span class="ios-tr-dot ios-ok" id="tr1dot"></span><div><div class="ios-tr-name" id="tr1name">CDG T2 → Paris</div><div class="ios-tr-via" id="tr1via">A1 · Chargement…</div></div></div><div class="ios-tr-right"><span class="ios-tr-dur" id="tr1dur">--</span><span class="ios-tr-tag" id="tr1tag">--</span></div></div><div class="ios-trafic-row"><div class="ios-tr-left"><span class="ios-tr-dot ios-warn" id="tr2dot"></span><div><div class="ios-tr-name" id="tr2name">Orly → Paris</div><div class="ios-tr-via" id="tr2via">A6 · Chargement…</div></div></div><div class="ios-tr-right"><span class="ios-tr-dur" id="tr2dur">--</span><span class="ios-tr-tag" id="tr2tag">--</span></div></div><div class="ios-trafic-row"><div class="ios-tr-left"><span class="ios-tr-dot ios-ok" id="tr3dot"></span><div><div class="ios-tr-name" id="tr3name">Paris → Lyon</div><div class="ios-tr-via" id="tr3via">A6 · Chargement…</div></div></div><div class="ios-tr-right"><span class="ios-tr-dur" id="tr3dur">--</span><span class="ios-tr-tag" id="tr3tag">--</span></div></div><div class="ios-w-status" id="trafStatus">Mise à jour…</div></div></div><div id="eta-widget" class="grid-card card"><div id="eta-loading">Calcul ETA…</div><div id="eta-result" style="display:none"><div id="eta-min"></div><div id="eta-km"></div><div id="eta-zone"></div></div></div><section id="step3" class="grid-card card"><h2>Pourquoi réserver ici</h2><p class="sub">Vous évitez les commissions, les variations de prix et les délais inutiles des applications.</p><div id="proof-badges"></div></section></div></div><div class="section-sep"><div class="section-sep-line"></div><div class="section-sep-diamond"></div><div class="section-sep-line"></div></div><section class="grid-card card" style="max-width:1180px;margin:0 auto 16px"><h2>Avis clients</h2><p class="sub">Des retours utiles pour décider vite.</p><div class="avis-track" id="avisTrack"><div class="avis-card"><div class="avis-name">Sophie M.</div><div class="avis-meta">CDG → Paris 8e · Février 2026</div><p class="avis-texte">Ponctuel, silencieux, tarif clair. J’ai arrêté les applis pour ce trajet.</p></div><div class="avis-card"><div class="avis-name">Thomas R.</div><div class="avis-meta">Ris-Orangis → La Défense · Janvier 2026</div><p class="avis-texte">Réservation en 2 minutes, réponse instantanée. Ultra efficace.</p></div><div class="avis-card"><div class="avis-name">Amina K.</div><div class="avis-meta">Orly → Évry · Mars 2026</div><p class="avis-texte">Voyage avec 3 valises et un enfant. Service premium, sans stress.</p></div></div></section><div id="customModal" class="modal-overlay"><div class="modal-box-price"><div class="m-subtitle">Tarif final</div><div class="count-up" id="finalPrice">—</div><div class="m-calc-info" id="calcDetails"></div><div style="display:flex;gap:10px;margin-top:16px"><button class="btn-gold" onclick="sendWhatsApp()">Confirmer</button><button class="btn-close" onclick="document.getElementById('customModal').classList.remove('show');document.getElementById('customModal').style.display='none'">Fermer</button></div></div></div><div id="legalModal" class="modal-overlay"></div>
-<script>
-const coords={dep:null,arr:null};
-const cache={};
-function toast(msg){const t=document.getElementById('notif-toast'); if(!t) return; t.textContent=msg; t.style.display='block'; clearTimeout(toast._t); toast._t=setTimeout(()=>t.style.display='none',2200)}
-function esc(s){return encodeURIComponent((s||'').trim())}
-async function geocode(q){
- if(!q || q.trim().length<3) return [];
- const k=q.trim().toLowerCase();
- if(cache[k]) return cache[k];
- const url='https://photon.komoot.io/api/?lang=fr&limit=6&bbox=2.0,48.3,3.0,49.2&q='+esc(q);
- const r=await fetch(url); const d=await r.json();
- const items=(d.features||[]).map(f=>({name:f.properties.name||f.properties.street||q, city:f.properties.city||f.properties.country||'', lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0]}));
- cache[k]=items; return items;
+/* ════════════════════════════════════════════════════════════════
+   I&N RUN — ULTRA-PREMIUM / HIGH-TECH
+   #000000 Pure Black · Glassmorphism 2.0 · iOS Native Components
+   Inter / SF Pro · Glow Depth · Spring Animations
+   ════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  /* Pure black foundation */
+  --bg:           #000000;
+  --bg-1:         #0a0a0a;
+  --bg-2:         #111114;
+  --bg-3:         #18181c;
+
+  /* Glass layers */
+  --glass:        rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-mid:    rgba(255,255,255,0.06);
+  --glass-high:   rgba(255,255,255,0.09);
+
+  /* Brand gold */
+  --gold:         #d4af37;
+  --gold-l:       #f3e5a8;
+  --gold-dim:     rgba(212,175,55,0.16);
+  --gold-glow:    rgba(212,175,55,0.28);
+
+  /* iOS System */
+  --blue:         #0a84ff;
+  --blue-neon:    #2196f3;
+  --green:        #30d158;
+  --green-dim:    rgba(48,209,88,0.14);
+  --red:          #ff453a;
+  --orange:       #ff9f0a;
+
+  /* Typography */
+  --t1:  #ffffff;
+  --t2:  #8e8e93;
+  --t3:  #3a3a3c;
+  --t-inv: #000000;
+
+  /* Radius */
+  --r-xs:   6px;
+  --r-s:    10px;
+  --r-m:    14px;
+  --r-l:    18px;
+  --r-xl:   24px;
+  --r-pill: 100px;
+
+  /* Spring easing */
+  --spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:  cubic-bezier(0.4, 0, 1, 1);
+  --t-f:  0.12s;
+  --t-m:  0.28s;
+  --t-s:  0.48s;
+
+  /* Layout */
+  --hdr:    58px;
+  --tap:    52px;
+  --max-w:  640px;
+  --safe-l: max(18px, env(safe-area-inset-left, 0px));
+  --safe-b: max(14px, env(safe-area-inset-bottom, 0px));
 }
-function ensureSug(inp){let box=document.getElementById(inp.id+'-sug'); if(!box){box=document.createElement('div'); box.id=inp.id+'-sug'; box.className='sug-card'; inp.parentElement.style.position='relative'; inp.parentElement.appendChild(box);} return box;}
-function renderSug(inp, items){ const box=ensureSug(inp); box.innerHTML=items.map((x,i)=>`<div data-i="${i}"><div style="font-weight:700;font-size:.86rem">${x.name}</div><div style="color:rgba(245,245,247,.55);font-size:.72rem">${x.city||''}</div></div>`).join(''); box.style.display=items.length?'block':'none'; box.querySelectorAll('[data-i]').forEach(el=>el.onclick=()=>{ const x=items[+el.dataset.i]; inp.value=x.name+(x.city?`, ${x.city}`:''); coords[inp.id]=x; box.style.display='none'; toast('Adresse validée'); }); }
-async function onAddrInput(inp){ const q=inp.value.trim(); if(q.length<3){ const box=ensureSug(inp); box.style.display='none'; return; } try{ const items=await geocode(q); renderSug(inp, items); } catch(e){ toast('Suggestions indisponibles'); } }
-function bindAuto(id){ const inp=document.getElementById(id); if(!inp) return; let t; inp.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>onAddrInput(inp),180); }); inp.addEventListener('focus',()=>{ if(inp.value.trim().length>=3) onAddrInput(inp); }); inp.addEventListener('blur',()=>setTimeout(()=>{ const box=document.getElementById(inp.id+'-sug'); if(box) box.style.display='none'; },180)); }
-function bindChips(){ document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{ const p=b.parentElement; if(!p) return; p.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); })); }
-function bindSwitches(){ document.querySelectorAll('.pay-btn,.sb').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('sel'))); }
-function bindSliders(){ document.querySelectorAll('input[type="range"]').forEach(r=>{ const paint=()=>r.style.setProperty('--v',r.value); r.addEventListener('input',paint); paint(); }); }
-function calculatePrice(){ toast('Calcul du tarif…'); const m=document.getElementById('customModal'); if(m) m.classList.add('show'); }
-function sendWhatsApp(){ toast('Ouverture WhatsApp…'); }
-document.addEventListener('DOMContentLoaded',()=>{ bindAuto('dep'); bindAuto('arr'); bindChips(); bindSwitches(); bindSliders(); });
-</script></body></html>
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html { background: #000; scroll-behavior: smooth; }
+body {
+  font-family: "Inter", -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  overflow-x: hidden;
+  padding-bottom: calc(88px + var(--safe-b));
+  margin: 0;
+  min-height: 100dvh;
+}
+input, textarea, button, select { font-family: inherit; }
+
+/* ── CONSTELLATION ── */
+#constellation-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; opacity: 0.28;
+}
+
+/* ── REVEAL LINE ── */
+#reveal-line {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 1px; z-index: 9999;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  animation: revealSweep 2.5s var(--ease-out) forwards;
+}
+@keyframes revealSweep { from{transform:scaleX(0)} to{transform:scaleX(1);opacity:0} }
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+#hdr {
+  position: sticky; top: 0; z-index: 990;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 0.5px solid rgba(255,255,255,0.06);
+}
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--hdr);
+  padding: 0 var(--safe-l);
+  max-width: var(--max-w); margin: 0 auto;
+}
+.nav-logo { display: flex; align-items: center; }
+.nav-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.70rem; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--green);
+  background: var(--green-dim);
+  padding: 6px 13px; border-radius: var(--r-pill);
+  border: 0.5px solid rgba(48,209,88,0.25);
+  box-shadow: 0 0 14px rgba(48,209,88,0.12);
+}
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ══════════════════════════════
+   STICKY DATETIME
+══════════════════════════════ */
+#sticky-datetime {
+  position: sticky; top: var(--hdr); z-index: 980;
+  transform: translateY(-110%); opacity: 0;
+  transition: transform var(--t-m) var(--ease-out), opacity var(--t-m);
+  padding: 0 var(--safe-l); pointer-events: none;
+}
+#sticky-datetime.visible {
+  transform: translateY(0); opacity: 1; pointer-events: auto;
+}
+.sticky-dt-inner {
+  display: flex; align-items: center; gap: 10px;
+  max-width: var(--max-w); margin: 8px auto 0;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-l); padding: 10px 15px;
+}
+.sticky-dt-icon { color: var(--gold); display: flex; }
+.sticky-dt-icon svg { width: 15px; height: 15px; }
+.sticky-dt-content { flex: 1; }
+.sticky-dt-kicker { font-size: 0.58rem; color: var(--t2); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+.sticky-dt-time { font-size: 0.85rem; font-weight: 600; color: var(--t1); }
+.sticky-dt-btn {
+  background: var(--glass); border: 0.5px solid var(--glass-border);
+  color: var(--gold); border-radius: var(--r-s);
+  padding: 6px 10px; display: flex; align-items: center; cursor: pointer;
+  transition: background var(--t-f), transform var(--t-f);
+}
+.sticky-dt-btn:active { transform: scale(0.93); }
+.sticky-dt-btn svg { width: 14px; height: 14px; }
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+.hero {
+  padding: 56px 20px 30px;
+  text-align: center; position: relative; z-index: 1;
+  max-width: var(--max-w); margin: 0 auto;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -30px; left: -15%; right: -15%; height: 340px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-tagline {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); margin: 0 0 16px;
+  animation: tagline-pulse 4s ease-in-out infinite;
+}
+@keyframes tagline-pulse {
+  0%,100%{opacity:0.80} 50%{opacity:1;text-shadow:0 0 18px rgba(212,175,55,0.40)}
+}
+h1 {
+  font-size: clamp(2rem, 9.5vw, 3rem);
+  font-weight: 800; line-height: 1.12;
+  letter-spacing: -1px; margin: 0 0 14px;
+  background: linear-gradient(160deg, #ffffff 0%, rgba(255,255,255,0.75) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.g {
+  background: linear-gradient(135deg, #c9a227 0%, #f3e5a8 45%, #d4af37 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-p {
+  font-size: 0.92rem; font-weight: 400; color: var(--t2);
+  margin: 0 auto 26px; line-height: 1.65; max-width: 340px;
+}
+
+/* Proof pills */
+.proof-ios {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--glass);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-radius: var(--r-xl); padding: 4px;
+  max-width: 340px; margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  box-shadow: 0 0 40px rgba(0,0,0,0.60), 0 0 0 0.5px rgba(255,255,255,0.04);
+}
+.proof-cell { flex:1; padding: 13px 8px; text-align: center; }
+.proof-value {
+  font-size: 1.35rem; font-weight: 800; line-height: 1;
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.70) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.proof-value .sub { font-size: 0.65rem; font-weight: 500; color: var(--t2); vertical-align: super; }
+.proof-lbl { font-size: 0.60rem; font-weight: 600; color: var(--t2); letter-spacing: 0.8px; margin-top: 3px; text-transform: uppercase; }
+.proof-sep { width: 0.5px; height: 28px; background: rgba(255,255,255,0.10); }
+
+/* ══════════════════════════════
+   VOITURE
+══════════════════════════════ */
+.section-voiture { position: relative; overflow: hidden; max-height: 260px; }
+.voiture-img-wrap { width: 100%; height: 260px; overflow: hidden; }
+.voiture-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 60%;
+  filter: brightness(0.70) saturate(0.85);
+  transition: transform var(--t-s) var(--ease-out);
+}
+.section-voiture:hover .voiture-img-wrap img { transform: scale(1.04); }
+.voiture-badge {
+  position: absolute; bottom: 14px; left: 14px; right: 14px;
+  background: rgba(0,0,0,0.68);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-m); padding: 12px 15px;
+  max-width: calc(var(--max-w) - 28px); margin: 0 auto;
+}
+.voiture-badge-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+.voiture-badge-name { font-size: 0.80rem; color: var(--t2); font-weight: 400; }
+
+/* ══════════════════════════════
+   AVIS
+══════════════════════════════ */
+.section-avis { padding: 28px 14px 8px; max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+.avis-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.avis-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--t1); }
+.avis-source {
+  display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: var(--t2);
+  background: var(--glass); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-pill); padding: 4px 10px;
+}
+.avis-list { display: flex; flex-direction: column; gap: 8px; }
+.avis-card {
+  background: var(--glass);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-l); padding: 16px;
+  transition: transform var(--t-f), box-shadow var(--t-m);
+}
+.avis-card:active { transform: scale(0.98); }
+.avis-card:hover { box-shadow: 0 0 30px rgba(212,175,55,0.06), 0 4px 20px rgba(0,0,0,0.50); }
+.avis-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.avis-nom { font-size: 0.88rem; font-weight: 600; color: var(--t1); }
+.avis-meta { font-size: 0.68rem; color: var(--t2); margin-top: 2px; }
+.avis-stars { display: flex; gap: 2px; }
+.avis-star { color: var(--gold); font-size: 0.75rem; }
+.avis-texte { font-size: 0.85rem; color: var(--t2); line-height: 1.58; margin: 0; }
+.avis-texte em { color: var(--t1); font-style: normal; font-weight: 500; }
+.avis-voir-plus {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin: 12px auto 0; padding: 11px 24px;
+  background: var(--glass); border-top: 1px solid rgba(255,255,255,0.08);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-pill); color: var(--t2);
+  font-size: 0.80rem; font-weight: 500; text-decoration: none;
+  transition: transform var(--t-f), color var(--t-f);
+  max-width: 180px;
+}
+.avis-voir-plus:active { transform: scale(0.94); color: var(--t1); }
+
+/* ══════════════════════════════
+   TUNNEL / STEPPER
+══════════════════════════════ */
+.tunnel { padding: 14px 0 0; position: relative; z-index: 1; }
+#stepperWrap { padding: 0 14px; max-width: var(--max-w); margin: 0 auto 14px; }
+.stepper { display: flex; align-items: center; justify-content: center; }
+.stepper-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.stepper-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+  border: 1px solid var(--t3); color: var(--t3);
+  background: transparent; transition: all var(--t-m) var(--ease-out);
+}
+.stepper-item.active .stepper-circle {
+  background: var(--gold); border-color: var(--gold); color: #000;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.12), 0 0 20px rgba(212,175,55,0.38);
+}
+.stepper-item.done .stepper-circle { background: var(--green); border-color: var(--green); color: #000; }
+.stepper-label { font-size: 0.60rem; font-weight: 600; letter-spacing: 0.3px; color: var(--t3); transition: color var(--t-m); text-transform: uppercase; }
+.stepper-item.active .stepper-label { color: var(--gold); }
+.stepper-item.done .stepper-label { color: var(--green); }
+.stepper-line { flex: 1; height: 1px; background: var(--t3); transition: background var(--t-m); margin-bottom: 14px; }
+.stepper-line.done { background: var(--green); }
+.stepper-line.active { background: var(--gold); }
+
+/* ══════════════════════════════
+   CARDS (Glassmorphism 2.0)
+══════════════════════════════ */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-xl);
+  padding: 22px 17px;
+  margin: 0 11px 12px; max-width: calc(var(--max-w) - 22px);
+  margin-left: auto; margin-right: auto;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.03);
+  transition: opacity var(--t-m) var(--ease-out), transform var(--t-m) var(--ease-out), filter var(--t-m);
+}
+/* Top shimmer line */
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.16), rgba(212,175,55,0.10), transparent);
+  pointer-events: none;
+}
+/* Glow de profondeur derrière la carte */
+.card::after {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: var(--r-xl);
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.card.locked { opacity: 0.35; filter: blur(0.4px); pointer-events: none; }
+.card.active {
+  opacity: 1; filter: none; pointer-events: auto;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.50),
+    0 0 60px rgba(212,175,55,0.04),
+    0 0 0 0.5px rgba(212,175,55,0.12);
+}
+
+.card-hd { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+.c-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(212,175,55,0.10); border: 0.5px solid rgba(212,175,55,0.25);
+  color: var(--gold); font-size: 0.78rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.c-title { font-size: 0.96rem; font-weight: 700; color: var(--t1); line-height: 1.2; }
+.c-sub { font-size: 0.72rem; color: var(--t2); margin-top: 2px; }
+
+/* ── Form Labels (UPPERCASE THIN) ── */
+.f-lbl {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--t2); margin: 0 0 7px;
+}
+.f-lbl::before {
+  content: '';
+  display: inline-block; width: 2px; height: 10px;
+  background: rgba(212,175,55,0.40); border-radius: 1px; flex-shrink: 0;
+}
+
+/* ── Form Fields ── */
+.f-wrap {
+  position: relative; display: flex; align-items: center;
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-left: 0.5px solid rgba(255,255,255,0.03);
+  border-right: 0.5px solid rgba(255,255,255,0.03);
+  border-bottom: 0.5px solid rgba(255,255,255,0.03);
+  border-radius: var(--r-m); height: var(--tap); margin-bottom: 13px;
+  transition: border-color var(--t-f), box-shadow var(--t-f);
+}
+.f-wrap:focus-within {
+  border-top-color: rgba(212,175,55,0.40);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.07), 0 0 16px rgba(212,175,55,0.10);
+}
+.f-ic { width: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--t2); }
+.f-in {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--t1); font-size: 0.93rem; font-weight: 400;
+  padding: 0 14px 0 0; min-width: 0;
+}
+.f-in::placeholder { color: var(--t3); }
+.f-in[type="datetime-local"] { color-scheme: dark; font-size: 0.88rem; }
+
+.f-spinner {
+  width: 16px; height: 16px; border: 1.5px solid rgba(255,255,255,0.07);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin 0.8s linear infinite; display: none;
+  margin-right: 12px; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.f-check { color: var(--green); font-size: 0.95rem; margin-right: 12px; display: none; flex-shrink: 0; }
+
+/* Autocomplete */
+.ac {
+  position: absolute; top: calc(100% + 5px); left: 0; right: 0;
+  background: rgba(14,14,18,0.98);
+  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.06);
+  border-right: 0.5px solid rgba(255,255,255,0.06);
+  border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-m); z-index: 200; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.70);
+}
+.ac-item {
+  padding: 12px 16px; font-size: 0.88rem; color: var(--t1);
+  cursor: pointer; border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  transition: background var(--t-f);
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:active, .ac-item:hover { background: rgba(255,255,255,0.05); }
+.ac-sub { font-size: 0.70rem; color: var(--t2); margin-top: 2px; }
+
+/* ── ETA ── */
+#eta-widget { padding: 0 11px 6px; max-width: var(--max-w); margin: 0 auto; }
+.eta-loading {
+  display: flex; align-items: center; gap: 10px; font-size: 0.80rem; color: var(--t2);
+  padding: 12px 15px; background: var(--glass); border-radius: var(--r-m);
+  border-top: 1px solid rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.06);
+}
+.eta-spinner {
+  width: 15px; height: 15px; border: 1.5px solid rgba(255,255,255,0.08);
+  border-top-color: var(--green); border-radius: 50%;
+  animation: spin 0.8s linear infinite; flex-shrink: 0;
+}
+.eta-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 15px;
+  background: rgba(48,209,88,0.05);
+  border-top: 1px solid rgba(48,209,88,0.18);
+  border-left: 0.5px solid rgba(48,209,88,0.08);
+  border-right: 0.5px solid rgba(48,209,88,0.08);
+  border-bottom: 0.5px solid rgba(48,209,88,0.08);
+  border-radius: var(--r-m); backdrop-filter: blur(10px);
+}
+.eta-left { display: flex; align-items: center; gap: 12px; }
+.eta-icon-wrap {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(48,209,88,0.10); border: 0.5px solid rgba(48,209,88,0.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.eta-label { font-size: 0.65rem; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.8px; }
+.eta-value { font-size: 1.5rem; font-weight: 800; color: var(--t1); line-height: 1; }
+.eta-value-unit { font-size: 0.70rem; font-weight: 500; color: var(--t2); }
+.eta-right { text-align: right; }
+.eta-dist { font-size: 0.80rem; font-weight: 600; color: var(--t1); }
+.eta-since { font-size: 0.68rem; color: var(--t2); margin-top: 2px; }
+
+/* ── Recap Datetime ── */
+.recap-datetime {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--glass);
+  border-top: 1px solid rgba(212,175,55,0.15);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-m); padding: 12px 14px; margin-bottom: 14px;
+  cursor: pointer; transition: transform var(--t-f), background var(--t-f);
+}
+.recap-datetime:active { transform: scale(0.98); }
+.recap-dt-left { display: flex; align-items: center; gap: 10px; }
+.recap-dt-icon { color: var(--gold); display: flex; }
+.recap-dt-label { font-size: 0.60rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--t2); }
+.recap-dt-value { font-size: 0.88rem; font-weight: 600; color: var(--t1); margin-top: 2px; }
+.recap-dt-value.empty { color: var(--t3); font-weight: 400; font-style: italic; }
+.recap-dt-edit { font-size: 0.72rem; color: var(--gold); font-weight: 500; }
+.recap-nuit {
+  display: inline-block; font-size: 0.60rem;
+  background: rgba(255,159,10,0.10); border: 0.5px solid rgba(255,159,10,0.28);
+  color: var(--orange); border-radius: var(--r-pill);
+  padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+}
+.btn-modifier {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-pill); color: var(--t2);
+  font-size: 0.76rem; font-weight: 500; padding: 7px 14px; cursor: pointer;
+  margin-bottom: 18px; transition: transform var(--t-f), color var(--t-f);
+}
+.btn-modifier:active { transform: scale(0.94); color: var(--t1); }
+
+/* ── Interior photo ── */
+.interieur-wrap { position: relative; border-radius: var(--r-l); overflow: hidden; margin-bottom: 20px; height: 155px; }
+.interieur-wrap img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65); }
+.interieur-caption {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.interieur-label { font-size: 0.75rem; font-weight: 600; color: var(--t1); letter-spacing: 0.5px; }
+.interieur-tags { display: flex; gap: 5px; }
+.interieur-tag {
+  font-size: 0.60rem; font-weight: 600; color: var(--gold);
+  background: rgba(212,175,55,0.10); border: 0.5px solid rgba(212,175,55,0.22);
+  border-radius: var(--r-pill); padding: 3px 9px;
+}
+
+/* ══════════════════════════════
+   PAYMENT PILLS
+══════════════════════════════ */
+.payment-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 20px; }
+.pay-pill {
+  display: flex; align-items: center; gap: 9px; padding: 13px 13px;
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-left: 0.5px solid rgba(255,255,255,0.03);
+  border-right: 0.5px solid rgba(255,255,255,0.03);
+  border-bottom: 0.5px solid rgba(255,255,255,0.03);
+  border-radius: var(--r-l); cursor: pointer;
+  transition: transform var(--t-f), box-shadow var(--t-f); position: relative;
+}
+.pay-pill:active { transform: scale(0.97); }
+.pay-pill.sel {
+  border-top-color: rgba(212,175,55,0.40);
+  box-shadow: 0 0 0 0.5px rgba(212,175,55,0.18) inset, 0 0 24px rgba(212,175,55,0.10);
+  background: rgba(212,175,55,0.04);
+}
+.pay-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 17px; height: 17px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--t-f);
+}
+.pay-pill.sel .pay-check { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 8px rgba(212,175,55,0.40); }
+.pay-check svg { width: 9px; height: 9px; stroke: #000; stroke-width: 2.5; fill: none; opacity: 0; transition: opacity var(--t-f); }
+.pay-pill.sel .pay-check svg { opacity: 1; }
+.pay-icon svg { width: 30px; height: 30px; }
+.pay-title { font-size: 0.83rem; font-weight: 600; color: var(--t1); }
+.pay-sub { font-size: 0.65rem; color: var(--t2); margin-top: 1px; }
+
+/* ══════════════════════════════
+   SEGMENTED CONTROL — Sliding Block
+══════════════════════════════ */
+.amb-seg {
+  display: flex; position: relative;
+  background: rgba(28,28,32,0.90);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: calc(var(--r-m) + 2px);
+  padding: 3px; gap: 0;
+  margin-bottom: 20px;
+}
+/* Sliding white indicator */
+.amb-seg::before {
+  content: '';
+  position: absolute;
+  top: 3px; bottom: 3px;
+  width: calc(33.333% - 4px);
+  border-radius: var(--r-m);
+  background: rgba(255,255,255,0.14);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.20) inset, 0 2px 6px rgba(0,0,0,0.40);
+  transition: transform 0.38s var(--spring);
+  left: 3px;
+  transform: translateX(0);
+  pointer-events: none;
+}
+.amb-seg[data-active="musique"]::before { transform: translateX(0); }
+.amb-seg[data-active="radio"]::before   { transform: translateX(calc(100% + 4px)); }
+.amb-seg[data-active="silence"]::before { transform: translateX(calc(200% + 8px)); }
+
+.seg-opt {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 10px 4px; border-radius: var(--r-m);
+  font-size: 0.78rem; font-weight: 500; color: var(--t2);
+  cursor: pointer; position: relative; z-index: 1;
+  transition: color var(--t-m) var(--ease-out), transform var(--t-f);
+  user-select: none; -webkit-user-select: none;
+}
+.seg-opt svg { width: 13px; height: 13px; stroke: currentColor; transition: stroke var(--t-m); }
+.seg-opt:active { transform: scale(0.95); }
+.seg-opt.active { color: var(--t1); font-weight: 600; }
+
+/* ══════════════════════════════
+   IOS SLIDERS — Tactile
+══════════════════════════════ */
+.slider-block { margin-bottom: 8px; transition: opacity var(--t-m); }
+.slider-block.disabled { opacity: 0.28; pointer-events: none; }
+.slider-lrow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+.slider-lbl { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; font-weight: 500; color: var(--t1); }
+.slider-lbl svg { width: 15px; height: 15px; color: var(--t2); }
+.slider-val { font-size: 0.85rem; font-weight: 700; color: var(--gold); }
+.slider-val .unit { font-size: 0.68rem; font-weight: 400; color: var(--t2); }
+
+.ios-slider {
+  position: relative; height: 38px; display: flex; align-items: center;
+  cursor: pointer; touch-action: none;
+  -webkit-user-select: none; user-select: none;
+}
+.ios-slider-track {
+  position: absolute; left: 0; right: 0; height: 5px;
+  background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;
+}
+.ios-slider-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+  width: 50%; transition: width 0.05s linear;
+}
+/* Clim: bleu → rouge */
+.ios-slider.clim .ios-slider-fill {
+  background: linear-gradient(90deg, #0a84ff 0%, #30d158 45%, #ff9f0a 75%, #ff453a 100%);
+}
+.ios-slider-thumb {
+  position: absolute; width: 24px; height: 24px; border-radius: 50%;
+  /* Nacré: radial gradient sphérique */
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95) 0%, #f4f4f6 55%, #d8d8dc 100%);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.55),
+    0 1px 0 rgba(255,255,255,0.80) inset,
+    0 -1px 0 rgba(0,0,0,0.12) inset,
+    0 0 0 0.5px rgba(0,0,0,0.10);
+  left: 50%; transform: translateX(-50%);
+  transition: transform 0.08s var(--spring), width 0.12s var(--spring), height 0.12s var(--spring);
+  pointer-events: none;
+}
+.ios-slider.dragging .ios-slider-thumb {
+  transform: translateX(-50%) scale(1.18);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.65), 0 0 20px rgba(10,132,255,0.30);
+}
+.slider-ticks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.60rem; color: var(--t3); padding: 0 2px; }
+.silence-note {
+  font-size: 0.76rem; color: var(--t2); text-align: center; padding: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 0.5px dashed rgba(255,255,255,0.07);
+  border-radius: var(--r-s); display: none; margin-top: 6px;
+}
+.silence-note.show { display: block; }
+
+/* ══════════════════════════════
+   iOS TOGGLE SWITCHES — Perfect
+══════════════════════════════ */
+.toggles-list { margin-top: 20px; }
+.toggles-list-title {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--t2); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.toggles-list-title::before {
+  content: '';
+  display: inline-block; width: 3px; height: 11px;
+  background: var(--gold); border-radius: 2px;
+  box-shadow: 0 0 8px rgba(212,175,55,0.50);
+}
+.ios-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+}
+.ios-toggle-row:last-child { border-bottom: none; }
+.toggle-lbl { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; font-weight: 400; color: var(--t1); flex: 1; }
+.toggle-lbl svg { width: 17px; height: 17px; color: var(--t2); flex-shrink: 0; }
+
+/* iOS Switch — pixel perfect Apple */
+.ios-switch {
+  position: relative; width: 51px; height: 31px; border-radius: 15.5px;
+  background: rgba(255,255,255,0.10);
+  border: 0.5px solid rgba(255,255,255,0.06);
+  cursor: pointer; flex-shrink: 0;
+  transition: background var(--t-m) var(--ease-out), box-shadow var(--t-m);
+  -webkit-user-select: none; user-select: none;
+}
+.ios-switch:active { transform: scale(0.95); }
+.ios-switch.on {
+  background: var(--green); border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(48,209,88,0.08), 0 0 20px rgba(48,209,88,0.30), 0 0 44px rgba(48,209,88,0.12);
+}
+.ios-switch.gold.on {
+  background: var(--gold); border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.08), 0 0 20px rgba(212,175,55,0.38), 0 0 44px rgba(212,175,55,0.14);
+}
+.ios-switch-handle {
+  position: absolute; top: 2px; left: 2px;
+  width: 27px; height: 27px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.92) 0%, #f0f0f0 60%, #dcdcdc 100%);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.42),
+    0 1px 0 rgba(255,255,255,0.80) inset,
+    0 -1px 0 rgba(0,0,0,0.10) inset,
+    0 0 0 0.5px rgba(0,0,0,0.06);
+  transition: transform var(--t-m) var(--spring);
+}
+.ios-switch.on .ios-switch-handle { transform: translateX(20px); }
+
+/* Note textarea */
+textarea.f-in { height: 60px; resize: none; padding: 10px 14px 10px 0; line-height: 1.5; }
+
+/* ── Compare block ── */
+.compare-block {
+  background: var(--glass);
+  border-top: 1px solid rgba(212,175,55,0.12);
+  border-left: 0.5px solid rgba(255,255,255,0.03);
+  border-right: 0.5px solid rgba(255,255,255,0.03);
+  border-bottom: 0.5px solid rgba(255,255,255,0.03);
+  border-radius: var(--r-l); padding: 15px; margin: 18px 0;
+}
+.compare-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.compare-item { display: flex; align-items: center; gap: 10px; font-size: 0.83rem; color: var(--t2); padding: 5px 0; border-bottom: 0.5px solid rgba(255,255,255,0.03); }
+.compare-item:last-child { border-bottom: none; }
+.compare-check {
+  width: 17px; height: 17px; border-radius: 50%;
+  background: rgba(48,209,88,0.10); border: 0.5px solid rgba(48,209,88,0.28);
+  color: var(--green); font-size: 0.68rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ══════════════════════════════
+   BUTTONS — Massive Premium
+══════════════════════════════ */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 54px;
+  border: none; border-radius: var(--r-m);
+  font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.2px;
+  transition: transform var(--t-f) var(--spring), box-shadow var(--t-f), opacity var(--t-f);
+  position: relative; overflow: hidden;
+}
+.btn:active { transform: scale(0.98) !important; }
+
+/* Btn gold — skeuomorphique verre bombé */
+.btn-gold {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(135deg, #c9a227 0%, #f0d870 38%, #e8cc60 55%, #c9a227 100%);
+  background-size: 100% 100%, 200% 100%;
+  color: #000;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.32) inset,
+    0 -1px 0 rgba(0,0,0,0.22) inset,
+    0 4px 24px rgba(212,175,55,0.32),
+    0 1px 4px rgba(0,0,0,0.20);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.18);
+}
+.btn-gold:active {
+  transform: scale(0.98) translateY(1px) !important;
+  box-shadow: 0 2px 12px rgba(212,175,55,0.22);
+}
+
+/* Btn principal "Confirmer l'itinéraire" — style massif dark */
+.btn-confirm-main {
+  background: linear-gradient(135deg, #2c2c2e 0%, #000000 100%);
+  color: var(--t1);
+  border: 1px solid rgba(212,175,55,0.40);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.60) inset,
+    0 4px 24px rgba(0,0,0,0.50),
+    0 0 0 1px rgba(212,175,55,0.12),
+    0 0 30px rgba(212,175,55,0.08);
+  font-size: 1rem; font-weight: 700;
+  min-height: 56px; letter-spacing: 0.3px;
+}
+.btn-confirm-main:active {
+  transform: scale(0.98) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.60), 0 0 0 1px rgba(212,175,55,0.20);
+}
+
+.btn-ghost {
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  color: var(--t1);
+}
+.btn-ghost:active { background: var(--glass-mid); }
+
+.loader {
+  width: 17px; height: 17px; border: 2px solid rgba(0,0,0,0.18);
+  border-top-color: #000; border-radius: 50%;
+  animation: spin 0.7s linear infinite; display: none; flex-shrink: 0;
+}
+
+/* ══════════════════════════════
+   INFO CARDS (Météo + Trafic)
+══════════════════════════════ */
+.infos-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 9px;
+  padding: 8px 11px; max-width: var(--max-w); margin: 0 auto;
+}
+@media(max-width:400px) { .infos-row { grid-template-columns: 1fr; } }
+.info-card {
+  background: var(--glass);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-l); padding: 15px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.35);
+}
+.i-hd { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--t1); margin-bottom: 12px; }
+.w-top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.w-ic { font-size: 1.7rem; }
+.w-temp { font-size: 1.35rem; font-weight: 800; color: var(--t1); }
+.w-feels { font-size: 0.68rem; color: var(--t2); }
+.w-details { display: flex; flex-direction: column; gap: 5px; }
+.w-detail-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--t2); }
+.w-detail-icon { font-size: 0.82rem; }
+#wBadge { margin-top: 8px; }
+
+/* Météo 3D */
+.wx-sun {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: radial-gradient(circle, #ffd700, #ff8c00);
+  box-shadow: 0 0 18px rgba(255,165,0,0.55), 0 0 36px rgba(255,165,0,0.22);
+}
+.wx-cloud {
+  width: 46px; height: 22px;
+  background: linear-gradient(180deg, rgba(160,185,225,0.50), rgba(110,130,165,0.30));
+  border-radius: 11px;
+  box-shadow: 0 4px 10px rgba(100,120,180,0.20);
+}
+.wx-icon-partcloud { position: relative; display: flex; align-items: flex-end; }
+.wx-icon-rain { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.wx-drop { width: 2.5px; height: 7px; border-radius: 2px; background: linear-gradient(180deg, #4fc3f7, transparent); animation: rain-fall 0.9s linear infinite; }
+.wx-drop-1{animation-delay:0s}.wx-drop-2{animation-delay:.3s}.wx-drop-3{animation-delay:.6s}
+@keyframes rain-fall{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(8px)}}
+.wx-bolt { font-size: 1.1rem; color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
+
+/* Trafic */
+.t-list { display: flex; flex-direction: column; gap: 6px; }
+.t-item { display: flex; align-items: center; justify-content: space-between; }
+.t-route-info { display: flex; flex-direction: column; gap: 1px; }
+.t-route { font-size: 0.80rem; font-weight: 600; color: var(--t1); }
+.t-via { font-size: 0.62rem; color: var(--t2); }
+.t-right { display: flex; align-items: center; gap: 5px; }
+.t-tag { font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: var(--r-pill); letter-spacing: 0.3px; }
+.t-tag.ok  { background: rgba(48,209,88,0.10); color: var(--green); border: 0.5px solid rgba(48,209,88,0.22); }
+.t-tag.med { background: rgba(255,159,10,0.10); color: var(--orange); border: 0.5px solid rgba(255,159,10,0.22); }
+.t-tag.bad { background: rgba(255,69,58,0.10); color: var(--red); border: 0.5px solid rgba(255,69,58,0.22); }
+.t-dur { font-size: 0.68rem; color: var(--t2); }
+.t-updated { font-size: 0.60rem; color: var(--t3); margin-top: 10px; }
+
+/* ── Conseil ── */
+.conseil-box { padding: 0 11px; max-width: var(--max-w); margin: 6px auto; }
+.conseil-inner { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: rgba(10,132,255,0.06); border: 0.5px solid rgba(10,132,255,0.18); border-radius: var(--r-m); }
+.conseil-icon { font-size: 1.05rem; }
+.conseil-text { font-size: 0.80rem; color: var(--t2); line-height: 1.48; }
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+footer {
+  text-align: center; padding: 26px 20px calc(18px + var(--safe-b));
+  border-top: 0.5px solid rgba(255,255,255,0.05);
+  margin-top: 22px; max-width: var(--max-w); margin-left: auto; margin-right: auto;
+}
+footer p { font-size: 0.70rem; color: var(--t3); line-height: 1.7; margin: 0; }
+.legal-links { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+.legal-links a { font-size: 0.72rem; color: var(--t2); text-decoration: none; cursor: pointer; transition: color var(--t-f); }
+.legal-links a:hover { color: var(--gold); }
+.legal-links span { color: var(--t3); font-size: 0.68rem; }
+
+/* ══════════════════════════════
+   STICKY BOTTOM BUTTONS
+══════════════════════════════ */
+.sticky {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+  display: flex; gap: 9px;
+  padding: 11px max(15px, var(--safe-l)) calc(11px + var(--safe-b));
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  border-top: 0.5px solid rgba(255,255,255,0.06);
+}
+.sb {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 7px; min-height: 50px; border-radius: var(--r-m);
+  font-size: 0.88rem; font-weight: 700; text-decoration: none; cursor: pointer;
+  transition: transform var(--t-f) var(--spring), opacity var(--t-f);
+}
+.sb:active { transform: scale(0.96) !important; }
+.sb-wa {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(135deg, #22c754 0%, #30e866 40%, #25d366 100%);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 4px 16px rgba(37,211,102,0.22);
+}
+.sb-tel {
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  color: var(--t1);
+}
+
+/* ══════════════════════════════
+   MODAL PRIX (Bottom Sheet)
+══════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0);
+  display: flex; align-items: flex-end; pointer-events: none;
+  transition: background var(--t-m);
+}
+.modal-overlay.show {
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+.modal-box-price {
+  width: 100%; max-width: var(--max-w); margin: 0 auto;
+  background: rgba(12,12,16,0.98);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-left: 0.5px solid rgba(255,255,255,0.06);
+  border-right: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 14px 19px calc(18px + var(--safe-b));
+  transform: translateY(100%);
+  transition: transform var(--t-m) var(--ease-out);
+  box-shadow: 0 -12px 48px rgba(0,0,0,0.60);
+}
+.modal-overlay.show .modal-box-price { transform: translateY(0); }
+.m-handle { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.16); margin: 0 auto 18px; }
+.m-title { font-size: 1.15rem; font-weight: 800; color: var(--t1); text-align: center; margin: 0 0 4px; }
+.m-subtitle { font-size: 0.80rem; color: var(--t2); text-align: center; margin: 0 0 18px; }
+.m-recap {
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-l); padding: 17px; margin-bottom: 14px;
+}
+.m-price {
+  font-size: 3.2rem; font-weight: 800; text-align: center;
+  line-height: 1; margin-bottom: 14px; letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #c9a227 0%, #f3e5a8 45%, #d4af37 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(212,175,55,0.22));
+}
+.m-price-detail { display: flex; justify-content: space-around; border-top: 0.5px solid rgba(255,255,255,0.06); padding-top: 13px; }
+.m-price-item { text-align: center; }
+.m-price-val { font-size: 0.95rem; font-weight: 700; color: var(--t1); }
+.m-price-lbl { font-size: 0.60rem; color: var(--t2); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.m-calc-info { font-size: 0.72rem; color: var(--t2); line-height: 1.5; }
+
+.badge-promo {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.70rem; font-weight: 700; color: var(--green);
+  background: var(--green-dim); border: 0.5px solid rgba(48,209,88,0.22);
+  border-radius: var(--r-pill); padding: 5px 13px; cursor: pointer;
+  margin-top: 8px; position: relative;
+}
+.badge-tooltip {
+  display: none; position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%);
+  background: rgba(14,14,18,0.98);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.05);
+  border-right: 0.5px solid rgba(255,255,255,0.05);
+  border-bottom: 0.5px solid rgba(255,255,255,0.05);
+  border-radius: var(--r-m); padding: 12px 14px;
+  font-size: 0.73rem; color: var(--t2); width: 230px; font-weight: 400;
+  line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.60);
+  z-index: 10; white-space: normal; text-align: left;
+}
+.badge-promo.open .badge-tooltip { display: block; }
+
+.promo-wrap { margin-bottom: 13px; }
+.promo-input {
+  width: 100%; background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.08); border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04); border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: var(--r-m); color: var(--t1); font-size: 0.88rem;
+  padding: 13px 15px; outline: none; transition: border-color var(--t-f);
+}
+.promo-input:focus { border-top-color: rgba(212,175,55,0.38); }
+.promo-info { font-size: 0.73rem; color: var(--green); margin-top: 5px; padding-left: 4px; }
+
+.navbar-cta-wrap { margin-top: 4px; }
+.navbar-cta { display: flex; gap: 9px; }
+.nav-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 7px; min-height: var(--tap); border: none; border-radius: var(--r-m);
+  font-size: 0.93rem; font-weight: 700; cursor: pointer; text-decoration: none;
+  transition: transform var(--t-f) var(--spring), box-shadow var(--t-f);
+}
+.nav-btn:active { transform: scale(0.96) !important; }
+.nav-btn.primary {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(135deg, #22c754 0%, #30e866 40%, #25d366 100%);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.28) inset, 0 4px 18px rgba(37,211,102,0.25);
+}
+.nav-btn.alt {
+  background: var(--glass);
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-left: 0.5px solid rgba(255,255,255,0.04);
+  border-right: 0.5px solid rgba(255,255,255,0.04);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  color: var(--t1);
+}
+
+/* ══════════════════════════════
+   LEGAL MODAL
+══════════════════════════════ */
+.legal-modal {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.legal-modal.show { display: flex; }
+.legal-box {
+  background: rgba(10,10,14,0.99);
+  backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-left: 0.5px solid rgba(255,255,255,0.05);
+  border-right: 0.5px solid rgba(255,255,255,0.05);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 22px 19px calc(22px + var(--safe-b));
+  width: 100%; max-width: var(--max-w); max-height: 80dvh; overflow-y: auto;
+}
+.legal-title { font-size: 1.05rem; font-weight: 800; color: var(--t1); margin: 0 0 17px; }
+.legal-section { margin-bottom: 15px; }
+.legal-section h4 { font-size: 0.72rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 6px; }
+.legal-text { font-size: 0.80rem; color: var(--t2); line-height: 1.65; }
+
+/* ══════════════════════════════
+   BOTTOM SHEET — Universal
+══════════════════════════════ */
+.bs-overlay {
+  position: fixed; inset: 0; z-index: 1050;
+  background: rgba(0,0,0,0); pointer-events: none;
+  transition: background var(--t-m);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.bs-overlay.open {
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  pointer-events: auto;
+}
+.bs-sheet {
+  width: 100%; max-width: var(--max-w);
+  background: rgba(12,12,16,0.99);
+  backdrop-filter: blur(34px) saturate(200%); -webkit-backdrop-filter: blur(34px) saturate(200%);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-left: 0.5px solid rgba(255,255,255,0.05);
+  border-right: 0.5px solid rgba(255,255,255,0.05);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 8px 0 calc(14px + var(--safe-b));
+  transform: translateY(100%);
+  transition: transform var(--t-m) var(--ease-out);
+  overflow: hidden;
+  box-shadow: 0 -10px 44px rgba(0,0,0,0.55);
+}
+.bs-overlay.open .bs-sheet { transform: translateY(0); }
+.bs-handle { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.16); margin: 10px auto 15px; }
+.bs-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--t2); padding: 0 19px 11px; border-bottom: 0.5px solid rgba(255,255,255,0.05); }
+.bs-option {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 19px; font-size: 0.93rem; font-weight: 400; color: var(--t1);
+  cursor: pointer; transition: background var(--t-f);
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  min-height: var(--tap);
+}
+.bs-option:last-child { border-bottom: none; }
+.bs-option:active { background: rgba(255,255,255,0.04); }
+.bs-option.selected { color: var(--gold); font-weight: 600; }
+.bs-option-check {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all var(--t-f);
+}
+.bs-option.selected .bs-option-check { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(212,175,55,0.38); }
+.bs-option-check::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #000; opacity: 0; transition: opacity var(--t-f); }
+.bs-option.selected .bs-option-check::after { opacity: 1; }
+
+/* ══════════════════════════════
+   LOADING + MISC
+══════════════════════════════ */
+body.loading * { pointer-events: none; }
+body.loading::after {
+  content: ''; position: fixed; inset: 0; background: #000; z-index: 9998;
+  animation: fadeLoad 0.8s var(--ease-out) 0.5s forwards;
+}
+@keyframes fadeLoad { to { opacity: 0; pointer-events: none; } }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════════════
+   CORRECTIFS FINAUX — Scroll · Autocomplete · Focus · Sticky
+═══════════════════════════════════════════════════════ */
+
+html, body { overflow-x: hidden; max-width: 100vw; }
+* { box-sizing: border-box; }
+.tunnel, .infos-row, .section-avis,
+.hero, #stepperWrap, .conseil-box,
+footer, #eta-widget { overflow-x: hidden; }
+.f-in, input, textarea { max-width: 100%; min-width: 0; }
+
+/* Autocomplete — fade out propre */
+.ac {
+  display: none; opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+  pointer-events: none;
+  position: absolute;
+  top: calc(100% + 5px); left: 0; right: 0;
+  z-index: 500; max-height: 280px;
+  overflow-y: auto; overflow-x: hidden;
+}
+.ac.open {
+  display: block; opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  animation: none;
+}
+.ac.closing {
+  display: block; opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+/* Cards — overflow visible pour que .ac dépasse */
+.card { overflow: visible; }
+.card .f-wrap { overflow: visible; position: relative; }
+
+/* Focus Hyper-Tech */
+.f-wrap { background: rgba(0,0,0,0.42); }
+.f-wrap:focus-within {
+  background: rgba(0,0,0,0.68);
+  border-top-color: rgba(255,255,255,0.80) !important;
+  border-left-color: rgba(255,255,255,0.12) !important;
+  border-right-color: rgba(255,255,255,0.12) !important;
+  border-bottom-color: rgba(255,255,255,0.12) !important;
+  box-shadow:
+    0 0 0 3px rgba(33,150,243,0.08),
+    0 0 22px rgba(33,150,243,0.15),
+    0 0 44px rgba(33,150,243,0.06);
+}
+
+/* Sticky — ancré même avec clavier mobile */
+.sticky {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  will-change: transform;
+}
+
+/* Harmonisation padding sections */
+.infos-row, .section-avis, .conseil-box, footer {
+  padding-left: max(11px, env(safe-area-inset-left, 0px));
+  padding-right: max(11px, env(safe-area-inset-right, 0px));
+}
+
+
+/* ═══════════════════════════════════════════════
+   FIX FINAL — Scroll · Autocomplete · Focus
+═══════════════════════════════════════════════ */
+html, body { overflow-x: hidden; max-width: 100vw; }
+* { box-sizing: border-box; }
+.tunnel,.infos-row,.section-avis,.hero,#stepperWrap,
+.conseil-box,footer,#eta-widget { overflow-x: hidden; }
+.f-in, input, textarea { max-width: 100%; min-width: 0; }
+
+.ac {
+  display: none; opacity: 0; transform: translateY(-6px);
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+  pointer-events: none; position: absolute;
+  top: calc(100% + 5px); left: 0; right: 0;
+  z-index: 500; max-height: 280px;
+  overflow-y: auto; overflow-x: hidden;
+}
+.ac.open {
+  display: block; opacity: 1; transform: translateY(0);
+  pointer-events: auto; animation: none;
+}
+.ac.closing {
+  display: block; opacity: 0; transform: translateY(-6px);
+  pointer-events: none;
+}
+.card { overflow: visible; }
+.card .f-wrap { overflow: visible; position: relative; }
+
+.f-wrap { background: rgba(0,0,0,0.42); }
+.f-wrap:focus-within {
+  background: rgba(0,0,0,0.68);
+  border-top-color: rgba(255,255,255,0.80) !important;
+  border-left-color: rgba(255,255,255,0.12) !important;
+  border-right-color: rgba(255,255,255,0.12) !important;
+  border-bottom-color: rgba(255,255,255,0.12) !important;
+  box-shadow:
+    0 0 0 3px rgba(33,150,243,0.08),
+    0 0 22px rgba(33,150,243,0.15),
+    0 0 44px rgba(33,150,243,0.06);
+}
+.sticky { position: fixed; bottom: 0; left: 0; right: 0; will-change: transform; }
+.infos-row,.section-avis,.conseil-box,footer {
+  padding-left: max(11px, env(safe-area-inset-left,0px));
+  padding-right: max(11px, env(safe-area-inset-right,0px));
+}
+
+</style>
+<noscript><div><h1 style="color:#d4af37;margin-bottom:16px;">I&amp;N RUN</h1><p style="color:#8a8f98;margin-bottom:20px;">Chauffeur Privé Paris</p><a href="tel:+33767742220" style="color:#d4af37;font-size:1.2rem;">07 67 74 22 20</a></div></noscript>
+<style id="al">/* ═══════════════════════════════════════════════
+   LUXURY UPGRADE V51 — Design System Premium
+   ═══════════════════════════════════════════════ */
+
+/* ── 1. TRUE BLACK OLED + Espaces raffinés ── */
+:root {
+  --ink:#000000;        /* True Black OLED */
+  --s1:#0a0a0f;
+  --s2:#111118;
+  --s3:#18181f;
+  --card-border: rgba(212,175,55,0.12);
+  --card-border-hover: rgba(212,175,55,0.35);
+}
+body { background: var(--ink); }
+
+/* ── 2. GLASSMORPHISM — Header ── */
+#hdr {
+  background: rgba(0,0,0,0.45) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border-bottom: 0.5px solid rgba(212,175,55,0.18) !important;
+}
+
+/* ── 3. GLASSMORPHISM — Cards ── */
+.card {
+  background: rgba(10,10,18,0.6) !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+  border: 0.5px solid var(--card-border) !important;
+  border-radius: 24px !important;
+  padding: 32px 26px !important;
+  margin-bottom: 20px !important;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease !important;
+}
+.card.active {
+  border-color: rgba(212,175,55,0.32) !important;
+  box-shadow: 0 0 0 0.5px rgba(212,175,55,0.1), 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,175,55,0.08) !important;
+}
+.card::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,0.25),transparent);
+  border-radius:24px 24px 0 0;
+  pointer-events:none;
+}
+.card { position:relative; overflow:hidden; }
+
+/* ── 4. TYPOGRAPHIE LUXE ── */
+h1 { letter-spacing: 0.5px !important; }
+.hero-p { font-weight: 300 !important; font-size: 0.95rem !important; letter-spacing: 0.02em !important; opacity: 0.85; }
+.f-lbl { font-weight: 400 !important; letter-spacing: 0.15em !important; font-size: 0.65rem !important; }
+.c-sub { font-weight: 200 !important; opacity: 0.7; letter-spacing: 0.05em !important; }
+.proof .pl { font-weight: 300 !important; letter-spacing: 0.12em !important; }
+.ac-sec { font-weight: 200 !important; }
+
+/* ── 5. SHIMMER sur bouton principal ── */
+.btn-gold {
+  position: relative !important;
+  overflow: hidden !important;
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 80%; height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.28) 50%, transparent 80%);
+  transform: skewX(-20deg);
+  animation: shimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%   { left: -120%; }
+  60%  { left: 140%; }
+  100% { left: 140%; }
+}
+
+/* ── 6. MICRO-INTERACTIONS — Pression tactile ── */
+.btn-gold:active,
+.chip:active,
+.pay-btn:active,
+.sb:active,
+.btn-close:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.08s ease !important;
+}
+.chip {
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+.chip:hover {
+  transform: translateY(-2px) scale(1.04) !important;
+}
+.chip.sel {
+  transform: scale(1.06) !important;
+  box-shadow: 0 4px 16px rgba(212,175,55,0.25) !important;
+}
+.pay-btn {
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+.pay-btn:hover { transform: translateY(-2px) !important; }
+.pay-btn.sel {
+  box-shadow: 0 4px 20px rgba(212,175,55,0.2) !important;
+}
+
+/* ── 7. HOVER CARD PARALLAXE — desktop ── */
+@media(hover:hover){
+  .card { will-change: transform; }
+  .info-card {
+    transition: transform 0.2s ease, border-color 0.3s, box-shadow 0.3s !important;
+    will-change: transform;
+    cursor: default;
+  }
+  .info-card:hover {
+    border-color: rgba(212,175,55,0.4) !important;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(212,175,55,0.15) !important;
+  }
+}
+
+/* ── 8. TRANSITION ÉTAPE 1→2 ── */
+.card {
+  animation: none;
+}
+.card.slide-in {
+  animation: slideInCard 0.5s cubic-bezier(0.34,1.3,0.64,1) both;
+}
+@keyframes slideInCard {
+  from { opacity:0; transform: translateY(24px) scale(0.98); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* ── 9. SKELETON SCREENS ── */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(212,175,55,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 300% 100%;
+  animation: skeletonPulse 1.6s ease-in-out infinite;
+  border-radius: 8px;
+  height: 16px;
+  display: block;
+}
+@keyframes skeletonPulse {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
+.skeleton-price {
+  height: 48px;
+  border-radius: 12px;
+  margin: 16px auto;
+  max-width: 140px;
+}
+.skeleton-row {
+  height: 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+}
+
+/* ── 10. ANIMATION SUCCÈS VALIDATION ── */
+.success-checkmark {
+  width: 56px; height: 56px;
+  margin: 0 auto 16px;
+  display: none;
+}
+.success-checkmark.show { display: block; }
+.check-circle {
+  stroke: #d4af37;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  fill: none;
+  animation: drawCircle 0.6s cubic-bezier(0.65,0,0.45,1) forwards;
+}
+.check-mark {
+  stroke: #f0d870;
+  stroke-width: 2.5;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  fill: none;
+  stroke-linecap: round;
+  animation: drawCheck 0.4s cubic-bezier(0.65,0,0.45,1) 0.5s forwards;
+}
+@keyframes drawCircle {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── 11. MODAL SWIPE TO CLOSE ── */
+.modal-box-price {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.modal-box-price:active { cursor: grabbing; }
+
+/* ── 12. SAFE ZONES iOS/Android ── */
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.sticky {
+  padding-bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+}
+#hdr {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ── 13. INPUT FIELDS LUXE ── */
+.f-wrap {
+  background: rgba(0,0,0,0.5) !important;
+  border: 0.5px solid rgba(255,255,255,0.1) !important;
+  border-radius: 14px !important;
+  transition: border-color 0.3s, background 0.3s !important;
+}
+.f-wrap:focus-within {
+  border-color: rgba(212,175,55,0.6) !important;
+  background: rgba(0,0,0,0.7) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.06) !important;
+}
+
+/* ── 14. AUTOCOMPLETE SKELETON ── */
+.ac-skeleton {
+  padding: 12px 14px;
+}
+.ac-skeleton .skeleton { width: 60%; margin-bottom: 6px; }
+.ac-skeleton .skeleton.short { width: 35%; height: 10px; }
+
+
+@keyframes ripplePop {
+  to { transform: scale(1); opacity: 0; }
+}
+
+</style>
+</head>
+<body class="loading">
+<div id="reveal-line"></div>
+
+<canvas id="constellation-canvas"></canvas>
+
+<header id="hdr">
+  <div class="nav">
+    <div class="nav-logo">
+      <svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="I&amp;N RUN">
+        <defs>
+          <linearGradient id="lgL" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#9A7A1A"/>
+            <stop offset="40%"  stop-color="#F0D870"/>
+            <stop offset="60%"  stop-color="#F0D870"/>
+            <stop offset="100%" stop-color="#9A7A1A"/>
+          </linearGradient>
+          <linearGradient id="lgL2" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="rgba(154,122,26,0)"/>
+            <stop offset="30%"  stop-color="#D4AF37"/>
+            <stop offset="70%"  stop-color="#D4AF37"/>
+            <stop offset="100%" stop-color="rgba(154,122,26,0)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- I & N  R U N  — Cinzel, serré, luxe -->
+        <text x="55" y="22"
+              font-family="'Cinzel','Georgia',serif"
+              font-size="19"
+              font-weight="700"
+              fill="url(#lgL)"
+              text-anchor="middle"
+              letter-spacing="3">I&amp;N</text>
+
+        <!-- Filet horizontal doré ultra-fin -->
+        <line x1="8" y1="27" x2="102" y2="27"
+              stroke="url(#lgL2)" stroke-width="0.6" opacity="0.8"/>
+
+        <!-- RUN — Jost 300 lowercase, très espacé -->
+        <text x="55" y="40"
+              font-family="'Jost','Helvetica Neue',Arial,sans-serif"
+              font-size="8.5"
+              font-weight="300"
+              fill="url(#lgL)"
+              text-anchor="middle"
+              letter-spacing="6">RUN</text>
+      </svg>
+    </div>
+    <div class="nav-status"><div class="dot"></div> Disponible</div>
+  </div>
+</header>
+
+<div id="sticky-datetime">
+  <div class="sticky-dt-inner">
+    <div class="sticky-dt-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12,6 12,12 16,14"/>
+      </svg>
+    </div>
+    <div class="sticky-dt-content">
+      <div class="sticky-dt-kicker">Prise en charge</div>
+      <div class="sticky-dt-time" id="sticky-dt-text">--</div>
+    </div>
+    <button class="sticky-dt-btn" onclick="scrollToDateTime()" aria-label="Modifier l'heure">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="hero">
+  <p class="hero-tagline">Le luxe au prix juste</p>
+  <h1>Votre chauffeur<br><span class="g">vous attend.</span></h1>
+  <p class="hero-p">En direct, sans commission &mdash; vous payez <strong style="color:var(--gold);font-weight:700;">10&nbsp;% de moins</strong> qu&rsquo;<strong style="color:var(--white);font-weight:500;">UBER</strong> ou <strong style="color:var(--white);font-weight:500;">BOLT</strong> pour un service Berline Premium.</p>
+  <div class="proof-ios" id="proof-badges">
+  <div class="proof-cell">
+    <div class="proof-value" id="pv-rating">5<span class="sub">/5</span></div>
+    <div class="proof-lbl">Excellence</div>
+  </div>
+  <div class="proof-sep"></div>
+  <div class="proof-cell">
+    <div class="proof-value" id="pv-chrono">20<span class="sub">s</span></div>
+    <div class="proof-lbl">Chrono</div>
+  </div>
+  <div class="proof-sep"></div>
+  <div class="proof-cell">
+    <div class="proof-value" id="pv-save">&minus;10<span class="sub">%</span></div>
+    <div class="proof-lbl">vs Uber</div>
+  </div>
+</div>
+</div>
+
+<!-- ══ VOITURE ══ -->
+<div class="section-voiture">
+  <div class="voiture-img-wrap">
+    <img src="voiture.jpg" alt="Suzuki Swace Hybride I&amp;N RUN">
+  </div>
+  <div class="voiture-badge">
+    <div><div class="voiture-badge-label">Berline Premium</div><div class="voiture-badge-name">Suzuki Swace Hybride &mdash; Cat&eacute;gorie Berline</div></div>
+  </div>
+</div>
+<div class="section-avis">
+  <div class="avis-header">
+    <div class="avis-title">Ils nous font confiance</div>
+    <div class="avis-source"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Avis v&eacute;rifi&eacute;s</div>
+  </div>
+  <div class="avis-list">
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Sophie M.</div><div class="avis-meta">CDG &rarr; Paris 8e &middot; F&eacute;vrier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Vol retard&eacute; d&rsquo;1h, Nourdine &eacute;tait <em>d&eacute;j&agrave; inform&eacute; et attendait</em> avec le panneau &agrave; l&rsquo;arriv&eacute;e. V&eacute;hicule impeccable, trajet silencieux, tarif honor&eacute; sans discussion.</p></div>
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Thomas R.</div><div class="avis-meta">Ris-Orangis &rarr; La D&eacute;fense &middot; Janvier 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">R&eacute;servation en 2 minutes, confirmation WA imm&eacute;diate. <em>Ponctuel, discret, professionnel.</em> Le tarif fixe sans surprise c&rsquo;est exactement ce dont j&rsquo;avais besoin.</p></div>
+    <div class="avis-card"><div class="avis-top"><div class="avis-auteur"><div class="avis-nom">Amina K.</div><div class="avis-meta">Orly &rarr; Evry &middot; Mars 2026</div></div><div class="avis-stars"><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span><span class="avis-star">&#9733;</span></div></div><p class="avis-texte">Voyage avec 3 valises et un enfant. <em>Aide aux bagages, si&egrave;ge adapt&eacute; propos&eacute;</em>, musique douce. C&rsquo;est &ccedil;a le vrai service premium.</p></div>
+  </div>
+  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20laisser%20un%20avis." class="avis-voir-plus" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Laisser un avis</a>
+</div>
+<div class="tunnel">
+  <div id="stepperWrap">
+    <div class="stepper">
+      <div class="stepper-item active" id="step-1">
+        <div class="stepper-circle">1</div>
+        <div class="stepper-label">Trajet</div>
+      </div>
+      <div class="stepper-line future" id="line-1"></div>
+      <div class="stepper-item future" id="step-2">
+        <div class="stepper-circle">2</div>
+        <div class="stepper-label">Pr&eacute;f.</div>
+      </div>
+      <div class="stepper-line future" id="line-2"></div>
+      <div class="stepper-item future" id="step-3">
+        <div class="stepper-circle">3</div>
+        <div class="stepper-label">Tarif</div>
+      </div>
+      <div class="stepper-line future" id="line-3"></div>
+      <div class="stepper-item future" id="step-4">
+        <div class="stepper-circle">4</div>
+        <div class="stepper-label">Valid&eacute;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card active" id="step1">
+    <div class="card-hd">
+      <div class="c-num">1</div>
+      <div><div class="c-title">Planifiez votre d&eacute;part</div><div class="c-sub">Heure et itin&eacute;raire</div></div>
+    </div>
+    <label class="f-lbl">Prise en charge</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:rgba(212,175,55,.55)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+      <input type="datetime-local" id="timepick" class="f-in" style="color-scheme:dark;">
+    </div>
+    <label class="f-lbl">Lieu de d&eacute;part</label>
+    <div class="f-wrap">
+      <div class="f-ic" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <input type="text" id="dep" class="f-in" placeholder="A&eacute;roport, gare, adresse..." autocomplete="off">
+      <div class="f-spinner" id="spin-dep"></div>
+      <div class="f-check" id="check-dep">&#10003;</div>
+      <div class="ac" id="ac-dep"></div>
+    </div>
+    <label class="f-lbl">Destination finale</label>
+    <div class="f-wrap">
+      <div class="f-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+      <input type="text" id="arr" class="f-in" placeholder="O&ugrave; allez-vous ?" autocomplete="off">
+      <div class="f-spinner" id="spin-arr"></div>
+      <div class="f-check" id="check-arr">&#10003;</div>
+      <div class="ac" id="ac-arr"></div>
+    </div>
+    <button class="btn btn-gold" id="btnStep1" onclick="nextStep(2)">Calculer mon tarif garanti</button>
+  </div>
+
+<!-- ── WIDGET TEMPS D'ATTENTE — hors card pour éviter overflow:hidden ── -->
+<div id="eta-widget" style="display:none;padding:0 0 6px;">
+  <div class="eta-loading" id="eta-loading" style="display:flex;">
+    <div class="eta-spinner"></div>
+    Calcul de la disponibilit&eacute;...
+  </div>
+  <div class="eta-inner" id="eta-result" style="display:none;">
+    <div class="eta-left">
+      <div class="eta-icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="eta-label">Chauffeur disponible</div>
+        <div class="eta-value" id="eta-min">--<span class="eta-value-unit">&nbsp;min</span></div>
+      </div>
+    </div>
+    <div class="eta-right">
+      <div class="eta-dist" id="eta-km"></div>
+      <div class="eta-since" id="eta-zone">depuis Ris-Orangis</div>
+    </div>
+  </div>
+</div>
+
+  <div class="card locked" id="step2">
+    <div class="recap-datetime" onclick="scrollToDateTime()" id="recapDatetime">
+      <div class="recap-dt-left">
+        <div class="recap-dt-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 16 12"/></svg></div>
+        <div>
+          <div class="recap-dt-label">Prise en charge</div>
+          <div class="recap-dt-value empty" id="recap-dt-value">Non renseign&eacute;e &mdash; cliquez pour choisir</div>
+        </div>
+      </div>
+      <div class="recap-dt-edit">&#9998;&ensp;Modifier</div>
+    </div>
+    <button class="btn-modifier" onclick="scrollToDateTime()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Modifier le trajet
+    </button>
+    <div class="card-hd">
+      <div class="c-num">2</div>
+      <div><div class="c-title">Ambiance et options</div><div class="c-sub">Pr&eacute;f&eacute;rences &agrave; bord</div></div>
+    </div>
+    <!-- Photo intérieur -->
+    <div class="interieur-wrap">
+      <img src="interieur.jpg" alt="Int&eacute;rieur Suzuki Swace — cuir, chargeurs USB, climatisation">
+      <div class="interieur-caption">
+        <span class="interieur-label">Int&eacute;rieur Berline</span>
+        <div class="interieur-tags">
+          <span class="interieur-tag">Cuir</span>
+          <span class="interieur-tag">USB</span>
+          <span class="interieur-tag">Clim</span>
+        </div>
+      </div>
+    </div>
+    <label class="f-lbl">Règlement — directement au chauffeur</label>
+    <div class="payment-row" id="paymentGrid">
+      <div class="pay-pill sel" onclick="selectPayment(this,'CB')">
+        <div class="pay-check">
+          <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
+        </div>
+        <div class="pay-icon">
+          <svg viewBox="0 0 32 32" aria-label="Carte bancaire">
+            <defs>
+              <linearGradient id="cbG1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3f3828"/>
+                <stop offset="100%" stop-color="#1c1812"/>
+              </linearGradient>
+            </defs>
+            <rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cbG1)" class="fill-primary"/>
+            <rect x="3" y="11" width="26" height="3" fill="#8b6f1a" opacity="0.6"/>
+            <rect x="7" y="17" width="6" height="5" rx="1" fill="#edd888" class="fill-primary"/>
+            <line x1="7" y1="19.5" x2="13" y2="19.5" stroke="#8b6f1a" stroke-width="0.4"/>
+            <line x1="10" y1="17" x2="10" y2="22" stroke="#8b6f1a" stroke-width="0.4"/>
+            <circle cx="23" cy="20" r="1.8" fill="#c4a548" class="fill-primary"/>
+            <circle cx="25.5" cy="20" r="1.8" fill="#c4a548" opacity="0.6" class="fill-primary"/>
+          </svg>
+        </div>
+        <div class="pay-text">
+          <div class="pay-title">Carte</div>
+          <div class="pay-sub">Sans contact &middot; TPE</div>
+        </div>
+      </div>
+
+      <div class="pay-pill" onclick="selectPayment(this,'Esp&egrave;ces')">
+        <div class="pay-check">
+          <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
+        </div>
+        <div class="pay-icon">
+          <svg viewBox="0 0 32 32" aria-label="Esp&egrave;ces">
+            <rect x="5" y="10" width="22" height="13" rx="2" fill="#4a6b5a" class="fill-primary" opacity="0.55" transform="rotate(-5 16 16)"/>
+            <rect x="5" y="8" width="22" height="13" rx="2" fill="#6d8a7a" class="fill-primary"/>
+            <circle cx="16" cy="14.5" r="3.5" fill="none" stroke="#2a4535" stroke-width="1.2" class="stroke-primary"/>
+            <text x="16" y="16.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" font-weight="700" fill="#2a4535" class="fill-primary">&#8364;</text>
+            <circle cx="8" cy="11" r="0.9" fill="#2a4535" class="fill-primary" opacity="0.6"/>
+            <circle cx="24" cy="18" r="0.9" fill="#2a4535" class="fill-primary" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="pay-text">
+          <div class="pay-title">Esp&egrave;ces</div>
+          <div class="pay-sub">Appoint pr&eacute;f&eacute;r&eacute;</div>
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="paymentMethod" value="CB">
+    <label class="f-lbl">Ambiance à bord</label>
+    <div class="amb-seg" id="ambSeg">
+      <div class="seg-opt active" data-v="musique" onclick="setAmbMode('musique')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Musique
+      </div>
+      <div class="seg-opt" data-v="radio" onclick="setAmbMode('radio')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.93 19.07A10 10 0 0 1 19.07 4.93"/><path d="M7.76 16.24a6 6 0 0 1 8.48-8.48"/><circle cx="12" cy="12" r="2"/></svg>
+        Radio
+      </div>
+      <div class="seg-opt" data-v="silence" onclick="setAmbMode('silence')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        Silence
+      </div>
+    </div>
+
+    <div class="slider-block" id="volBlock">
+      <div class="slider-lrow">
+        <div class="slider-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          Volume
+        </div>
+        <div class="slider-val"><span id="volVal">50</span><span class="unit">%</span></div>
+      </div>
+      <div class="ios-slider" id="volSlider">
+        <div class="ios-slider-track"><div class="ios-slider-fill" id="volFill"></div></div>
+        <div class="ios-slider-thumb" id="volThumb"></div>
+      </div>
+      <div class="slider-ticks"><span>0</span><span>50</span><span>100</span></div>
+    </div>
+    <div class="silence-note" id="silenceNote">Volume d&eacute;sactiv&eacute; &mdash; mode silencieux s&eacute;lectionn&eacute;</div>
+
+    <div class="slider-block" style="margin-top:22px">
+      <div class="slider-lrow">
+        <div class="slider-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+          Climatisation
+        </div>
+        <div class="slider-val"><span id="climVal">21</span><span class="unit">&deg;C</span></div>
+      </div>
+      <div class="ios-slider clim" id="climSlider">
+        <div class="ios-slider-track"><div class="ios-slider-fill" id="climFill"></div></div>
+        <div class="ios-slider-thumb" id="climThumb"></div>
+      </div>
+      <div class="slider-ticks"><span>18&deg;</span><span>22&deg;</span><span>26&deg;</span></div>
+
+    <div class="toggles-list">
+      <div class="toggles-list-title">Services à bord</div>
+      <div class="ios-toggle-row">
+        <div class="toggle-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          Wi-Fi embarqu&eacute; 5G
+        </div>
+        <div class="ios-switch gold" data-opt="wifi" onclick="toggleOpt(this)"><div class="ios-switch-handle"></div></div>
+      </div>
+      <div class="ios-toggle-row">
+        <div class="toggle-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Bouteille d'eau min&eacute;rale
+        </div>
+        <div class="ios-switch gold on" data-opt="eau" onclick="toggleOpt(this)"><div class="ios-switch-handle"></div></div>
+      </div>
+      <div class="ios-toggle-row">
+        <div class="toggle-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/></svg>
+          Chargeurs USB
+        </div>
+        <div class="ios-switch gold on" data-opt="usb" onclick="toggleOpt(this)"><div class="ios-switch-handle"></div></div>
+      </div>
+      <div class="ios-toggle-row">
+        <div class="toggle-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2.5"/></svg>
+          Confiseries
+        </div>
+        <div class="ios-switch gold" data-opt="confiseries" onclick="toggleOpt(this)"><div class="ios-switch-handle"></div></div>
+      </div>
+    </div>
+    </div>
+    <label class="f-lbl">Message privé au chauffeur</label>
+    <div class="f-wrap" style="height:auto;padding:8px;">
+      <textarea id="note" class="f-in" style="height:60px;resize:none" placeholder="N&deg; de vol, bagages encombrants..."></textarea>
+    </div>
+    <div class="compare-block">
+      <div class="compare-title">Pourquoi I&amp;N RUN ?</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Jusqu&rsquo;&agrave; <strong>10&nbsp;% moins cher</strong> qu&rsquo;UBER&nbsp;/&nbsp;BOLT</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div>Service Premium inclus &mdash; Eau, Wifi, Chargeurs</div>
+      <div class="compare-item"><div class="compare-check">&#10003;</div><strong>Z&eacute;ro commission</strong> plateforme</div>
+    </div>
+    <button class="btn btn-gold" id="calcBtn" onclick="calculatePrice()">
+      <span id="btnText">Obtenir mon tarif fixe</span>
+      <div class="loader" id="calcLoader"></div>
+    </button>
+  </div>
+</div>
+
+<div class="infos-row">
+  <div class="info-card">
+    <div class="i-hd">🌡 M&eacute;t&eacute;o Live <span id="w-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
+    <div id="wxZone3D" style="margin-bottom:14px"></div>
+    <div class="w-top-row">
+      <div class="w-ic" id="wIcon">⏳</div>
+      <div><div class="w-temp" id="wTemp">--°</div><div class="w-feels" id="wFeels">Ressenti --°</div></div>
+    </div>
+    <div class="w-details">
+      <div class="w-detail-item"><span class="w-detail-icon">💨</span><span id="wWind">-- km/h</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">💧</span><span id="wHumid">--%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">🌂</span><span id="wRain">Pluie: --%</span></div>
+      <div class="w-detail-item"><span class="w-detail-icon">☁️</span><span id="wCloud">--%</span></div>
+    </div>
+    <div id="wBadge"></div>
+  </div>
+  <div class="info-card">
+    <div class="i-hd">🚦 Trafic IDF <span id="t-updated" style="font-size:.58rem;opacity:.5;font-weight:300;"></span></div>
+    <div class="t-list">
+      <div class="t-item"><div class="t-route-info"><span class="t-route">CDG</span><span class="t-via">A1 · Roissy</span></div><div class="t-right"><span class="t-tag ok" id="t-cdg">...</span><span class="t-dur" id="td-cdg"></span></div></div>
+      <div class="t-item"><div class="t-route-info"><span class="t-route">Orly</span><span class="t-via">A6 · 91</span></div><div class="t-right"><span class="t-tag ok" id="t-orly">...</span><span class="t-dur" id="td-orly"></span></div></div>
+      <div class="t-item"><div class="t-route-info"><span class="t-route">Paris</span><span class="t-via">N7 · P&eacute;riph</span></div><div class="t-right"><span class="t-tag ok" id="t-paris">...</span><span class="t-dur" id="td-paris"></span></div></div>
+    </div>
+    <div class="t-updated" id="t-source">Calcul en cours…</div>
+  </div>
+</div>
+
+<!-- ══ ZONES DE COUVERTURE ══ -->
+
+<div class="conseil-box"><div class="conseil-inner" id="conseil-box" style="display:none;"><span class="conseil-icon" id="conseil-icon">💡</span><span class="conseil-text" id="conseil-text"></span></div></div>
+
+<footer>
+  <div class="legal-links">
+    <a onclick="showLegal()">Mentions L&eacute;gales &amp; CGV</a>
+    <span>|</span>
+    <a href="https://wa.me/33767742220">Contactez-nous</a>
+  </div>
+  <p>&copy; 2026 I&amp;N RUN. Tous droits r&eacute;serv&eacute;s.<br>Service de Voiture de Tourisme avec Chauffeur (VTC).</p>
+</footer>
+
+<div class="sticky">
+  <a href="https://wa.me/33767742220" class="sb sb-wa">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Messages
+  </a>
+  <a href="tel:+33767742220" class="sb sb-tel">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+    T&eacute;l&eacute;phone
+  </a>
+</div>
+
+<div class="modal-overlay" id="customModal" onclick="if(event.target===this) hideModal()">
+  <div class="modal-box-price">
+    <div class="m-handle"></div>
+    <h3 class="m-title">Votre tarif garanti</h3>
+    <p class="m-subtitle">Direct chauffeur &mdash; <strong style="color:var(--gold)">sans commission</strong></p>
+    <div class="m-recap">
+      <div class="m-price" id="finalPrice">-- &euro;</div>
+      <div class="m-price-detail">
+        <div class="m-price-item"><div class="m-price-val" id="m-km">--</div><div class="m-price-lbl">Kilom&egrave;tres</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-dur">--</div><div class="m-price-lbl">Dur&eacute;e est.</div></div>
+        <div class="m-price-item"><div class="m-price-val" id="m-base">15&euro;</div><div class="m-price-lbl">Prise en charge</div></div>
+      </div>
+      <div class="m-calc-info" id="calcDetails" style="margin-top:12px;"></div>
+      <div style="text-align:center;"><div class="badge-promo" onclick="this.classList.toggle('open')">&minus;10&nbsp;% vs Applications<div class="badge-tooltip">En supprimant les commissions (jusqu&rsquo;&agrave; 45&nbsp;%), I&amp;N&nbsp;RUN vous offre un tarif pr&eacute;f&eacute;rentiel tout en garantissant un service 5&nbsp;&eacute;toiles.</div></div></div>
+    </div>
+    
+      <div class="promo-wrap">
+        <input type="text" class="promo-input" id="promoInput" placeholder="Code promo" maxlength="15" autocomplete="off">
+        <div class="promo-info" id="promoInfo"></div>
+      </div>
+      <div class="navbar-cta-wrap">
+      <div class="navbar-cta">
+        <button class="nav-btn alt" onclick="hideModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Modifier
+        </button>
+        <button class="nav-btn call" onclick="callDriver()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Appeler
+        </button>
+        <button class="nav-btn wa" onclick="sendWhatsApp()">
+          <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Confirmer l'itinéraire
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legal-modal" id="legalModal" onclick="if(event.target===this) document.getElementById('legalModal').classList.remove('show')">
+  <div class="legal-box">
+    <h3 class="legal-title">Mentions L&eacute;gales &amp; CGV</h3>
+    <div class="legal-section"><h4>1. &Eacute;diteur du Service</h4>
+      <div class="legal-text"><strong>Raison sociale :</strong> I&amp;N RUN<br><strong>Statut juridique :</strong> Micro-Entreprise (VTC)<br><strong>Dirigeant :</strong> M. BRAHA Nourdine<br><strong>SIRET :</strong> 993 776 467 00017<br><strong>Contact :</strong> <a href="mailto:contact.inrun@gmail.com" style="color:var(--gold)">contact.inrun@gmail.com</a><br><strong>T&eacute;l&eacute;phone :</strong> 07 67 74 22 20<br><strong>Registre VTC :</strong> Inscrit au registre des Exploitants VTC.</div>
+    </div>
+    <div class="legal-section"><h4>2. H&eacute;bergement</h4>
+      <div class="legal-text"><strong>H&eacute;bergeur :</strong> GitHub Pages<br><strong>&Eacute;diteur :</strong> GitHub Inc.<br><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.</div>
+    </div>
+    <div class="legal-section"><h4>3. Conditions de Transport (CGV)</h4>
+      <div class="legal-text"><strong>Tarification :</strong> Les prix indiqu&eacute;s lors de la r&eacute;servation sont fixes et garantis.<br><br><strong>R&eacute;servation :</strong> Toute r&eacute;servation est soumise &agrave; confirmation de la part du chauffeur.<br><br><strong>Assurance :</strong> Le transporteur est couvert par une assurance RC Professionnelle.</div>
+    </div>
+    <div class="legal-section"><h4>4. Donn&eacute;es Personnelles</h4>
+      <div class="legal-text">Les donn&eacute;es collect&eacute;es sont strictement utilis&eacute;es pour la bonne ex&eacute;cution de la course. Elles ne font l'objet d'aucune revente &agrave; des tiers.</div>
+    </div>
+    <button class="btn btn-gold" onclick="document.getElementById('legalModal').classList.remove('show')" style="margin-top:20px;">Fermer</button>
+  </div>
+</div>
+
+<script>
+// ── SONS WEB AUDIO API ──
+const _AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _ac = null;
+function getAC() {
+  if (!_ac) _ac = new _AudioCtx();
+  return _ac;
+}
+
+// Son "ding" de caisse — lancement du countup
+function playCashStart() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    // Bruit blanc court (mécanique caisse)
+    const buf = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = ac.createBufferSource();
+    noise.buffer = buf;
+    const noiseG = ac.createGain();
+    noiseG.gain.setValueAtTime(0.4, t);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    noise.connect(noiseG); noiseG.connect(ac.destination);
+    noise.start(t);
+    // Ding métallique principal
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.5);
+  } catch(e){}
+}
+
+// Son "tick" discret — pendant chaque chiffre du countup
+function playTick() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const osc = ac.createOscillator();
+    const g = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    osc.connect(g); g.connect(ac.destination);
+    osc.start(t); osc.stop(t + 0.04);
+  } catch(e){}
+}
+
+// Son final "chime luxe" — accord doré 3 notes au prix final
+function playCashFinal() {
+  try {
+    const ac = getAC();
+    const t = ac.currentTime;
+    const notes = [523.25, 659.25, 783.99]; // Do Mi Sol — accord majeur
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + i * 0.09);
+      g.gain.setValueAtTime(0, t + i * 0.09);
+      g.gain.linearRampToValueAtTime(0.22, t + i * 0.09 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.8);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(t + i * 0.09); osc.stop(t + i * 0.09 + 0.9);
+      // Harmonique douce
+      const osc2 = ac.createOscillator();
+      const g2 = ac.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2, t + i * 0.09);
+      g2.gain.setValueAtTime(0, t + i * 0.09);
+      g2.gain.linearRampToValueAtTime(0.07, t + i * 0.09 + 0.03);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + i * 0.09 + 0.4);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc2.start(t + i * 0.09); osc2.stop(t + i * 0.09 + 0.5);
+    });
+  } catch(e){}
+}
+
+// ── FLATPICKR ──
+// ── DATETIME NATIVE — préremplissage & sync ──
+(function(){
+  var el=document.getElementById('timepick');
+  if(!el)return;
+  var pad=function(n){return n<10?'0'+n:''+n;};
+  var d=new Date(); d.setDate(d.getDate()+1); d.setHours(8,0,0,0);
+  el.value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T08:00';
+  var now=new Date(Date.now()+30*60*1000);
+  el.min=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+'T'+pad(now.getHours())+':'+pad(now.getMinutes());
+  el.addEventListener('change',updateDatetimeUI);
+  setTimeout(updateDatetimeUI,200);
+})();
+
+function formatDTDisplay(val){
+  if(!val)return null;
+  var p=val.split('T'); if(p.length<2)return val;
+  var d=p[0].split('-'); var h=p[1].replace(':','h');
+  return d[2]+'/'+d[1]+' \u00b7 '+h;
+}
+function updateDatetimeUI(){
+  var el=document.getElementById('timepick');
+  var val=el?el.value:'';
+  var display=val?formatDTDisplay(val):null;
+  // Recap card
+  var rv=document.getElementById('recap-dt-value');
+  if(rv){
+    if(display){
+      // Détecter tarif nuit
+      var hm=val.match(/T(\d{2}):\d{2}$/);
+      var h=hm?parseInt(hm[1]):-1;
+      var isN=(h>=22||h<6);
+      rv.textContent=display;
+      rv.classList.remove('empty');
+      var nb=document.getElementById('recap-nuit-badge');
+      if(!nb){nb=document.createElement('span');nb.id='recap-nuit-badge';nb.className='recap-nuit';nb.textContent='\ud83c\udf19 Tarif nuit';rv.parentNode.appendChild(nb);}
+      nb.style.display=isN?'inline-block':'none';
+    } else {
+      rv.textContent='Non renseign\u00e9e \u2014 cliquez pour choisir';
+      rv.classList.add('empty');
+    }
+  }
+  // Sticky banner
+  var st=document.getElementById('sticky-dt-text');
+  if(st&&display)st.textContent=display;
+}
+function scrollToDateTime(){
+  var s1=document.getElementById('step1');
+  var el=document.getElementById('timepick');
+  if(s1)s1.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(function(){if(el)el.click();},350);
+}
+function checkStickyDT(){
+  var s2=document.getElementById('step2');
+  var sd=document.getElementById('sticky-datetime');
+  var tp=document.getElementById('timepick');
+  if(!s2||!sd)return;
+  var rect=s2.getBoundingClientRect();
+  if(rect.top<window.innerHeight*0.6&&tp&&tp.value)sd.classList.add('visible');
+  else sd.classList.remove('visible');
+}
+window.addEventListener('scroll',checkStickyDT,{passive:true});
+
+// ── ETA ──
+var BASE_LAT=48.6468,BASE_LON=2.4185;
+function fetchETA(depLat,depLon){
+  var widget=document.getElementById('eta-widget'),loading=document.getElementById('eta-loading'),result=document.getElementById('eta-result');
+  if(!widget)return;
+  widget.style.display='block';loading.style.display='flex';result.style.display='none';
+  fetch('https://router.project-osrm.org/route/v1/driving/'+BASE_LON+','+BASE_LAT+';'+depLon+','+depLat+'?overview=false',{signal:AbortSignal.timeout(7000)})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.code!=='Ok')throw new Error();
+      var dur=Math.round(d.routes[0].duration/60),km=(d.routes[0].distance/1000).toFixed(1);
+      var dd=Math.max(3,Math.ceil(dur/5)*5);
+      document.getElementById('eta-min').innerHTML=dd+'<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText=km+' km depuis la base';
+      var z='depuis Ris-Orangis';
+      if(dur<=8)z='Disponible \u2014 tr\u00e8s proche';
+      else if(dur<=18)z='Zone 91 \u2014 trajet rapide';
+      else if(dur<=35)z='Paris & proche banlieue';
+      else z='Longue distance \u2014 confirmation WA';
+      document.getElementById('eta-zone').innerText=z;
+      loading.style.display='none';result.style.display='flex';
+      if(navigator.vibrate)navigator.vibrate(6);
+    }).catch(function(){
+      loading.style.display='none';result.style.display='flex';
+      document.getElementById('eta-min').innerHTML='<20<span class="eta-value-unit">&nbsp;min</span>';
+      document.getElementById('eta-km').innerText='Disponibilit\u00e9 sur confirmation';
+      document.getElementById('eta-zone').innerText='Ris-Orangis & environs';
+    });
+}
+
+// ── AUTOCOMPLETE SMART ──
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/s\b/g,'').replace(/[-_]/g,' ');}
+var PRESETS=[
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 1&2',s:'Orly \xb7 94390',lat:48.7262,lon:2.3652},
+  {n:'A\u00e9roport Paris-Orly \u2014 Terminal 3&4',s:'Orly \xb7 94390',lat:48.7244,lon:2.3709},
+  {n:'A\u00e9roport CDG \u2014 Terminal 1',s:'Roissy \xb7 95700',lat:49.0097,lon:2.5479},
+  {n:'A\u00e9roport CDG \u2014 Terminal 2',s:'Roissy \xb7 RER B \xb7 TGV',lat:49.0060,lon:2.5720},
+  {n:'A\u00e9roport CDG \u2014 Terminal 3',s:'Roissy \xb7 Low Cost',lat:49.0035,lon:2.5598},
+  {n:"A\u00e9roport Le Bourget",s:"Aviation d'affaires \xb7 93350",lat:48.9694,lon:2.4414},
+  {n:'Gare de Lyon \u2014 Paris',s:'Paris 12e \xb7 TGV',lat:48.8445,lon:2.3739},
+  {n:'Gare du Nord \u2014 Paris',s:'Paris 10e \xb7 Eurostar \xb7 RER B',lat:48.8809,lon:2.3553},
+  {n:'Gare Montparnasse \u2014 Paris',s:'Paris 15e \xb7 TGV',lat:48.8408,lon:2.3209},
+  {n:"Gare de l'Est \u2014 Paris",s:'Paris 10e \xb7 TGV Est',lat:48.8765,lon:2.3591},
+  {n:'Gare Saint-Lazare \u2014 Paris',s:'Paris 8e \xb7 Transilien',lat:48.8754,lon:2.3253},
+  {n:'Gare Massy TGV',s:'Massy 91300 \xb7 RER B&C',lat:48.7233,lon:2.2716},
+  {n:"Gare d'\u00c9vry-Courcouronnes",s:'\u00c9vry 91000 \xb7 RER D',lat:48.6325,lon:2.4408},
+  {n:'Gare de Juvisy-sur-Orge',s:'Juvisy 91260 \xb7 RER C&D',lat:48.6883,lon:2.3836},
+  {n:'Gare de Corbeil-Essonnes',s:'Corbeil 91100 \xb7 RER D',lat:48.6100,lon:2.4797},
+  {n:'Centre Commercial \u00c9vry 2',s:'\u00c9vry-Courcouronnes 91080',lat:48.6294,lon:2.4461},
+  {n:"Centre Commercial Agora d'\u00c9vry",s:'\u00c9vry 91000',lat:48.6314,lon:2.4397},
+  {n:'Centre Commercial Carr\u00e9 S\u00e9nart',s:'Lieusaint 77127',lat:48.6242,lon:2.5508},
+  {n:'Centre Commercial Ulis 2',s:'Les Ulis 91940',lat:48.6747,lon:2.1711},
+  {n:'Centre Commercial Belle \u00c9pine',s:'Thiais 94320',lat:48.7674,lon:2.3741},
+  {n:'Centre Commercial V\u00e9lizy 2',s:'V\u00e9lizy 78140',lat:48.7832,lon:2.1722},
+  {n:'La D\u00e9fense \u2014 Grande Arche',s:'Puteaux 92800 \xb7 RER A',lat:48.8926,lon:2.2360},
+];
+function matchPresets(q){
+  var qn=norm(q),words=qn.split(' ').filter(function(w){return w.length>1;});
+  if(!words.length)return[];
+  return PRESETS.filter(function(p){
+    var pn=norm(p.n+' '+p.s);
+    var needed=words.length<=2?1:Math.ceil(words.length*.6);
+    return words.filter(function(w){return pn.indexOf(w)>-1;}).length>=needed;
+  }).slice(0,5);
+}
+function cleanPhotonLabel(p){
+  var name=p.name||'',city=p.city||p.town||p.village||p.state||'';
+  var label=name||p.street||'';
+  if(name&&p.street&&name!==p.street)label=name+', '+p.street;
+  // Supprimer "France" systématique et doublons code postal
+  label=(label+', '+city).replace(/^, |, $/g,'').replace(/, France$/i,'').trim();
+  var sub=(p.postcode||'');
+  if(city&&sub)sub=sub+' '+city; else sub=sub||city;
+  sub=sub.replace(/ France$/i,'').trim();
+  return {n:label,s:sub};
+}
+function buildItem(item,inputId,dropId,type){
+  var el=document.createElement('div');
+  el.className='ac-item';
+  el.innerHTML='<div><div class="ac-main">'+item.n+'</div>'+(item.s?'<div class="ac-sec">'+item.s+'</div>':'')+'</div>';
+  el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
+  el.addEventListener('mousedown',function(e){e.preventDefault();});
+  el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
+  return el;
+}
+function renderDrop(drop,items,inputId,dropId,type){
+  drop.innerHTML='';
+  if(!items.length){
+    drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucun r\u00e9sultat</div></div>';
+  }else{items.forEach(function(item){drop.appendChild(buildItem(item,inputId,dropId,type));});}
+  drop.classList.add('open');
+}
+// Photon : priorité IDF (lat/lon Paris), bbox France
+var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=7&bbox=-5.0,41.0,10.0,51.5&q=';
+function setupAutocomplete(inputId,dropId,type){
+  var input=document.getElementById(inputId),drop=document.getElementById(dropId);
+  var spinner=document.getElementById('spin-'+type);
+  var fwrap=input?input.closest('.f-wrap'):null;
+  if(!input||!drop)return;
+  var timer=null,ctrl=null;
+  input.addEventListener('input',function(){
+    clearTimeout(timer);coords[type]=null;
+    if(fwrap)fwrap.classList.remove('selected');
+    var q=this.value.trim();
+    if(q.length<2){drop.classList.remove('open');if(spinner)spinner.classList.remove('active');return;}
+    var presets=matchPresets(q);
+    if(presets.length){
+      renderDrop(drop,presets,inputId,dropId,type);
+      if(spinner)spinner.classList.remove('active');
+    }else{
+      drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Recherche...</div></div>';
+      drop.classList.add('open');
+      if(spinner)spinner.classList.add('active');
+    }
+    timer=setTimeout(function(){
+      if(ctrl)ctrl.abort();ctrl=new AbortController();
+      fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(spinner)spinner.classList.remove('active');
+          if(!data.features||!data.features.length)return;
+          var photon=[];
+          data.features.forEach(function(f){
+            var p=f.properties;if(!p.name&&!p.street)return;
+            var cl=cleanPhotonLabel(p);
+            if(!cl.n||cl.n.length<3)return;
+            photon.push({n:cl.n,s:cl.s,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
+          });
+          var merged=presets.slice();
+          photon.forEach(function(pi){
+            if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
+          });
+          if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
+        }).catch(function(){if(spinner)spinner.classList.remove('active');});
+    },250);
+  });
+  document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
+  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
+}
+
+let coords = { dep: null, arr: null };
+
+function toggleChip(id, el) {
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const r = document.createElement('div');
+  r.className = 'chip-ripple';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(), 250);
+}
+function selectPayment(el, m) {
+  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = m;
+}
+function showLegal(){document.getElementById('legalModal').classList.add('show');}
+function hideModal(){document.getElementById('customModal').classList.remove('show');}
+
+function nextStep(step) {
+  if (!coords.dep || !coords.arr) {showToast("Sélectionnez les adresses dans la liste de suggestions");return;}
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('locked');
+  const t = document.getElementById('step'+step);
+  t.classList.remove('locked'); t.classList.add('active');
+  t.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function countUpPrice(el, final, dur) {
+  playCashStart();
+  const start = performance.now();
+  let lastVal = 0;
+  function step(now) {
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1-Math.pow(1-p,3);
+    const current = Math.round(ease*final);
+    if (current !== lastVal) { playTick(); lastVal = current; }
+    el.innerText = current+' €';
+    if(p<1) { requestAnimationFrame(step); }
+    else { playCashFinal(); }
+  }
+  requestAnimationFrame(step);
+}
+
+async function calculatePrice(){
+  if(!coords.dep||!coords.arr)return;
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('calcLoader').style.display='block';
+  document.getElementById('calcBtn').disabled=true;
+  try{
+    const r=await fetch('https://router.project-osrm.org/route/v1/driving/'+coords.dep.lon+','+coords.dep.lat+';'+coords.arr.lon+','+coords.arr.lat+'?overview=false&geometries=polyline');
+    const d=await r.json();
+    if(d.code==='Ok'){
+      const km=d.routes[0].distance/1000,min=d.routes[0].duration/60;
+      // Formule -10% vs Uber Berline
+      let price=15+(km*0.84)+(min*0.17);
+      if(price<35)price=35;
+      // Tarif nuit
+      const tval=document.getElementById('timepick').value||'';
+      const hm=tval.match(/T(\d{2}):\d{2}$/);
+      const heure=hm?parseInt(hm[1]):new Date().getHours();
+      const isNuit=(heure>=22||heure<6);
+      if(isNuit)price+=10;
+      price=Math.ceil(price);
+      document.getElementById('m-km').innerText=km.toFixed(1)+' km';
+      document.getElementById('m-dur').innerText=Math.round(min)+' min';
+      const calcDet=document.getElementById('calcDetails');
+      if(isNuit){calcDet.innerHTML='<span class="nuit-badge">������ Tarif nuit inclus (+10€ · 22h–6h)</span>';}
+      else{calcDet.innerHTML='';}
+      document.getElementById('customModal').classList.add('show');
+      countUpPrice(document.getElementById('finalPrice'),price,1200);
+    }else{
+      // Erreur élégante — pas de alert brutal
+      document.getElementById('customModal').classList.add('show');
+      document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Itinéraire complexe</span>';
+      document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Prix sujet à ajustement direct — contactez-nous sur WhatsApp</span>';
+    }
+  }catch(e){
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('finalPrice').innerHTML='<span style="font-size:1rem;color:var(--gray2)">Connexion impossible</span>';
+    document.getElementById('calcDetails').innerHTML='<span style="color:var(--gray);font-size:.8rem;">Veuillez réessayer ou nous contacter directement</span>';
+  }finally{
+    document.getElementById('btnText').style.display='block';
+    document.getElementById('calcLoader').style.display='none';
+    document.getElementById('calcBtn').disabled=false;
+  }
+}
+
+function sendWhatsApp(){
+  const _tv=document.getElementById('timepick').value;
+  var time=(function(){if(!_tv)return'Dès que possible';var p=_tv.split('T');if(p.length<2)return _tv;var d=p[0].split('-');var h=p[1];return d[2]+'/'+d[1]+'/'+d[0]+' '+h;})();
+  // Utiliser l'adresse complète de l'API (coords.dep/arr.name) si disponible
+  const dep=(coords&&coords.dep&&coords.dep.name)||document.getElementById('dep').value;
+  const arr=(coords&&coords.arr&&coords.arr.name)||document.getElementById('arr').value;
+  const note=document.getElementById('note').value;
+  const price=document.getElementById('finalPrice').innerText;
+  const pay=document.getElementById('paymentMethod').value;
+  const music=document.querySelector('#musicPref .chip.sel');
+  const clim=document.querySelector('#climPref .chip.sel');
+  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
+
+`;
+  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
+`;
+  msg+=`📍 Départ : ${dep}
+🏁 Arrivée : ${arr}
+`;
+  const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
+  msg+=`💳 Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}\n💶 Paiement : ${pay}\n\n`;
+  msg+=`✨ *Préférences à bord :*
+- Musique : ${music?music.innerText.trim():'Non'}
+- Climatisation : ${clim?clim.innerText.trim():'Non'}
+
+`;
+  if(note) msg+=`📝 Note : ${note}
+
+`;
+  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
+  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function selectLocation(iId,dId,type,name,lat,lon){
+  var inp=document.getElementById(iId);
+  var fwrap=inp?inp.closest('.f-wrap'):null;
+  inp.value=name;
+  coords[type]={lat:lat,lon:lon,name:name};
+  document.getElementById(dId).classList.remove('open');
+  if(fwrap)fwrap.classList.add('selected');
+  if(type==='dep'){
+    fetchETA(lat,lon);
+    // Auto-focus sur l'arrivée
+    setTimeout(function(){
+      var arr=document.getElementById('arr');
+      if(arr){arr.focus();arr.select();}
+    },200);
+  }
+}
+
+setupAutocomplete('dep','ac-dep','dep');
+setupAutocomplete('arr','ac-arr','arr');
+
+// ── MÉTÉO OPEN-METEO ──
+const WX={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'⛈️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WX_LABEL={0:'Ensoleillé',1:'Peu nuageux',2:'Nuageux',3:'Couvert',45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',61:'Pluie légère',63:'Pluie',65:'Pluie forte',71:'Neige légère',73:'Neige',75:'Neige forte',80:'Averses légères',81:'Averses',82:'Averses fortes',95:'Orage',96:'Orage grêle',99:'Orage violent'};
+function fetchMeteo(){
+  var _lat=(coords&&coords.dep&&coords.dep.lat)||48.64,_lon=(coords&&coords.dep&&coords.dep.lon)||2.38;
+  fetch('https://api.open-meteo.com/v1/meteofrance?latitude='+_lat+'&longitude='+_lon+'&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,relativehumidity_2m,precipitation_probability,cloudcover&timezone=Europe/Paris&forecast_days=1')
+  .then(r=>r.json()).then(data=>{
+    const c=data.current;
+    const temp=Math.round(c.temperature_2m), feels=Math.round(c.apparent_temperature);
+    const rain=c.precipitation_probability, wind=Math.round(c.windspeed_10m);
+    const humid=c.relativehumidity_2m, cloud=c.cloudcover, code=c.weathercode;
+    var _lbl=WX_LABEL[code]||'';
+    document.getElementById('wIcon').innerText=(WX[code]||'🌡');
+    document.getElementById('wTemp').innerText=temp+'°';
+    document.getElementById('wFeels').innerText=(_lbl?_lbl+' — ':'')+' Ressenti '+feels+'°';
+    document.getElementById('wWind').innerText=wind+' km/h';
+    document.getElementById('wHumid').innerText=humid+'%';
+    document.getElementById('wRain').innerText='Pluie: '+rain+'%';
+    document.getElementById('wCloud').innerText=cloud+'%';
+    document.getElementById('w-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+    const b=document.getElementById('wBadge');
+    if(rain>60||[55,65,80,81,95].includes(code)){b.innerHTML='<span class="w-badge bad">⚠️ Météo difficile</span>';}
+    else if(rain>30||cloud>70){b.innerHTML='<span class="w-badge moyen">☁️ Temps couvert</span>';}
+    else{b.innerHTML='<span class="w-badge bon">✅ Bonnes conditions</span>';}
+    window._meteoData={rain,wind,code,temp};
+    genConseil();
+  }).catch(()=>{document.getElementById('wIcon').innerText='🌡';document.getElementById('wTemp').innerText='--°';});
+}
+
+// ── TRAFIC OSRM ──
+const ROUTES=[
+  {id:'cdg',dur:'td-cdg',from:[48.8566,2.3522],to:[49.0097,2.5479]},
+  {id:'orly',dur:'td-orly',from:[48.8566,2.3522],to:[48.7262,2.3652]},
+  {id:'paris',dur:'td-paris',from:[48.9000,2.3000],to:[48.8300,2.3800]}
+];
+function fetchTrafic(){
+  ROUTES.forEach(route=>{
+    fetch(`https://router.project-osrm.org/route/v1/driving/${route.from[1]},${route.from[0]};${route.to[1]},${route.to[0]}?overview=false`)
+    .then(r=>r.json()).then(d=>{
+      if(d.code!=='Ok') return;
+      const min=Math.round(d.routes[0].duration/60);
+      const km=(d.routes[0].distance/1000).toFixed(0);
+      const el=document.getElementById('t-'+route.id),dur=document.getElementById(route.dur);
+      dur.innerText=min+' min · '+km+' km';
+      var thr=route.id==='cdg'?35:route.id==='orly'?25:20;
+      if(min>Math.round(thr*1.3)){el.className='t-tag bad';el.innerText='BOUCHONS';}
+      else if(min>thr){el.className='t-tag warn';el.innerText='DENSE';}
+      else{el.className='t-tag ok';el.innerText='FLUIDE';}
+    }).catch(()=>{});
+  });
+  document.getElementById('t-updated').innerText=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('t-source').innerText='Mis à jour: '+new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+}
+
+function genConseil(){
+  const m=window._meteoData||{};
+  const h=new Date().getHours();
+  const rush=(h>=7&&h<=10)||(h>=16&&h<=19);
+  const box=document.getElementById('conseil-box');
+  const icon=document.getElementById('conseil-icon');
+  const text=document.getElementById('conseil-text');
+  let msg='',ic='💡';
+  if(m.rain>60){ic='☔';msg='<strong>Pluie prévue.</strong> Prévoir 5 min supplémentaires, route glissante.';}
+  else if(rush){ic='🚦';msg='<strong>Heure de pointe.</strong> Départ recommandé 15 min plus tôt.';}
+  else if(m.temp<5){ic='❄️';msg='<strong>Température négative.</strong> Le chauffeur préchauffage la voiture.';}
+  else if(m.temp>28){ic='🌡️';msg='<strong>Forte chaleur.</strong> Climatisation activée dès la prise en charge.';}
+  else{ic='✅';msg='<strong>Conditions idéales.</strong> Bonne route !';}
+  icon.innerText=ic; text.innerHTML=msg;
+  box.style.display='flex';
+}
+
+fetchMeteo();
+fetchTrafic();
+setInterval(fetchMeteo, 300000);
+setInterval(fetchTrafic, 180000);
+
+// ── CONSTELLATION 60FPS OPTIMISÉE ──
+(function(){
+  var canvas = document.getElementById('constellation-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, pts = [], RAF;
+  var mouse = {x:-999, y:-999};
+  var scrollY = 0;
+  var DPR = Math.min(window.devicePixelRatio||1, 2);
+
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width  = W+'px';
+    canvas.style.height = H+'px';
+    ctx.scale(DPR, DPR);
+    initPts();
+  }
+
+  function initPts(){
+    var count = Math.min(Math.floor(W*H/14000), 80);
+    pts = [];
+    for(var i=0;i<count;i++){
+      pts.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx:(Math.random()-0.5)*0.18,
+        vy:(Math.random()-0.5)*0.18,
+        r: Math.random()*1.2+0.3,
+        a: Math.random()*0.6+0.2
+      });
+    }
+  }
+
+  var DIST = 130, DIST2 = DIST*DIST;
+  var lastT = 0;
+
+  function draw(ts){
+    RAF = requestAnimationFrame(draw);
+    var dt = Math.min(ts - lastT, 32); lastT = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      p.x += p.vx*(dt/16);
+      p.y += p.vy*(dt/16);
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+
+      // Légère attraction vers la souris
+      var mdx=mouse.x-p.x, mdy=mouse.y-p.y;
+      var md2=mdx*mdx+mdy*mdy;
+      if(md2<22500){ // 150px
+        var f=0.00003;
+        p.vx+=mdx*f*(dt/16); p.vy+=mdy*f*(dt/16);
+      }
+      // Friction
+      p.vx*=0.999; p.vy*=0.999;
+
+      // Dessiner point
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,175,55,'+p.a+')';
+      ctx.fill();
+
+      // Lignes entre points proches
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j];
+        var dx=p.x-q.x, dy=p.y-q.y;
+        var d2=dx*dx+dy*dy;
+        if(d2<DIST2){
+          var alpha=(1-d2/DIST2)*0.18;
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle='rgba(212,175,55,'+alpha+')';
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    canvas.classList.add('ready');
+  }
+
+  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  window.addEventListener('touchmove',function(e){
+    mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY;
+  },{passive:true});
+  window.addEventListener('resize', function(){cancelAnimationFrame(RAF);resize();lastT=0;RAF=requestAnimationFrame(draw);});
+
+  resize();
+  RAF = requestAnimationFrame(draw);
+})();
+
+
+/* ── COUNTER-UP PROOF BADGES ── */
+(function(){
+  var badges = document.getElementById('proof-badges');
+  if(!badges) return;
+  var animated = false;
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting && !animated){
+      animated = true;
+      document.querySelectorAll('.count-up').forEach(function(el){
+        var target = parseFloat(el.dataset.target);
+        var suffix = el.dataset.suffix || '';
+        var decimal = el.dataset.decimal ? 1 : 0;
+        var start = 0;
+        var duration = 900;
+        var startTime = null;
+        function step(ts){
+          if(!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var ease = 1 - Math.pow(1 - progress, 3);
+          var val = target === 0 ? 0 : ease * target;
+          el.textContent = decimal ? val.toFixed(1) : Math.round(val);
+          el.textContent += suffix;
+          if(progress < 1) requestAnimationFrame(step);
+          else { el.textContent = (decimal ? target.toFixed(1) : target) + suffix; }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+  }, {threshold: 0.6});
+  obs.observe(badges);
+})();
+
+/* ── REVEAL SEQUENCE + RIPPLE + TOAST ── */
+(function(){
+  // Retirer loading + lancer séquence
+  document.body.classList.remove('loading');
+  var seq = [
+    {sel:'#hdr .nav-logo', d:150},
+    {sel:'.hero h1',       d:320},
+    {sel:'.hero .hero-p',  d:480},
+    {sel:'.hero .proof',   d:640},
+    {sel:'#step1',         d:820},
+    {sel:'.sticky',        d:950}
+  ];
+  seq.forEach(function(it){
+    var el = document.querySelector(it.sel);
+    if(el) setTimeout(function(){ el.classList.add('ai-in'); }, it.d);
+  });
+  // Fallback logo : garanti visible après 1.5s
+  setTimeout(function(){
+    var lg = document.querySelector('#hdr .nav-logo');
+    if(lg) lg.classList.add('ai-in');
+  }, 1500);
+
+  // Ripple tactile sur boutons
+  document.querySelectorAll('.btn-gold,.sb,.chip,.pay-btn,.btn-close').forEach(function(btn){
+    btn.addEventListener('pointerdown', function(e){
+      var r = this.getBoundingClientRect();
+      var sz = Math.max(r.width, r.height) * 2;
+      var rpl = document.createElement('span');
+      rpl.style.cssText = 'position:absolute;width:' + sz + 'px;height:' + sz + 'px;border-radius:50%;background:rgba(212,175,55,.18);transform:scale(0);top:' + ((e.clientY - r.top) - sz/2) + 'px;left:' + ((e.clientX - r.left) - sz/2) + 'px;pointer-events:none;animation:ripplePop .5s ease-out forwards;';
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(rpl);
+      setTimeout(function(){ rpl.remove(); }, 550);
+    });
+  });
+})();
+
+// Toast global — utilisable partout
+function showToast(msg, duration){
+  var t = document.getElementById('notif-toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function(){
+    t.classList.remove('show');
+  }, duration || 2600);
+}
+</script>
+
+
+<script>
+if('serviceWorker' in navigator){try{
+  var _sw="const CACHE='inrun-v4';self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{const u=e.request.url;if(u.includes('open-meteo')||u.includes('osrm')||u.includes('photon'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res&&res.ok&&e.request.method==='GET'&&!u.includes('chrome-extension')){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}return res;})));});";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([_sw],{type:'application/javascript'}))).catch(function(){});
+}catch(e){}}
+</script>
+<div id="notif-toast" class="notif-toast"></div>
+<script>
+
+// ═══════════════════════════════════════════════════════════════
+// AMBIANCE : toggle musique/radio/silence + sliders
+// ═══════════════════════════════════════════════════════════════
+window._ambMode = 'musique';
+window._volume = 50;
+window._clim = 21;
+
+function setAmbMode(mode){
+  window._ambMode = mode;
+  document.querySelectorAll('.seg-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.v === mode);
+  });
+  var volBlock = document.getElementById('volBlock');
+  var note = document.getElementById('silenceNote');
+  if(mode === 'silence'){
+    volBlock.classList.add('disabled');
+    note.classList.add('show');
+  } else {
+    volBlock.classList.remove('disabled');
+    note.classList.remove('show');
+  }
+}
+
+function makeIOSSlider(sliderId, fillId, thumbId, valId, min, max, startVal, storeKey){
+  var slider = document.getElementById(sliderId);
+  var fill = document.getElementById(fillId);
+  var thumb = document.getElementById(thumbId);
+  var valEl = document.getElementById(valId);
+  if(!slider || !fill || !thumb || !valEl) return;
+  var val = startVal;
+  var dragging = false;
+  function update(){
+    var pct = ((val - min) / (max - min)) * 100;
+    fill.style.width = pct + '%';
+    thumb.style.left = pct + '%';
+    valEl.textContent = Math.round(val);
+    window[storeKey] = Math.round(val);
+  }
+  function getValFromEvent(e){
+    var rect = slider.getBoundingClientRect();
+    var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    var pct = Math.max(0, Math.min(1, x / rect.width));
+    return min + pct * (max - min);
+  }
+  function onStart(e){
+    dragging = true;
+    slider.classList.add('dragging');
+    val = getValFromEvent(e);
+    update();
+    e.preventDefault();
+  }
+  function onMove(e){
+    if(!dragging) return;
+    val = getValFromEvent(e);
+    update();
+    e.preventDefault();
+  }
+  function onEnd(){
+    dragging = false;
+    slider.classList.remove('dragging');
+  }
+  slider.addEventListener('mousedown', onStart);
+  slider.addEventListener('touchstart', onStart, { passive: false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('mouseup', onEnd);
+  document.addEventListener('touchend', onEnd);
+  update();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  makeIOSSlider('volSlider','volFill','volThumb','volVal', 0, 100, 50, '_volume');
+  makeIOSSlider('climSlider','climFill','climThumb','climVal', 18, 26, 21, '_clim');
+});
+
+// ═══════════════════════════════════════════════════════════════
+// STEPPER 4 ÉTAPES
+// ═══════════════════════════════════════════════════════════════
+function setStepperState(stepNum){
+  for(var i=1; i<=4; i++){
+    var el = document.getElementById('step-'+i);
+    if(!el) continue;
+    el.classList.remove('active','done','future');
+    var circle = el.querySelector('.stepper-circle');
+    if(i < stepNum){
+      el.classList.add('done');
+      circle.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>';
+    } else if(i === stepNum){
+      el.classList.add('active');
+      circle.textContent = i;
+    } else {
+      el.classList.add('future');
+      circle.textContent = i;
+    }
+  }
+  for(var j=1; j<=3; j++){
+    var line = document.getElementById('line-'+j);
+    if(!line) continue;
+    line.classList.remove('done','future');
+    line.classList.add(j < stepNum ? 'done' : 'future');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CODE PROMO
+// ═══════════════════════════════════════════════════════════════
+window.PROMO_CODES = {
+  'BIENVENUE10': { type: 'percent', value: 10, label: '-10% offre découverte', oncePerClient: true },
+  'MERCI15':     { type: 'percent', value: 15, label: '-15% fidélité' },
+  'VIP20':       { type: 'percent', value: 20, label: '-20% corporate' },
+  'AMI10':       { type: 'flat',    value: 10, label: '-10€ parrainage' }
+};
+window._activePromo = null;
+window._basePrice = 0;
+
+function validatePromoLive(){
+  var inp = document.getElementById('promoInput');
+  var info = document.getElementById('promoInfo');
+  if(!inp || !info) return;
+  var code = inp.value.trim().toUpperCase();
+  inp.classList.remove('valid','invalid');
+  info.classList.remove('valid','invalid');
+  if(!code){ info.textContent=''; window._activePromo=null; recomputePrice(); return; }
+  if(window.PROMO_CODES[code]){
+    inp.classList.add('valid');
+    info.classList.add('valid');
+    info.textContent = '✓ ' + window.PROMO_CODES[code].label;
+    window._activePromo = code;
+    recomputePrice();
+  } else {
+    inp.classList.add('invalid');
+    info.classList.add('invalid');
+    info.textContent = '✗ Code invalide';
+    window._activePromo = null;
+    recomputePrice();
+  }
+}
+
+function applyPromo(basePrice){
+  if(!window._activePromo) return basePrice;
+  var promo = window.PROMO_CODES[window._activePromo];
+  if(!promo) return basePrice;
+  var newPrice;
+  if(promo.type === 'percent'){
+    newPrice = basePrice * (1 - promo.value/100);
+  } else {
+    newPrice = basePrice - promo.value;
+  }
+  newPrice = Math.max(25, Math.round(newPrice)); // plancher 25€
+  return newPrice;
+}
+
+function recomputePrice(){
+  if(window._basePrice <= 0) return;
+  var finalPrice = applyPromo(window._basePrice);
+  var el = document.getElementById('finalPrice');
+  if(el) el.textContent = finalPrice;
+}
+
+// Hook sur promoInput
+document.addEventListener('DOMContentLoaded', function(){
+  var pi = document.getElementById('promoInput');
+  if(pi) pi.addEventListener('input', validatePromoLive);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ÉTOILES FILANTES
+// ═══════════════════════════════════════════════════════════════
+function createShootingStar(){
+  if(document.hidden) return;
+  var s = document.createElement('div');
+  s.className = 'shooting-star';
+  var startX = Math.random() * window.innerWidth;
+  var startY = Math.random() * window.innerHeight * 0.4;
+  var angle = 25 + Math.random() * 20;
+  var dist = 400 + Math.random() * 300;
+  s.style.left = startX + 'px';
+  s.style.top = startY + 'px';
+  s.style.transform = 'rotate(' + angle + 'deg)';
+  document.body.appendChild(s);
+  s.animate([
+    { opacity: 0, transform: 'rotate('+angle+'deg) translateX(0)' },
+    { opacity: 1, transform: 'rotate('+angle+'deg) translateX('+(dist*0.3)+'px)', offset: 0.2 },
+    { opacity: 0, transform: 'rotate('+angle+'deg) translateX('+dist+'px)' }
+  ], { duration: 1200 + Math.random() * 800, easing: 'ease-out' }).onfinish = function(){ s.remove(); };
+}
+setTimeout(function scheduleStars(){
+  createShootingStar();
+  setTimeout(scheduleStars, 8000 + Math.random() * 6000);
+}, 3000);
+
+// ═══════════════════════════════════════════════════════════════
+// Hook sur nextStep pour stepper
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  var orig = window.nextStep;
+  if(typeof orig === 'function'){
+    window.nextStep = function(n){
+      orig.apply(this, arguments);
+      if(n === 2) setStepperState(2);
+    };
+  }
+  // Modal affichée → step 3
+  var modal = document.getElementById('customModal');
+  if(modal){
+    new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.attributeName === 'class' && modal.classList.contains('show')){
+          setStepperState(3);
+        }
+      });
+    }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+  }
+  // sendWhatsApp → step 4
+  var origWA = window.sendWhatsApp;
+  if(typeof origWA === 'function'){
+    window.sendWhatsApp = function(){
+      setStepperState(4);
+      // Enrichir le message WhatsApp avec volume/clim/ambiance
+      return origWA.apply(this, arguments);
+    };
+  }
+})();
+
+</script>
+<script>
+
+// ═══════════════════════════════════════════════════════════════
+// MÉTÉO 3D — rendu style claymorphism
+// ═══════════════════════════════════════════════════════════════
+window.WX_STYLES_3D = {
+  clear:    { cls: 'sunny',    icon: 'sun',        labels: { fr: 'Ensoleillé' } },
+  partcloud:{ cls: 'cloudy',   icon: 'partcloud',  labels: { fr: 'Peu nuageux' } },
+  cloud:    { cls: 'overcast', icon: 'cloud',      labels: { fr: 'Couvert' } },
+  fog:      { cls: 'overcast', icon: 'cloud',      labels: { fr: 'Brouillard' } },
+  drizzle:  { cls: 'rain',     icon: 'rain',       labels: { fr: 'Bruine' } },
+  rain:     { cls: 'rain',     icon: 'rain',       labels: { fr: 'Pluie' } },
+  storm:    { cls: 'storm',    icon: 'storm',      labels: { fr: 'Orage' } },
+  snow:     { cls: 'overcast', icon: 'cloud',      labels: { fr: 'Neige' } }
+};
+
+function codeToStyle3D(code){
+  if(code === 0 || code === 1) return 'clear';
+  if(code === 2) return 'partcloud';
+  if(code === 3 || code === 45 || code === 48) return 'cloud';
+  if([51,53,55,56,57].includes(code)) return 'drizzle';
+  if([61,63,65,66,67,80,81,82].includes(code)) return 'rain';
+  if([95,96,99].includes(code)) return 'storm';
+  if([71,73,75,77,85,86].includes(code)) return 'snow';
+  return 'partcloud';
+}
+
+function buildWxIcon3D(iconType){
+  if(iconType === 'sun') return '<div class="wx-sun"></div>';
+  if(iconType === 'partcloud') return '<div class="wx-icon-partcloud"><div class="wx-sun"></div><div class="wx-cloud"></div></div>';
+  if(iconType === 'cloud') return '<div class="wx-cloud"></div>';
+  if(iconType === 'rain') return '<div class="wx-icon-rain"><div class="wx-cloud"></div><div class="wx-drop wx-drop-1"></div><div class="wx-drop wx-drop-2"></div><div class="wx-drop wx-drop-3"></div></div>';
+  if(iconType === 'storm') return '<div class="wx-icon-rain"><div class="wx-cloud"></div><div class="wx-bolt"></div></div>';
+  return '<div class="wx-cloud"></div>';
+}
+
+// Hook sur fetchMeteo — remplacer l'affichage existant par card 3D
+window.renderMeteo3D = function(temp, feels, code, wind, humidity, rainProb){
+  var styleKey = codeToStyle3D(code);
+  var style = window.WX_STYLES_3D[styleKey];
+  var zone = document.getElementById('wxZone3D');
+  if(!zone) return;
+  zone.innerHTML = '' +
+    '<div class="wx-3d-card ' + style.cls + '">' +
+      '<div class="wx-3d-icon">' + buildWxIcon3D(style.icon) + '</div>' +
+      '<div class="wx-3d-content">' +
+        '<div class="wx-3d-temp">' + Math.round(temp) + '°</div>' +
+        '<div class="wx-3d-label">' + style.labels.fr + '</div>' +
+        '<div class="wx-3d-sub">Ressenti ' + Math.round(feels) + '° · ' + Math.round(wind) + ' km/h · ' + rainProb + '%</div>' +
+      '</div>' +
+    '</div>';
+};
+
+// Wrapper de fetchMeteo pour aussi rendre la 3D
+(function(){
+  var originalFetchMeteo = window.fetchMeteo;
+  if(typeof originalFetchMeteo !== 'function') return;
+  window.fetchMeteo = function(){
+    return originalFetchMeteo.apply(this, arguments).then ? originalFetchMeteo.apply(this, arguments) : originalFetchMeteo.apply(this, arguments);
+  };
+  // À la place : on écoute le window._meteoData qui est rempli par fetchMeteo
+  setInterval(function(){
+    if(window._meteoData && window._meteoData.temp != null){
+      var d = window._meteoData;
+      window.renderMeteo3D(d.temp, d.feels || d.temp, d.code, d.wind, d.humidity || 50, d.rain || 0);
+    }
+  }, 2000);
+})();
+
+</script>
+
+<script>
+
+// ═══════════════════════════════════════════════════════════════
+// iOS REFINED — callDriver + toggles + enrichissement WhatsApp
+// ═══════════════════════════════════════════════════════════════
+
+// État des toggles options
+window._opts = { wifi: false, eau: true, usb: true, confiseries: false };
+
+function toggleOpt(el) {
+  el.classList.toggle('on');
+  var opt = el.dataset.opt;
+  if (opt) window._opts[opt] = el.classList.contains('on');
+}
+
+// Appel direct chauffeur (tel:)
+function callDriver() {
+  window.location.href = 'tel:+33767742220';
+}
+
+// Hook de sendWhatsApp pour enrichir message avec options
+(function(){
+  var origSend = window.sendWhatsApp;
+  if (typeof origSend !== 'function') return;
+  window.sendWhatsApp = function() {
+    // Tenter d'enrichir le texte envoyé
+    // On intercepte window.location.href = '...' via proxy sur sendWhatsApp
+    var originalSetter = Object.getOwnPropertyDescriptor(window.location, 'href') || Object.getOwnPropertyDescriptor(HTMLAnchorElement.prototype, 'href');
+    // Plus simple : on appelle l'original et c'est tout — l'enrichissement se fait via window._opts accessible dans le texte
+    return origSend.apply(this, arguments);
+  };
+})();
+
+// Exposer les options dans un helper pour que sendWhatsApp puisse les lire
+window.getOptionsText = function() {
+  var lines = [];
+  // Ambiance
+  if (window._ambMode) {
+    if (window._ambMode === 'silence') {
+      lines.push('🔇 Ambiance : Silence demandé');
+    } else {
+      var modeLabel = window._ambMode === 'musique' ? 'Musique' : 'Radio';
+      lines.push('🎵 ' + modeLabel + ' — Volume ' + (window._volume || 50) + '%');
+    }
+  }
+  // Clim
+  if (window._clim) {
+    lines.push('❄️ Climatisation : ' + window._clim + '°C');
+  }
+  // Options
+  var optNames = [];
+  if (window._opts) {
+    if (window._opts.wifi) optNames.push('Wi-Fi 5G');
+    if (window._opts.eau) optNames.push('Eau minérale');
+    if (window._opts.usb) optNames.push('USB recharge');
+    if (window._opts.confiseries) optNames.push('Confiseries');
+  }
+  if (optNames.length > 0) {
+    lines.push('✓ Options : ' + optNames.join(', '));
+  }
+  return lines.join('\n');
+};
+
+</script>
+
+<script>
+// ── PATCH: Segmented control sliding indicator sync ──
+(function(){
+  var origSet = window.setAmbMode;
+  window.setAmbMode = function(mode){
+    if(typeof origSet === 'function') origSet(mode);
+    var seg = document.getElementById('ambSeg');
+    if(seg) seg.setAttribute('data-active', mode);
+  };
+  // Init on load
+  var seg = document.getElementById('ambSeg');
+  if(seg) seg.setAttribute('data-active', window._ambMode || 'musique');
+})();
+
+// ── PATCH: Bouton principal — style btn-confirm-main sur le bouton de réservation ──
+(function(){
+  var btn = document.querySelector('.nav-btn.primary');
+  // Already handled by nav-btn.primary styles
+})();
+
+// ── BOTTOM SHEET — Composant universel ──
+(function() {
+  var overlay = document.createElement('div');
+  overlay.className = 'bs-overlay';
+  overlay.id = 'bs-overlay';
+  overlay.innerHTML =
+    '<div class="bs-sheet" id="bs-sheet">' +
+      '<div class="bs-handle"></div>' +
+      '<div class="bs-title" id="bs-title"></div>' +
+      '<div id="bs-options"></div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) window.closeBS(); });
+  var startY=0, sheet=document.getElementById('bs-sheet');
+  sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;},{passive:true});
+  sheet.addEventListener('touchend',function(e){if(e.changedTouches[0].clientY-startY>60) window.closeBS();},{passive:true});
+})();
+
+window.openBS = function(title, options, currentVal, onSelect) {
+  var overlay=document.getElementById('bs-overlay');
+  var titleEl=document.getElementById('bs-title');
+  var optionsEl=document.getElementById('bs-options');
+  titleEl.textContent = title;
+  optionsEl.innerHTML = '';
+  options.forEach(function(opt){
+    var div=document.createElement('div');
+    div.className='bs-option'+(opt.value===currentVal?' selected':'');
+    div.innerHTML='<span>'+opt.label+'</span><span class="bs-option-check"></span>';
+    div.addEventListener('click',function(){
+      optionsEl.querySelectorAll('.bs-option').forEach(function(el){el.classList.remove('selected');});
+      div.classList.add('selected');
+      if(navigator.vibrate) navigator.vibrate(6);
+      setTimeout(function(){ window.closeBS(); onSelect(opt.value, opt.label); }, 175);
+    });
+    optionsEl.appendChild(div);
+  });
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeBS = function(){
+  document.getElementById('bs-overlay').classList.remove('open');
+  document.body.style.overflow='';
+};
+</script>
+
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   CORRECTIFS FINAUX JS
+══════════════════════════════════════════════════════════ */
+
+// 1. AUTOCOMPLETE — Fermeture immédiate + nettoyage DOM
+(function() {
+  function waitForSelectLocation(attempts) {
+    if (typeof window.selectLocation === 'function') {
+      var orig = window.selectLocation;
+      window.selectLocation = function(iId, dId, type, name, lat, lon) {
+        var drop = document.getElementById(dId);
+        if (drop) {
+          drop.classList.add('closing');
+          drop.classList.remove('open');
+          setTimeout(function() {
+            drop.classList.remove('closing');
+            drop.innerHTML = '';
+          }, 200);
+        }
+        orig(iId, dId, type, name, lat, lon);
+      };
+    } else if (attempts > 0) {
+      setTimeout(function() { waitForSelectLocation(attempts - 1); }, 100);
+    }
+  }
+  waitForSelectLocation(20);
+})();
+
+// Fermer l'ac au tap extérieur (mobile)
+document.addEventListener('touchstart', function(e) {
+  ['ac-dep','ac-arr'].forEach(function(id) {
+    var el = document.getElementById(id);
+    var inp = document.getElementById(id === 'ac-dep' ? 'dep' : 'arr');
+    if (el && inp && !el.contains(e.target) && e.target !== inp) {
+      el.classList.remove('open');
+      setTimeout(function() { if (el) el.innerHTML = ''; }, 200);
+    }
+  });
+}, { passive: true });
+
+// 2. SCROLL HORIZONTAL
+document.documentElement.style.overflowX = 'hidden';
+document.body.style.overflowX = 'hidden';
+
+// 3. STICKY BAR — Suit le visual viewport (clavier mobile iOS)
+(function() {
+  var sticky = document.querySelector('.sticky');
+  if (!sticky || !window.visualViewport) return;
+  function updateSticky() {
+    var vv = window.visualViewport;
+    var offsetBottom = window.innerHeight - vv.height - vv.offsetTop;
+    sticky.style.transform = 'translateY(-' + Math.max(0, offsetBottom) + 'px)';
+  }
+  window.visualViewport.addEventListener('resize', updateSticky, { passive: true });
+  window.visualViewport.addEventListener('scroll', updateSticky, { passive: true });
+})();
+</script>
+
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CORRECTIFS FINAUX — Paiement exclusif · WhatsApp · UX
+══════════════════════════════════════════════════════════════ */
+
+// 1. PAIEMENT EXCLUSIF — fix sélecteur .pay-pill
+function selectPayment(el, method) {
+  document.querySelectorAll('.pay-pill').forEach(function(b) { b.classList.remove('sel'); });
+  el.classList.add('sel');
+  document.getElementById('paymentMethod').value = method;
+  if (navigator.vibrate) navigator.vibrate(6);
+}
+
+// 2. WHATSAPP — URL propre + message enrichi
+var DRIVER_PHONE = '33767742220';
+function sendWhatsApp() {
+  var _tv = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
+  var time = (function() {
+    if (!_tv) return 'Dès que possible';
+    var p = _tv.split('T'); if (p.length < 2) return _tv;
+    var d = p[0].split('-');
+    return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
+  })();
+  var dep = (window.coords && coords.dep && coords.dep.name)
+    || (document.getElementById('dep') ? document.getElementById('dep').value : '') || 'Non renseigné';
+  var arr = (window.coords && coords.arr && coords.arr.name)
+    || (document.getElementById('arr') ? document.getElementById('arr').value : '') || 'Non renseigné';
+  var price = document.getElementById('finalPrice') ? document.getElementById('finalPrice').innerText.trim() : 'À confirmer';
+  var pay   = document.getElementById('paymentMethod') ? document.getElementById('paymentMethod').value : 'Non précisé';
+  var note  = document.getElementById('note') ? document.getElementById('note').value.trim() : '';
+  var ambMode = window._ambMode || 'musique';
+  var volume  = window._volume  || 50;
+  var clim    = window._clim    || 21;
+  var ambLabel = ambMode === 'silence' ? '🔇 Silence'
+    : ambMode === 'radio' ? '📻 Radio — Volume ' + volume + '%'
+    : '🎵 Musique — Volume ' + volume + '%';
+  var opts = window._opts || {};
+  var optLines = [];
+  if (opts.wifi)        optLines.push('📶 Wi-Fi');
+  if (opts.eau)         optLines.push('💧 Eau minérale');
+  if (opts.usb)         optLines.push('🔌 USB');
+  if (opts.confiseries) optLines.push('🍬 Confiseries');
+  var calcDetails = document.getElementById('calcDetails');
+  var isNuit = calcDetails && calcDetails.innerText.toLowerCase().includes('nuit');
+
+  var msg = '*📋 BON DE RÉSERVATION — I&N RUN*
+
+';
+  msg += '🕒 Prise en charge : ' + time + '
+';
+  msg += '📍 Départ : ' + dep + '
+';
+  msg += '🏁 Arrivée : ' + arr + '
+
+';
+  msg += '💰 Tarif fixe garanti : *' + price + '*' + (isNuit ? ' _(tarif nuit)_' : '') + '
+';
+  msg += '💳 Paiement : ' + pay + '
+
+';
+  msg += '✨ *Préférences à bord :*
+';
+  msg += '- Ambiance : ' + ambLabel + '
+';
+  msg += '- Climatisation : ❄️ ' + clim + '°C
+';
+  if (optLines.length) msg += '- Options : ' + optLines.join(', ') + '
+';
+  if (note) msg += '
+📝 Note : ' + note + '
+';
+  msg += '
+Merci de confirmer votre *NOM complet* pour valider 🙏';
+
+  window.open('https://wa.me/' + DRIVER_PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// 3. AUTOCOMPLETE — Fermeture immédiate
+(function() {
+  function patch(n) {
+    if (typeof window.selectLocation === 'function') {
+      var orig = window.selectLocation;
+      window.selectLocation = function(iId, dId, type, name, lat, lon) {
+        var drop = document.getElementById(dId);
+        if (drop) {
+          drop.classList.remove('open');
+          drop.classList.add('closing');
+          setTimeout(function() { drop.classList.remove('closing'); drop.innerHTML = ''; }, 180);
+        }
+        orig(iId, dId, type, name, lat, lon);
+      };
+    } else if (n > 0) { setTimeout(function() { patch(n-1); }, 100); }
+  }
+  patch(20);
+})();
+document.addEventListener('touchstart', function(e) {
+  ['ac-dep','ac-arr'].forEach(function(id) {
+    var el = document.getElementById(id);
+    var inp = document.getElementById(id === 'ac-dep' ? 'dep' : 'arr');
+    if (el && inp && !el.contains(e.target) && e.target !== inp) {
+      el.classList.remove('open');
+      setTimeout(function() { if(el) el.innerHTML=''; }, 180);
+    }
+  });
+}, { passive: true });
+
+// 4. STICKY BAR — Stable avec clavier iOS
+(function() {
+  var sticky = document.querySelector('.sticky');
+  if (!sticky || !window.visualViewport) return;
+  function upd() {
+    var vv = window.visualViewport;
+    sticky.style.transform = 'translateY(-' + Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px)';
+  }
+  window.visualViewport.addEventListener('resize', upd, { passive: true });
+  window.visualViewport.addEventListener('scroll', upd, { passive: true });
+})();
+
+// 5. OVERFLOW-X
+document.documentElement.style.overflowX = 'hidden';
+document.body.style.overflowX = 'hidden';
+
+// 6. SEGMENTED CONTROL sync
+(function() {
+  var seg = document.getElementById('ambSeg');
+  if (seg) seg.setAttribute('data-active', window._ambMode || 'musique');
+  var orig = window.setAmbMode;
+  if (typeof orig === 'function') {
+    window.setAmbMode = function(mode) {
+      orig(mode);
+      if (seg) seg.setAttribute('data-active', mode);
+    };
+  }
+})();
+</script>
+
+</body>
+</html>
