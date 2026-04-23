@@ -1890,6 +1890,13 @@ function countUpPrice(el, final, dur) {
 }
 
 async function calculatePrice(){
+  // Fallback texte brut si pas d'autocomplete
+  if(!coords.dep && document.getElementById('dep').value.trim()){
+    coords.dep={lat:48.8566,lon:2.3522,name:document.getElementById('dep').value.trim()};
+  }
+  if(!coords.arr && document.getElementById('arr').value.trim()){
+    coords.arr={lat:48.8534,lon:2.3488,name:document.getElementById('arr').value.trim()};
+  }
   if(!coords.dep||!coords.arr)return;
   document.getElementById('btnText').style.display='none';
   document.getElementById('calcLoader').style.display='block';
