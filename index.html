@@ -467,33 +467,107 @@ h1 {
 .pay-sub { font-size:0.65rem; color:var(--t2); margin-top:1px; }
 
 /* ══ SEGMENTED CONTROL — Spring Sliding ══════════════════ */
+/* ══ SEGMENTED CONTROL — iOS 3D Native ══════════════════════ */
 .amb-seg {
-  display:flex; position:relative;
-  background:rgba(28,28,32,0.90); border:0.5px solid rgba(255,255,255,0.08);
-  border-radius:calc(var(--r-m) + 2px); padding:3px; margin-bottom:20px;
+  display: flex;
+  position: relative;
+  /* Fond concave sombre — effet "creux" iOS */
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(0,0,0,0.55) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(18,18,22,0.88) 100%);
+  border: 0.5px solid rgba(255,255,255,0.06);
+  border-bottom: 0.5px solid rgba(255,255,255,0.10);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.55) inset,
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 -1px 0 rgba(0,0,0,0.40) inset;
+  border-radius: calc(var(--r-m) + 3px);
+  padding: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
-.amb-seg::before {
-  content:''; position:absolute; top:3px; bottom:3px;
-  width:calc(33.333% - 4px); border-radius:var(--r-m);
-  background:rgba(255,255,255,0.14);
-  box-shadow:0 1px 0 rgba(255,255,255,0.20) inset,0 2px 6px rgba(0,0,0,0.40);
-  transition:transform 0.38s var(--spring); left:3px;
-  pointer-events:none;
+
+/* Glider — capsule flottante 3D */
+.seg-glider {
+  position: absolute;
+  top: 4px; bottom: 4px;
+  left: 4px;
+  width: calc(33.333% - 5.33px);
+  border-radius: calc(var(--r-m) - 1px);
+  /* Fond nacré — effet capsule qui "flotte" */
+  background: radial-gradient(
+    ellipse at 40% 25%,
+    rgba(255,255,255,0.96) 0%,
+    #f2f2f5 45%,
+    #dcdce0 100%
+  );
+  box-shadow:
+    /* Ombre portée principale — donne la hauteur */
+    0 4px 12px rgba(0,0,0,0.55),
+    0 2px 4px rgba(0,0,0,0.35),
+    /* Highlight top — bord lumineux */
+    0 1px 0 rgba(255,255,255,0.90) inset,
+    /* Shadow bottom — donne le relief */
+    0 -1px 0 rgba(0,0,0,0.14) inset,
+    /* Contour subtil */
+    0 0 0 0.5px rgba(0,0,0,0.08);
+  /* Spring animation fluide */
+  transition: transform 0.30s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+  /* État initial : Musique (index 0) */
+  transform: translateX(0);
+  will-change: transform;
 }
-.amb-seg[data-active="musique"]::before { transform:translateX(0); }
-.amb-seg[data-active="radio"]::before   { transform:translateX(calc(100% + 4px)); }
-.amb-seg[data-active="silence"]::before { transform:translateX(calc(200% + 8px)); }
+
+/* Positions des 3 états */
+.amb-seg[data-active="musique"] .seg-glider {
+  transform: translateX(0);
+}
+.amb-seg[data-active="radio"] .seg-glider {
+  transform: translateX(calc(100% + (8px / 3)));
+}
+.amb-seg[data-active="silence"] .seg-glider {
+  transform: translateX(calc(200% + (16px / 3)));
+}
+
+/* Squeeze effect au clic — capsule qui s'écrase */
+.seg-glider.pressed {
+  transform: scaleY(0.93) !important;
+}
+
 .seg-opt {
-  flex:1; display:flex; align-items:center; justify-content:center; gap:5px;
-  padding:10px 4px; border-radius:var(--r-m);
-  font-size:0.78rem; font-weight:500; color:var(--t2);
-  cursor:pointer; position:relative; z-index:1;
-  transition:color var(--t-m) var(--ease-out),transform var(--t-f);
-  user-select:none; -webkit-user-select:none;
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 11px 4px;
+  border-radius: calc(var(--r-m) - 1px);
+  font-size: 0.78rem; font-weight: 500;
+  /* Texte gris par défaut */
+  color: rgba(255,255,255,0.40);
+  cursor: pointer;
+  position: relative; z-index: 1;
+  transition:
+    color 0.22s var(--ease-out),
+    font-weight 0.10s,
+    transform 0.12s var(--spring);
+  user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.seg-opt svg { width:13px; height:13px; stroke:currentColor; transition:stroke var(--t-m); }
-.seg-opt:active { transform:scale(0.95); }
-.seg-opt.active { color:var(--t1); font-weight:600; }
+.seg-opt svg {
+  width: 13px; height: 13px;
+  stroke: currentColor;
+  transition: stroke 0.22s;
+}
+.seg-opt:active { transform: scale(0.94); }
+
+/* Option active — texte NOIR contrasté sur la capsule blanche */
+.seg-opt.active {
+  color: #000000;
+  font-weight: 700;
+  text-shadow: none;
+}
+.seg-opt.active svg { stroke: #000; }
 
 /* ══ SLIDERS — Nacré + Rail gradient ════════════════════ */
 .slider-block { margin-bottom:8px; transition:opacity var(--t-m); }
@@ -1255,7 +1329,8 @@ body {
     </div>
     <input type="hidden" id="paymentMethod" value="CB">
     <label class="f-lbl">Ambiance à bord</label>
-    <div class="amb-seg" id="ambSeg">
+    <div class="amb-seg" id="ambSeg" data-active="musique">
+      <div class="seg-glider" id="segGlider"></div>
       <div class="seg-opt active" data-v="musique" onclick="setAmbMode('musique')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         Musique
@@ -2139,18 +2214,40 @@ window._clim = 21;
 
 function setAmbMode(mode){
   window._ambMode = mode;
-  document.querySelectorAll('.seg-opt').forEach(el => {
+  var seg = document.getElementById('ambSeg');
+  var glider = document.getElementById('segGlider');
+  var modes = ['musique','radio','silence'];
+  var idx = modes.indexOf(mode);
+
+  // Déplacer la capsule glider
+  if(glider && idx >= 0){
+    // Squeeze at press, release after
+    glider.classList.add('pressed');
+    setTimeout(function(){ glider.classList.remove('pressed'); }, 90);
+    // translateX en % de la largeur d'un segment
+    var segWidth = seg ? (seg.offsetWidth - 8) / 3 : 0;
+    glider.style.transform = 'translateX(' + (idx * (segWidth + 8/3)) + 'px)';
+  }
+  if(seg) seg.setAttribute('data-active', mode);
+
+  // Toggle active class + couleur texte
+  document.querySelectorAll('.seg-opt').forEach(function(el){
     el.classList.toggle('active', el.dataset.v === mode);
   });
+
+  // Volume block + note silence
   var volBlock = document.getElementById('volBlock');
   var note = document.getElementById('silenceNote');
   if(mode === 'silence'){
-    volBlock.classList.add('disabled');
-    note.classList.add('show');
+    if(volBlock) volBlock.classList.add('disabled');
+    if(note) note.classList.add('show');
   } else {
-    volBlock.classList.remove('disabled');
-    note.classList.remove('show');
+    if(volBlock) volBlock.classList.remove('disabled');
+    if(note) note.classList.remove('show');
   }
+
+  // Haptic feedback subtil
+  if(navigator.vibrate) navigator.vibrate(4);
 }
 
 function makeIOSSlider(sliderId, fillId, thumbId, valId, min, max, startVal, storeKey){
@@ -2488,6 +2585,27 @@ window.getOptionsText = function() {
   }
   return lines.join('\n');
 };
+
+
+// ── INIT SEGMENTED GLIDER au chargement
+(function(){
+  var seg = document.getElementById('ambSeg');
+  var glider = document.getElementById('segGlider');
+  if(!seg || !glider) return;
+  function initGlider(){
+    var modes = ['musique','radio','silence'];
+    var mode = window._ambMode || 'musique';
+    var idx = modes.indexOf(mode);
+    var segWidth = (seg.offsetWidth - 8) / 3;
+    glider.style.transform = 'translateX(' + (idx * (segWidth + 8/3)) + 'px)';
+    seg.setAttribute('data-active', mode);
+  }
+  // Run after layout
+  if(document.readyState === 'complete'){ initGlider(); }
+  else { window.addEventListener('load', initGlider); }
+  // Recalc on resize (orientation change)
+  window.addEventListener('resize', initGlider, {passive:true});
+})();
 
 </script>
 </body>
