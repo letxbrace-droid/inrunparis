@@ -1793,7 +1793,7 @@ function renderDrop(drop,items,inputId,dropId,type){
   drop.classList.add('open');
 }
 // Photon : priorité IDF (lat/lon Paris), bbox France
-var PHOTON='https://photon.komoot.io/api/?lang=fr&lat=48.8566&lon=2.3522&limit=7&bbox=-5.0,41.0,10.0,51.5&q=';
+var PHOTON='https://api-adresse.data.gouv.fr/search/?limit=7&autocomplete=1&q=';
 function setupAutocomplete(inputId,dropId,type){
   var input=document.getElementById(inputId),drop=document.getElementById(dropId);
   var spinner=document.getElementById('spin-'+type);
@@ -1817,23 +1817,40 @@ function setupAutocomplete(inputId,dropId,type){
     timer=setTimeout(function(){
       if(ctrl)ctrl.abort();ctrl=new AbortController();
       fetch(PHOTON+encodeURIComponent(q),{signal:ctrl.signal})
-        .then(function(r){return r.json();})
+        .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
         .then(function(data){
           if(spinner)spinner.classList.remove('active');
-          if(!data.features||!data.features.length)return;
-          var photon=[];
-          data.features.forEach(function(f){
-            var p=f.properties;if(!p.name&&!p.street)return;
-            var cl=cleanPhotonLabel(p);
-            if(!cl.n||cl.n.length<3)return;
-            photon.push({n:cl.n,s:cl.s,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
-          });
+          var remote=[];
+          if(data&&data.features&&data.features.length){
+            data.features.forEach(function(f){
+              var p=f.properties||{};
+              var label=p.label || [p.housenumber,p.name,p.postcode,p.city].filter(Boolean).join(' ');
+              if(!label||!f.geometry||!f.geometry.coordinates)return;
+              remote.push({
+                n: label,
+                s: p.context || p.city || p.postcode || '',
+                lat: f.geometry.coordinates[1],
+                lon: f.geometry.coordinates[0]
+              });
+            });
+          }
           var merged=presets.slice();
-          photon.forEach(function(pi){
+          remote.forEach(function(pi){
             if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
           });
-          if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
-        }).catch(function(){if(spinner)spinner.classList.remove('active');});
+          if(merged.length) renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
+          else {
+            drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--t2);font-size:.82rem;">Aucune suggestion</div></div>';
+            drop.classList.add('open');
+          }
+        }).catch(function(){
+          if(spinner)spinner.classList.remove('active');
+          if(presets.length){ renderDrop(drop,presets,inputId,dropId,type); }
+          else {
+            drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--t2);font-size:.82rem;">Suggestions indisponibles</div></div>';
+            drop.classList.add('open');
+          }
+        });
     },250);
   });
   document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
