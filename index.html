@@ -719,6 +719,7 @@ h1 .g {
   border-radius: 12px !important;
   padding: 0 14px !important;
   height: 52px !important;
+  overflow: visible !important;
   transition: border-color 0.25s, box-shadow 0.25s !important;
 }
 .f-wrap:focus-within {
@@ -5306,14 +5307,9 @@ function setupAutocomplete(inputId,dropId,type){
           if(data&&data.features&&data.features.length){
             data.features.forEach(function(f){
               var p=f.properties||{};
-              var label=p.label || [p.housenumber,p.name,p.postcode,p.city].filter(Boolean).join(' ');
+              var label=p.label||[p.housenumber,p.name,p.postcode,p.city].filter(Boolean).join(' ');
               if(!label||!f.geometry||!f.geometry.coordinates)return;
-              remote.push({
-                n: label,
-                s: p.context || [p.postcode,p.city].filter(Boolean).join(' '),
-                lat: f.geometry.coordinates[1],
-                lon: f.geometry.coordinates[0]
-              });
+              remote.push({n:label,s:p.context||[p.postcode,p.city].filter(Boolean).join(' '),lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]});
             });
           }
           var merged=presets.slice();
@@ -5321,17 +5317,11 @@ function setupAutocomplete(inputId,dropId,type){
             if(!merged.some(function(m){return Math.abs(m.lat-pi.lat)<.002&&Math.abs(m.lon-pi.lon)<.002;}))merged.push(pi);
           });
           if(merged.length)renderDrop(drop,merged.slice(0,7),inputId,dropId,type);
-          else {
-            drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucune suggestion</div></div>';
-            drop.classList.add('open');
-          }
+          else {drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Aucune suggestion</div></div>';drop.classList.add('open');}
         }).catch(function(){
           if(spinner)spinner.classList.remove('active');
           if(presets.length)renderDrop(drop,presets,inputId,dropId,type);
-          else {
-            drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Suggestions indisponibles</div></div>';
-            drop.classList.add('open');
-          }
+          else {drop.innerHTML='<div class="ac-item"><div class="ac-main" style="color:var(--gray);font-size:.82rem;">Suggestions indisponibles</div></div>';drop.classList.add('open');}
         });
     },250);
   });
@@ -5387,17 +5377,18 @@ async function geocodeBAN(text){
   if(!text)return null;
   try{
     var r=await fetch('https://api-adresse.data.gouv.fr/search/?limit=1&autocomplete=1&q='+encodeURIComponent(text));
-    if(!r.ok) return null;
+    if(!r.ok)return null;
     var d=await r.json();
-    if(!d||!d.features||!d.features.length) return null;
-    var f=d.features[0];
-    return {lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0],name:(f.properties&&f.properties.label)||text};
+    if(!d||!d.features||!d.features.length)return null;
+    var f=d.features[0],p=f.properties||{};
+    return {lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0],name:p.label||text};
   }catch(e){return null;}
 }
+
 async function calculatePrice(){
   if(!coords.dep){coords.dep=await geocodeBAN((document.getElementById('dep')||{value:''}).value.trim());}
   if(!coords.arr){coords.arr=await geocodeBAN((document.getElementById('arr')||{value:''}).value.trim());}
-  if(!coords.dep||!coords.arr){showToast('Adresse introuvable, essayez une adresse plus précise');return;}
+  if(!coords.dep||!coords.arr)return;
   document.getElementById('btnText').style.display='none';
   document.getElementById('calcLoader').style.display='block';
   document.getElementById('calcBtn').disabled=true;
