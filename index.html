@@ -324,7 +324,7 @@ h1 {
   background:rgba(0,0,0,0.42);
   border-top:1px solid rgba(255,255,255,0.09); border-left:0.5px solid rgba(255,255,255,0.03);
   border-right:0.5px solid rgba(255,255,255,0.03); border-bottom:0.5px solid rgba(255,255,255,0.03);
-  border-radius:var(--r-m); height:var(--tap); margin-bottom:13px;
+  border-radius:var(--r-m); height:var(--tap); margin-bottom:13px; overflow:visible;
   transition:border-color var(--t-f),box-shadow var(--t-f),background var(--t-f);
 }
 .f-wrap:focus-within {
@@ -1785,6 +1785,7 @@ function buildItem(item,inputId,dropId,type){
   el._loc={name:item.n,lat:item.lat,lon:item.lon,iid:inputId,did:dropId,type:type};
   el.addEventListener('mousedown',function(e){e.preventDefault();});
   el.addEventListener('click',function(){var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);});
+  el.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();var d=this._loc;selectLocation(d.iid,d.did,d.type,d.name,d.lat,d.lon);},{passive:false});
   return el;
 }
 function renderDrop(drop,items,inputId,dropId,type){
@@ -1839,7 +1840,7 @@ function setupAutocomplete(inputId,dropId,type){
     },250);
   });
   document.addEventListener('mousedown',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');});
-  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target))drop.classList.remove('open');},{passive:true});
+  document.addEventListener('touchstart',function(e){if(e.target!==input&&!drop.contains(e.target)&&!e.target.closest('.ac-item'))drop.classList.remove('open');},{passive:true});
 }
 
 let coords = { dep: null, arr: null };
