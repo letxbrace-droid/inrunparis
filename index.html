@@ -2273,10 +2273,11 @@ function toggleChip(id, el) {
   el.appendChild(r);
   setTimeout(()=>r.remove(), 250);
 }
-function selectPayment(el, m) {
-  document.querySelectorAll('.pay-btn').forEach(b=>b.classList.remove('sel'));
+function selectPayment(el, method) {
+  document.querySelectorAll('.pay-pill').forEach(function(b) { b.classList.remove('sel'); });
   el.classList.add('sel');
-  document.getElementById('paymentMethod').value = m;
+  document.getElementById('paymentMethod').value = method;
+  if (navigator.vibrate) navigator.vibrate(6);
 }
 function showLegal(){document.getElementById('legalModal').classList.add('show');}
 function hideModal(){document.getElementById('customModal').classList.remove('show');}
@@ -2350,38 +2351,121 @@ async function calculatePrice(){
   }
 }
 
-function sendWhatsApp(){
-  const _tv=document.getElementById('timepick').value;
-  var time=(function(){if(!_tv)return'Dès que possible';var p=_tv.split('T');if(p.length<2)return _tv;var d=p[0].split('-');var h=p[1];return d[2]+'/'+d[1]+'/'+d[0]+' '+h;})();
-  // Utiliser l'adresse complète de l'API (coords.dep/arr.name) si disponible
-  const dep=(coords&&coords.dep&&coords.dep.name)||document.getElementById('dep').value;
-  const arr=(coords&&coords.arr&&coords.arr.name)||document.getElementById('arr').value;
-  const note=document.getElementById('note').value;
-  const price=document.getElementById('finalPrice').innerText;
-  const pay=document.getElementById('paymentMethod').value;
-  const music=document.querySelector('#musicPref .chip.sel');
-  const clim=document.querySelector('#climPref .chip.sel');
-  let msg=`*BON DE RÉSERVATION VTC - I&N RUN*
+function sendWhatsApp() {
+  // ── Prise en charge
+  var _tv = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
+  var time = (function() {
+    if (!_tv) return 'Dès que possible';
+    var p = _tv.split('T');
+    if (p.length < 2) return _tv;
+    var d = p[0].split('-');
+    return d[2] + '/' + d[1] + '/' + d[0] + ' à ' + p[1];
+  })();
 
-`;
-  msg+=`🕒 Prise en charge : ${time||'Dès que possible'}
-`;
-  msg+=`📍 Départ : ${dep}
-🏁 Arrivée : ${arr}
-`;
-  const _nuitBadge=document.getElementById('calcDetails')&&document.getElementById('calcDetails').innerText.includes('nuit');
-  msg+=`💳 Tarif fixé : ${price}${_nuitBadge?' (tarif nuit inclus)':''}\n💶 Paiement : ${pay}\n\n`;
-  msg+=`✨ *Préférences à bord :*
-- Musique : ${music?music.innerText.trim():'Non'}
-- Climatisation : ${clim?clim.innerText.trim():'Non'}
+  // ── Adresses
+  var dep = (window.coords && coords.dep && coords.dep.name)
+    || (document.getElementById('dep') ? document.getElementById('dep').value : '') || 'Non renseigné';
+  var arr = (window.coords && coords.arr && coords.arr.name)
+    || (document.getElementById('arr') ? document.getElementById('arr').value : '') || 'Non renseigné';
 
-`;
-  if(note) msg+=`📝 Note : ${note}
+  // ── Tarif
+  var priceEl = document.getElementById('finalPrice');
+  var price = priceEl ? priceEl.innerText.trim() : 'À confirmer';
+  var calcDetails = document.getElementById('calcDetails');
+  var isNuit = calcDetails && calcDetails.innerText.toLowerCase().includes('nuit');
 
-`;
-  msg+=`Pour valider ce bon de réservation, merci de me confirmer votre NOM s'il vous plaît :`;
-  window.open(`https://wa.me/33767742220?text=${encodeURIComponent(msg)}`,'_blank');
+  // ── Paiement
+  var pay = document.getElementById('paymentMethod')
+    ? document.getElementById('paymentMethod').value : 'Non précisé';
+  var payLabel = pay === 'CB' ? '💳 Carte bancaire' : '💵 Espèces';
+
+  // ── Note client
+  var note = document.getElementById('note') ? document.getElementById('note').value.trim() : '';
+
+  // ── Ambiance
+  var ambMode = window._ambMode || 'musique';
+  var volume  = window._volume  || 50;
+  var clim    = window._clim    || 21;
+  var ambLabel = ambMode === 'silence' ? 'Mode Silence 🔇'
+    : ambMode === 'radio' ? 'Radio 📻 — vol. ' + volume + '%'
+    : 'Musique 🎵 — vol. ' + volume + '%';
+
+  // ── Options à bord
+  var opts = window._opts || {};
+  var extras = [];
+  if (opts.wifi)        extras.push('📶 Wi-Fi embarqué');
+  if (opts.eau)         extras.push('💧 Eau minérale');
+  if (opts.usb)         extras.push('🔌 Chargeurs USB');
+  if (opts.confiseries) extras.push('🍬 Confiseries');
+  var extrasLine = extras.length ? extras.join(' · ') : 'Aucun extra';
+
+  // ── Construction du Bon de Commande structuré
+  var sep  = '━━━━━━━━━━━━━━━━━━━━━━━━';
+  var msg  = '';
+  msg += '*📑 NOUVELLE RÉSERVATION — I&N RUN*
+';
+  msg += sep + '
+
+';
+
+  msg += '*🗺️ ITINÉRAIRE*
+';
+  msg += '📍 *Départ :* ' + dep + '
+';
+  msg += '🏁 *Arrivée :* ' + arr + '
+';
+  msg += '📅 *Date/Heure :* ' + time + '
+
+';
+
+  msg += sep + '
+';
+  msg += '*💰 TARIF*
+';
+  msg += '• Montant fixe garanti : *' + price + '*';
+  if (isNuit) msg += ' _(majoration nuit incluse)_';
+  msg += '
+
+';
+
+  msg += sep + '
+';
+  msg += '*✨ SERVICES À BORD*
+';
+  msg += '• Clim : ❄️ ' + clim + '°C
+';
+  msg += '• Ambiance : ' + ambLabel + '
+';
+  msg += '• Extras : ' + extrasLine + '
+
+';
+
+  msg += sep + '
+';
+  msg += '*💳 PAIEMENT*
+';
+  msg += payLabel + '
+
+';
+
+  if (note) {
+    msg += sep + '
+';
+    msg += '*💬 MESSAGE CLIENT*
+';
+    msg += note + '
+
+';
+  }
+
+  msg += sep + '
+';
+  msg += '_Pour valider votre réservation, merci de confirmer votre *NOM complet* 🙏_';
+
+  var url = 'https://wa.me/33767742220?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
 }
+
 function selectLocation(iId,dId,type,name,lat,lon){
   var inp=document.getElementById(iId);
   var fwrap=inp?inp.closest('.f-wrap'):null;
