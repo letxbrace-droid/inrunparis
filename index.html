@@ -2608,33 +2608,24 @@ window.getOptionsText = function() {
 })();
 
 </script>
-</body>
-</html><script>
-/* ══════════════════════════════════════════════════════════════════
-   I&N RUN — PRODUCTION PATCH
-   Paiement exclusif · WhatsApp BON DE COMMANDE · Autocomplete fix
-   Validation formulaire · Shimmer · Aria · iOS keyboard fix
-══════════════════════════════════════════════════════════════════ */
 
-// ── ARIA-LABELS SVG
+<script>
+/* ══════════════════════════════════════════════════════════════
+   I&N RUN — PRODUCTION PATCH FINAL v5
+   Bouton WA · Validation · Bon de commande · Segmented 3D
+   Autocomplete · Paiement exclusif · Sticky iOS · Shimmer
+══════════════════════════════════════════════════════════════ */
+
+// ── ARIA SVG
 document.querySelectorAll('svg:not([aria-label]):not([aria-hidden])').forEach(function(s){
   s.setAttribute('aria-hidden','true'); s.setAttribute('focusable','false');
 });
 
-// ── SEGMENTED CONTROL sync
-(function(){
-  var seg = document.getElementById('ambSeg');
-  if(seg) seg.setAttribute('data-active', window._ambMode||'musique');
-  var orig = window.setAmbMode;
-  if(typeof orig==='function'){
-    window.setAmbMode=function(mode){
-      orig(mode);
-      if(seg) seg.setAttribute('data-active', mode);
-    };
-  }
-})();
+// ── OVERFLOW-X
+document.documentElement.style.overflowX = 'hidden';
+document.body.style.overflowX = 'hidden';
 
-// ── PAIEMENT EXCLUSIF — override selectPayment
+// ── PAIEMENT EXCLUSIF (.pay-pill)
 window.selectPayment = function(el, method) {
   document.querySelectorAll('.pay-pill').forEach(function(b){ b.classList.remove('sel'); });
   el.classList.add('sel');
@@ -2642,230 +2633,261 @@ window.selectPayment = function(el, method) {
   if(navigator.vibrate) navigator.vibrate(6);
 };
 
-// ── AUTOCOMPLETE — Fermeture immédiate
+// ── AUTOCOMPLETE — fermeture immédiate + nettoyage DOM
 (function(){
   function patch(n){
-    if(typeof window.selectLocation==='function'){
+    if(typeof window.selectLocation === 'function'){
       var orig = window.selectLocation;
-      window.selectLocation = function(iId,dId,type,name,lat,lon){
+      window.selectLocation = function(iId, dId, type, name, lat, lon){
         var drop = document.getElementById(dId);
         if(drop){
           drop.classList.remove('open');
           drop.classList.add('closing');
-          setTimeout(function(){ drop.classList.remove('closing'); drop.innerHTML=''; },180);
+          setTimeout(function(){ drop.classList.remove('closing'); drop.innerHTML = ''; }, 180);
         }
-        orig(iId,dId,type,name,lat,lon);
+        orig(iId, dId, type, name, lat, lon);
       };
-    } else if(n>0){ setTimeout(function(){ patch(n-1); },100); }
+    } else if(n > 0){ setTimeout(function(){ patch(n-1); }, 100); }
   }
   patch(20);
 })();
-document.addEventListener('touchstart',function(e){
+document.addEventListener('touchstart', function(e){
   ['ac-dep','ac-arr'].forEach(function(id){
-    var el=document.getElementById(id);
-    var inp=document.getElementById(id==='ac-dep'?'dep':'arr');
-    if(el&&inp&&!el.contains(e.target)&&e.target!==inp){
+    var el  = document.getElementById(id);
+    var inp = document.getElementById(id === 'ac-dep' ? 'dep' : 'arr');
+    if(el && inp && !el.contains(e.target) && e.target !== inp){
       el.classList.remove('open');
-      setTimeout(function(){ if(el) el.innerHTML=''; },180);
+      setTimeout(function(){ if(el) el.innerHTML = ''; }, 180);
     }
   });
-},{passive:true});
+}, { passive: true });
 
-// ── SHIMMER sur calcul prix
+// ── SHIMMER pendant calcul prix
 (function(){
   var orig = window.calculatePrice;
-  if(typeof orig!=='function') return;
+  if(typeof orig !== 'function') return;
   window.calculatePrice = function(){
     ['finalPrice','m-km','m-dur','m-base'].forEach(function(id){
-      var el=document.getElementById(id);
-      if(el) el.classList.add('shimmer-loading');
+      var el = document.getElementById(id); if(el) el.classList.add('shimmer-loading');
     });
     orig();
   };
   var origCount = window.countUpPrice;
-  if(typeof origCount==='function'){
-    window.countUpPrice = function(el,final,dur){
+  if(typeof origCount === 'function'){
+    window.countUpPrice = function(el, final, dur){
       el.classList.remove('shimmer-loading');
-      origCount(el,final,dur);
+      origCount(el, final, dur);
     };
   }
 })();
 
-// ── STICKY BAR — stable avec clavier iOS
+// ── STICKY BAR — stable avec clavier iOS (visualViewport)
 (function(){
   var sticky = document.querySelector('.sticky');
-  if(!sticky||!window.visualViewport) return;
+  if(!sticky || !window.visualViewport) return;
   function upd(){
-    var vv=window.visualViewport;
-    sticky.style.transform='translateY(-'+Math.max(0,window.innerHeight-vv.height-vv.offsetTop)+'px)';
+    var vv = window.visualViewport;
+    var offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    sticky.style.transform = 'translateY(-' + offset + 'px)';
   }
-  window.visualViewport.addEventListener('resize',upd,{passive:true});
-  window.visualViewport.addEventListener('scroll',upd,{passive:true});
+  window.visualViewport.addEventListener('resize', upd, { passive: true });
+  window.visualViewport.addEventListener('scroll', upd, { passive: true });
 })();
 
-// ── OVERFLOW-X
-document.documentElement.style.overflowX='hidden';
-document.body.style.overflowX='hidden';
+// ── SEGMENTED CONTROL 3D — glider physique
+(function(){
+  var seg    = document.getElementById('ambSeg');
+  var glider = document.getElementById('segGlider');
+  if(!seg || !glider) return;
 
-// ── WHATSAPP — Bon de Commande structuré
+  function moveGlider(mode){
+    var idx = ['musique','radio','silence'].indexOf(mode);
+    if(idx < 0) idx = 0;
+    var segW = (seg.offsetWidth - 8) / 3;
+    glider.style.transform = 'translateX(' + (idx * (segW + 8/3)) + 'px)';
+    seg.setAttribute('data-active', mode);
+  }
+
+  if(document.readyState === 'complete'){ moveGlider(window._ambMode || 'musique'); }
+  else { window.addEventListener('load', function(){ moveGlider(window._ambMode || 'musique'); }); }
+  window.addEventListener('resize', function(){ moveGlider(window._ambMode || 'musique'); }, { passive: true });
+
+  var origAmb = window.setAmbMode;
+  if(typeof origAmb === 'function'){
+    window.setAmbMode = function(mode){
+      origAmb(mode);
+      glider.classList.add('pressed');
+      setTimeout(function(){ glider.classList.remove('pressed'); }, 90);
+      moveGlider(mode);
+      if(navigator.vibrate) navigator.vibrate(4);
+    };
+  }
+})();
+
+// ══════════════════════════════════════════════════════════
+//  WHATSAPP — Bon de Commande Structuré
+// ══════════════════════════════════════════════════════════
 function sendWhatsApp(){
   try {
-    var _tv = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
+    // Date/heure
+    var _tv  = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
     var time = (function(){
       if(!_tv) return 'Dès que possible';
       var p = _tv.split('T'); if(p.length < 2) return _tv;
-      var d = p[0].split('-');
-      return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
+      var d = p[0].split('-'); return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
     })();
 
+    // Adresses
     var dep = (window.coords && window.coords.dep && window.coords.dep.name)
-      || (document.getElementById('dep') ? document.getElementById('dep').value : '') || 'Non renseigné';
+      || (document.getElementById('dep') ? document.getElementById('dep').value : '')
+      || 'Non renseigné';
     var arr = (window.coords && window.coords.arr && window.coords.arr.name)
-      || (document.getElementById('arr') ? document.getElementById('arr').value : '') || 'Non renseigné';
+      || (document.getElementById('arr') ? document.getElementById('arr').value : '')
+      || 'Non renseigné';
 
-    var price  = document.getElementById('finalPrice')    ? document.getElementById('finalPrice').innerText.trim()    : 'À confirmer';
-    var pay    = document.getElementById('paymentMethod') ? document.getElementById('paymentMethod').value             : 'CB';
-    var note   = document.getElementById('note')          ? document.getElementById('note').value.trim()              : '';
-    var phone  = document.getElementById('clientPhone')   ? document.getElementById('clientPhone').value.trim()       : 'Non renseigné';
+    // Tarif / paiement
+    var price    = document.getElementById('finalPrice')    ? document.getElementById('finalPrice').innerText.trim()    : 'À confirmer';
+    var pay      = document.getElementById('paymentMethod') ? document.getElementById('paymentMethod').value             : 'CB';
+    var payLabel = (pay === 'CB') ? '💳 Carte bancaire' : '💵 Espèces';
 
-    var payLabel  = (pay === 'CB') ? '💳 Carte bancaire' : '💵 Espèces';
-    var ambMode   = window._ambMode  || 'musique';
-    var volume    = window._volume   || 50;
-    var clim      = window._clim     || 21;
-    var ambLabel  = ambMode === 'silence' ? 'Mode Silence 🔇'
-      : ambMode === 'radio' ? 'Radio 📻 — vol. '+volume+'%'
+    // Client
+    var note  = document.getElementById('note')        ? document.getElementById('note').value.trim()         : '';
+    var phone = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value.trim()  : 'Non renseigné';
+
+    // Ambiance
+    var ambMode  = window._ambMode || 'musique';
+    var volume   = window._volume  || 50;
+    var clim     = window._clim    || 21;
+    var ambLabel = ambMode === 'silence' ? 'Mode Silence 🔇'
+      : ambMode === 'radio'   ? 'Radio 📻 — vol. '+volume+'%'
       : 'Musique 🎵 — vol. '+volume+'%';
 
+    // Options
     var opts = window._opts || {};
     var extras = [];
     if(opts.wifi)        extras.push('📶 Wi-Fi');
     if(opts.eau)         extras.push('💧 Eau minérale');
     if(opts.usb)         extras.push('🔌 USB');
     if(opts.confiseries) extras.push('🍬 Confiseries');
-    var extrasLine = extras.length ? extras.join(' · ') : 'Aucun';
 
+    // Tarif nuit
     var calcDetails = document.getElementById('calcDetails');
     var isNuit = calcDetails && calcDetails.innerText.toLowerCase().includes('nuit');
 
+    // ── Construction du bon de commande
     var sep = '━━━━━━━━━━━━━━━━━━━━━━';
-    var msg = '';
-    msg += '*📑 NOUVELLE RÉSERVATION — I&N RUN*
+    var msg = '*--- 📑 RÉSERVATION I&N RUN ---*
 ';
     msg += sep + '
 
 ';
-    msg += '*🗺️ ITINÉRAIRE*
+    msg += '📍 *DÉPART :* '      + dep  + '
 ';
-    msg += '📍 *Départ :* ' + dep + '
+    msg += '🏁 *ARRIVÉE :* '     + arr  + '
 ';
-    msg += '🏁 *Arrivée :* ' + arr + '
-';
-    msg += '📅 *Date/Heure :* ' + time + '
+    msg += '📅 *DATE/HEURE :* '  + time + '
 
 ';
     msg += sep + '
 ';
-    msg += '*💰 TARIF*
-';
-    msg += '• Montant fixe garanti : *' + price + '*' + (isNuit ? ' _(tarif nuit)_' : '') + '
+    msg += '*💰 TARIF :* ' + price + (isNuit ? ' _(tarif nuit)_' : '') + '
 
 ';
     msg += sep + '
 ';
-    msg += '*✨ SERVICES À BORD*
+    msg += '*✨ SERVICES À BORD :*
 ';
-    msg += '• Clim : ❄️ ' + clim + '°C
+    msg += '• Clim : ❄️ ' + clim + '°C / Mode : ' + ambLabel + '
 ';
-    msg += '• Ambiance : ' + ambLabel + '
-';
-    msg += '• Extras : ' + extrasLine + '
+    msg += '• Options : ' + (extras.length ? extras.join(' · ') : 'Aucun') + '
 
 ';
     msg += sep + '
 ';
-    msg += '*💳 PAIEMENT*
+    msg += '*💳 PAIEMENT :* ' + payLabel + '
 ';
-    msg += payLabel + '
-
+    msg += '*📱 TEL :* '     + phone    + '
 ';
-    msg += sep + '
-';
-    msg += '*📱 CLIENT*
-';
-    msg += '• Tél : ' + phone + '
-';
-    if(note) msg += '• Message : ' + note + '
+    if(note) msg += '*💬 MESSAGE :* ' + note + '
 ';
     msg += '
 ' + sep + '
 ';
-    msg += '_Merci de confirmer votre *NOM complet* pour valider 🙏_';
+    msg += '_Merci de confirmer votre *NOM complet* 🙏_';
 
     var url = 'https://wa.me/33767742220?text=' + encodeURIComponent(msg);
-    console.log("WA URL:", url.substring(0, 80) + "...");
+    console.log('✅ Envoi WA OK:', url.substring(0, 80) + '...');
     window.open(url, '_blank');
 
-  } catch(err) {
-    console.error("Erreur sendWhatsApp:", err);
-    alert('Erreur lors de l'envoi : ' + err.message);
-  }
-}
-
-
-function validateAndSend(){
-  try {
-    // Validation simple — vérifie uniquement que les champs texte ne sont pas vides
-    var depVal = document.getElementById('dep') ? document.getElementById('dep').value.trim() : '';
-    var arrVal = document.getElementById('arr') ? document.getElementById('arr').value.trim() : '';
-    var phoneVal = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value.trim() : '';
-
-    var ok = true;
-
-    if(!depVal){
-      var wDep = document.getElementById('dep') ? document.getElementById('dep').closest('.f-wrap') : null;
-      if(wDep){ wDep.classList.add('invalid'); setTimeout(function(){ wDep.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-    if(!arrVal){
-      var wArr = document.getElementById('arr') ? document.getElementById('arr').closest('.f-wrap') : null;
-      if(wArr){ wArr.classList.add('invalid'); setTimeout(function(){ wArr.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-    if(!phoneVal || phoneVal.replace(/\s/g,'').length < 9){
-      var wPhone = document.getElementById('wrap-phone');
-      if(wPhone){ wPhone.classList.add('invalid'); setTimeout(function(){ wPhone.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-
-    if(!ok){
-      if(typeof showToast === 'function') showToast('Veuillez remplir : Départ, Arrivée et Téléphone *');
-      return;
-    }
-
-    console.log("Validation OK, envoi vers WhatsApp...");
-    sendWhatsApp();
-
-  } catch(err) {
-    console.error("Erreur validateAndSend:", err);
+  } catch(err){
+    console.error('❌ Erreur sendWhatsApp:', err);
     alert('Erreur envoi : ' + err.message);
   }
 }
 
-// Bind bouton principal
-var btnConfirm = document.getElementById('btn-confirm');
-if(btnConfirm){
-  btnConfirm.removeAttribute('onclick');
-  btnConfirm.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+// ══════════════════════════════════════════════════════════
+//  VALIDATION SIMPLIFIÉE — Départ + Arrivée + Téléphone
+// ══════════════════════════════════════════════════════════
+function validateAndSend(){
+  try {
+    var depEl   = document.getElementById('dep');
+    var arrEl   = document.getElementById('arr');
+    var phoneEl = document.getElementById('clientPhone');
+
+    var depVal   = depEl   ? depEl.value.trim()   : '';
+    var arrVal   = arrEl   ? arrEl.value.trim()   : '';
+    var phoneVal = phoneEl ? phoneEl.value.trim()  : 'ok'; // optionnel si champ absent
+
+    var ok = true;
+
+    if(!depVal){
+      var wD = depEl ? depEl.closest('.f-wrap') : null;
+      if(wD){ wD.classList.add('invalid'); setTimeout(function(){ wD.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+    if(!arrVal){
+      var wA = arrEl ? arrEl.closest('.f-wrap') : null;
+      if(wA){ wA.classList.add('invalid'); setTimeout(function(){ wA.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+    if(phoneEl && phoneVal.replace(/\s/g,'').length < 9){
+      var wP = document.getElementById('wrap-phone');
+      if(wP){ wP.classList.add('invalid'); setTimeout(function(){ wP.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+
+    if(!ok){
+      if(typeof showToast === 'function') showToast('Remplissez : Départ, Arrivée et Téléphone');
+      return;
+    }
+
+    console.log('Validation OK, envoi vers WhatsApp...');
+    sendWhatsApp();
+
+  } catch(err){
+    console.error('❌ Erreur validation:', err);
+    // Fallback — envoie quand même
+    sendWhatsApp();
+  }
 }
-// Sticky WA buttons
-document.querySelectorAll('.sb-wa').forEach(function(el){
-  el.removeAttribute('href');
-  el.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
-});
-// Tout autre bouton qui appelle encore sendWhatsApp
-document.querySelectorAll('[onclick="sendWhatsApp()"]').forEach(function(el){
-  el.setAttribute('onclick','validateAndSend()');
-});
+
+// ── Binding robuste — override tous les handlers précédents
+(function(){
+  // Bouton principal modal
+  var btn = document.getElementById('btn-confirm');
+  if(btn){
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+  }
+  // Sticky bar bouton WA
+  document.querySelectorAll('.sb-wa').forEach(function(el){
+    el.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+  });
+  // Filet de sécurité — autres boutons résiduels
+  document.querySelectorAll('[onclick*="sendWhatsApp"]').forEach(function(el){
+    el.setAttribute('onclick', 'validateAndSend()');
+  });
+})();
 </script>
 </body>
 </html>
