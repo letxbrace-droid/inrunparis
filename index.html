@@ -1518,9 +1518,9 @@ body {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           Appeler
         </button>
-        <button class="nav-btn wa" onclick="sendWhatsApp()">
+        <button class="nav-btn wa" id="btn-confirm" onclick="validateAndSend()">
           <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Confirmer l'itinéraire
+          Réserver mon chauffeur
         </button>
       </div>
     </div>
@@ -2709,122 +2709,162 @@ document.body.style.overflowX='hidden';
 
 // ── WHATSAPP — Bon de Commande structuré
 function sendWhatsApp(){
-  // Récupération variables
-  var _tv = document.getElementById('timepick')?document.getElementById('timepick').value:'';
-  var time=(function(){
-    if(!_tv) return 'Dès que possible';
-    var p=_tv.split('T'); if(p.length<2) return _tv;
-    var d=p[0].split('-'); return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
-  })();
-  var dep=(window.coords&&coords.dep&&coords.dep.name)||(document.getElementById('dep')?document.getElementById('dep').value:'')||'Non renseigné';
-  var arr=(window.coords&&coords.arr&&coords.arr.name)||(document.getElementById('arr')?document.getElementById('arr').value:'')||'Non renseigné';
-  var price=document.getElementById('finalPrice')?document.getElementById('finalPrice').innerText.trim():'À confirmer';
-  var pay=document.getElementById('paymentMethod')?document.getElementById('paymentMethod').value:'CB';
-  var payLabel=pay==='CB'?'💳 Carte bancaire':'💵 Espèces';
-  var note=document.getElementById('note')?document.getElementById('note').value.trim():'';
-  var phone=document.getElementById('clientPhone')?document.getElementById('clientPhone').value.trim():'Non renseigné';
-  var ambMode=window._ambMode||'musique';
-  var volume=window._volume||50;
-  var clim=window._clim||21;
-  var ambLabel=ambMode==='silence'?'Mode Silence 🔇':ambMode==='radio'?'Radio 📻 — vol. '+volume+'%':'Musique 🎵 — vol. '+volume+'%';
-  var opts=window._opts||{};
-  var extras=[];
-  if(opts.wifi) extras.push('📶 Wi-Fi');
-  if(opts.eau) extras.push('💧 Eau minérale');
-  if(opts.usb) extras.push('🔌 USB');
-  if(opts.confiseries) extras.push('🍬 Confiseries');
-  var extrasLine=extras.length?extras.join(' · '):'Aucun extra';
-  var calcDetails=document.getElementById('calcDetails');
-  var isNuit=calcDetails&&calcDetails.innerText.toLowerCase().includes('nuit');
+  try {
+    var _tv = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
+    var time = (function(){
+      if(!_tv) return 'Dès que possible';
+      var p = _tv.split('T'); if(p.length < 2) return _tv;
+      var d = p[0].split('-');
+      return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
+    })();
 
-  // Construction du bon de commande
-  var sep='━━━━━━━━━━━━━━━━━━━━━━';
-  var msg='';
-  msg+='*📑 NOUVELLE RÉSERVATION — I&N RUN*
-';
-  msg+=sep+'
+    var dep = (window.coords && window.coords.dep && window.coords.dep.name)
+      || (document.getElementById('dep') ? document.getElementById('dep').value : '') || 'Non renseigné';
+    var arr = (window.coords && window.coords.arr && window.coords.arr.name)
+      || (document.getElementById('arr') ? document.getElementById('arr').value : '') || 'Non renseigné';
 
-';
-  msg+='*🗺️ ITINÉRAIRE*
-';
-  msg+='📍 *Départ :* '+dep+'
-';
-  msg+='🏁 *Arrivée :* '+arr+'
-';
-  msg+='📅 *Date/Heure :* '+time+'
+    var price  = document.getElementById('finalPrice')    ? document.getElementById('finalPrice').innerText.trim()    : 'À confirmer';
+    var pay    = document.getElementById('paymentMethod') ? document.getElementById('paymentMethod').value             : 'CB';
+    var note   = document.getElementById('note')          ? document.getElementById('note').value.trim()              : '';
+    var phone  = document.getElementById('clientPhone')   ? document.getElementById('clientPhone').value.trim()       : 'Non renseigné';
 
+    var payLabel  = (pay === 'CB') ? '💳 Carte bancaire' : '💵 Espèces';
+    var ambMode   = window._ambMode  || 'musique';
+    var volume    = window._volume   || 50;
+    var clim      = window._clim     || 21;
+    var ambLabel  = ambMode === 'silence' ? 'Mode Silence 🔇'
+      : ambMode === 'radio' ? 'Radio 📻 — vol. '+volume+'%'
+      : 'Musique 🎵 — vol. '+volume+'%';
+
+    var opts = window._opts || {};
+    var extras = [];
+    if(opts.wifi)        extras.push('📶 Wi-Fi');
+    if(opts.eau)         extras.push('💧 Eau minérale');
+    if(opts.usb)         extras.push('🔌 USB');
+    if(opts.confiseries) extras.push('🍬 Confiseries');
+    var extrasLine = extras.length ? extras.join(' · ') : 'Aucun';
+
+    var calcDetails = document.getElementById('calcDetails');
+    var isNuit = calcDetails && calcDetails.innerText.toLowerCase().includes('nuit');
+
+    var sep = '━━━━━━━━━━━━━━━━━━━━━━';
+    var msg = '';
+    msg += '*📑 NOUVELLE RÉSERVATION — I&N RUN*
 ';
-  msg+=sep+'
-';
-  msg+='*💰 TARIF*
-';
-  msg+='• Montant fixe garanti : *'+price+'*'+(isNuit?' _(tarif nuit)_':'')+'
+    msg += sep + '
 
 ';
-  msg+=sep+'
+    msg += '*🗺️ ITINÉRAIRE*
 ';
-  msg+='*✨ SERVICES À BORD*
+    msg += '📍 *Départ :* ' + dep + '
 ';
-  msg+='• Clim : ❄️ '+clim+'°C
+    msg += '🏁 *Arrivée :* ' + arr + '
 ';
-  msg+='• Ambiance : '+ambLabel+'
-';
-  msg+='• Extras : '+extrasLine+'
+    msg += '📅 *Date/Heure :* ' + time + '
 
 ';
-  msg+=sep+'
+    msg += sep + '
 ';
-  msg+='*💳 PAIEMENT*
+    msg += '*💰 TARIF*
 ';
-  msg+=payLabel+'
+    msg += '• Montant fixe garanti : *' + price + '*' + (isNuit ? ' _(tarif nuit)_' : '') + '
 
 ';
-  msg+=sep+'
+    msg += sep + '
 ';
-  msg+='*📱 CLIENT*
+    msg += '*✨ SERVICES À BORD*
 ';
-  msg+='• Tél : '+phone+'
+    msg += '• Clim : ❄️ ' + clim + '°C
 ';
-  if(note) msg+='• Message : '+note+'
+    msg += '• Ambiance : ' + ambLabel + '
 ';
-  msg+='
-'+sep+'
+    msg += '• Extras : ' + extrasLine + '
+
 ';
-  msg+='_Merci de confirmer votre *NOM complet* pour valider 🙏_';
+    msg += sep + '
+';
+    msg += '*💳 PAIEMENT*
+';
+    msg += payLabel + '
 
-  window.open('https://wa.me/33767742220?text='+encodeURIComponent(msg),'_blank');
-}
+';
+    msg += sep + '
+';
+    msg += '*📱 CLIENT*
+';
+    msg += '• Tél : ' + phone + '
+';
+    if(note) msg += '• Message : ' + note + '
+';
+    msg += '
+' + sep + '
+';
+    msg += '_Merci de confirmer votre *NOM complet* pour valider 🙏_';
 
-// ── VALIDATION + SEND
-function validateAndSend(){
-  var ok=true;
-  var depVal=(window.coords&&coords.dep&&coords.dep.name)||(document.getElementById('dep')?document.getElementById('dep').value.trim():'');
-  var wDep=document.getElementById('dep')?document.getElementById('dep').closest('.f-wrap'):null;
-  if(!depVal){ if(wDep){wDep.classList.add('invalid');setTimeout(function(){wDep.classList.remove('invalid');},600);} ok=false; }
+    var url = 'https://wa.me/33767742220?text=' + encodeURIComponent(msg);
+    console.log("WA URL:", url.substring(0, 80) + "...");
+    window.open(url, '_blank');
 
-  var arrVal=(window.coords&&coords.arr&&coords.arr.name)||(document.getElementById('arr')?document.getElementById('arr').value.trim():'');
-  var wArr=document.getElementById('arr')?document.getElementById('arr').closest('.f-wrap'):null;
-  if(!arrVal){ if(wArr){wArr.classList.add('invalid');setTimeout(function(){wArr.classList.remove('invalid');},600);} ok=false; }
-
-  var phoneEl=document.getElementById('clientPhone');
-  var phoneVal=phoneEl?phoneEl.value.trim():'';
-  var wPhone=document.getElementById('wrap-phone');
-  if(!phoneVal||phoneVal.replace(/\s/g,'').length<9){ if(wPhone){wPhone.classList.add('invalid');setTimeout(function(){wPhone.classList.remove('invalid');},600);} ok=false; }
-
-  if(!ok){
-    if(typeof showToast==='function') showToast('Veuillez remplir tous les champs obligatoires *');
-    return;
+  } catch(err) {
+    console.error("Erreur sendWhatsApp:", err);
+    alert('Erreur lors de l'envoi : ' + err.message);
   }
-  sendWhatsApp();
 }
 
-// Remplace tous les onclick sendWhatsApp() par validateAndSend()
-document.querySelectorAll('[onclick="sendWhatsApp()"]').forEach(function(el){
-  el.setAttribute('onclick','validateAndSend()');
-});
+
+function validateAndSend(){
+  try {
+    // Validation simple — vérifie uniquement que les champs texte ne sont pas vides
+    var depVal = document.getElementById('dep') ? document.getElementById('dep').value.trim() : '';
+    var arrVal = document.getElementById('arr') ? document.getElementById('arr').value.trim() : '';
+    var phoneVal = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value.trim() : '';
+
+    var ok = true;
+
+    if(!depVal){
+      var wDep = document.getElementById('dep') ? document.getElementById('dep').closest('.f-wrap') : null;
+      if(wDep){ wDep.classList.add('invalid'); setTimeout(function(){ wDep.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+    if(!arrVal){
+      var wArr = document.getElementById('arr') ? document.getElementById('arr').closest('.f-wrap') : null;
+      if(wArr){ wArr.classList.add('invalid'); setTimeout(function(){ wArr.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+    if(!phoneVal || phoneVal.replace(/\s/g,'').length < 9){
+      var wPhone = document.getElementById('wrap-phone');
+      if(wPhone){ wPhone.classList.add('invalid'); setTimeout(function(){ wPhone.classList.remove('invalid'); }, 700); }
+      ok = false;
+    }
+
+    if(!ok){
+      if(typeof showToast === 'function') showToast('Veuillez remplir : Départ, Arrivée et Téléphone *');
+      return;
+    }
+
+    console.log("Validation OK, envoi vers WhatsApp...");
+    sendWhatsApp();
+
+  } catch(err) {
+    console.error("Erreur validateAndSend:", err);
+    alert('Erreur envoi : ' + err.message);
+  }
+}
+
+// Bind bouton principal
+var btnConfirm = document.getElementById('btn-confirm');
+if(btnConfirm){
+  btnConfirm.removeAttribute('onclick');
+  btnConfirm.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+}
 // Sticky WA buttons
 document.querySelectorAll('.sb-wa').forEach(function(el){
-  el.addEventListener('click',function(e){ e.preventDefault(); validateAndSend(); });
+  el.removeAttribute('href');
+  el.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+});
+// Tout autre bouton qui appelle encore sendWhatsApp
+document.querySelectorAll('[onclick="sendWhatsApp()"]').forEach(function(el){
+  el.setAttribute('onclick','validateAndSend()');
 });
 </script>
 </body>
