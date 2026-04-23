@@ -2876,5 +2876,48 @@ window.addEventListener('load', _bindAll);
 })();
 
 </script>
+
+<script>
+/* ══════════════════════════════════════════
+   FIX DEFINITIF — Bouton "Réserver mon chauffeur"
+   touchend = jamais bloqué par touch-action ni drag handler
+══════════════════════════════════════════ */
+(function() {
+  function bindReserverBtn() {
+    var btn = document.getElementById('btn-confirm');
+    if (!btn) return;
+
+    btn.removeAttribute('onclick');
+
+    btn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof validateAndSend === 'function') validateAndSend();
+    }, { passive: false });
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (typeof validateAndSend === 'function') validateAndSend();
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    bindReserverBtn();
+  } else {
+    window.addEventListener('load', bindReserverBtn);
+  }
+
+  var modal = document.getElementById('customModal');
+  if (modal) {
+    new MutationObserver(function(muts) {
+      muts.forEach(function(m) {
+        if (m.attributeName === 'class' && modal.classList.contains('show')) {
+          setTimeout(bindReserverBtn, 30);
+        }
+      });
+    }).observe(modal, { attributes: true });
+  }
+})();
+</script>
 </body>
 </html>
