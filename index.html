@@ -255,8 +255,8 @@ h1 {
 .avis-voir-plus:active { transform:scale(0.94); color:var(--t1); }
 
 /* ══ STEPPER ══════════════════════════════════════════════ */
-.tunnel { padding:14px 0 0; position:relative; z-index:1; overflow:hidden; }
-#stepperWrap { padding:0 max(14px,var(--safe-l)); max-width:var(--max-w); margin:0 auto 14px; overflow:hidden; }
+.tunnel { padding:14px 0 0; position:relative; z-index:1; overflow:visible; }
+#stepperWrap { padding:0 max(14px,var(--safe-l)); max-width:var(--max-w); margin:0 auto 14px; overflow:visible; }
 .stepper { display:flex; align-items:center; justify-content:center; }
 .stepper-item { display:flex; flex-direction:column; align-items:center; gap:5px; }
 .stepper-circle {
@@ -866,7 +866,7 @@ body { background: var(--ink); }
   border-radius:24px 24px 0 0;
   pointer-events:none;
 }
-.card { position:relative; overflow:hidden; }
+.card { position:relative; overflow:visible; }
 
 /* ── 4. TYPOGRAPHIE LUXE ── */
 h1 { letter-spacing: 0.5px !important; }
