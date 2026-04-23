@@ -1012,10 +1012,19 @@ h1 { letter-spacing: 0.5px !important; }
 /* ── 11. MODAL SWIPE TO CLOSE ── */
 .modal-box-price {
   touch-action: pan-y;
-  cursor: grab;
+  cursor: default;
   user-select: none;
 }
-.modal-box-price:active { cursor: grabbing; }
+.modal-box-price:active { cursor: default; }
+/* Fix critique : les boutons dans le modal doivent recevoir les taps */
+.modal-box-price .nav-btn,
+.navbar-cta .nav-btn,
+#btn-confirm {
+  touch-action: manipulation !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent;
+}
 
 /* ── 12. SAFE ZONES iOS/Android ── */
 body {
@@ -2611,21 +2620,14 @@ window.getOptionsText = function() {
 
 <script>
 /* ══════════════════════════════════════════════════════════════
-   I&N RUN — PRODUCTION PATCH FINAL v5
-   Bouton WA · Validation · Bon de commande · Segmented 3D
-   Autocomplete · Paiement exclusif · Sticky iOS · Shimmer
+   I&N RUN — PATCH FINAL DÉFINITIF v7
+   URL HTTPS wa.me · window.location.assign · Validation brute
 ══════════════════════════════════════════════════════════════ */
 
-// ── ARIA SVG
-document.querySelectorAll('svg:not([aria-label]):not([aria-hidden])').forEach(function(s){
-  s.setAttribute('aria-hidden','true'); s.setAttribute('focusable','false');
-});
-
-// ── OVERFLOW-X
 document.documentElement.style.overflowX = 'hidden';
 document.body.style.overflowX = 'hidden';
 
-// ── PAIEMENT EXCLUSIF (.pay-pill)
+// ── PAIEMENT EXCLUSIF
 window.selectPayment = function(el, method) {
   document.querySelectorAll('.pay-pill').forEach(function(b){ b.classList.remove('sel'); });
   el.classList.add('sel');
@@ -2633,18 +2635,15 @@ window.selectPayment = function(el, method) {
   if(navigator.vibrate) navigator.vibrate(6);
 };
 
-// ── AUTOCOMPLETE — fermeture immédiate + nettoyage DOM
+// ── AUTOCOMPLETE fermeture immédiate
 (function(){
   function patch(n){
     if(typeof window.selectLocation === 'function'){
       var orig = window.selectLocation;
       window.selectLocation = function(iId, dId, type, name, lat, lon){
         var drop = document.getElementById(dId);
-        if(drop){
-          drop.classList.remove('open');
-          drop.classList.add('closing');
-          setTimeout(function(){ drop.classList.remove('closing'); drop.innerHTML = ''; }, 180);
-        }
+        if(drop){ drop.classList.remove('open'); drop.classList.add('closing');
+          setTimeout(function(){ drop.classList.remove('closing'); drop.innerHTML = ''; }, 180); }
         orig(iId, dId, type, name, lat, lon);
       };
     } else if(n > 0){ setTimeout(function(){ patch(n-1); }, 100); }
@@ -2653,7 +2652,7 @@ window.selectPayment = function(el, method) {
 })();
 document.addEventListener('touchstart', function(e){
   ['ac-dep','ac-arr'].forEach(function(id){
-    var el  = document.getElementById(id);
+    var el = document.getElementById(id);
     var inp = document.getElementById(id === 'ac-dep' ? 'dep' : 'arr');
     if(el && inp && !el.contains(e.target) && e.target !== inp){
       el.classList.remove('open');
@@ -2662,56 +2661,20 @@ document.addEventListener('touchstart', function(e){
   });
 }, { passive: true });
 
-// ── SHIMMER pendant calcul prix
+// ── SEGMENTED CONTROL 3D glider
 (function(){
-  var orig = window.calculatePrice;
-  if(typeof orig !== 'function') return;
-  window.calculatePrice = function(){
-    ['finalPrice','m-km','m-dur','m-base'].forEach(function(id){
-      var el = document.getElementById(id); if(el) el.classList.add('shimmer-loading');
-    });
-    orig();
-  };
-  var origCount = window.countUpPrice;
-  if(typeof origCount === 'function'){
-    window.countUpPrice = function(el, final, dur){
-      el.classList.remove('shimmer-loading');
-      origCount(el, final, dur);
-    };
-  }
-})();
-
-// ── STICKY BAR — stable avec clavier iOS (visualViewport)
-(function(){
-  var sticky = document.querySelector('.sticky');
-  if(!sticky || !window.visualViewport) return;
-  function upd(){
-    var vv = window.visualViewport;
-    var offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-    sticky.style.transform = 'translateY(-' + offset + 'px)';
-  }
-  window.visualViewport.addEventListener('resize', upd, { passive: true });
-  window.visualViewport.addEventListener('scroll', upd, { passive: true });
-})();
-
-// ── SEGMENTED CONTROL 3D — glider physique
-(function(){
-  var seg    = document.getElementById('ambSeg');
+  var seg = document.getElementById('ambSeg');
   var glider = document.getElementById('segGlider');
   if(!seg || !glider) return;
-
   function moveGlider(mode){
-    var idx = ['musique','radio','silence'].indexOf(mode);
-    if(idx < 0) idx = 0;
+    var idx = ['musique','radio','silence'].indexOf(mode); if(idx < 0) idx = 0;
     var segW = (seg.offsetWidth - 8) / 3;
     glider.style.transform = 'translateX(' + (idx * (segW + 8/3)) + 'px)';
     seg.setAttribute('data-active', mode);
   }
-
   if(document.readyState === 'complete'){ moveGlider(window._ambMode || 'musique'); }
   else { window.addEventListener('load', function(){ moveGlider(window._ambMode || 'musique'); }); }
-  window.addEventListener('resize', function(){ moveGlider(window._ambMode || 'musique'); }, { passive: true });
-
+  window.addEventListener('resize', function(){ moveGlider(window._ambMode || 'musique'); }, {passive:true});
   var origAmb = window.setAmbMode;
   if(typeof origAmb === 'function'){
     window.setAmbMode = function(mode){
@@ -2724,170 +2687,184 @@ document.addEventListener('touchstart', function(e){
   }
 })();
 
-// ══════════════════════════════════════════════════════════
-//  WHATSAPP — Bon de Commande Structuré
-// ══════════════════════════════════════════════════════════
+// ── STICKY BAR stable iOS
+(function(){
+  var sticky = document.querySelector('.sticky');
+  if(!sticky || !window.visualViewport) return;
+  function upd(){
+    var vv = window.visualViewport;
+    sticky.style.transform = 'translateY(-' + Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px)';
+  }
+  window.visualViewport.addEventListener('resize', upd, {passive:true});
+  window.visualViewport.addEventListener('scroll', upd, {passive:true});
+})();
+
+// ══════════════════════════════════════════════════════
+//  WHATSAPP — URL HTTPS officielle
+// ══════════════════════════════════════════════════════
 function sendWhatsApp(){
-  try {
-    // Date/heure
-    var _tv  = document.getElementById('timepick') ? document.getElementById('timepick').value : '';
-    var time = (function(){
-      if(!_tv) return 'Dès que possible';
-      var p = _tv.split('T'); if(p.length < 2) return _tv;
-      var d = p[0].split('-'); return d[2]+'/'+d[1]+'/'+d[0]+' à '+p[1];
-    })();
+  var dep   = (document.getElementById('dep')   || {}).value   || 'Non rensigne';
+  var arr   = (document.getElementById('arr')   || {}).value   || 'Non rensigne';
+  var price = ((document.getElementById('finalPrice')    || {}).innerText || 'A confirmer').trim();
+  var pay   = ((document.getElementById('paymentMethod') || {}).value)    || 'CB';
+  var note  = ((document.getElementById('note')          || {}).value     || '').trim();
+  var phone = ((document.getElementById('clientPhone')   || {}).value     || '').trim();
 
-    // Adresses
-    var dep = (window.coords && window.coords.dep && window.coords.dep.name)
-      || (document.getElementById('dep') ? document.getElementById('dep').value : '')
-      || 'Non renseigné';
-    var arr = (window.coords && window.coords.arr && window.coords.arr.name)
-      || (document.getElementById('arr') ? document.getElementById('arr').value : '')
-      || 'Non renseigné';
+  var _tv = (document.getElementById('timepick') || {}).value || '';
+  var time = 'Des que possible';
+  if(_tv){ var p=_tv.split('T'); if(p.length>=2){ var d=p[0].split('-'); time=d[2]+'/'+d[1]+'/'+d[0]+' a '+p[1]; } }
 
-    // Tarif / paiement
-    var price    = document.getElementById('finalPrice')    ? document.getElementById('finalPrice').innerText.trim()    : 'À confirmer';
-    var pay      = document.getElementById('paymentMethod') ? document.getElementById('paymentMethod').value             : 'CB';
-    var payLabel = (pay === 'CB') ? '💳 Carte bancaire' : '💵 Espèces';
+  var payLabel = (pay === 'CB') ? 'Carte bancaire' : 'Especes';
+  var ambMode  = window._ambMode || 'musique';
+  var volume   = window._volume  || 50;
+  var clim     = window._clim    || 21;
+  var ambLabel = ambMode === 'silence' ? 'Mode Silence'
+    : ambMode === 'radio' ? 'Radio - vol. ' + volume + '%'
+    : 'Musique - vol. ' + volume + '%';
+  var opts = window._opts || {};
+  var extras = [];
+  if(opts.wifi)        extras.push('Wi-Fi');
+  if(opts.eau)         extras.push('Eau minerale');
+  if(opts.usb)         extras.push('USB');
+  if(opts.confiseries) extras.push('Confiseries');
 
-    // Client
-    var note  = document.getElementById('note')        ? document.getElementById('note').value.trim()         : '';
-    var phone = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value.trim()  : 'Non renseigné';
-
-    // Ambiance
-    var ambMode  = window._ambMode || 'musique';
-    var volume   = window._volume  || 50;
-    var clim     = window._clim    || 21;
-    var ambLabel = ambMode === 'silence' ? 'Mode Silence 🔇'
-      : ambMode === 'radio'   ? 'Radio 📻 — vol. '+volume+'%'
-      : 'Musique 🎵 — vol. '+volume+'%';
-
-    // Options
-    var opts = window._opts || {};
-    var extras = [];
-    if(opts.wifi)        extras.push('📶 Wi-Fi');
-    if(opts.eau)         extras.push('💧 Eau minérale');
-    if(opts.usb)         extras.push('🔌 USB');
-    if(opts.confiseries) extras.push('🍬 Confiseries');
-
-    // Tarif nuit
-    var calcDetails = document.getElementById('calcDetails');
-    var isNuit = calcDetails && calcDetails.innerText.toLowerCase().includes('nuit');
-
-    // ── Construction du bon de commande
-    var sep = '━━━━━━━━━━━━━━━━━━━━━━';
-    var msg = '*--- 📑 RÉSERVATION I&N RUN ---*
+  var sep = '------------------------';
+  var msg = '';
+  msg += '*--- RESERVATION I&N RUN ---*' + '
 ';
-    msg += sep + '
+  msg += sep + '
 
 ';
-    msg += '📍 *DÉPART :* '      + dep  + '
+  msg += '*DEPART :* ' + dep + '
 ';
-    msg += '🏁 *ARRIVÉE :* '     + arr  + '
+  msg += '*ARRIVEE :* ' + arr + '
 ';
-    msg += '📅 *DATE/HEURE :* '  + time + '
+  msg += '*DATE/HEURE :* ' + time + '
 
 ';
-    msg += sep + '
+  msg += sep + '
 ';
-    msg += '*💰 TARIF :* ' + price + (isNuit ? ' _(tarif nuit)_' : '') + '
+  msg += '*TARIF :* ' + price + '
 
 ';
-    msg += sep + '
+  msg += sep + '
 ';
-    msg += '*✨ SERVICES À BORD :*
+  msg += '*SERVICES A BORD :*
 ';
-    msg += '• Clim : ❄️ ' + clim + '°C / Mode : ' + ambLabel + '
+  msg += '- Clim : ' + clim + 'C / Mode : ' + ambLabel + '
 ';
-    msg += '• Options : ' + (extras.length ? extras.join(' · ') : 'Aucun') + '
+  msg += '- Options : ' + (extras.length ? extras.join(', ') : 'Aucun') + '
 
 ';
-    msg += sep + '
+  msg += sep + '
 ';
-    msg += '*💳 PAIEMENT :* ' + payLabel + '
+  msg += '*PAIEMENT :* ' + payLabel + '
 ';
-    msg += '*📱 TEL :* '     + phone    + '
+  if(phone) msg += '*TEL :* ' + phone + '
 ';
-    if(note) msg += '*💬 MESSAGE :* ' + note + '
+  if(note)  msg += '*MESSAGE :* ' + note + '
 ';
-    msg += '
+  msg += '
 ' + sep + '
 ';
-    msg += '_Merci de confirmer votre *NOM complet* 🙏_';
+  msg += 'Merci de confirmer votre NOM COMPLET pour valider.';
 
-    var url = 'https://wa.me/33767742220?text=' + encodeURIComponent(msg);
-    console.log('✅ Envoi WA OK:', url.substring(0, 80) + '...');
-    window.open(url, '_blank');
-
-  } catch(err){
-    console.error('❌ Erreur sendWhatsApp:', err);
-    alert('Erreur envoi : ' + err.message);
-  }
+  var url = 'https://wa.me/33767742220?text=' + encodeURIComponent(msg);
+  console.log('WA URL OK:', url.substring(0, 80) + '...');
+  window.location.assign(url);
 }
 
-// ══════════════════════════════════════════════════════════
-//  VALIDATION SIMPLIFIÉE — Départ + Arrivée + Téléphone
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+//  VALIDATION SIMPLE — texte brut, sans window.coords
+// ══════════════════════════════════════════════════════
 function validateAndSend(){
-  try {
-    var depEl   = document.getElementById('dep');
-    var arrEl   = document.getElementById('arr');
-    var phoneEl = document.getElementById('clientPhone');
+  var dep   = document.getElementById('dep')         ? document.getElementById('dep').value.trim()         : '';
+  var arr   = document.getElementById('arr')         ? document.getElementById('arr').value.trim()         : '';
+  var phone = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value.trim()  : null;
 
-    var depVal   = depEl   ? depEl.value.trim()   : '';
-    var arrVal   = arrEl   ? arrEl.value.trim()   : '';
-    var phoneVal = phoneEl ? phoneEl.value.trim()  : 'ok'; // optionnel si champ absent
+  var ok = true;
 
-    var ok = true;
-
-    if(!depVal){
-      var wD = depEl ? depEl.closest('.f-wrap') : null;
-      if(wD){ wD.classList.add('invalid'); setTimeout(function(){ wD.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-    if(!arrVal){
-      var wA = arrEl ? arrEl.closest('.f-wrap') : null;
-      if(wA){ wA.classList.add('invalid'); setTimeout(function(){ wA.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-    if(phoneEl && phoneVal.replace(/\s/g,'').length < 9){
-      var wP = document.getElementById('wrap-phone');
-      if(wP){ wP.classList.add('invalid'); setTimeout(function(){ wP.classList.remove('invalid'); }, 700); }
-      ok = false;
-    }
-
-    if(!ok){
-      if(typeof showToast === 'function') showToast('Remplissez : Départ, Arrivée et Téléphone');
-      return;
-    }
-
-    console.log('Validation OK, envoi vers WhatsApp...');
-    sendWhatsApp();
-
-  } catch(err){
-    console.error('❌ Erreur validation:', err);
-    // Fallback — envoie quand même
-    sendWhatsApp();
+  if(!dep){
+    var wD = document.getElementById('dep') ? document.getElementById('dep').closest('.f-wrap') : null;
+    if(wD){ wD.classList.add('invalid'); setTimeout(function(){ wD.classList.remove('invalid'); }, 700); }
+    ok = false;
   }
+  if(!arr){
+    var wA = document.getElementById('arr') ? document.getElementById('arr').closest('.f-wrap') : null;
+    if(wA){ wA.classList.add('invalid'); setTimeout(function(){ wA.classList.remove('invalid'); }, 700); }
+    ok = false;
+  }
+  if(phone !== null && phone.replace(/\s/g,'').length < 9){
+    var wP = document.getElementById('wrap-phone');
+    if(wP){ wP.classList.add('invalid'); setTimeout(function(){ wP.classList.remove('invalid'); }, 700); }
+    ok = false;
+  }
+
+  if(!ok){
+    alert('Merci de remplir les adresses et votre numero de telephone.');
+    return;
+  }
+  console.log('Validation OK - envoi WhatsApp...');
+  sendWhatsApp();
 }
 
-// ── Binding robuste — override tous les handlers précédents
-(function(){
-  // Bouton principal modal
+// ══════════════════════════════════════════════════════
+//  BINDING — Triple securite
+// ══════════════════════════════════════════════════════
+function _bindAll(){
   var btn = document.getElementById('btn-confirm');
   if(btn){
-    btn.removeAttribute('onclick');
-    btn.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
+    btn.onclick = null;
+    btn.addEventListener('click', function(){ validateAndSend(); });
   }
-  // Sticky bar bouton WA
   document.querySelectorAll('.sb-wa').forEach(function(el){
+    el.onclick = null;
     el.addEventListener('click', function(e){ e.preventDefault(); validateAndSend(); });
   });
-  // Filet de sécurité — autres boutons résiduels
   document.querySelectorAll('[onclick*="sendWhatsApp"]').forEach(function(el){
-    el.setAttribute('onclick', 'validateAndSend()');
+    el.setAttribute('onclick','validateAndSend()');
   });
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', _bindAll);
+} else {
+  _bindAll();
+}
+window.addEventListener('load', _bindAll);
+
+// ── FIX CRITIQUE: pointer-events sur boutons dans modal
+(function(){
+  function fixModalButtons(){
+    var btns = document.querySelectorAll('.modal-box-price .nav-btn, #btn-confirm, .navbar-cta .nav-btn');
+    btns.forEach(function(b){
+      b.style.touchAction = 'manipulation';
+      b.style.pointerEvents = 'auto';
+      b.style.cursor = 'pointer';
+      b.style.webkitTapHighlightColor = 'transparent';
+    });
+    // Empêche le swipe-dismiss de capturer les taps sur boutons
+    var modal = document.querySelector('.modal-box-price');
+    if(modal){
+      modal.addEventListener('touchstart', function(e){
+        if(e.target.closest('.nav-btn') || e.target.closest('button')){
+          e.stopPropagation();
+        }
+      }, true); // capture phase
+    }
+  }
+  if(document.readyState === 'complete'){ fixModalButtons(); }
+  else { window.addEventListener('load', fixModalButtons); }
+  // Re-appliquer après ouverture du modal
+  var origShow = window.showModal;
+  if(typeof origShow === 'function'){
+    window.showModal = function(){
+      origShow.apply(this, arguments);
+      setTimeout(fixModalButtons, 50);
+    };
+  }
 })();
+
 </script>
 </body>
 </html>
