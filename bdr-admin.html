@@ -1505,29 +1505,59 @@ function generateInvoicePDF() {
   doc.setFontSize(9);
   doc.setTextColor(30, 30, 30);
 
-  let description = '';
+  // ═══ Description sur plusieurs lignes (pas de débordement) ═══
+  // Largeur max colonne Description : margin+3 → pageW-margin-80 (laisse place pour Date/Qté/Montant)
+  const descMaxWidth = pageW - 2 * margin - 80;
+
+  // Ligne 1 : type de service
+  let descTitle = '';
+  let descTrajet = '';
+
   if (isMad) {
     const durLabels = {
-      '3h': 'Mise à disposition 3h', '4h': 'Demi-journée (4h)',
+      '3h': 'Mise à disposition (3h)', '4h': 'Demi-journée (4h)',
       '8h': 'Journée complète (8h)', '6h': 'Soirée (6h)', 'custom': 'Forfait personnalisé'
     };
-    description = durLabels[madDuration] || 'Mise à disposition';
+    descTitle = durLabels[madDuration] || 'Mise à disposition';
+    descTrajet = pickupAddr || '';
   } else {
-    // Trajet : utiliser " > " ASCII pur (jsPDF ne supporte pas →) + 40 chars
-    const fromTxt = pickupAddr.length > 40 ? pickupAddr.substring(0, 40) + '...' : pickupAddr;
-    const toTxt = dropAddr.length > 40 ? dropAddr.substring(0, 40) + '...' : dropAddr;
-    description = `Transport VTC ${fromTxt} > ${toTxt}`;
+    descTitle = 'Transport VTC';
+    // Raccourcir intelligemment les adresses (garder ville si possible)
+    const shortFrom = pickupAddr.length > 35 ? pickupAddr.substring(0, 35) + '...' : pickupAddr;
+    const shortTo = dropAddr.length > 35 ? dropAddr.substring(0, 35) + '...' : dropAddr;
+    descTrajet = `${shortFrom} > ${shortTo}`;
   }
 
-  doc.text(description, margin + 3, y);
+  // Ligne 1 : titre du service en gras
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(30, 30, 30);
+  doc.text(descTitle, margin + 3, y);
 
+  // Date / Qté / Montant alignés sur la 1ère ligne uniquement
   const dtPrest = pickupDt ? new Date(pickupDt).toLocaleDateString('fr-FR') : '—';
+  doc.setFont('helvetica', 'normal');
   doc.text(dtPrest, pageW - margin - 75, y);
   doc.text('1', pageW - margin - 50, y);
+
+  doc.setFont('helvetica', 'bold');
   doc.text(priceTtc.toFixed(2) + ' €', pageW - margin - 5, y, { align: 'right' });
 
-  y += 6;
+  y += 5;
 
+  // Ligne 2 : trajet (avec wrap auto si trop long)
+  if (descTrajet) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(80, 75, 70);
+    const trajetLines = doc.splitTextToSize(descTrajet, descMaxWidth);
+    trajetLines.forEach(line => {
+      doc.text(line, margin + 3, y);
+      y += 4;
+    });
+  }
+
+  // Ligne 3 : distance (uniquement pour transfert)
   if (distKm && !isMad) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
