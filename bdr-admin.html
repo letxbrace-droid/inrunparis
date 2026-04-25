@@ -413,6 +413,119 @@ body {
   color: var(--gold);
   text-decoration: none;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TOGGLE MODE — BDR / Facture
+   ═══════════════════════════════════════════════════════════════ */
+.mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.15);
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.mode-btn {
+  padding: 12px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.mode-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
+
+.mode-btn:hover {
+  color: var(--bone);
+}
+
+.mode-btn.active {
+  background: linear-gradient(165deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  color: var(--oled);
+  font-weight: 700;
+  box-shadow:
+    0 0 16px rgba(212, 175, 55, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.mode-btn.active svg {
+  opacity: 1;
+}
+
+/* Sections conditionnelles selon mode */
+.mode-section { display: none; }
+.mode-section.active { display: block; }
+
+/* Numérotation facture spéciale */
+.invoice-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  color: var(--mist);
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+}
+
+.invoice-counter .badge-storage {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 0.5px solid rgba(52, 211, 153, 0.25);
+  border-radius: 100px;
+  color: var(--success);
+  font-size: 0.54rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.btn-reset-counter {
+  margin-left: auto;
+  padding: 4px 10px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 0.5px solid rgba(239, 68, 68, 0.25);
+  border-radius: 8px;
+  color: var(--danger);
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-reset-counter:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
 </style>
 </head>
 <body>
@@ -442,6 +555,18 @@ body {
     <div class="admin-title">BDR Admin</div>
     <div class="admin-sub">Générateur de bons de réservation</div>
     <div class="admin-badge">🔒 Zone privée</div>
+  </div>
+
+  <!-- TOGGLE MODE -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="bdr">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Bon de Réservation
+    </button>
+    <button class="mode-btn" data-mode="invoice">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+      Facture
+    </button>
   </div>
 
   <!-- PARSE WHATSAPP -->
@@ -481,12 +606,31 @@ body {
   </div>
 
   <!-- INFOS BDR -->
-  <div class="section">
-    <div class="section-title">3 · Informations du bon</div>
+  <div class="section" id="infosSection">
+    <div class="section-title">3 · Informations</div>
 
-    <div class="field-group">
-      <label class="field-label">N° de bon (auto-généré si vide)</label>
+    <!-- N° BDR (mode BDR uniquement) -->
+    <div class="field-group mode-section active" data-mode-content="bdr">
+      <label class="field-label">N° de bon de réservation</label>
       <input type="text" class="txt-input" id="bonNum" placeholder="INR-260424-1834">
+      <div class="invoice-counter">Format auto : INR-AAMMJJ-HHMM</div>
+    </div>
+
+    <!-- N° FACTURE (mode Facture uniquement) -->
+    <div class="field-group mode-section" data-mode-content="invoice">
+      <label class="field-label">N° de facture (séquentiel)</label>
+      <input type="text" class="txt-input" id="invoiceNum" placeholder="2026-001">
+      <div class="invoice-counter">
+        <span class="badge-storage" id="counterBadge">💾 Compteur actif</span>
+        <span id="counterInfo">Dernier n° : —</span>
+        <button class="btn-reset-counter" id="resetCounterBtn" type="button">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- BDR de référence (mode Facture uniquement) -->
+    <div class="field-group mode-section" data-mode-content="invoice">
+      <label class="field-label">N° de bon de référence (optionnel)</label>
+      <input type="text" class="txt-input" id="refBonNum" placeholder="INR-260424-1834">
     </div>
 
     <div class="row-2">
@@ -506,8 +650,14 @@ body {
     </div>
 
     <div class="field-group">
-      <label class="field-label">Date &amp; heure de prise en charge</label>
+      <label class="field-label" id="pickupDtLabel">Date &amp; heure de prise en charge</label>
       <input type="datetime-local" class="txt-input" id="pickupDt">
+    </div>
+
+    <!-- Date d'émission facture (mode facture uniquement) -->
+    <div class="field-group mode-section" data-mode-content="invoice">
+      <label class="field-label">Date d'émission de la facture</label>
+      <input type="date" class="txt-input" id="invoiceDate">
     </div>
 
     <div class="field-group">
@@ -563,7 +713,7 @@ body {
   <div class="section">
     <button class="btn btn-gold" id="genPdfBtn">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
-      Générer le PDF
+      <span id="genBtnLabel">Générer le bon de réservation</span>
     </button>
 
     <button class="btn btn-ghost" id="resetBtn" style="margin-top:10px">Nouveau BDR</button>
@@ -1001,6 +1151,481 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updatePreview();
 });
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TOGGLE MODE — BDR / FACTURE
+   ═══════════════════════════════════════════════════════════════ */
+let currentMode = 'bdr'; // 'bdr' ou 'invoice'
+
+function setMode(mode) {
+  currentMode = mode;
+
+  // Update boutons toggle
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+
+  // Update sections conditionnelles
+  document.querySelectorAll('[data-mode-content]').forEach(el => {
+    el.classList.toggle('active', el.dataset.modeContent === mode);
+  });
+
+  // Update label du bouton génération
+  const lbl = document.getElementById('genBtnLabel');
+  if (lbl) {
+    lbl.textContent = mode === 'invoice' ? 'Générer la facture' : 'Générer le bon de réservation';
+  }
+
+  // Update label de la date
+  const pickupLabel = document.getElementById('pickupDtLabel');
+  if (pickupLabel) {
+    pickupLabel.textContent = mode === 'invoice'
+      ? 'Date & heure de la prestation'
+      : 'Date & heure de prise en charge';
+  }
+
+  // Si passage en mode facture, suggérer un n° auto-incrémenté
+  if (mode === 'invoice') {
+    suggestNextInvoiceNum();
+    setTodayDate();
+  }
+
+  showToast(mode === 'invoice' ? 'Mode Facture activé' : 'Mode BDR activé');
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => setMode(btn.dataset.mode));
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   NUMÉROTATION FACTURE — localStorage séquentiel
+   ═══════════════════════════════════════════════════════════════ */
+const STORAGE_KEY = 'inrun_invoice_lastNum';
+
+function getLastInvoiceNum() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function setLastInvoiceNum(num) {
+  try {
+    localStorage.setItem(STORAGE_KEY, num);
+  } catch (e) {
+    console.warn('localStorage indisponible');
+  }
+}
+
+function parseInvoiceNum(num) {
+  // Format attendu : "2026-001", "2026-002", etc.
+  const match = num.match(/^(\d{4})-(\d+)$/);
+  if (!match) return null;
+  return { year: parseInt(match[1]), seq: parseInt(match[2]), padding: match[2].length };
+}
+
+function nextInvoiceNum(lastNum) {
+  const parsed = parseInvoiceNum(lastNum);
+  const currentYear = new Date().getFullYear();
+
+  if (!parsed) {
+    // Premier usage : 2026-001
+    return `${currentYear}-001`;
+  }
+
+  // Si année différente, redémarrer à 001
+  if (parsed.year !== currentYear) {
+    return `${currentYear}-001`;
+  }
+
+  // Incrémenter
+  const nextSeq = parsed.seq + 1;
+  const padding = Math.max(parsed.padding, 3);
+  return `${parsed.year}-${String(nextSeq).padStart(padding, '0')}`;
+}
+
+function suggestNextInvoiceNum() {
+  const lastNum = getLastInvoiceNum();
+  const next = nextInvoiceNum(lastNum);
+  const input = document.getElementById('invoiceNum');
+  if (input && !input.value) input.value = next;
+
+  const info = document.getElementById('counterInfo');
+  if (info) {
+    info.textContent = lastNum ? `Dernier n° : ${lastNum}` : 'Aucun n° précédent — saisissez le 1er';
+  }
+}
+
+function setTodayDate() {
+  const inv = document.getElementById('invoiceDate');
+  if (inv && !inv.value) {
+    const today = new Date().toISOString().slice(0, 10);
+    inv.value = today;
+  }
+}
+
+document.getElementById('resetCounterBtn').addEventListener('click', () => {
+  if (!confirm('Réinitialiser le compteur de factures ? Le prochain n° sera celui que vous saisirez.')) return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('invoiceNum').value = '';
+    document.getElementById('counterInfo').textContent = 'Compteur réinitialisé';
+    showToast('✓ Compteur réinitialisé', 'success');
+  } catch (e) {
+    showToast('Erreur lors du reset', 'error');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   PARSER WHATSAPP — récupère aussi le NOM client
+   ═══════════════════════════════════════════════════════════════ */
+const originalParse = parseWhatsApp;
+window.parseWhatsApp = function() {
+  const raw = document.getElementById('waRaw').value.trim();
+  if (!raw) { showToast('Collez d\'abord le message', 'error'); return; }
+
+  // Appel à l'original pour les autres champs
+  originalParse();
+
+  // Ajouter parsing du nom client
+  const nameMatch = raw.match(/Client\s*[:：]\s*([^\n]+)/i);
+  if (nameMatch) {
+    const cleanName = nameMatch[1].trim();
+    if (cleanName !== '—') {
+      document.getElementById('clientName').value = cleanName;
+    }
+  }
+
+  // Email
+  const emailMatch = raw.match(/Email\s*[:：]\s*([^\s\n]+@[^\s\n]+)/i);
+  if (emailMatch) {
+    document.getElementById('clientEmail').value = emailMatch[1].trim();
+  }
+
+  updatePreview();
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   GÉNÉRATION PDF — Routing BDR vs FACTURE
+   ═══════════════════════════════════════════════════════════════ */
+const originalGenerate = generatePDF;
+window.generatePDF = function() {
+  if (currentMode === 'invoice') {
+    generateInvoicePDF();
+  } else {
+    originalGenerate();
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   PDF FACTURE — Avec mentions légales obligatoires + TVA
+   ═══════════════════════════════════════════════════════════════ */
+function generateInvoicePDF() {
+  const { jsPDF } = window.jspdf;
+
+  // Récupération des champs
+  const invoiceNum = document.getElementById('invoiceNum').value.trim();
+  const refBonNum = document.getElementById('refBonNum').value.trim();
+  const clientName = document.getElementById('clientName').value.trim();
+  const clientPhone = document.getElementById('clientPhone').value.trim();
+  const clientEmail = document.getElementById('clientEmail').value.trim();
+  const pickupDt = document.getElementById('pickupDt').value;
+  const invoiceDate = document.getElementById('invoiceDate').value || new Date().toISOString().slice(0,10);
+  const pickupAddr = document.getElementById('pickupAddr').value.trim();
+  const dropAddr = document.getElementById('dropAddr').value.trim();
+  const priceTtc = parseFloat(document.getElementById('priceTtc').value) || 0;
+  const distKm = document.getElementById('distKm').value;
+  const payment = document.getElementById('payment').value;
+  const madDuration = document.getElementById('madDuration').value;
+
+  // Validation
+  if (!invoiceNum) { showToast('N° de facture requis', 'error'); return; }
+  if (!clientName) { showToast('Nom du client requis', 'error'); return; }
+  if (!pickupDt) { showToast('Date de prestation requise', 'error'); return; }
+  if (!priceTtc) { showToast('Montant requis', 'error'); return; }
+
+  const isMad = currentType === 'mad';
+  const tvaRate = isMad ? 0.20 : 0.10;
+  const priceHt = priceTtc / (1 + tvaRate);
+  const tvaAmount = priceTtc - priceHt;
+
+  // Création PDF A4
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pageW = 210, pageH = 297;
+  const margin = 20;
+
+  // ═══ HEADER NOIR ═══
+  doc.setFillColor(0, 0, 0);
+  doc.rect(0, 0, pageW, 50, 'F');
+
+  // Logo I&N
+  doc.setFont('times', 'italic');
+  doc.setFontSize(28);
+  doc.setTextColor(232, 199, 112);
+  doc.text('I&N', margin, 28);
+
+  doc.setFont('courier', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(212, 175, 55);
+  doc.text('R U N', margin + 18, 28);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(168, 162, 158);
+  doc.text('CHAUFFEUR PRIVÉ · PARIS & ÎLE-DE-FRANCE', margin, 36);
+
+  // N° Facture
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(212, 175, 55);
+  doc.text(`FACTURE N° ${invoiceNum}`, pageW - margin, 22, { align: 'right' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.setTextColor(168, 162, 158);
+  doc.text(`Émise le ${new Date(invoiceDate).toLocaleDateString('fr-FR')}`, pageW - margin, 30, { align: 'right' });
+  if (refBonNum) {
+    doc.text(`Réf. bon : ${refBonNum}`, pageW - margin, 36, { align: 'right' });
+  }
+
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.3);
+  doc.line(margin, 45, pageW - margin, 45);
+
+  // ═══ TITRE ═══
+  let y = 65;
+  doc.setFont('times', 'italic');
+  doc.setFontSize(22);
+  doc.setTextColor(40, 40, 40);
+  doc.text('Facture', margin, y);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(107, 101, 96);
+  doc.text(isMad ? 'Mise à disposition de chauffeur' : 'Prestation de transport VTC', margin, y + 6);
+
+  // Badge type
+  doc.setFillColor(isMad ? 154 : 212, isMad ? 124 : 175, isMad ? 31 : 55);
+  doc.roundedRect(pageW - margin - 45, y - 5, 45, 7, 2, 2, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(255, 255, 255);
+  doc.text(isMad ? 'MISE À DISPOSITION' : 'TRANSFERT', pageW - margin - 22.5, y - 0.5, { align: 'center' });
+
+  y += 16;
+
+  // ═══ ÉMETTEUR / CLIENT (côte à côte) ═══
+  const colW = (pageW - 2 * margin - 8) / 2;
+
+  // ÉMETTEUR (gauche)
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(154, 124, 31);
+  doc.text('ÉMETTEUR', margin, y);
+  doc.setLineWidth(0.2);
+  doc.line(margin, y + 1, margin + colW, y + 1);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(30, 30, 30);
+  doc.text('I&N RUN', margin, y + 7);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(80, 75, 70);
+  doc.text('BRAHA Nourdine', margin, y + 12);
+  doc.text('Ris-Orangis (91130)', margin, y + 17);
+  doc.text('SIREN : 993 776 467', margin, y + 22);
+  doc.text('SIRET : 993 776 467 00017', margin, y + 27);
+  doc.text('TVA Intracom : FR' + computeVATIntra('993776467'), margin, y + 32);
+
+  // CLIENT (droite)
+  const xClient = margin + colW + 8;
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(154, 124, 31);
+  doc.text('FACTURÉ À', xClient, y);
+  doc.line(xClient, y + 1, xClient + colW, y + 1);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(30, 30, 30);
+  doc.text(clientName, xClient, y + 7);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(80, 75, 70);
+  let cy = y + 12;
+  if (clientPhone) { doc.text('Tél : ' + clientPhone, xClient, cy); cy += 5; }
+  if (clientEmail) { doc.text(clientEmail, xClient, cy); cy += 5; }
+
+  y += 42;
+
+  // ═══ TABLEAU PRESTATION ═══
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(154, 124, 31);
+  doc.text('DÉTAIL DE LA PRESTATION', margin, y);
+  doc.line(margin + 60, y - 1, pageW - margin, y - 1);
+
+  y += 6;
+
+  // Header tableau
+  doc.setFillColor(248, 245, 237);
+  doc.rect(margin, y, pageW - 2 * margin, 8, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(60, 55, 50);
+  doc.text('Description', margin + 3, y + 5.5);
+  doc.text('Date', pageW - margin - 75, y + 5.5);
+  doc.text('Qté', pageW - margin - 50, y + 5.5);
+  doc.text('Montant HT', pageW - margin - 5, y + 5.5, { align: 'right' });
+
+  y += 10;
+
+  // Ligne prestation
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(30, 30, 30);
+
+  let description = '';
+  if (isMad) {
+    const durLabels = {
+      '3h': 'Mise à disposition 3h', '4h': 'Demi-journée (4h)',
+      '8h': 'Journée complète (8h)', '6h': 'Soirée (6h)', 'custom': 'Forfait personnalisé'
+    };
+    description = durLabels[madDuration] || 'Mise à disposition';
+  } else {
+    description = `Transport VTC ${pickupAddr.substring(0, 20)} → ${dropAddr.substring(0, 20)}`;
+  }
+
+  doc.text(description, margin + 3, y);
+
+  const dtPrest = pickupDt ? new Date(pickupDt).toLocaleDateString('fr-FR') : '—';
+  doc.text(dtPrest, pageW - margin - 75, y);
+  doc.text('1', pageW - margin - 50, y);
+  doc.text(priceHt.toFixed(2) + ' €', pageW - margin - 5, y, { align: 'right' });
+
+  y += 6;
+
+  if (distKm && !isMad) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(120, 115, 110);
+    doc.text(`Distance : ${distKm} km`, margin + 3, y);
+    y += 4;
+  }
+
+  // Ligne séparation
+  doc.setDrawColor(220, 215, 210);
+  doc.setLineWidth(0.2);
+  doc.line(margin, y, pageW - margin, y);
+  y += 6;
+
+  // ═══ TOTAUX ═══
+  const totalsX = pageW - margin - 70;
+  const totalsXVal = pageW - margin - 5;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(80, 75, 70);
+  doc.text('Total HT', totalsX, y);
+  doc.text(priceHt.toFixed(2) + ' €', totalsXVal, y, { align: 'right' });
+  y += 6;
+
+  doc.text(`TVA ${(tvaRate * 100).toFixed(0)}%`, totalsX, y);
+  doc.text(tvaAmount.toFixed(2) + ' €', totalsXVal, y, { align: 'right' });
+  y += 4;
+
+  // Encadré TTC
+  doc.setFillColor(212, 175, 55);
+  doc.roundedRect(totalsX - 5, y, 75, 10, 2, 2, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(0, 0, 0);
+  doc.text('TOTAL TTC', totalsX, y + 7);
+  doc.text(priceTtc.toFixed(2) + ' €', totalsXVal, y + 7, { align: 'right' });
+
+  y += 18;
+
+  // ═══ PAIEMENT ═══
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(154, 124, 31);
+  doc.text('PAIEMENT', margin, y);
+  doc.line(margin + 25, y - 1, pageW - margin, y - 1);
+  y += 6;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(60, 55, 50);
+  doc.text(`Mode de règlement : ${payment}`, margin, y);
+  y += 5;
+  doc.text(`Date de paiement : ${pickupDt ? new Date(pickupDt).toLocaleDateString('fr-FR') : 'À réception'}`, margin, y);
+
+  // ═══ MENTIONS LÉGALES OBLIGATOIRES (footer) ═══
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.2);
+  doc.line(margin, pageH - 40, pageW - margin, pageH - 40);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(107, 101, 96);
+
+  const mentions = [
+    'Pénalités de retard : 3 fois le taux d\'intérêt légal en cas de paiement après échéance (Loi LME 4 août 2008).',
+    'Indemnité forfaitaire pour frais de recouvrement : 40 € (D. n°2012-1115 du 2 oct. 2012).',
+    'Pas d\'escompte pour règlement anticipé. TVA acquittée d\'après les débits.',
+    'Activité de transport public particulier de personnes (VTC) · Carte pro VTC · Inscription au Registre EVTC.',
+    'I&N RUN · SIREN 993 776 467 · SIRET 993 776 467 00017 · contact.inrun@gmail.com · 07 67 74 22 20'
+  ];
+
+  let my = pageH - 36;
+  mentions.forEach(line => {
+    doc.text(line, pageW / 2, my, { align: 'center', maxWidth: pageW - 2 * margin });
+    my += 4;
+  });
+
+  // ═══ SAUVEGARDER LE N° DANS LOCALSTORAGE ═══
+  setLastInvoiceNum(invoiceNum);
+
+  // Sauvegarder le PDF
+  doc.save(`Facture-${invoiceNum}.pdf`);
+  showToast(`✓ Facture ${invoiceNum} générée`, 'success');
+
+  // Pré-remplir le n° suivant pour la prochaine facture
+  setTimeout(() => {
+    const next = nextInvoiceNum(invoiceNum);
+    document.getElementById('invoiceNum').value = next;
+    document.getElementById('counterInfo').textContent = `Dernier n° : ${invoiceNum}`;
+  }, 800);
+}
+
+// Calcul TVA Intracom (clé sur SIREN)
+function computeVATIntra(siren) {
+  const num = BigInt(siren) * 100n + 12n;
+  const key = num % 97n;
+  return String(key).padStart(2, '0') + siren;
+}
+
+// Réattacher l'événement (le bouton aura besoin d'aller au bon générateur)
+document.getElementById('genPdfBtn').removeEventListener('click', originalGenerate);
+document.getElementById('genPdfBtn').addEventListener('click', () => {
+  if (currentMode === 'invoice') {
+    generateInvoicePDF();
+  } else {
+    originalGenerate();
+  }
+});
+
+// Init du compteur de factures au chargement (si déjà existant)
+if (getLastInvoiceNum()) {
+  const counterInfo = document.getElementById('counterInfo');
+  if (counterInfo) counterInfo.textContent = `Dernier n° : ${getLastInvoiceNum()}`;
+}
+
 </script>
 
 </body>
