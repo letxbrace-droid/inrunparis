@@ -888,6 +888,16 @@ function generatePDF() {
   const madDuration = document.getElementById('madDuration').value;
 
   if (!clientName) { showToast('Nom du client requis', 'error'); return; }
+  if (clientName.length < 5) {
+    if (!confirm('⚠️ Le nom semble incomplet ("' + clientName + '"). Souhaitez-vous continuer quand même ?')) {
+      return;
+    }
+  }
+  if (clientName.length < 5) {
+    if (!confirm('⚠️ Le nom semble incomplet ("' + clientName + '"). Souhaitez-vous continuer quand même ?')) {
+      return;
+    }
+  }
   if (!pickupDt) { showToast('Date de prise en charge requise', 'error'); return; }
   if (!pickupAddr) { showToast('Lieu de départ requis', 'error'); return; }
   if (!priceTtc) { showToast('Prix requis', 'error'); return; }
@@ -906,16 +916,17 @@ function generatePDF() {
   doc.setFillColor(0, 0, 0);
   doc.rect(0, 0, pageW, 50, 'F');
 
-  // ═══ LOGO I&N ═══
+  // ═══ LOGO I&N RUN — espacement corrigé ═══
   doc.setFont('times', 'italic');
   doc.setFontSize(28);
   doc.setTextColor(232, 199, 112); // gold-warm
   doc.text('I&N', margin, 28);
 
+  const _inW = doc.getTextWidth('I&N');
   doc.setFont('courier', 'normal');
   doc.setFontSize(11);
   doc.setTextColor(212, 175, 55);
-  doc.text('R U N', margin + 18, 28);
+  doc.text('R U N', margin + _inW + 4, 28);
 
   // Texte header
   doc.setFont('helvetica', 'normal');
@@ -1360,16 +1371,18 @@ function generateInvoicePDF() {
   doc.setFillColor(0, 0, 0);
   doc.rect(0, 0, pageW, 50, 'F');
 
-  // Logo I&N
+  // Logo I&N RUN — espacement corrigé
   doc.setFont('times', 'italic');
   doc.setFontSize(28);
   doc.setTextColor(232, 199, 112);
   doc.text('I&N', margin, 28);
 
+  // Mesurer la largeur de "I&N" pour positionner correctement "R U N"
+  const inWidth = doc.getTextWidth('I&N');
   doc.setFont('courier', 'normal');
   doc.setFontSize(11);
   doc.setTextColor(212, 175, 55);
-  doc.text('R U N', margin + 18, 28);
+  doc.text('R U N', margin + inWidth + 4, 28);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -1439,7 +1452,9 @@ function generateInvoicePDF() {
   doc.text('Ris-Orangis (91130)', margin, y + 17);
   doc.text('SIREN : 993 776 467', margin, y + 22);
   doc.text('SIRET : 993 776 467 00017', margin, y + 27);
-  doc.text('TVA Intracom : FR' + computeVATIntra('993776467'), margin, y + 32);
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(7);
+  doc.text('TVA non applicable, art. 293 B du CGI', margin, y + 32);
 
   // CLIENT (droite)
   const xClient = margin + colW + 8;
@@ -1481,7 +1496,7 @@ function generateInvoicePDF() {
   doc.text('Description', margin + 3, y + 5.5);
   doc.text('Date', pageW - margin - 75, y + 5.5);
   doc.text('Qté', pageW - margin - 50, y + 5.5);
-  doc.text('Montant HT', pageW - margin - 5, y + 5.5, { align: 'right' });
+  doc.text('Montant', pageW - margin - 5, y + 5.5, { align: 'right' });
 
   y += 10;
 
@@ -1498,7 +1513,10 @@ function generateInvoicePDF() {
     };
     description = durLabels[madDuration] || 'Mise à disposition';
   } else {
-    description = `Transport VTC ${pickupAddr.substring(0, 20)} → ${dropAddr.substring(0, 20)}`;
+    // Trajet : utiliser " > " ASCII pur (jsPDF ne supporte pas →) + 40 chars
+    const fromTxt = pickupAddr.length > 40 ? pickupAddr.substring(0, 40) + '...' : pickupAddr;
+    const toTxt = dropAddr.length > 40 ? dropAddr.substring(0, 40) + '...' : dropAddr;
+    description = `Transport VTC ${fromTxt} > ${toTxt}`;
   }
 
   doc.text(description, margin + 3, y);
@@ -1506,7 +1524,7 @@ function generateInvoicePDF() {
   const dtPrest = pickupDt ? new Date(pickupDt).toLocaleDateString('fr-FR') : '—';
   doc.text(dtPrest, pageW - margin - 75, y);
   doc.text('1', pageW - margin - 50, y);
-  doc.text(priceHt.toFixed(2) + ' €', pageW - margin - 5, y, { align: 'right' });
+  doc.text(priceTtc.toFixed(2) + ' €', pageW - margin - 5, y, { align: 'right' });
 
   y += 6;
 
@@ -1524,29 +1542,25 @@ function generateInvoicePDF() {
   doc.line(margin, y, pageW - margin, y);
   y += 6;
 
-  // ═══ TOTAUX ═══
+  // ═══ TOTAL — Franchise TVA (un seul montant) ═══
   const totalsX = pageW - margin - 70;
   const totalsXVal = pageW - margin - 5;
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(80, 75, 70);
-  doc.text('Total HT', totalsX, y);
-  doc.text(priceHt.toFixed(2) + ' €', totalsXVal, y, { align: 'right' });
+  // Note discrète : TVA non applicable
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(7);
+  doc.setTextColor(140, 135, 130);
+  doc.text('TVA non applicable - art. 293 B du CGI', totalsX, y);
   y += 6;
 
-  doc.text(`TVA ${(tvaRate * 100).toFixed(0)}%`, totalsX, y);
-  doc.text(tvaAmount.toFixed(2) + ' €', totalsXVal, y, { align: 'right' });
-  y += 4;
-
-  // Encadré TTC
+  // Encadré TOTAL doré
   doc.setFillColor(212, 175, 55);
-  doc.roundedRect(totalsX - 5, y, 75, 10, 2, 2, 'F');
+  doc.roundedRect(totalsX - 5, y, 75, 11, 2, 2, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
+  doc.setFontSize(12);
   doc.setTextColor(0, 0, 0);
-  doc.text('TOTAL TTC', totalsX, y + 7);
-  doc.text(priceTtc.toFixed(2) + ' €', totalsXVal, y + 7, { align: 'right' });
+  doc.text('MONTANT NET', totalsX, y + 7.5);
+  doc.text(priceTtc.toFixed(2) + ' €', totalsXVal, y + 7.5, { align: 'right' });
 
   y += 18;
 
@@ -1575,11 +1589,11 @@ function generateInvoicePDF() {
   doc.setTextColor(107, 101, 96);
 
   const mentions = [
+    'TVA non applicable, art. 293 B du CGI - Micro-entreprise en franchise de TVA.',
     'Pénalités de retard : 3 fois le taux d\'intérêt légal en cas de paiement après échéance (Loi LME 4 août 2008).',
-    'Indemnité forfaitaire pour frais de recouvrement : 40 € (D. n°2012-1115 du 2 oct. 2012).',
-    'Pas d\'escompte pour règlement anticipé. TVA acquittée d\'après les débits.',
-    'Activité de transport public particulier de personnes (VTC) · Carte pro VTC · Inscription au Registre EVTC.',
-    'I&N RUN · SIREN 993 776 467 · SIRET 993 776 467 00017 · contact.inrun@gmail.com · 07 67 74 22 20'
+    'Indemnité forfaitaire pour frais de recouvrement : 40 € (D. n°2012-1115 du 2 oct. 2012). Pas d\'escompte.',
+    'Activité de transport public particulier de personnes (VTC) - Carte pro VTC - Registre EVTC.',
+    'I&N RUN - SIREN 993 776 467 - SIRET 993 776 467 00017 - contact.inrun@gmail.com - 07 67 74 22 20'
   ];
 
   let my = pageH - 36;
