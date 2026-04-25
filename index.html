@@ -2116,6 +2116,103 @@ body {
 .mad-cta {
   margin-top: 18px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GÉOLOCALISATION — Bouton "Utiliser ma position"
+   ═══════════════════════════════════════════════════════════════ */
+.geoloc-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+  padding: 0;
+  margin-left: 4px;
+  position: relative;
+}
+
+.geoloc-btn:hover {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--gold);
+  transform: scale(1.05);
+}
+
+.geoloc-btn:active {
+  transform: scale(0.95);
+}
+
+.geoloc-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s;
+}
+
+.geoloc-btn.loading {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--gold);
+}
+
+.geoloc-btn.loading svg {
+  animation: geolocPulse 1.2s ease-in-out infinite;
+}
+
+.geoloc-btn.success {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: var(--success);
+}
+
+.geoloc-btn.success svg {
+  stroke: var(--success);
+}
+
+@keyframes geolocPulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: scale(0.85);
+  }
+}
+
+.geoloc-hint {
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--mist);
+  letter-spacing: 0.06em;
+  margin: 4px 4px 8px;
+  padding: 0 4px;
+  min-height: 0;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.geoloc-hint.show {
+  opacity: 1;
+  margin-bottom: 12px;
+}
+
+.geoloc-hint.success {
+  color: var(--success);
+}
+
+.geoloc-hint.error {
+  color: var(--danger);
+}
 </style>
 </head>
 <body>
@@ -2193,7 +2290,7 @@ body {
   <section class="card reveal">
     <div class="eyebrow">Étape 01</div>
     <div class="card-title">Votre itinéraire</div>
-    <div class="card-sub">Saisissez vos adresses</div>
+    <div class="card-sub">Indiquez votre trajet</div>
 
     <!-- Date et heure -->
     <div class="field">
@@ -2215,8 +2312,12 @@ body {
         <div class="field-lbl">Lieu de départ</div>
         <input type="text" id="depart" placeholder="Ex : Ris-Orangis, Paris..." autocomplete="off">
       </div>
+      <button class="geoloc-btn" id="geolocBtn" type="button" aria-label="Utiliser ma position actuelle">
+        <svg id="geolocIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      </button>
       <div class="ac-drop" id="ac-depart"></div>
     </div>
+    <div class="geoloc-hint" id="geolocHint"></div>
 
     <!-- Badges terminaux (affichés quand CDG/Orly détecté) -->
     <div class="terminals" id="term-depart"></div>
@@ -2391,19 +2492,19 @@ body {
     <!-- BOUTON CALCUL -->
     <button class="btn-primary" id="calcBtn">
       <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Calculer votre tarif
+      Découvrir mon tarif garanti
     </button>
 
     <!-- PRIX BOX (caché par défaut) -->
     <div class="price-box" id="priceBox">
-      <div class="price-lbl">Tarif garanti tout compris</div>
+      <div class="price-lbl">Votre tarif fixe, sans surprise</div>
       <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
       <div class="price-detail" id="priceDetail">—</div>
       <div class="price-badges" id="priceBadges"></div>
       <div style="margin-top:22px">
         <button class="btn-wa" id="waBtn">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>Réserver sur WhatsApp</span>
+          <span>Confirmer ma réservation</span>
         </button>
         <button class="btn-secondary" id="recalcBtn">Modifier la course</button>
       </div>
@@ -2507,7 +2608,7 @@ body {
 
     <button class="btn-wa mad-cta" id="madBtn">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      <span>Demander un devis MAD</span>
+      <span>Réserver mon chauffeur à l'heure</span>
     </button>
   </section>
 
@@ -3708,6 +3809,114 @@ document.addEventListener('DOMContentLoaded', () => {
       window.open(`https://wa.me/33767742220?text=${msg}`, '_blank');
     });
   }
+});
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GÉOLOCALISATION — Smart default lieu de départ
+   ═══════════════════════════════════════════════════════════════ */
+async function reverseGeocode(lat, lng) {
+  // Utilise Photon pour faire le reverse geocoding
+  const url = `https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}&lang=fr`;
+  try {
+    const r = await fetch(url);
+    const data = await r.json();
+    if (!data.features || !data.features.length) return null;
+    const f = data.features[0];
+    const p = f.properties;
+    const parts = [p.name, p.street, p.city, p.postcode].filter(Boolean);
+    const display = parts.join(', ');
+    return {
+      name: display,
+      displayName: display,
+      lat: f.geometry.coordinates[1],
+      lng: f.geometry.coordinates[0],
+    };
+  } catch (e) {
+    console.warn('Reverse geocode error:', e);
+    return null;
+  }
+}
+
+function showGeolocHint(msg, type = '') {
+  const hint = document.getElementById('geolocHint');
+  if (!hint) return;
+  hint.textContent = msg;
+  hint.className = 'geoloc-hint show ' + type;
+  if (type) {
+    setTimeout(() => {
+      hint.classList.remove('show');
+      setTimeout(() => hint.textContent = '', 300);
+    }, 4000);
+  }
+}
+
+async function useMyLocation() {
+  const btn = document.getElementById('geolocBtn');
+  const input = document.getElementById('depart');
+  if (!btn || !input) return;
+
+  // Vérifier la disponibilité de l'API
+  if (!navigator.geolocation) {
+    showGeolocHint('Géolocalisation non disponible sur cet appareil', 'error');
+    return;
+  }
+
+  // État loading
+  btn.classList.add('loading');
+  showGeolocHint('Recherche de votre position…');
+  if (navigator.vibrate) navigator.vibrate(10);
+
+  // Demander la position
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      const result = await reverseGeocode(latitude, longitude);
+
+      btn.classList.remove('loading');
+
+      if (result) {
+        // Succès
+        input.value = result.displayName;
+        STATE.depart = { name: result.name, lat: result.lat, lng: result.lng };
+        input.parentElement.classList.add('filled');
+        btn.classList.add('success');
+        showGeolocHint('✓ Position détectée', 'success');
+        if (navigator.vibrate) navigator.vibrate(15);
+
+        // Avancer le stepper si arrivée déjà remplie
+        if (STATE.depart && STATE.arrive && typeof setStep === 'function') {
+          setStep(2);
+        }
+
+        // Reset du bouton après 3s
+        setTimeout(() => btn.classList.remove('success'), 3000);
+      } else {
+        // Reverse geocode failed
+        showGeolocHint('Impossible de déterminer l\'adresse', 'error');
+      }
+    },
+    (error) => {
+      btn.classList.remove('loading');
+      let msg = 'Impossible d\'obtenir votre position';
+      if (error.code === 1) msg = 'Autorisez la géolocalisation pour utiliser cette fonction';
+      else if (error.code === 2) msg = 'Position indisponible';
+      else if (error.code === 3) msg = 'Délai d\'attente dépassé';
+      showGeolocHint(msg, 'error');
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000,
+    }
+  );
+}
+
+// Attacher le bouton
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('geolocBtn');
+  if (btn) btn.addEventListener('click', useMyLocation);
 });
 
 </script>
