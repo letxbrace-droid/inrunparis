@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Fraunces: serif éditoriale luxe / Inter: sans-serif moderne / JetBrains: mono technique -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ═══════════════════════════════════════════════════════════════
@@ -45,7 +45,7 @@
 
   /* TYPO */
   --ff-display: "Fraunces", "Times New Roman", serif;
-  --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-body: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-mono: "JetBrains Mono", "SF Mono", monospace;
 
   /* SPACING */
@@ -58,6 +58,11 @@
   /* SAFE AREA */
   --safe-top: env(safe-area-inset-top, 0);
   --safe-bot: env(safe-area-inset-bottom, 0);
+  /* Passe 1 — Variables ajoutées */
+  --gold-amber: #E5BE5B;
+  --ease-luxe: cubic-bezier(0.65, 0.05, 0.05, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -2255,6 +2260,70 @@ body {
   stroke: var(--muted) !important;
   fill: none !important;
 }
+
+
+/* Passe 1 — Grain texture éditoriale (overlay subtil) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PASSE 1 — Raffinements typographiques Geist
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Optimisation du rendu Geist sur le body */
+body {
+  letter-spacing: -0.005em;
+  font-feature-settings: "ss01" 1, "ss02" 1, "cv11" 1;
+}
+
+/* Selection en or ambré (plus chaud que l'or classique) */
+::selection {
+  background: var(--gold-amber);
+  color: var(--oled);
+}
+
+/* Hero : letter-spacing plus serré pour Geist */
+.hero-sub,
+.card-sub {
+  letter-spacing: -0.005em;
+}
+
+/* Titres en italique : cohérence avec la signature éditoriale */
+.hero-title em,
+.card-title em {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold-amber), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Améliorer le contraste de l'or chaud sur les chiffres importants */
+.proof-value,
+.mad-price,
+.price-amount {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold-amber), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Polish : meilleure lisibilité des micro-labels en mono */
+.field-lbl,
+.eyebrow,
+.section-title {
+  font-feature-settings: "ss01" 1;
+}
+
 </style>
 </head>
 <body>
