@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="robots" content="noindex,nofollow">
+<title>I&N RUN — Trouver mon chauffeur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   URGENCE.HTML — Portail captif Wi-Fi I&N RUN
+   Mobile-first · Zero scroll · OLED Premium
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --oled: #000000;
+  --ink: #0a0a0a;
+  --ink-2: #111112;
+  --bone: #f5f1e8;
+  --gold: #D4AF37;
+  --gold-warm: #E8C770;
+  --gold-deep: #9A7C1F;
+  --gold-glow: rgba(212, 175, 55, 0.45);
+  --mist: #a8a29e;
+  --muted: #6b6560;
+  --dim: #3a3734;
+  --success: #34d399;
+  --danger: #ef4444;
+  --wa: #25d366;
+  --wa-deep: #128c4a;
+  --ff-display: 'Fraunces', 'Times New Roman', serif;
+  --ff-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-bot: env(safe-area-inset-bottom, 0);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html, body {
+  background: var(--oled);
+  color: var(--bone);
+  font-family: var(--ff-body);
+  height: 100vh;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Halo doré subtil en haut */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 50% at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Petites étoiles dorées qui clignotent (style "ambiance gare") */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(212, 175, 55, 0.6), transparent),
+    radial-gradient(1px 1px at 80% 70%, rgba(212, 175, 55, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 60% 20%, rgba(232, 199, 112, 0.3), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(212, 175, 55, 0.5), transparent);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
+  animation: starsTwinkle 4s ease-in-out infinite;
+}
+
+@keyframes starsTwinkle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+::selection { background: var(--gold); color: var(--oled); }
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT — Tout sur 1 écran, pas de scroll
+   ═══════════════════════════════════════════════════════════════ */
+.app {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 14px) 18px calc(var(--safe-bot) + 14px);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER MINI — Logo I&N RUN
+   ═══════════════════════════════════════════════════════════════ */
+.brand-mini {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+
+.brand-monogram {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: var(--ff-mono);
+  font-weight: 600;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+
+.brand-status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 0.5px solid rgba(52, 211, 153, 0.3);
+  border-radius: 100px;
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--success);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brand-status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 6px var(--success);
+  animation: pulseLive 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO — Le hook
+   ═══════════════════════════════════════════════════════════════ */
+.hero {
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.hero-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--gold);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+  opacity: 0.5;
+}
+
+.hero-eyebrow::before { width: 18px; background: linear-gradient(90deg, var(--gold), transparent); }
+.hero-eyebrow::after { flex: 1; }
+
+.hero h1 {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-size: 1.9rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--bone);
+  margin-bottom: 8px;
+}
+
+.hero h1 em {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+}
+
+.hero p {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+.hero p strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORM — Champs avec focus or
+   ═══════════════════════════════════════════════════════════════ */
+.form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  min-height: 0;
+}
+
+.field {
+  position: relative;
+}
+
+.field-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 4px;
+  padding-left: 2px;
+}
+
+.field-label .req {
+  color: var(--gold-warm);
+  margin-left: 2px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 11px 13px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  border-radius: 11px;
+  font-family: var(--ff-body);
+  font-size: 0.92rem;
+  color: var(--gold-warm);
+  font-weight: 500;
+  outline: none;
+  transition: all 0.25s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  letter-spacing: 0.005em;
+}
+
+.field input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 1;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--gold);
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12), 0 0 18px rgba(212, 175, 55, 0.15);
+}
+
+.field.invalid input,
+.field.invalid select {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  animation: shakeField 0.4s ease-in-out;
+}
+
+@keyframes shakeField {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.field.valid input {
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+  color: var(--bone);
+}
+
+.field input[autocomplete="off"]::-webkit-contacts-auto-fill-button,
+.field input[autocomplete="off"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOUTON ACTION — Géant, vert WhatsApp, shimmer
+   ═══════════════════════════════════════════════════════════════ */
+.btn-action {
+  width: 100%;
+  padding: 17px 22px;
+  background: linear-gradient(165deg, #34d76e 0%, var(--wa) 50%, var(--wa-deep) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--ff-body);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow:
+    0 0 32px rgba(37, 211, 102, 0.45),
+    0 8px 20px rgba(18, 140, 74, 0.4),
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+  -webkit-touch-callout: none;
+}
+
+.btn-action::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -60%; }
+  60%, 100% { left: 160%; }
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+.btn-action svg {
+  width: 18px;
+  height: 18px;
+  fill: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-action span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-action.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-action.loading svg {
+  animation: spinLoading 1s linear infinite;
+}
+
+@keyframes spinLoading {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Bouton secondaire : appel direct (filet de sécurité) */
+.btn-call {
+  width: 100%;
+  padding: 13px 22px;
+  background: transparent;
+  color: var(--gold);
+  border: 0.5px solid rgba(212, 175, 55, 0.35);
+  border-radius: 100px;
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.btn-call:active {
+  background: rgba(212, 175, 55, 0.1);
+  transform: scale(0.98);
+}
+
+.btn-call svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MENTION LÉGALE — Discrète mais présente
+   ═══════════════════════════════════════════════════════════════ */
+.legal {
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-align: center;
+  flex-shrink: 0;
+  padding: 0 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ÉCRAN DE CONFIRMATION (overlay full-screen)
+   ═══════════════════════════════════════════════════════════════ */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--oled);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 24px) 22px calc(var(--safe-bot) + 22px);
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-y: auto;
+  animation: confirmIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.confirm-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 50% at 50% 0%, rgba(52, 211, 153, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.confirm-overlay.show {
+  display: flex;
+}
+
+@keyframes confirmIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.confirm-icon {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--success), #1a9949);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 16px;
+  box-shadow:
+    0 0 32px rgba(52, 211, 153, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+@keyframes iconPop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.confirm-icon svg {
+  width: 38px;
+  height: 38px;
+  stroke: #ffffff;
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirm-title {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-style: italic;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--bone);
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: -0.015em;
+}
+
+.confirm-sub {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 22px;
+  font-weight: 600;
+}
+
+.confirm-card {
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0.5));
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  border-radius: 18px;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.confirm-card-label {
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  color: var(--mist);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.confirm-bonum {
+  font-family: var(--ff-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.confirm-time {
+  font-family: var(--ff-mono);
+  font-size: 0.66rem;
+  color: var(--bone);
+  letter-spacing: 0.04em;
+}
+
+.confirm-time .label {
+  color: var(--mist);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+.confirm-divider {
+  height: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  margin: 14px 0;
+}
+
+.confirm-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 9px;
+  padding: 0 2px;
+}
+
+.confirm-detail-icon {
+  flex-shrink: 0;
+  width: 16px;
+  margin-top: 1px;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.confirm-detail-text {
+  flex: 1;
+  font-size: 0.78rem;
+  color: var(--bone);
+  line-height: 1.4;
+}
+
+.confirm-detail-text strong {
+  font-family: var(--ff-mono);
+  font-size: 0.5rem;
+  color: var(--mist);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.confirm-instructions {
+  background: rgba(212, 175, 55, 0.06);
+  border: 0.5px dashed rgba(212, 175, 55, 0.25);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 0.74rem;
+  color: var(--mist);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.confirm-instructions strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.confirm-btn {
+  padding: 12px 10px;
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 12px;
+  color: var(--gold);
+  font-family: var(--ff-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.confirm-btn:active {
+  background: rgba(212, 175, 55, 0.15);
+  transform: scale(0.97);
+}
+
+.confirm-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirm-legal {
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-align: center;
+  margin-top: auto;
+  padding: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ADAPTATIONS PETITS ÉCRANS (iPhone SE, etc.)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-height: 700px) {
+  .hero h1 { font-size: 1.55rem; }
+  .hero p { font-size: 0.76rem; }
+  .field-label { font-size: 0.46rem; }
+  .field input, .field select { padding: 9px 12px; font-size: 0.86rem; }
+  .form { gap: 6px; }
+  .btn-action { padding: 14px 22px; font-size: 0.86rem; }
+  .legal { font-size: 0.46rem; }
+}
+
+@media (max-height: 600px) {
+  .brand-mini { margin-bottom: 8px; }
+  .hero { margin-bottom: 10px; }
+  .hero h1 { font-size: 1.35rem; margin-bottom: 4px; }
+  .hero p { font-size: 0.72rem; line-height: 1.35; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ÉCRAN PRINCIPAL — formulaire urgence
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="app" id="appMain">
+
+  <!-- HEADER MINI -->
+  <div class="brand-mini">
+    <span class="brand-monogram">I&amp;N</span>
+    <span class="brand-name">RUN</span>
+    <span class="brand-status">Disponible</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Réservation directe · Sans intermédiaire</div>
+    <h1>Toujours pas <em>de connexion ?</em></h1>
+    <p>Votre téléphone cherche du réseau, <strong>nous cherchons un passager</strong>. Saisissez l'opportunité d'un départ sans attente.</p>
+  </div>
+
+  <!-- FORM -->
+  <form class="form" id="urgenceForm" autocomplete="off" novalidate>
+    <div class="field" id="field-name">
+      <label class="field-label" for="clientName">Votre nom <span class="req">·</span></label>
+      <input type="text" id="clientName" autocomplete="name" autocapitalize="words" maxlength="50" placeholder="Ex : Jean Dupont" required>
+    </div>
+
+    <div class="field" id="field-pickup">
+      <label class="field-label" for="pickupLoc">Où êtes-vous précisément ? <span class="req">·</span></label>
+      <input type="text" id="pickupLoc" autocomplete="off" autocapitalize="sentences" maxlength="80" placeholder="Ex : Hall 1, sortie sud" required>
+    </div>
+
+    <div class="field" id="field-destination">
+      <label class="field-label" for="destination">Destination <span class="req">·</span></label>
+      <input type="text" id="destination" autocomplete="off" autocapitalize="words" maxlength="80" placeholder="Ex : Paris 8e, Versailles..." required>
+    </div>
+
+    <div class="field" id="field-pax">
+      <label class="field-label" for="pax">Nombre de passagers</label>
+      <select id="pax">
+        <option value="1">1 passager</option>
+        <option value="2">2 passagers</option>
+        <option value="3">3 passagers</option>
+        <option value="4">4 passagers</option>
+      </select>
+    </div>
+  </form>
+
+  <!-- BOUTON ACTION PRINCIPAL -->
+  <button class="btn-action" id="submitBtn" type="button">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span id="submitLabel">Trouver mon chauffeur</span>
+  </button>
+
+  <!-- BOUTON SECONDAIRE — Filet de sécurité (appel direct, marche TOUJOURS sans Internet) -->
+  <a href="tel:+33767742220" class="btn-call" id="callBtn">
+    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Appeler directement
+  </a>
+
+  <!-- MENTION LÉGALE -->
+  <div class="legal">
+    Conformément à l'article R.3122-14 du Code des transports,<br>
+    cette demande constitue une réservation préalable.<br>
+    I&amp;N RUN · SIREN 993 776 467
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ÉCRAN DE CONFIRMATION — bon de réservation côté client
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="confirm-overlay" id="confirmOverlay">
+
+  <div class="confirm-icon">
+    <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
+  </div>
+
+  <div class="confirm-title">Bon de réservation émis</div>
+  <div class="confirm-sub">Pré-réservation préalable VTC</div>
+
+  <div class="confirm-card">
+    <div class="confirm-card-label">N° de réservation</div>
+    <div class="confirm-bonum" id="confirmBonNum">INR-...</div>
+    <div class="confirm-time">
+      <span class="label">Émis le</span>
+      <span id="confirmDate">—</span>
+    </div>
+
+    <div class="confirm-divider"></div>
+
+    <div class="confirm-detail">
+      <div class="confirm-detail-icon">👤</div>
+      <div class="confirm-detail-text">
+        <strong>Client</strong>
+        <span id="confirmName">—</span>
+      </div>
+    </div>
+
+    <div class="confirm-detail">
+      <div class="confirm-detail-icon">📍</div>
+      <div class="confirm-detail-text">
+        <strong>Prise en charge</strong>
+        <span id="confirmPickup">—</span>
+      </div>
+    </div>
+
+    <div class="confirm-detail">
+      <div class="confirm-detail-icon">🏁</div>
+      <div class="confirm-detail-text">
+        <strong>Destination</strong>
+        <span id="confirmDest">—</span>
+      </div>
+    </div>
+
+    <div class="confirm-detail">
+      <div class="confirm-detail-icon">👥</div>
+      <div class="confirm-detail-text">
+        <strong>Passagers</strong>
+        <span id="confirmPax">1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="confirm-instructions">
+    <strong>Conservez ce numéro.</strong><br>
+    Présentez-le au chauffeur ou aux autorités si demandé.
+  </div>
+
+  <div class="confirm-actions">
+    <button class="confirm-btn" id="screenshotBtn">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Sauvegarder
+    </button>
+    <a href="tel:+33767742220" class="confirm-btn">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Appeler
+    </a>
+  </div>
+
+  <div class="confirm-legal">
+    Article R.3122-14 du Code des transports · I&amp;N RUN · SIREN 993 776 467 · 07 67 74 22 20
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   URGENCE.HTML — Logique
+   ═══════════════════════════════════════════════════════════════ */
+
+const PHONE = '33767742220';
+
+/* ─── HAPTIC ─── */
+const haptic = (ms = 10) => {
+  if (navigator.vibrate) navigator.vibrate(ms);
+};
+
+/* ─── GÉNÉRATEUR DE N° DE BON ─── */
+function generateBonNumber() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mi = String(now.getMinutes()).padStart(2, '0');
+  return `INR-${yy}${mm}${dd}-${hh}${mi}`;
+}
+
+/* ─── FORMATAGE DATE FR ─── */
+function formatDateFR(date) {
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  const hh = String(date.getHours()).padStart(2, '0');
+  const mi = String(date.getMinutes()).padStart(2, '0');
+  return `${dd}/${mm}/${yyyy} à ${hh}:${mi}`;
+}
+
+/* ─── VALIDATION ─── */
+function validateField(fieldId, inputId, minLength = 2) {
+  const field = document.getElementById(fieldId);
+  const input = document.getElementById(inputId);
+  const value = input.value.trim();
+  const isValid = value.length >= minLength;
+
+  field.classList.remove('invalid', 'valid');
+  if (isValid) {
+    field.classList.add('valid');
+  }
+  return isValid;
+}
+
+function showError(fieldId) {
+  const field = document.getElementById(fieldId);
+  field.classList.remove('valid');
+  field.classList.add('invalid');
+  // Retirer la classe shake après l'animation pour pouvoir la rejouer
+  setTimeout(() => field.classList.remove('invalid'), 800);
+}
+
+/* ─── VALIDATION EN TEMPS RÉEL ─── */
+['clientName', 'pickupLoc', 'destination'].forEach(id => {
+  const input = document.getElementById(id);
+  if (!input) return;
+  input.addEventListener('input', () => {
+    const fieldId = 'field-' + (id === 'clientName' ? 'name' : id === 'pickupLoc' ? 'pickup' : 'destination');
+    const field = document.getElementById(fieldId);
+    if (input.value.trim().length >= 2) {
+      field.classList.remove('invalid');
+      field.classList.add('valid');
+    }
+  });
+});
+
+/* ─── BOUTON PRINCIPAL — SOUMISSION ─── */
+const submitBtn = document.getElementById('submitBtn');
+
+submitBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  haptic(10);
+
+  // Récupération des champs
+  const clientName = document.getElementById('clientName').value.trim();
+  const pickupLoc = document.getElementById('pickupLoc').value.trim();
+  const destination = document.getElementById('destination').value.trim();
+  const pax = document.getElementById('pax').value;
+
+  // Validation
+  let hasError = false;
+  if (clientName.length < 2) {
+    showError('field-name');
+    document.getElementById('clientName').focus();
+    hasError = true;
+  } else if (pickupLoc.length < 2) {
+    showError('field-pickup');
+    document.getElementById('pickupLoc').focus();
+    hasError = true;
+  } else if (destination.length < 2) {
+    showError('field-destination');
+    document.getElementById('destination').focus();
+    hasError = true;
+  }
+
+  if (hasError) {
+    haptic([0, 60, 40, 60]); // pattern d'erreur
+    return;
+  }
+
+  // Génération du n° et de la date
+  const bonNum = generateBonNumber();
+  const now = new Date();
+  const dateStr = formatDateFR(now);
+  const dateForWa = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+  const timeForWa = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  // Composition du message WhatsApp (style "bon de commande officiel")
+  const message = [
+    '✅ *BON DE RÉSERVATION PRÉALABLE*',
+    '',
+    `🎫 N° : ${bonNum}`,
+    'Entreprise : I&N RUN',
+    '',
+    `👤 Client : ${clientName}`,
+    `📍 Prise en charge : ${pickupLoc}`,
+    `🏁 Destination : ${destination}`,
+    `👥 Passagers : ${pax}`,
+    `🕒 Émis le : ${dateForWa} à ${timeForWa}`,
+    '',
+    '_Urgence Gare_ : Pouvez-vous me confirmer le tarif et votre temps d\'approche ?'
+  ].join('\n');
+
+  const waUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+
+  // Pré-remplir l'écran de confirmation
+  document.getElementById('confirmBonNum').textContent = bonNum;
+  document.getElementById('confirmDate').textContent = dateStr;
+  document.getElementById('confirmName').textContent = clientName;
+  document.getElementById('confirmPickup').textContent = pickupLoc;
+  document.getElementById('confirmDest').textContent = destination;
+  document.getElementById('confirmPax').textContent = pax === '1' ? '1 passager' : `${pax} passagers`;
+
+  // Loading state
+  submitBtn.classList.add('loading');
+  document.getElementById('submitLabel').textContent = 'Ouverture WhatsApp...';
+
+  // Stocker les données pour pouvoir les sauvegarder en image
+  window._bonData = { bonNum, dateStr, clientName, pickupLoc, destination, pax };
+
+  haptic(20); // confirmation forte
+
+  // Afficher l'écran de confirmation et ouvrir WhatsApp
+  setTimeout(() => {
+    document.getElementById('appMain').style.display = 'none';
+    document.getElementById('confirmOverlay').classList.add('show');
+    window.scrollTo(0, 0);
+    // Ouverture WhatsApp (peut échouer si pas de réseau, c'est pour ça qu'on a l'écran de confirm)
+    window.open(waUrl, '_blank');
+  }, 350);
+});
+
+/* ─── SAUVEGARDE EN IMAGE (canvas) ─── */
+document.getElementById('screenshotBtn').addEventListener('click', () => {
+  haptic(15);
+  const data = window._bonData;
+  if (!data) return;
+
+  // Génération d'une image PNG via Canvas (sans dépendance externe)
+  const canvas = document.createElement('canvas');
+  const W = 800, H = 1100;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fond noir avec halo doré
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Halo doré radial
+  const grd = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 700);
+  grd.addColorStop(0, 'rgba(212, 175, 55, 0.18)');
+  grd.addColorStop(1, 'rgba(212, 175, 55, 0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Logo I&N RUN
+  ctx.fillStyle = '#E8C770';
+  ctx.font = 'italic 600 64px "Fraunces", serif';
+  ctx.fillText('I&N', 60, 120);
+
+  ctx.fillStyle = '#D4AF37';
+  ctx.font = '600 22px "JetBrains Mono", monospace';
+  ctx.fillText('R U N', 175, 120);
+
+  // Titre
+  ctx.fillStyle = '#f5f1e8';
+  ctx.font = 'italic 500 56px "Fraunces", serif';
+  ctx.fillText('Bon de réservation', 60, 230);
+
+  ctx.fillStyle = '#D4AF37';
+  ctx.font = '600 18px "JetBrains Mono", monospace';
+  ctx.fillText('PRÉ-RÉSERVATION PRÉALABLE VTC', 60, 270);
+
+  // Filet doré
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(60, 300);
+  ctx.lineTo(W - 60, 300);
+  ctx.stroke();
+
+  // N° de bon
+  ctx.fillStyle = '#a8a29e';
+  ctx.font = '600 18px "JetBrains Mono", monospace';
+  ctx.fillText('N° DE RÉSERVATION', 60, 360);
+
+  ctx.fillStyle = '#E8C770';
+  ctx.font = 'bold 44px "JetBrains Mono", monospace';
+  ctx.fillText(data.bonNum, 60, 410);
+
+  ctx.fillStyle = '#a8a29e';
+  ctx.font = '500 22px "Inter", sans-serif';
+  ctx.fillText('Émis le ' + data.dateStr, 60, 450);
+
+  // Détails
+  let y = 530;
+  const drawDetail = (label, value) => {
+    ctx.fillStyle = '#a8a29e';
+    ctx.font = '600 18px "JetBrains Mono", monospace';
+    ctx.fillText(label, 60, y);
+    ctx.fillStyle = '#f5f1e8';
+    ctx.font = '500 26px "Inter", sans-serif';
+    // Texte avec wrap
+    const maxW = W - 120;
+    const words = value.split(' ');
+    let line = '';
+    let yy = y + 32;
+    for (let n = 0; n < words.length; n++) {
+      const test = line + words[n] + ' ';
+      const testW = ctx.measureText(test).width;
+      if (testW > maxW && n > 0) {
+        ctx.fillText(line, 60, yy);
+        line = words[n] + ' ';
+        yy += 30;
+      } else {
+        line = test;
+      }
+    }
+    ctx.fillText(line, 60, yy);
+    y = yy + 50;
+  };
+
+  drawDetail('CLIENT', data.clientName);
+  drawDetail('PRISE EN CHARGE', data.pickupLoc);
+  drawDetail('DESTINATION', data.destination);
+  drawDetail('PASSAGERS', data.pax === '1' ? '1 passager' : `${data.pax} passagers`);
+
+  // Footer mention légale
+  ctx.fillStyle = '#6b6560';
+  ctx.font = '500 14px "JetBrains Mono", monospace';
+  const legal1 = 'Article R.3122-14 du Code des transports';
+  const legal2 = 'I&N RUN · SIREN 993 776 467 · 07 67 74 22 20';
+  ctx.fillText(legal1, 60, H - 60);
+  ctx.fillText(legal2, 60, H - 30);
+
+  // Conversion en image téléchargeable
+  canvas.toBlob((blob) => {
+    if (!blob) {
+      alert('Impossible de générer l\'image. Faites une capture d\'écran à la place.');
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Bon-${data.bonNum}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, 'image/png');
+});
+
+/* ─── PRÉVENTION DU SCROLL CACHÉ (iOS) ─── */
+document.addEventListener('touchmove', (e) => {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+    if (document.getElementById('confirmOverlay').classList.contains('show')) return;
+    e.preventDefault();
+  }
+}, { passive: false });
+
+/* ─── HAPTIC SUR FOCUS DES CHAMPS ─── */
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('focus', () => haptic(5));
+});
+
+/* ─── HAPTIC APPEL ─── */
+document.getElementById('callBtn').addEventListener('click', () => haptic(15));
+
+</script>
+
+</body>
+</html>

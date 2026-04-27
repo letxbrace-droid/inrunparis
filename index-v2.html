@@ -1,0 +1,4139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>I&amp;N RUN — Chauffeur privé Paris &amp; Île-de-France</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fraunces: serif éditoriale luxe / Inter: sans-serif moderne / JetBrains: mono technique -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — I&N RUN OLED Premium
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* FONDS OLED */
+  --oled: #000000;
+  --ink: #0a0a0a;
+  --ink-2: #111112;
+  --ink-3: #1a1a1c;
+
+  /* OR CLASSIQUE CONCIERGERIE */
+  --gold: #D4AF37;
+  --gold-warm: #E8C770;
+  --gold-deep: #9A7C1F;
+  --gold-glow: rgba(212, 175, 55, 0.45);
+
+  /* BLANCS & GRIS */
+  --bone: #f5f1e8;
+  --paper: #ffffff;
+  --mist: #a8a29e;
+  --shadow-ink: #4a4744;
+  --muted: #6b6560;
+  --dim: #3a3734;
+
+  /* ÉTATS */
+  --success: #34d399;
+  --danger: #ef4444;
+  --wa: #25d366;
+  --wa-deep: #128c4a;
+
+  /* TYPO */
+  --ff-display: "Fraunces", "Times New Roman", serif;
+  --ff-body: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono: "JetBrains Mono", "SF Mono", monospace;
+
+  /* SPACING */
+  --gutter: 20px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  /* SAFE AREA */
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-bot: env(safe-area-inset-bottom, 0);
+  /* Passe 1 — Variables ajoutées */
+  --gold-amber: #E5BE5B;
+  --ease-luxe: cubic-bezier(0.65, 0.05, 0.05, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html, body {
+  background: var(--oled);
+  color: var(--bone);
+  font-family: var(--ff-body);
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  padding-bottom: calc(90px + var(--safe-bot));
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(212, 175, 55, 0.04) 0%, transparent 60%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--oled); }
+::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Selection */
+::selection { background: var(--gold); color: var(--oled); }
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════ */
+.hdr {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.15);
+  padding: calc(var(--safe-top) + 14px) var(--gutter) 14px;
+}
+
+.hdr-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.brand {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 48, "SOFT" 20;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-style: italic;
+}
+
+.brand-mark {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(52, 211, 153, 0.08);
+  border: 0.5px solid rgba(52, 211, 153, 0.25);
+  border-radius: 100px;
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  font-weight: 600;
+  color: var(--success);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.badge-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: live 1.8s ease-in-out infinite;
+}
+
+@keyframes live { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════════════════════ */
+.main {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow::before, .eyebrow::after {
+  content: '';
+  flex: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+  opacity: 0.5;
+}
+
+.eyebrow::before { width: 20px; background: linear-gradient(90deg, var(--gold), transparent); }
+.eyebrow::after { flex: 1; }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════════════════ */
+.hero {
+  padding: 32px 0 40px;
+  text-align: left;
+  position: relative;
+}
+
+.hero h1 {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+  color: var(--bone);
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--gold-warm) 0%, var(--gold) 50%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 0.95rem;
+  color: var(--mist);
+  line-height: 1.55;
+  max-width: 380px;
+}
+
+.hero p strong {
+  color: var(--bone);
+  font-weight: 500;
+}
+
+/* Ornement hero */
+.hero-ornament {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 22px 0 0;
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--mist);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero-ornament span::before { content: '·'; margin: 0 10px; color: var(--gold); }
+.hero-ornament span:first-child::before { content: ''; margin: 0; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROOF BAR
+   ═══════════════════════════════════════════════════════════════ */
+.proof {
+  display: flex;
+  align-items: stretch;
+  padding: 14px 22px;
+  background: rgba(26, 26, 28, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(212, 175, 55, 0.14);
+  border-radius: var(--radius-lg);
+  margin: 12px 0 30px;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.proof-cell {
+  flex: 1;
+  text-align: center;
+  padding: 4px;
+}
+
+.proof-val {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-size: 1.45rem;
+  font-weight: 400;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 5px;
+}
+
+.proof-val sub {
+  font-size: 0.68rem;
+  opacity: 0.8;
+  vertical-align: baseline;
+  -webkit-text-fill-color: initial;
+  color: var(--gold);
+}
+
+.proof-lbl {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--mist);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.proof-sep {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.25), transparent);
+  margin: 0 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STEP INDICATOR
+   ═══════════════════════════════════════════════════════════════ */
+.step-ind {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 20px 0 16px;
+  padding: 12px 16px;
+  background: rgba(26, 26, 28, 0.4);
+  border: 0.5px solid rgba(212, 175, 55, 0.1);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.step-item.future .step-circle {
+  background: var(--ink-2);
+  color: var(--muted);
+  border: 0.5px solid rgba(212, 175, 55, 0.1);
+}
+
+.step-item.active .step-circle {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  color: var(--oled);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18), 0 0 24px var(--gold-glow);
+  animation: pulse-step 2.4s ease-in-out infinite;
+}
+
+.step-item.done .step-circle {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+  color: var(--oled);
+  box-shadow: 0 0 16px var(--gold-glow);
+}
+
+@keyframes pulse-step {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18), 0 0 24px var(--gold-glow); }
+  50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.1), 0 0 36px var(--gold-glow); }
+}
+
+.step-lbl {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.step-item.active .step-lbl, .step-item.done .step-lbl { color: var(--gold); }
+
+.step-line {
+  flex: 1;
+  height: 1.5px;
+  margin: -18px 4px 0;
+  z-index: 1;
+  background: rgba(212, 175, 55, 0.12);
+  transition: background 0.5s;
+}
+
+.step-line.done {
+  background: linear-gradient(90deg, var(--gold), var(--gold-warm));
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD (container principal)
+   ═══════════════════════════════════════════════════════════════ */
+.card {
+  background: rgba(26, 26, 28, 0.6);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 0.5px solid rgba(212, 175, 55, 0.12);
+  border-top: 0.5px solid rgba(212, 175, 55, 0.18);
+  border-radius: var(--radius-xl);
+  padding: 24px 22px;
+  margin-bottom: 16px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 16px 48px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.card-title {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--bone);
+  margin-bottom: 4px;
+}
+
+.card-sub {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  color: var(--mist);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 20px 0 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INPUTS LISIBLES
+   ═══════════════════════════════════════════════════════════════ */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.field:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.field.filled { border-color: rgba(52, 211, 153, 0.35); }
+
+.field-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 30% 25%, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.08));
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.field-ic svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.field-body { flex: 1; min-width: 0; }
+
+.field-lbl {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.field input, .field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--ff-body);
+  font-size: 0.94rem;
+  color: var(--gold-warm);
+  font-weight: 500;
+  caret-color: var(--gold);
+  letter-spacing: 0.01em;
+}
+
+.field input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 1;
+}
+
+.field input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TERMINAL BADGES (CDG/Orly shortcuts)
+   ═══════════════════════════════════════════════════════════════ */
+.terminals {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 10px 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 0.5px dashed rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.terminals.show { display: flex; }
+
+.terminals-lbl {
+  width: 100%;
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 6px 6px;
+}
+
+.term-chip {
+  padding: 7px 12px;
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.04));
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  border-radius: 100px;
+  font-family: var(--ff-mono);
+  font-size: 0.62rem;
+  color: var(--gold-warm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.term-chip:hover, .term-chip:active {
+  background: linear-gradient(165deg, var(--gold-warm), var(--gold));
+  color: var(--oled);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AUTOCOMPLETE DROPDOWN
+   ═══════════════════════════════════════════════════════════════ */
+.ac-drop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: rgba(17, 17, 18, 0.95);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 0.5px solid rgba(212, 175, 55, 0.22);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.7),
+    0 32px 64px rgba(0, 0, 0, 0.5);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 40;
+  display: none;
+}
+
+.ac-drop.show { display: block; animation: acFadeIn 0.2s ease-out; }
+
+@keyframes acFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ac-item {
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+}
+
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover, .ac-item.active { background: rgba(212, 175, 55, 0.1); }
+
+.ac-ic {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(212, 175, 55, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ac-ic svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.ac-text { flex: 1; min-width: 0; }
+.ac-name {
+  font-size: 0.86rem;
+  color: var(--bone);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac-meta {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ac-badge-idf {
+  padding: 3px 7px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEGMENTED CONTROL iOS
+   ═══════════════════════════════════════════════════════════════ */
+.seg {
+  display: grid;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.08);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.seg-2 { grid-template-columns: 1fr 1fr; }
+.seg-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.seg-opt {
+  padding: 11px 8px;
+  text-align: center;
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 9px;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  user-select: none;
+  border: none;
+  background: transparent;
+}
+
+.seg-opt svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; opacity: 0.75; }
+
+.seg-opt:hover { color: var(--bone); }
+
+.seg-opt.active {
+  background: linear-gradient(165deg, var(--gold-warm), var(--gold) 50%, var(--gold-deep));
+  color: var(--oled);
+  font-weight: 700;
+  box-shadow:
+    0 0 16px var(--gold-glow),
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.seg-opt.active svg { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════
+   iOS SLIDER
+   ═══════════════════════════════════════════════════════════════ */
+.slider-block { margin-top: 18px; transition: opacity 0.4s, filter 0.4s; }
+.slider-block.disabled { opacity: 0.35; pointer-events: none; filter: grayscale(0.5); }
+
+.slider-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.slider-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--bone);
+  font-weight: 500;
+}
+
+.slider-label svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+.slider-val {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-size: 1.3rem;
+  color: var(--bone);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.slider-val .unit {
+  font-family: var(--ff-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.ios-slider {
+  position: relative;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.ios-track {
+  position: absolute;
+  inset: 0 0 0 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1.5px 2px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.ios-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 50%;
+  background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  border-radius: 6px;
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.ios-slider.clim .ios-fill {
+  background: linear-gradient(90deg, #83F9FF 0%, var(--gold) 50%, #ef4444 100%);
+}
+
+.ios-thumb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(165deg, #ffffff 0%, #f1ebe0 100%);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s cubic-bezier(0.34, 1.5, 0.64, 1);
+  z-index: 2;
+}
+
+.ios-slider.dragging .ios-thumb {
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow:
+    0 0 0 8px rgba(212, 175, 55, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-top: 6px;
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.silence-hint {
+  display: none;
+  margin-top: 10px;
+  padding: 9px 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 0.5px solid rgba(212, 175, 55, 0.08);
+  border-radius: 10px;
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.silence-hint.show { display: block; }
+
+/* ═══════════════════════════════════════════════════════════════
+   iOS TOGGLES
+   ═══════════════════════════════════════════════════════════════ */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 2px;
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.06);
+}
+
+.toggle-row:last-child { border-bottom: none; }
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: var(--bone);
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+}
+
+.toggle-label svg { width: 16px; height: 16px; stroke: var(--mist); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+.switch {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  border-radius: 31px;
+  cursor: pointer;
+  background: var(--ink-3);
+  border: 0.5px solid rgba(212, 175, 55, 0.08);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.switch-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(165deg, #ffffff 0%, #f1ebe0 100%);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.switch.on {
+  background: linear-gradient(165deg, var(--gold-warm), var(--gold) 50%, var(--gold-deep));
+  border-color: var(--gold);
+  box-shadow:
+    0 0 14px var(--gold-glow),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.switch.on .switch-handle { left: 22px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PAIEMENT (CARTE / ESPÈCES)
+   ═══════════════════════════════════════════════════════════════ */
+.pay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pay-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.pay-card.sel {
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.05));
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.pay-icon { flex-shrink: 0; width: 32px; height: 32px; }
+.pay-icon svg { width: 26px; height: 26px; }
+
+.pay-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+
+.pay-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bone);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pay-sub {
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pay-card.sel .pay-sub { color: var(--gold); }
+
+.pay-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--success);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.pay-card.sel .pay-check { display: flex; }
+.pay-check svg {
+  width: 8px; height: 8px;
+  stroke: var(--oled);
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRIX BOX (résultat calcul)
+   ═══════════════════════════════════════════════════════════════ */
+.price-box {
+  margin-top: 20px;
+  padding: 24px 20px;
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.08), rgba(0, 0, 0, 0.4));
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  display: none;
+}
+
+.price-box.show { display: block; animation: priceRise 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes priceRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.price-lbl {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--mist);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.price-val {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 144;
+  font-size: 4rem;
+  font-weight: 400;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
+}
+
+.price-val .eur {
+  font-size: 1.8rem;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+
+.price-detail {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.price-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.p-badge {
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.p-badge.nuit { background: rgba(131, 249, 255, 0.12); color: #83F9FF; border: 0.5px solid rgba(131, 249, 255, 0.3); }
+.p-badge.promo { background: rgba(52, 211, 153, 0.12); color: var(--success); border: 0.5px solid rgba(52, 211, 153, 0.3); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROMO INPUT
+   ═══════════════════════════════════════════════════════════════ */
+.promo-wrap { margin: 14px 0 8px; position: relative; }
+.promo-in {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--gold-warm);
+  font-family: var(--ff-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  outline: none;
+  transition: all 0.25s;
+}
+
+.promo-in::placeholder {
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.promo-in:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12); }
+.promo-in.valid { border-color: var(--success); color: var(--success); }
+.promo-in.invalid { border-color: var(--danger); color: var(--danger); }
+
+.promo-msg {
+  margin-top: 6px;
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.06em;
+  min-height: 14px;
+}
+
+.promo-msg.valid { color: var(--success); }
+.promo-msg.invalid { color: var(--danger); }
+
+/* ═══════════════════════════════════════════════════════════════
+   BOUTON PRIMAIRE OR
+   ═══════════════════════════════════════════════════════════════ */
+.btn-primary {
+  width: 100%;
+  padding: 17px 24px;
+  background: linear-gradient(165deg, var(--gold-warm), var(--gold) 50%, var(--gold-deep));
+  color: var(--oled);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--ff-body);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 16px;
+  box-shadow:
+    0 0 40px rgba(212, 175, 55, 0.3),
+    0 6px 16px rgba(154, 124, 31, 0.35),
+    0 12px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(1px); }
+
+.btn-primary svg { width: 14px; height: 14px; stroke: var(--oled); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* SHIMMER sur bouton WhatsApp (conversion maximale) */
+.btn-wa {
+  width: 100%;
+  padding: 17px 24px;
+  background: linear-gradient(165deg, #34d76e 0%, var(--wa) 50%, var(--wa-deep) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--ff-body);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 0 40px rgba(37, 211, 102, 0.4),
+    0 6px 16px rgba(18, 140, 74, 0.4),
+    0 12px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-wa::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -50%; }
+  60%, 100% { left: 150%; }
+}
+
+.btn-wa:hover { transform: translateY(-2px); }
+.btn-wa svg { width: 18px; height: 18px; fill: #fff; position: relative; z-index: 1; }
+.btn-wa span { position: relative; z-index: 1; }
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px 22px;
+  background: transparent;
+  color: var(--mist);
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  border-radius: 100px;
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover { color: var(--bone); border-color: var(--gold); }
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS WIDGETS (météo + trafic)
+   ═══════════════════════════════════════════════════════════════ */
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.status-card {
+  background: rgba(26, 26, 28, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(212, 175, 55, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 16px 14px;
+}
+
+.status-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.status-title {
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.status-time {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.wx-main { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+
+.wx-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(165deg, rgba(131, 249, 255, 0.18), rgba(27, 84, 255, 0.1));
+  border: 0.5px solid rgba(131, 249, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-icon-box svg { width: 26px; height: 26px; stroke: var(--bone); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.wx-temp {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--bone);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.wx-desc {
+  font-size: 0.74rem;
+  color: var(--mist);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.wx-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  padding-top: 10px;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.1);
+}
+
+.wx-det {
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--mist);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wx-det .val { color: var(--bone); font-weight: 600; }
+
+.traffic-list { display: flex; flex-direction: column; gap: 7px; }
+
+.traffic-item {
+  background: rgba(0, 0, 0, 0.4);
+  border: 0.5px solid rgba(212, 175, 55, 0.08);
+  border-radius: 10px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ti-route { display: flex; flex-direction: column; min-width: 0; }
+.ti-name { font-size: 0.78rem; font-weight: 600; color: var(--bone); }
+.ti-via { font-family: var(--ff-mono); font-size: 0.52rem; color: var(--muted); letter-spacing: 0.04em; margin-top: 1px; }
+
+.ti-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+
+.ti-tag {
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ti-tag.ok { background: rgba(52, 211, 153, 0.12); color: var(--success); border: 0.5px solid rgba(52, 211, 153, 0.25); }
+.ti-tag.warn { background: rgba(212, 175, 55, 0.12); color: var(--gold); border: 0.5px solid rgba(212, 175, 55, 0.3); }
+.ti-tag.bad { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: 0.5px solid rgba(239, 68, 68, 0.25); }
+
+.ti-dur {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 48;
+  font-size: 0.78rem;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REVIEWS
+   ═══════════════════════════════════════════════════════════════ */
+.reviews {
+  margin: 30px 0;
+}
+
+.review {
+  background: rgba(26, 26, 28, 0.5);
+  border: 0.5px solid rgba(212, 175, 55, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.review::before {
+  content: '"';
+  position: absolute;
+  top: 4px;
+  left: 14px;
+  font-family: var(--ff-display);
+  font-size: 2.5rem;
+  color: var(--gold);
+  opacity: 0.4;
+  line-height: 1;
+}
+
+.review-quote {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 24;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--bone);
+  line-height: 1.5;
+  margin: 8px 0 14px;
+  padding-left: 14px;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.08);
+}
+
+.review-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--bone);
+}
+
+.review-route {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-top: 1px;
+}
+
+.stars { color: var(--gold); font-size: 0.86rem; letter-spacing: 0.05em; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CTA BOTTOM PERSISTANT
+   ═══════════════════════════════════════════════════════════════ */
+.cta-dock {
+  position: fixed;
+  bottom: calc(16px + var(--safe-bot));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 0.5px solid rgba(212, 175, 55, 0.22);
+  border-radius: 100px;
+  box-shadow:
+    0 0 40px rgba(212, 175, 55, 0.15),
+    0 8px 30px rgba(0, 0, 0, 0.6),
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: dockUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dockUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.dock-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: none;
+  background: transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: var(--ff-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--bone);
+  transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+  white-space: nowrap;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.dock-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.dock-btn.msg {
+  background: linear-gradient(135deg, #34d76e, var(--wa) 50%, var(--wa-deep));
+  color: #fff;
+  box-shadow:
+    0 0 20px rgba(37, 211, 102, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.dock-btn.msg svg { fill: #fff; stroke: none; }
+
+.dock-btn.tel { background: transparent; color: var(--gold); }
+
+.dock-btn.tel svg { stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.dock-btn.tel:hover { background: rgba(212, 175, 55, 0.1); color: var(--gold-warm); }
+
+.dock-sep { width: 0.5px; background: rgba(212, 175, 55, 0.25); margin: 6px 2px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+.footer {
+  margin: 40px -var(--gutter) 0;
+  padding: 30px 20px calc(100px + var(--safe-bot));
+  text-align: center;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.1);
+}
+
+.footer-brand {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--bone);
+  margin-bottom: 4px;
+}
+
+.footer-baseline {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--mist);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.footer-legal {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+
+.footer-legal a { color: var(--gold); text-decoration: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MISC
+   ═══════════════════════════════════════════════════════════════ */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  opacity: 0.5;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.divider span {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Reveal animation on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smaller screens */
+@media (max-width: 380px) {
+  .dock-btn { padding: 10px 16px; font-size: 0.66rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .price-val { font-size: 3.2rem; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGO I&N RUN (header + footer)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Header brand */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--ff-display);
+}
+
+.brand-monogram {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  font-size: 0.62rem;
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-left: 4px;
+  padding-top: 2px;
+}
+
+/* Footer logo */
+.footer-logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.footer-monogram {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.footer-run {
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  padding-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER REDESIGN
+   ═══════════════════════════════════════════════════════════════ */
+
+.footer {
+  margin: 40px -20px 0;
+  padding: 36px 20px calc(100px + var(--safe-bot));
+  text-align: center;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.15);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.footer-baseline {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--mist);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 4px 0 20px;
+}
+
+.footer-contact {
+  font-family: var(--ff-mono);
+  font-size: 0.68rem;
+  color: var(--mist);
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.footer-contact a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-contact a:hover { color: var(--gold-warm); }
+
+.footer-links {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(212, 175, 55, 0.04);
+  border: 0.5px solid rgba(212, 175, 55, 0.1);
+  border-radius: 100px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-links a {
+  color: var(--bone);
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+.footer-dot {
+  color: var(--dim);
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.footer-legal-base {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL LÉGAL (mentions / CGV / confidentialité)
+   ═══════════════════════════════════════════════════════════════ */
+
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.legal-overlay.show { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.legal-modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  background: linear-gradient(180deg, var(--ink-3), var(--ink));
+  border: 0.5px solid rgba(212, 175, 55, 0.2);
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.legal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px 14px;
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.1);
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+}
+
+.legal-head-title {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 48;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--bone);
+}
+
+.legal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(212, 175, 55, 0.2);
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.legal-close:hover {
+  background: var(--gold);
+  color: var(--oled);
+}
+
+.legal-close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.legal-body {
+  overflow-y: auto;
+  padding: 22px 22px calc(30px + var(--safe-bot));
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.legal-body h3 {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 48;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+  margin: 20px 0 8px;
+  line-height: 1.3;
+}
+
+.legal-body h3:first-child { margin-top: 0; }
+
+.legal-body p,
+.legal-body li {
+  font-size: 0.84rem;
+  color: var(--mist);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.legal-body strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+.legal-body ul {
+  margin: 8px 0 14px 20px;
+  padding: 0;
+}
+
+.legal-body li {
+  margin-bottom: 6px;
+  list-style: none;
+  position: relative;
+  padding-left: 12px;
+}
+
+.legal-body li::before {
+  content: '·';
+  color: var(--gold);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.legal-body a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 0.5px dotted var(--gold);
+}
+
+.legal-body .legal-meta {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px dashed rgba(212, 175, 55, 0.15);
+}
+
+.legal-body .legal-key {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(212, 175, 55, 0.05);
+  border: 0.5px solid rgba(212, 175, 55, 0.12);
+  border-radius: 10px;
+  margin: 8px 0;
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+}
+
+.legal-body .legal-key-lbl {
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.58rem;
+  padding-top: 3px;
+}
+
+.legal-body .legal-key-val {
+  color: var(--gold);
+  font-weight: 600;
+  text-align: right;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CONFIRMATION DU N° DE BON (après clic Réserver)
+   ═══════════════════════════════════════════════════════════════ */
+.bon-confirmation {
+  margin-top: 20px;
+  padding: 18px 16px;
+  background: linear-gradient(165deg, rgba(52, 211, 153, 0.08), rgba(212, 175, 55, 0.04));
+  border: 0.5px solid rgba(52, 211, 153, 0.3);
+  border-radius: 16px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bon-confirmation.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bon-conf-label {
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--success);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.bon-conf-number {
+  font-family: var(--ff-mono);
+  font-size: 1.15rem;
+  color: var(--gold-warm);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.bon-conf-msg {
+  font-size: 0.74rem;
+  color: var(--mist);
+  line-height: 1.45;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION MISE À DISPOSITION (MAD)
+   ═══════════════════════════════════════════════════════════════ */
+.mad-section {
+  margin: 36px 0 28px;
+}
+
+.mad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.mad-card {
+  background: rgba(26, 26, 28, 0.6);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 0.5px solid rgba(212, 175, 55, 0.15);
+  border-top: 0.5px solid rgba(212, 175, 55, 0.22);
+  border-radius: 18px;
+  padding: 18px 14px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mad-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212, 175, 55, 0.08), transparent);
+  pointer-events: none;
+}
+
+.mad-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 24px rgba(212, 175, 55, 0.15),
+    0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mad-card.featured {
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.03));
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.mad-badge-best {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 8px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  color: var(--oled);
+  border-radius: 100px;
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.mad-label {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--mist);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.mad-name {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 48;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--bone);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.mad-duration {
+  font-family: var(--ff-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.mad-price {
+  font-family: var(--ff-display);
+  font-variation-settings: "opsz" 72;
+  font-size: 1.8rem;
+  font-weight: 400;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.mad-price .eur {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-left: 2px;
+}
+
+.mad-rate {
+  font-family: var(--ff-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.mad-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 18px 0;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 0.5px dashed rgba(212, 175, 55, 0.2);
+  border-radius: 14px;
+}
+
+.mad-feat-chip {
+  padding: 5px 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  border-radius: 100px;
+  font-family: var(--ff-mono);
+  font-size: 0.56rem;
+  color: var(--gold-warm);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.mad-tva-note {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 12px 0 8px;
+  opacity: 0.7;
+}
+
+.mad-cta {
+  margin-top: 18px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GÉOLOCALISATION — Bouton "Utiliser ma position"
+   ═══════════════════════════════════════════════════════════════ */
+.geoloc-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 0.5px solid rgba(212, 175, 55, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+  padding: 0;
+  margin-left: 4px;
+  position: relative;
+}
+
+.geoloc-btn:hover {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--gold);
+  transform: scale(1.05);
+}
+
+.geoloc-btn:active {
+  transform: scale(0.95);
+}
+
+.geoloc-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s;
+}
+
+.geoloc-btn.loading {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--gold);
+}
+
+.geoloc-btn.loading svg {
+  animation: geolocPulse 1.2s ease-in-out infinite;
+}
+
+.geoloc-btn.success {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: var(--success);
+}
+
+.geoloc-btn.success svg {
+  stroke: var(--success);
+}
+
+@keyframes geolocPulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: scale(0.85);
+  }
+}
+
+.geoloc-hint {
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  color: var(--mist);
+  letter-spacing: 0.06em;
+  margin: 4px 4px 8px;
+  padding: 0 4px;
+  min-height: 0;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.geoloc-hint.show {
+  opacity: 1;
+  margin-bottom: 12px;
+}
+
+.geoloc-hint.success {
+  color: var(--success);
+}
+
+.geoloc-hint.error {
+  color: var(--danger);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COORDONNÉES CLIENT — Champ obligatoire + bouton désactivé
+   ═══════════════════════════════════════════════════════════════ */
+
+#name-field.invalid {
+  border-color: rgba(239, 68, 68, 0.4);
+  animation: shakeName 0.4s ease-in-out;
+}
+
+@keyframes shakeName {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+#name-field.valid {
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.btn-primary:disabled,
+.btn-primary[disabled] {
+  background: linear-gradient(165deg, #5a5550, #3a3734) !important;
+  color: var(--muted) !important;
+  cursor: not-allowed !important;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+}
+
+.btn-primary:disabled:hover,
+.btn-primary[disabled]:hover {
+  transform: none !important;
+}
+
+.btn-primary:disabled svg,
+.btn-primary[disabled] svg {
+  stroke: var(--muted) !important;
+  fill: none !important;
+}
+
+
+/* Passe 1 — Grain texture éditoriale (overlay subtil) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PASSE 1 — Raffinements typographiques Geist
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Optimisation du rendu Geist sur le body */
+body {
+  letter-spacing: -0.005em;
+  font-feature-settings: "ss01" 1, "ss02" 1, "cv11" 1;
+}
+
+/* Selection en or ambré (plus chaud que l'or classique) */
+::selection {
+  background: var(--gold-amber);
+  color: var(--oled);
+}
+
+/* Hero : letter-spacing plus serré pour Geist */
+.hero-sub,
+.card-sub {
+  letter-spacing: -0.005em;
+}
+
+/* Titres en italique : cohérence avec la signature éditoriale */
+.hero-title em,
+.card-title em {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold-amber), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Améliorer le contraste de l'or chaud sur les chiffres importants */
+.proof-value,
+.mad-price,
+.price-amount {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold-amber), var(--gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Polish : meilleure lisibilité des micro-labels en mono */
+.field-lbl,
+.eyebrow,
+.section-title {
+  font-feature-settings: "ss01" 1;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="brand">
+      <span class="brand-monogram">I&amp;N</span>
+      <span class="brand-name">RUN</span>
+    </div>
+    <div class="badge-live">Disponible</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero reveal">
+    <div class="eyebrow">Chauffeur privé · Paris &amp; IDF</div>
+    <h1>Votre chauffeur<br><em>vous attend.</em></h1>
+    <p>Un service sur-mesure, direct et sans commission.<br>
+    <strong>10% moins cher</strong> que les applications, <strong>confirmation en 2 minutes</strong>.</p>
+    <div class="hero-ornament">
+      <span>Mise à disposition 24/7</span>
+      <span>Aéroports</span>
+      <span>Gares</span>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <div class="proof reveal">
+    <div class="proof-cell">
+      <div class="proof-val">5<sub>/5</sub></div>
+      <div class="proof-lbl">Excellence</div>
+    </div>
+    <div class="proof-sep"></div>
+    <div class="proof-cell">
+      <div class="proof-val">2<sub>min</sub></div>
+      <div class="proof-lbl">Confirmation</div>
+    </div>
+    <div class="proof-sep"></div>
+    <div class="proof-cell">
+      <div class="proof-val">&minus;10<sub>%</sub></div>
+      <div class="proof-lbl">vs Apps</div>
+    </div>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="step-ind reveal" id="stepper">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle">1</div>
+      <div class="step-lbl">Trajet</div>
+    </div>
+    <div class="step-line" data-line="1"></div>
+    <div class="step-item future" data-step="2">
+      <div class="step-circle">2</div>
+      <div class="step-lbl">Service</div>
+    </div>
+    <div class="step-line" data-line="2"></div>
+    <div class="step-item future" data-step="3">
+      <div class="step-circle">3</div>
+      <div class="step-lbl">Tarif</div>
+    </div>
+    <div class="step-line" data-line="3"></div>
+    <div class="step-item future" data-step="4">
+      <div class="step-circle">4</div>
+      <div class="step-lbl">Réservé</div>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 1 — TRAJET -->
+  <section class="card reveal">
+    <div class="eyebrow">Étape 01</div>
+    <div class="card-title">Votre itinéraire</div>
+    <div class="card-sub">Indiquez votre trajet</div>
+
+    <!-- Date et heure -->
+    <div class="field">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Prise en charge</div>
+        <input type="datetime-local" id="pickup-time" aria-label="Date et heure de prise en charge">
+      </div>
+    </div>
+
+    <!-- Départ -->
+    <div class="field" id="depart-field">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Lieu de départ</div>
+        <input type="text" id="depart" placeholder="Ex : Ris-Orangis, Paris..." autocomplete="off">
+      </div>
+      <button class="geoloc-btn" id="geolocBtn" type="button" aria-label="Utiliser ma position actuelle">
+        <svg id="geolocIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      </button>
+      <div class="ac-drop" id="ac-depart"></div>
+    </div>
+    <div class="geoloc-hint" id="geolocHint"></div>
+
+    <!-- Badges terminaux (affichés quand CDG/Orly détecté) -->
+    <div class="terminals" id="term-depart"></div>
+
+    <!-- Arrivée -->
+    <div class="field" id="arrive-field">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Destination</div>
+        <input type="text" id="arrive" placeholder="Où souhaitez-vous aller ?" autocomplete="off">
+      </div>
+      <div class="ac-drop" id="ac-arrive"></div>
+    </div>
+
+    <!-- Badges terminaux arrivée -->
+    <div class="terminals" id="term-arrive"></div>
+  </section>
+
+  <!-- ÉTAPE 2 — SERVICE -->
+  <section class="card reveal">
+    <div class="eyebrow">Étape 02</div>
+    <div class="card-title">À bord</div>
+    <div class="card-sub">Personnalisez votre trajet</div>
+
+    <div class="section-title">Ambiance</div>
+    <div class="seg seg-3" id="amb-seg">
+      <button class="seg-opt active" data-v="musique">
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Musique
+      </button>
+      <button class="seg-opt" data-v="radio">
+        <svg viewBox="0 0 24 24"><path d="M4.93 19.07A10 10 0 0 1 19.07 4.93"/><path d="M7.76 16.24a6 6 0 0 1 8.48-8.48"/><circle cx="12" cy="12" r="2"/></svg>
+        Radio
+      </button>
+      <button class="seg-opt" data-v="silence">
+        <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        Silence
+      </button>
+    </div>
+
+    <div class="slider-block" id="volBlock">
+      <div class="slider-head">
+        <div class="slider-label">
+          <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          Volume
+        </div>
+        <div class="slider-val"><span id="volVal">50</span><span class="unit">%</span></div>
+      </div>
+      <div class="ios-slider" id="volSlider">
+        <div class="ios-track"><div class="ios-fill" id="volFill"></div></div>
+        <div class="ios-thumb" id="volThumb"></div>
+      </div>
+      <div class="slider-ticks"><span>0</span><span>50</span><span>100</span></div>
+    </div>
+    <div class="silence-hint" id="silenceHint">Volume désactivé · mode silence</div>
+
+    <div class="slider-block" style="margin-top:20px">
+      <div class="slider-head">
+        <div class="slider-label">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          Climatisation
+        </div>
+        <div class="slider-val"><span id="climVal">21</span><span class="unit">°C</span></div>
+      </div>
+      <div class="ios-slider clim" id="climSlider">
+        <div class="ios-track"><div class="ios-fill" id="climFill"></div></div>
+        <div class="ios-thumb" id="climThumb"></div>
+      </div>
+      <div class="slider-ticks"><span>18°</span><span>22°</span><span>26°</span></div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">Prestations incluses</div>
+
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        Wi-Fi 5G à bord
+      </div>
+      <div class="switch" data-opt="wifi"><div class="switch-handle"></div></div>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <svg viewBox="0 0 24 24"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Bouteille d'eau
+      </div>
+      <div class="switch on" data-opt="eau"><div class="switch-handle"></div></div>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/></svg>
+        Chargeur USB universel
+      </div>
+      <div class="switch on" data-opt="usb"><div class="switch-handle"></div></div>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3L8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+        Confiseries
+      </div>
+      <div class="switch" data-opt="confiseries"><div class="switch-handle"></div></div>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/><path d="M9 11h6"/></svg>
+        Siège enfant (sur demande)
+      </div>
+      <div class="switch" data-opt="siege"><div class="switch-handle"></div></div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">Mode de règlement</div>
+    <div class="pay-grid">
+      <div class="pay-card sel" data-method="Carte">
+        <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
+        <div class="pay-icon">
+          <svg viewBox="0 0 32 32">
+            <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs>
+            <rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cg)"/>
+            <rect x="3" y="11" width="26" height="3" fill="#D4AF37" opacity="0.65"/>
+            <rect x="7" y="17" width="6" height="5" rx="1" fill="#E8C770"/>
+            <circle cx="23" cy="20" r="1.8" fill="#D4AF37"/>
+            <circle cx="25.5" cy="20" r="1.8" fill="#9A7C1F" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="pay-info">
+          <div class="pay-title">Carte</div>
+          <div class="pay-sub">Sans contact</div>
+        </div>
+      </div>
+
+      <div class="pay-card" data-method="Espèces">
+        <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
+        <div class="pay-icon">
+          <svg viewBox="0 0 32 32">
+            <rect x="5" y="10" width="22" height="13" rx="2" fill="#34d399" opacity="0.55" transform="rotate(-5 16 16)"/>
+            <rect x="5" y="8" width="22" height="13" rx="2" fill="#6ee7b7"/>
+            <circle cx="16" cy="14.5" r="3.5" fill="none" stroke="#065f46" stroke-width="1.2"/>
+            <text x="16" y="16.5" text-anchor="middle" font-family="Inter" font-size="5" font-weight="700" fill="#065f46">€</text>
+          </svg>
+        </div>
+        <div class="pay-info">
+          <div class="pay-title">Espèces</div>
+          <div class="pay-sub">Préféré</div>
+        </div>
+      </div>
+    </div>
+
+    <input type="hidden" id="paymentMethod" value="Carte">
+
+    <!-- Note au chauffeur -->
+    <div class="field" style="margin-top:20px">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Note (optionnel)</div>
+        <input type="text" id="note" placeholder="N° de vol, bagages, instructions..." maxlength="120">
+      </div>
+    </div>
+
+    <!-- Promo code -->
+    <div class="promo-wrap">
+      <input type="text" class="promo-in" id="promoCode" placeholder="Code avantage (optionnel)" maxlength="20" autocomplete="off">
+      <div class="promo-msg" id="promoMsg"></div>
+    </div>
+
+    <!-- VOS COORDONNÉES (nom obligatoire pour le bon de réservation) -->
+    <div class="section-title" style="margin-top:24px">Vos coordonnées</div>
+
+    <div class="field" id="name-field">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Votre nom <span style="color:var(--gold);font-weight:700">·</span></div>
+        <input type="text" id="clientName" placeholder="Ex : Jean Dupont" autocomplete="name" maxlength="60" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-ic">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="field-body">
+        <div class="field-lbl">Email (optionnel)</div>
+        <input type="email" id="clientEmail" placeholder="Pour recevoir votre facture" autocomplete="email" maxlength="100">
+      </div>
+    </div>
+
+    <!-- BOUTON CALCUL -->
+    <button class="btn-primary" id="calcBtn">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Découvrir mon tarif garanti
+    </button>
+
+    <!-- PRIX BOX (caché par défaut) -->
+    <div class="price-box" id="priceBox">
+      <div class="price-lbl">Votre tarif fixe, sans surprise</div>
+      <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
+      <div class="price-detail" id="priceDetail">—</div>
+      <div class="price-badges" id="priceBadges"></div>
+      <div style="margin-top:22px">
+        <button class="btn-wa" id="waBtn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>Confirmer ma réservation</span>
+        </button>
+        <button class="btn-secondary" id="recalcBtn">Modifier la course</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS (météo + trafic live) -->
+  <div class="status-grid reveal">
+    <div class="status-card">
+      <div class="status-head">
+        <div class="status-title">Météo</div>
+        <div class="status-time" id="wxTime">—</div>
+      </div>
+      <div class="wx-main">
+        <div class="wx-icon-box" id="wxIconBox">
+          <svg id="wxIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </div>
+        <div>
+          <div class="wx-temp"><span id="wxTemp">—</span></div>
+          <div class="wx-desc" id="wxDesc">Chargement…</div>
+        </div>
+      </div>
+      <div class="wx-details">
+        <div class="wx-det">Vent <span class="val" id="wxWind">—</span></div>
+        <div class="wx-det">Humidité <span class="val" id="wxHum">—</span></div>
+      </div>
+    </div>
+
+    <div class="status-card">
+      <div class="status-head">
+        <div class="status-title">Trafic IDF</div>
+        <div class="status-time" id="trafficTime">—</div>
+      </div>
+      <div class="traffic-list" id="trafficList">
+        <div class="traffic-item">
+          <div class="ti-route">
+            <div class="ti-name">Chargement</div>
+            <div class="ti-via">Données en cours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  
+
+  <!-- MISE À DISPOSITION (MAD) -->
+  <section class="card mad-section reveal">
+    <div class="eyebrow">Service Premium</div>
+    <div class="card-title">Mise à disposition</div>
+    <div class="card-sub">Chauffeur privé à l'heure ou à la journée</div>
+
+    <p style="color:var(--mist); font-size:0.86rem; line-height:1.55; margin-bottom:8px;">
+      Pour vos <strong style="color:var(--bone)">rendez-vous business</strong>, <strong style="color:var(--bone)">mariages</strong>, <strong style="color:var(--bone)">visites touristiques</strong> ou <strong style="color:var(--bone)">journées VIP</strong>, réservez votre chauffeur pour une durée forfaitaire. Véhicule et chauffeur restent à votre disposition pendant toute la période convenue.
+    </p>
+
+    <div class="mad-features">
+      <span class="mad-feat-chip">Sans kilomètres limités</span>
+      <span class="mad-feat-chip">Attentes incluses</span>
+      <span class="mad-feat-chip">Discrétion absolue</span>
+      <span class="mad-feat-chip">Tenue élégante</span>
+    </div>
+
+    <div class="mad-grid">
+      <div class="mad-card">
+        <div class="mad-label">Formule</div>
+        <div class="mad-name">À l'heure</div>
+        <div class="mad-duration">Minimum 3h</div>
+        <div class="mad-price">65<span class="eur">€</span></div>
+        <div class="mad-rate">par heure</div>
+      </div>
+
+      <div class="mad-card">
+        <div class="mad-label">Formule</div>
+        <div class="mad-name">Demi-journée</div>
+        <div class="mad-duration">4 heures</div>
+        <div class="mad-price">240<span class="eur">€</span></div>
+        <div class="mad-rate">soit 60€/h</div>
+      </div>
+
+      <div class="mad-card featured">
+        <div class="mad-badge-best">Populaire</div>
+        <div class="mad-label">Formule</div>
+        <div class="mad-name">Journée</div>
+        <div class="mad-duration">8 heures</div>
+        <div class="mad-price">450<span class="eur">€</span></div>
+        <div class="mad-rate">soit 56€/h</div>
+      </div>
+
+      <div class="mad-card">
+        <div class="mad-label">Formule</div>
+        <div class="mad-name">Soirée</div>
+        <div class="mad-duration">18h – minuit</div>
+        <div class="mad-price">320<span class="eur">€</span></div>
+        <div class="mad-rate">6 heures</div>
+      </div>
+    </div>
+
+    <div class="mad-tva-note">Tarifs TTC · Sans frais cachés · TVA non applicable, art. 293 B du CGI</div>
+
+    <button class="btn-wa mad-cta" id="madBtn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span>Réserver mon chauffeur à l'heure</span>
+    </button>
+  </section>
+
+  <section class="reviews reveal">
+    <div class="eyebrow">Ils témoignent</div>
+
+    <div class="review">
+      <div class="review-quote">"Chauffeur ponctuel, véhicule impeccable, tarif honoré sans discussion. Le service premium sans l'attente des applications."</div>
+      <div class="review-author">
+        <div>
+          <div class="review-name">Sophie M.</div>
+          <div class="review-route">CDG → Paris 8e</div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+
+    <div class="review">
+      <div class="review-quote">"Réservation en 2 minutes via WhatsApp, confirmation immédiate. Ponctuel, discret, professionnel. Je recommande."</div>
+      <div class="review-author">
+        <div>
+          <div class="review-name">Thomas R.</div>
+          <div class="review-route">Ris-Orangis → La Défense</div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+
+    <div class="review">
+      <div class="review-quote">"Service courtois, conduite souple, sièges confortables. Une vraie alternative premium aux grandes plateformes."</div>
+      <div class="review-author">
+        <div>
+          <div class="review-name">Amina K.</div>
+          <div class="review-route">Orly → Versailles</div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer reveal">
+    <div class="footer-logo">
+      <span class="footer-monogram">I&amp;N</span>
+      <span class="footer-run">RUN</span>
+    </div>
+    <div class="footer-baseline">Chauffeur privé · Paris &amp; Île-de-France</div>
+
+    <div class="footer-contact">
+      <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a>
+      <span class="footer-dot">·</span>
+      <a href="tel:+33767742220">07 67 74 22 20</a>
+    </div>
+
+    <div class="footer-links">
+      <a href="#" onclick="openLegal('mentions'); return false;">Mentions légales</a>
+      <span class="footer-dot">·</span>
+      <a href="#" onclick="openLegal('cgv'); return false;">CGV</a>
+      <span class="footer-dot">·</span>
+      <a href="#" onclick="openLegal('confidentialite'); return false;">Confidentialité</a>
+    </div>
+
+    <div class="footer-legal-base">
+      © 2026 I&amp;N RUN &middot; SIREN 993 776 467 &middot; SIRET 993 776 467 00017<br>
+      Entreprise de transport public routier de personnes · Carte pro VTC
+    </div>
+  </footer>
+
+</main>
+
+<!-- CTA DOCK -->
+<nav class="cta-dock" aria-label="Actions rapides">
+  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course." class="dock-btn msg" target="_blank" rel="noopener" id="dockMsg">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Messages
+  </a>
+  <div class="dock-sep"></div>
+  <a href="tel:+33767742220" class="dock-btn tel" id="dockTel">
+    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Téléphone
+  </a>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONCIERGERIE — Moteur de réservation
+   ═══════════════════════════════════════════════════════════════
+   Architecture :
+   - UTIL : helpers (haptic, debounce, formatters)
+   - STATE : état global centralisé
+   - AC : autocomplete Photon avec priorité IDF + terminaux
+   - OSRM : calcul distance/durée + buffer trafic ×1.2
+   - PRICE : tarification dynamique + codes promo
+   - UI : sliders, toggles, segmented, stepper
+   - WHATSAPP : composition du message de réservation
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── UTIL ────────────────────────────────────────────────── */
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+// Haptic feedback (vibrate API si dispo)
+const haptic = (ms = 10) => {
+  if (navigator.vibrate) navigator.vibrate(ms);
+};
+
+const debounce = (fn, wait) => {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+};
+
+/* ─── STATE ───────────────────────────────────────────────── */
+const STATE = {
+  depart: null,      // { name, lat, lng }
+  arrive: null,      // { name, lat, lng }
+  pickup: null,      // ISO datetime
+  clientName: '',    // Nom du client (obligatoire pour BDR)
+  clientEmail: '',   // Email (optionnel)
+  ambiance: 'musique',
+  volume: 50,
+  clim: 21,
+  options: { wifi: false, eau: true, usb: true, confiseries: false, siege: false },
+  payment: 'Carte',
+  note: '',
+  promo: null,       // { code, discount }
+  price: null,       // { base, final, km, mins, isNight }
+};
+
+/* ─── CODES PROMO ─────────────────────────────────────────── */
+const PROMO_CODES = {
+  'BIENVENUE10': { type: 'percent', val: 10, label: 'Bienvenue · −10% découverte' },
+  'MERCI15':     { type: 'percent', val: 15, label: 'Fidélité · −15%' },
+  'VIP20':       { type: 'percent', val: 20, label: 'Corporate · −20%' },
+  'AMI10':       { type: 'flat',    val: 10, label: 'Parrainage · −10€' },
+};
+
+/* ─── TARIFICATION ────────────────────────────────────────── */
+const PRICE = {
+  base: 15,          // Frais de prise en charge
+  perKm: 0.84,       // €/km
+  perMin: 0.17,      // €/min
+  min: 35,           // Minimum de course
+  nightPlus: 10,     // Supplément nuit
+  nightStart: 22,    // 22h
+  nightEnd: 6,       // 6h
+  trafficBuffer: 1.2 // Buffer trafic IDF ×1.2
+};
+
+/* ─── PRESETS IDF (pour autocomplete prioritaire) ─────────── */
+const IDF_PRESETS = [
+  // Aéroports + terminaux
+  { name: 'Aéroport Paris-Charles de Gaulle', lat: 49.0097, lng: 2.5479, type: 'airport', key: 'cdg' },
+  { name: 'CDG · Terminal 1', lat: 49.0097, lng: 2.5479, type: 'terminal', parent: 'cdg' },
+  { name: 'CDG · Terminal 2A', lat: 49.0038, lng: 2.5631, type: 'terminal', parent: 'cdg' },
+  { name: 'CDG · Terminal 2C', lat: 49.0042, lng: 2.5598, type: 'terminal', parent: 'cdg' },
+  { name: 'CDG · Terminal 2E (gare TGV)', lat: 49.0056, lng: 2.5693, type: 'terminal', parent: 'cdg' },
+  { name: 'CDG · Terminal 2F', lat: 49.0064, lng: 2.5683, type: 'terminal', parent: 'cdg' },
+  { name: 'CDG · Terminal 3', lat: 49.0110, lng: 2.5433, type: 'terminal', parent: 'cdg' },
+  { name: 'Aéroport Paris-Orly', lat: 48.7233, lng: 2.3795, type: 'airport', key: 'orly' },
+  { name: 'Orly · Terminal 1', lat: 48.7260, lng: 2.3653, type: 'terminal', parent: 'orly' },
+  { name: 'Orly · Terminal 2', lat: 48.7233, lng: 2.3795, type: 'terminal', parent: 'orly' },
+  { name: 'Orly · Terminal 3', lat: 48.7281, lng: 2.3594, type: 'terminal', parent: 'orly' },
+  { name: 'Orly · Terminal 4', lat: 48.7281, lng: 2.3594, type: 'terminal', parent: 'orly' },
+  { name: 'Aéroport Paris-Beauvais (BVA)', lat: 49.4544, lng: 2.1128, type: 'airport' },
+  // Gares parisiennes
+  { name: 'Gare du Nord', lat: 48.8809, lng: 2.3553, type: 'gare' },
+  { name: 'Gare de Lyon', lat: 48.8443, lng: 2.3738, type: 'gare' },
+  { name: 'Gare Montparnasse', lat: 48.8410, lng: 2.3216, type: 'gare' },
+  { name: 'Gare Saint-Lazare', lat: 48.8754, lng: 2.3255, type: 'gare' },
+  { name: 'Gare de l\'Est', lat: 48.8767, lng: 2.3589, type: 'gare' },
+  // Points d'intérêt
+  { name: 'La Défense · CNIT', lat: 48.8897, lng: 2.2378, type: 'poi' },
+  { name: 'Paris Expo Porte de Versailles', lat: 48.8328, lng: 2.2875, type: 'poi' },
+  { name: 'Disneyland Paris', lat: 48.8722, lng: 2.7758, type: 'poi' },
+  { name: 'Ris-Orangis (91)', lat: 48.6468, lng: 2.4185, type: 'city' },
+  { name: 'Versailles (78)', lat: 48.8049, lng: 2.1204, type: 'city' },
+];
+
+/* ═══════════════════════════════════════════════════════════
+   AUTOCOMPLETE — Photon + priorité IDF + terminaux
+   ═══════════════════════════════════════════════════════════ */
+
+// Bbox IDF pour boost local
+const IDF_BBOX = { minLat: 48.12, maxLat: 49.24, minLng: 1.45, maxLng: 3.56 };
+const IDF_CENTER = { lat: 48.8566, lng: 2.3522 };
+
+// Filtre presets par pertinence
+function matchPresets(q) {
+  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const qn = norm(q);
+  return IDF_PRESETS.filter(p => norm(p.name).includes(qn)).slice(0, 5);
+}
+
+// Détecte si on doit afficher les terminaux CDG/Orly
+function detectTerminals(text) {
+  const t = text.toLowerCase();
+  if (/cdg|charles\s*de\s*gaulle|roissy/.test(t)) return 'cdg';
+  if (/orly/.test(t)) return 'orly';
+  return null;
+}
+
+function renderTerminals(container, parentKey, onPick) {
+  container.innerHTML = '';
+  const terms = IDF_PRESETS.filter(p => p.parent === parentKey);
+  if (!terms.length) { container.classList.remove('show'); return; }
+
+  const lbl = document.createElement('div');
+  lbl.className = 'terminals-lbl';
+  lbl.textContent = parentKey === 'cdg' ? 'Terminaux CDG (Roissy)' : 'Terminaux Orly';
+  container.appendChild(lbl);
+
+  terms.forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'term-chip';
+    chip.textContent = t.name.split('·')[1]?.trim() || t.name;
+    chip.addEventListener('click', () => {
+      haptic(10);
+      onPick(t);
+      container.classList.remove('show');
+    });
+    container.appendChild(chip);
+  });
+
+  container.classList.add('show');
+}
+
+async function photonSearch(q) {
+  // Utiliser Photon avec biais géographique IDF (lat/lng = Paris)
+  const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&lang=fr&limit=8&lat=${IDF_CENTER.lat}&lon=${IDF_CENTER.lng}&location_bias_scale=0.5`;
+  try {
+    const r = await fetch(url);
+    const data = await r.json();
+    return (data.features || []).map(f => {
+      const p = f.properties;
+      const parts = [p.name, p.city, p.postcode, p.country].filter(Boolean);
+      return {
+        name: parts.join(', '),
+        displayName: p.name,
+        meta: [p.city, p.postcode].filter(Boolean).join(' · '),
+        lat: f.geometry.coordinates[1],
+        lng: f.geometry.coordinates[0],
+        isIDF: isInIDF(f.geometry.coordinates[1], f.geometry.coordinates[0]),
+        raw: p,
+      };
+    });
+  } catch (e) {
+    console.warn('Photon error:', e);
+    return [];
+  }
+}
+
+function isInIDF(lat, lng) {
+  return lat >= IDF_BBOX.minLat && lat <= IDF_BBOX.maxLat &&
+         lng >= IDF_BBOX.minLng && lng <= IDF_BBOX.maxLng;
+}
+
+// Render dropdown
+function renderDropdown(drop, results, onPick) {
+  if (!results.length) {
+    drop.classList.remove('show');
+    return;
+  }
+
+  // Priorité : IDF d'abord
+  results.sort((a, b) => (b.isIDF ? 1 : 0) - (a.isIDF ? 1 : 0));
+
+  drop.innerHTML = '';
+  results.slice(0, 8).forEach((r) => {
+    const item = document.createElement('div');
+    item.className = 'ac-item';
+
+    const icon = document.createElement('div');
+    icon.className = 'ac-ic';
+    icon.innerHTML = r.type === 'airport' ? '<svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>'
+      : r.type === 'gare' ? '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><path d="M9 14l-2 4"/><path d="M15 14l2 4"/></svg>'
+      : r.type === 'terminal' ? '<svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5"/></svg>'
+      : '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+    item.appendChild(icon);
+
+    const text = document.createElement('div');
+    text.className = 'ac-text';
+    const name = document.createElement('div');
+    name.className = 'ac-name';
+    name.textContent = r.displayName || r.name;
+    text.appendChild(name);
+    if (r.meta) {
+      const meta = document.createElement('div');
+      meta.className = 'ac-meta';
+      meta.textContent = r.meta;
+      text.appendChild(meta);
+    }
+    item.appendChild(text);
+
+    if (r.isIDF || r.type) {
+      const badge = document.createElement('div');
+      badge.className = 'ac-badge-idf';
+      badge.textContent = r.type === 'airport' ? 'AÉRO'
+                        : r.type === 'gare' ? 'GARE'
+                        : r.type === 'terminal' ? 'TERM'
+                        : 'IDF';
+      item.appendChild(badge);
+    }
+
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      haptic(10);
+      onPick(r);
+      drop.classList.remove('show');
+    });
+    drop.appendChild(item);
+  });
+
+  drop.classList.add('show');
+}
+
+function setupAutocomplete(inputId, dropId, termsId, stateKey) {
+  const input = document.getElementById(inputId);
+  const drop = document.getElementById(dropId);
+  const terms = document.getElementById(termsId);
+
+  const onPick = (r) => {
+    input.value = r.displayName || r.name;
+    STATE[stateKey] = { name: r.displayName || r.name, lat: r.lat, lng: r.lng };
+
+    // Détecte si c'est un aéroport → afficher les terminaux
+    const termKey = detectTerminals(input.value) || (r.key);
+    if (termKey && r.type === 'airport') {
+      renderTerminals(terms, termKey, (t) => {
+        input.value = t.name;
+        STATE[stateKey] = { name: t.name, lat: t.lat, lng: t.lng };
+        input.parentElement.classList.add('filled');
+      });
+    } else {
+      terms.classList.remove('show');
+    }
+    input.parentElement.classList.add('filled');
+  };
+
+  const search = debounce(async (q) => {
+    if (q.length < 2) { drop.classList.remove('show'); return; }
+    // 1. Presets IDF d'abord
+    const presets = matchPresets(q).map(p => ({
+      ...p,
+      displayName: p.name,
+      meta: p.type === 'airport' ? 'Aéroport · IDF' : p.type === 'gare' ? 'Gare · Paris' : 'Île-de-France',
+      isIDF: true,
+    }));
+    // 2. Photon
+    const photon = await photonSearch(q);
+    // 3. Merge (déduplication naïve par coords)
+    const seen = new Set(presets.map(p => `${p.lat.toFixed(3)},${p.lng.toFixed(3)}`));
+    const merged = [...presets];
+    photon.forEach(p => {
+      const key = `${p.lat.toFixed(3)},${p.lng.toFixed(3)}`;
+      if (!seen.has(key)) { merged.push(p); seen.add(key); }
+    });
+    renderDropdown(drop, merged, onPick);
+
+    // Détecte CDG/Orly dans le texte tapé
+    const termKey = detectTerminals(q);
+    if (termKey) {
+      renderTerminals(terms, termKey, (t) => {
+        input.value = t.name;
+        STATE[stateKey] = { name: t.name, lat: t.lat, lng: t.lng };
+        input.parentElement.classList.add('filled');
+        drop.classList.remove('show');
+      });
+    } else {
+      terms.classList.remove('show');
+    }
+  }, 280);
+
+  input.addEventListener('input', (e) => search(e.target.value));
+  input.addEventListener('focus', () => {
+    if (input.value.length >= 2) search(input.value);
+  });
+  input.addEventListener('blur', () => {
+    setTimeout(() => drop.classList.remove('show'), 200);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OSRM — Calcul distance/durée
+   ═══════════════════════════════════════════════════════════ */
+async function osrmRoute(from, to) {
+  const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=false`;
+  try {
+    const r = await fetch(url);
+    const data = await r.json();
+    if (!data.routes || !data.routes.length) return null;
+    const route = data.routes[0];
+    return {
+      km: route.distance / 1000,
+      mins: (route.duration / 60) * PRICE.trafficBuffer, // Buffer trafic IDF ×1.2
+      rawMins: route.duration / 60,
+    };
+  } catch (e) {
+    console.warn('OSRM error:', e);
+    return null;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PRIX — Tarification dynamique
+   ═══════════════════════════════════════════════════════════ */
+function isNightTime(dateStr) {
+  const d = dateStr ? new Date(dateStr) : new Date();
+  const h = d.getHours();
+  return h >= PRICE.nightStart || h < PRICE.nightEnd;
+}
+
+function computePrice(km, mins, pickupTime) {
+  let price = PRICE.base + (km * PRICE.perKm) + (mins * PRICE.perMin);
+  const isNight = isNightTime(pickupTime);
+  if (isNight) price += PRICE.nightPlus;
+  if (price < PRICE.min) price = PRICE.min;
+  return { price: Math.round(price), isNight };
+}
+
+function applyPromo(price) {
+  if (!STATE.promo) return price;
+  const promo = PROMO_CODES[STATE.promo.code];
+  if (!promo) return price;
+  let final;
+  if (promo.type === 'percent') final = price * (1 - promo.val / 100);
+  else final = price - promo.val;
+  return Math.max(25, Math.round(final)); // Plancher 25€
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UI — Sliders, Toggles, Segmented, Stepper
+   ═══════════════════════════════════════════════════════════ */
+
+// Sliders iOS
+function makeSlider(sliderId, fillId, thumbId, valId, min, max, startVal, stateKey) {
+  const slider = $(`#${sliderId}`);
+  const fill = $(`#${fillId}`);
+  const thumb = $(`#${thumbId}`);
+  const valEl = $(`#${valId}`);
+  let val = startVal;
+  let dragging = false;
+
+  function update() {
+    const pct = ((val - min) / (max - min)) * 100;
+    fill.style.width = pct + '%';
+    thumb.style.left = pct + '%';
+    valEl.textContent = Math.round(val);
+    STATE[stateKey] = Math.round(val);
+  }
+
+  function getVal(e) {
+    const rect = slider.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    return min + pct * (max - min);
+  }
+
+  function onStart(e) {
+    dragging = true;
+    slider.classList.add('dragging');
+    val = getVal(e);
+    update();
+    haptic(5);
+    e.preventDefault();
+  }
+
+  function onMove(e) {
+    if (!dragging) return;
+    val = getVal(e);
+    update();
+    e.preventDefault();
+  }
+
+  function onEnd() {
+    if (dragging) haptic(10);
+    dragging = false;
+    slider.classList.remove('dragging');
+  }
+
+  slider.addEventListener('mousedown', onStart);
+  slider.addEventListener('touchstart', onStart, { passive: false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('mouseup', onEnd);
+  document.addEventListener('touchend', onEnd);
+
+  update();
+}
+
+// Segmented control ambiance
+function setupSegmented() {
+  $$('#amb-seg .seg-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      $$('#amb-seg .seg-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      STATE.ambiance = opt.dataset.v;
+      haptic(10);
+      $('#volBlock').classList.toggle('disabled', STATE.ambiance === 'silence');
+      $('#silenceHint').classList.toggle('show', STATE.ambiance === 'silence');
+    });
+  });
+}
+
+// Toggles iOS
+function setupToggles() {
+  $$('.switch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      sw.classList.toggle('on');
+      const opt = sw.dataset.opt;
+      if (opt) STATE.options[opt] = sw.classList.contains('on');
+      haptic(10);
+    });
+  });
+}
+
+// Payment
+function setupPayment() {
+  $$('.pay-card').forEach(card => {
+    card.addEventListener('click', () => {
+      $$('.pay-card').forEach(c => c.classList.remove('sel'));
+      card.classList.add('sel');
+      STATE.payment = card.dataset.method;
+      $('#paymentMethod').value = STATE.payment;
+      haptic(10);
+    });
+  });
+}
+
+// Stepper
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const item = $(`[data-step="${i}"]`);
+    if (!item) continue;
+    item.classList.remove('active', 'done', 'future');
+    const circle = item.querySelector('.step-circle');
+    if (i < n) {
+      item.classList.add('done');
+      circle.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,12 10,18 20,6"/></svg>';
+    } else if (i === n) {
+      item.classList.add('active');
+      circle.textContent = i;
+    } else {
+      item.classList.add('future');
+      circle.textContent = i;
+    }
+  }
+  for (let i = 1; i <= 3; i++) {
+    const line = $(`[data-line="${i}"]`);
+    if (line) line.classList.toggle('done', i < n);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROMO CODE
+   ═══════════════════════════════════════════════════════════ */
+function validatePromo() {
+  const input = $('#promoCode');
+  const msg = $('#promoMsg');
+  const code = input.value.trim().toUpperCase();
+  input.classList.remove('valid', 'invalid');
+  msg.classList.remove('valid', 'invalid');
+
+  if (!code) {
+    msg.textContent = '';
+    STATE.promo = null;
+    return;
+  }
+
+  if (PROMO_CODES[code]) {
+    input.classList.add('valid');
+    msg.classList.add('valid');
+    msg.textContent = '✓ ' + PROMO_CODES[code].label;
+    STATE.promo = { code };
+  } else {
+    input.classList.add('invalid');
+    msg.classList.add('invalid');
+    msg.textContent = '✗ Code invalide';
+    STATE.promo = null;
+  }
+
+  // Recalculer si prix déjà affiché
+  if (STATE.price) updatePriceDisplay();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CALCUL DU PRIX + AFFICHAGE
+   ═══════════════════════════════════════════════════════════ */
+async function computeAndShow() {
+  if (!STATE.depart || !STATE.arrive) {
+    alert('Veuillez indiquer vos adresses de départ et de destination.');
+    return;
+  }
+
+  const btn = $('#calcBtn');
+  const origText = btn.innerHTML;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" opacity="0.3"/><path d="M12 2 a10 10 0 0 1 10 10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg> Calcul en cours…';
+  btn.disabled = true;
+
+  const route = await osrmRoute(STATE.depart, STATE.arrive);
+  if (!route) {
+    alert('Impossible de calculer l\'itinéraire. Vérifiez les adresses.');
+    btn.innerHTML = origText;
+    btn.disabled = false;
+    return;
+  }
+
+  const { price, isNight } = computePrice(route.km, route.mins, STATE.pickup);
+  STATE.price = {
+    base: price,
+    final: applyPromo(price),
+    km: route.km,
+    mins: route.mins,
+    isNight,
+  };
+
+  updatePriceDisplay();
+  setStep(3);
+  haptic(20);
+
+  btn.innerHTML = origText;
+  btn.disabled = false;
+}
+
+function updatePriceDisplay() {
+  if (!STATE.price) return;
+  const { base, final, km, mins, isNight } = STATE.price;
+  $('#priceVal').textContent = final;
+  $('#priceDetail').textContent = `${km.toFixed(1)} km · ${Math.round(mins)} min estimés`;
+
+  const badges = $('#priceBadges');
+  badges.innerHTML = '';
+  if (isNight) {
+    const b = document.createElement('div');
+    b.className = 'p-badge nuit';
+    b.textContent = '+10€ tarif nuit';
+    badges.appendChild(b);
+  }
+  if (STATE.promo && base !== final) {
+    const b = document.createElement('div');
+    b.className = 'p-badge promo';
+    b.textContent = `${STATE.promo.code} · −${base - final}€`;
+    badges.appendChild(b);
+  }
+
+  $('#priceBox').classList.add('show');
+  $('#priceBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WHATSAPP — Composition message
+   ═══════════════════════════════════════════════════════════ */
+function generateBonNumber() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mi = String(now.getMinutes()).padStart(2, '0');
+  return `INR-${yy}${mm}${dd}-${hh}${mi}`;
+}
+
+function buildWhatsAppMessage() {
+  const p = STATE.price;
+  // Générer et stocker le n° de bon
+  if (!STATE.bonNumber) STATE.bonNumber = generateBonNumber();
+  const lines = [
+    '*NOUVELLE RÉSERVATION I&N RUN*',
+    '',
+    `🎫 N° BON : ${STATE.bonNumber}`,
+    '',
+    `👤 Client : ${STATE.clientName || '—'}`,
+  ];
+  if (STATE.clientEmail) lines.push(`📧 Email : ${STATE.clientEmail}`);
+  lines.push(
+    '',
+    `🕒 Prise en charge : ${STATE.pickup ? new Date(STATE.pickup).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : 'Dès que possible'}`,
+    `📍 Départ : ${STATE.depart?.name || '—'}`,
+    `🏁 Arrivée : ${STATE.arrive?.name || '—'}`,
+    ''
+  );
+
+  if (p) {
+    lines.push(`💰 Tarif : ${p.final}€ (${p.km.toFixed(1)} km · ${Math.round(p.mins)} min)`);
+    if (p.isNight) lines.push('🌙 Tarif nuit appliqué');
+    if (STATE.promo) lines.push(`🎁 Code : ${STATE.promo.code}`);
+    lines.push('');
+  }
+
+  // Ambiance
+  if (STATE.ambiance === 'silence') lines.push('🔇 Ambiance : silence demandé');
+  else lines.push(`🎵 ${STATE.ambiance === 'musique' ? 'Musique' : 'Radio'} · Volume ${STATE.volume}%`);
+  lines.push(`❄️ Climatisation : ${STATE.clim}°C`);
+
+  // Options
+  const optNames = [];
+  if (STATE.options.wifi) optNames.push('Wi-Fi 5G');
+  if (STATE.options.eau) optNames.push('Bouteille d\'eau');
+  if (STATE.options.usb) optNames.push('USB recharge');
+  if (STATE.options.confiseries) optNames.push('Confiseries');
+  if (STATE.options.siege) optNames.push('Siège enfant');
+  if (optNames.length) lines.push(`✨ Prestations : ${optNames.join(', ')}`);
+
+  lines.push(`💳 Règlement : ${STATE.payment}`);
+
+  const note = $('#note').value.trim();
+  if (note) lines.push('', `📝 Note : ${note}`);
+
+  lines.push('', 'Merci de bien vouloir confirmer ma réservation.');
+
+  return lines.join('\n');
+}
+
+function sendWhatsApp() {
+  haptic(20);
+  // Générer n° bon AVANT le message
+  if (!STATE.bonNumber) STATE.bonNumber = generateBonNumber();
+  const msg = encodeURIComponent(buildWhatsAppMessage());
+  const url = `https://wa.me/33767742220?text=${msg}`;
+  setStep(4);
+  // Afficher confirmation visuelle du n° de bon
+  showBonConfirmation(STATE.bonNumber);
+  window.open(url, '_blank');
+}
+
+function showBonConfirmation(bonNum) {
+  const box = document.getElementById('priceBox');
+  if (!box) return;
+  // Créer ou mettre à jour l'affichage du n° de bon
+  let confBox = document.getElementById('bonConfirmation');
+  if (!confBox) {
+    confBox = document.createElement('div');
+    confBox.id = 'bonConfirmation';
+    confBox.className = 'bon-confirmation';
+    box.appendChild(confBox);
+  }
+  confBox.innerHTML = `
+    <div class="bon-conf-label">Votre numéro de réservation</div>
+    <div class="bon-conf-number">${bonNum}</div>
+    <div class="bon-conf-msg">Conservez ce numéro. Confirmation sous 2 minutes sur WhatsApp.</div>
+  `;
+  confBox.classList.add('show');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MÉTÉO + TRAFIC (live)
+   ═══════════════════════════════════════════════════════════ */
+
+const WX_DESC = {
+  0: 'Ensoleillé', 1: 'Principalement clair', 2: 'Partiellement nuageux', 3: 'Couvert',
+  45: 'Brouillard', 48: 'Brouillard givrant',
+  51: 'Bruine légère', 53: 'Bruine', 55: 'Bruine dense',
+  61: 'Pluie légère', 63: 'Pluie', 65: 'Pluie forte',
+  71: 'Neige légère', 73: 'Neige', 75: 'Neige forte',
+  80: 'Averses', 81: 'Averses', 82: 'Averses violentes',
+  95: 'Orage', 96: 'Orage grêle', 99: 'Orage violent',
+};
+
+const WX_ICON = {
+  clear: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 0 1 0 9z"/>',
+  rain: '<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="16" y1="19" x2="16" y2="21"/><line x1="16" y1="13" x2="16" y2="15"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="12" y1="15" x2="12" y2="17"/>',
+  storm: '<path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/><polyline points="13 11 9 17 15 17 11 23"/>',
+  snow: '<path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="8" y1="20" x2="8.01" y2="20"/><line x1="12" y1="18" x2="12.01" y2="18"/><line x1="12" y1="22" x2="12.01" y2="22"/><line x1="16" y1="16" x2="16.01" y2="16"/><line x1="16" y1="20" x2="16.01" y2="20"/>',
+  fog: '<path d="M5 16h14M7 20h10M3 12h18M6 8h12M8 4h8"/>',
+};
+
+function codeToIcon(code) {
+  if (code === 0 || code === 1) return 'clear';
+  if ([2, 3].includes(code)) return 'cloud';
+  if ([45, 48].includes(code)) return 'fog';
+  if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return 'rain';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'snow';
+  if ([95, 96, 99].includes(code)) return 'storm';
+  return 'cloud';
+}
+
+async function fetchMeteo() {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=48.6468&longitude=2.4185&current_weather=true&hourly=relative_humidity_2m,precipitation_probability`;
+    const r = await fetch(url);
+    const d = await r.json();
+    const cw = d.current_weather;
+    $('#wxTemp').innerHTML = `${Math.round(cw.temperature)}°`;
+    $('#wxDesc').textContent = WX_DESC[cw.weathercode] || '—';
+    $('#wxWind').textContent = `${Math.round(cw.windspeed)} km/h`;
+    const hum = d.hourly?.relative_humidity_2m?.[0] ?? 0;
+    $('#wxHum').textContent = `${Math.round(hum)}%`;
+    $('#wxIcon').innerHTML = WX_ICON[codeToIcon(cw.weathercode)];
+    $('#wxTime').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  } catch (e) {
+    console.warn('Météo error:', e);
+    $('#wxDesc').textContent = 'Données indisponibles';
+  }
+}
+
+async function fetchTraffic() {
+  const RISO = { lat: 48.6468, lng: 2.4185 };
+  const destinations = [
+    { name: 'CDG', via: 'A1 · Roissy', lat: 49.0097, lng: 2.5479 },
+    { name: 'Orly', via: 'A6 · 91',    lat: 48.7233, lng: 2.3795 },
+    { name: 'Paris', via: 'N7 · Périph', lat: 48.8566, lng: 2.3522 },
+  ];
+
+  const container = $('#trafficList');
+  container.innerHTML = '';
+
+  for (const dest of destinations) {
+    const route = await osrmRoute(RISO, dest);
+    if (!route) continue;
+    const h = new Date().getHours();
+    // Peak factor simple : matin, soir, weekend
+    const isPeak = (h >= 7 && h <= 10) || (h >= 16 && h <= 20);
+    const isWeekend = [0, 6].includes(new Date().getDay());
+    const peakMult = isPeak && !isWeekend ? 1.45 : (isWeekend ? 0.82 : 1.0);
+    const adjMins = route.rawMins * peakMult;
+    const ratio = adjMins / route.rawMins;
+
+    let tag = 'ok', label = 'Fluide';
+    if (ratio > 1.3) { tag = 'bad'; label = 'Bouchons'; }
+    else if (ratio > 1.1) { tag = 'warn'; label = 'Dense'; }
+
+    const item = document.createElement('div');
+    item.className = 'traffic-item';
+    item.innerHTML = `
+      <div class="ti-route">
+        <div class="ti-name">${dest.name}</div>
+        <div class="ti-via">${dest.via}</div>
+      </div>
+      <div class="ti-right">
+        <div class="ti-tag ${tag}">${label}</div>
+        <div class="ti-dur">${Math.round(adjMins)}'·${route.km.toFixed(0)}km</div>
+      </div>
+    `;
+    container.appendChild(item);
+  }
+
+  $('#trafficTime').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REVEAL ON SCROLL
+   ═══════════════════════════════════════════════════════════ */
+function setupReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  $$('.reveal').forEach(el => observer.observe(el));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DATETIME DEFAULT
+   ═══════════════════════════════════════════════════════════ */
+function setupDateTime() {
+  const input = $('#pickup-time');
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 30);
+  now.setSeconds(0);
+  const iso = now.toISOString().slice(0, 16);
+  input.value = iso;
+  STATE.pickup = iso;
+  input.addEventListener('change', (e) => {
+    STATE.pickup = e.target.value;
+    haptic(5);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Sliders
+  makeSlider('volSlider', 'volFill', 'volThumb', 'volVal', 0, 100, 50, 'volume');
+  makeSlider('climSlider', 'climFill', 'climThumb', 'climVal', 18, 26, 21, 'clim');
+
+  // Contrôles
+  setupSegmented();
+  setupToggles();
+  setupPayment();
+  setupDateTime();
+
+  // Autocomplete
+  setupAutocomplete('depart', 'ac-depart', 'term-depart', 'depart');
+  setupAutocomplete('arrive', 'ac-arrive', 'term-arrive', 'arrive');
+
+  // Événements
+  $('#promoCode').addEventListener('input', validatePromo);
+  $('#calcBtn').addEventListener('click', computeAndShow);
+  $('#waBtn').addEventListener('click', sendWhatsApp);
+  $('#recalcBtn').addEventListener('click', () => {
+    $('#priceBox').classList.remove('show');
+    setStep(2);
+    $('#calcBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // Haptic sur clicks importants
+  $('#dockMsg').addEventListener('click', () => haptic(15));
+  $('#dockTel').addEventListener('click', () => haptic(15));
+
+  // Stepper progression
+  const depInp = $('#depart');
+  const arrInp = $('#arrive');
+  [depInp, arrInp].forEach(inp => {
+    inp.addEventListener('change', () => {
+      if (STATE.depart && STATE.arrive) setStep(2);
+    });
+  });
+
+  // Widgets live
+  fetchMeteo();
+  fetchTraffic();
+  setInterval(fetchMeteo, 10 * 60 * 1000);   // 10 min
+  setInterval(fetchTraffic, 5 * 60 * 1000);  // 5 min
+
+  // Reveal
+  setupReveal();
+});
+</script>
+
+
+
+<!-- MODAL LÉGAL (mentions / CGV / confidentialité) -->
+<div class="legal-overlay" id="legalOverlay" onclick="if(event.target===this) closeLegal()">
+  <div class="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <div class="legal-head">
+      <div class="legal-head-title" id="legalTitle">Mentions légales</div>
+      <button class="legal-close" onclick="closeLegal()" aria-label="Fermer">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="legal-body" id="legalBody"></div>
+  </div>
+</div>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   MODAL LÉGAL — Mentions légales, CGV, Confidentialité
+   ═══════════════════════════════════════════════════════════════ */
+
+const LEGAL_CONTENT = {
+  mentions: {
+    title: 'Mentions légales',
+    html: `
+      <div class="legal-meta">Dernière mise à jour · Avril 2026</div>
+
+      <h3>Éditeur du site</h3>
+      <p>Le présent site <strong>inrunparis</strong> est édité par <strong>I&amp;N RUN</strong>, entreprise individuelle exerçant sous le régime du Travailleur Indépendant.</p>
+
+      <div class="legal-key">
+        <span class="legal-key-lbl">Dirigeant</span>
+        <span class="legal-key-val">BRAHA Nourdine</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">SIREN</span>
+        <span class="legal-key-val">993 776 467</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">SIRET</span>
+        <span class="legal-key-val">993 776 467 00017</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Siège social</span>
+        <span class="legal-key-val">Ris-Orangis (91130)</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Activité</span>
+        <span class="legal-key-val">Transport VTC</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Carte pro VTC</span>
+        <span class="legal-key-val">Registre EVTC</span>
+      </div>
+
+      <h3>Contact</h3>
+      <p>
+        Email : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a><br>
+        Téléphone : <a href="tel:+33767742220">07 67 74 22 20</a>
+      </p>
+
+      <h3>Hébergeur</h3>
+      <p>Ce site est hébergé par <strong>GitHub Pages</strong> (GitHub, Inc.), 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis.</p>
+
+      <h3>Propriété intellectuelle</h3>
+      <p>L'ensemble du contenu de ce site (textes, images, graphismes, logos, icônes) est la propriété exclusive d'I&amp;N RUN, à l'exception des éléments tiers clairement identifiés. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
+
+      <h3>Limitation de responsabilité</h3>
+      <p>I&amp;N RUN met tout en œuvre pour fournir des informations exactes et à jour. Les tarifs indicatifs affichés sur ce site sont susceptibles de varier selon les conditions de circulation, la disponibilité du chauffeur et les événements exceptionnels. Seul le tarif confirmé par WhatsApp fait foi.</p>
+
+      <h3>Droit applicable</h3>
+      <p>Le présent site et ses conditions d'utilisation sont régis par le droit français. Tout litige relatif à leur interprétation ou exécution relève de la compétence exclusive des tribunaux français.</p>
+    `
+  },
+
+  cgv: {
+    title: 'Conditions Générales de Vente',
+    html: `
+      <div class="legal-meta">Dernière mise à jour · Avril 2026</div>
+
+      <h3>Article 1 — Objet</h3>
+      <p>Les présentes Conditions Générales de Vente (ci-après « CGV ») régissent les relations contractuelles entre <strong>I&amp;N RUN</strong> (SIREN 993 776 467), ci-après « le Transporteur », et toute personne physique ou morale souhaitant réserver une prestation de transport (ci-après « le Client »).</p>
+
+      <h3>Article 2 — Nature de la prestation</h3>
+      <p>Le Transporteur exerce l'activité de <strong>Voiture de Transport avec Chauffeur (VTC)</strong> conformément au code des transports français. La prestation consiste en la mise à disposition d'un véhicule avec chauffeur pour le transport de personnes sur des trajets préalablement définis.</p>
+
+      <h3>Article 3 — Réservation</h3>
+      <p>La réservation s'effectue :</p>
+      <ul>
+        <li>Via le formulaire du site internet (calcul de tarif préalable)</li>
+        <li>Par WhatsApp au 07 67 74 22 20</li>
+        <li>Par téléphone au 07 67 74 22 20</li>
+        <li>Par email : contact.inrun@gmail.com</li>
+      </ul>
+      <p>La réservation n'est définitive qu'à réception de la confirmation du Transporteur, communiquée par WhatsApp ou SMS dans un délai maximum de 2 minutes.</p>
+
+      <h3>Article 4 — Tarifs</h3>
+      <p>Les tarifs sont exprimés en euros TTC. La formule appliquée est la suivante :</p>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Prise en charge</span>
+        <span class="legal-key-val">15,00 €</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Tarif kilométrique</span>
+        <span class="legal-key-val">0,84 €/km</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Tarif minute</span>
+        <span class="legal-key-val">0,17 €/min</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Minimum de course</span>
+        <span class="legal-key-val">35,00 €</span>
+      </div>
+      <div class="legal-key">
+        <span class="legal-key-lbl">Majoration nuit (22h-6h)</span>
+        <span class="legal-key-val">+10,00 €</span>
+      </div>
+      <p>Le tarif communiqué lors de la confirmation de la réservation est <strong>garanti et définitif</strong>, sauf modification du trajet ou attentes non prévues imputables au Client.</p>
+
+      <h3>Article 5 — Paiement</h3>
+      <p>Le règlement s'effectue directement auprès du chauffeur à la fin de la course, par :</p>
+      <ul>
+        <li><strong>Carte bancaire</strong> (paiement sans contact via TPE embarqué)</li>
+        <li><strong>Espèces</strong> (appoint préféré)</li>
+      </ul>
+      <p>Aucun paiement anticipé n'est exigé pour les réservations standards. Pour les courses entreprises ou VIP, une facture est émise sur demande.</p>
+
+      <h3>Article 6 — Annulation</h3>
+      <p>Le Client peut annuler sa réservation sans frais jusqu'à <strong>1 heure avant l'horaire de prise en charge</strong> convenu.</p>
+      <p>Toute annulation tardive (moins d'1 heure) ou non-présentation au point de départ donnera lieu à facturation forfaitaire de <strong>15 €</strong> correspondant aux frais de déplacement du chauffeur.</p>
+
+      <h3>Article 7 — Retards et attentes</h3>
+      <p>Le Transporteur met tout en œuvre pour respecter les horaires convenus. En cas de retard supérieur à 15 minutes imputable au Transporteur (hors circonstances exceptionnelles), une remise commerciale pourra être proposée.</p>
+      <p>Pour les prises en charge aéroport, <strong>15 minutes de courtoisie</strong> sont offertes après l'heure convenue. Au-delà, un supplément de 0,50 €/minute pourra être facturé.</p>
+
+      <h3>Article 8 — Comportement du Client</h3>
+      <p>Le Client s'engage à respecter le véhicule et le chauffeur. Sont strictement interdits :</p>
+      <ul>
+        <li>Le tabac, la cigarette électronique et toute substance illicite à bord</li>
+        <li>La consommation excessive d'alcool susceptible de dégrader le véhicule</li>
+        <li>Tout comportement violent, insultant ou discriminant envers le chauffeur</li>
+      </ul>
+      <p>Le Transporteur se réserve le droit d'interrompre la course en cas de manquement grave, sans remboursement.</p>
+
+      <h3>Article 9 — Bagages et animaux</h3>
+      <p>Le transport de bagages standards est inclus dans la prestation (2 valises + 2 bagages cabine par passager). Les animaux de compagnie sont acceptés <strong>sur demande préalable</strong> et doivent voyager en caisse de transport adaptée.</p>
+
+      <h3>Article 10 — Responsabilité</h3>
+      <p>Le Transporteur est assuré au titre de la responsabilité civile professionnelle conformément à la réglementation VTC en vigueur. Sa responsabilité se limite aux dommages directs causés aux personnes ou aux biens pendant la course.</p>
+      <p>Le Transporteur décline toute responsabilité en cas d'oubli d'effets personnels à bord. Les objets retrouvés sont conservés 15 jours puis restitués sur présentation d'une pièce d'identité.</p>
+
+      <h3>Article 11 — Codes promotionnels</h3>
+      <p>Les codes promotionnels sont nominatifs, non cumulables, et ne peuvent faire l'objet d'aucun remboursement en espèces. Chaque code a des conditions spécifiques affichées lors de son utilisation.</p>
+
+      <h3>Article 12 — Réclamations</h3>
+      <p>Toute réclamation doit être adressée dans un délai de 7 jours suivant la course à : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a>.</p>
+
+      <h3>Article 13 — Droit applicable</h3>
+      <p>Les présentes CGV sont régies par le droit français. En cas de litige et à défaut de résolution amiable, les tribunaux français sont seuls compétents.</p>
+    `
+  },
+
+  confidentialite: {
+    title: 'Politique de confidentialité',
+    html: `
+      <div class="legal-meta">Conforme RGPD · Avril 2026</div>
+
+      <h3>Responsable de traitement</h3>
+      <p><strong>I&amp;N RUN</strong> (SIREN 993 776 467), représentée par Nourdine BRAHA, est responsable du traitement des données personnelles collectées sur ce site.</p>
+
+      <h3>Données collectées</h3>
+      <p>Nous collectons uniquement les données nécessaires à la prestation :</p>
+      <ul>
+        <li><strong>Adresses</strong> de départ et d'arrivée (nécessaires au calcul du trajet)</li>
+        <li><strong>Date et heure</strong> de prise en charge</li>
+        <li><strong>Numéro de téléphone</strong> (uniquement si vous initiez un contact WhatsApp ou appel)</li>
+        <li><strong>Préférences</strong> de course (ambiance, climatisation, options)</li>
+      </ul>
+      <p>Aucune donnée bancaire n'est stockée sur ce site. Le règlement s'effectue directement auprès du chauffeur.</p>
+
+      <h3>Finalités</h3>
+      <p>Les données collectées servent exclusivement à :</p>
+      <ul>
+        <li>Calculer un tarif estimatif de trajet</li>
+        <li>Organiser et exécuter la prestation de transport</li>
+        <li>Répondre à vos demandes de contact</li>
+        <li>Respecter nos obligations légales (facturation, comptabilité)</li>
+      </ul>
+
+      <h3>Partage des données</h3>
+      <p>Vos données ne sont <strong>jamais vendues</strong>, louées ou cédées à des tiers. Elles peuvent être transmises aux prestataires techniques suivants, strictement nécessaires au fonctionnement du service :</p>
+      <ul>
+        <li><strong>Photon</strong> (Komoot) — recherche d'adresses</li>
+        <li><strong>OSRM</strong> — calcul d'itinéraire</li>
+        <li><strong>Open-Meteo</strong> — données météo</li>
+        <li><strong>WhatsApp</strong> (Meta Platforms) — messagerie</li>
+      </ul>
+
+      <h3>Durée de conservation</h3>
+      <p>Les données liées aux réservations sont conservées <strong>3 ans</strong> à compter de la dernière prestation, conformément aux obligations comptables. Les données techniques (adresses recherchées sans réservation) ne sont pas stockées côté serveur.</p>
+
+      <h3>Vos droits (RGPD)</h3>
+      <p>Conformément au Règlement Général sur la Protection des Données, vous disposez des droits suivants :</p>
+      <ul>
+        <li>Droit d'<strong>accès</strong> à vos données</li>
+        <li>Droit de <strong>rectification</strong></li>
+        <li>Droit à l'<strong>effacement</strong></li>
+        <li>Droit à la <strong>limitation</strong> du traitement</li>
+        <li>Droit à la <strong>portabilité</strong></li>
+        <li>Droit d'<strong>opposition</strong></li>
+      </ul>
+      <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a></p>
+
+      <h3>Cookies</h3>
+      <p>Ce site n'utilise <strong>aucun cookie de tracking</strong> ni de publicité. Seuls des cookies techniques strictement nécessaires au fonctionnement peuvent être utilisés (sauvegarde de vos préférences).</p>
+
+      <h3>Réclamation CNIL</h3>
+      <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la <strong>CNIL</strong> (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+    `
+  }
+};
+
+function openLegal(type) {
+  const modal = document.getElementById('legalOverlay');
+  const title = document.getElementById('legalTitle');
+  const body = document.getElementById('legalBody');
+  const content = LEGAL_CONTENT[type];
+  if (!content) return;
+
+  title.textContent = content.title;
+  body.innerHTML = content.html;
+  body.scrollTop = 0;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  if (navigator.vibrate) navigator.vibrate(10);
+}
+
+function closeLegal() {
+  const modal = document.getElementById('legalOverlay');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+  if (navigator.vibrate) navigator.vibrate(5);
+}
+
+// Fermer avec Échap
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('legalOverlay').classList.contains('show')) {
+    closeLegal();
+  }
+});
+
+// Exposer globalement pour les onclick du footer
+window.openLegal = openLegal;
+window.closeLegal = closeLegal;
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MAD — Demande devis WhatsApp
+   ═══════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  const madBtn = document.getElementById('madBtn');
+  if (madBtn) {
+    madBtn.addEventListener('click', () => {
+      if (navigator.vibrate) navigator.vibrate(15);
+      const msg = encodeURIComponent(
+        '*DEMANDE DE DEVIS — MISE À DISPOSITION*\n\n' +
+        'Bonjour Nourdine,\n\n' +
+        'Je souhaite réserver votre service de mise à disposition :\n\n' +
+        '📅 Date : \n' +
+        '🕒 Horaires : \n' +
+        '⏱️ Durée estimée : \n' +
+        '📍 Point de départ : \n' +
+        '🎯 Type de prestation : (Business / Mariage / Tourisme / Autre)\n' +
+        '👥 Nombre de passagers : \n\n' +
+        'Merci de me confirmer votre disponibilité et le tarif final.'
+      );
+      window.open(`https://wa.me/33767742220?text=${msg}`, '_blank');
+    });
+  }
+});
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GÉOLOCALISATION — Smart default lieu de départ
+   ═══════════════════════════════════════════════════════════════ */
+async function reverseGeocode(lat, lng) {
+  // Utilise Photon pour faire le reverse geocoding
+  const url = `https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}&lang=fr`;
+  try {
+    const r = await fetch(url);
+    const data = await r.json();
+    if (!data.features || !data.features.length) return null;
+    const f = data.features[0];
+    const p = f.properties;
+    const parts = [p.name, p.street, p.city, p.postcode].filter(Boolean);
+    const display = parts.join(', ');
+    return {
+      name: display,
+      displayName: display,
+      lat: f.geometry.coordinates[1],
+      lng: f.geometry.coordinates[0],
+    };
+  } catch (e) {
+    console.warn('Reverse geocode error:', e);
+    return null;
+  }
+}
+
+function showGeolocHint(msg, type = '') {
+  const hint = document.getElementById('geolocHint');
+  if (!hint) return;
+  hint.textContent = msg;
+  hint.className = 'geoloc-hint show ' + type;
+  if (type) {
+    setTimeout(() => {
+      hint.classList.remove('show');
+      setTimeout(() => hint.textContent = '', 300);
+    }, 4000);
+  }
+}
+
+async function useMyLocation() {
+  const btn = document.getElementById('geolocBtn');
+  const input = document.getElementById('depart');
+  if (!btn || !input) return;
+
+  // Vérifier la disponibilité de l'API
+  if (!navigator.geolocation) {
+    showGeolocHint('Géolocalisation non disponible sur cet appareil', 'error');
+    return;
+  }
+
+  // État loading
+  btn.classList.add('loading');
+  showGeolocHint('Recherche de votre position…');
+  if (navigator.vibrate) navigator.vibrate(10);
+
+  // Demander la position
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      const result = await reverseGeocode(latitude, longitude);
+
+      btn.classList.remove('loading');
+
+      if (result) {
+        // Succès
+        input.value = result.displayName;
+        STATE.depart = { name: result.name, lat: result.lat, lng: result.lng };
+        input.parentElement.classList.add('filled');
+        btn.classList.add('success');
+        showGeolocHint('✓ Position détectée', 'success');
+        if (navigator.vibrate) navigator.vibrate(15);
+
+        // Avancer le stepper si arrivée déjà remplie
+        if (STATE.depart && STATE.arrive && typeof setStep === 'function') {
+          setStep(2);
+        }
+
+        // Reset du bouton après 3s
+        setTimeout(() => btn.classList.remove('success'), 3000);
+      } else {
+        // Reverse geocode failed
+        showGeolocHint('Impossible de déterminer l\'adresse', 'error');
+      }
+    },
+    (error) => {
+      btn.classList.remove('loading');
+      let msg = 'Impossible d\'obtenir votre position';
+      if (error.code === 1) msg = 'Autorisez la géolocalisation pour utiliser cette fonction';
+      else if (error.code === 2) msg = 'Position indisponible';
+      else if (error.code === 3) msg = 'Délai d\'attente dépassé';
+      showGeolocHint(msg, 'error');
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000,
+    }
+  );
+}
+
+// Attacher le bouton
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('geolocBtn');
+  if (btn) btn.addEventListener('click', useMyLocation);
+});
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   VALIDATION DES COORDONNÉES CLIENT
+   ═══════════════════════════════════════════════════════════════ */
+function validateClientName() {
+  const input = document.getElementById('clientName');
+  const field = document.getElementById('name-field');
+  const calcBtn = document.getElementById('calcBtn');
+  if (!input || !field || !calcBtn) return false;
+
+  const value = input.value.trim();
+  STATE.clientName = value;
+
+  const isValid = value.length >= 2;
+
+  field.classList.remove('invalid');
+  if (isValid) {
+    field.classList.add('valid');
+  } else {
+    field.classList.remove('valid');
+  }
+
+  // Activer/désactiver le bouton
+  calcBtn.disabled = !isValid;
+
+  return isValid;
+}
+
+function validateClientEmail() {
+  const input = document.getElementById('clientEmail');
+  if (!input) return;
+  const value = input.value.trim();
+  STATE.clientEmail = value;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const nameInput = document.getElementById('clientName');
+  const emailInput = document.getElementById('clientEmail');
+  const calcBtn = document.getElementById('calcBtn');
+
+  if (nameInput) {
+    // État initial : bouton désactivé
+    if (calcBtn) calcBtn.disabled = true;
+
+    nameInput.addEventListener('input', validateClientName);
+    nameInput.addEventListener('blur', () => {
+      const value = nameInput.value.trim();
+      if (value && value.length < 2) {
+        document.getElementById('name-field').classList.add('invalid');
+      }
+    });
+  }
+
+  if (emailInput) {
+    emailInput.addEventListener('input', validateClientEmail);
+  }
+
+  // Override du clic sur calcBtn pour vérifier le nom
+  if (calcBtn) {
+    const oldHandler = calcBtn.onclick;
+    calcBtn.addEventListener('click', (e) => {
+      if (!validateClientName()) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById('name-field').classList.add('invalid');
+        document.getElementById('clientName').focus();
+        if (navigator.vibrate) navigator.vibrate([10, 40, 10]);
+        return false;
+      }
+    }, true);
+  }
+});
+
+</script>
+</body>
+</html>
