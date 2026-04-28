@@ -67,6 +67,19 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 ::-webkit-scrollbar-thumb { background: rgba(212,175,55,.3); border-radius: 3px; }
 ::selection { background: var(--gold); color: var(--oled); }
 
+/* ── SCROLL PROGRESS BAR ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 100;
+  transition: transform 0.1s linear;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
 /* ── HEADER ── */
 .hdr {
   position: fixed;
@@ -742,8 +755,11 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .bon-confirmation { margin-top: 20px; padding: 18px 16px; background: linear-gradient(165deg,rgba(52,211,153,.08),rgba(212,175,55,.04)); border: 0.5px solid rgba(52,211,153,.3); border-radius: 16px; text-align: center; opacity: 0; transform: translateY(12px); transition: all .5s cubic-bezier(.34,1.56,.64,1); }
 .bon-confirmation.show { opacity: 1; transform: translateY(0); }
 .bon-conf-label { font-family: var(--ff-mono); font-size: .56rem; color: var(--success); letter-spacing: .18em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
-.bon-conf-number { font-family: var(--ff-mono); font-size: 1.15rem; color: var(--gold-warm); font-weight: 700; letter-spacing: .12em; margin-bottom: 8px; text-shadow: 0 0 20px rgba(212,175,55,.3); }
-.bon-conf-msg { font-size: .74rem; color: var(--mist); line-height: 1.45; }
+.bon-conf-number { font-family: var(--ff-mono); font-size: 1.15rem; color: var(--gold-warm); font-weight: 700; letter-spacing: .12em; margin-bottom: 10px; text-shadow: 0 0 20px rgba(212,175,55,.3); }
+.bon-conf-msg { font-size: .74rem; color: var(--mist); line-height: 1.45; margin-bottom: 12px; }
+.bon-copy-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: rgba(212,175,55,.1); border: 0.5px solid rgba(212,175,55,.3); border-radius: 100px; font-family: var(--ff-mono); font-size: .62rem; color: var(--gold); letter-spacing: .1em; cursor: pointer; transition: all .2s; font-weight: 600; text-transform: uppercase; }
+.bon-copy-btn:hover { background: rgba(212,175,55,.2); color: var(--gold-warm); }
+.bon-copy-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ═══════════════════════════════════════════════════════════════
    FAQ
@@ -942,6 +958,8 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
     <div class="badge-live">Disponible</div>
   </div>
 </header>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <main class="main">
 
@@ -1888,7 +1906,7 @@ function showBonConfirmation(bonNum) {
   if (!box) return;
   let confBox = document.getElementById('bonConfirmation');
   if (!confBox) { confBox = document.createElement('div'); confBox.id = 'bonConfirmation'; confBox.className = 'bon-confirmation'; box.appendChild(confBox); }
-  confBox.innerHTML = `<div class="bon-conf-label">Votre numéro de réservation</div><div class="bon-conf-number">${bonNum}</div><div class="bon-conf-msg">Conservez ce numéro. Confirmation sous 2 minutes sur WhatsApp.</div>`;
+  confBox.innerHTML = `<div class="bon-conf-label">Votre numéro de réservation</div><div class="bon-conf-number">${bonNum}</div><div class="bon-conf-msg">Conservez ce numéro. Confirmation sous 2 minutes sur WhatsApp.</div><button class="bon-copy-btn" onclick="navigator.clipboard.writeText('${bonNum}').then(()=>{this.textContent='✓ Copié !';setTimeout(()=>{this.innerHTML='<svg viewBox=\\'0 0 24 24\\'><rect x=\\'9\\' y=\\'9\\' width=\\'13\\' height=\\'13\\' rx=\\'2\\'/><path d=\\'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\\'/></svg> Copier';},2000)})"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copier</button>`;
   confBox.classList.add('show');
 }
 
@@ -2124,6 +2142,26 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(fetchMeteo, 10 * 60 * 1000);
   setInterval(fetchTraffic, 5 * 60 * 1000);
   setupReveal();
+
+  // Barre de progression de lecture
+  const scrollProg = document.getElementById('scrollProgress');
+  if (scrollProg) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = maxScroll > 0 ? scrolled / maxScroll : 0;
+      scrollProg.style.transform = `scaleX(${pct})`;
+    }, { passive: true });
+  }
+
+  // Ctrl+Entrée → calculer le tarif
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      const calcBtn = document.getElementById('calcBtn');
+      if (calcBtn && !calcBtn.disabled) calcBtn.click();
+    }
+  });
 });
 </script>
 
