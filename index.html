@@ -589,6 +589,130 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .seg-opt.active { background: linear-gradient(165deg,var(--gold-warm),var(--gold) 50%,var(--gold-deep)); color: var(--oled); font-weight: 700; box-shadow: 0 0 16px var(--gold-glow), 0 2px 6px rgba(0,0,0,.35), inset 0 1px 2px rgba(255,255,255,.3); }
 .seg-opt.active svg { opacity: 1; }
 
+/* ── AMBIENT TECH SELECTOR ── */
+.amb-sel {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px;
+  position: relative;
+}
+.amb-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  padding: 18px 8px 13px;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(212,175,55,.12);
+  border-radius: 14px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.amb-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(212,175,55,.1), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.amb-btn:hover { border-color: rgba(212,175,55,.28); }
+.amb-btn:hover::before { opacity: .5; }
+.amb-btn.active { border-color: rgba(212,175,55,.55); box-shadow: 0 0 24px rgba(212,175,55,.18), inset 0 1px 0 rgba(255,255,255,.06); }
+.amb-btn.active::before { opacity: 1; }
+/* corner brackets on active */
+.amb-btn.active::after {
+  content: '';
+  position: absolute; top: 5px; right: 5px;
+  width: 10px; height: 10px;
+  border-top: 1.5px solid rgba(212,175,55,.7);
+  border-right: 1.5px solid rgba(212,175,55,.7);
+  border-radius: 0 3px 0 0;
+}
+.amb-icon {
+  width: 32px; height: 22px;
+  display: flex; align-items: flex-end; justify-content: center;
+  color: var(--dim); transition: color .3s;
+}
+.amb-btn.active .amb-icon { color: var(--gold); }
+.amb-btn:hover:not(.active) .amb-icon { color: var(--muted); }
+.amb-lbl {
+  font-family: var(--ff-mono); font-size: .52rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim); transition: color .3s;
+}
+.amb-btn.active .amb-lbl { color: var(--gold-warm); }
+.amb-btn:hover:not(.active) .amb-lbl { color: var(--muted); }
+
+/* ── Equalizer bars (MUSIQUE) ── */
+.eq-bars { display: flex; gap: 2.5px; align-items: flex-end; height: 20px; }
+.eq-bar {
+  width: 3.5px; border-radius: 3px 3px 1px 1px;
+  background: currentColor; transform-origin: bottom;
+  transition: background .3s;
+}
+.eq-bar:nth-child(1) { height: 10px; }
+.eq-bar:nth-child(2) { height: 18px; }
+.eq-bar:nth-child(3) { height: 13px; }
+.eq-bar:nth-child(4) { height: 8px;  }
+.amb-btn.active .eq-bar { animation: eqBounce var(--s,.55s) ease-in-out infinite alternate; }
+.eq-bar:nth-child(1) { --s:.55s; }
+.eq-bar:nth-child(2) { --s:.4s;  animation-delay:.07s; }
+.eq-bar:nth-child(3) { --s:.68s; animation-delay:.03s; }
+.eq-bar:nth-child(4) { --s:.5s;  animation-delay:.13s; }
+@keyframes eqBounce {
+  from { transform: scaleY(.18); opacity: .45; }
+  to   { transform: scaleY(1);   opacity: 1;   }
+}
+
+/* ── Radio rings (RADIO) ── */
+.radio-rings {
+  position: relative; width: 28px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.radio-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; position: relative; z-index: 2;
+  transition: box-shadow .3s;
+}
+.amb-btn.active .radio-dot { box-shadow: 0 0 8px currentColor; }
+.radio-ring {
+  position: absolute; border-radius: 50%;
+  border: 1.5px solid currentColor; opacity: 0;
+}
+.radio-ring:nth-child(2) { width: 12px; height: 12px; }
+.radio-ring:nth-child(3) { width: 22px; height: 22px; }
+.amb-btn.active .radio-ring { animation: radioPulse 1.6s ease-out infinite; }
+.amb-btn.active .radio-ring:nth-child(3) { animation-delay: .45s; }
+@keyframes radioPulse {
+  0%   { opacity: .75; transform: scale(.4); }
+  100% { opacity: 0;   transform: scale(1.1); }
+}
+
+/* ── Silence icon ── */
+.amb-btn[data-v="silence"] .amb-icon svg { width: 20px; height: 20px; }
+.amb-btn[data-v="silence"].active .amb-icon svg {
+  animation: silenceBlink 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(212,175,55,.5));
+}
+@keyframes silenceBlink {
+  0%,100% { opacity: 1; } 50% { opacity: .45; }
+}
+
+/* ── Status line below selector ── */
+.amb-status {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 9px; padding: 8px 14px;
+  background: rgba(0,0,0,.4); border: 0.5px solid rgba(212,175,55,.1);
+  border-radius: 10px;
+  font-family: var(--ff-mono); font-size: .54rem;
+  color: var(--muted); letter-spacing: .06em;
+  transition: border-color .3s;
+}
+.amb-status.active-music { border-color: rgba(212,175,55,.22); }
+.amb-status.active-radio { border-color: rgba(131,249,255,.18); color: #83F9FF; }
+.amb-status.active-silence { border-color: rgba(239,68,68,.18); color: var(--danger); }
+.amb-status-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 5px var(--gold);
+  flex-shrink: 0; animation: live 1.8s ease-in-out infinite;
+}
+.amb-status.active-radio .amb-status-dot { background: #83F9FF; box-shadow: 0 0 5px #83F9FF; }
+.amb-status.active-silence .amb-status-dot { background: var(--danger); box-shadow: 0 0 5px var(--danger); animation: none; opacity: .6; }
+
 /* ── SLIDERS ── */
 .slider-block { margin-top: 18px; transition: opacity .4s, filter .4s; }
 .slider-block.disabled { opacity: .35; pointer-events: none; filter: grayscale(.5); }
@@ -1665,10 +1789,39 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         <div class="card-sub">Personnalisez votre trajet</div>
 
         <div class="section-title">Ambiance</div>
-        <div class="seg seg-3" id="amb-seg">
-          <button class="seg-opt active" data-v="musique"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Musique</button>
-          <button class="seg-opt" data-v="radio"><svg viewBox="0 0 24 24"><path d="M4.93 19.07A10 10 0 0 1 19.07 4.93"/><path d="M7.76 16.24a6 6 0 0 1 8.48-8.48"/><circle cx="12" cy="12" r="2"/></svg>Radio</button>
-          <button class="seg-opt" data-v="silence"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>Silence</button>
+        <div class="amb-sel" id="amb-seg">
+          <button class="amb-btn active" data-v="musique">
+            <div class="amb-icon">
+              <div class="eq-bars">
+                <div class="eq-bar" style="--s:.48s;height:12px"></div>
+                <div class="eq-bar" style="--s:.62s;height:18px"></div>
+                <div class="eq-bar" style="--s:.55s;height:8px"></div>
+                <div class="eq-bar" style="--s:.70s;height:15px"></div>
+                <div class="eq-bar" style="--s:.42s;height:10px"></div>
+              </div>
+            </div>
+            <span class="amb-lbl">Musique</span>
+          </button>
+          <button class="amb-btn" data-v="radio">
+            <div class="amb-icon">
+              <div class="radio-rings">
+                <div class="radio-dot"></div>
+                <div class="radio-ring" style="width:14px;height:14px;top:-4.5px;left:-4.5px"></div>
+                <div class="radio-ring" style="width:22px;height:22px;top:-8.5px;left:-8.5px;animation-delay:.45s"></div>
+              </div>
+            </div>
+            <span class="amb-lbl">Radio</span>
+          </button>
+          <button class="amb-btn" data-v="silence">
+            <div class="amb-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            </div>
+            <span class="amb-lbl">Silence</span>
+          </button>
+        </div>
+        <div class="amb-status active-music" id="ambStatus">
+          <div class="amb-status-dot"></div>
+          <span id="ambStatusText">Musique · Volume 50%</span>
         </div>
 
         <div class="slider-block" id="volBlock">
@@ -2014,14 +2167,31 @@ function makeSlider(sliderId, fillId, thumbId, valId, min, max, startVal, stateK
 
 /* ─ SEGMENTED ─ */
 function setupSegmented() {
-  $$('#amb-seg .seg-opt').forEach(opt => {
+  const statusEl = document.getElementById('ambStatus');
+  const statusTxt = document.getElementById('ambStatusText');
+  const statusLabels = { musique: 'Musique · Volume ', radio: 'Radio FM · En direct', silence: 'Silence · Mode zen' };
+  $$('#amb-seg .amb-btn').forEach(opt => {
     opt.addEventListener('click', () => {
-      $$('#amb-seg .seg-opt').forEach(o => o.classList.remove('active'));
+      $$('#amb-seg .amb-btn').forEach(o => o.classList.remove('active'));
       opt.classList.add('active'); STATE.ambiance = opt.dataset.v; haptic(10);
-      document.getElementById('volBlock').classList.toggle('disabled', STATE.ambiance === 'silence');
-      document.getElementById('silenceHint').classList.toggle('show', STATE.ambiance === 'silence');
+      const isSilence = STATE.ambiance === 'silence';
+      document.getElementById('volBlock').classList.toggle('disabled', isSilence);
+      document.getElementById('silenceHint').classList.toggle('show', isSilence);
+      if (statusEl) {
+        statusEl.className = 'amb-status active-' + STATE.ambiance;
+        const vol = document.getElementById('volVal');
+        statusTxt.textContent = STATE.ambiance === 'musique'
+          ? statusLabels.musique + (vol ? vol.textContent : '50') + '%'
+          : statusLabels[STATE.ambiance];
+      }
     });
   });
+  const volVal = document.getElementById('volVal');
+  if (volVal) {
+    new MutationObserver(() => {
+      if (STATE.ambiance === 'musique' && statusTxt) statusTxt.textContent = 'Musique · Volume ' + volVal.textContent + '%';
+    }).observe(volVal, { childList: true, characterData: true, subtree: true });
+  }
 }
 
 /* ─ TOGGLES ─ */
