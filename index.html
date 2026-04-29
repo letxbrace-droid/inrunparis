@@ -2803,11 +2803,12 @@ let _heroRouteTimer = null;
 let _heroClim = 21;
 
 function initHeroMap() {
-  /* Attend que L soit disponible (defer peut finir après DOMContentLoaded) */
   if (typeof L === 'undefined') {
-    document.getElementById('leafletJs').addEventListener('load', initHeroMap, { once: true });
+    const el = document.getElementById('leafletJs');
+    if (el) el.addEventListener('load', initHeroMap, { once: true });
     return;
   }
+  if (_heroMap) return;
 
   _heroMap = L.map('heroMapCanvas', {
     zoomControl: false, attributionControl: true,
@@ -2822,14 +2823,12 @@ function initHeroMap() {
 
   _heroMap.setView([48.75, 2.40], 10);
 
-  /* invalidateSize après layout — corrige le bug 100dvh mobile */
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      _heroMap.invalidateSize({ animate: false });
-    });
-  });
+  /* Multiple invalidateSize — fiabilité 100dvh mobile + layout tardif */
+  setTimeout(() => _heroMap.invalidateSize({ animate: false }), 0);
+  setTimeout(() => _heroMap.invalidateSize({ animate: false }), 150);
+  setTimeout(() => _heroMap.invalidateSize({ animate: false }), 600);
 
-  /* Re-invalidate au resize (rotation mobile, redimensionnement desktop) */
+  /* Re-invalidate au resize */
   window.addEventListener('resize', () => {
     clearTimeout(_heroMap._resizeTimer);
     _heroMap._resizeTimer = setTimeout(() => _heroMap.invalidateSize(), 150);
@@ -2841,11 +2840,11 @@ function initHeroMap() {
       heroSetGPS(pos.coords.latitude, pos.coords.longitude);
     }, () => {}, { enableHighAccuracy: true, timeout: 8000 });
   }
+}
 
-  /* Autocomplete */
+function initHeroAC() {
   heroSetupAC('hDepart', true);
   heroSetupAC('hArrive', false);
-
   document.getElementById('hGeoBtn').addEventListener('click', () => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(pos => {
@@ -2855,7 +2854,7 @@ function initHeroMap() {
 }
 
 async function heroSetGPS(lat, lng) {
-  /* Dot pulsant sur la carte */
+  if (!_heroMap || typeof L === 'undefined') return;
   if (_heroGpsDot) _heroMap.removeLayer(_heroGpsDot);
   const icon = L.divIcon({
     className: '',
@@ -3254,6 +3253,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupReveal();
   initNFC();
   initHeroMap();
+  initHeroAC();
   setupHeroAmb();
 
   // Barre de progression de lecture
@@ -3375,6 +3375,15 @@ document.addEventListener('DOMContentLoaded', () => {
       origUrgency.classList.add('glitch');
       uc++;
     }, 5000);
+  }
+});
+
+/* invalidateSize final après chargement complet de la page */
+window.addEventListener('load', () => {
+  if (_heroMap) {
+    _heroMap.invalidateSize({ animate: false });
+  } else {
+    initHeroMap();
   }
 });
 </script>
