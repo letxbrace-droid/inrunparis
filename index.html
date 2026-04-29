@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════════
@@ -767,6 +769,24 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .p-badge { padding: 4px 9px; border-radius: 8px; font-family: var(--ff-mono); font-size: .54rem; letter-spacing: .1em; font-weight: 700; text-transform: uppercase; }
 .p-badge.nuit { background: rgba(131,249,255,.12); color: #83F9FF; border: 0.5px solid rgba(131,249,255,.3); }
 .p-badge.promo { background: rgba(52,211,153,.12); color: var(--success); border: 0.5px solid rgba(52,211,153,.3); }
+.p-badge.airport { background: rgba(212,175,55,.1); color: var(--gold); border: 0.5px solid rgba(212,175,55,.3); }
+.p-badge.van { background: rgba(168,85,247,.12); color: #c084fc; border: 0.5px solid rgba(168,85,247,.3); }
+.p-badge.savings { background: rgba(52,211,153,.15); color: #6ee7b7; border: 0.5px solid rgba(52,211,153,.4); font-weight: 800; animation: savingsPop .45s cubic-bezier(.34,1.56,.64,1); }
+@keyframes savingsPop { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ── NFC BADGE ── */
+.nfc-badge { display: flex; align-items: center; gap: 7px; margin: 8px 16px 0; padding: 9px 13px; background: linear-gradient(135deg,rgba(212,175,55,.12),rgba(212,175,55,.05)); border: 0.5px solid rgba(212,175,55,.4); border-radius: 10px; font-family: var(--ff-mono); font-size: .58rem; letter-spacing: .1em; color: var(--gold-warm); text-transform: uppercase; animation: nfcSlide .4s cubic-bezier(.34,1.56,.64,1); }
+.nfc-badge svg { flex-shrink: 0; color: var(--gold); }
+.nfc-driver { margin-left: auto; color: var(--mist); font-size: .52rem; }
+@keyframes nfcSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── ROUTE MAP ── */
+#routeMap { height: 220px; border-radius: 14px; overflow: hidden; margin-top: 18px; border: 0.5px solid rgba(212,175,55,.18); display: none; position: relative; }
+#routeMap.show { display: block; animation: priceRise .5s cubic-bezier(.34,1.56,.64,1); }
+.leaflet-container { background: #0a0a0a !important; }
+.leaflet-control-zoom { display: none !important; }
+.leaflet-attribution-flag { display: none !important; }
+.leaflet-control-attribution { background: rgba(0,0,0,.5) !important; color: rgba(255,255,255,.3) !important; font-size: .5rem !important; }
 
 /* ── PROMO ── */
 .promo-wrap { margin: 14px 0 8px; position: relative; }
@@ -1723,6 +1743,13 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
       </div>
     </div>
 
+    <!-- Badge NFC — visible uniquement si ?nfc=1 -->
+    <div class="nfc-badge" id="nfcBadge" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M20 12V8H6a2 2 0 0 1-2-2V4"/><path d="M4 20V16H18a2 2 0 0 0 2-2v-4"/><path d="M8 12h8"/></svg>
+      <span>NFC · À bord du véhicule</span>
+      <span class="nfc-driver" id="nfcDriver"></span>
+    </div>
+
     <div class="step-ind" id="stepper">
       <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-lbl">Trajet</div></div>
       <div class="step-line" data-line="1"></div>
@@ -1902,6 +1929,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
             </button>
             <button class="btn-secondary" id="recalcBtn">Modifier la course</button>
           </div>
+          <div id="routeMap"></div>
         </div>
       </section>
 
@@ -1970,6 +1998,7 @@ const STATE = {
   ambiance: 'musique', volume: 50, clim: 21,
   options: { wifi: false, eau: true, usb: true, confiseries: false, siege: false },
   payment: 'Carte', note: '', promo: null, price: null,
+  vehicleType: 'berline', nfcMode: false,
 };
 
 /* ─ PROMO CODES ─ */
@@ -1981,7 +2010,18 @@ const PROMO_CODES = {
 };
 
 /* ─ TARIFICATION ─ */
-const PRICE = { base: 15, perKm: 0.84, perMin: 0.17, min: 35, nightPlus: 10, nightStart: 22, nightEnd: 6, trafficBuffer: 1.2 };
+/* Positionnement : -10% vs Uber Berline / Bolt Business Île-de-France */
+const PRICE = {
+  base: 13, perKm: 0.82, perMin: 0.16, min: 32,
+  nightPct: 0.15, nightStart: 22, nightEnd: 6, trafficBuffer: 1.2,
+  airportFlat: 6,   /* CDG / Orly / Beauvais */
+  vanPct: 0.25,     /* +25% pour Van 7 places */
+  /* Références concurrentes pour calcul économies */
+  ref: { base: 14.5, perKm: 0.92, perMin: 0.18 }
+};
+function isAirportAddr(name) {
+  return /CDG|Roissy|Charles[- ]de[- ]Gaulle|Orly|ORY|Beauvais|BVA/i.test(name || '');
+}
 
 /* ─ IDF PRESETS ─ */
 const IDF_PRESETS = [
@@ -2119,13 +2159,18 @@ function setupAutocomplete(inputId, dropId, termsId, stateKey) {
 
 /* ─ OSRM ─ */
 async function osrmRoute(from, to) {
-  const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=false`;
+  const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=full&geometries=geojson`;
   try {
     const r = await fetch(url);
     const data = await r.json();
     if (!data.routes?.length) return null;
     const route = data.routes[0];
-    return { km: route.distance / 1000, mins: (route.duration / 60) * PRICE.trafficBuffer, rawMins: route.duration / 60 };
+    return {
+      km: route.distance / 1000,
+      mins: (route.duration / 60) * PRICE.trafficBuffer,
+      rawMins: route.duration / 60,
+      geometry: route.geometry  /* GeoJSON LineString pour la carte */
+    };
   } catch (e) { return null; }
 }
 
@@ -2138,9 +2183,15 @@ function isNightTime(dateStr) {
 function computePrice(km, mins, pickupTime) {
   let price = PRICE.base + (km * PRICE.perKm) + (mins * PRICE.perMin);
   const isNight = isNightTime(pickupTime);
-  if (isNight) price += PRICE.nightPlus;
+  if (isNight) price *= (1 + PRICE.nightPct);
+  const isAirport = isAirportAddr(STATE.depart?.name) || isAirportAddr(STATE.arrive?.name);
+  if (isAirport) price += PRICE.airportFlat;
+  const isVan = STATE.vehicleType === 'van';
+  if (isVan) price *= (1 + PRICE.vanPct);
   if (price < PRICE.min) price = PRICE.min;
-  return { price: Math.round(price), isNight };
+  const refPrice = PRICE.ref.base + (km * PRICE.ref.perKm) + (mins * PRICE.ref.perMin);
+  const savings = Math.max(0, Math.round(refPrice - price));
+  return { price: Math.round(price), isNight, isAirport, isVan, savings };
 }
 function applyPromo(price) {
   if (!STATE.promo) return price;
@@ -2275,25 +2326,29 @@ async function computeAndShow() {
     btn.setAttribute('aria-busy', 'false');
     return;
   }
-  const { price, isNight } = computePrice(route.km, route.mins, STATE.pickup);
+  const { price, isNight, isAirport, isVan, savings } = computePrice(route.km, route.mins, STATE.pickup);
   btn.setAttribute('aria-busy', 'false');
-  STATE.price = { base: price, final: applyPromo(price), km: route.km, mins: route.mins, isNight };
-  updatePriceDisplay(); setStep(3); haptic(20);
+  STATE.price = { base: price, final: applyPromo(price), km: route.km, mins: route.mins, isNight, isAirport, isVan, savings };
+  STATE.routeGeometry = route.geometry;
+  updatePriceDisplay(); renderRouteMap(); setStep(3); haptic(20);
   btn.innerHTML = origText; btn.disabled = false;
 }
 function updatePriceDisplay() {
   if (!STATE.price) return;
-  const { base, final, km, mins, isNight } = STATE.price;
+  const { base, final, km, mins, isNight, isAirport, isVan, savings } = STATE.price;
   document.getElementById('priceVal').textContent = final;
   document.getElementById('priceDetail').textContent = `${km.toFixed(1)} km · ${Math.round(mins)} min estimés`;
   const badges = document.getElementById('priceBadges');
   badges.innerHTML = '';
-  if (isNight) { const b = document.createElement('div'); b.className = 'p-badge nuit'; b.textContent = '+10€ tarif nuit'; badges.appendChild(b); }
-  if (STATE.promo && base !== final) { const b = document.createElement('div'); b.className = 'p-badge promo'; b.textContent = `${STATE.promo.code} · −${base - final}€`; badges.appendChild(b); }
+  const mkBadge = (cls, txt) => { const b = document.createElement('div'); b.className = `p-badge ${cls}`; b.textContent = txt; badges.appendChild(b); };
+  if (isNight) mkBadge('nuit', '+15% tarif nuit');
+  if (isAirport) mkBadge('airport', '+6€ aéroport');
+  if (isVan) mkBadge('van', '+25% Van 7 places');
+  if (STATE.promo && base !== final) mkBadge('promo', `${STATE.promo.code} · −${base - final}€`);
+  if (savings > 0) mkBadge('savings', `−${savings}€ vs Uber/Bolt`);
   const pb = document.getElementById('priceBox');
   pb.classList.add('show');
-  const top = pb.getBoundingClientRect().top + window.pageYOffset - 80;
-  window.scrollTo({ top, behavior: 'smooth' });
+  pb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 /* ─ WHATSAPP ─ */
@@ -2483,6 +2538,71 @@ function setupHero() {
 }
 
 /* ═══ INIT ═══ */
+/* ─ CARTE LEAFLET ─ */
+let _map = null, _routeLayer = null;
+function renderRouteMap() {
+  if (typeof L === 'undefined' || !STATE.routeGeometry || !STATE.depart || !STATE.arrive) return;
+  const mapEl = document.getElementById('routeMap');
+  mapEl.classList.add('show');
+
+  const coords = STATE.routeGeometry.coordinates.map(([lng, lat]) => [lat, lng]);
+  const from = [STATE.depart.lat, STATE.depart.lng];
+  const to   = [STATE.arrive.lat, STATE.arrive.lng];
+
+  if (!_map) {
+    _map = L.map('routeMap', { zoomControl: false, attributionControl: true, dragging: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap contributors © CARTO', subdomains: 'abcd', maxZoom: 19
+    }).addTo(_map);
+  }
+  if (_routeLayer) _map.removeLayer(_routeLayer);
+
+  const goldIcon = (label) => L.divIcon({
+    className: '',
+    html: `<div style="width:10px;height:10px;border-radius:50%;background:#D4AF37;box-shadow:0 0 12px rgba(212,175,55,.8);border:2px solid #fff"></div>`,
+    iconSize: [10, 10], iconAnchor: [5, 5]
+  });
+
+  _routeLayer = L.layerGroup([
+    L.polyline(coords, { color: '#D4AF37', weight: 3, opacity: .85 }),
+    L.marker(from, { icon: goldIcon('D') }),
+    L.marker(to,   { icon: goldIcon('A') })
+  ]).addTo(_map);
+
+  const bounds = L.latLngBounds([from, to, ...coords]);
+  _map.fitBounds(bounds, { padding: [20, 20] });
+}
+
+/* ─ NFC ENTRY POINT ─ */
+async function initNFC() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('nfc') !== '1') return;
+  STATE.nfcMode = true;
+  const badge = document.getElementById('nfcBadge');
+  const driver = params.get('driver') || '';
+  if (badge) {
+    badge.style.display = 'flex';
+    const driverEl = document.getElementById('nfcDriver');
+    if (driverEl && driver) driverEl.textContent = `Chauffeur ${driver}`;
+  }
+  /* Ouvre le sheet et pré-remplit le départ avec la géolocalisation */
+  openBookingSheet();
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude, longitude } = pos.coords;
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+      const d = await r.json();
+      const parts = (d.display_name || '').split(',');
+      const name = [parts[0], parts[1]].filter(Boolean).map(s => s.trim()).join(', ');
+      const el = document.getElementById('depart');
+      if (el) el.value = name;
+      STATE.depart = { name, lat: latitude, lng: longitude };
+      document.getElementById('depart-field')?.classList.remove('invalid');
+    } catch {}
+  }, () => {}, { enableHighAccuracy: true, timeout: 6000 });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setupHero();
   makeSlider('volSlider', 'volFill', 'volThumb', 'volVal', 0, 100, 50, 'volume');
@@ -2569,6 +2689,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(fetchMeteo, 10 * 60 * 1000);
   setInterval(fetchTraffic, 5 * 60 * 1000);
   setupReveal();
+  initNFC();
 
   // Barre de progression de lecture
   const scrollProg = document.getElementById('scrollProgress');
