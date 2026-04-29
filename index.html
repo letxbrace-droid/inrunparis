@@ -261,6 +261,178 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 @keyframes bounceY { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
 
 /* ═══════════════════════════════════════════════════════════════
+   HERO MAP — INR CARD SIGNATURE
+   ═══════════════════════════════════════════════════════════════ */
+#heroMap { position:relative; height:100dvh; min-height:580px; overflow:hidden; }
+#heroMapCanvas { position:absolute; inset:0; z-index:0; width:100%; height:100%; }
+.hero-map-vignette {
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,.65) 100%),
+              linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 25%, transparent 60%, rgba(0,0,0,.88) 100%),
+              linear-gradient(to right, rgba(0,0,0,.25) 0%, transparent 50%);
+}
+.hero-map-scanline {
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,.045) 3px, rgba(0,0,0,.045) 4px);
+}
+
+/* ── INR Card ── */
+.inr-card {
+  position:absolute; bottom:0; left:0; right:0; z-index:10;
+  margin:0 10px 72px;
+  padding:16px 16px 12px;
+  background:rgba(0,0,0,.84);
+  backdrop-filter:blur(28px) saturate(1.4);
+  -webkit-backdrop-filter:blur(28px) saturate(1.4);
+  border:0.5px solid rgba(212,175,55,.22);
+  border-radius:20px;
+  --bw:13px; --bt:1.5px; --bc:rgba(212,175,55,.55);
+}
+.inr-card::before {
+  content:''; position:absolute; top:0; left:0;
+  width:var(--bw); height:var(--bw);
+  border-top:var(--bt) solid var(--bc); border-left:var(--bt) solid var(--bc);
+  border-radius:20px 0 0 0; pointer-events:none;
+}
+.inr-card::after {
+  content:''; position:absolute; bottom:0; right:0;
+  width:var(--bw); height:var(--bw);
+  border-bottom:var(--bt) solid var(--bc); border-right:var(--bt) solid var(--bc);
+  border-radius:0 0 20px 0; pointer-events:none;
+}
+
+/* ── HUD header ── */
+.inr-card-hud { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.inr-monogram {
+  font-family:var(--ff-mono); font-size:.58rem; font-weight:700; letter-spacing:.24em;
+  color:var(--gold); background:rgba(212,175,55,.1);
+  border:0.5px solid rgba(212,175,55,.28); padding:3px 9px; border-radius:5px;
+}
+.inr-hud-status { display:flex; align-items:center; gap:5px; margin-left:auto; font-family:var(--ff-mono); font-size:.5rem; color:var(--mist); letter-spacing:.08em; }
+.inr-live-dot { width:5px; height:5px; border-radius:50%; background:var(--success); box-shadow:0 0 6px var(--success); animation:livePulse 2s ease-in-out infinite; }
+@keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+/* ── Fields ── */
+.inr-fields { position:relative; margin-bottom:12px; }
+.inr-field-row {
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:rgba(255,255,255,.03); border:0.5px solid rgba(255,255,255,.07);
+  border-radius:12px; transition:border-color .2s, background .2s;
+}
+.inr-field-row:focus-within { border-color:rgba(212,175,55,.4); background:rgba(212,175,55,.04); }
+.inr-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.inr-dot-origin { background:var(--gold); box-shadow:0 0 10px rgba(212,175,55,.7); }
+.inr-dot-dest { background:#ef4444; box-shadow:0 0 10px rgba(239,68,68,.7); }
+.inr-field-body { flex:1; min-width:0; }
+.inr-field-lbl { display:block; font-family:var(--ff-mono); font-size:.46rem; letter-spacing:.14em; color:var(--mist); text-transform:uppercase; margin-bottom:2px; }
+.inr-input { width:100%; background:transparent; border:none; outline:none; font-family:var(--ff-body); font-size:.88rem; font-weight:500; color:var(--bone); padding:0; }
+.inr-input::placeholder { color:rgba(255,255,255,.28); }
+.inr-geo-btn {
+  background:transparent; border:0.5px solid rgba(212,175,55,.2); border-radius:8px; padding:6px;
+  color:var(--gold); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all .2s; flex-shrink:0;
+}
+.inr-geo-btn:hover { background:rgba(212,175,55,.1); border-color:rgba(212,175,55,.45); }
+.inr-geo-btn svg { width:14px; height:14px; }
+.inr-field-divider { padding:3px 0 3px 20px; }
+.inr-field-line { width:1px; height:12px; background:linear-gradient(to bottom,rgba(212,175,55,.35),rgba(212,175,55,.08)); }
+
+/* ── Autocomplete drop hero ── */
+.inr-ac-drop {
+  position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:200;
+  background:rgba(6,6,6,.97); border:0.5px solid rgba(212,175,55,.22);
+  border-radius:14px; overflow:hidden; display:none;
+  backdrop-filter:blur(24px); box-shadow:0 12px 40px rgba(0,0,0,.6);
+}
+.inr-ac-drop.open { display:block; animation:acSlide .2s ease-out; }
+@keyframes acSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.inr-ac-item { display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; border-bottom:0.5px solid rgba(255,255,255,.04); transition:background .15s; }
+.inr-ac-item:last-child { border-bottom:none; }
+.inr-ac-item:hover, .inr-ac-item.focused { background:rgba(212,175,55,.08); }
+.inr-ac-icon { font-family:var(--ff-mono); font-size:.6rem; color:var(--gold); opacity:.7; width:18px; flex-shrink:0; text-align:center; }
+.inr-ac-name { font-size:.82rem; font-weight:500; color:var(--bone); }
+.inr-ac-sub { font-size:.66rem; color:var(--mist); margin-top:1px; }
+
+/* ── Price display ── */
+.inr-price-wrap { overflow:hidden; }
+.inr-price-calculating {
+  display:flex; align-items:center; gap:8px; padding:10px 14px;
+  background:rgba(212,175,55,.05); border:0.5px solid rgba(212,175,55,.15); border-radius:12px; margin-bottom:10px;
+  font-family:var(--ff-mono); font-size:.6rem; color:var(--gold); letter-spacing:.1em;
+}
+.inr-price-eq { display:flex; gap:2.5px; align-items:flex-end; height:14px; }
+.inr-price-eq-bar { width:2.5px; border-radius:2px; background:var(--gold); transform-origin:bottom; animation:eqBounce var(--s,.5s) ease-in-out infinite alternate; }
+.inr-price-result {
+  padding:12px 14px; margin-bottom:10px;
+  background:linear-gradient(135deg,rgba(212,175,55,.1),rgba(212,175,55,.03));
+  border:0.5px solid rgba(212,175,55,.32); border-radius:14px;
+  position:relative; overflow:hidden; animation:priceRise .45s cubic-bezier(.34,1.56,.64,1);
+}
+.inr-price-result::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(212,175,55,.07),transparent); animation:priceScan .8s ease-out; }
+.inr-price-row { display:flex; align-items:baseline; gap:5px; }
+.inr-price-val { font-family:var(--ff-mono); font-size:2.1rem; font-weight:700; color:var(--gold-warm); line-height:1; text-shadow:0 0 30px rgba(212,175,55,.4); }
+.inr-price-eur { font-family:var(--ff-mono); font-size:1rem; color:var(--gold); font-weight:600; }
+.inr-price-meta { font-family:var(--ff-mono); font-size:.53rem; color:var(--mist); letter-spacing:.1em; margin-top:3px; }
+.inr-price-badges { display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; }
+
+/* ── Actions ── */
+.inr-actions { display:flex; gap:8px; margin-bottom:8px; }
+.inr-btn-reserve {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:13px;
+  background:linear-gradient(165deg,var(--gold-warm),var(--gold) 50%,var(--gold-deep));
+  color:var(--oled); font-family:var(--ff-display); font-size:.84rem; font-weight:700;
+  border:none; border-radius:12px; cursor:pointer; transition:all .2s; overflow:hidden; position:relative;
+}
+.inr-btn-reserve::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); transform:translateX(-100%); transition:transform .4s; }
+.inr-btn-reserve:hover::after { transform:translateX(100%); }
+.inr-btn-reserve:hover { box-shadow:0 6px 24px rgba(212,175,55,.4); }
+.inr-btn-custom {
+  display:flex; align-items:center; gap:5px; padding:13px 14px;
+  background:rgba(255,255,255,.04); border:0.5px solid rgba(255,255,255,.1);
+  color:var(--mist); font-family:var(--ff-body); font-size:.76rem; font-weight:500;
+  border-radius:12px; cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.inr-btn-custom.open, .inr-btn-custom:hover { border-color:rgba(212,175,55,.3); color:var(--gold); background:rgba(212,175,55,.07); }
+
+/* ── Customize panel ── */
+.inr-custom-panel { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.34,1.56,.64,1); }
+.inr-custom-panel.open { max-height:240px; padding-top:10px; border-top:0.5px solid rgba(255,255,255,.06); margin-top:2px; }
+.inr-custom-section { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.inr-custom-lbl { display:flex; align-items:center; gap:5px; font-family:var(--ff-mono); font-size:.52rem; letter-spacing:.12em; color:var(--mist); text-transform:uppercase; white-space:nowrap; min-width:68px; }
+.inr-amb-mini { display:flex; gap:5px; flex:1; }
+.inr-amb-opt {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 5px;
+  background:rgba(0,0,0,.4); border:0.5px solid rgba(212,175,55,.1); border-radius:10px;
+  color:var(--mist); font-family:var(--ff-mono); font-size:.48rem; letter-spacing:.06em;
+  cursor:pointer; transition:all .25s;
+}
+.inr-amb-opt.active { border-color:rgba(212,175,55,.45); color:var(--gold); background:rgba(212,175,55,.08); }
+.inr-amb-opt.active .eq-bar { animation:eqBounce var(--s,.55s) ease-in-out infinite alternate; }
+.inr-amb-opt.active .radio-ring { animation:radioPulse 1.6s ease-out infinite; }
+.inr-amb-opt.active svg { animation:silenceBlink 2.2s ease-in-out infinite; }
+.inr-clim-ctrl { display:flex; align-items:center; gap:8px; }
+.inr-clim-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:rgba(212,175,55,.08); border:0.5px solid rgba(212,175,55,.25); border-radius:8px; color:var(--gold); font-size:1rem; font-weight:700; cursor:pointer; transition:all .15s; }
+.inr-clim-btn:hover { background:rgba(212,175,55,.2); }
+.inr-clim-val { font-family:var(--ff-mono); font-size:.85rem; font-weight:600; color:var(--gold-warm); min-width:38px; text-align:center; }
+
+/* ── WA link ── */
+.inr-wa-link { display:flex; align-items:center; justify-content:center; gap:6px; font-family:var(--ff-mono); font-size:.5rem; letter-spacing:.1em; color:var(--mist); text-decoration:none; padding-top:2px; transition:color .2s; }
+.inr-wa-link:hover { color:var(--success); }
+
+/* ── GPS dot Leaflet ── */
+.gps-dot-wrap { position:relative; width:24px; height:24px; }
+.gps-core { position:absolute; top:50%; left:50%; width:8px; height:8px; margin:-4px 0 0 -4px; border-radius:50%; background:var(--gold); box-shadow:0 0 14px rgba(212,175,55,.9),0 0 28px rgba(212,175,55,.45); z-index:2; }
+.gps-ring { position:absolute; border-radius:50%; border:1.5px solid rgba(212,175,55,.6); animation:gpsPulse 2.4s ease-out infinite; }
+.gps-ring-1 { top:4px; left:4px; right:4px; bottom:4px; animation-delay:0s; }
+.gps-ring-2 { inset:0; animation-delay:.7s; }
+@keyframes gpsPulse { 0%{opacity:.75;transform:scale(.3)} 100%{opacity:0;transform:scale(1)} }
+
+/* ── Responsive desktop ── */
+@media(min-width:640px) {
+  .inr-card { left:auto; right:auto; bottom:auto; top:50%; transform:translateY(-50%); margin:0 0 0 40px; width:min(400px,calc(100vw - 80px)); border-radius:22px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    URGENCY STRIP
    ═══════════════════════════════════════════════════════════════ */
 .urgency-strip {
@@ -1404,28 +1576,104 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
 
 <main class="main">
 
-  <!-- ═══ HERO — PHOTO VOITURE ═══ -->
-  <section class="hero-full">
-    <div class="hero-bg" style="will-change:transform;" role="img" aria-label="Véhicule I&N RUN, chauffeur privé Paris"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-overlay-gold"></div>
-    <div class="hero-grid-overlay" aria-hidden="true"></div>
-    <div class="hero-scanline" aria-hidden="true"></div>
-    <div class="hero-content">
-      <div class="hero-tag">Chauffeur privé · Paris &amp; IDF · 24/7</div>
-      <h1 class="hero-h1">Votre chauffeur<br><em>vous attend.</em></h1>
-      <p class="hero-sub">Tarif fixe garanti, confirmation en <strong>2 minutes</strong>. <strong>10% moins cher</strong> que les applications.</p>
-      <div class="hero-ctas">
-        <button onclick="openBookingSheet()" class="hero-cta-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <span>Calculer mon tarif</span>
-        </button>
-        <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course." class="hero-cta-wa" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>WhatsApp direct</span>
-        </a>
+  <!-- ═══ HERO MAP — INR SIGNATURE ═══ -->
+  <section id="heroMap" aria-label="Calculez votre tarif instantanément">
+    <div id="heroMapCanvas"></div>
+    <div class="hero-map-vignette" aria-hidden="true"></div>
+    <div class="hero-map-scanline" aria-hidden="true"></div>
+
+    <!-- INR Floating card -->
+    <div class="inr-card" id="inrCard" role="main">
+
+      <!-- HUD header -->
+      <div class="inr-card-hud">
+        <span class="inr-monogram">INR</span>
+        <div class="inr-hud-status">
+          <span class="inr-live-dot"></span>
+          <span>Disponible · 24/7</span>
+        </div>
       </div>
+
+      <!-- Champs trajet -->
+      <div class="inr-fields">
+        <div class="inr-field-row" id="hDepartField">
+          <div class="inr-dot inr-dot-origin"></div>
+          <div class="inr-field-body">
+            <label class="inr-field-lbl" for="hDepart">Votre position</label>
+            <input class="inr-input" id="hDepart" placeholder="Départ détecté…" autocomplete="off" aria-autocomplete="list" aria-haspopup="listbox">
+          </div>
+          <button class="inr-geo-btn" id="hGeoBtn" title="Utiliser ma position GPS" aria-label="Géolocaliser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          </button>
+        </div>
+        <div class="inr-field-divider"><div class="inr-field-line"></div></div>
+        <div class="inr-field-row" id="hArriveField">
+          <div class="inr-dot inr-dot-dest"></div>
+          <div class="inr-field-body">
+            <label class="inr-field-lbl" for="hArrive">Destination</label>
+            <input class="inr-input" id="hArrive" placeholder="Où allons-nous ?" autocomplete="off" aria-autocomplete="list" aria-haspopup="listbox">
+          </div>
+        </div>
+        <div class="inr-ac-drop" id="hAcDrop" role="listbox"></div>
+      </div>
+
+      <!-- Résultat prix -->
+      <div class="inr-price-wrap" id="inrPriceWrap"></div>
+
+      <!-- Actions -->
+      <div class="inr-actions" id="inrActions" style="display:none">
+        <button class="inr-btn-reserve" onclick="heroReserve()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Réserver ce trajet
+        </button>
+        <button class="inr-btn-custom" id="inrCustomToggle" onclick="toggleHeroCustom()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="13" height="13"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg>
+          Perso
+        </button>
+      </div>
+
+      <!-- Panneau personnalisation -->
+      <div class="inr-custom-panel" id="inrCustomPanel">
+        <div class="inr-custom-section">
+          <div class="inr-custom-lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="11" height="11"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            Ambiance
+          </div>
+          <div class="inr-amb-mini" id="hAmbSeg">
+            <button class="inr-amb-opt active" data-v="musique">
+              <div class="eq-bars"><div class="eq-bar" style="--s:.48s;height:10px"></div><div class="eq-bar" style="--s:.62s;height:14px"></div><div class="eq-bar" style="--s:.55s;height:7px"></div><div class="eq-bar" style="--s:.70s;height:12px"></div></div>
+              Musique
+            </button>
+            <button class="inr-amb-opt" data-v="radio">
+              <div class="radio-rings" style="width:20px;height:14px"><div class="radio-dot"></div><div class="radio-ring" style="width:12px;height:12px;top:-4px;left:-4px"></div></div>
+              Radio
+            </button>
+            <button class="inr-amb-opt" data-v="silence">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="15" height="15"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              Silence
+            </button>
+          </div>
+        </div>
+        <div class="inr-custom-section">
+          <div class="inr-custom-lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="11" height="11"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
+            Clim
+          </div>
+          <div class="inr-clim-ctrl">
+            <button class="inr-clim-btn" onclick="heroClimAdj(-1)">−</button>
+            <span class="inr-clim-val" id="hClimVal">21°C</span>
+            <button class="inr-clim-btn" onclick="heroClimAdj(+1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WA direct -->
+      <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20réserver%20une%20course." class="inr-wa-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Réservation directe WhatsApp
+      </a>
     </div>
+
     <div class="hero-scroll-hint">
       <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       Découvrir
@@ -2538,7 +2786,296 @@ function setupHero() {
 }
 
 /* ═══ INIT ═══ */
-/* ─ CARTE LEAFLET ─ */
+/* ══════════════════════════════════════════════════════════════
+   HERO MAP — INR CARD LIVE
+   ══════════════════════════════════════════════════════════════ */
+let _heroMap = null, _heroRoute = null, _heroGpsDot = null;
+let _heroDepart = null, _heroArrive = null;
+let _heroRouteTimer = null;
+let _heroClim = 21;
+
+function initHeroMap() {
+  if (typeof L === 'undefined') return;
+
+  _heroMap = L.map('heroMapCanvas', {
+    zoomControl: false, attributionControl: true,
+    dragging: true, scrollWheelZoom: false, doubleClickZoom: false,
+    touchZoom: true
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com">CARTO</a>',
+    subdomains: 'abcd', maxZoom: 19
+  }).addTo(_heroMap);
+
+  _heroMap.setView([48.75, 2.40], 10);
+
+  /* GPS auto */
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      heroSetGPS(pos.coords.latitude, pos.coords.longitude);
+    }, () => {}, { enableHighAccuracy: true, timeout: 8000 });
+  }
+
+  /* Autocomplete départ */
+  heroSetupAC('hDepart', true);
+  heroSetupAC('hArrive', false);
+
+  document.getElementById('hGeoBtn').addEventListener('click', () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(pos => {
+      heroSetGPS(pos.coords.latitude, pos.coords.longitude);
+    }, () => {}, { enableHighAccuracy: true, timeout: 6000 });
+  });
+}
+
+async function heroSetGPS(lat, lng) {
+  /* Dot pulsant sur la carte */
+  if (_heroGpsDot) _heroMap.removeLayer(_heroGpsDot);
+  const icon = L.divIcon({
+    className: '',
+    html: '<div class="gps-dot-wrap"><div class="gps-ring gps-ring-1"></div><div class="gps-ring gps-ring-2"></div><div class="gps-core"></div></div>',
+    iconSize: [24, 24], iconAnchor: [12, 12]
+  });
+  _heroGpsDot = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(_heroMap);
+  _heroMap.setView([lat, lng], 13, { animate: true });
+
+  /* Reverse geocode */
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fr`);
+    const d = await r.json();
+    const parts = (d.display_name || '').split(',');
+    const name = [parts[0], parts[1]].filter(Boolean).map(s => s.trim()).join(', ');
+    document.getElementById('hDepart').value = name;
+    _heroDepart = { name, lat, lng };
+    heroTriggerRoute();
+  } catch {}
+}
+
+/* ── Autocomplete hero ── */
+const ICON_MAP = { airport: '✈', terminal: '✈', gare: '🚉', poi: '📍', city: '🏙', default: '📌' };
+function heroSetupAC(inputId, isDepart) {
+  const input = document.getElementById(inputId);
+  const drop  = document.getElementById('hAcDrop');
+  let acTimer = null, lastQuery = '';
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (q === lastQuery) return;
+    lastQuery = q;
+    clearTimeout(acTimer);
+    if (q.length < 2) { drop.classList.remove('open'); drop.innerHTML = ''; return; }
+    acTimer = setTimeout(() => heroFetchAC(q, isDepart, input, drop), 280);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { drop.classList.remove('open'); drop.innerHTML = ''; }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#inrCard')) { drop.classList.remove('open'); drop.innerHTML = ''; }
+  }, { passive: true });
+}
+
+async function heroFetchAC(q, isDepart, input, drop) {
+  const presets = IDF_PRESETS.filter(p => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 4);
+  let results = presets.map(p => ({ name: p.name, sub: p.type === 'airport' ? 'Aéroport' : p.type === 'gare' ? 'Gare' : 'Île-de-France', lat: p.lat, lng: p.lng, type: p.type }));
+
+  if (results.length < 5) {
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&countrycodes=fr&accept-language=fr`);
+      const data = await r.json();
+      const nominatim = data.slice(0, 5 - results.length).map(d => ({
+        name: d.display_name.split(',')[0].trim(),
+        sub: d.display_name.split(',').slice(1, 3).join(',').trim(),
+        lat: parseFloat(d.lat), lng: parseFloat(d.lon), type: 'default'
+      }));
+      results = [...results, ...nominatim];
+    } catch {}
+  }
+
+  if (!results.length) { drop.classList.remove('open'); drop.innerHTML = ''; return; }
+
+  drop.innerHTML = results.map((r, i) => `
+    <div class="inr-ac-item" data-i="${i}" role="option">
+      <span class="inr-ac-icon">${ICON_MAP[r.type] || ICON_MAP.default}</span>
+      <div><div class="inr-ac-name">${r.name}</div>${r.sub ? `<div class="inr-ac-sub">${r.sub}</div>` : ''}</div>
+    </div>`).join('');
+  drop.classList.add('open');
+
+  drop.querySelectorAll('.inr-ac-item').forEach((el, i) => {
+    el.addEventListener('click', () => {
+      const sel = results[i];
+      input.value = sel.name;
+      drop.classList.remove('open'); drop.innerHTML = '';
+      if (isDepart) { _heroDepart = sel; STATE.depart = sel; }
+      else { _heroArrive = sel; STATE.arrive = sel; }
+      heroTriggerRoute();
+    });
+  });
+}
+
+/* ── OSRM live route ── */
+function heroTriggerRoute() {
+  clearTimeout(_heroRouteTimer);
+  if (!_heroDepart || !_heroArrive) return;
+  _heroRouteTimer = setTimeout(heroComputeRoute, 600);
+}
+
+async function heroComputeRoute() {
+  if (!_heroDepart || !_heroArrive) return;
+
+  /* Affiche equalizer "calcul en cours" */
+  const wrap = document.getElementById('inrPriceWrap');
+  wrap.innerHTML = `<div class="inr-price-calculating">
+    <div class="inr-price-eq">
+      <div class="inr-price-eq-bar" style="--s:.42s;height:8px"></div>
+      <div class="inr-price-eq-bar" style="--s:.56s;height:13px"></div>
+      <div class="inr-price-eq-bar" style="--s:.48s;height:6px"></div>
+      <div class="inr-price-eq-bar" style="--s:.64s;height:11px"></div>
+    </div>
+    Calcul OSRM en cours…
+  </div>`;
+
+  const route = await osrmRoute(_heroDepart, _heroArrive);
+  if (!route) { wrap.innerHTML = ''; return; }
+
+  const { price, isNight, isAirport, isVan, savings } = computePrice(route.km, route.mins, null);
+
+  /* Stocker dans STATE */
+  STATE.depart  = _heroDepart;
+  STATE.arrive  = _heroArrive;
+  STATE.routeGeometry = route.geometry;
+  STATE.price   = { base: price, final: price, km: route.km, mins: route.mins, isNight, isAirport, isVan, savings };
+
+  /* Polyline animée sur la carte hero */
+  heroDrawRoute(route.geometry);
+
+  /* Afficher le prix */
+  heroShowPrice(price, route.km, route.mins, { isNight, isAirport, savings });
+
+  /* Montrer les actions */
+  const actions = document.getElementById('inrActions');
+  actions.style.display = 'flex';
+  actions.style.animation = 'priceRise .4s cubic-bezier(.34,1.56,.64,1)';
+}
+
+function heroDrawRoute(geometry) {
+  if (!_heroMap || !geometry) return;
+  if (_heroRoute) _heroMap.removeLayer(_heroRoute);
+
+  const latlngs = geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+  const poly = L.polyline([], { color: '#D4AF37', weight: 3.5, opacity: .9 }).addTo(_heroMap);
+
+  let i = 0;
+  const step = Math.max(1, Math.ceil(latlngs.length / 80));
+  const draw = () => {
+    if (i < latlngs.length) {
+      poly.addLatLng(latlngs[Math.min(i, latlngs.length - 1)]);
+      i += step;
+      requestAnimationFrame(draw);
+    } else {
+      poly.setLatLngs(latlngs);
+    }
+  };
+  draw();
+  _heroRoute = poly;
+
+  /* Marqueur destination */
+  const destIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:10px;height:10px;border-radius:50%;background:#ef4444;box-shadow:0 0 12px rgba(239,68,68,.8);border:2px solid rgba(255,255,255,.7)"></div>',
+    iconSize: [10, 10], iconAnchor: [5, 5]
+  });
+  L.marker([_heroArrive.lat, _heroArrive.lng], { icon: destIcon }).addTo(_heroMap);
+
+  const bounds = L.latLngBounds(latlngs);
+  _heroMap.fitBounds(bounds, { padding: [80, 80], maxZoom: 13 });
+}
+
+function heroShowPrice(price, km, mins, { isNight, isAirport, savings }) {
+  const wrap = document.getElementById('inrPriceWrap');
+
+  let badges = '';
+  if (isNight) badges += `<div class="p-badge nuit">Nuit +15%</div>`;
+  if (isAirport) badges += `<div class="p-badge airport">Aéroport +6€</div>`;
+  if (savings > 0) badges += `<div class="p-badge savings">−${savings}€ vs Uber</div>`;
+
+  wrap.innerHTML = `<div class="inr-price-result">
+    <div class="inr-price-row">
+      <span class="inr-price-val" id="heroPriceVal">0</span>
+      <span class="inr-price-eur">€</span>
+    </div>
+    <div class="inr-price-meta">${km.toFixed(1)} km · ${Math.round(mins)} min estimés · tarif fixe garanti</div>
+    ${badges ? `<div class="inr-price-badges">${badges}</div>` : ''}
+  </div>`;
+
+  /* Count-up */
+  let cur = 0; const target = price;
+  const step = Math.max(1, Math.ceil(target / 30));
+  const el = document.getElementById('heroPriceVal');
+  const tick = () => {
+    cur = Math.min(cur + step, target);
+    el.textContent = cur;
+    if (cur < target) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+/* ── Personnalisation hero ── */
+function toggleHeroCustom() {
+  const panel = document.getElementById('inrCustomPanel');
+  const btn   = document.getElementById('inrCustomToggle');
+  const open  = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.innerHTML = open
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Fermer'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="13" height="13"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg> Perso';
+}
+
+function heroClimAdj(delta) {
+  _heroClim = Math.max(18, Math.min(26, _heroClim + delta));
+  document.getElementById('hClimVal').textContent = _heroClim + '°C';
+  STATE.clim = _heroClim;
+}
+
+function setupHeroAmb() {
+  document.querySelectorAll('#hAmbSeg .inr-amb-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#hAmbSeg .inr-amb-opt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      STATE.ambiance = btn.dataset.v;
+      haptic(10);
+      /* Sync amb-seg dans le sheet */
+      document.querySelectorAll('#amb-seg .amb-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.v === STATE.ambiance);
+      });
+    });
+  });
+}
+
+/* ── Réserver → sync + ouvre sheet ── */
+function heroReserve() {
+  STATE.depart  = _heroDepart || STATE.depart;
+  STATE.arrive  = _heroArrive || STATE.arrive;
+  STATE.clim    = _heroClim;
+  /* Pré-remplir les champs du sheet */
+  const dEl = document.getElementById('depart');
+  const aEl = document.getElementById('arrive');
+  if (dEl && STATE.depart) dEl.value = STATE.depart.name;
+  if (aEl && STATE.arrive) aEl.value = STATE.arrive.name;
+  /* Si prix déjà calculé → aller directement à step 2 */
+  openBookingSheet();
+  if (STATE.price) {
+    setTimeout(() => {
+      const s1next = document.getElementById('step1-next');
+      if (s1next) sheetStep1Next();
+    }, 350);
+  }
+  haptic(20);
+}
+
+/* ─ CARTE LEAFLET (sheet) ─ */
 let _map = null, _routeLayer = null;
 function renderRouteMap() {
   if (typeof L === 'undefined' || !STATE.routeGeometry || !STATE.depart || !STATE.arrive) return;
@@ -2690,6 +3227,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(fetchTraffic, 5 * 60 * 1000);
   setupReveal();
   initNFC();
+  initHeroMap();
+  setupHeroAmb();
 
   // Barre de progression de lecture
   const scrollProg = document.getElementById('scrollProgress');
