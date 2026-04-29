@@ -10,9 +10,11 @@
 <title>I&amp;N RUN — Chauffeur privé Paris &amp; Île-de-France</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
+<link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/zvF11mc=" crossorigin=""></script>
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/zvF11mc=" crossorigin="" id="leafletJs"></script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════════
@@ -263,7 +265,11 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 /* ═══════════════════════════════════════════════════════════════
    HERO MAP — INR CARD SIGNATURE
    ═══════════════════════════════════════════════════════════════ */
-#heroMap { position:relative; height:100dvh; min-height:580px; overflow:hidden; }
+#heroMap {
+  position:relative; height:100dvh; min-height:580px; overflow:hidden;
+  /* Fond fallback toujours visible pendant le chargement des tuiles */
+  background: radial-gradient(ellipse at 60% 40%, #1a1508 0%, #0d0b05 40%, #000 100%);
+}
 #heroMapCanvas { position:absolute; inset:0; z-index:0; width:100%; height:100%; }
 .hero-map-vignette {
   position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -955,10 +961,12 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 /* ── ROUTE MAP ── */
 #routeMap { height: 220px; border-radius: 14px; overflow: hidden; margin-top: 18px; border: 0.5px solid rgba(212,175,55,.18); display: none; position: relative; }
 #routeMap.show { display: block; animation: priceRise .5s cubic-bezier(.34,1.56,.64,1); }
-.leaflet-container { background: #0a0a0a !important; }
+.leaflet-container { background: transparent !important; }
 .leaflet-control-zoom { display: none !important; }
 .leaflet-attribution-flag { display: none !important; }
 .leaflet-control-attribution { background: rgba(0,0,0,.5) !important; color: rgba(255,255,255,.3) !important; font-size: .5rem !important; }
+.leaflet-tile { transition: opacity .4s ease !important; }
+.leaflet-tile-loaded { opacity: 1 !important; }
 
 /* ── PROMO ── */
 .promo-wrap { margin: 14px 0 8px; position: relative; }
@@ -2795,20 +2803,37 @@ let _heroRouteTimer = null;
 let _heroClim = 21;
 
 function initHeroMap() {
-  if (typeof L === 'undefined') return;
+  /* Attend que L soit disponible (defer peut finir après DOMContentLoaded) */
+  if (typeof L === 'undefined') {
+    document.getElementById('leafletJs').addEventListener('load', initHeroMap, { once: true });
+    return;
+  }
 
   _heroMap = L.map('heroMapCanvas', {
     zoomControl: false, attributionControl: true,
     dragging: true, scrollWheelZoom: false, doubleClickZoom: false,
-    touchZoom: true
+    touchZoom: true, fadeAnimation: true, markerZoomAnimation: true
   });
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com">CARTO</a>',
-    subdomains: 'abcd', maxZoom: 19
+    subdomains: 'abcd', maxZoom: 19, keepBuffer: 4
   }).addTo(_heroMap);
 
   _heroMap.setView([48.75, 2.40], 10);
+
+  /* invalidateSize après layout — corrige le bug 100dvh mobile */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      _heroMap.invalidateSize({ animate: false });
+    });
+  });
+
+  /* Re-invalidate au resize (rotation mobile, redimensionnement desktop) */
+  window.addEventListener('resize', () => {
+    clearTimeout(_heroMap._resizeTimer);
+    _heroMap._resizeTimer = setTimeout(() => _heroMap.invalidateSize(), 150);
+  }, { passive: true });
 
   /* GPS auto */
   if (navigator.geolocation) {
@@ -2817,7 +2842,7 @@ function initHeroMap() {
     }, () => {}, { enableHighAccuracy: true, timeout: 8000 });
   }
 
-  /* Autocomplete départ */
+  /* Autocomplete */
   heroSetupAC('hDepart', true);
   heroSetupAC('hArrive', false);
 
