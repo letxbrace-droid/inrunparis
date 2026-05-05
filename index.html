@@ -271,8 +271,8 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 }
 #heroMapCanvas {
   position:absolute; inset:0; z-index:0; width:100%; height:100%;
-  /* Nuit : neon cyan — brightness relevé pour que les rues soient visibles */
-  filter: sepia(1) hue-rotate(155deg) saturate(4) brightness(0.92) contrast(1.35);
+  /* Nuit : brightness en premier → rues visibles puis teinture cyan */
+  filter: brightness(1.45) sepia(1) hue-rotate(145deg) saturate(5) contrast(1.2);
   transition: filter .8s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
@@ -570,6 +570,84 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
   box-shadow:0 2px 14px rgba(0,0,0,.35);
 }
 #heroMap.day-mode .leaflet-control-attribution { background:rgba(255,255,255,.55) !important; color:rgba(0,0,0,.4) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE — MODE JOUR (body.day-mode)
+   ═══════════════════════════════════════════════════════════════ */
+body.day-mode {
+  background: #f0f4f8;
+  color: #1a2030;
+  transition: background .5s ease, color .5s ease;
+}
+body.day-mode ::-webkit-scrollbar-track { background: #e4eaf0; }
+/* Navbar */
+body.day-mode .hdr {
+  background: rgba(240,244,248,.94);
+  border-bottom-color: rgba(12,244,216,.3);
+}
+body.day-mode .badge-live {
+  background: rgba(52,211,153,.15); color: #0a7a5e; border-color: rgba(52,211,153,.35);
+}
+/* Sections backgrounds */
+body.day-mode .how-section,
+body.day-mode .compare-section,
+body.day-mode .reviews-strip,
+body.day-mode .mad-section,
+body.day-mode .faq-section { background: transparent; }
+/* Text */
+body.day-mode .how-title,
+body.day-mode .card-title,
+body.day-mode .cr-name,
+body.day-mode .review-name,
+body.day-mode .trust-title,
+body.day-mode .faq-q { color: #1a2030; }
+body.day-mode .how-desc,
+body.day-mode .review-text,
+body.day-mode .section-intro p,
+body.day-mode .compare-subtitle,
+body.day-mode .cr-val,
+body.day-mode .faq-a { color: #4a5568; }
+body.day-mode .section-title,
+body.day-mode .proof-lbl,
+body.day-mode .inr-hud-status { color: #6b7280; }
+/* Cards & surfaces */
+body.day-mode .compare-card {
+  background: rgba(255,255,255,.88);
+  border-color: rgba(0,0,0,.07);
+  box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
+}
+body.day-mode .compare-header { border-bottom-color: rgba(0,0,0,.06); }
+body.day-mode .faq-item {
+  background: rgba(255,255,255,.7);
+  border-color: rgba(0,0,0,.07);
+}
+body.day-mode .faq-item.open { border-color: rgba(12,244,216,.35); background: rgba(255,255,255,.95); }
+body.day-mode .faq-a strong { color: #1a2030; }
+body.day-mode .review-card {
+  background: rgba(255,255,255,.82);
+  border-color: rgba(0,0,0,.06);
+}
+/* Footer */
+body.day-mode .footer {
+  background: rgba(224,232,240,.5);
+  border-top-color: rgba(0,0,0,.07);
+}
+body.day-mode .footer-baseline,
+body.day-mode .footer-contact { color: #6b7280; }
+body.day-mode .footer-links a { color: #4a5568; }
+body.day-mode .footer-links { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.03); }
+body.day-mode .footer-legal-base { color: #9ca3af; }
+/* CTA dock */
+body.day-mode .cta-dock {
+  background: rgba(240,244,248,.97);
+  border-top-color: rgba(0,0,0,.06);
+  box-shadow: 0 -4px 24px rgba(0,0,0,.06);
+}
+/* Proof strip */
+body.day-mode .proof-num { color: #0AABA0; }
+/* How section line */
+body.day-mode .how-step::after { background: linear-gradient(180deg,rgba(12,244,216,.4),transparent); }
+/* Step circles keep their teal gradient — no override needed */
 
 /* ═══════════════════════════════════════════════════════════════
    URGENCY STRIP
@@ -1310,9 +1388,14 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .footer-dot { color: var(--dim); font-size: .8rem; line-height: 1; }
 .footer-legal-base { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .04em; line-height: 1.7; }
 
-/* ── REVEAL ── */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
-.reveal.in { opacity: 1; transform: translateY(0); }
+/* ── REVEAL 3D ── */
+.reveal {
+  opacity: 0;
+  transform: perspective(1200px) rotateX(14deg) translateY(32px) scale(0.96);
+  transform-origin: 50% 0%;
+  transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1);
+}
+.reveal.in { opacity: 1; transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1); }
 
 /* ── LEGAL MODAL ── */
 .legal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
@@ -1440,13 +1523,14 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 }
 .btn-primary:hover::after, .hero-cta-primary:hover::after { left: 160%; }
 
-/* ── Stagger reveal ── */
+/* ── Stagger reveal 3D ── */
 .reveal-stagger {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+  transform: perspective(800px) rotateX(10deg) translateY(20px) scale(0.97);
+  transform-origin: 50% 0%;
+  transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
 }
-.reveal-stagger.in { opacity: 1; transform: translateY(0); }
+.reveal-stagger.in { opacity: 1; transform: perspective(800px) rotateX(0deg) translateY(0) scale(1); }
 
 /* ── Floating particles ── */
 .hero-particle {
@@ -1696,7 +1780,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
   .badge-live::before { animation: none !important; opacity: 1 !important; }
   .urgency-pulse { animation: none !important; }
   .cta-dock { animation: none !important; }
-  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .reveal, .reveal-stagger { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 </style>
 </head>
@@ -3040,11 +3124,13 @@ function heroApplyMode() {
 
   if (_heroDayMode) {
     hero.classList.add('day-mode');
+    document.body.classList.add('day-mode');
     btn.innerHTML = MOON_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">JOUR</span>';
     btn.title = 'Passer en mode nuit';
     btn.setAttribute('aria-label', 'Passer en mode nuit');
   } else {
     hero.classList.remove('day-mode');
+    document.body.classList.remove('day-mode');
     btn.innerHTML = SUN_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>';
     btn.title = 'Passer en mode jour';
     btn.setAttribute('aria-label', 'Passer en mode jour');
