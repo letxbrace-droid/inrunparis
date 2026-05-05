@@ -276,8 +276,8 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
   transition: filter .8s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
-  /* Jour : noir & blanc ultra-contrasté — style carte architecturale */
-  filter: grayscale(1) contrast(3.2) brightness(1.06) saturate(0);
+  /* Jour : N&B doux — contrast modéré pour éviter le blowout */
+  filter: grayscale(1) contrast(1.35) brightness(0.88) saturate(0);
 }
 .hero-map-vignette {
   position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -509,17 +509,18 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 /* ── Mode jour/nuit — toggle button ── */
 .hero-mode-toggle {
   position:absolute; top:14px; right:14px; z-index:20;
-  width:38px; height:38px; border-radius:50%;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(14px) saturate(1.2);
+  height:34px; padding:0 11px; border-radius:17px;
+  background:rgba(0,0,0,.62); backdrop-filter:blur(14px) saturate(1.2);
   -webkit-backdrop-filter:blur(14px) saturate(1.2);
-  border:0.5px solid rgba(255,255,255,.18);
-  color:#fff; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.08em;
+  display:flex; align-items:center; justify-content:center; gap:5px;
   transition:background .3s, border-color .3s, color .3s, transform .2s;
-  box-shadow:0 2px 12px rgba(0,0,0,.3);
+  box-shadow:0 2px 14px rgba(0,0,0,.35);
 }
-.hero-mode-toggle:hover { transform:scale(1.08); }
-.hero-mode-toggle svg { transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
+.hero-mode-toggle:hover { transform:scale(1.05); }
+.hero-mode-toggle svg { transition:transform .4s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
+.hero-mode-lbl { font-family:var(--font-mono); }
 
 /* ── MODE JOUR — overrides ── */
 #heroMap.day-mode {
@@ -565,8 +566,8 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 #heroMap.day-mode .inr-wa-link { color:#777; }
 #heroMap.day-mode .inr-wa-link:hover { color:var(--success); }
 #heroMap.day-mode .hero-mode-toggle {
-  background:rgba(255,255,255,.82); border-color:rgba(0,0,0,.12); color:#333;
-  box-shadow:0 2px 12px rgba(0,0,0,.12);
+  background:rgba(0,0,0,.62); border-color:rgba(255,255,255,.22); color:#fff;
+  box-shadow:0 2px 14px rgba(0,0,0,.35);
 }
 #heroMap.day-mode .leaflet-control-attribution { background:rgba(255,255,255,.55) !important; color:rgba(0,0,0,.4) !important; }
 
@@ -1737,9 +1738,10 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
 
     <!-- Toggle jour/nuit -->
     <button class="hero-mode-toggle" id="heroModeToggle" aria-label="Basculer mode jour/nuit" title="Mode jour / nuit">
-      <svg id="heroModeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+      <svg id="heroModeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
       </svg>
+      <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
     </button>
 
     <!-- INR Floating card -->
@@ -3038,12 +3040,12 @@ function heroApplyMode() {
 
   if (_heroDayMode) {
     hero.classList.add('day-mode');
-    btn.innerHTML = MOON_ICON;
+    btn.innerHTML = MOON_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">JOUR</span>';
     btn.title = 'Passer en mode nuit';
     btn.setAttribute('aria-label', 'Passer en mode nuit');
   } else {
     hero.classList.remove('day-mode');
-    btn.innerHTML = SUN_ICON;
+    btn.innerHTML = SUN_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>';
     btn.title = 'Passer en mode jour';
     btn.setAttribute('aria-label', 'Passer en mode jour');
   }
