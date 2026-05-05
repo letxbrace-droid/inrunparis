@@ -573,63 +573,147 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 
 /* ═══════════════════════════════════════════════════════════════
    PAGE — MODE JOUR (body.day-mode)
+   Règle : tout texte teal clair (#0CF4D8 / #35FFE8) → #087a72 en jour
+   pour respecter WCAG AA (ratio ≥ 4.5:1 sur fond blanc)
    ═══════════════════════════════════════════════════════════════ */
 body.day-mode {
-  background: #f0f4f8;
+  background: #eef2f7;
   color: #1a2030;
   transition: background .5s ease, color .5s ease;
 }
-body.day-mode ::-webkit-scrollbar-track { background: #e4eaf0; }
-/* Navbar */
+body.day-mode ::-webkit-scrollbar-track { background: #dde4ee; }
+
+/* ── Navbar ── */
 body.day-mode .hdr {
-  background: rgba(240,244,248,.94);
-  border-bottom-color: rgba(12,244,216,.3);
+  background: rgba(238,242,247,.96);
+  border-bottom-color: rgba(8,122,114,.2);
 }
+body.day-mode .brand-name { color: #4a5568; }
 body.day-mode .badge-live {
-  background: rgba(52,211,153,.15); color: #0a7a5e; border-color: rgba(52,211,153,.35);
+  background: rgba(8,122,114,.1); color: #087a72; border-color: rgba(8,122,114,.28);
 }
-/* Sections backgrounds */
-body.day-mode .how-section,
-body.day-mode .compare-section,
-body.day-mode .reviews-strip,
-body.day-mode .mad-section,
-body.day-mode .faq-section { background: transparent; }
-/* Text */
+
+/* ── Texte accentué : teal sombre pour lisibilité ── */
+body.day-mode .section-title { color: #087a72; }
+body.day-mode .how-num { box-shadow: 0 0 14px rgba(8,122,114,.25); }
 body.day-mode .how-title,
 body.day-mode .card-title,
-body.day-mode .cr-name,
-body.day-mode .review-name,
+body.day-mode .mad-name,
+body.day-mode .pay-title,
 body.day-mode .trust-title,
+body.day-mode .review-name,
+body.day-mode .cr-name,
 body.day-mode .faq-q { color: #1a2030; }
 body.day-mode .how-desc,
 body.day-mode .review-text,
 body.day-mode .section-intro p,
 body.day-mode .compare-subtitle,
 body.day-mode .cr-val,
+body.day-mode .trust-sub,
+body.day-mode .pay-sub,
+body.day-mode .mad-sub,
 body.day-mode .faq-a { color: #4a5568; }
-body.day-mode .section-title,
 body.day-mode .proof-lbl,
 body.day-mode .inr-hud-status { color: #6b7280; }
-/* Cards & surfaces */
-body.day-mode .compare-card {
+/* Winner name : teal visible */
+body.day-mode .cr-name.winner-name { color: #087a72; }
+/* Italique accentué dans intros */
+body.day-mode .section-intro h2 em { color: #087a72; }
+
+/* ── Proof strip (chiffres 5/5, 2min, -10%) ── */
+body.day-mode .proof {
   background: rgba(255,255,255,.88);
+  border-color: rgba(8,122,114,.15);
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+}
+body.day-mode .proof-sep { background: linear-gradient(180deg,transparent,rgba(8,122,114,.2),transparent); }
+
+/* ── Trust badges (Carte VTC, Assuré RC Pro, 24h/24) ── */
+body.day-mode .trust-badge {
+  background: rgba(255,255,255,.88);
+  border-color: rgba(0,0,0,.07);
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+body.day-mode .trust-badge:hover { border-left-color: #087a72; }
+
+/* ── Urgency strip ── */
+body.day-mode .urgency-strip {
+  background: linear-gradient(90deg,rgba(8,122,114,.07),rgba(8,122,114,.04));
+  border-color: rgba(8,122,114,.18);
+}
+body.day-mode .urgency-text { color: #087a72; }
+body.day-mode .urgency-right { color: #4a5568; }
+
+/* ── Compare card ── */
+body.day-mode .compare-card {
+  background: rgba(255,255,255,.92);
   border-color: rgba(0,0,0,.07);
   box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
 }
 body.day-mode .compare-header { border-bottom-color: rgba(0,0,0,.06); }
+
+/* ── FAQ ── */
 body.day-mode .faq-item {
-  background: rgba(255,255,255,.7);
+  background: rgba(255,255,255,.72);
   border-color: rgba(0,0,0,.07);
 }
-body.day-mode .faq-item.open { border-color: rgba(12,244,216,.35); background: rgba(255,255,255,.95); }
+body.day-mode .faq-item.open { border-color: rgba(8,122,114,.35); background: rgba(255,255,255,.96); }
 body.day-mode .faq-a strong { color: #1a2030; }
+body.day-mode .faq-q svg { stroke: #087a72; }
+
+/* ── Chips de termes ── */
+body.day-mode .term-chip {
+  background: rgba(8,122,114,.08);
+  border-color: rgba(8,122,114,.25);
+  color: #087a72;
+}
+body.day-mode .term-chip:hover { background: linear-gradient(165deg,#087a72,#0AABA0); color: #fff; }
+
+/* ── MAD section (formules chauffeur) ── */
+body.day-mode .mad-card {
+  background: rgba(255,255,255,.85);
+  border-color: rgba(0,0,0,.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+}
+body.day-mode .mad-card.featured {
+  background: linear-gradient(165deg,rgba(8,122,114,.1),rgba(8,122,114,.04));
+  border-color: rgba(8,122,114,.3);
+}
+body.day-mode .mad-card:hover {
+  border-color: rgba(8,122,114,.4);
+  box-shadow: 0 8px 28px rgba(8,122,114,.12), 0 2px 8px rgba(0,0,0,.06);
+}
+body.day-mode .mad-features {
+  background: rgba(238,242,247,.8);
+  border-color: rgba(8,122,114,.2);
+}
+body.day-mode .mad-feat-chip {
+  background: rgba(8,122,114,.1);
+  border-color: rgba(8,122,114,.22);
+  color: #087a72;
+}
+
+/* ── Pay cards (méthodes paiement) ── */
+body.day-mode .pay-card {
+  background: rgba(255,255,255,.85);
+  border-color: rgba(0,0,0,.08);
+}
+body.day-mode .pay-card.sel {
+  background: linear-gradient(165deg,rgba(8,122,114,.12),rgba(8,122,114,.04));
+  border-color: #087a72;
+  box-shadow: 0 0 18px rgba(8,122,114,.18);
+}
+body.day-mode .pay-card.sel .pay-sub { color: #087a72; }
+
+/* ── Review cards ── */
 body.day-mode .review-card {
-  background: rgba(255,255,255,.82);
+  background: rgba(255,255,255,.85);
   border-color: rgba(0,0,0,.06);
 }
-/* Footer */
+
+/* ── Footer ── */
 body.day-mode .footer {
-  background: rgba(224,232,240,.5);
+  background: rgba(220,230,240,.5);
   border-top-color: rgba(0,0,0,.07);
 }
 body.day-mode .footer-baseline,
@@ -637,17 +721,16 @@ body.day-mode .footer-contact { color: #6b7280; }
 body.day-mode .footer-links a { color: #4a5568; }
 body.day-mode .footer-links { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.03); }
 body.day-mode .footer-legal-base { color: #9ca3af; }
-/* CTA dock */
+
+/* ── CTA dock ── */
 body.day-mode .cta-dock {
-  background: rgba(240,244,248,.97);
+  background: rgba(238,242,247,.97);
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
 }
-/* Proof strip */
-body.day-mode .proof-num { color: #0AABA0; }
-/* How section line */
-body.day-mode .how-step::after { background: linear-gradient(180deg,rgba(12,244,216,.4),transparent); }
-/* Step circles keep their teal gradient — no override needed */
+
+/* ── How section ── */
+body.day-mode .how-step::after { background: linear-gradient(180deg,rgba(8,122,114,.35),transparent); }
 
 /* ═══════════════════════════════════════════════════════════════
    URGENCY STRIP
