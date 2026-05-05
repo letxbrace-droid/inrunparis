@@ -27,7 +27,7 @@
   --ink-3: #1a1a1c;
   --gold: #0CF4D8;
   --gold-warm: #35FFE8;
-  --gold-deep: #0AABA0;
+  --gold-deep: var(--gold-deep);
   --gold-glow: rgba(12, 244, 216, 0.45);
   --bone: #f5f1e8;
   --paper: #ffffff;
@@ -535,33 +535,33 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
   background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.03) 3px, rgba(255,255,255,.03) 4px);
 }
 #heroMap.day-mode .inr-card {
-  background:rgba(255,255,255,.86);
+  background:rgba(255,255,255,.92);
   backdrop-filter:blur(28px) saturate(1.8);
   -webkit-backdrop-filter:blur(28px) saturate(1.8);
-  border-color:rgba(12,244,216,.35);
+  border-color:rgba(13,107,98,.25);
 }
 #heroMap.day-mode .inr-monogram {
-  color:var(--gold); background:rgba(12,244,216,.12); border-color:rgba(12,244,216,.32);
+  color:#0f5c55; background:rgba(13,107,98,.1); border-color:rgba(13,107,98,.28);
 }
-#heroMap.day-mode .inr-hud-status { color:#555; }
-#heroMap.day-mode .inr-live-dot { background:var(--success); box-shadow:0 0 6px var(--success); }
-#heroMap.day-mode .inr-field-lbl { color:#777; }
-#heroMap.day-mode .inr-input { color:#111; }
-#heroMap.day-mode .inr-input::placeholder { color:rgba(0,0,0,.3); }
+#heroMap.day-mode .inr-hud-status { color:#4b5563; }
+#heroMap.day-mode .inr-live-dot { background:#059669; box-shadow:0 0 6px rgba(5,150,105,.5); }
+#heroMap.day-mode .inr-field-lbl { color:#6b7280; }
+#heroMap.day-mode .inr-input { color:#111827; }
+#heroMap.day-mode .inr-input::placeholder { color:rgba(0,0,0,.28); }
 #heroMap.day-mode .inr-field-row { border-color:rgba(0,0,0,.07); }
-#heroMap.day-mode .inr-field-line { background:linear-gradient(to bottom,rgba(12,244,216,.4),rgba(12,244,216,.1)); }
+#heroMap.day-mode .inr-field-line { background:linear-gradient(to bottom,rgba(13,107,98,.5),rgba(13,107,98,.15)); }
 #heroMap.day-mode .inr-ac-drop {
-  background:rgba(255,255,255,.96);
+  background:rgba(255,255,255,.98);
   border-color:rgba(0,0,0,.08);
   box-shadow:0 8px 30px rgba(0,0,0,.12);
 }
-#heroMap.day-mode .inr-ac-name { color:#111; }
-#heroMap.day-mode .inr-ac-sub { color:#666; }
-#heroMap.day-mode .inr-ac-item:hover, #heroMap.day-mode .inr-ac-item.focused { background:rgba(12,244,216,.1); }
-#heroMap.day-mode .inr-price-meta { color:#555; }
-#heroMap.day-mode .inr-btn-custom { color:#444; border-color:rgba(0,0,0,.12); background:rgba(0,0,0,.04); }
-#heroMap.day-mode .inr-btn-custom:hover { color:var(--gold); border-color:rgba(12,244,216,.35); background:rgba(12,244,216,.08); }
-#heroMap.day-mode .inr-custom-lbl { color:#666; }
+#heroMap.day-mode .inr-ac-name { color:#111827; }
+#heroMap.day-mode .inr-ac-sub { color:#6b7280; }
+#heroMap.day-mode .inr-ac-item:hover, #heroMap.day-mode .inr-ac-item.focused { background:rgba(13,107,98,.08); }
+#heroMap.day-mode .inr-price-meta { color:#4b5563; }
+#heroMap.day-mode .inr-btn-custom { color:#374151; border-color:rgba(0,0,0,.12); background:rgba(0,0,0,.04); }
+#heroMap.day-mode .inr-btn-custom:hover { color:#0f5c55; border-color:rgba(13,107,98,.35); background:rgba(13,107,98,.08); }
+#heroMap.day-mode .inr-custom-lbl { color:#6b7280; }
 #heroMap.day-mode .inr-custom-panel.open { border-top-color:rgba(0,0,0,.08); }
 #heroMap.day-mode .inr-wa-link { color:#777; }
 #heroMap.day-mode .inr-wa-link:hover { color:var(--success); }
@@ -573,12 +573,28 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 
 /* ═══════════════════════════════════════════════════════════════
    PAGE — MODE JOUR (body.day-mode)
-   Règle : tout texte teal clair (#0CF4D8 / #35FFE8) → #087a72 en jour
-   pour respecter WCAG AA (ratio ≥ 4.5:1 sur fond blanc)
+   Stratégie : redéfinir les variables CSS à la racine du body.day-mode
+   → tout composant utilisant var(--gold) bascule automatiquement
+   Palette jour : teal profond #0f5c55 (ratio 8:1 sur blanc = WCAG AAA)
    ═══════════════════════════════════════════════════════════════ */
 body.day-mode {
-  background: #eef2f7;
-  color: #1a2030;
+  /* ── Redéfinition complète des tokens de couleur ── */
+  --gold:      #0d6b62;   /* teal profond — ratio 5.5:1 sur blanc ✓ */
+  --gold-warm: #0f5c55;   /* teal très sombre — ratio 8:1 ✓ */
+  --gold-deep: #0a8c80;   /* teal médium — liens, icônes */
+  --gold-glow: rgba(13,107,98,0.15);
+  --bone:      #111827;   /* texte principal (était crème sur fond sombre) */
+  --mist:      #6b7280;   /* texte secondaire */
+  --muted:     #4b5563;   /* texte tertiaire */
+  --dim:       #9ca3af;   /* texte très discret */
+  --ink:       #f3f4f6;   /* surface légère */
+  --ink-2:     #e9ecf0;
+  --ink-3:     #dee4ec;
+  --oled:      #f8fafc;   /* fond page */
+  --success:   #059669;   /* vert foncé visible sur blanc */
+
+  background: #f0f5fa;
+  color: #111827;
   transition: background .5s ease, color .5s ease;
 }
 body.day-mode ::-webkit-scrollbar-track { background: #dde4ee; }
@@ -590,11 +606,11 @@ body.day-mode .hdr {
 }
 body.day-mode .brand-name { color: #4a5568; }
 body.day-mode .badge-live {
-  background: rgba(8,122,114,.1); color: #087a72; border-color: rgba(8,122,114,.28);
+  background: rgba(8,122,114,.1); color: var(--gold-warm); border-color: rgba(8,122,114,.28);
 }
 
 /* ── Texte accentué : teal sombre pour lisibilité ── */
-body.day-mode .section-title { color: #087a72; }
+body.day-mode .section-title { color: var(--gold-warm); }
 body.day-mode .how-num { box-shadow: 0 0 14px rgba(8,122,114,.25); }
 body.day-mode .how-title,
 body.day-mode .card-title,
@@ -616,9 +632,9 @@ body.day-mode .faq-a { color: #4a5568; }
 body.day-mode .proof-lbl,
 body.day-mode .inr-hud-status { color: #6b7280; }
 /* Winner name : teal visible */
-body.day-mode .cr-name.winner-name { color: #087a72; }
+body.day-mode .cr-name.winner-name { color: var(--gold-warm); }
 /* Italique accentué dans intros */
-body.day-mode .section-intro h2 em { color: #087a72; }
+body.day-mode .section-intro h2 em { color: var(--gold-warm); }
 
 /* ── Proof strip (chiffres 5/5, 2min, -10%) ── */
 body.day-mode .proof {
@@ -634,14 +650,14 @@ body.day-mode .trust-badge {
   border-color: rgba(0,0,0,.07);
   box-shadow: 0 2px 10px rgba(0,0,0,.05);
 }
-body.day-mode .trust-badge:hover { border-left-color: #087a72; }
+body.day-mode .trust-badge:hover { border-left-color: var(--gold-warm); }
 
 /* ── Urgency strip ── */
 body.day-mode .urgency-strip {
   background: linear-gradient(90deg,rgba(8,122,114,.07),rgba(8,122,114,.04));
   border-color: rgba(8,122,114,.18);
 }
-body.day-mode .urgency-text { color: #087a72; }
+body.day-mode .urgency-text { color: var(--gold-warm); }
 body.day-mode .urgency-right { color: #4a5568; }
 
 /* ── Compare card ── */
@@ -659,15 +675,15 @@ body.day-mode .faq-item {
 }
 body.day-mode .faq-item.open { border-color: rgba(8,122,114,.35); background: rgba(255,255,255,.96); }
 body.day-mode .faq-a strong { color: #1a2030; }
-body.day-mode .faq-q svg { stroke: #087a72; }
+body.day-mode .faq-q svg { stroke: var(--gold-warm); }
 
 /* ── Chips de termes ── */
 body.day-mode .term-chip {
   background: rgba(8,122,114,.08);
   border-color: rgba(8,122,114,.25);
-  color: #087a72;
+  color: var(--gold-warm);
 }
-body.day-mode .term-chip:hover { background: linear-gradient(165deg,#087a72,#0AABA0); color: #fff; }
+body.day-mode .term-chip:hover { background: linear-gradient(165deg,#0f5c55,#0d6b62); color: #fff; }
 
 /* ── MAD section (formules chauffeur) ── */
 body.day-mode .mad-card {
@@ -690,7 +706,7 @@ body.day-mode .mad-features {
 body.day-mode .mad-feat-chip {
   background: rgba(8,122,114,.1);
   border-color: rgba(8,122,114,.22);
-  color: #087a72;
+  color: var(--gold-warm);
 }
 
 /* ── Pay cards (méthodes paiement) ── */
@@ -700,10 +716,10 @@ body.day-mode .pay-card {
 }
 body.day-mode .pay-card.sel {
   background: linear-gradient(165deg,rgba(8,122,114,.12),rgba(8,122,114,.04));
-  border-color: #087a72;
+  border-color: var(--gold-warm);
   box-shadow: 0 0 18px rgba(8,122,114,.18);
 }
-body.day-mode .pay-card.sel .pay-sub { color: #087a72; }
+body.day-mode .pay-card.sel .pay-sub { color: var(--gold-warm); }
 
 /* ── Review cards ── */
 body.day-mode .review-card {
@@ -2458,7 +2474,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         <div class="pay-grid">
           <div class="pay-card sel" data-method="Carte" role="radio" aria-checked="true" tabindex="0" aria-label="Carte bancaire">
             <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
-            <div class="pay-icon"><svg viewBox="0 0 32 32"><defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs><rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cg2)"/><rect x="3" y="11" width="26" height="3" fill="#0CF4D8" opacity=".65"/><rect x="7" y="17" width="6" height="5" rx="1" fill="#35FFE8"/><circle cx="23" cy="20" r="1.8" fill="#0CF4D8"/><circle cx="25.5" cy="20" r="1.8" fill="#0AABA0" opacity=".85"/></svg></div>
+            <div class="pay-icon"><svg viewBox="0 0 32 32"><defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs><rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cg2)"/><rect x="3" y="11" width="26" height="3" fill="#0CF4D8" opacity=".65"/><rect x="7" y="17" width="6" height="5" rx="1" fill="#35FFE8"/><circle cx="23" cy="20" r="1.8" fill="#0CF4D8"/><circle cx="25.5" cy="20" r="1.8" fill="var(--gold-deep)" opacity=".85"/></svg></div>
             <div class="pay-info"><div class="pay-title">Carte</div><div class="pay-sub">Sans contact</div></div>
           </div>
           <div class="pay-card" data-method="Espèces" role="radio" aria-checked="false" tabindex="0" aria-label="Espèces">
