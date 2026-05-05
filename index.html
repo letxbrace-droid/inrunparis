@@ -276,8 +276,8 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
   transition: filter .8s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
-  /* Jour : N&B doux — contrast modéré pour éviter le blowout */
-  filter: grayscale(1) contrast(1.35) brightness(0.88) saturate(0);
+  /* Jour : tuiles sombres inversées → fond blanc, rues noires = N&B sans blowout */
+  filter: invert(1) grayscale(1) contrast(1.55) brightness(0.96);
 }
 .hero-map-vignette {
   position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -325,7 +325,7 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 
 /* ── HUD zoom ── */
 .hero-zoom-hud {
-  position:absolute; top:62px; right:14px; z-index:20; pointer-events:none;
+  position:absolute; top:114px; right:14px; z-index:20; pointer-events:none;
   font-family:var(--ff-mono); font-size:.4rem; letter-spacing:.16em;
   color:rgba(12,244,216,.5); text-transform:uppercase;
   background:rgba(0,0,0,.48); backdrop-filter:blur(10px);
@@ -503,12 +503,12 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 /* ── Responsive desktop ── */
 @media(min-width:640px) {
   .inr-card { left:auto; right:auto; bottom:auto; top:50%; transform:translateY(-50%); margin:0 0 0 40px; width:min(400px,calc(100vw - 80px)); border-radius:22px; }
-  .hero-mode-toggle { top:20px; right:20px; }
+  .hero-mode-toggle { top:74px; right:20px; }
 }
 
 /* ── Mode jour/nuit — toggle button ── */
 .hero-mode-toggle {
-  position:absolute; top:14px; right:14px; z-index:20;
+  position:absolute; top:68px; right:14px; z-index:60;
   height:34px; padding:0 11px; border-radius:17px;
   background:rgba(0,0,0,.62); backdrop-filter:blur(14px) saturate(1.2);
   -webkit-backdrop-filter:blur(14px) saturate(1.2);
@@ -2955,7 +2955,7 @@ let _heroMap = null, _heroRoute = null, _heroGpsDot = null, _heroTileLayer = nul
 let _heroDayMode = false;
 const HERO_TILES = {
   night: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  day:   'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+  day:   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 };
 let _heroDepart = null, _heroArrive = null;
 let _heroRouteTimer = null;
