@@ -271,12 +271,13 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 }
 #heroMapCanvas {
   position:absolute; inset:0; z-index:0; width:100%; height:100%;
-  /* Filtre "data terminal" : profondeur + teinte tech bleue */
-  filter: contrast(1.18) brightness(0.82) saturate(1.3) hue-rotate(-10deg);
+  /* Nuit : contraste élevé → rues lisibles, labels nets */
+  filter: contrast(1.35) brightness(0.92) saturate(1.4);
   transition: filter .7s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
-  filter: contrast(1.07) brightness(1.04) saturate(0.8);
+  /* Jour : léger boost contraste + légère désaturation → propre */
+  filter: contrast(1.18) brightness(1.02) saturate(0.88);
 }
 .hero-map-vignette {
   position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -2952,7 +2953,7 @@ let _heroMap = null, _heroRoute = null, _heroGpsDot = null, _heroTileLayer = nul
 let _heroDayMode = false;
 const HERO_TILES = {
   night: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  day:   'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+  day:   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 };
 let _heroDepart = null, _heroArrive = null;
 let _heroRouteTimer = null;
