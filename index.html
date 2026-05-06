@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -312,7 +312,7 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .hero-coord-hud {
   position:absolute; bottom:80px; left:12px; z-index:15; pointer-events:none;
   display:flex; align-items:center; gap:4px;
-  font-family:var(--ff-mono); font-size:.42rem; letter-spacing:.11em;
+  font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.11em;
   color:rgba(12,244,216,.62);
   background:rgba(0,0,0,.5); backdrop-filter:blur(10px) saturate(1.2);
   -webkit-backdrop-filter:blur(10px) saturate(1.2);
@@ -392,12 +392,12 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
   background:rgba(255,255,255,.03); border:0.5px solid rgba(255,255,255,.07);
   border-radius:12px; transition:border-color .2s, background .2s;
 }
-.inr-field-row:focus-within { border-color:rgba(12,244,216,.4); background:rgba(12,244,216,.04); }
+.inr-field-row:focus-within { border-color:var(--gold); box-shadow:0 0 0 2px rgba(12,244,216,.25); background:rgba(12,244,216,.04); }
 .inr-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
 .inr-dot-origin { background:var(--gold); box-shadow:0 0 10px rgba(12,244,216,.7); }
 .inr-dot-dest { background:#ef4444; box-shadow:0 0 10px rgba(239,68,68,.7); }
 .inr-field-body { flex:1; min-width:0; }
-.inr-field-lbl { display:block; font-family:var(--ff-mono); font-size:.46rem; letter-spacing:.14em; color:var(--mist); text-transform:uppercase; margin-bottom:2px; }
+.inr-field-lbl { display:block; font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.14em; color:var(--mist); text-transform:uppercase; margin-bottom:2px; }
 .inr-input { width:100%; background:transparent; border:none; outline:none; font-family:var(--ff-body); font-size:.88rem; font-weight:500; color:var(--bone); padding:0; }
 .inr-input::placeholder { color:rgba(255,255,255,.28); }
 .inr-geo-btn {
@@ -445,7 +445,7 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .inr-price-row { display:flex; align-items:baseline; gap:5px; }
 .inr-price-val { font-family:var(--ff-mono); font-size:2.1rem; font-weight:700; color:var(--gold-warm); line-height:1; text-shadow:0 0 30px rgba(12,244,216,.4); }
 .inr-price-eur { font-family:var(--ff-mono); font-size:1rem; color:var(--gold); font-weight:600; }
-.inr-price-meta { font-family:var(--ff-mono); font-size:.53rem; color:var(--mist); letter-spacing:.1em; margin-top:3px; }
+.inr-price-meta { font-family:var(--ff-mono); font-size:.65rem; color:var(--mist); letter-spacing:.1em; margin-top:3px; }
 .inr-price-badges { display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; }
 
 /* ── Actions ── */
@@ -471,12 +471,12 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .inr-custom-panel { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.34,1.56,.64,1); }
 .inr-custom-panel.open { max-height:240px; padding-top:10px; border-top:0.5px solid rgba(255,255,255,.06); margin-top:2px; }
 .inr-custom-section { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.inr-custom-lbl { display:flex; align-items:center; gap:5px; font-family:var(--ff-mono); font-size:.52rem; letter-spacing:.12em; color:var(--mist); text-transform:uppercase; white-space:nowrap; min-width:68px; }
+.inr-custom-lbl { display:flex; align-items:center; gap:5px; font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.12em; color:var(--mist); text-transform:uppercase; white-space:nowrap; min-width:68px; }
 .inr-amb-mini { display:flex; gap:5px; flex:1; }
 .inr-amb-opt {
   flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 5px;
   background:rgba(0,0,0,.4); border:0.5px solid rgba(12,244,216,.1); border-radius:10px;
-  color:var(--mist); font-family:var(--ff-mono); font-size:.48rem; letter-spacing:.06em;
+  color:var(--mist); font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.06em;
   cursor:pointer; transition:all .25s;
 }
 .inr-amb-opt.active { border-color:rgba(12,244,216,.45); color:var(--gold); background:rgba(12,244,216,.08); }
@@ -484,7 +484,7 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 .inr-amb-opt.active .radio-ring { animation:radioPulse 1.6s ease-out infinite; }
 .inr-amb-opt.active svg { animation:silenceBlink 2.2s ease-in-out infinite; }
 .inr-clim-ctrl { display:flex; align-items:center; gap:8px; }
-.inr-clim-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:rgba(12,244,216,.08); border:0.5px solid rgba(12,244,216,.25); border-radius:8px; color:var(--gold); font-size:1rem; font-weight:700; cursor:pointer; transition:all .15s; }
+.inr-clim-btn { width:28px; height:28px; min-width:44px; min-height:44px; display:flex; align-items:center; justify-content:center; background:rgba(12,244,216,.08); border:0.5px solid rgba(12,244,216,.25); border-radius:8px; color:var(--gold); font-size:1rem; font-weight:700; cursor:pointer; transition:all .15s; }
 .inr-clim-btn:hover { background:rgba(12,244,216,.2); }
 .inr-clim-val { font-family:var(--ff-mono); font-size:.85rem; font-weight:600; color:var(--gold-warm); min-width:38px; text-align:center; }
 
@@ -828,7 +828,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   letter-spacing: .1em; font-weight: 600;
 }
 .urgency-right {
-  font-family: var(--ff-mono); font-size: .54rem; color: var(--muted);
+  font-family: var(--ff-mono); font-size:.65rem; color: var(--muted);
   letter-spacing: .08em; white-space: nowrap;
 }
 
@@ -853,7 +853,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   line-height: 1; letter-spacing: -0.01em; margin-bottom: 5px;
 }
 .proof-val sub { font-size: .68rem; opacity: .8; vertical-align: baseline; -webkit-text-fill-color: initial; color: var(--gold); }
-.proof-lbl { font-family: var(--ff-mono); font-size: .52rem; color: var(--mist); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
+.proof-lbl { font-family: var(--ff-mono); font-size:.65rem; color: var(--mist); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
 .proof-sep { width: 1px; background: linear-gradient(180deg, transparent, rgba(12,244,216,.25), transparent); margin: 0 6px; }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -871,6 +871,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   border-radius: var(--radius-lg);
   padding: 18px 18px 16px;
   position: relative;
+  cursor: pointer;
   transition: border-color .25s;
 }
 .review-card:hover { border-color: rgba(12,244,216,.25); }
@@ -895,7 +896,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 }
 .review-info { flex: 1; min-width: 0; }
 .review-name { font-size: .78rem; font-weight: 700; color: var(--bone); }
-.review-route { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .06em; margin-top: 1px; }
+.review-route { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .06em; margin-top: 1px; }
 
 /* ═══════════════════════════════════════════════════════════════
    HOW IT WORKS
@@ -953,8 +954,8 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   border-bottom: 0.5px solid rgba(12,244,216,.1);
   display: flex; align-items: center; justify-content: space-between;
 }
-.compare-subtitle { font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin-top: 2px; }
-.compare-example { font-family: var(--ff-mono); font-size: .54rem; color: var(--gold); letter-spacing: .08em; padding: 4px 10px; background: rgba(12,244,216,.08); border: 0.5px solid rgba(12,244,216,.2); border-radius: 100px; }
+.compare-subtitle { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin-top: 2px; }
+.compare-example { font-family: var(--ff-mono); font-size:.65rem; color: var(--gold); letter-spacing: .08em; padding: 4px 10px; background: rgba(12,244,216,.08); border: 0.5px solid rgba(12,244,216,.2); border-radius: 100px; }
 .compare-rows { padding: 8px 0; }
 .compare-row {
   display: flex; align-items: center; justify-content: space-between;
@@ -974,7 +975,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .cr-name { font-size: .88rem; font-weight: 600; color: var(--bone); }
 .cr-name.winner-name { color: var(--gold-warm); }
 .cr-tag {
-  font-family: var(--ff-mono); font-size: .48rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  font-family: var(--ff-mono); font-size:.65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
   padding: 2px 7px; border-radius: 6px;
 }
 .cr-tag.best { background: rgba(12,244,216,.15); border: 0.5px solid rgba(12,244,216,.35); color: var(--gold); }
@@ -1001,9 +1002,126 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   padding: 12px 20px;
   border-top: 0.5px solid rgba(12,244,216,.1);
   background: rgba(0,0,0,.3);
-  font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .06em;
+  font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .06em;
   text-align: center;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   TARIF TABLE (remplace le comparatif avec concurrents)
+   ═══════════════════════════════════════════════════════════════ */
+.tarif-table-section { padding: 36px var(--gutter) 0; }
+.tarif-table-card {
+  background: rgba(26,26,28,.6); backdrop-filter: blur(28px);
+  border: 0.5px solid rgba(12,244,216,.14); border-top: 0.5px solid rgba(12,244,216,.22);
+  border-radius: var(--radius-xl); overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+.tarif-head {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 0.5px solid rgba(12,244,216,.12);
+}
+.tarif-col-a {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(12,244,216,.08), rgba(12,244,216,.02));
+  border-right: 0.5px solid rgba(12,244,216,.12);
+}
+.tarif-col-b { padding: 16px 20px; }
+.tarif-col-label {
+  font-family: var(--ff-mono); font-size:.65rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+.tarif-col-label.gold { color: var(--gold); }
+.tarif-col-label.grey { color: var(--muted); }
+.tarif-col-sublabel {
+  font-family: var(--ff-mono); font-size:.65rem; color: var(--muted);
+  letter-spacing: .06em; margin-top: 3px;
+}
+.tarif-rows { }
+.tarif-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 0.5px solid rgba(12,244,216,.06);
+}
+.tarif-row:last-child { border-bottom: none; }
+.tarif-cell {
+  padding: 13px 20px;
+  font-size: .84rem; color: var(--mist); line-height: 1.4;
+  display: flex; align-items: center; gap: 8px;
+}
+.tarif-cell.a {
+  background: linear-gradient(90deg, rgba(12,244,216,.05), transparent);
+  border-right: 0.5px solid rgba(12,244,216,.06);
+  color: var(--bone); font-weight: 500;
+}
+.tarif-cell.a::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  box-shadow: 0 0 6px var(--gold-glow);
+}
+.tarif-cell.b::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--muted); opacity: .4; flex-shrink: 0;
+}
+.tarif-footer {
+  padding: 12px 20px;
+  border-top: 0.5px solid rgba(12,244,216,.1);
+  background: rgba(0,0,0,.3);
+  font-family: var(--ff-mono); font-size:.65rem; color: var(--muted);
+  letter-spacing: .06em; text-align: center;
+}
+
+/* ── Step 2 loading state ── */
+.s2-loading {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 22px 0 18px;
+  font-family: var(--ff-mono); font-size:.74rem; color: var(--mist); letter-spacing: .08em;
+}
+.s2-loading svg { stroke: var(--gold); }
+
+/* ── Step 2 compact option chips (toggles inline) ── */
+.s2-toggle-row {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+}
+.s2-toggle-chip {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px;
+  background: rgba(26,26,28,.5); border: 0.5px solid rgba(12,244,216,.15);
+  border-radius: 100px; cursor: pointer;
+  font-family: var(--ff-mono); font-size:.74rem; color: var(--mist);
+  letter-spacing: .06em; transition: all .2s; user-select: none;
+}
+.s2-toggle-chip.on {
+  background: rgba(12,244,216,.08); border-color: rgba(12,244,216,.35);
+  color: var(--gold);
+}
+.s2-toggle-chip .chip-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); transition: background .2s;
+  flex-shrink: 0;
+}
+.s2-toggle-chip.on .chip-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold-glow); }
+
+/* ── s2 extras (note+promo) collapsible ── */
+.s2-extras { margin-top: 16px; border-radius: var(--radius-md); overflow: hidden; }
+.s2-extras summary {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  padding: 10px 14px;
+  background: rgba(12,244,216,.04); border: 0.5px solid rgba(12,244,216,.1);
+  border-radius: var(--radius-md);
+  font-family: var(--ff-mono); font-size:.74rem; color: var(--mist);
+  letter-spacing: .06em; list-style: none; transition: all .2s;
+}
+.s2-extras summary::-webkit-details-marker { display: none; }
+.s2-extras[open] summary { border-radius: var(--radius-md) var(--radius-md) 0 0; color: var(--gold); border-color: rgba(12,244,216,.25); }
+.s2-extras-body { padding: 14px; background: rgba(12,244,216,.03); border: 0.5px solid rgba(12,244,216,.1); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); display: flex; flex-direction: column; gap: 10px; }
+
+/* day-mode tarif table */
+body.day-mode .tarif-table-card { background: rgba(255,255,255,.9); border-color: rgba(13,107,98,.15); }
+body.day-mode .tarif-col-a { background: linear-gradient(135deg, rgba(13,107,98,.06), rgba(13,107,98,.02)); }
+body.day-mode .tarif-row { border-bottom-color: rgba(13,107,98,.08); }
+body.day-mode .tarif-cell.a { color: #111827; background: linear-gradient(90deg, rgba(13,107,98,.05), transparent); }
+body.day-mode .tarif-cell { color: #6b7280; }
+body.day-mode .s2-toggle-chip { background: rgba(255,255,255,.8); border-color: rgba(13,107,98,.2); color: #6b7280; }
+body.day-mode .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color: rgba(13,107,98,.4); color: var(--gold); }
 
 /* ═══════════════════════════════════════════════════════════════
    TRUST BADGES
@@ -1019,12 +1137,13 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   background: rgba(26,26,28,.5);
   border: 0.5px solid rgba(12,244,216,.12);
   border-radius: var(--radius-md);
+  cursor: pointer;
 }
 .trust-icon { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .trust-icon svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .trust-text { min-width: 0; }
 .trust-title { font-size: .72rem; font-weight: 700; color: var(--bone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.trust-sub { font-family: var(--ff-mono); font-size: .48rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 1px; }
+.trust-sub { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 1px; }
 
 /* ═══════════════════════════════════════════════════════════════
    SECTION BOOKING (form zone)
@@ -1064,7 +1183,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   0%,100%{box-shadow:0 0 0 4px rgba(12,244,216,.18),0 0 24px var(--gold-glow)}
   50%{box-shadow:0 0 0 8px rgba(12,244,216,.1),0 0 36px var(--gold-glow)}
 }
-.step-lbl { font-family: var(--ff-mono); font-size: .52rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.step-lbl { font-family: var(--ff-mono); font-size:.65rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .step-item.active .step-lbl, .step-item.done .step-lbl { color: var(--gold); }
 .step-line { flex: 1; height: 1.5px; margin: -18px 4px 0; z-index: 1; background: rgba(12,244,216,.12); transition: background .5s; }
 .step-line.done { background: linear-gradient(90deg, var(--gold), var(--gold-warm)); box-shadow: 0 0 8px var(--gold-glow); }
@@ -1096,7 +1215,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 }
 .field-ic svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .field-body { flex: 1; min-width: 0; }
-.field-lbl { font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: 2px; }
+.field-lbl { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: 2px; }
 .field input, .field textarea {
   width: 100%; background: transparent; border: none; outline: none;
   font-family: var(--ff-body); font-size: .94rem; color: var(--gold-warm); font-weight: 500;
@@ -1108,7 +1227,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 /* ── TERMINALS ── */
 .terminals { display: none; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 10px 6px; background: rgba(0,0,0,.4); border: 0.5px dashed rgba(12,244,216,.2); border-radius: var(--radius-md); }
 .terminals.show { display: flex; }
-.terminals-lbl { width: 100%; font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 6px 6px; }
+.terminals-lbl { width: 100%; font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 6px 6px; }
 .term-chip { padding: 7px 12px; background: linear-gradient(165deg,rgba(12,244,216,.12),rgba(12,244,216,.04)); border: 0.5px solid rgba(12,244,216,.3); border-radius: 100px; font-family: var(--ff-mono); font-size: .62rem; color: var(--gold-warm); font-weight: 600; letter-spacing: .08em; cursor: pointer; transition: all .2s; white-space: nowrap; }
 .term-chip:hover, .term-chip:active { background: linear-gradient(165deg,var(--gold-warm),var(--gold)); color: var(--oled); transform: translateY(-1px); }
 
@@ -1123,8 +1242,8 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .ac-ic svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .ac-text { flex: 1; min-width: 0; }
 .ac-name { font-size: .86rem; color: var(--bone); font-weight: 500; letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ac-meta { font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .06em; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ac-badge-idf { padding: 3px 7px; background: rgba(12,244,216,.12); border: 0.5px solid rgba(12,244,216,.3); border-radius: 6px; font-family: var(--ff-mono); font-size: .48rem; color: var(--gold); letter-spacing: .1em; font-weight: 700; flex-shrink: 0; }
+.ac-meta { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .06em; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ac-badge-idf { padding: 3px 7px; background: rgba(12,244,216,.12); border: 0.5px solid rgba(12,244,216,.3); border-radius: 6px; font-family: var(--ff-mono); font-size:.65rem; color: var(--gold); letter-spacing: .1em; font-weight: 700; flex-shrink: 0; }
 
 /* ── SEGMENTED ── */
 .seg { display: grid; padding: 3px; background: rgba(0,0,0,.5); border: 0.5px solid rgba(12,244,216,.08); border-radius: 12px; box-shadow: inset 0 1px 2px rgba(0,0,0,.4); }
@@ -1177,7 +1296,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .amb-btn.active .amb-icon { color: var(--gold); }
 .amb-btn:hover:not(.active) .amb-icon { color: var(--muted); }
 .amb-lbl {
-  font-family: var(--ff-mono); font-size: .52rem; font-weight: 600;
+  font-family: var(--ff-mono); font-size:.65rem; font-weight: 600;
   letter-spacing: .14em; text-transform: uppercase;
   color: var(--dim); transition: color .3s;
 }
@@ -1245,7 +1364,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   margin-top: 9px; padding: 8px 14px;
   background: rgba(0,0,0,.4); border: 0.5px solid rgba(12,244,216,.1);
   border-radius: 10px;
-  font-family: var(--ff-mono); font-size: .54rem;
+  font-family: var(--ff-mono); font-size:.65rem;
   color: var(--muted); letter-spacing: .06em;
   transition: border-color .3s;
 }
@@ -1274,7 +1393,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .ios-slider.clim .ios-fill { background: linear-gradient(90deg,#83F9FF 0%,var(--gold) 50%,#ef4444 100%); }
 .ios-thumb { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(165deg,#ffffff 0%,#f1ebe0 100%); box-shadow: 0 2px 4px rgba(0,0,0,.4),0 6px 12px rgba(0,0,0,.3),inset 0 1px 1px rgba(255,255,255,.9); transition: transform .2s cubic-bezier(.34,1.5,.64,1); z-index: 2; }
 .ios-slider.dragging .ios-thumb { transform: translate(-50%,-50%) scale(1.2); box-shadow: 0 0 0 8px rgba(12,244,216,.15),0 4px 10px rgba(0,0,0,.5); }
-.slider-ticks { display: flex; justify-content: space-between; padding: 0 4px; margin-top: 6px; font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .08em; font-weight: 600; }
+.slider-ticks { display: flex; justify-content: space-between; padding: 0 4px; margin-top: 6px; font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .08em; font-weight: 600; }
 .silence-hint { display: none; margin-top: 10px; padding: 9px 14px; background: rgba(0,0,0,.4); border: 0.5px solid rgba(12,244,216,.08); border-radius: 10px; font-family: var(--ff-mono); font-size: .58rem; color: var(--muted); letter-spacing: .06em; text-align: center; }
 .silence-hint.show { display: block; }
 
@@ -1296,7 +1415,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .pay-icon svg { width: 26px; height: 26px; }
 .pay-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .pay-title { font-size: .8rem; font-weight: 700; color: var(--bone); letter-spacing: .01em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pay-sub { font-family: var(--ff-mono); font-size: .48rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pay-sub { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pay-card.sel .pay-sub { color: var(--gold); }
 .pay-check { position: absolute; top: 6px; right: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--success); display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,.3); }
 .pay-card.sel .pay-check { display: flex; }
@@ -1311,7 +1430,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .price-val .eur { font-size: 1.8rem; opacity: .75; margin-left: 4px; }
 .price-detail { font-family: var(--ff-mono); font-size: .56rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-top: 8px; }
 .price-badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
-.p-badge { padding: 4px 9px; border-radius: 8px; font-family: var(--ff-mono); font-size: .54rem; letter-spacing: .1em; font-weight: 700; text-transform: uppercase; }
+.p-badge { padding: 4px 9px; border-radius: 8px; font-family: var(--ff-mono); font-size:.65rem; letter-spacing: .1em; font-weight: 700; text-transform: uppercase; }
 .p-badge.nuit { background: rgba(131,249,255,.12); color: #83F9FF; border: 0.5px solid rgba(131,249,255,.3); }
 .p-badge.promo { background: rgba(52,211,153,.12); color: var(--success); border: 0.5px solid rgba(52,211,153,.3); }
 .p-badge.airport { background: rgba(12,244,216,.1); color: var(--gold); border: 0.5px solid rgba(12,244,216,.3); }
@@ -1322,7 +1441,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 /* ── NFC BADGE ── */
 .nfc-badge { display: flex; align-items: center; gap: 7px; margin: 8px 16px 0; padding: 9px 13px; background: linear-gradient(135deg,rgba(12,244,216,.12),rgba(12,244,216,.05)); border: 0.5px solid rgba(12,244,216,.4); border-radius: 10px; font-family: var(--ff-mono); font-size: .58rem; letter-spacing: .1em; color: var(--gold-warm); text-transform: uppercase; animation: nfcSlide .4s cubic-bezier(.34,1.56,.64,1); }
 .nfc-badge svg { flex-shrink: 0; color: var(--gold); }
-.nfc-driver { margin-left: auto; color: var(--mist); font-size: .52rem; }
+.nfc-driver { margin-left: auto; color: var(--mist); font-size:.65rem; }
 @keyframes nfcSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── ROUTE MAP ── */
@@ -1383,7 +1502,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .status-card { background: rgba(26,26,28,.5); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 0.5px solid rgba(12,244,216,.12); border-radius: var(--radius-lg); padding: 16px 14px; }
 .status-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .status-title { font-family: var(--ff-mono); font-size: .58rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-.status-time { font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .06em; }
+.status-time { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .06em; }
 .wx-main { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .wx-icon-box { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(165deg,rgba(131,249,255,.18),rgba(27,84,255,.1)); border: 0.5px solid rgba(131,249,255,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .wx-icon-box svg { width: 26px; height: 26px; stroke: var(--bone); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -1396,9 +1515,9 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .traffic-item { background: rgba(0,0,0,.4); border: 0.5px solid rgba(12,244,216,.08); border-radius: 10px; padding: 9px 11px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .ti-route { display: flex; flex-direction: column; min-width: 0; }
 .ti-name { font-size: .78rem; font-weight: 600; color: var(--bone); }
-.ti-via { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
+.ti-via { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
 .ti-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
-.ti-tag { padding: 2px 7px; border-radius: 6px; font-family: var(--ff-mono); font-size: .48rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ti-tag { padding: 2px 7px; border-radius: 6px; font-family: var(--ff-mono); font-size:.65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .ti-tag.ok { background: rgba(52,211,153,.12); color: var(--success); border: 0.5px solid rgba(52,211,153,.25); }
 .ti-tag.warn { background: rgba(12,244,216,.12); color: var(--gold); border: 0.5px solid rgba(12,244,216,.3); }
 .ti-tag.bad { background: rgba(239,68,68,.12); color: var(--danger); border: 0.5px solid rgba(239,68,68,.25); }
@@ -1411,20 +1530,20 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .mad-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 0%,rgba(12,244,216,.08),transparent); pointer-events: none; }
 .mad-card:hover { border-color: rgba(12,244,216,.4); transform: translateY(-2px); box-shadow: 0 0 24px rgba(12,244,216,.15), 0 8px 20px rgba(0,0,0,.5); }
 .mad-card.featured { background: linear-gradient(165deg,rgba(12,244,216,.12),rgba(12,244,216,.03)); border-color: rgba(12,244,216,.35); }
-.mad-badge-best { position: absolute; top: 10px; right: 10px; padding: 3px 8px; background: linear-gradient(135deg,var(--gold),var(--gold-deep)); color: var(--oled); border-radius: 100px; font-family: var(--ff-mono); font-size: .48rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 2px 8px rgba(12,244,216,.4); }
-.mad-label { font-family: var(--ff-mono); font-size: .54rem; color: var(--mist); letter-spacing: .18em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; position: relative; z-index: 1; }
+.mad-badge-best { position: absolute; top: 10px; right: 10px; padding: 3px 8px; background: linear-gradient(135deg,var(--gold),var(--gold-deep)); color: var(--oled); border-radius: 100px; font-family: var(--ff-mono); font-size:.65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 2px 8px rgba(12,244,216,.4); }
+.mad-label { font-family: var(--ff-mono); font-size:.65rem; color: var(--mist); letter-spacing: .18em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; position: relative; z-index: 1; }
 .mad-name { font-family: var(--ff-display); font-variation-settings: "opsz" 48; font-size: 1.1rem; font-weight: 500; font-style: italic; color: var(--bone); margin-bottom: 4px; position: relative; z-index: 1; }
 .mad-duration { font-family: var(--ff-mono); font-size: .6rem; color: var(--muted); letter-spacing: .1em; margin-bottom: 14px; position: relative; z-index: 1; }
 .mad-price { font-family: var(--ff-display); font-variation-settings: "opsz" 72; font-size: 1.8rem; font-weight: 400; background: linear-gradient(135deg,var(--gold-warm),var(--gold),var(--gold-deep)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; position: relative; z-index: 1; }
 .mad-price .eur { font-size: .8rem; opacity: .75; margin-left: 2px; }
-.mad-rate { font-family: var(--ff-mono); font-size: .54rem; color: var(--muted); letter-spacing: .08em; margin-top: 6px; position: relative; z-index: 1; }
+.mad-rate { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .08em; margin-top: 6px; position: relative; z-index: 1; }
 .mad-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 18px 0; padding: 14px; background: rgba(0,0,0,.4); border: 0.5px dashed rgba(12,244,216,.2); border-radius: 14px; }
 .mad-feat-chip { padding: 5px 10px; background: rgba(12,244,216,.08); border: 0.5px solid rgba(12,244,216,.25); border-radius: 100px; font-family: var(--ff-mono); font-size: .56rem; color: var(--gold-warm); letter-spacing: .08em; font-weight: 600; }
-.mad-tva-note { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .08em; text-align: center; margin: 12px 0 8px; opacity: .7; }
+.mad-tva-note { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .08em; text-align: center; margin: 12px 0 8px; opacity: .7; }
 .mad-cta { margin-top: 18px; }
 
 /* ── GEOLOC ── */
-.geoloc-btn { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: rgba(12,244,216,.08); border: 0.5px solid rgba(12,244,216,.25); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .25s cubic-bezier(.34,1.3,.64,1); padding: 0; margin-left: 4px; position: relative; }
+.geoloc-btn { flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: rgba(12,244,216,.08); border: 0.5px solid rgba(12,244,216,.25); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .25s cubic-bezier(.34,1.3,.64,1); padding: 0; margin-left: 4px; position: relative; }
 .geoloc-btn:hover { background: rgba(12,244,216,.18); border-color: var(--gold); transform: scale(1.05); }
 .geoloc-btn svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: all .3s; }
 .geoloc-btn.loading { background: rgba(12,244,216,.18); border-color: var(--gold); }
@@ -1462,13 +1581,14 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   border: 0.5px solid rgba(12,244,216,.1);
   border-radius: var(--radius-md);
   overflow: hidden;
+  cursor: pointer;
   transition: border-color .2s;
 }
 .faq-item.open { border-color: rgba(12,244,216,.28); }
 .faq-q {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 16px 18px; cursor: pointer;
-  font-size: .88rem; font-weight: 600; color: var(--bone); line-height: 1.4;
+  font-size: .88rem; font-weight: 600; color: var(--bone); line-height: 1.5;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -1501,7 +1621,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 }
 .interior-caption { font-family: var(--ff-display); font-variation-settings:"opsz" 48; font-size: 1.1rem; font-style: italic; color: var(--bone); line-height: 1.3; }
 .interior-caption span { color: var(--gold-warm); }
-.interior-badge { position: absolute; top: 14px; right: 14px; padding: 5px 12px; background: rgba(0,0,0,.6); backdrop-filter: blur(10px); border: 0.5px solid rgba(12,244,216,.3); border-radius: 100px; font-family: var(--ff-mono); font-size: .52rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.interior-badge { position: absolute; top: 14px; right: 14px; padding: 5px 12px; background: rgba(0,0,0,.6); backdrop-filter: blur(10px); border: 0.5px solid rgba(12,244,216,.3); border-radius: 100px; font-family: var(--ff-mono); font-size:.65rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
 
 /* ═══════════════════════════════════════════════════════════════
    CTA DOCK + FOOTER
@@ -1527,14 +1647,14 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 /* ── DIVIDER ── */
 .divider { display: flex; align-items: center; gap: 12px; margin: 24px var(--gutter); opacity: .5; }
 .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); }
-.divider span { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
+.divider span { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
 
 /* ── FOOTER ── */
 .footer { margin-top: 40px; padding: 36px var(--gutter) calc(100px + var(--safe-bot)); text-align: center; border-top: 0.5px solid rgba(12,244,216,.15); background: rgba(0,0,0,.4); }
 .footer-logo { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
 .footer-monogram { font-family: var(--ff-display); font-variation-settings:"opsz" 144; font-weight: 600; font-style: italic; font-size: 1.8rem; background: linear-gradient(135deg,var(--gold-warm),var(--gold),var(--gold-deep)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em; line-height: 1; }
 .footer-run { font-family: var(--ff-mono); font-weight: 500; font-size: .72rem; color: var(--gold); letter-spacing: .45em; text-transform: uppercase; padding-top: 4px; }
-.footer-baseline { font-family: var(--ff-mono); font-size: .54rem; color: var(--mist); letter-spacing: .22em; text-transform: uppercase; margin: 4px 0 20px; }
+.footer-baseline { font-family: var(--ff-mono); font-size:.65rem; color: var(--mist); letter-spacing: .22em; text-transform: uppercase; margin: 4px 0 20px; }
 .footer-contact { font-family: var(--ff-mono); font-size: .68rem; color: var(--mist); letter-spacing: .06em; margin-bottom: 18px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 6px; }
 .footer-contact a { color: var(--gold); text-decoration: none; transition: color .2s; }
 .footer-contact a:hover { color: var(--gold-warm); }
@@ -1542,7 +1662,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .footer-links a { color: var(--bone); text-decoration: none; transition: color .2s; padding: 2px 4px; cursor: pointer; }
 .footer-links a:hover { color: var(--gold); }
 .footer-dot { color: var(--dim); font-size: .8rem; line-height: 1; }
-.footer-legal-base { font-family: var(--ff-mono); font-size: .52rem; color: var(--muted); letter-spacing: .04em; line-height: 1.7; }
+.footer-legal-base { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .04em; line-height: 1.7; }
 
 /* ── REVEAL 3D ── */
 .reveal {
@@ -1560,7 +1680,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .legal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px 14px; border-bottom: 0.5px solid rgba(12,244,216,.1); flex-shrink: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(20px); }
 .legal-head-title { font-family: var(--ff-display); font-variation-settings:"opsz" 48; font-style: italic; font-size: 1.15rem; color: var(--bone); }
-.legal-close { width: 32px; height: 32px; border-radius: 50%; border: 0.5px solid rgba(12,244,216,.2); background: rgba(12,244,216,.08); color: var(--gold); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.legal-close { width: 44px; height: 44px; border-radius: 50%; border: 0.5px solid rgba(12,244,216,.2); background: rgba(12,244,216,.08); color: var(--gold); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
 .legal-close:hover { background: var(--gold); color: var(--oled); }
 .legal-close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .legal-body { overflow-y: auto; padding: 22px 22px calc(30px + var(--safe-bot)); flex: 1; -webkit-overflow-scrolling: touch; }
@@ -1745,7 +1865,7 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
 .faq-item::before {
   content: attr(data-n);
   position: absolute; left: -24px; top: 15px;
-  font-family: var(--ff-mono); font-size: .46rem;
+  font-family: var(--ff-mono); font-size:.65rem;
   color: rgba(12,244,216,.3); letter-spacing: .1em;
 }
 .faq-list { position: relative; padding-left: 0; }
@@ -1760,6 +1880,22 @@ body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.
   40%      { opacity: 1; transform: none; }
 }
 .glitch { animation: glitchFlash .4s ease; }
+
+/* ── Tablet 768px ── */
+@media (min-width: 768px) {
+  .reviews-row { flex-direction: row; align-items: flex-start; }
+  .review-card { flex: 1; }
+  .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 32px; }
+  .how-step { padding-bottom: 0; }
+  .how-step::after { display: none; }
+  .trust-row { flex-wrap: nowrap; }
+}
+
+/* ── Desktop 1024px ── */
+@media (min-width: 1024px) {
+  :root { --gutter: 48px; }
+  .section-intro h2 { font-size: 2rem; }
+}
 
 @media (max-width: 380px) {
   .dock-btn { padding: 10px 16px; font-size: .66rem; }
@@ -1883,7 +2019,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 11px; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
   background: rgba(26,26,28,.7); border: 0.5px solid rgba(12,244,216,.12);
-  font-family: var(--ff-mono); font-size: .54rem; color: var(--mist); letter-spacing: .06em;
+  font-family: var(--ff-mono); font-size:.65rem; color: var(--mist); letter-spacing: .06em;
 }
 .sheet-stat-pill svg { width: 11px; height: 11px; stroke: var(--gold); flex-shrink: 0; fill: none; }
 .sheet-stat-live { border-color: rgba(52,211,153,.25); color: var(--success); }
@@ -2091,7 +2227,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
     <div class="urgency-right" id="urgencyCounter">3 courses aujourd'hui</div>
   </div>
 
-  <!-- ═══ PROOF BAR ═══ -->
+  <!-- ═══ PROOF + TRUST BAR (fusionnés) ═══ -->
   <div style="padding: 20px var(--gutter) 0;">
     <div class="proof reveal">
       <div class="proof-cell">
@@ -2104,128 +2240,99 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         <div class="proof-lbl">Confirmation</div>
       </div>
       <div class="proof-sep"></div>
-      <div class="proof-cell">
-        <div class="proof-val">&minus;10<sub>%</sub></div>
-        <div class="proof-lbl">vs Apps</div>
+      <div class="proof-cell" title="Carte professionnelle VTC · Registre EVTC">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="proof-lbl">Carte EVTC</div>
       </div>
-    </div>
-  </div>
-
-  <!-- ═══ TRUST BADGES ═══ -->
-  <div class="trust-row reveal">
-    <div class="trust-badge">
-      <div class="trust-icon" style="background:rgba(12,244,216,.08);border:0.5px solid rgba(12,244,216,.2);">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="proof-sep"></div>
+      <div class="proof-cell" title="Assurance Responsabilité Civile Professionnelle">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--success)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div class="proof-lbl">RC Pro</div>
       </div>
-      <div class="trust-text">
-        <div class="trust-title">Carte VTC</div>
-        <div class="trust-sub">Registre EVTC</div>
-      </div>
-    </div>
-    <div class="trust-badge">
-      <div class="trust-icon" style="background:rgba(52,211,153,.08);border:0.5px solid rgba(52,211,153,.2);">
-        <svg viewBox="0 0 24 24" style="stroke:var(--success)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      </div>
-      <div class="trust-text">
-        <div class="trust-title">Assuré RC Pro</div>
-        <div class="trust-sub">Couverture totale</div>
-      </div>
-    </div>
-    <div class="trust-badge">
-      <div class="trust-icon" style="background:rgba(131,249,255,.08);border:0.5px solid rgba(131,249,255,.2);">
-        <svg viewBox="0 0 24 24" style="stroke:#83F9FF"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <div class="trust-text">
-        <div class="trust-title">24h/24 · 7j/7</div>
-        <div class="trust-sub">Toujours disponible</div>
+      <div class="proof-sep"></div>
+      <div class="proof-cell" title="Service disponible 24h/24, 7j/7">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#83F9FF" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="proof-lbl">24h / 7j</div>
       </div>
     </div>
   </div>
 
   <!-- ═══ HOW IT WORKS ═══ -->
   <section class="how-section reveal">
-    <div class="eyebrow">Simple &amp; rapide</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Comment ça marche ?</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;">Réserver votre chauffeur en moins de 2 minutes.</div>
+    <div class="eyebrow">En 3 étapes</div>
+    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Un service sans mauvaise surprise.</div>
+    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;">De la réservation à l'arrivée, vous savez exactement à quoi vous attendre.</div>
     <div class="how-steps">
       <div class="how-step">
         <div class="how-num">1</div>
         <div class="how-body">
-          <div class="how-title">Renseignez votre trajet</div>
-          <div class="how-desc">Départ, destination, date &amp; heure. Personnalisez votre voyage à bord (ambiance, clim, options).</div>
+          <div class="how-title">Saisissez votre trajet</div>
+          <div class="how-desc">Départ, destination, date. Personnalisez à bord en trente secondes — sans compte à créer.</div>
           <span class="how-badge">30 secondes</span>
         </div>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
         <div class="how-body">
-          <div class="how-title">Obtenez votre tarif fixe garanti</div>
-          <div class="how-desc">Prix calculé en temps réel, sans surprise. Aucun frais caché, aucune commission intermédiaire.</div>
-          <span class="how-badge">Instantané</span>
+          <div class="how-title">Votre tarif fixe s'affiche</div>
+          <div class="how-desc">Calculé en temps réel, sans commission d'application. Ce que vous voyez est ce que vous payez.</div>
+          <span class="how-badge">Prix garanti</span>
         </div>
       </div>
       <div class="how-step">
         <div class="how-num">3</div>
         <div class="how-body">
-          <div class="how-title">Confirmez sur WhatsApp</div>
-          <div class="how-desc">Votre chauffeur confirme en moins de 2 minutes. Un numéro de réservation vous est communiqué.</div>
+          <div class="how-title">Chauffeur à l'heure convenue</div>
+          <div class="how-desc">Confirmation WhatsApp en moins de 2 minutes. Chauffeur certifié VTC, couvert RC Pro.</div>
           <span class="how-badge">Confirmation &lt; 2 min</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ PRICE COMPARISON ═══ -->
-  <section class="compare-section reveal">
-    <div class="eyebrow">Transparence tarifaire</div>
-    <div class="compare-card">
-      <div class="compare-header">
-        <div>
-          <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.1rem;font-weight:400;color:var(--bone);letter-spacing:-0.01em;">Pourquoi nous choisir</div>
-          <div class="compare-subtitle">Trajet estimé · CDG → Paris 8e</div>
+  <!-- ═══ TARIF TABLE ═══ -->
+  <section class="tarif-table-section reveal">
+    <div class="eyebrow">Tarification</div>
+    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:16px;">Tarif fixe contre prix variable.</div>
+    <div class="tarif-table-card">
+      <div class="tarif-head">
+        <div class="tarif-col-a">
+          <div class="tarif-col-label gold">I&amp;N RUN · Tarif fixe</div>
+          <div class="tarif-col-sublabel">Prix connu avant de partir</div>
         </div>
-        <div class="compare-example">~55 km</div>
-      </div>
-      <div class="compare-rows">
-        <div class="compare-row winner">
-          <div class="cr-left">
-            <div class="cr-dot gold"></div>
-            <div>
-              <div class="cr-name winner-name">I&amp;N RUN</div>
-              <div style="display:flex;gap:4px;margin-top:3px;">
-                <span class="cr-tag best">Tarif fixe</span>
-                <span class="cr-tag conf">Confirmé</span>
-              </div>
-            </div>
-          </div>
-          <div class="cr-price">
-            <div class="cr-amount highlight">59€</div>
-            <div class="cr-saving">Économisez jusqu'à 11€</div>
-          </div>
-        </div>
-        <div class="compare-row">
-          <div class="cr-left"><div class="cr-dot grey"></div><div class="cr-name">Uber (Black)</div></div>
-          <div class="cr-price"><div class="cr-amount">~70€</div><div class="cr-note">Prix variable</div></div>
-        </div>
-        <div class="compare-row">
-          <div class="cr-left"><div class="cr-dot grey"></div><div class="cr-name">Bolt</div></div>
-          <div class="cr-price"><div class="cr-amount">~65€</div><div class="cr-note">Commission incluse</div></div>
-        </div>
-        <div class="compare-row">
-          <div class="cr-left"><div class="cr-dot grey"></div><div class="cr-name">Taxi conventionné</div></div>
-          <div class="cr-price"><div class="cr-amount">~75€</div><div class="cr-note">Compteur</div></div>
+        <div class="tarif-col-b">
+          <div class="tarif-col-label grey">Applications classiques</div>
+          <div class="tarif-col-sublabel">Prix estimatif, variable</div>
         </div>
       </div>
-      <div class="compare-footer">Tarifs indicatifs pour illustration. Calculez votre tarif exact ci-dessous.</div>
+      <div class="tarif-rows">
+        <div class="tarif-row">
+          <div class="tarif-cell a">Prix annoncé avant de monter</div>
+          <div class="tarif-cell b">Estimatif, peut augmenter en route</div>
+        </div>
+        <div class="tarif-row">
+          <div class="tarif-cell a">Aucune commission cachée</div>
+          <div class="tarif-cell b">Surge pricing aux heures de pointe</div>
+        </div>
+        <div class="tarif-row">
+          <div class="tarif-cell a">Confirmation WhatsApp immédiate</div>
+          <div class="tarif-cell b">Attribution aléatoire du chauffeur</div>
+        </div>
+        <div class="tarif-row">
+          <div class="tarif-cell a">Chauffeur VTC dédié, certifié</div>
+          <div class="tarif-cell b">Profil variable selon disponibilité</div>
+        </div>
+      </div>
+      <div class="tarif-footer">Calculez votre tarif exact ci-dessus · Confirmé par WhatsApp · Garanti sans surprise</div>
     </div>
   </section>
 
   <!-- ═══ AVIS CLIENTS ═══ -->
   <section class="reviews-strip reveal">
-    <div class="eyebrow">Ils témoignent</div>
+    <div class="eyebrow">Paroles de clients</div>
     <div class="reviews-row">
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" aria-label="5 étoiles sur 5" role="img">★★★★★</div>
         <div class="review-text">"Chauffeur ponctuel, véhicule impeccable, tarif honoré sans discussion. Le service premium sans l'attente des applications."</div>
         <div class="review-footer">
           <div class="review-avatar">SM</div>
@@ -2236,7 +2343,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         </div>
       </div>
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" aria-label="5 étoiles sur 5" role="img">★★★★★</div>
         <div class="review-text">"Réservation en 2 minutes via WhatsApp, confirmation immédiate. Ponctuel, discret, professionnel. Je recommande."</div>
         <div class="review-footer">
           <div class="review-avatar">TR</div>
@@ -2247,7 +2354,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         </div>
       </div>
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" aria-label="5 étoiles sur 5" role="img">★★★★★</div>
         <div class="review-text">"Service courtois, conduite souple, sièges confortables. Une vraie alternative premium aux grandes plateformes."</div>
         <div class="review-footer">
           <div class="review-avatar">AK</div>
@@ -2262,7 +2369,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
 
   <!-- ═══ PHOTO INTÉRIEUR ═══ -->
   <div class="interior-strip reveal">
-    <img src="interieur.jpg" alt="Intérieur véhicule I&N RUN" class="interior-img">
+    <img src="interieur.jpg" alt="Intérieur véhicule I&N RUN" class="interior-img" loading="lazy" decoding="async">
     <div class="interior-overlay">
       <div class="interior-caption">Un habitacle <span>premium</span>,<br>pour chaque trajet.</div>
     </div>
@@ -2403,11 +2510,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
     <div class="step-ind" id="stepper">
       <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-lbl">Trajet</div></div>
       <div class="step-line" data-line="1"></div>
-      <div class="step-item future" data-step="2"><div class="step-circle">2</div><div class="step-lbl">Service</div></div>
-      <div class="step-line" data-line="2"></div>
-      <div class="step-item future" data-step="3"><div class="step-circle">3</div><div class="step-lbl">Tarif</div></div>
-      <div class="step-line" data-line="3"></div>
-      <div class="step-item future" data-step="4"><div class="step-circle">4</div><div class="step-lbl">Réservé</div></div>
+      <div class="step-item future" data-step="2"><div class="step-circle">2</div><div class="step-lbl">Confirmer</div></div>
     </div>
 
     <div class="sheet-scroll" id="sheetScroll">
@@ -2451,21 +2554,32 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         <div class="terminals" id="term-arrive"></div>
       </section>
 
-      <!-- CONTINUER -->
+      <!-- CONTINUER → STEP 2 -->
       <div class="sheet-next-wrap" id="step1-next">
         <button class="btn-primary" id="continuerBtn" onclick="sheetStep1Next()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          Continuer — personnaliser à bord
+          Voir mon tarif
         </button>
       </div>
 
-      <!-- ÉTAPE 2 — SERVICE -->
+      <!-- ÉTAPE 2 — CONFIRMER (tunnel simplifié 2 étapes) -->
       <section class="card" id="card-step2" style="display:none;opacity:0;transform:translateY(18px);">
-        <div class="eyebrow">Étape 02</div>
-        <div class="card-title">À bord</div>
-        <div class="card-sub">Personnalisez votre trajet</div>
 
-        <div class="section-title">Ambiance</div>
+        <!-- Prix auto-calculé — affiché en haut -->
+        <div id="step2-loading" class="s2-loading" style="display:none">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2 a10 10 0 0 1 10 10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>
+          Calcul de votre tarif…
+        </div>
+        <div class="price-box" id="priceBox">
+          <div class="price-lbl">Votre tarif fixe, sans surprise</div>
+          <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
+          <div class="price-detail" id="priceDetail">—</div>
+          <div class="price-badges" id="priceBadges"></div>
+          <div id="routeMap"></div>
+        </div>
+
+        <!-- Ambiance (3 chips compactes) -->
+        <div class="section-title" style="margin-top:20px">Ambiance</div>
         <div class="amb-sel" id="amb-seg">
           <button class="amb-btn active" data-v="musique">
             <div class="amb-icon">
@@ -2496,38 +2610,26 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
             <span class="amb-lbl">Silence</span>
           </button>
         </div>
-        <div class="amb-status active-music" id="ambStatus">
-          <div class="amb-status-dot"></div>
-          <span id="ambStatusText">Musique · Volume 50%</span>
-        </div>
 
-        <div class="slider-block" id="volBlock">
-          <div class="slider-head">
-            <div class="slider-label"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>Volume</div>
-            <div class="slider-val"><span id="volVal">50</span><span class="unit">%</span></div>
+        <!-- Options en chips (plus léger que les toggles) -->
+        <div class="section-title" style="margin-top:18px">Options à bord</div>
+        <div class="s2-toggle-row">
+          <div class="s2-toggle-chip on" data-opt="eau" onclick="toggleChip(this)">
+            <span class="chip-dot"></span>Eau
           </div>
-          <div class="ios-slider" id="volSlider"><div class="ios-track"><div class="ios-fill" id="volFill"></div></div><div class="ios-thumb" id="volThumb"></div></div>
-          <div class="slider-ticks"><span>0</span><span>50</span><span>100</span></div>
-        </div>
-        <div class="silence-hint" id="silenceHint">Volume désactivé · mode silence</div>
-
-        <div class="slider-block" style="margin-top:20px">
-          <div class="slider-head">
-            <div class="slider-label"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Climatisation</div>
-            <div class="slider-val"><span id="climVal">21</span><span class="unit">°C</span></div>
+          <div class="s2-toggle-chip on" data-opt="usb" onclick="toggleChip(this)">
+            <span class="chip-dot"></span>USB
           </div>
-          <div class="ios-slider clim" id="climSlider"><div class="ios-track"><div class="ios-fill" id="climFill"></div></div><div class="ios-thumb" id="climThumb"></div></div>
-          <div class="slider-ticks"><span>18°</span><span>22°</span><span>26°</span></div>
+          <div class="s2-toggle-chip" data-opt="wifi" onclick="toggleChip(this)">
+            <span class="chip-dot"></span>Wi-Fi
+          </div>
+          <div class="s2-toggle-chip" data-opt="siege" onclick="toggleChip(this)">
+            <span class="chip-dot"></span>Siège enfant
+          </div>
         </div>
 
-        <div class="section-title" style="margin-top:24px">Prestations</div>
-        <div class="toggle-row"><div class="toggle-label"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>Wi-Fi 5G</div><div class="switch" data-opt="wifi"><div class="switch-handle"></div></div></div>
-        <div class="toggle-row"><div class="toggle-label"><svg viewBox="0 0 24 24"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>Bouteille d'eau</div><div class="switch on" data-opt="eau"><div class="switch-handle"></div></div></div>
-        <div class="toggle-row"><div class="toggle-label"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/></svg>Chargeur USB</div><div class="switch on" data-opt="usb"><div class="switch-handle"></div></div></div>
-        <div class="toggle-row"><div class="toggle-label"><svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3L8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>Confiseries</div><div class="switch" data-opt="confiseries"><div class="switch-handle"></div></div></div>
-        <div class="toggle-row"><div class="toggle-label"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/><path d="M9 11h6"/></svg>Siège enfant</div><div class="switch" data-opt="siege"><div class="switch-handle"></div></div></div>
-
-        <div class="section-title" style="margin-top:24px">Règlement</div>
+        <!-- Règlement -->
+        <div class="section-title" style="margin-top:18px">Règlement</div>
         <div class="pay-grid">
           <div class="pay-card sel" data-method="Carte" role="radio" aria-checked="true" tabindex="0" aria-label="Carte bancaire">
             <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
@@ -2542,45 +2644,45 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
         </div>
         <input type="hidden" id="paymentMethod" value="Carte">
 
-        <div class="field" style="margin-top:20px">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <div class="field-body"><div class="field-lbl">Note (optionnel)</div><input type="text" id="note" placeholder="N° de vol, bagages…" maxlength="120" autocomplete="off"></div>
-        </div>
+        <!-- Note + promo (repliés par défaut) -->
+        <details class="s2-extras">
+          <summary>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Note · Code promo
+          </summary>
+          <div class="s2-extras-body">
+            <div class="field">
+              <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="field-body"><div class="field-lbl">Note (optionnel)</div><input type="text" id="note" placeholder="N° de vol, bagages…" maxlength="120" autocomplete="off"></div>
+            </div>
+            <div class="promo-wrap" style="margin:0">
+              <input type="text" class="promo-in" id="promoCode" placeholder="Code avantage" maxlength="20" autocomplete="off" aria-label="Code promotionnel" aria-describedby="promoMsg">
+              <div class="promo-msg" id="promoMsg" role="alert" aria-live="polite"></div>
+            </div>
+          </div>
+        </details>
 
-        <div class="promo-wrap">
-          <input type="text" class="promo-in" id="promoCode" placeholder="Code avantage (optionnel)" maxlength="20" autocomplete="off" aria-label="Code promotionnel" aria-describedby="promoMsg">
-          <div class="promo-msg" id="promoMsg" role="alert" aria-live="polite"></div>
-        </div>
-
-        <div class="section-title" style="margin-top:24px">Vos coordonnées</div>
+        <!-- Coordonnées -->
+        <div class="section-title" style="margin-top:20px">Votre prénom</div>
         <div class="field" id="name-field">
           <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <div class="field-body"><div class="field-lbl">Votre nom <span style="color:var(--gold);font-weight:700">·</span></div><input type="text" id="clientName" placeholder="Ex : Jean Dupont" autocomplete="name" maxlength="60" required aria-required="true"></div>
+          <div class="field-body"><div class="field-lbl">Pour personnaliser votre bon de réservation <span style="color:var(--gold);font-weight:700">·</span></div><input type="text" id="clientName" placeholder="Ex : Jean" autocomplete="given-name" maxlength="60" required aria-required="true"></div>
         </div>
         <div class="field">
           <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="field-body"><div class="field-lbl">Email (optionnel)</div><input type="email" id="clientEmail" placeholder="Pour recevoir votre facture" autocomplete="email" maxlength="100" inputmode="email"></div>
+          <div class="field-body"><div class="field-lbl">Email (optionnel) — pour votre facture</div><input type="email" id="clientEmail" placeholder="votre@email.fr" autocomplete="email" maxlength="100" inputmode="email"></div>
         </div>
 
-        <button class="btn-primary" id="calcBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          Découvrir mon tarif garanti
+        <!-- bouton calcBtn caché — déclenché automatiquement -->
+        <button id="calcBtn" style="display:none" aria-hidden="true" tabindex="-1">calc</button>
+
+        <!-- CTA WhatsApp -->
+        <button class="btn-wa" id="waBtn" disabled style="margin-top:20px">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span id="waBtnLabel">Entrez votre prénom pour confirmer</span>
         </button>
+        <button class="btn-secondary" id="recalcBtn">← Modifier la course</button>
 
-        <div class="price-box" id="priceBox">
-          <div class="price-lbl">Votre tarif fixe, sans surprise</div>
-          <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
-          <div class="price-detail" id="priceDetail">—</div>
-          <div class="price-badges" id="priceBadges"></div>
-          <div style="margin-top:22px">
-            <button class="btn-wa" id="waBtn">
-              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              <span>Confirmer ma réservation</span>
-            </button>
-            <button class="btn-secondary" id="recalcBtn">Modifier la course</button>
-          </div>
-          <div id="routeMap"></div>
-        </div>
       </section>
 
     </div><!-- /sheet-scroll -->
@@ -2918,16 +3020,23 @@ function setupPayment() {
 
 /* ─ STEPPER ─ */
 function setStep(n) {
-  for (let i = 1; i <= 4; i++) {
+  // Map internal 4-step state to visible 2-step stepper
+  // n=1 → step1 active, n=2/3 → step2 active, n=4 → step2 done
+  const CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,12 10,18 20,6"/></svg>';
+  const displayStep = n <= 1 ? 1 : 2;
+  const step2Done   = n >= 4;
+  for (let i = 1; i <= 2; i++) {
     const item = document.querySelector(`[data-step="${i}"]`);
     if (!item) continue;
     item.classList.remove('active', 'done', 'future');
     const circle = item.querySelector('.step-circle');
-    if (i < n) { item.classList.add('done'); circle.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,12 10,18 20,6"/></svg>'; }
-    else if (i === n) { item.classList.add('active'); circle.textContent = i; }
+    if (step2Done && i === 2) { item.classList.add('done'); circle.innerHTML = CHECK; }
+    else if (i < displayStep) { item.classList.add('done'); circle.innerHTML = CHECK; }
+    else if (i === displayStep) { item.classList.add('active'); circle.textContent = i; }
     else { item.classList.add('future'); circle.textContent = i; }
   }
-  for (let i = 1; i <= 3; i++) { const line = document.querySelector(`[data-line="${i}"]`); if (line) line.classList.toggle('done', i < n); }
+  const line = document.querySelector('[data-line="1"]');
+  if (line) line.classList.toggle('done', displayStep > 1 || step2Done);
 }
 
 /* ─ PROMO ─ */
@@ -2959,29 +3068,25 @@ function showFormError(msg) {
 }
 async function computeAndShow() {
   if (!STATE.depart || !STATE.arrive) {
-    // Announce to screen readers
     showFormError('Veuillez indiquer vos adresses de départ et de destination.');
     return;
   }
-  const btn = document.getElementById('calcBtn');
-  const origText = btn.innerHTML;
-  btn.setAttribute('aria-busy', 'true');
-  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="M12 2 a10 10 0 0 1 10 10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg> Calcul en cours…';
-  btn.disabled = true;
+  const loadingEl = document.getElementById('step2-loading');
+  const waBtn = document.getElementById('waBtn');
+  if (loadingEl) loadingEl.style.display = 'flex';
+  if (waBtn) waBtn.disabled = true;
   const route = await osrmRoute(STATE.depart, STATE.arrive);
+  if (loadingEl) loadingEl.style.display = 'none';
   if (!route) {
     showFormError("Impossible de calculer l'itinéraire. Vérifiez les adresses et réessayez.");
-    btn.innerHTML = origText;
-    btn.disabled = false;
-    btn.setAttribute('aria-busy', 'false');
     return;
   }
   const { price, isNight, isAirport, isVan, savings } = computePrice(route.km, route.mins, STATE.pickup);
-  btn.setAttribute('aria-busy', 'false');
   STATE.price = { base: price, final: applyPromo(price), km: route.km, mins: route.mins, isNight, isAirport, isVan, savings };
   STATE.routeGeometry = route.geometry;
-  updatePriceDisplay(); renderRouteMap(); setStep(3); haptic(20);
-  btn.innerHTML = origText; btn.disabled = false;
+  updatePriceDisplay(); renderRouteMap(); setStep(2); haptic(20);
+  // Enable WA button if name already filled
+  validateClientName();
 }
 function updatePriceDisplay() {
   if (!STATE.price) return;
@@ -2995,7 +3100,6 @@ function updatePriceDisplay() {
   if (isAirport) mkBadge('airport', '+6€ aéroport');
   if (isVan) mkBadge('van', '+25% Van 7 places');
   if (STATE.promo && base !== final) mkBadge('promo', `${STATE.promo.code} · −${base - final}€`);
-  if (savings > 0) mkBadge('savings', `−${savings}€ vs Uber/Bolt`);
   const pb = document.getElementById('priceBox');
   pb.classList.add('show');
   pb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3153,13 +3257,18 @@ async function useMyLocation() {
 
 /* ─ VALIDATION NOM ─ */
 function validateClientName() {
-  const input = document.getElementById('clientName'), field = document.getElementById('name-field'), calcBtn = document.getElementById('calcBtn');
-  if (!input || !field || !calcBtn) return false;
+  const input = document.getElementById('clientName'), field = document.getElementById('name-field');
+  if (!input || !field) return false;
   const value = input.value.trim(); STATE.clientName = value;
   const isValid = value.length >= 2;
   field.classList.remove('invalid');
   field.classList.toggle('valid', isValid);
-  calcBtn.disabled = !isValid;
+  const waBtn = document.getElementById('waBtn');
+  const label = document.getElementById('waBtnLabel');
+  if (waBtn) {
+    waBtn.disabled = !isValid || !STATE.price;
+    if (label) label.textContent = (!isValid) ? 'Entrez votre prénom pour confirmer' : (STATE.price ? `Confirmer ma réservation · ${STATE.price.final}€` : 'Calcul en cours…');
+  }
   return isValid;
 }
 
@@ -3495,7 +3604,7 @@ function heroShowPrice(price, km, mins, { isNight, isAirport, savings }) {
   let badges = '';
   if (isNight) badges += `<div class="p-badge nuit">Nuit +15%</div>`;
   if (isAirport) badges += `<div class="p-badge airport">Aéroport +6€</div>`;
-  if (savings > 0) badges += `<div class="p-badge savings">−${savings}€ vs Uber</div>`;
+  if (savings > 0) badges += `<div class="p-badge savings">−${savings}€ vs tarif variable</div>`;
 
   wrap.innerHTML = `<div class="inr-price-result">
     <div class="inr-price-row">
@@ -3676,9 +3785,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('waBtn').addEventListener('click', sendWhatsApp);
   document.getElementById('recalcBtn').addEventListener('click', () => {
     document.getElementById('priceBox').classList.remove('show');
-    setStep(2);
-    const top = document.getElementById('depart').getBoundingClientRect().top + window.pageYOffset - 80;
-    window.scrollTo({ top, behavior: 'smooth' });
+    STATE.price = null;
+    const step2 = document.getElementById('card-step2');
+    const nextWrap = document.getElementById('step1-next');
+    if (step2) { step2.style.opacity = '0'; step2.style.transform = 'translateY(18px)'; setTimeout(() => { step2.style.display = 'none'; }, 280); }
+    if (nextWrap) { nextWrap.style.display = ''; nextWrap.classList.remove('hiding'); }
+    setStep(1);
+    setTimeout(() => { const el = document.getElementById('depart'); if (el) el.focus(); }, 350);
   });
 
   document.getElementById('clientName').addEventListener('input', () => {
@@ -3812,7 +3925,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = ((e.clientX - r.left) / r.width  - .5) * 12;
         const y = ((e.clientY - r.top)  / r.height - .5) * -12;
         card.style.transform = `perspective(500px) rotateX(${y}deg) rotateY(${x}deg) translateY(-3px)`;
-        card.style.transition = 'transform .08s linear';
+        card.style.transition = 'transform .12s linear';
       });
       card.addEventListener('mouseleave', () => {
         card.style.transform = '';
@@ -3941,6 +4054,19 @@ function sheetStep1Next() {
     step2.style.transform = 'translateY(0)';
     setTimeout(() => step2.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   }));
+
+  // Auto-déclenche le calcul du tarif dès l'entrée en étape 2
+  setTimeout(() => computeAndShow(), 350);
+}
+
+/* ─ TOGGLE CHIP (options à bord) ─ */
+function toggleChip(el) {
+  el.classList.toggle('on');
+  const opt = el.dataset.opt;
+  const isOn = el.classList.contains('on');
+  STATE.options = STATE.options || {};
+  STATE.options[opt] = isOn;
+  haptic(5);
 }
 
 // Close sheet on backdrop click
