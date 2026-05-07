@@ -558,10 +558,13 @@ body { padding-bottom: calc(72px + var(--safe-bot)); }
 #heroMap.day-mode .inr-ac-name { color:#111827; }
 #heroMap.day-mode .inr-ac-sub { color:#6b7280; }
 #heroMap.day-mode .inr-ac-item:hover, #heroMap.day-mode .inr-ac-item.focused { background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-price-meta { color:#4b5563; }
+#heroMap.day-mode .inr-price-val { text-shadow: none; color: var(--gold-warm); }
+#heroMap.day-mode .inr-price-meta { color: #374151; }
 #heroMap.day-mode .inr-btn-custom { color:#374151; border-color:rgba(0,0,0,.12); background:rgba(0,0,0,.04); }
 #heroMap.day-mode .inr-btn-custom:hover { color:#0f5c55; border-color:rgba(13,107,98,.35); background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-custom-lbl { color:#6b7280; }
+#heroMap.day-mode .inr-custom-lbl { color:#374151; }
+#heroMap.day-mode .p-badge.airport { background:rgba(10,92,84,.1); color:#065f56; border-color:rgba(10,92,84,.45); }
+#heroMap.day-mode .p-badge.savings { background:#d1fae5; color:#047857; border-color:rgba(4,120,87,.45); }
 #heroMap.day-mode .inr-custom-panel.open { border-top-color:rgba(0,0,0,.08); }
 #heroMap.day-mode .inr-wa-link { color:#777; }
 #heroMap.day-mode .inr-wa-link:hover { color:var(--success); }
@@ -705,9 +708,9 @@ body { padding-bottom: calc(72px + var(--safe-bot)); }
   border-color: rgba(8,122,114,.2);
 }
 [data-theme="light"] .mad-feat-chip {
-  background: rgba(8,122,114,.1);
-  border-color: rgba(8,122,114,.22);
-  color: var(--gold-warm);
+  background: #ffffff;
+  border-color: rgba(10,92,84,.35);
+  color: #084d46;
 }
 
 /* ── Pay cards (méthodes paiement) ── */
@@ -810,8 +813,9 @@ body { padding-bottom: calc(72px + var(--safe-bot)); }
   background: linear-gradient(165deg, rgba(13,107,98,.06), rgba(255,255,255,.6));
   border-color: rgba(13,107,98,.2);
 }
-[data-theme="light"] .price-lbl { color: #4a5568; }
-[data-theme="light"] .price-detail { color: #6b7280; }
+[data-theme="light"] .price-lbl { color: #374151; }
+[data-theme="light"] .price-detail { color: #374151; }
+[data-theme="light"] .price-val { filter: none; }
 /* ── Step 2 extras (details/summary) ── */
 [data-theme="light"] .s2-extras summary {
   background: rgba(13,107,98,.04); border-color: rgba(13,107,98,.15); color: #4a5568;
@@ -1470,6 +1474,13 @@ body { padding-bottom: calc(72px + var(--safe-bot)); }
 .p-badge.savings { background: rgba(52,211,153,.15); color: #6ee7b7; border: 0.5px solid rgba(52,211,153,.4); font-weight: 800; animation: savingsPop .45s cubic-bezier(.34,1.56,.64,1); }
 @keyframes savingsPop { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+/* ── Badges prix — overrides mode jour (hardcoded dark theme colors → lisibles) ── */
+[data-theme="light"] .p-badge.airport { background: rgba(10,92,84,.1); color: #065f56; border-color: rgba(10,92,84,.45); }
+[data-theme="light"] .p-badge.savings { background: #d1fae5; color: #047857; border-color: rgba(4,120,87,.45); }
+[data-theme="light"] .p-badge.nuit    { background: rgba(31,41,55,.07); color: #1f2937; border-color: rgba(31,41,55,.25); }
+[data-theme="light"] .p-badge.promo   { background: #d1fae5; color: #047857; border-color: rgba(4,120,87,.4); }
+[data-theme="light"] .p-badge.van     { background: rgba(124,58,237,.08); color: #5b21b6; border-color: rgba(124,58,237,.35); }
+
 /* ── NFC BADGE ── */
 .nfc-badge { display: flex; align-items: center; gap: 7px; margin: 8px 16px 0; padding: 9px 13px; background: linear-gradient(135deg,rgba(12,244,216,.12),rgba(12,244,216,.05)); border: 0.5px solid rgba(12,244,216,.4); border-radius: 10px; font-family: var(--ff-mono); font-size: .58rem; letter-spacing: .1em; color: var(--gold-warm); text-transform: uppercase; animation: nfcSlide .4s cubic-bezier(.34,1.56,.64,1); }
 .nfc-badge svg { flex-shrink: 0; color: var(--gold); }
@@ -1658,8 +1669,8 @@ body { padding-bottom: calc(72px + var(--safe-bot)); }
 .interior-badge { position: absolute; top: 14px; right: 14px; padding: 5px 12px; background: rgba(0,0,0,.6); backdrop-filter: blur(10px); border: 0.5px solid rgba(12,244,216,.3); border-radius: 100px; font-family: var(--ff-mono); font-size:.65rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
 
 /* ── Mode jour : image lumineuse, texte lisible en blanc sur overlay léger ── */
-[data-theme="light"] .interior-img { filter: brightness(1.05) saturate(1.05); }
-[data-theme="light"] .interior-overlay { background: linear-gradient(135deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.12) 55%,rgba(0,0,0,.4) 100%); }
+[data-theme="light"] .interior-img { filter: brightness(1.35) saturate(1.1) contrast(1.05); }
+[data-theme="light"] .interior-overlay { background: linear-gradient(135deg,rgba(0,0,0,.48) 0%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.32) 100%); }
 [data-theme="light"] .interior-badge { background: rgba(255,255,255,.88); border-color: rgba(13,107,98,.3); color: var(--gold); }
 
 /* ═══════════════════════════════════════════════════════════════
