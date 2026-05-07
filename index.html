@@ -2875,16 +2875,28 @@ function renderTerminals(container, parentKey, onPick) {
   container.classList.add('show');
 }
 async function photonSearch(q) {
-  const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&lang=fr&limit=8&lat=${IDF_CENTER.lat}&lon=${IDF_CENTER.lng}&location_bias_scale=0.5`;
+  /* Essai Photon d'abord (résultats enrichis), fallback Nominatim si échec */
   try {
-    const r = await fetch(url);
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 3000);
+    const r = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&lang=fr&limit=8&lat=${IDF_CENTER.lat}&lon=${IDF_CENTER.lng}&location_bias_scale=0.5`, { signal: ctrl.signal });
+    clearTimeout(tid);
+    if (!r.ok) throw new Error('photon-err');
     const data = await r.json();
-    return (data.features || []).map(f => {
+    const res = (data.features || []).map(f => {
       const p = f.properties;
-      const parts = [p.name, p.city, p.postcode, p.country].filter(Boolean);
-      return { name: parts.join(', '), displayName: p.name, meta: [p.city, p.postcode].filter(Boolean).join(' · '), lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], isIDF: isInIDF(f.geometry.coordinates[1], f.geometry.coordinates[0]), raw: p };
+      return { name: [p.name, p.city, p.postcode, p.country].filter(Boolean).join(', '), displayName: p.name, meta: [p.city, p.postcode].filter(Boolean).join(' · '), lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], isIDF: isInIDF(f.geometry.coordinates[1], f.geometry.coordinates[0]) };
     });
-  } catch (e) { return []; }
+    if (res.length) return res;
+    throw new Error('photon-empty');
+  } catch (_) {
+    /* Fallback Nominatim */
+    try {
+      const r2 = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=8&countrycodes=fr&viewbox=${IDF_BBOX.minLng},${IDF_BBOX.maxLat},${IDF_BBOX.maxLng},${IDF_BBOX.minLat}&bounded=0&accept-language=fr`, { headers: { 'Accept-Language': 'fr' } });
+      const data2 = await r2.json();
+      return data2.map(d => ({ name: d.display_name, displayName: d.name || d.display_name.split(',')[0], meta: d.display_name.split(',').slice(1, 3).join(' ·'), lat: parseFloat(d.lat), lng: parseFloat(d.lon), isIDF: isInIDF(parseFloat(d.lat), parseFloat(d.lon)) }));
+    } catch (_2) { return []; }
+  }
 }
 function isInIDF(lat, lng) {
   return lat >= IDF_BBOX.minLat && lat <= IDF_BBOX.maxLat && lng >= IDF_BBOX.minLng && lng <= IDF_BBOX.maxLng;
@@ -3865,8 +3877,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('dockMsg').addEventListener('click', () => haptic(15));
-  document.getElementById('dockTel').addEventListener('click', () => haptic(15));
+  document.getElementById('dockTel')?.addEventListener('click', () => haptic(15));
 
   ['depart', 'arrive'].forEach(id => {
     document.getElementById(id).addEventListener('change', () => { if (STATE.depart && STATE.arrive) setStep(2); });
