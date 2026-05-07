@@ -64,7 +64,7 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-body { padding-bottom: calc(90px + var(--safe-bot)); }
+body { padding-bottom: calc(72px + var(--safe-bot)); }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--oled); }
@@ -572,255 +572,256 @@ body { padding-bottom: calc(90px + var(--safe-bot)); }
 #heroMap.day-mode .leaflet-control-attribution { background:rgba(255,255,255,.55) !important; color:rgba(0,0,0,.4) !important; }
 
 /* ═══════════════════════════════════════════════════════════════
-   PAGE — MODE JOUR (body.day-mode)
-   Stratégie : redéfinir les variables CSS à la racine du body.day-mode
+   SYSTÈME DE THÈME — data-theme="light" sur <html>
+   Stratégie : variables sémantiques sur :root, overrides sur [data-theme="light"]
    → tout composant utilisant var(--gold) bascule automatiquement
    Palette jour : teal profond #0f5c55 (ratio 8:1 sur blanc = WCAG AAA)
    ═══════════════════════════════════════════════════════════════ */
-body.day-mode {
+[data-theme="light"] {
   /* ── Redéfinition complète des tokens de couleur ── */
-  --gold:      #0d6b62;   /* teal profond — ratio 5.5:1 sur blanc ✓ */
-  --gold-warm: #0f5c55;   /* teal très sombre — ratio 8:1 ✓ */
-  --gold-deep: #0a8c80;   /* teal médium — liens, icônes */
+  --gold:      #0d6b62;
+  --gold-warm: #0f5c55;
+  --gold-deep: #0a8c80;
   --gold-glow: rgba(13,107,98,0.15);
-  --bone:      #111827;   /* texte principal (était crème sur fond sombre) */
-  --mist:      #6b7280;   /* texte secondaire */
-  --muted:     #4b5563;   /* texte tertiaire */
-  --dim:       #9ca3af;   /* texte très discret */
-  --ink:       #f3f4f6;   /* surface légère */
+  --bone:      #111827;
+  --mist:      #6b7280;
+  --muted:     #4b5563;
+  --dim:       #9ca3af;
+  --ink:       #f3f4f6;
   --ink-2:     #e9ecf0;
   --ink-3:     #dee4ec;
-  --oled:      #f8fafc;   /* fond page */
-  --success:   #059669;   /* vert foncé visible sur blanc */
-
+  --oled:      #f8fafc;
+  --success:   #059669;
+}
+[data-theme="light"] body {
   background: #f0f5fa;
   color: #111827;
   transition: background .5s ease, color .5s ease;
 }
-body.day-mode ::-webkit-scrollbar-track { background: #dde4ee; }
+[data-theme="light"] ::-webkit-scrollbar-track { background: #dde4ee; }
 
 /* ── Navbar ── */
-body.day-mode .hdr {
+[data-theme="light"] .hdr {
   background: rgba(238,242,247,.96);
   border-bottom-color: rgba(8,122,114,.2);
 }
-body.day-mode .brand-name { color: #4a5568; }
-body.day-mode .badge-live {
+[data-theme="light"] .brand-name { color: #4a5568; }
+[data-theme="light"] .badge-live {
   background: rgba(8,122,114,.1); color: var(--gold-warm); border-color: rgba(8,122,114,.28);
 }
 
 /* ── Texte accentué : teal sombre pour lisibilité ── */
-body.day-mode .section-title { color: var(--gold-warm); }
-body.day-mode .how-num { box-shadow: 0 0 14px rgba(8,122,114,.25); }
-body.day-mode .how-title,
-body.day-mode .card-title,
-body.day-mode .mad-name,
-body.day-mode .pay-title,
-body.day-mode .trust-title,
-body.day-mode .review-name,
-body.day-mode .cr-name,
-body.day-mode .faq-q { color: #1a2030; }
-body.day-mode .how-desc,
-body.day-mode .review-text,
-body.day-mode .section-intro p,
-body.day-mode .compare-subtitle,
-body.day-mode .cr-val,
-body.day-mode .trust-sub,
-body.day-mode .pay-sub,
-body.day-mode .mad-sub,
-body.day-mode .faq-a { color: #4a5568; }
-body.day-mode .proof-lbl,
-body.day-mode .inr-hud-status { color: #6b7280; }
+[data-theme="light"] .section-title { color: var(--gold-warm); }
+[data-theme="light"] .how-num { box-shadow: 0 0 14px rgba(8,122,114,.25); }
+[data-theme="light"] .how-title,
+[data-theme="light"] .card-title,
+[data-theme="light"] .mad-name,
+[data-theme="light"] .pay-title,
+[data-theme="light"] .trust-title,
+[data-theme="light"] .review-name,
+[data-theme="light"] .cr-name,
+[data-theme="light"] .faq-q { color: #1a2030; }
+[data-theme="light"] .how-desc,
+[data-theme="light"] .review-text,
+[data-theme="light"] .section-intro p,
+[data-theme="light"] .compare-subtitle,
+[data-theme="light"] .cr-val,
+[data-theme="light"] .trust-sub,
+[data-theme="light"] .pay-sub,
+[data-theme="light"] .mad-sub,
+[data-theme="light"] .faq-a { color: #4a5568; }
+[data-theme="light"] .proof-lbl,
+[data-theme="light"] .inr-hud-status { color: #6b7280; }
 /* Winner name : teal visible */
-body.day-mode .cr-name.winner-name { color: var(--gold-warm); }
+[data-theme="light"] .cr-name.winner-name { color: var(--gold-warm); }
 /* Italique accentué dans intros */
-body.day-mode .section-intro h2 em { color: var(--gold-warm); }
+[data-theme="light"] .section-intro h2 em { color: var(--gold-warm); }
 
 /* ── Proof strip (chiffres 5/5, 2min, -10%) ── */
-body.day-mode .proof {
+[data-theme="light"] .proof {
   background: rgba(255,255,255,.88);
   border-color: rgba(8,122,114,.15);
   box-shadow: 0 2px 16px rgba(0,0,0,.06);
 }
-body.day-mode .proof-sep { background: linear-gradient(180deg,transparent,rgba(8,122,114,.2),transparent); }
+[data-theme="light"] .proof-sep { background: linear-gradient(180deg,transparent,rgba(8,122,114,.2),transparent); }
 
 /* ── Trust badges (Carte VTC, Assuré RC Pro, 24h/24) ── */
-body.day-mode .trust-badge {
+[data-theme="light"] .trust-badge {
   background: rgba(255,255,255,.88);
   border-color: rgba(0,0,0,.07);
   box-shadow: 0 2px 10px rgba(0,0,0,.05);
 }
-body.day-mode .trust-badge:hover { border-left-color: var(--gold-warm); }
+[data-theme="light"] .trust-badge:hover { border-left-color: var(--gold-warm); }
 
 /* ── Urgency strip ── */
-body.day-mode .urgency-strip {
+[data-theme="light"] .urgency-strip {
   background: linear-gradient(90deg,rgba(8,122,114,.07),rgba(8,122,114,.04));
   border-color: rgba(8,122,114,.18);
 }
-body.day-mode .urgency-text { color: var(--gold-warm); }
-body.day-mode .urgency-right { color: #4a5568; }
+[data-theme="light"] .urgency-text { color: var(--gold-warm); }
+[data-theme="light"] .urgency-right { color: #4a5568; }
 
 /* ── Compare card ── */
-body.day-mode .compare-card {
+[data-theme="light"] .compare-card {
   background: rgba(255,255,255,.92);
   border-color: rgba(0,0,0,.07);
   box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
 }
-body.day-mode .compare-header { border-bottom-color: rgba(0,0,0,.06); }
+[data-theme="light"] .compare-header { border-bottom-color: rgba(0,0,0,.06); }
 
 /* ── FAQ ── */
-body.day-mode .faq-item {
+[data-theme="light"] .faq-item {
   background: rgba(255,255,255,.72);
   border-color: rgba(0,0,0,.07);
 }
-body.day-mode .faq-item.open { border-color: rgba(8,122,114,.35); background: rgba(255,255,255,.96); }
-body.day-mode .faq-a strong { color: #1a2030; }
-body.day-mode .faq-q svg { stroke: var(--gold-warm); }
+[data-theme="light"] .faq-item.open { border-color: rgba(8,122,114,.35); background: rgba(255,255,255,.96); }
+[data-theme="light"] .faq-a strong { color: #1a2030; }
+[data-theme="light"] .faq-q svg { stroke: var(--gold-warm); }
 
 /* ── Chips de termes ── */
-body.day-mode .term-chip {
+[data-theme="light"] .term-chip {
   background: rgba(8,122,114,.08);
   border-color: rgba(8,122,114,.25);
   color: var(--gold-warm);
 }
-body.day-mode .term-chip:hover { background: linear-gradient(165deg,#0f5c55,#0d6b62); color: #fff; }
+[data-theme="light"] .term-chip:hover { background: linear-gradient(165deg,#0f5c55,#0d6b62); color: #fff; }
 
 /* ── MAD section (formules chauffeur) ── */
-body.day-mode .mad-card {
+[data-theme="light"] .mad-card {
   background: rgba(255,255,255,.85);
   border-color: rgba(0,0,0,.08);
   box-shadow: 0 4px 20px rgba(0,0,0,.07);
 }
-body.day-mode .mad-card.featured {
+[data-theme="light"] .mad-card.featured {
   background: linear-gradient(165deg,rgba(8,122,114,.1),rgba(8,122,114,.04));
   border-color: rgba(8,122,114,.3);
 }
-body.day-mode .mad-card:hover {
+[data-theme="light"] .mad-card:hover {
   border-color: rgba(8,122,114,.4);
   box-shadow: 0 8px 28px rgba(8,122,114,.12), 0 2px 8px rgba(0,0,0,.06);
 }
-body.day-mode .mad-features {
+[data-theme="light"] .mad-features {
   background: rgba(238,242,247,.8);
   border-color: rgba(8,122,114,.2);
 }
-body.day-mode .mad-feat-chip {
+[data-theme="light"] .mad-feat-chip {
   background: rgba(8,122,114,.1);
   border-color: rgba(8,122,114,.22);
   color: var(--gold-warm);
 }
 
 /* ── Pay cards (méthodes paiement) ── */
-body.day-mode .pay-card {
+[data-theme="light"] .pay-card {
   background: rgba(255,255,255,.85);
   border-color: rgba(0,0,0,.08);
 }
-body.day-mode .pay-card.sel {
+[data-theme="light"] .pay-card.sel {
   background: linear-gradient(165deg,rgba(8,122,114,.12),rgba(8,122,114,.04));
   border-color: var(--gold-warm);
   box-shadow: 0 0 18px rgba(8,122,114,.18);
 }
-body.day-mode .pay-card.sel .pay-sub { color: var(--gold-warm); }
+[data-theme="light"] .pay-card.sel .pay-sub { color: var(--gold-warm); }
 
 /* ── Review cards ── */
-body.day-mode .review-card {
+[data-theme="light"] .review-card {
   background: rgba(255,255,255,.85);
   border-color: rgba(0,0,0,.06);
 }
 
 /* ── Footer ── */
-body.day-mode .footer {
+[data-theme="light"] .footer {
   background: rgba(220,230,240,.5);
   border-top-color: rgba(0,0,0,.07);
 }
-body.day-mode .footer-baseline,
-body.day-mode .footer-contact { color: #6b7280; }
-body.day-mode .footer-links a { color: #4a5568; }
-body.day-mode .footer-links { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.03); }
-body.day-mode .footer-legal-base { color: #9ca3af; }
+[data-theme="light"] .footer-baseline,
+[data-theme="light"] .footer-contact { color: #6b7280; }
+[data-theme="light"] .footer-links a { color: #4a5568; }
+[data-theme="light"] .footer-links { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.03); }
+[data-theme="light"] .footer-legal-base { color: #9ca3af; }
 
 /* ── CTA dock ── */
-body.day-mode .cta-dock {
+[data-theme="light"] .cta-dock {
   background: rgba(238,242,247,.97);
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
 }
 
 /* ── How section ── */
-body.day-mode .how-step::after { background: linear-gradient(180deg,rgba(8,122,114,.35),transparent); }
+[data-theme="light"] .how-step::after { background: linear-gradient(180deg,rgba(8,122,114,.35),transparent); }
 
 /* ── Sheet/Modal booking — jour ── */
-body.day-mode .sheet-overlay { background: rgba(0,0,0,.35); backdrop-filter:blur(8px); }
-body.day-mode .sheet-panel {
+[data-theme="light"] .sheet-overlay { background: rgba(0,0,0,.35); backdrop-filter:blur(8px); }
+[data-theme="light"] .sheet-panel {
   background: linear-gradient(180deg,#f8fafc 0%,#f0f5fa 100%);
   border-color: rgba(13,107,98,.18);
   box-shadow: 0 -8px 40px rgba(0,0,0,.12), 0 -1px 0 rgba(13,107,98,.12);
 }
-body.day-mode .sheet-handle { background: rgba(13,107,98,.3); }
-body.day-mode .sheet-handle-wrap:hover .sheet-handle { background: rgba(13,107,98,.55); }
-body.day-mode .sheet-hdr { border-bottom-color: rgba(0,0,0,.07); }
-body.day-mode .sheet-close {
+[data-theme="light"] .sheet-handle { background: rgba(13,107,98,.3); }
+[data-theme="light"] .sheet-handle-wrap:hover .sheet-handle { background: rgba(13,107,98,.55); }
+[data-theme="light"] .sheet-hdr { border-bottom-color: rgba(0,0,0,.07); }
+[data-theme="light"] .sheet-close {
   background: rgba(13,107,98,.1); border-color: rgba(13,107,98,.22);
 }
-body.day-mode .sheet-close:hover { background: rgba(13,107,98,.2); }
-body.day-mode .sheet-status { border-bottom-color: rgba(0,0,0,.06); }
-body.day-mode .sheet-stat-pill {
+[data-theme="light"] .sheet-close:hover { background: rgba(13,107,98,.2); }
+[data-theme="light"] .sheet-status { border-bottom-color: rgba(0,0,0,.06); }
+[data-theme="light"] .sheet-stat-pill {
   background: rgba(255,255,255,.85); border-color: rgba(0,0,0,.08); color: #4b5563;
 }
-body.day-mode .sheet-panel .step-ind {
+[data-theme="light"] .sheet-panel .step-ind {
   background: rgba(240,245,250,.9);
   border-bottom-color: rgba(0,0,0,.06);
 }
-body.day-mode .step-item.future .step-circle {
+[data-theme="light"] .step-item.future .step-circle {
   background: #e5e9ef; color: #6b7280; border-color: rgba(0,0,0,.08);
 }
 /* ── Cards dans le sheet ── */
-body.day-mode .sheet-scroll .card,
-body.day-mode .card {
+[data-theme="light"] .sheet-scroll .card,
+[data-theme="light"] .card {
   background: rgba(255,255,255,.9);
   border-color: rgba(0,0,0,.07);
   box-shadow: 0 2px 16px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
 }
-body.day-mode .card-sub { color: #6b7280; }
+[data-theme="light"] .card-sub { color: #6b7280; }
 /* ── Champs de formulaire ── */
-body.day-mode .field {
+[data-theme="light"] .field {
   background: rgba(255,255,255,.95);
   border-color: rgba(0,0,0,.08);
   box-shadow: 0 1px 3px rgba(0,0,0,.04);
 }
-body.day-mode .field:focus-within {
+[data-theme="light"] .field:focus-within {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(13,107,98,.12), 0 1px 4px rgba(0,0,0,.06);
 }
-body.day-mode .field.filled { border-color: rgba(5,150,105,.4); }
-body.day-mode .field input,
-body.day-mode .field textarea,
-body.day-mode .field select { color: #111827; background: transparent; }
-body.day-mode .field input::placeholder,
-body.day-mode .field textarea::placeholder { color: rgba(0,0,0,.28); }
+[data-theme="light"] .field.filled { border-color: rgba(5,150,105,.4); }
+[data-theme="light"] .field input,
+[data-theme="light"] .field textarea,
+[data-theme="light"] .field select { color: #111827; background: transparent; }
+[data-theme="light"] .field input::placeholder,
+[data-theme="light"] .field textarea::placeholder { color: rgba(0,0,0,.28); }
 /* ── Segment buttons (Sans Contact / Espèces) ── */
-body.day-mode .seg-opt { color: #6b7280; }
-body.day-mode .seg-opt:hover { color: #1a2030; }
+[data-theme="light"] .seg-opt { color: #6b7280; }
+[data-theme="light"] .seg-opt:hover { color: #1a2030; }
 /* ── Slider track ── */
-body.day-mode .ios-track { background: rgba(0,0,0,.12); box-shadow: inset 0 1px 2px rgba(0,0,0,.1); }
+[data-theme="light"] .ios-track { background: rgba(0,0,0,.12); box-shadow: inset 0 1px 2px rgba(0,0,0,.1); }
 /* ── Toggles (switch) ── */
-body.day-mode .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.08); }
+[data-theme="light"] .switch:not(.on) { background: #d1d9e0; border-color: rgba(0,0,0,.08); }
 /* ── Price box (step 2) ── */
-body.day-mode .price-box {
+[data-theme="light"] .price-box {
   background: linear-gradient(165deg, rgba(13,107,98,.06), rgba(255,255,255,.6));
   border-color: rgba(13,107,98,.2);
 }
-body.day-mode .price-lbl { color: #4a5568; }
-body.day-mode .price-detail { color: #6b7280; }
+[data-theme="light"] .price-lbl { color: #4a5568; }
+[data-theme="light"] .price-detail { color: #6b7280; }
 /* ── Step 2 extras (details/summary) ── */
-body.day-mode .s2-extras summary {
+[data-theme="light"] .s2-extras summary {
   background: rgba(13,107,98,.04); border-color: rgba(13,107,98,.15); color: #4a5568;
 }
-body.day-mode .s2-extras[open] summary { color: var(--gold); }
-body.day-mode .s2-extras-body {
+[data-theme="light"] .s2-extras[open] summary { color: var(--gold); }
+[data-theme="light"] .s2-extras-body {
   background: rgba(255,255,255,.7); border-color: rgba(13,107,98,.1);
 }
 /* ── Step 2 loading spinner ── */
-body.day-mode .s2-loading { color: #4a5568; }
+[data-theme="light"] .s2-loading { color: #4a5568; }
 /* ═══════════════════════════════════════════════════════════════
    URGENCY STRIP
    ═══════════════════════════════════════════════════════════════ */
@@ -852,25 +853,27 @@ body.day-mode .s2-loading { color: #4a5568; }
    PROOF BAR
    ═══════════════════════════════════════════════════════════════ */
 .proof {
-  display: flex; align-items: stretch;
-  padding: 14px 22px;
-  background: rgba(26,26,28,.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  display: flex; align-items: center;
+  padding: 10px 14px;
+  background: rgba(26,26,28,.5); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 0.5px solid rgba(12,244,216,.14);
   border-radius: var(--radius-lg);
-  margin: 0 var(--gutter) 0;
+  margin: 0 var(--gutter);
   box-shadow: 0 4px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  overflow: hidden;
 }
-.proof-cell { flex: 1; text-align: center; padding: 4px; }
+.proof-cell { flex: 1; min-width: 0; text-align: center; padding: 2px 1px; }
+.proof-cell.num { flex: 1.4; }
 .proof-val {
   font-family: var(--ff-display); font-variation-settings: "opsz" 72;
-  font-size: 1.45rem; font-weight: 400;
+  font-size: 1.15rem; font-weight: 400;
   background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  line-height: 1; letter-spacing: -0.01em; margin-bottom: 5px;
+  line-height: 1; letter-spacing: -0.01em; margin-bottom: 3px;
 }
-.proof-val sub { font-size: .68rem; opacity: .8; vertical-align: baseline; -webkit-text-fill-color: initial; color: var(--gold); }
-.proof-lbl { font-family: var(--ff-mono); font-size:.65rem; color: var(--mist); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
-.proof-sep { width: 1px; background: linear-gradient(180deg, transparent, rgba(12,244,216,.25), transparent); margin: 0 6px; }
+.proof-val sub { font-size: .58rem; opacity: .8; vertical-align: baseline; -webkit-text-fill-color: initial; color: var(--gold); }
+.proof-lbl { font-family: var(--ff-body); font-size: .58rem; color: var(--mist); letter-spacing: .02em; text-transform: uppercase; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.proof-sep { width: 1px; flex-shrink: 0; align-self: stretch; background: linear-gradient(180deg, transparent, rgba(12,244,216,.25), transparent); margin: 0 3px; }
 
 /* ═══════════════════════════════════════════════════════════════
    REVIEWS COMPACT (above the form)
@@ -1131,13 +1134,13 @@ body.day-mode .s2-loading { color: #4a5568; }
 .s2-extras-body { padding: 14px; background: rgba(12,244,216,.03); border: 0.5px solid rgba(12,244,216,.1); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); display: flex; flex-direction: column; gap: 10px; }
 
 /* day-mode tarif table */
-body.day-mode .tarif-table-card { background: rgba(255,255,255,.9); border-color: rgba(13,107,98,.15); }
-body.day-mode .tarif-col-a { background: linear-gradient(135deg, rgba(13,107,98,.06), rgba(13,107,98,.02)); }
-body.day-mode .tarif-row { border-bottom-color: rgba(13,107,98,.08); }
-body.day-mode .tarif-cell.a { color: #111827; background: linear-gradient(90deg, rgba(13,107,98,.05), transparent); }
-body.day-mode .tarif-cell { color: #6b7280; }
-body.day-mode .s2-toggle-chip { background: rgba(255,255,255,.8); border-color: rgba(13,107,98,.2); color: #6b7280; }
-body.day-mode .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color: rgba(13,107,98,.4); color: var(--gold); }
+[data-theme="light"] .tarif-table-card { background: rgba(255,255,255,.9); border-color: rgba(13,107,98,.15); }
+[data-theme="light"] .tarif-col-a { background: linear-gradient(135deg, rgba(13,107,98,.06), rgba(13,107,98,.02)); }
+[data-theme="light"] .tarif-row { border-bottom-color: rgba(13,107,98,.08); }
+[data-theme="light"] .tarif-cell.a { color: #111827; background: linear-gradient(90deg, rgba(13,107,98,.05), transparent); }
+[data-theme="light"] .tarif-cell { color: #6b7280; }
+[data-theme="light"] .s2-toggle-chip { background: rgba(255,255,255,.8); border-color: rgba(13,107,98,.2); color: #6b7280; }
+[data-theme="light"] .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color: rgba(13,107,98,.4); color: var(--gold); }
 
 /* ═══════════════════════════════════════════════════════════════
    TRUST BADGES
@@ -1492,7 +1495,9 @@ body.day-mode .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color
   transition: transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; overflow: hidden;
 }
 .btn-primary:hover { transform: translateY(-2px); }
-.btn-primary:active { transform: translateY(1px); }
+.btn-primary:active { transform: scale(0.96); transition: transform .12s ease; }
+.btn-wa:active { transform: scale(0.96); transition: transform .12s ease; }
+.btn-secondary:active { transform: scale(0.96); transition: transform .12s ease; }
 .btn-primary svg { width: 14px; height: 14px; stroke: var(--oled); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .btn-primary:disabled { background: linear-gradient(165deg,#5a5550,#3a3734)!important; color: var(--muted)!important; cursor: not-allowed!important; box-shadow: none!important; transform: none!important; }
 
@@ -1640,25 +1645,43 @@ body.day-mode .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color
 .interior-badge { position: absolute; top: 14px; right: 14px; padding: 5px 12px; background: rgba(0,0,0,.6); backdrop-filter: blur(10px); border: 0.5px solid rgba(12,244,216,.3); border-radius: 100px; font-family: var(--ff-mono); font-size:.65rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
 
 /* ═══════════════════════════════════════════════════════════════
-   CTA DOCK + FOOTER
+   BOTTOM NAV BAR — mobile-first, usage à une main
    ═══════════════════════════════════════════════════════════════ */
 .cta-dock {
-  position: fixed; bottom: calc(16px + var(--safe-bot)); left: 50%; transform: translateX(-50%);
-  z-index: 100; display: flex; padding: 6px;
-  background: rgba(0,0,0,.82); backdrop-filter: blur(32px) saturate(200%); -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 0.5px solid rgba(12,244,216,.22); border-radius: 100px;
-  box-shadow: 0 0 40px rgba(12,244,216,.15), 0 8px 30px rgba(0,0,0,.6), 0 16px 48px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.05);
-  animation: dockUp .6s cubic-bezier(.34,1.56,.64,1);
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: stretch;
+  height: calc(60px + var(--safe-bot));
+  padding-bottom: var(--safe-bot);
+  background: rgba(8,8,10,.88);
+  backdrop-filter: blur(32px) saturate(200%); -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border-top: 0.5px solid rgba(12,244,216,.15);
+  box-shadow: 0 -4px 32px rgba(0,0,0,.4), 0 -1px 0 rgba(12,244,216,.08);
+  animation: dockUp .5s cubic-bezier(.16,1,.3,1);
 }
-@keyframes dockUp { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-.dock-btn { display: flex; align-items: center; gap: 8px; padding: 11px 22px; border: none; background: transparent; border-radius: 100px; cursor: pointer; font-family: var(--ff-body); font-size: .72rem; font-weight: 700; letter-spacing: .05em; color: var(--bone); transition: all .25s cubic-bezier(.34,1.3,.64,1); white-space: nowrap; text-decoration: none; text-transform: uppercase; }
-.dock-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-.dock-btn.msg { background: linear-gradient(135deg,#34d76e,var(--wa) 50%,var(--wa-deep)); color: #fff; box-shadow: 0 0 20px rgba(37,211,102,.4), inset 0 1px 1px rgba(255,255,255,.3); }
-.dock-btn.msg svg { fill: #fff; stroke: none; }
-.dock-btn.tel { background: transparent; color: var(--gold); }
-.dock-btn.tel svg { stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.dock-btn.tel:hover { background: rgba(12,244,216,.1); color: var(--gold-warm); }
-.dock-sep { width: 0.5px; background: rgba(12,244,216,.25); margin: 6px 2px; }
+@keyframes dockUp { from{opacity:0;transform:translateY(100%)} to{opacity:1;transform:translateY(0)} }
+.dock-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; padding: 8px 4px 6px; border: none; background: transparent;
+  cursor: pointer; font-family: var(--ff-body); font-size: .55rem; font-weight: 600;
+  letter-spacing: .06em; color: var(--mist); transition: color .2s ease; white-space: nowrap;
+  text-decoration: none; text-transform: uppercase; position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+.dock-btn:active { transform: scale(0.94); transition: transform .12s ease; }
+.dock-btn svg { width: 20px; height: 20px; flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
+.dock-btn:active svg { transform: scale(0.88); }
+.dock-btn.active { color: var(--gold); }
+.dock-btn.active svg { filter: drop-shadow(0 0 6px var(--gold-glow)); }
+.dock-btn.reserve {
+  color: #fff;
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+  border-radius: 16px; margin: 8px 6px; padding: 6px 10px;
+  box-shadow: 0 0 20px var(--gold-glow), 0 4px 12px rgba(0,0,0,.4);
+  font-weight: 700; font-size: .6rem;
+}
+.dock-btn.reserve svg { filter: none !important; }
+.dock-sep { display: none; }
 
 /* ── DIVIDER ── */
 .divider { display: flex; align-items: center; gap: 12px; margin: 24px var(--gutter); opacity: .5; }
@@ -1683,9 +1706,9 @@ body.day-mode .s2-toggle-chip.on { background: rgba(13,107,98,.08); border-color
 /* ── REVEAL 3D ── */
 .reveal {
   opacity: 0;
-  transform: perspective(1200px) rotateX(14deg) translateY(32px) scale(0.96);
+  transform: perspective(1200px) rotateX(15deg) translateY(40px) scale(0.95);
   transform-origin: 50% 0%;
-  transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1);
+  transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
 }
 .reveal.in { opacity: 1; transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1); }
 
@@ -2244,31 +2267,31 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
   </div>
 
   <!-- ═══ PROOF + TRUST BAR (fusionnés) ═══ -->
-  <div style="padding: 20px var(--gutter) 0;">
+  <div style="padding: 20px 0 0;">
     <div class="proof reveal">
-      <div class="proof-cell">
+      <div class="proof-cell num">
         <div class="proof-val">5<sub>/5</sub></div>
         <div class="proof-lbl">Excellence</div>
       </div>
       <div class="proof-sep"></div>
-      <div class="proof-cell">
+      <div class="proof-cell num">
         <div class="proof-val">2<sub>min</sub></div>
-        <div class="proof-lbl">Confirmation</div>
+        <div class="proof-lbl">Confirm.</div>
       </div>
       <div class="proof-sep"></div>
       <div class="proof-cell" title="Carte professionnelle VTC · Registre EVTC">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <div class="proof-lbl">Carte EVTC</div>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 3px;display:block"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="proof-lbl">EVTC</div>
       </div>
       <div class="proof-sep"></div>
       <div class="proof-cell" title="Assurance Responsabilité Civile Professionnelle">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--success)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--success)" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 3px;display:block"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         <div class="proof-lbl">RC Pro</div>
       </div>
       <div class="proof-sep"></div>
       <div class="proof-cell" title="Service disponible 24h/24, 7j/7">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#83F9FF" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 4px;display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <div class="proof-lbl">24h / 7j</div>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#83F9FF" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 3px;display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="proof-lbl">24h/7j</div>
       </div>
     </div>
   </div>
@@ -2307,7 +2330,7 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
   </section>
 
   <!-- ═══ TARIF TABLE ═══ -->
-  <section class="tarif-table-section reveal">
+  <section class="tarif-table-section reveal" id="tarifs">
     <div class="eyebrow">Tarification</div>
     <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:16px;">Tarif fixe contre prix variable.</div>
     <div class="tarif-table-card">
@@ -2706,20 +2729,22 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
 </div><!-- /bookingSheet -->
 
 <!-- ═══ CTA DOCK ═══ -->
-<nav class="cta-dock" aria-label="Actions rapides">
-  <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20course." class="dock-btn msg" target="_blank" rel="noopener" id="dockMsg">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Messages
+<nav class="cta-dock" aria-label="Navigation principale" id="bottomNav">
+  <a href="#top" class="dock-btn active" id="dockHome" aria-label="Accueil" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Accueil
   </a>
-  <div class="dock-sep"></div>
-  <button class="dock-btn reserve" onclick="openBookingSheet()" id="dockReserve" aria-label="Ouvrir la réservation">
-    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  <button class="dock-btn reserve" onclick="openBookingSheet()" id="dockReserve" aria-label="Réserver une course">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     Réserver
   </button>
-  <div class="dock-sep"></div>
-  <a href="tel:+33767742220" class="dock-btn tel" id="dockTel">
-    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    Tél.
+  <a href="#tarifs" class="dock-btn" id="dockTarifs" aria-label="Voir les tarifs" onclick="document.getElementById('tarifs')?.scrollIntoView({behavior:'smooth'});return false;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Tarifs
+  </a>
+  <a href="tel:+33767742220" class="dock-btn" id="dockTel" aria-label="Appeler">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Appeler
   </a>
 </nav>
 
@@ -3406,13 +3431,15 @@ function heroApplyMode() {
 
   if (_heroDayMode) {
     hero.classList.add('day-mode');
-    document.body.classList.add('day-mode');
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('inrunparis-theme', 'light');
     btn.innerHTML = MOON_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">JOUR</span>';
     btn.title = 'Passer en mode nuit';
     btn.setAttribute('aria-label', 'Passer en mode nuit');
   } else {
     hero.classList.remove('day-mode');
-    document.body.classList.remove('day-mode');
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('inrunparis-theme', 'dark');
     btn.innerHTML = SUN_ICON + '<span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>';
     btn.title = 'Passer en mode jour';
     btn.setAttribute('aria-label', 'Passer en mode jour');
@@ -3428,9 +3455,14 @@ function heroApplyMode() {
 }
 
 function initHeroMode() {
-  /* Auto-detect : jour entre 7h et 20h */
-  const h = new Date().getHours();
-  _heroDayMode = h >= 7 && h < 20;
+  /* Persist via localStorage, sinon auto-detect par heure */
+  const stored = localStorage.getItem('inrunparis-theme');
+  if (stored !== null) {
+    _heroDayMode = stored === 'light';
+  } else {
+    const h = new Date().getHours();
+    _heroDayMode = h >= 7 && h < 20;
+  }
   heroApplyMode();
 
   document.getElementById('heroModeToggle').addEventListener('click', () => {
@@ -4115,6 +4147,26 @@ function closeLegal() {
 }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('legalOverlay').classList.contains('show')) closeLegal(); });
 window.openLegal = openLegal; window.closeLegal = closeLegal;
+
+/* ── Bottom nav active state au scroll ── */
+(function() {
+  const home   = document.getElementById('dockHome');
+  const tarifs = document.getElementById('dockTarifs');
+  const tel    = document.getElementById('dockTel');
+  const sections = [
+    { el: document.getElementById('tarifs'), btn: tarifs }
+  ];
+  function updateNav() {
+    const y = window.scrollY + window.innerHeight * 0.4;
+    let active = home;
+    for (const { el, btn } of sections) {
+      if (el && el.getBoundingClientRect().top + window.scrollY <= y) active = btn;
+    }
+    [home, tarifs, tel].forEach(b => b && b.classList.remove('active'));
+    if (active) active.classList.add('active');
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+})();
 </script>
 
 </body>
