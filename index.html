@@ -4484,13 +4484,66 @@ document.getElementById('bookingSheet').addEventListener('click', function(e) {
   if (e.target === this) closeBookingSheet();
 });
 
-// Swipe-down to dismiss
+// Swipe-down to dismiss — suivi temps réel + vélocité + snap-back
 (function() {
-  const handle = document.getElementById('sheetHandle');
-  if (!handle) return;
-  let y0 = 0;
-  handle.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
-  handle.addEventListener('touchend',   e => { if (e.changedTouches[0].clientY - y0 > 70) closeBookingSheet(); }, { passive: true });
+  const sheet  = document.getElementById('bookingSheet');
+  const panel  = document.getElementById('sheetPanel');
+  const scroll = document.getElementById('sheetScroll');
+  if (!panel || !sheet) return;
+
+  let y0 = 0, dy = 0, t0 = 0, active = false;
+
+  function onStart(e) {
+    if (!sheet.classList.contains('open')) return;
+    const scrollTop = scroll ? scroll.scrollTop : 0;
+    // N'active le swipe que si le contenu est en haut OU si on touche le handle
+    const onHandle = e.target.closest('#sheetHandle');
+    if (scrollTop > 2 && !onHandle) return;
+    y0 = e.touches[0].clientY;
+    t0 = Date.now();
+    dy = 0; active = false;
+  }
+
+  function onMove(e) {
+    if (y0 === 0) return;
+    const rawDy = e.touches[0].clientY - y0;
+    if (rawDy <= 0) { y0 = 0; return; } // glissement vers le haut — laisse défiler
+    active = true;
+    dy = rawDy;
+    e.preventDefault(); // bloque le scroll pendant le drag
+    const scale = 1 - dy * 0.00018;
+    const alpha = Math.max(0.38, 1 - dy / 520);
+    panel.style.transition = 'none';
+    panel.style.transform  = `translateY(${dy}px) scale(${scale})`;
+    panel.style.opacity    = alpha;
+    // Handle : s'illumine au fur et à mesure
+    const h = document.querySelector('.sheet-handle');
+    if (h) h.style.background = `rgba(12,244,216,${Math.min(.9, .28 + dy * .004)})`;
+  }
+
+  function onEnd() {
+    if (!active) { y0 = 0; return; }
+    const velocity = dy / Math.max(1, Date.now() - t0); // px/ms
+    const dismiss  = dy > 110 || velocity > 0.55;
+    const h = document.querySelector('.sheet-handle');
+    if (h) h.style.background = '';
+    panel.style.transition = '';
+    panel.style.opacity    = '';
+    if (dismiss) {
+      panel.style.transform = 'translateY(100%) scale(.98)';
+      haptic(12);
+      setTimeout(() => { closeBookingSheet(); panel.style.transform = ''; }, 320);
+    } else {
+      // Snap-back élastique
+      panel.style.transform = 'translateY(0) scale(1)';
+    }
+    y0 = 0; dy = 0; active = false;
+  }
+
+  panel.addEventListener('touchstart',  onStart, { passive: true });
+  panel.addEventListener('touchmove',   onMove,  { passive: false });
+  panel.addEventListener('touchend',    onEnd,   { passive: true });
+  panel.addEventListener('touchcancel', onEnd,   { passive: true });
 })();
 
 // Keyboard: Escape closes sheet
