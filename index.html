@@ -3675,10 +3675,10 @@ function initHeroMap() {
     _heroMap._resizeTimer = setTimeout(() => _heroMap.invalidateSize(), 150);
   }, { passive: true });
 
-  /* GPS auto */
+  /* GPS auto — fly-in cinématique Z-18 au chargement */
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(pos => {
-      heroSetGPS(pos.coords.latitude, pos.coords.longitude);
+      heroSetGPS(pos.coords.latitude, pos.coords.longitude, 18);
     }, () => {}, { enableHighAccuracy: true, timeout: 8000 });
   }
 }
@@ -3689,7 +3689,7 @@ function initHeroAC() {
   document.getElementById('hGeoBtn').addEventListener('click', () => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(pos => {
-      heroSetGPS(pos.coords.latitude, pos.coords.longitude);
+      heroSetGPS(pos.coords.latitude, pos.coords.longitude, 16);
     }, () => {}, { enableHighAccuracy: true, timeout: 6000 });
   });
 }
@@ -3758,7 +3758,7 @@ function initHeroMode() {
   });
 }
 
-async function heroSetGPS(lat, lng) {
+async function heroSetGPS(lat, lng, zoom = 13) {
   if (!_heroMap || typeof L === 'undefined') return;
   if (_heroGpsDot) _heroMap.removeLayer(_heroGpsDot);
   const icon = L.divIcon({
@@ -3767,7 +3767,7 @@ async function heroSetGPS(lat, lng) {
     iconSize: [24, 24], iconAnchor: [12, 12]
   });
   _heroGpsDot = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(_heroMap);
-  _heroMap.setView([lat, lng], 13, { animate: true });
+  _heroMap.flyTo([lat, lng], zoom, { animate: true, duration: zoom >= 16 ? 2.5 : 1.2, easeLinearity: 0.15 });
 
   /* Reverse geocode */
   try {
@@ -4023,31 +4023,42 @@ function renderRouteMap() {
   mapEl.classList.add('show');
 
   const coords = STATE.routeGeometry.coordinates.map(([lng, lat]) => [lat, lng]);
-  const from = [STATE.depart.lat, STATE.depart.lng];
-  const to   = [STATE.arrive.lat, STATE.arrive.lng];
+  const from   = [STATE.depart.lat, STATE.depart.lng];
+  const to     = [STATE.arrive.lat, STATE.arrive.lng];
+  const bounds = L.latLngBounds([from, to, ...coords]);
 
-  if (!_map) {
+  const dotIcon = () => L.divIcon({
+    className: '',
+    html: `<div style="width:10px;height:10px;border-radius:50%;background:#0CF4D8;box-shadow:0 0 14px rgba(12,244,216,.9),0 0 4px rgba(12,244,216,.5);border:2px solid rgba(255,255,255,.9)"></div>`,
+    iconSize: [10, 10], iconAnchor: [5, 5]
+  });
+
+  const isFirstInit = !_map;
+  if (isFirstInit) {
     _map = L.map('routeMap', { zoomControl: false, attributionControl: true, dragging: false, scrollWheelZoom: false });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap contributors © CARTO', subdomains: 'abcd', maxZoom: 19
     }).addTo(_map);
   }
-  if (_routeLayer) _map.removeLayer(_routeLayer);
 
-  const goldIcon = (label) => L.divIcon({
-    className: '',
-    html: `<div style="width:10px;height:10px;border-radius:50%;background:#0CF4D8;box-shadow:0 0 12px rgba(12,244,216,.8);border:2px solid #fff"></div>`,
-    iconSize: [10, 10], iconAnchor: [5, 5]
-  });
+  if (_routeLayer) { _map.removeLayer(_routeLayer); _routeLayer = null; }
 
-  _routeLayer = L.layerGroup([
-    L.polyline(coords, { color: '#0CF4D8', weight: 3, opacity: .85 }),
-    L.marker(from, { icon: goldIcon('D') }),
-    L.marker(to,   { icon: goldIcon('A') })
-  ]).addTo(_map);
+  /* Triple-layer lumineux : outer glow · mid halo · core net */
+  const glow1 = L.polyline(coords, { color: '#0CF4D8', weight: 20, opacity: .07 });
+  const glow2 = L.polyline(coords, { color: '#0CF4D8', weight:  8, opacity: .22 });
+  const core  = L.polyline(coords, { color: '#35FFE8', weight:  2.5, opacity: .95 });
 
-  const bounds = L.latLngBounds([from, to, ...coords]);
-  _map.fitBounds(bounds, { padding: [20, 20] });
+  _routeLayer = L.layerGroup([glow1, glow2, core, L.marker(from, { icon: dotIcon() }), L.marker(to, { icon: dotIcon() })]).addTo(_map);
+
+  /* Animation style Uber : départ zoomé → dezoom sur l'itinéraire complet */
+  const flyOut = () => {
+    _map.invalidateSize({ animate: false });
+    _map.setView(from, 15, { animate: false });
+    setTimeout(() => {
+      _map.flyToBounds(bounds, { padding: [44, 44], animate: true, duration: 1.8, easeLinearity: 0.12 });
+    }, isFirstInit ? 380 : 220);
+  };
+  setTimeout(flyOut, isFirstInit ? 120 : 0);
 }
 
 /* ─ NFC ENTRY POINT ─ */
