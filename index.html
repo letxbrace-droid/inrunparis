@@ -60,6 +60,8 @@ html {
   scroll-behavior: smooth;
   background: var(--page-bg);
   transition: background-color .5s ease;
+  overflow-x: hidden;  /* iOS Safari : doit être sur html ET body */
+  width: 100%;
 }
 html, body {
   background: var(--page-bg);
@@ -76,6 +78,8 @@ html, body {
 body {
   padding-bottom: calc(80px + var(--safe-bot));
   animation: pageEntry .6s cubic-bezier(.16,1,.3,1) both;
+  position: relative; /* REQUIS iOS Safari : active le clipping overflow-x */
+  width: 100%;
 }
 @keyframes pageEntry {
   from { opacity: 0; }
@@ -97,7 +101,8 @@ body {
   transform: scaleX(0);
   z-index: 100;
   transition: transform 0.1s linear;
-  filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 10px var(--glow-sm));
+  /* filter sur position:fixed provoque des artefacts iOS → box-shadow à la place */
+  box-shadow: 0 0 8px var(--gold), 0 0 16px var(--glow-sm);
 }
 
 /* ── HEADER ── */
@@ -2120,6 +2125,7 @@ button:not(:disabled):active,
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   display: flex; align-items: flex-end; justify-content: center;
   opacity: 0; pointer-events: none;
+  overflow: hidden; /* clip le panel translateY pour éviter débordement iOS */
   transition: opacity .35s ease, backdrop-filter .35s ease;
 }
 .sheet-overlay.open { opacity: 1; pointer-events: all; }
