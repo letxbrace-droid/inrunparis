@@ -2128,6 +2128,123 @@ button, a, .seg-opt, .switch, .pay-card, .term-chip, .faq-q, .ac-item {
 }
 .dock-btn.reserve svg { stroke: var(--oled); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ═══════════════════════════════════════════════════════════════
+   NEUMORPHISME — Soft UI Moderne
+   Éclairage directionnel haut-gauche → relief tactile HD
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Variables surface — identique au fond des composants */
+:root {
+  --neu-bg:    #111114;
+  --neu-hi:    rgba(255,255,255,.048);   /* lumière haut-gauche */
+  --neu-lo:    rgba(0,0,0,.80);          /* ombre bas-droite */
+  --neu-hi-sm: rgba(255,255,255,.032);
+  --neu-lo-sm: rgba(0,0,0,.62);
+}
+[data-theme="light"] {
+  --neu-bg:    #e4ebf4;
+  --neu-hi:    rgba(255,255,255,.94);
+  --neu-lo:    rgba(163,177,198,.68);
+  --neu-hi-sm: rgba(255,255,255,.8);
+  --neu-lo-sm: rgba(163,177,198,.45);
+}
+
+/* ── Proof bar : carte extrudée du fond ── */
+.proof {
+  background: var(--neu-bg) !important;
+  box-shadow: -5px -5px 14px var(--neu-hi), 5px 5px 14px var(--neu-lo) !important;
+  border: none !important;
+}
+
+/* ── Ambiance cards (Musique / Radio / Silence) ── */
+.amb-btn {
+  background: var(--neu-bg);
+  border: none !important;
+  box-shadow: -4px -4px 10px var(--neu-hi), 4px 4px 10px var(--neu-lo);
+}
+.amb-btn::before { background: linear-gradient(135deg, rgba(12,244,216,.06), transparent); }
+.amb-btn.active {
+  background: linear-gradient(155deg, #161b2e 0%, #0c111f 100%);
+  border: none !important;
+  box-shadow:
+    -4px -4px 10px var(--neu-hi),
+    4px 4px 10px var(--neu-lo),
+    0 10px 36px var(--gold-glow),
+    0 4px 16px rgba(0,0,0,.4);
+}
+/* LED underline glow — remplace corner bracket */
+.amb-btn.active::after {
+  top: auto !important; right: auto !important;
+  bottom: 0px; left: 15%; width: 70%; height: 1px;
+  border: none !important; border-radius: 50%;
+  background: var(--gold);
+  filter: blur(7px);
+  opacity: .9;
+  box-shadow: 0 0 12px 4px var(--gold-glow);
+}
+
+/* ── Step 2 toggle chips : extrudé OFF → encastré ON ── */
+.s2-toggle-chip {
+  background: var(--neu-bg) !important;
+  box-shadow: -3px -3px 7px var(--neu-hi-sm), 3px 3px 7px var(--neu-lo-sm) !important;
+  border: none !important;
+  transition: box-shadow .25s ease, color .2s !important;
+}
+.s2-toggle-chip.on {
+  background: var(--neu-bg) !important;
+  box-shadow:
+    inset -2px -2px 6px var(--neu-hi-sm),
+    inset  2px  2px 6px var(--neu-lo-sm),
+    0 4px 20px var(--gold-glow) !important;
+  color: var(--gold) !important;
+  border: none !important;
+}
+
+/* ── Price box : carte neumorphique ── */
+.price-box {
+  background: var(--neu-bg) !important;
+  box-shadow: -6px -6px 18px var(--neu-hi), 6px 6px 18px var(--neu-lo) !important;
+  border: none !important;
+}
+
+/* ── Bouton Réserver bottom nav : LED glow directionnel ── */
+.dock-btn.reserve {
+  box-shadow:
+    0  0  20px var(--gold-glow),
+    0  8px 28px var(--gold-glow),
+    0 14px 36px rgba(0,0,0,.5) !important;
+  overflow: visible;
+}
+
+/* ── Cards booking sheet : profondeur neumorphique ── */
+.sheet-scroll .card {
+  background: rgba(17,17,20,.95) !important;
+  backdrop-filter: blur(20px) saturate(120%) !important;
+  box-shadow:
+    -4px -4px 12px var(--neu-hi),
+    4px 4px 12px var(--neu-lo),
+    0 8px 24px rgba(0,0,0,.5) !important;
+  border: 0.5px solid rgba(255,255,255,.04) !important;
+}
+
+/* Day-mode : cartes claires */
+[data-theme="light"] .sheet-scroll .card {
+  background: rgba(228,235,244,.98) !important;
+  box-shadow:
+    -4px -4px 12px var(--neu-hi),
+    4px 4px 12px var(--neu-lo),
+    0 4px 16px rgba(0,0,0,.05) !important;
+  border: none !important;
+}
+[data-theme="light"] .amb-btn.active {
+  background: linear-gradient(155deg, #1a2035 0%, #0f1525 100%) !important;
+}
+[data-theme="light"] .price-box {
+  background: var(--neu-bg) !important;
+  box-shadow: -6px -6px 18px var(--neu-hi), 6px 6px 18px var(--neu-lo) !important;
+  border: none !important;
+}
+
 /* ── prefers-reduced-motion: disable decorative animations ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
