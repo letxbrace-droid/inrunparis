@@ -2407,18 +2407,10 @@ button:not(:disabled):active,
     <div class="hero-map-vignette" aria-hidden="true"></div>
     <div class="hero-map-scanline" aria-hidden="true"></div>
 
-    <!-- Scan beam tech -->
-    <div class="hero-scan-beam" aria-hidden="true"></div>
-
-    <!-- HUD Coordonnées -->
-    <div class="hero-coord-hud" id="heroCoordHud" aria-hidden="true">
-      <span id="heroCoordLat">48.7520°N</span>
-      <span class="hero-coord-sep">·</span>
-      <span id="heroCoordLng">2.4000°E</span>
-    </div>
-
-    <!-- HUD Zoom -->
-    <div class="hero-zoom-hud" id="heroZoomHud" aria-hidden="true">Z·10</div>
+    <!-- HUD Coordonnées (masqué — remplacé par spans vides pour garder heroUpdateHud sans erreur) -->
+    <span id="heroCoordLat" style="display:none"></span>
+    <span id="heroCoordLng" style="display:none"></span>
+    <span id="heroZoomHud"  style="display:none"></span>
 
     <!-- Toggle jour/nuit -->
     <button class="hero-mode-toggle" id="heroModeToggle" aria-label="Basculer mode jour/nuit" title="Mode jour / nuit">
