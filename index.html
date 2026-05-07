@@ -385,11 +385,12 @@ body {
   position:absolute; bottom:0; left:0; right:0; z-index:10;
   margin:0 10px 72px;
   padding:16px 16px 12px;
-  background:rgba(0,0,0,.84);
-  backdrop-filter:blur(28px) saturate(1.4);
-  -webkit-backdrop-filter:blur(28px) saturate(1.4);
+  background:rgba(10,12,22,.62);
+  backdrop-filter:blur(40px) saturate(1.9) brightness(.92);
+  -webkit-backdrop-filter:blur(40px) saturate(1.9) brightness(.92);
   border:0.5px solid rgba(12,244,216,.22);
   border-radius:20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.5), inset 0 1.5px 0 rgba(255,255,255,.07);
   --bw:13px; --bt:1.5px; --bc:rgba(12,244,216,.55);
 }
 .inr-card::before {
@@ -567,10 +568,11 @@ body {
   background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.03) 3px, rgba(255,255,255,.03) 4px);
 }
 #heroMap.day-mode .inr-card {
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(28px) saturate(1.8);
-  -webkit-backdrop-filter:blur(28px) saturate(1.8);
-  border-color:rgba(13,107,98,.25);
+  background:rgba(255,255,255,.60);
+  backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
+  -webkit-backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
+  border-color:rgba(13,107,98,.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,.12), inset 0 1.5px 0 rgba(255,255,255,.95);
 }
 #heroMap.day-mode .inr-monogram {
   color:#0f5c55; background:rgba(13,107,98,.1); border-color:rgba(13,107,98,.28);
@@ -1753,20 +1755,34 @@ body {
   animation: dockUp .5s cubic-bezier(.16,1,.3,1);
 }
 @keyframes dockUp { from{opacity:0;transform:translateY(100%)} to{opacity:1;transform:translateY(0)} }
+@keyframes dockTap {
+  0%   { transform: scale(.90); }
+  55%  { transform: scale(1.08); }
+  80%  { transform: scale(.98); }
+  100% { transform: scale(1); }
+}
+@keyframes dockIconFlare {
+  0%   { filter: drop-shadow(0 0 4px var(--gold-glow)); }
+  45%  { filter: drop-shadow(0 0 18px var(--gold-glow)) drop-shadow(0 0 36px rgba(12,244,216,.35)); }
+  100% { filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 16px rgba(12,244,216,.2)); }
+}
 .dock-btn {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 5px; padding: 10px 4px 8px; border: none; background: transparent;
   cursor: pointer; font-family: var(--ff-body); font-size: .55rem; font-weight: 600;
-  letter-spacing: .06em; color: var(--mist); transition: color .2s ease; white-space: nowrap;
-  text-decoration: none; text-transform: uppercase; position: relative;
+  letter-spacing: .06em; color: var(--mist);
+  transition: color .25s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap; text-decoration: none; text-transform: uppercase; position: relative;
   -webkit-tap-highlight-color: transparent;
   min-height: 44px;
 }
-.dock-btn:active { transform: scale(0.92); transition: transform .1s cubic-bezier(.34,1.56,.64,1); }
-.dock-btn svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
-.dock-btn:active svg { transform: scale(0.85); }
+.dock-btn:active { transform: scale(0.90); }
+.dock-btn svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1), filter .25s ease; }
+.dock-btn:active svg { transform: scale(0.84); }
 .dock-btn.active { color: var(--gold); }
 .dock-btn.active svg { filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 16px rgba(12,244,216,.2)); }
+.dock-btn.tapping { animation: dockTap .38s cubic-bezier(.34,1.56,.64,1) forwards; }
+.dock-btn.tapping svg { animation: dockIconFlare .38s ease-out forwards; }
 .dock-btn.reserve {
   color: #fff;
   background: linear-gradient(135deg, var(--gold-warm), var(--gold));
@@ -4155,6 +4171,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('dockTel')?.addEventListener('click', () => haptic(15));
+
+  /* Pulse tap sur tous les boutons de la dock bar */
+  document.querySelectorAll('.dock-btn:not(.reserve)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.remove('tapping');
+      void btn.offsetWidth;
+      btn.classList.add('tapping');
+      btn.addEventListener('animationend', () => btn.classList.remove('tapping'), { once: true });
+    });
+  });
 
   ['depart', 'arrive'].forEach(id => {
     document.getElementById(id).addEventListener('change', () => { if (STATE.depart && STATE.arrive) setStep(2); });
