@@ -3307,7 +3307,10 @@ function setupAutocomplete(inputId, dropId, termsId, stateKey) {
 async function osrmRoute(from, to) {
   const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=full&geometries=geojson`;
   try {
-    const r = await fetch(url);
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 8000); /* timeout 8s */
+    const r = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(tid);
     const data = await r.json();
     if (!data.routes?.length) return null;
     const route = data.routes[0];
@@ -3315,7 +3318,7 @@ async function osrmRoute(from, to) {
       km: route.distance / 1000,
       mins: (route.duration / 60) * PRICE.trafficBuffer,
       rawMins: route.duration / 60,
-      geometry: route.geometry  /* GeoJSON LineString pour la carte */
+      geometry: route.geometry
     };
   } catch (e) { return null; }
 }
@@ -3559,63 +3562,76 @@ const WX_DESC = { 0:'Ensoleillé',1:'Principalement clair',2:'Partiellement nuag
 const WX_ICON = { clear:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>', cloud:'<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 0 1 0 9z"/>', rain:'<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/><line x1="12" y1="21" x2="12" y2="23"/>', storm:'<path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/><polyline points="13 11 9 17 15 17 11 23"/>', snow:'<path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="12" y1="18" x2="12.01" y2="18"/><line x1="16" y1="16" x2="16.01" y2="16"/>', fog:'<path d="M5 16h14M7 20h10M3 12h18M6 8h12M8 4h8"/>' };
 function codeToIcon(code) { if (code===0||code===1) return 'clear'; if ([2,3].includes(code)) return 'cloud'; if ([45,48].includes(code)) return 'fog'; if ([51,53,55,61,63,65,80,81,82].includes(code)) return 'rain'; if ([71,73,75].includes(code)) return 'snow'; if ([95,96,99].includes(code)) return 'storm'; return 'cloud'; }
 async function fetchMeteo() {
+  const sheetWx = document.getElementById('sheetWxLabel');
   try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=48.6468&longitude=2.4185&current_weather=true&hourly=relative_humidity_2m,precipitation_probability');
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=48.6468&longitude=2.4185&current_weather=true&hourly=relative_humidity_2m,precipitation_probability', { signal: ctrl.signal });
+    clearTimeout(tid);
     const d = await r.json();
     const cw = d.current_weather;
     const temp = Math.round(cw.temperature);
     const desc = WX_DESC[cw.weathercode] || '—';
-    document.getElementById('wxTemp').innerHTML = `${temp}°`;
-    document.getElementById('wxDesc').textContent = desc;
-    document.getElementById('wxWind').textContent = `${Math.round(cw.windspeed)} km/h`;
+    const wxTemp = document.getElementById('wxTemp');
+    const wxDesc = document.getElementById('wxDesc');
+    const wxWind = document.getElementById('wxWind');
+    const wxHum  = document.getElementById('wxHum');
+    const wxIcon = document.getElementById('wxIcon');
+    const wxTime = document.getElementById('wxTime');
+    if (wxTemp) wxTemp.innerHTML = `${temp}°`;
+    if (wxDesc) wxDesc.textContent = desc;
+    if (wxWind) wxWind.textContent = `${Math.round(cw.windspeed)} km/h`;
     const hum = d.hourly?.relative_humidity_2m?.[0] ?? 0;
-    document.getElementById('wxHum').textContent = `${Math.round(hum)}%`;
-    document.getElementById('wxIcon').innerHTML = WX_ICON[codeToIcon(cw.weathercode)];
-    document.getElementById('wxTime').textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    /* Sync direct sur le pill du sheet, qu'il soit déjà ouvert ou pas */
-    const sheetWx = document.getElementById('sheetWxLabel');
+    if (wxHum)  wxHum.textContent  = `${Math.round(hum)}%`;
+    if (wxIcon) wxIcon.innerHTML   = WX_ICON[codeToIcon(cw.weathercode)];
+    if (wxTime) wxTime.textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
     if (sheetWx) sheetWx.textContent = `${temp}° · ${desc}`;
   } catch (e) {
-    document.getElementById('wxDesc').textContent = 'Données indisponibles';
-    const sheetWx = document.getElementById('sheetWxLabel');
+    const wxDesc = document.getElementById('wxDesc');
+    if (wxDesc) wxDesc.textContent = 'Données indisponibles';
     if (sheetWx) sheetWx.textContent = 'Météo indisponible';
   }
 }
 async function fetchTraffic() {
-  const RISO = { lat: 48.6468, lng: 2.4185 };
-  const destinations = [
-    { name: 'CDG', via: 'A1 · Roissy', lat: 49.0097, lng: 2.5479 },
-    { name: 'Orly', via: 'A6 · 91', lat: 48.7233, lng: 2.3795 },
-    { name: 'Paris', via: 'N7 · Périph', lat: 48.8566, lng: 2.3522 },
-  ];
+  const sheetTr   = document.getElementById('sheetTrafficLabel');
   const container = document.getElementById('trafficList');
-  container.innerHTML = '';
-  for (const dest of destinations) {
-    const route = await osrmRoute(RISO, dest);
-    if (!route) continue;
-    const h = new Date().getHours();
-    const isPeak = (h >= 7 && h <= 10) || (h >= 16 && h <= 20);
-    const isWeekend = [0, 6].includes(new Date().getDay());
-    const peakMult = isPeak && !isWeekend ? 1.45 : (isWeekend ? 0.82 : 1.0);
-    const adjMins = route.rawMins * peakMult;
-    const ratio = adjMins / route.rawMins;
-    let tag = 'ok', label = 'Fluide';
-    if (ratio > 1.3) { tag = 'bad'; label = 'Bouchons'; } else if (ratio > 1.1) { tag = 'warn'; label = 'Dense'; }
-    const item = document.createElement('div');
-    item.className = 'traffic-item';
-    item.innerHTML = `<div class="ti-route"><div class="ti-name">${dest.name}</div><div class="ti-via">${dest.via}</div></div><div class="ti-right"><div class="ti-tag ${tag}">${label}</div><div class="ti-dur">${Math.round(adjMins)}'·${route.km.toFixed(0)}km</div></div>`;
-    container.appendChild(item);
+  if (!container) { if (sheetTr) sheetTr.textContent = 'Trafic indisponible'; return; }
+  try {
+    const RISO = { lat: 48.6468, lng: 2.4185 };
+    const destinations = [
+      { name: 'CDG',   via: 'A1 · Roissy',  lat: 49.0097, lng: 2.5479 },
+      { name: 'Orly',  via: 'A6 · 91',       lat: 48.7233, lng: 2.3795 },
+      { name: 'Paris', via: 'N7 · Périph',   lat: 48.8566, lng: 2.3522 },
+    ];
+    /* Parallel — all 3 OSRM calls fire at once */
+    const routes = await Promise.all(destinations.map(dest => osrmRoute(RISO, dest)));
+    container.innerHTML = '';
+    const h          = new Date().getHours();
+    const isPeak     = (h >= 7 && h <= 10) || (h >= 16 && h <= 20);
+    const isWeekend  = [0, 6].includes(new Date().getDay());
+    const peakMult   = isPeak && !isWeekend ? 1.45 : (isWeekend ? 0.82 : 1.0);
+    routes.forEach((route, i) => {
+      if (!route) return;
+      const dest    = destinations[i];
+      const adjMins = route.rawMins * peakMult;
+      const ratio   = adjMins / route.rawMins;
+      let tag = 'ok', label = 'Fluide';
+      if (ratio > 1.3) { tag = 'bad'; label = 'Bouchons'; } else if (ratio > 1.1) { tag = 'warn'; label = 'Dense'; }
+      const item = document.createElement('div');
+      item.className = 'traffic-item';
+      item.innerHTML = `<div class="ti-route"><div class="ti-name">${dest.name}</div><div class="ti-via">${dest.via}</div></div><div class="ti-right"><div class="ti-tag ${tag}">${label}</div><div class="ti-dur">${Math.round(adjMins)}'·${route.km.toFixed(0)}km</div></div>`;
+      container.appendChild(item);
+    });
+    const trafficTime = document.getElementById('trafficTime');
+    if (trafficTime) trafficTime.textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    const tagEls      = container.querySelectorAll('.ti-tag');
+    const hasBad      = [...tagEls].some(el => el.classList.contains('bad'));
+    const hasWarn     = [...tagEls].some(el => el.classList.contains('warn'));
+    const globalLabel = hasBad ? 'Bouchons' : hasWarn ? 'Dense' : 'Fluide';
+    if (sheetTr) sheetTr.textContent = `Trafic · ${globalLabel}`;
+  } catch (e) {
+    if (sheetTr) sheetTr.textContent = 'Trafic indisponible';
   }
-  const timeStr = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-  document.getElementById('trafficTime').textContent = timeStr;
-
-  /* Résumé trafic global pour le pill du sheet */
-  const items = container.querySelectorAll('.ti-tag');
-  const hasBad  = [...items].some(el => el.classList.contains('bad'));
-  const hasWarn = [...items].some(el => el.classList.contains('warn'));
-  const globalLabel = hasBad ? '🔴 Bouchons' : hasWarn ? '🟡 Dense' : '🟢 Fluide';
-  const sheetTr = document.getElementById('sheetTrafficLabel');
-  if (sheetTr) sheetTr.textContent = `Trafic · ${globalLabel}`;
 }
 
 /* ─ REVEAL ─ */
