@@ -3526,14 +3526,23 @@ async function fetchMeteo() {
     const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=48.6468&longitude=2.4185&current_weather=true&hourly=relative_humidity_2m,precipitation_probability');
     const d = await r.json();
     const cw = d.current_weather;
-    document.getElementById('wxTemp').innerHTML = `${Math.round(cw.temperature)}°`;
-    document.getElementById('wxDesc').textContent = WX_DESC[cw.weathercode] || '—';
+    const temp = Math.round(cw.temperature);
+    const desc = WX_DESC[cw.weathercode] || '—';
+    document.getElementById('wxTemp').innerHTML = `${temp}°`;
+    document.getElementById('wxDesc').textContent = desc;
     document.getElementById('wxWind').textContent = `${Math.round(cw.windspeed)} km/h`;
     const hum = d.hourly?.relative_humidity_2m?.[0] ?? 0;
     document.getElementById('wxHum').textContent = `${Math.round(hum)}%`;
     document.getElementById('wxIcon').innerHTML = WX_ICON[codeToIcon(cw.weathercode)];
     document.getElementById('wxTime').textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-  } catch (e) { document.getElementById('wxDesc').textContent = 'Données indisponibles'; }
+    /* Sync direct sur le pill du sheet, qu'il soit déjà ouvert ou pas */
+    const sheetWx = document.getElementById('sheetWxLabel');
+    if (sheetWx) sheetWx.textContent = `${temp}° · ${desc}`;
+  } catch (e) {
+    document.getElementById('wxDesc').textContent = 'Données indisponibles';
+    const sheetWx = document.getElementById('sheetWxLabel');
+    if (sheetWx) sheetWx.textContent = 'Météo indisponible';
+  }
 }
 async function fetchTraffic() {
   const RISO = { lat: 48.6468, lng: 2.4185 };
@@ -3560,7 +3569,16 @@ async function fetchTraffic() {
     item.innerHTML = `<div class="ti-route"><div class="ti-name">${dest.name}</div><div class="ti-via">${dest.via}</div></div><div class="ti-right"><div class="ti-tag ${tag}">${label}</div><div class="ti-dur">${Math.round(adjMins)}'·${route.km.toFixed(0)}km</div></div>`;
     container.appendChild(item);
   }
-  document.getElementById('trafficTime').textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  const timeStr = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('trafficTime').textContent = timeStr;
+
+  /* Résumé trafic global pour le pill du sheet */
+  const items = container.querySelectorAll('.ti-tag');
+  const hasBad  = [...items].some(el => el.classList.contains('bad'));
+  const hasWarn = [...items].some(el => el.classList.contains('warn'));
+  const globalLabel = hasBad ? '🔴 Bouchons' : hasWarn ? '🟡 Dense' : '🟢 Fluide';
+  const sheetTr = document.getElementById('sheetTrafficLabel');
+  if (sheetTr) sheetTr.textContent = `Trafic · ${globalLabel}`;
 }
 
 /* ─ REVEAL ─ */
@@ -4385,17 +4403,12 @@ function openBookingSheet() {
   sheet.classList.add('open');
   sheet.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  // Sync mini status pills
+  // Sync mini status pills (fallback si fetch déjà terminé avant ouverture)
   const wxTemp = document.getElementById('wxTemp');
   const wxDesc = document.getElementById('wxDesc');
   const sheetWx = document.getElementById('sheetWxLabel');
-  if (wxTemp && sheetWx && wxTemp.textContent !== '—') {
-    sheetWx.textContent = wxTemp.textContent + '° · ' + (wxDesc ? wxDesc.textContent : '');
-  }
-  const trafficTime = document.getElementById('trafficTime');
-  const sheetTr = document.getElementById('sheetTrafficLabel');
-  if (trafficTime && sheetTr && trafficTime.textContent !== '—') {
-    sheetTr.textContent = 'Trafic · ' + trafficTime.textContent;
+  if (wxTemp && sheetWx && wxTemp.textContent.trim() !== '—') {
+    sheetWx.textContent = wxTemp.textContent.trim() + ' · ' + (wxDesc ? wxDesc.textContent : '');
   }
   // Focus first input
   setTimeout(() => {
