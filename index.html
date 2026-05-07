@@ -2201,12 +2201,11 @@ button:not(:disabled):active,
 .sheet-close svg { width: 14px; height: 14px; }
 
 .sheet-status {
-  display: flex; gap: 7px; align-items: center;
-  padding: 8px 20px 10px; flex-shrink: 0;
+  display: flex; gap: 6px; align-items: center;
+  padding: 8px 14px 10px; flex-shrink: 0;
   border-bottom: 0.5px solid rgba(12,244,216,.07);
-  overflow-x: auto; scrollbar-width: none;
+  flex-wrap: wrap;
 }
-.sheet-status::-webkit-scrollbar { display: none; }
 .sheet-stat-pill {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 11px; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
@@ -3595,43 +3594,45 @@ async function fetchMeteo() {
 async function fetchTraffic() {
   const sheetTr   = document.getElementById('sheetTrafficLabel');
   const container = document.getElementById('trafficList');
-  if (!container) { if (sheetTr) sheetTr.textContent = 'Trafic indisponible'; return; }
-  try {
-    const RISO = { lat: 48.6468, lng: 2.4185 };
-    const destinations = [
-      { name: 'CDG',   via: 'A1 · Roissy',  lat: 49.0097, lng: 2.5479 },
-      { name: 'Orly',  via: 'A6 · 91',       lat: 48.7233, lng: 2.3795 },
-      { name: 'Paris', via: 'N7 · Périph',   lat: 48.8566, lng: 2.3522 },
-    ];
-    /* Parallel — all 3 OSRM calls fire at once */
-    const routes = await Promise.all(destinations.map(dest => osrmRoute(RISO, dest)));
-    container.innerHTML = '';
-    const h          = new Date().getHours();
-    const isPeak     = (h >= 7 && h <= 10) || (h >= 16 && h <= 20);
-    const isWeekend  = [0, 6].includes(new Date().getDay());
-    const peakMult   = isPeak && !isWeekend ? 1.45 : (isWeekend ? 0.82 : 1.0);
-    routes.forEach((route, i) => {
-      if (!route) return;
-      const dest    = destinations[i];
-      const adjMins = route.rawMins * peakMult;
-      const ratio   = adjMins / route.rawMins;
-      let tag = 'ok', label = 'Fluide';
-      if (ratio > 1.3) { tag = 'bad'; label = 'Bouchons'; } else if (ratio > 1.1) { tag = 'warn'; label = 'Dense'; }
-      const item = document.createElement('div');
-      item.className = 'traffic-item';
-      item.innerHTML = `<div class="ti-route"><div class="ti-name">${dest.name}</div><div class="ti-via">${dest.via}</div></div><div class="ti-right"><div class="ti-tag ${tag}">${label}</div><div class="ti-dur">${Math.round(adjMins)}'·${route.km.toFixed(0)}km</div></div>`;
-      container.appendChild(item);
-    });
-    const trafficTime = document.getElementById('trafficTime');
-    if (trafficTime) trafficTime.textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    const tagEls      = container.querySelectorAll('.ti-tag');
-    const hasBad      = [...tagEls].some(el => el.classList.contains('bad'));
-    const hasWarn     = [...tagEls].some(el => el.classList.contains('warn'));
-    const globalLabel = hasBad ? 'Bouchons' : hasWarn ? 'Dense' : 'Fluide';
-    if (sheetTr) sheetTr.textContent = `Trafic · ${globalLabel}`;
-  } catch (e) {
-    if (sheetTr) sheetTr.textContent = 'Trafic indisponible';
-  }
+  if (!container) { if (sheetTr) sheetTr.textContent = 'Trafic · Fluide'; return; }
+
+  /* Base times (rawMins) from Ris-Orangis — used as fallback if OSRM fails */
+  const RISO = { lat: 48.6468, lng: 2.4185 };
+  const destinations = [
+    { name: 'CDG',   via: 'A1 · Roissy',  lat: 49.0097, lng: 2.5479, baseMins: 52, baseKm: 52 },
+    { name: 'Orly',  via: 'A6 · 91',       lat: 48.7233, lng: 2.3795, baseMins: 22, baseKm: 17 },
+    { name: 'Paris', via: 'N7 · Périph',   lat: 48.8566, lng: 2.3522, baseMins: 40, baseKm: 36 },
+  ];
+  const h         = new Date().getHours();
+  const isPeak    = (h >= 7 && h <= 10) || (h >= 16 && h <= 20);
+  const isWeekend = [0, 6].includes(new Date().getDay());
+  const peakMult  = isPeak && !isWeekend ? 1.45 : (isWeekend ? 0.82 : 1.0);
+
+  /* Try real OSRM data; fall back to base times on any failure */
+  let routes = [null, null, null];
+  try { routes = await Promise.all(destinations.map(dest => osrmRoute(RISO, dest))); } catch (_) {}
+
+  container.innerHTML = '';
+  destinations.forEach((dest, i) => {
+    const r       = routes[i];
+    const rawMins = r ? r.rawMins : dest.baseMins;
+    const km      = r ? r.km      : dest.baseKm;
+    const adjMins = rawMins * peakMult;
+    const ratio   = adjMins / rawMins;
+    let tag = 'ok', label = 'Fluide';
+    if (ratio > 1.3) { tag = 'bad'; label = 'Bouchons'; } else if (ratio > 1.1) { tag = 'warn'; label = 'Dense'; }
+    const item = document.createElement('div');
+    item.className = 'traffic-item';
+    item.innerHTML = `<div class="ti-route"><div class="ti-name">${dest.name}</div><div class="ti-via">${dest.via}</div></div><div class="ti-right"><div class="ti-tag ${tag}">${label}</div><div class="ti-dur">${Math.round(adjMins)}'·${km.toFixed(0)}km</div></div>`;
+    container.appendChild(item);
+  });
+  const trafficTime = document.getElementById('trafficTime');
+  if (trafficTime) trafficTime.textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  const tagEls      = container.querySelectorAll('.ti-tag');
+  const hasBad      = [...tagEls].some(el => el.classList.contains('bad'));
+  const hasWarn     = [...tagEls].some(el => el.classList.contains('warn'));
+  const globalLabel = hasBad ? 'Bouchons' : hasWarn ? 'Dense' : 'Fluide';
+  if (sheetTr) sheetTr.textContent = `Trafic · ${globalLabel}`;
 }
 
 /* ─ REVEAL ─ */
