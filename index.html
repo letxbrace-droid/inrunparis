@@ -4555,15 +4555,50 @@ document.getElementById('bookingSheet').addEventListener('click', function(e) {
 // Keyboard: Escape closes sheet
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBookingSheet(); });
 
-// visualViewport — remonte le sheet au-dessus du clavier iOS/Android
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
+// Keyboard avoidance — visualViewport API (iOS 13+ / Android Chrome)
+(function () {
+  const vv = window.visualViewport;
+  if (!vv) return;
+
+  let rafId = null;
+
+  function apply() {
+    const sheet = document.getElementById('bookingSheet');
     const panel = document.getElementById('sheetPanel');
+    const scrl  = document.getElementById('sheetScroll');
     if (!panel) return;
-    const offset = window.innerHeight - window.visualViewport.height;
-    panel.style.paddingBottom = offset > 0 ? `${offset}px` : '';
-  });
-}
+
+    const keyH = window.innerHeight - vv.height;
+
+    if (keyH > 60 && sheet && sheet.classList.contains('open')) {
+      // Clavier ouvert : réduit le panel à l'espace disponible
+      panel.style.height = vv.height + 'px';
+
+      // Scroll l'input actif au-dessus du bord bas visible
+      requestAnimationFrame(() => {
+        const focused = document.activeElement;
+        if (focused && focused !== document.body && scrl) {
+          const elRect   = focused.getBoundingClientRect();
+          const scrlRect = scrl.getBoundingClientRect();
+          const overlap  = elRect.bottom - scrlRect.bottom + 24;
+          if (overlap > 0) scrl.scrollBy({ top: overlap, behavior: 'smooth' });
+        }
+      });
+    } else {
+      // Clavier fermé : restaure la hauteur CSS (93dvh)
+      panel.style.height = '';
+    }
+  }
+
+  function schedule() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(apply);
+  }
+
+  // iOS fire parfois "scroll" au lieu de "resize" lors de l'ouverture du clavier
+  vv.addEventListener('resize', schedule);
+  vv.addEventListener('scroll', schedule);
+}());
 
 function openLegal(type) {
   const modal = document.getElementById('legalOverlay'), title = document.getElementById('legalTitle'), body = document.getElementById('legalBody');
