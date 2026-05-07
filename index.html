@@ -2207,6 +2207,8 @@ button:not(:disabled):active,
   flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
   padding: 14px var(--gutter) calc(24px + var(--safe-bot));
   scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 .sheet-scroll .card { margin-bottom: 12px; }
 .sheet-scroll .card::before,
@@ -3281,6 +3283,19 @@ function isNightTime(dateStr) {
   const h = d.getHours();
   return h >= PRICE.nightStart || h < PRICE.nightEnd;
 }
+/* ─ COUNTER ANIMATION ─ ease-out cubique, 700ms par défaut */
+function animateCount(el, target, duration = 700) {
+  if (!el) return;
+  const start = performance.now();
+  const from  = parseInt(el.textContent) || 0;
+  (function raf(now) {
+    const t    = Math.min(1, (now - start) / duration);
+    const ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
+    el.textContent = Math.round(from + (target - from) * ease);
+    if (t < 1) requestAnimationFrame(raf);
+  })(start);
+}
+
 function computePrice(km, mins, pickupTime) {
   let price = PRICE.base + (km * PRICE.perKm) + (mins * PRICE.perMin);
   const isNight = isNightTime(pickupTime);
@@ -3441,7 +3456,7 @@ async function computeAndShow() {
 function updatePriceDisplay() {
   if (!STATE.price) return;
   const { base, final, km, mins, isNight, isAirport, isVan, savings } = STATE.price;
-  document.getElementById('priceVal').textContent = final;
+  animateCount(document.getElementById('priceVal'), final, 750);
   document.getElementById('priceDetail').textContent = `${km.toFixed(1)} km · ${Math.round(mins)} min estimés`;
   const badges = document.getElementById('priceBadges');
   badges.innerHTML = '';
@@ -3972,16 +3987,7 @@ function heroShowPrice(price, km, mins, { isNight, isAirport, savings }) {
     ${badges ? `<div class="inr-price-badges">${badges}</div>` : ''}
   </div>`;
 
-  /* Count-up */
-  let cur = 0; const target = price;
-  const step = Math.max(1, Math.ceil(target / 30));
-  const el = document.getElementById('heroPriceVal');
-  const tick = () => {
-    cur = Math.min(cur + step, target);
-    el.textContent = cur;
-    if (cur < target) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
+  animateCount(document.getElementById('heroPriceVal'), price, 750);
 }
 
 /* ── Personnalisation hero ── */
@@ -4548,6 +4554,16 @@ document.getElementById('bookingSheet').addEventListener('click', function(e) {
 
 // Keyboard: Escape closes sheet
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBookingSheet(); });
+
+// visualViewport — remonte le sheet au-dessus du clavier iOS/Android
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const panel = document.getElementById('sheetPanel');
+    if (!panel) return;
+    const offset = window.innerHeight - window.visualViewport.height;
+    panel.style.paddingBottom = offset > 0 ? `${offset}px` : '';
+  });
+}
 
 function openLegal(type) {
   const modal = document.getElementById('legalOverlay'), title = document.getElementById('legalTitle'), body = document.getElementById('legalBody');
