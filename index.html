@@ -59,6 +59,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Décalage ancre pour compenser le header fixe (safe-top + ~56px hauteur header) */
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 56px);
   background: var(--page-bg);
   transition: background-color .5s ease;
   overflow-x: hidden;  /* iOS Safari : doit être sur html ET body */
@@ -72,6 +74,7 @@ html, body {
   line-height: 1.5;
   overflow-x: hidden;
   min-height: 100vh;
+  min-height: -webkit-fill-available; /* iOS Safari : évite le décalage lié à la barre d'adresse */
   -webkit-tap-highlight-color: transparent;
   transition: background-color .5s ease, color .4s ease;
 }
@@ -303,7 +306,10 @@ body {
    HERO MAP — INR CARD SIGNATURE
    ═══════════════════════════════════════════════════════════════ */
 #heroMap {
-  position:relative; height:100dvh; min-height:580px; overflow:hidden;
+  position:relative;
+  height: 100vh; /* fallback iOS < 15.4 */
+  height: 100dvh;
+  min-height:580px; overflow:hidden;
   background: radial-gradient(ellipse at 60% 40%, #041210 0%, #020a08 40%, #000 100%);
 }
 #heroMapCanvas {
@@ -389,7 +395,8 @@ body {
 /* ── INR Card ── */
 .inr-card {
   position:absolute; bottom:0; left:0; right:0; z-index:10;
-  margin:0 10px 72px;
+  /* 80px socle + safe-bot → garantit que la carte passe au-dessus du dock sur tous les iPhones (home bar inclus) */
+  margin: 0 10px calc(80px + env(safe-area-inset-bottom, 0px));
   padding:16px 16px 12px;
   background:rgba(10,12,22,.62);
   backdrop-filter:blur(40px) saturate(1.9) brightness(.92);
@@ -2151,7 +2158,9 @@ button:not(:disabled):active,
 .sheet-overlay.open { opacity: 1; pointer-events: all; }
 
 .sheet-panel {
-  width: 100%; max-width: 560px; height: 93dvh;
+  width: 100%; max-width: 560px;
+  height: 93vh; /* fallback iOS < 15.4 */
+  height: 93dvh;
   background: linear-gradient(180deg, #131315 0%, #0a0a0a 100%);
   border: 0.5px solid rgba(12,244,216,.22);
   border-bottom: none;
@@ -3065,7 +3074,7 @@ button:not(:disabled):active,
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     Réserver
   </button>
-  <a href="#tarifs" class="dock-btn" id="dockTarifs" aria-label="Voir les tarifs" onclick="document.getElementById('tarifs')?.scrollIntoView({behavior:'smooth'});return false;">
+  <a href="#tarifs" class="dock-btn" id="dockTarifs" aria-label="Voir les tarifs" onclick="smoothScrollTo(document.getElementById('tarifs'));return false;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     Tarifs
   </a>
@@ -3115,7 +3124,10 @@ const debounce = (fn, wait) => { let t; return (...a) => { clearTimeout(t); t = 
 /* ─ SMOOTH SCROLL ─ */
 function smoothScrollTo(el) {
   if (!el) return;
-  const top = el.getBoundingClientRect().top + window.pageYOffset - 80;
+  /* Hauteur réelle du header fixe : mesurée dynamiquement pour tous les iPhone (notch, Dynamic Island…) */
+  const hdrEl  = document.querySelector('.hdr');
+  const offset = hdrEl ? hdrEl.getBoundingClientRect().height + 8 : 64;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
   window.scrollTo({ top, behavior: 'smooth' });
 }
 
