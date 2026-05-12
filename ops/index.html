@@ -415,10 +415,12 @@
           <svg class="chevron" id="sess-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg>
         </div>
         <div id="sess-body">
+          <!-- Start view -->
           <div id="sess-start">
             <div class="shift-grid" id="shift-grid"></div>
             <button class="sess-btn" id="btn-start" style="background:rgba(0,200,150,.15);color:var(--green);border:1px solid rgba(0,200,150,.3);width:100%">▶ Démarrer la session</button>
           </div>
+          <!-- Active view -->
           <div id="sess-active" style="display:none">
             <div id="sess-timer" class="sess-timer">00:00:00</div>
             <div class="sess-meta">
@@ -439,25 +441,64 @@
       <div class="kpi-sec">
         <div class="sec-label">Performance</div>
         <div class="kpi-grid">
-          <div class="kpi"><div class="kpi-lbl">CA du jour</div><div id="k-today" class="kpi-val gold">—</div><div id="k-today-sub" class="kpi-sub">0 course</div><div class="kpi-ico">💰</div></div>
-          <div class="kpi"><div class="kpi-lbl">Moy / course</div><div id="k-avg" class="kpi-val green">—</div><div class="kpi-sub">tip inclus</div><div class="kpi-ico">📊</div></div>
-          <div class="kpi"><div class="kpi-lbl">Semaine</div><div id="k-week" class="kpi-val blue">—</div><div id="k-week-sub" class="kpi-sub">0 course</div><div class="kpi-ico">📈</div></div>
-          <div class="kpi"><div class="kpi-lbl">Ce mois</div><div id="k-month" class="kpi-val purple">—</div><div id="k-month-sub" class="kpi-sub">0 course</div><div class="kpi-ico">📅</div></div>
+          <div class="kpi">
+            <div class="kpi-lbl">CA du jour</div>
+            <div id="k-today" class="kpi-val gold">—</div>
+            <div id="k-today-sub" class="kpi-sub">0 course</div>
+            <div class="kpi-ico">💰</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-lbl">Moy / course</div>
+            <div id="k-avg" class="kpi-val green">—</div>
+            <div class="kpi-sub">tip inclus</div>
+            <div class="kpi-ico">📊</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-lbl">Semaine</div>
+            <div id="k-week" class="kpi-val blue">—</div>
+            <div id="k-week-sub" class="kpi-sub">0 course</div>
+            <div class="kpi-ico">📈</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-lbl">Ce mois</div>
+            <div id="k-month" class="kpi-val purple">—</div>
+            <div id="k-month-sub" class="kpi-sub">0 course</div>
+            <div class="kpi-ico">📅</div>
+          </div>
         </div>
       </div>
 
-      <div class="chart-box"><div class="chart-ttl">CA 30 jours · €</div><div style="height:130px;position:relative"><canvas id="chart-rev"></canvas></div></div>
-
-      <div class="chart-row2">
-        <div class="chart-box" style="margin:0"><div class="chart-ttl">Plateformes</div><div style="height:115px;position:relative"><canvas id="chart-plat"></canvas></div></div>
-        <div class="chart-box" style="margin:0"><div class="chart-ttl">Moy / jour</div><div style="height:115px;position:relative"><canvas id="chart-day"></canvas></div></div>
+      <!-- Revenue chart -->
+      <div class="chart-box">
+        <div class="chart-ttl">CA 30 jours · €</div>
+        <div style="height:130px;position:relative"><canvas id="chart-rev"></canvas></div>
       </div>
 
-      <div class="hm-wrap"><div class="hm-title">■ Heatmap demande IDF · €/h estimé</div><div id="hm-grid" class="hm-grid"></div></div>
+      <!-- Platform + day -->
+      <div class="chart-row2">
+        <div class="chart-box" style="margin:0">
+          <div class="chart-ttl">Plateformes</div>
+          <div style="height:115px;position:relative"><canvas id="chart-plat"></canvas></div>
+        </div>
+        <div class="chart-box" style="margin:0">
+          <div class="chart-ttl">Moy / jour</div>
+          <div style="height:115px;position:relative"><canvas id="chart-day"></canvas></div>
+        </div>
+      </div>
 
-      <div class="chart-box" style="margin-bottom:.35rem"><div class="chart-ttl">Zones productivité Uber · §03 playbook</div><table class="ztable"><tbody id="zone-body"></tbody></table></div>
+      <!-- Heatmap -->
+      <div class="hm-wrap">
+        <div class="hm-title">■ Heatmap demande IDF · €/h estimé</div>
+        <div id="hm-grid" class="hm-grid"></div>
+      </div>
+
+      <!-- Zone table -->
+      <div class="chart-box" style="margin-bottom:.35rem">
+        <div class="chart-ttl">Zones productivité Uber · §03 playbook</div>
+        <table class="ztable"><tbody id="zone-body"></tbody></table>
+      </div>
       <div style="height:.4rem"></div>
-    </div>
+    </div><!-- /dashboard -->
 
     <!-- TAB HISTORY -->
     <div id="tab-history" class="tab">
@@ -477,15 +518,33 @@
       <div class="set-wrap">
         <div class="set-sec">
           <div class="set-sec-ttl">Données</div>
-          <div class="set-row"><div><div class="set-lbl">Exporter CSV</div><div class="set-desc">Toutes les courses</div></div><button class="set-btn inf" id="btn-export">Exporter</button></div>
-          <div class="set-row"><div><div class="set-lbl">Recharger seed</div><div class="set-desc">119 courses démo historiques</div></div><button class="set-btn pri" id="btn-seed">Recharger</button></div>
-          <div class="set-row"><div><div class="set-lbl">Effacer tout</div><div class="set-desc" style="color:var(--red)">Irréversible</div></div><button class="set-btn dan" id="btn-clear">Effacer</button></div>
+          <div class="set-row">
+            <div><div class="set-lbl">Exporter CSV</div><div class="set-desc">Toutes les courses</div></div>
+            <button class="set-btn inf" id="btn-export">Exporter</button>
+          </div>
+          <div class="set-row">
+            <div><div class="set-lbl">Recharger seed</div><div class="set-desc">119 courses démo historiques</div></div>
+            <button class="set-btn pri" id="btn-seed">Recharger</button>
+          </div>
+          <div class="set-row">
+            <div><div class="set-lbl">Effacer tout</div><div class="set-desc" style="color:var(--red)">Irréversible</div></div>
+            <button class="set-btn dan" id="btn-clear">Effacer</button>
+          </div>
         </div>
         <div class="set-sec">
           <div class="set-sec-ttl">Application</div>
-          <div class="set-row"><div><div class="set-lbl">Version</div><div class="set-desc">I&amp;N RUN OPS</div></div><span style="font-family:var(--mono);font-size:.7rem;color:var(--textM)">v0.3.0</span></div>
-          <div class="set-row"><div><div class="set-lbl">Total courses</div><div class="set-desc">IndexedDB local</div></div><span id="set-total" style="font-family:var(--mono);font-size:.95rem;color:var(--gold)">—</span></div>
-          <div class="set-row"><div><div class="set-lbl">Service Worker</div><div class="set-desc">Cache hors-ligne</div></div><span id="sw-st" style="font-size:.7rem;color:var(--textD)">…</span></div>
+          <div class="set-row">
+            <div><div class="set-lbl">Version</div><div class="set-desc">I&amp;N RUN OPS</div></div>
+            <span style="font-family:var(--mono);font-size:.7rem;color:var(--textM)">v0.3.0</span>
+          </div>
+          <div class="set-row">
+            <div><div class="set-lbl">Total courses</div><div class="set-desc">IndexedDB local</div></div>
+            <span id="set-total" style="font-family:var(--mono);font-size:.95rem;color:var(--gold)">—</span>
+          </div>
+          <div class="set-row">
+            <div><div class="set-lbl">Service Worker</div><div class="set-desc">Cache hors-ligne</div></div>
+            <span id="sw-st" style="font-size:.7rem;color:var(--textD)">…</span>
+          </div>
         </div>
       </div>
     </div>
@@ -509,14 +568,24 @@
 
     <!-- FAB -->
     <button id="fab" aria-label="Ajouter une course">+</button>
-  </div>
+  </div><!-- /main -->
 
   <!-- MODAL ADD COURSE -->
   <div id="modal-ov" class="hide">
     <div class="modal-sh">
       <div class="m-handle"></div>
-      <div class="m-head"><div class="m-title">Nouvelle course</div><button class="m-close" id="btn-m-close">✕</button></div>
-      <div class="f-grp"><label class="f-lbl">Plateforme</label><div class="plat-tabs"><button class="plat-tab on" data-p="uber">⚫ Uber</button><button class="plat-tab" data-p="bolt">🟢 Bolt</button><button class="plat-tab" data-p="heetch">🟣 Heetch</button></div></div>
+      <div class="m-head">
+        <div class="m-title">Nouvelle course</div>
+        <button class="m-close" id="btn-m-close">✕</button>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Plateforme</label>
+        <div class="plat-tabs">
+          <button class="plat-tab on" data-p="uber">⚫ Uber</button>
+          <button class="plat-tab" data-p="bolt">🟢 Bolt</button>
+          <button class="plat-tab" data-p="heetch">🟣 Heetch</button>
+        </div>
+      </div>
       <div class="f-grid">
         <div class="f-grp"><label class="f-lbl">Montant €*</label><input id="f-fare" class="f-inp" type="number" placeholder="0.00" min="0" step="0.01"></div>
         <div class="f-grp"><label class="f-lbl">Pourboire €</label><input id="f-tip" class="f-inp" type="number" placeholder="0.00" min="0" step="0.01"></div>
@@ -527,20 +596,40 @@
         <div class="f-grp"><label class="f-lbl">Départ</label><input id="f-dep" class="f-inp" type="text" placeholder="Ville" style="font-family:system-ui"></div>
         <div class="f-grp"><label class="f-lbl">Destination</label><input id="f-dest" class="f-inp" type="text" placeholder="Ville" style="font-family:system-ui"></div>
       </div>
-      <div class="f-surge-row"><span class="f-lbl" style="margin:0;flex:1">Surge actif</span><button id="tog-surge" class="tog" style="background:var(--s3)"><span class="tog-thumb" style="left:3px"></span></button></div>
+      <div class="f-surge-row">
+        <span class="f-lbl" style="margin:0;flex:1">Surge actif</span>
+        <button id="tog-surge" class="tog" style="background:var(--s3)"><span class="tog-thumb" style="left:3px"></span></button>
+      </div>
       <button class="btn-save" id="btn-save">Enregistrer la course</button>
     </div>
   </div>
 
-</div>
+</div><!-- /app -->
 
 <script>
 'use strict';
 
-const db = new Dexie('inrun-ops');
-db.version(1).stores({ courses:'id,datetime,platform', settings:'key', meta:'key' });
-db.version(2).stores({ courses:'id,datetime,platform', settings:'key', meta:'key', sessions:'id,startTime,status' });
+/* top-level error → always un-freeze the loading screen */
+window.addEventListener('error', () => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('main').style.display = 'flex';
+});
 
+/* ═══════════════════════════════════════════════
+   DATABASE (lazy — created inside init)
+═══════════════════════════════════════════════ */
+let db = null;
+function openDB(){
+  if (typeof Dexie === 'undefined') return null;
+  const d = new Dexie('inrun-ops');
+  d.version(1).stores({ courses:'id,datetime,platform', settings:'key', meta:'key' });
+  d.version(2).stores({ courses:'id,datetime,platform', settings:'key', meta:'key', sessions:'id,startTime,status' });
+  return d;
+}
+
+/* ═══════════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════════ */
 const HEATMAP = [
   { slot:'00-04', h:[0,4],  vals:[25,20,22,25,35,45,35] },
   { slot:'04-08', h:[4,8],  vals:[38,35,42,45,50,55,45] },
@@ -568,208 +657,613 @@ const SHIFTS = {
 };
 const PEMOJI = { uber:'⚫', bolt:'🟢', heetch:'🟣' };
 
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
 const S = {
-  courses:[], tab:'dashboard', filter:'all',
-  platform:'uber', surge:false, shiftType:'A',
-  session:null, timerID:null, charts:{},
+  courses: [],
+  tab: 'dashboard',
+  filter: 'all',
+  platform: 'uber',
+  surge: false,
+  shiftType: 'A',
+  session: null,   // { startTime, totalPaused, pauseTime, status, type }
+  timerID: null,
+  charts: {},
 };
 
+/* ═══════════════════════════════════════════════
+   SIGNAL ENGINE
+═══════════════════════════════════════════════ */
 function dow(d){ return (d.getDay()+6)%7 }
-function heatScore(h,dw){ const r=HEATMAP.find(r=>h>=r.h[0]&&h<r.h[1]); return r?r.vals[dw]:35; }
-function demandLevel(s){ return s>=50?'PEAK':s>=42?'HIGH':s>=35?'NORMAL':'LOW'; }
-function platformSignal(h,dw){
-  if(h>=20){ if(dw===4)return{plat:'bolt',reason:'BOLT ★ Ven. soir — 19,99€/course observé',isPause:false}; if(dw===5)return{plat:'uber',reason:'Uber surge Sam. — 60€/h PEAK absolu',isPause:false}; }
-  if(h<4)  return{plat:'uber',reason:'Nuit creuse — Uber x2.5 surge tardif',isPause:false};
-  if(h<7)  return{plat:'uber',reason:'Uber — aéroport CDG/Orly actif dès 4h',isPause:false};
-  if(h<10) return{plat:'uber',reason:'Uber — rush matinal Île-de-France',isPause:false};
-  if(h<13) return{plat:'bolt',reason:'Bolt — meilleur taux commission matin',isPause:false};
-  if(h<17) return{plat:'bolt',reason:'Creux 13h–17h — PAUSE recommandée',isPause:true};
-  return         {plat:'uber',reason:'Uber — rush soir banlieue parisienne',isPause:false};
+
+function heatScore(h, dw){
+  const row = HEATMAP.find(r => h >= r.h[0] && h < r.h[1]);
+  return row ? row.vals[dw] : 35;
 }
 
-function fmtEur(v){ return v>0?v.toFixed(0)+'€':'0€' }
-function fmtTime(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function demandLevel(score){
+  if (score >= 50) return 'PEAK';
+  if (score >= 42) return 'HIGH';
+  if (score >= 35) return 'NORMAL';
+  return 'LOW';
+}
+
+function platformSignal(h, dw){
+  if (h >= 20){
+    if (dw === 4) return { plat:'bolt',  reason:'BOLT ★ Ven. soir — 19,99€/course observé', isPause:false };
+    if (dw === 5) return { plat:'uber',  reason:'Uber surge Sam. — 60€/h PEAK absolu',       isPause:false };
+  }
+  if (h <  4)  return { plat:'uber', reason:'Nuit creuse — Uber x2.5 surge tardif',           isPause:false };
+  if (h <  7)  return { plat:'uber', reason:'Uber — aéroport CDG/Orly actif dès 4h',         isPause:false };
+  if (h < 10)  return { plat:'uber', reason:'Uber — rush matinal Île-de-France',              isPause:false };
+  if (h < 13)  return { plat:'bolt', reason:'Bolt — meilleur taux commission matin',          isPause:false };
+  if (h < 17)  return { plat:'bolt', reason:'Creux 13h–17h — PAUSE recommandée',             isPause:true  };
+  return               { plat:'uber', reason:'Uber — rush soir banlieue parisienne',          isPause:false };
+}
+
+/* ═══════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════ */
+function fmtEur(v){ return v > 0 ? v.toFixed(0)+'€' : '0€' }
+function fmtTime(ms){
+  const s = Math.floor(ms/1000);
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
 function uid(){ return 'c_'+Date.now()+'_'+Math.random().toString(36).slice(2,6) }
-function sessElapsed(){ if(!S.session)return 0; const{startTime,pauseTime,totalPaused,status}=S.session,now=Date.now(),paused=status==='paused'?(now-pauseTime+totalPaused):totalPaused; return now-startTime-paused; }
-function sessCA(){ if(!S.session)return 0; return S.courses.filter(c=>new Date(c.datetime).getTime()>=S.session.startTime).reduce((a,c)=>a+(c.fare||0)+(c.tip||0),0); }
 
-function renderSignal(){
-  const now=new Date(),h=now.getHours(),dw=dow(now),score=heatScore(h,dw),level=demandLevel(score),sig=platformSignal(h,dw);
-  const b=document.getElementById('sig-badge');
-  b.className='sig-badge '+level;
-  b.textContent=level+' · '+score+'€/h · '+PEMOJI[sig.plat]+' '+sig.plat.charAt(0).toUpperCase()+sig.plat.slice(1);
-  document.getElementById('sig-reason').textContent=sig.reason;
-  document.getElementById('sig-time').textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+function sessElapsed(){
+  if (!S.session) return 0;
+  const { startTime, pauseTime, totalPaused, status } = S.session;
+  const now = Date.now();
+  const paused = status === 'paused' ? (now - pauseTime + totalPaused) : totalPaused;
+  return now - startTime - paused;
 }
 
+function sessCA(){
+  if (!S.session) return 0;
+  return S.courses.filter(c => new Date(c.datetime).getTime() >= S.session.startTime)
+    .reduce((a,c) => a + (c.fare||0) + (c.tip||0), 0);
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: SIGNAL
+═══════════════════════════════════════════════ */
+function renderSignal(){
+  const now = new Date();
+  const h = now.getHours(), dw = dow(now);
+  const score = heatScore(h, dw);
+  const level = demandLevel(score);
+  const sig   = platformSignal(h, dw);
+
+  const badge = document.getElementById('sig-badge');
+  badge.className = 'sig-badge ' + level;
+  badge.textContent = level + ' · ' + score + '€/h · ' + PEMOJI[sig.plat] + ' ' + sig.plat.charAt(0).toUpperCase()+sig.plat.slice(1);
+  document.getElementById('sig-reason').textContent = sig.reason;
+  document.getElementById('sig-time').textContent = now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER: HEATMAP
+═══════════════════════════════════════════════ */
 function renderHeatmap(){
-  const now=new Date(),h=now.getHours(),dw=dow(now),MAX=60;
-  let out='<div class="hm-cell hdr"></div>';
-  DAYS_FR.forEach(d=>{out+=`<div class="hm-cell hdr">${d}</div>`;});
-  HEATMAP.forEach(row=>{
-    const cur=h>=row.h[0]&&h<row.h[1];
-    out+=`<div class="hm-cell row-lbl">${row.slot}</div>`;
-    row.vals.forEach((v,i)=>{
-      const t=v/MAX;let r,g,b;
-      if(t>.75){r=240;g=68;b=68;}else if(t>.6){r=212;g=175;b=55;}else if(t>.45){r=61;g=142;b=245;}else{r=38;g=51;b=84;}
-      out+=`<div class="hm-cell${(cur&&i===dw)?' cur':''}" style="background:rgba(${r},${g},${b},${.25+t*.65});color:rgba(255,255,255,${.4+t*.6})">${v}</div>`;
+  const now = new Date(), h = now.getHours(), dw = dow(now);
+  const MAX = 60;
+  let out = '<div class="hm-cell hdr"></div>';
+  DAYS_FR.forEach(d => { out += `<div class="hm-cell hdr">${d}</div>`; });
+  HEATMAP.forEach(row => {
+    const isCurSlot = h >= row.h[0] && h < row.h[1];
+    out += `<div class="hm-cell row-lbl">${row.slot}</div>`;
+    row.vals.forEach((v,i) => {
+      const t = v/MAX;
+      let r,g,b;
+      if (t > .75){ r=240;g=68;b=68; }
+      else if (t > .6){ r=212;g=175;b=55; }
+      else if (t > .45){ r=61;g=142;b=245; }
+      else { r=38;g=51;b=84; }
+      const a = .25 + t*.65;
+      const cur = isCurSlot && i === dw;
+      out += `<div class="hm-cell${cur?' cur':''}" style="background:rgba(${r},${g},${b},${a});color:rgba(255,255,255,${.4+t*.6})">${v}</div>`;
     });
   });
-  document.getElementById('hm-grid').innerHTML=out;
+  document.getElementById('hm-grid').innerHTML = out;
 }
 
+/* ═══════════════════════════════════════════════
+   RENDER: ZONE TABLE
+═══════════════════════════════════════════════ */
 function renderZones(){
-  document.getElementById('zone-body').innerHTML=ZONES.map(z=>`<tr><td class="${z.hot?'z-hot':'z-cold'}">${z.hot?'🔥':'·'} ${z.z}</td><td class="z-val ${z.hot?'z-hot':'z-cold'}">${z.v.toFixed(1)}€/h</td><td style="text-align:right;font-size:.55rem;color:var(--textD)">${z.hot?'HOT':''}</td></tr>`).join('');
+  document.getElementById('zone-body').innerHTML = ZONES.map(z =>
+    `<tr>
+      <td class="${z.hot?'z-hot':'z-cold'}">${z.hot?'🔥':'·'} ${z.z}</td>
+      <td class="z-val ${z.hot?'z-hot':'z-cold'}">${z.v.toFixed(1)}€/h</td>
+      <td style="text-align:right;font-size:.55rem;color:var(--textD)">${z.hot?'HOT':''}</td>
+    </tr>`
+  ).join('');
 }
 
+/* ═══════════════════════════════════════════════
+   RENDER: SHIFT PICKER
+═══════════════════════════════════════════════ */
 function renderShiftPicker(){
-  document.getElementById('shift-grid').innerHTML=Object.entries(SHIFTS).map(([k,v])=>`<div class="shift-opt${S.shiftType===k?' sel':''}" data-s="${k}"><div class="shift-opt-name">${v.name}</div><div class="shift-opt-desc">${v.desc}</div>${v.target?`<div class="shift-opt-tgt">Cible: ${v.target}€</div>`:''}</div>`).join('');
+  document.getElementById('shift-grid').innerHTML = Object.entries(SHIFTS).map(([k,v]) =>
+    `<div class="shift-opt${S.shiftType===k?' sel':''}" data-s="${k}">
+      <div class="shift-opt-name">${v.name}</div>
+      <div class="shift-opt-desc">${v.desc}</div>
+      ${v.target ? `<div class="shift-opt-tgt">Cible: ${v.target}€</div>` : ''}
+    </div>`
+  ).join('');
 }
 
+/* ═══════════════════════════════════════════════
+   RENDER: KPIs
+═══════════════════════════════════════════════ */
 function renderKPIs(){
-  const now=new Date(),ts=now.toISOString().slice(0,10);
-  const ms=new Date(now.getFullYear(),now.getMonth(),1);
-  const ws=new Date(now);ws.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1));ws.setHours(0,0,0,0);
-  const today=S.courses.filter(c=>c.datetime.slice(0,10)===ts);
-  const week=S.courses.filter(c=>new Date(c.datetime)>=ws);
-  const month=S.courses.filter(c=>new Date(c.datetime)>=ms);
-  const sum=a=>a.reduce((t,c)=>t+(c.fare||0)+(c.tip||0),0);
-  const tCA=sum(today),tAvg=today.length?tCA/today.length:0;
-  document.getElementById('k-today').textContent=fmtEur(tCA);
-  document.getElementById('k-today-sub').textContent=today.length+' course'+(today.length!==1?'s':'');
-  document.getElementById('k-avg').textContent=tAvg>0?tAvg.toFixed(2)+'€':'—';
-  document.getElementById('k-week').textContent=fmtEur(sum(week));
-  document.getElementById('k-week-sub').textContent=week.length+' course'+(week.length!==1?'s':'');
-  document.getElementById('k-month').textContent=fmtEur(sum(month));
-  document.getElementById('k-month-sub').textContent=month.length+' course'+(month.length!==1?'s':'');
-  document.getElementById('set-total').textContent=S.courses.length;
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0,10);
+  const monStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const wkStart = new Date(now); wkStart.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1)); wkStart.setHours(0,0,0,0);
+
+  const today = S.courses.filter(c => c.datetime.slice(0,10)===todayStr);
+  const week  = S.courses.filter(c => new Date(c.datetime)>=wkStart);
+  const month = S.courses.filter(c => new Date(c.datetime)>=monStart);
+  const sum = a => a.reduce((t,c) => t+(c.fare||0)+(c.tip||0), 0);
+
+  const tCA  = sum(today);
+  const tAvg = today.length ? tCA/today.length : 0;
+
+  document.getElementById('k-today').textContent     = fmtEur(tCA);
+  document.getElementById('k-today-sub').textContent = today.length+' course'+(today.length!==1?'s':'');
+  document.getElementById('k-avg').textContent       = tAvg > 0 ? tAvg.toFixed(2)+'€' : '—';
+  document.getElementById('k-week').textContent      = fmtEur(sum(week));
+  document.getElementById('k-week-sub').textContent  = week.length+' course'+(week.length!==1?'s':'');
+  document.getElementById('k-month').textContent     = fmtEur(sum(month));
+  document.getElementById('k-month-sub').textContent = month.length+' course'+(month.length!==1?'s':'');
+  document.getElementById('set-total').textContent   = S.courses.length;
 }
 
+/* ═══════════════════════════════════════════════
+   RENDER: SESSION
+═══════════════════════════════════════════════ */
 function renderSession(){
-  const dot=document.getElementById('sess-dot'),st=document.getElementById('sess-status'),sv=document.getElementById('sess-start'),av=document.getElementById('sess-active'),bp=document.getElementById('btn-pause'),br=document.getElementById('btn-resume');
-  if(!S.session){dot.className='sess-dot';st.textContent='Session inactive';st.style.color='var(--textM)';sv.style.display='block';av.style.display='none';renderShiftPicker();return;}
-  const{status,type}=S.session;
-  dot.className='sess-dot '+(status==='paused'?'paused':'active');
-  st.textContent=(status==='paused'?'⏸ En pause':'▶ En cours')+' — '+(SHIFTS[type]?.name||'Libre');
-  st.style.color=status==='paused'?'var(--amber)':'var(--green)';
-  sv.style.display='none';av.style.display='block';
-  const elapsed=sessElapsed(),ca=sessCA(),eph=elapsed>0?ca/(elapsed/3600000):0;
-  const cnt=S.courses.filter(c=>new Date(c.datetime).getTime()>=S.session.startTime).length;
-  document.getElementById('sess-timer').textContent=fmtTime(elapsed);
-  document.getElementById('sm-courses').textContent=cnt;
-  document.getElementById('sm-ca').textContent=ca.toFixed(0)+'€';
-  document.getElementById('sm-eph').textContent=eph>0?eph.toFixed(0)+'€/h':'—';
-  bp.style.display=status==='active'?'flex':'none';
-  br.style.display=status==='paused'?'flex':'none';
+  const dot       = document.getElementById('sess-dot');
+  const status    = document.getElementById('sess-status');
+  const startView = document.getElementById('sess-start');
+  const actView   = document.getElementById('sess-active');
+  const btnPause  = document.getElementById('btn-pause');
+  const btnResume = document.getElementById('btn-resume');
+
+  if (!S.session){
+    dot.className = 'sess-dot';
+    status.textContent = 'Session inactive';
+    status.style.color = 'var(--textM)';
+    startView.style.display = 'block';
+    actView.style.display   = 'none';
+    renderShiftPicker();
+    return;
+  }
+
+  const { status:st, type } = S.session;
+  dot.className = 'sess-dot ' + (st==='paused'?'paused':'active');
+  status.textContent = (st==='paused'?'⏸ En pause':'▶ En cours')+' — '+(SHIFTS[type]?.name||'Libre');
+  status.style.color = st==='paused' ? 'var(--amber)' : 'var(--green)';
+
+  startView.style.display = 'none';
+  actView.style.display   = 'block';
+
+  const elapsed = sessElapsed();
+  const ca = sessCA();
+  const eph = elapsed > 0 ? ca/(elapsed/3600000) : 0;
+  const cnt = S.courses.filter(c => new Date(c.datetime).getTime()>=S.session.startTime).length;
+
+  document.getElementById('sess-timer').textContent = fmtTime(elapsed);
+  document.getElementById('sm-courses').textContent = cnt;
+  document.getElementById('sm-ca').textContent      = ca.toFixed(0)+'€';
+  document.getElementById('sm-eph').textContent     = eph > 0 ? eph.toFixed(0)+'€/h' : '—';
+
+  btnPause.style.display  = st==='active'  ? 'flex':'none';
+  btnResume.style.display = st==='paused' ? 'flex':'none';
 }
 
+/* ═══════════════════════════════════════════════
+   RENDER: HISTORY
+═══════════════════════════════════════════════ */
 function renderHistory(){
-  const list=document.getElementById('hist-list');
-  let data=[...S.courses].sort((a,b)=>new Date(b.datetime)-new Date(a.datetime));
-  if(S.filter!=='all')data=data.filter(c=>c.platform===S.filter);
-  if(!data.length){list.innerHTML='<div class="empty"><div class="empty-ico">🚗</div><div class="empty-txt">Aucune course</div></div>';return;}
-  list.innerHTML=data.map(c=>{
-    const dt=new Date(c.datetime),ds=dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}),ts=dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    const meta=[ds+' '+ts,c.distance_km?c.distance_km+'km':null,c.departure_city,c.destination_city].filter(Boolean).join(' · ');
-    return `<div class="c-row"><div class="c-plat">${PEMOJI[c.platform]||'🚗'}</div><div class="c-info"><div class="c-fare">${(c.fare||0).toFixed(2)}€${c.tip?`<span class="c-tip">+${c.tip.toFixed(2)}€ tip</span>`:''}</div><div class="c-meta">${meta}</div></div>${c.surge_active?'<div class="c-surge" title="Surge"></div>':''}<button class="c-del" data-del="${c.id}" title="Supprimer">✕</button></div>`;
+  const list = document.getElementById('hist-list');
+  let data = [...S.courses].sort((a,b) => new Date(b.datetime)-new Date(a.datetime));
+  if (S.filter !== 'all') data = data.filter(c => c.platform===S.filter);
+
+  if (!data.length){
+    list.innerHTML = '<div class="empty"><div class="empty-ico">🚗</div><div class="empty-txt">Aucune course</div></div>';
+    return;
+  }
+  list.innerHTML = data.map(c => {
+    const dt = new Date(c.datetime);
+    const ds = dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    const ts = dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const meta = [ds+' '+ts, c.distance_km?c.distance_km+'km':null, c.departure_city, c.destination_city].filter(Boolean).join(' · ');
+    return `<div class="c-row">
+      <div class="c-plat">${PEMOJI[c.platform]||'🚗'}</div>
+      <div class="c-info">
+        <div class="c-fare">${(c.fare||0).toFixed(2)}€${c.tip?`<span class="c-tip">+${c.tip.toFixed(2)}€ tip</span>`:''}</div>
+        <div class="c-meta">${meta}</div>
+      </div>
+      ${c.surge_active?'<div class="c-surge" title="Surge"></div>':''}
+      <button class="c-del" data-del="${c.id}" title="Supprimer">✕</button>
+    </div>`;
   }).join('');
 }
 
-const GRID='rgba(38,51,84,.6)',TXT='#4A5A7A';
-function chartRevData(){const days=[],data=[],now=new Date();for(let i=29;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);days.push(i===0?'Auj.':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}));data.push(parseFloat(S.courses.filter(c=>c.datetime.slice(0,10)===ds).reduce((a,c)=>a+(c.fare||0)+(c.tip||0),0).toFixed(2)));}return{days,data};}
-function chartPlatData(){const t={uber:0,bolt:0,heetch:0};S.courses.forEach(c=>{if(t[c.platform]!==undefined)t[c.platform]+=(c.fare||0)+(c.tip||0);});return{labels:['Uber','Bolt','Heetch'],data:[t.uber,t.bolt,t.heetch]};}
-function chartDayData(){const totals=[0,0,0,0,0,0,0],counts=[0,0,0,0,0,0,0];S.courses.forEach(c=>{const dw=dow(new Date(c.datetime));totals[dw]+=(c.fare||0)+(c.tip||0);counts[dw]++;});return{labels:DAYS_FR,data:totals.map((t,i)=>counts[i]?parseFloat((t/counts[i]).toFixed(2)):0)};}
+/* ═══════════════════════════════════════════════
+   CHARTS
+═══════════════════════════════════════════════ */
+const GRID = 'rgba(38,51,84,.6)';
+const TXT  = '#4A5A7A';
+
+function chartRevData(){
+  const days=[],data=[];
+  const now=new Date();
+  for(let i=29;i>=0;i--){
+    const d=new Date(now); d.setDate(d.getDate()-i);
+    const ds=d.toISOString().slice(0,10);
+    days.push(i===0?'Auj.':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}));
+    data.push(parseFloat(S.courses.filter(c=>c.datetime.slice(0,10)===ds).reduce((a,c)=>a+(c.fare||0)+(c.tip||0),0).toFixed(2)));
+  }
+  return { days, data };
+}
+
+function chartPlatData(){
+  const t={uber:0,bolt:0,heetch:0};
+  S.courses.forEach(c=>{ if(t[c.platform]!==undefined) t[c.platform]+=(c.fare||0)+(c.tip||0); });
+  return { labels:['Uber','Bolt','Heetch'], data:[t.uber,t.bolt,t.heetch] };
+}
+
+function chartDayData(){
+  const totals=[0,0,0,0,0,0,0], counts=[0,0,0,0,0,0,0];
+  S.courses.forEach(c=>{ const dw=dow(new Date(c.datetime)); totals[dw]+=(c.fare||0)+(c.tip||0); counts[dw]++; });
+  return { labels:DAYS_FR, data:totals.map((t,i)=>counts[i]?parseFloat((t/counts[i]).toFixed(2)):0) };
+}
 
 function initCharts(){
-  Chart.defaults.color=TXT;Chart.defaults.borderColor=GRID;Chart.defaults.font.family='system-ui';
-  const rc=document.getElementById('chart-rev').getContext('2d'),rg=rc.createLinearGradient(0,0,0,130);rg.addColorStop(0,'rgba(212,175,55,.28)');rg.addColorStop(1,'rgba(212,175,55,0)');
-  const rv=chartRevData();
-  S.charts.rev=new Chart(rc,{type:'line',data:{labels:rv.days,datasets:[{data:rv.data,borderColor:'#D4AF37',backgroundColor:rg,borderWidth:2,fill:true,tension:.4,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:'#D4AF37'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'€'}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:6,font:{size:8},color:TXT}},y:{grid:{color:GRID},ticks:{font:{size:8},color:TXT,callback:v=>v+'€'}}}}});
-  const pd=chartPlatData();
-  S.charts.plat=new Chart(document.getElementById('chart-plat').getContext('2d'),{type:'doughnut',data:{labels:pd.labels,datasets:[{data:pd.data,backgroundColor:['#111','#16a34a','#7c3aed'],borderColor:['#333','#16a34a66','#7c3aed66'],borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:8},boxWidth:8,padding:4,color:TXT}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw.toFixed(0)+'€'}}}}});
-  const dd=chartDayData();
-  S.charts.day=new Chart(document.getElementById('chart-day').getContext('2d'),{type:'bar',data:{labels:dd.labels,datasets:[{data:dd.data,backgroundColor:dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)'),borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'€/j'}}},scales:{x:{grid:{display:false},ticks:{font:{size:8},color:TXT}},y:{grid:{color:GRID},ticks:{font:{size:8},color:TXT,callback:v=>v+'€'}}}}});
+  Chart.defaults.color = TXT;
+  Chart.defaults.borderColor = GRID;
+  Chart.defaults.font.family = 'system-ui';
+
+  const rc = document.getElementById('chart-rev').getContext('2d');
+  const rg = rc.createLinearGradient(0,0,0,130);
+  rg.addColorStop(0,'rgba(212,175,55,.28)'); rg.addColorStop(1,'rgba(212,175,55,0)');
+  const rv = chartRevData();
+  S.charts.rev = new Chart(rc,{
+    type:'line',
+    data:{ labels:rv.days, datasets:[{ data:rv.data, borderColor:'#D4AF37', backgroundColor:rg, borderWidth:2, fill:true, tension:.4, pointRadius:0, pointHoverRadius:4, pointHoverBackgroundColor:'#D4AF37' }] },
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c=>c.raw+'€' } } },
+      scales:{
+        x:{ grid:{display:false}, ticks:{maxTicksLimit:6,font:{size:8},color:TXT} },
+        y:{ grid:{color:GRID}, ticks:{font:{size:8},color:TXT,callback:v=>v+'€'} }
+      }
+    }
+  });
+
+  const pd = chartPlatData();
+  S.charts.plat = new Chart(document.getElementById('chart-plat').getContext('2d'),{
+    type:'doughnut',
+    data:{ labels:pd.labels, datasets:[{ data:pd.data, backgroundColor:['#111','#16a34a','#7c3aed'], borderColor:['#333','#16a34a66','#7c3aed66'], borderWidth:1 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'65%',
+      plugins:{
+        legend:{ display:true, position:'bottom', labels:{ font:{size:8}, boxWidth:8, padding:4, color:TXT } },
+        tooltip:{ callbacks:{ label:c=>c.label+': '+c.raw.toFixed(0)+'€' } }
+      }
+    }
+  });
+
+  const dd = chartDayData();
+  S.charts.day = new Chart(document.getElementById('chart-day').getContext('2d'),{
+    type:'bar',
+    data:{ labels:dd.labels, datasets:[{ data:dd.data, backgroundColor:dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)'), borderRadius:3, borderSkipped:false }] },
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c=>c.raw+'€/j' } } },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:8},color:TXT} },
+        y:{ grid:{color:GRID}, ticks:{font:{size:8},color:TXT,callback:v=>v+'€'} }
+      }
+    }
+  });
 }
 
 function updateCharts(){
-  if(!S.charts.rev)return;
-  const rv=chartRevData();S.charts.rev.data.labels=rv.days;S.charts.rev.data.datasets[0].data=rv.data;S.charts.rev.update('none');
-  const pd=chartPlatData();S.charts.plat.data.datasets[0].data=pd.data;S.charts.plat.update('none');
-  const dd=chartDayData();S.charts.day.data.datasets[0].data=dd.data;S.charts.day.data.datasets[0].backgroundColor=dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)');S.charts.day.update('none');
+  if (!S.charts.rev) return;
+  const rv=chartRevData(); S.charts.rev.data.labels=rv.days; S.charts.rev.data.datasets[0].data=rv.data; S.charts.rev.update('none');
+  const pd=chartPlatData(); S.charts.plat.data.datasets[0].data=pd.data; S.charts.plat.update('none');
+  const dd=chartDayData(); S.charts.day.data.datasets[0].data=dd.data; S.charts.day.data.datasets[0].backgroundColor=dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)'); S.charts.day.update('none');
 }
 
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════ */
 function switchTab(id){
-  S.tab=id;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.id==='tab-'+id));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
-  const btns=document.querySelectorAll('.nb'),idx=[...btns].findIndex(b=>b.dataset.tab===id);
-  if(idx>=0){const w=document.getElementById('bnav').offsetWidth/btns.length;document.getElementById('nb-bar').style.left=(idx*w+w/2-11)+'px';}
+  S.tab = id;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.id==='tab-'+id));
+  document.querySelectorAll('.nb').forEach(b => b.classList.toggle('on', b.dataset.tab===id));
+  // Slide indicator
+  const btns = document.querySelectorAll('.nb');
+  const idx = [...btns].findIndex(b=>b.dataset.tab===id);
+  if (idx>=0){
+    const w = document.getElementById('bnav').offsetWidth / btns.length;
+    document.getElementById('nb-bar').style.left = (idx*w + w/2 - 11)+'px';
+  }
 }
 
+/* ═══════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════ */
 function openModal(){
-  S.platform='uber';S.surge=false;
-  ['f-fare','f-tip','f-dist','f-dur','f-dep','f-dest'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.remove('err');});
+  S.platform='uber'; S.surge=false;
+  ['f-fare','f-tip','f-dist','f-dur','f-dep','f-dest'].forEach(id=>{ document.getElementById(id).value=''; document.getElementById(id).classList.remove('err'); });
   document.querySelectorAll('.plat-tab').forEach(b=>b.classList.toggle('on',b.dataset.p==='uber'));
-  const tog=document.getElementById('tog-surge');tog.style.background='var(--s3)';tog.querySelector('.tog-thumb').style.left='3px';
+  const tog=document.getElementById('tog-surge');
+  tog.style.background='var(--s3)'; tog.querySelector('.tog-thumb').style.left='3px';
   document.getElementById('modal-ov').classList.remove('hide');
   setTimeout(()=>document.getElementById('f-fare').focus(),300);
 }
-function closeModal(){document.getElementById('modal-ov').classList.add('hide');}
+function closeModal(){ document.getElementById('modal-ov').classList.add('hide'); }
 
 async function saveCourse(){
-  const fareEl=document.getElementById('f-fare'),fare=parseFloat(fareEl.value);
-  if(!fare||fare<=0){fareEl.classList.add('err');fareEl.focus();setTimeout(()=>fareEl.classList.remove('err'),1600);return;}
-  const course={id:uid(),datetime:new Date().toISOString(),platform:S.platform,type:'standard',fare,tip:parseFloat(document.getElementById('f-tip').value)||0,distance_km:parseFloat(document.getElementById('f-dist').value)||null,duration_min:parseInt(document.getElementById('f-dur').value)||null,departure_city:document.getElementById('f-dep').value.trim()||null,destination_city:document.getElementById('f-dest').value.trim()||null,surge_active:S.surge,created_at:new Date().toISOString()};
-  await db.courses.add(course);S.courses.unshift(course);closeModal();renderAll();
+  const fareEl = document.getElementById('f-fare');
+  const fare = parseFloat(fareEl.value);
+  if (!fare||fare<=0){
+    fareEl.classList.add('err');
+    fareEl.focus();
+    setTimeout(()=>fareEl.classList.remove('err'),1600);
+    return;
+  }
+  const course = {
+    id: uid(),
+    datetime: new Date().toISOString(),
+    platform: S.platform,
+    type: 'standard',
+    fare,
+    tip:          parseFloat(document.getElementById('f-tip').value)||0,
+    distance_km:  parseFloat(document.getElementById('f-dist').value)||null,
+    duration_min: parseInt(document.getElementById('f-dur').value)||null,
+    departure_city:   document.getElementById('f-dep').value.trim()||null,
+    destination_city: document.getElementById('f-dest').value.trim()||null,
+    surge_active: S.surge,
+    created_at: new Date().toISOString(),
+  };
+  if (db) await db.courses.add(course).catch(()=>{});
+  S.courses.unshift(course);
+  closeModal();
+  renderAll();
 }
 
-async function deleteCourse(id){if(!confirm('Supprimer cette course ?'))return;await db.courses.delete(id);S.courses=S.courses.filter(c=>c.id!==id);renderAll();}
-async function exportCSV(){const cols=['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active','created_at'];const rows=S.courses.map(c=>cols.map(k=>JSON.stringify(c[k]??'')).join(','));const blob=new Blob([cols.join(',')+'
+/* ═══════════════════════════════════════════════
+   DATA OPS
+═══════════════════════════════════════════════ */
+async function deleteCourse(id){
+  if (!confirm('Supprimer cette course ?')) return;
+  if (db) await db.courses.delete(id).catch(()=>{});
+  S.courses = S.courses.filter(c=>c.id!==id);
+  renderAll();
+}
+
+async function exportCSV(){
+  const cols=['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active','created_at'];
+  const rows = S.courses.map(c=>cols.map(k=>JSON.stringify(c[k]??'')).join(','));
+  const blob = new Blob([cols.join(',')+'
 '+rows.join('
-')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inrun_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);}
-async function reloadSeed(){if(!confirm('Recharger les 119 courses démo ?'))return;try{const r=await fetch('./seed_data.json');const seeds=await r.json();await db.courses.bulkPut(seeds);S.courses=await db.courses.orderBy('datetime').reverse().toArray();renderAll();}catch(e){alert('Erreur seed: '+e.message);}}
-async function clearAll(){if(!confirm('Effacer TOUTES les courses ? Action irréversible.'))return;await db.courses.clear();S.courses=[];renderAll();}
+')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='inrun_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+  URL.revokeObjectURL(a.href);
+}
 
-function startSession(){S.session={startTime:Date.now(),totalPaused:0,pauseTime:null,status:'active',type:S.shiftType};clearInterval(S.timerID);S.timerID=setInterval(()=>{if(S.session)renderSession();},1000);renderSession();}
-function pauseSession(){if(!S.session||S.session.status!=='active')return;S.session.status='paused';S.session.pauseTime=Date.now();renderSession();}
-function resumeSession(){if(!S.session||S.session.status!=='paused')return;S.session.totalPaused+=Date.now()-S.session.pauseTime;S.session.pauseTime=null;S.session.status='active';renderSession();}
-function endSession(){if(!confirm('Terminer la session ?'))return;clearInterval(S.timerID);S.session=null;renderSession();}
+async function reloadSeed(){
+  if (!confirm('Recharger les 119 courses démo ?')) return;
+  try {
+    const r = await fetch('./seed_data.json');
+    const seeds = await r.json();
+    if (db) { await db.courses.bulkPut(seeds); S.courses = await db.courses.orderBy('datetime').reverse().toArray(); }
+    else { S.courses = seeds; }
+    renderAll();
+  } catch(e){ alert('Erreur seed: '+e.message); }
+}
 
-function renderAll(){renderKPIs();renderHistory();updateCharts();renderHeatmap();renderSession();}
+async function clearAll(){
+  if (!confirm('Effacer TOUTES les courses ? Action irréversible.')) return;
+  if (db) await db.courses.clear().catch(()=>{});
+  S.courses = [];
+  renderAll();
+}
 
+/* ═══════════════════════════════════════════════
+   SESSION OPS
+═══════════════════════════════════════════════ */
+function startSession(){
+  S.session = { startTime:Date.now(), totalPaused:0, pauseTime:null, status:'active', type:S.shiftType };
+  clearInterval(S.timerID);
+  S.timerID = setInterval(()=>{ if(S.session) renderSession(); }, 1000);
+  renderSession();
+}
+function pauseSession(){
+  if(!S.session||S.session.status!=='active') return;
+  S.session.status='paused'; S.session.pauseTime=Date.now(); renderSession();
+}
+function resumeSession(){
+  if(!S.session||S.session.status!=='paused') return;
+  S.session.totalPaused += Date.now()-S.session.pauseTime;
+  S.session.pauseTime=null; S.session.status='active'; renderSession();
+}
+function endSession(){
+  if(!confirm('Terminer la session ?')) return;
+  clearInterval(S.timerID); S.session=null; renderSession();
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER ALL
+═══════════════════════════════════════════════ */
+function renderAll(){
+  renderKPIs();
+  renderHistory();
+  updateCharts();
+  renderHeatmap();
+  renderSession();
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
 async function init(){
-  try{
-    S.courses=await db.courses.orderBy('datetime').reverse().toArray();
-    if(!S.courses.length){const meta=await db.meta.get('seeded');if(!meta){try{const r=await fetch('./seed_data.json');const seeds=await r.json();await db.courses.bulkPut(seeds);await db.meta.put({key:'seeded',value:true});S.courses=await db.courses.orderBy('datetime').reverse().toArray();}catch(e){}}}
-  }catch(e){console.error('DB:',e);}
+  /* Guaranteed loading-hide after 6s max (CDN timeout safety net) */
+  const forceHide = setTimeout(showApp, 6000);
 
-  document.getElementById('main').style.display='flex';
-  renderZones();renderShiftPicker();renderSignal();renderHeatmap();renderKPIs();renderHistory();renderSession();
-  setTimeout(()=>{const btns=document.querySelectorAll('.nb'),w=document.getElementById('bnav').offsetWidth/btns.length;document.getElementById('nb-bar').style.left=(w/2-11)+'px';},50);
-  initCharts();
-  setInterval(renderSignal,30000);
-  const ls=document.getElementById('loading');ls.classList.add('out');setTimeout(()=>ls.style.display='none',380);
+  function showApp(){
+    clearTimeout(forceHide);
+    document.getElementById('main').style.display = 'flex';
+    const ls = document.getElementById('loading');
+    ls.classList.add('out');
+    setTimeout(()=>{ ls.style.display='none'; }, 380);
+  }
 
-  document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
-  document.getElementById('fab').addEventListener('click',openModal);
-  document.getElementById('btn-m-close').addEventListener('click',closeModal);
-  document.getElementById('modal-ov').addEventListener('click',e=>{if(e.target===document.getElementById('modal-ov'))closeModal();});
-  document.querySelectorAll('.plat-tab').forEach(btn=>btn.addEventListener('click',()=>{S.platform=btn.dataset.p;document.querySelectorAll('.plat-tab').forEach(b=>b.classList.toggle('on',b===btn));}));
-  document.getElementById('tog-surge').addEventListener('click',()=>{S.surge=!S.surge;const el=document.getElementById('tog-surge');el.style.background=S.surge?'var(--gold)':'var(--s3)';el.querySelector('.tog-thumb').style.left=S.surge?'23px':'3px';});
-  document.getElementById('btn-save').addEventListener('click',saveCourse);
-  document.getElementById('filter-bar').addEventListener('click',e=>{const chip=e.target.closest('[data-f]');if(!chip)return;S.filter=chip.dataset.f;document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.f===S.filter));renderHistory();});
-  document.getElementById('hist-list').addEventListener('click',e=>{const btn=e.target.closest('[data-del]');if(btn)deleteCourse(btn.dataset.del);});
-  document.getElementById('btn-export').addEventListener('click',exportCSV);
-  document.getElementById('btn-seed').addEventListener('click',reloadSeed);
-  document.getElementById('btn-clear').addEventListener('click',clearAll);
-  document.getElementById('sess-head').addEventListener('click',()=>{const body=document.getElementById('sess-body'),chev=document.getElementById('sess-chev'),open=body.style.display!=='none';body.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});
-  document.getElementById('btn-start').addEventListener('click',startSession);
-  document.getElementById('btn-pause').addEventListener('click',pauseSession);
-  document.getElementById('btn-resume').addEventListener('click',resumeSession);
-  document.getElementById('btn-end').addEventListener('click',endSession);
-  document.getElementById('shift-grid').addEventListener('click',e=>{const opt=e.target.closest('[data-s]');if(!opt)return;S.shiftType=opt.dataset.s;renderShiftPicker();});
+  /* Open DB */
+  try { db = openDB(); } catch(e){ console.warn('DB open failed:', e); }
 
-  if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').then(()=>{const el=document.getElementById('sw-st');el.textContent='✓ Actif';el.style.color='var(--green)';}).catch(()=>{const el=document.getElementById('sw-st');el.textContent='✗ Inactif';el.style.color='var(--red)';});}
+  /* Load courses */
+  if (db) {
+    try {
+      S.courses = await db.courses.orderBy('datetime').reverse().toArray();
+      if (!S.courses.length){
+        const meta = await db.meta.get('seeded').catch(()=>null);
+        if (!meta){
+          try {
+            const r = await fetch('./seed_data.json');
+            const seeds = await r.json();
+            await db.courses.bulkPut(seeds);
+            await db.meta.put({key:'seeded',value:true});
+            S.courses = await db.courses.orderBy('datetime').reverse().toArray();
+          } catch(e){ /* seed unavailable offline */ }
+        }
+      }
+    } catch(e){ console.warn('DB load:', e); }
+  }
+
+  /* Render UI immediately — show app before charts */
+  renderZones();
+  renderShiftPicker();
+  renderSignal();
+  renderHeatmap();
+  renderKPIs();
+  renderHistory();
+  renderSession();
+
+  showApp();   /* unhide now — charts load after */
+
+  /* Nav indicator */
+  setTimeout(()=>{
+    const btns=document.querySelectorAll('.nb');
+    const w=document.getElementById('bnav').offsetWidth/btns.length;
+    document.getElementById('nb-bar').style.left=(w/2-11)+'px';
+  },50);
+
+  /* Charts — optional, won't block app if Chart.js CDN fails */
+  if (typeof Chart !== 'undefined'){
+    try { initCharts(); } catch(e){ console.warn('Charts:', e); }
+  }
+
+  /* Live signal refresh */
+  setInterval(renderSignal, 30000);
+
+  // ── EVENT LISTENERS ────────────────────────
+
+  // Tab nav
+  document.querySelectorAll('[data-tab]').forEach(btn=>{
+    btn.addEventListener('click',()=>switchTab(btn.dataset.tab));
+  });
+
+  // FAB
+  document.getElementById('fab').addEventListener('click', openModal);
+
+  // Modal close
+  document.getElementById('btn-m-close').addEventListener('click', closeModal);
+  document.getElementById('modal-ov').addEventListener('click', e=>{
+    if (e.target===document.getElementById('modal-ov')) closeModal();
+  });
+
+  // Platform tabs
+  document.querySelectorAll('.plat-tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      S.platform=btn.dataset.p;
+      document.querySelectorAll('.plat-tab').forEach(b=>b.classList.toggle('on',b===btn));
+    });
+  });
+
+  // Surge toggle
+  document.getElementById('tog-surge').addEventListener('click',()=>{
+    S.surge=!S.surge;
+    const el=document.getElementById('tog-surge');
+    el.style.background=S.surge?'var(--gold)':'var(--s3)';
+    el.querySelector('.tog-thumb').style.left=S.surge?'23px':'3px';
+  });
+
+  // Save course
+  document.getElementById('btn-save').addEventListener('click', saveCourse);
+
+  // History filter
+  document.getElementById('filter-bar').addEventListener('click',e=>{
+    const chip=e.target.closest('[data-f]');
+    if(!chip) return;
+    S.filter=chip.dataset.f;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.f===S.filter));
+    renderHistory();
+  });
+
+  // History delete (delegation)
+  document.getElementById('hist-list').addEventListener('click',e=>{
+    const btn=e.target.closest('[data-del]');
+    if(btn) deleteCourse(btn.dataset.del);
+  });
+
+  // Settings
+  document.getElementById('btn-export').addEventListener('click', exportCSV);
+  document.getElementById('btn-seed').addEventListener('click', reloadSeed);
+  document.getElementById('btn-clear').addEventListener('click', clearAll);
+
+  // Session panel toggle
+  document.getElementById('sess-head').addEventListener('click',()=>{
+    const body=document.getElementById('sess-body');
+    const chev=document.getElementById('sess-chev');
+    const open=body.style.display!=='none';
+    body.style.display=open?'none':'block';
+    chev.style.transform=open?'':'rotate(180deg)';
+  });
+
+  // Session controls
+  document.getElementById('btn-start').addEventListener('click', startSession);
+  document.getElementById('btn-pause').addEventListener('click', pauseSession);
+  document.getElementById('btn-resume').addEventListener('click', resumeSession);
+  document.getElementById('btn-end').addEventListener('click', endSession);
+
+  // Shift picker
+  document.getElementById('shift-grid').addEventListener('click',e=>{
+    const opt=e.target.closest('[data-s]');
+    if(!opt) return;
+    S.shiftType=opt.dataset.s;
+    renderShiftPicker();
+  });
+
+  // Service Worker
+  if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(()=>{
+        const el=document.getElementById('sw-st');
+        el.textContent='✓ Actif'; el.style.color='var(--green)';
+      })
+      .catch(()=>{
+        const el=document.getElementById('sw-st');
+        el.textContent='✗ Inactif'; el.style.color='var(--red)';
+      });
+  }
 }
 
 init();
