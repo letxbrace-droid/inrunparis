@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#D4AF37">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INRUN OPS">
+  <meta name="description" content="Tableau de bord opérationnel VTC I&amp;N RUN">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <title>I&amp;N RUN OPS</title>
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Dexie.js — IndexedDB wrapper (UMD → window.Dexie, chargé avant le module) -->
+  <script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
+
+  <style>
+    :root {
+      --bg:       #0A0F1C;
+      --surface:  #0F172A;
+      --surface2: #1E293B;
+      --surface3: #334155;
+      --gold:     #D4AF37;
+      --gold-d:   #A88B2C;
+      --gold-l:   #F4E4A6;
+      --text:     #F1F5F9;
+      --text-m:   #94A3B8;
+      --text-d:   #64748B;
+      --green:    #10B981;
+      --red:      #EF4444;
+      --amber:    #F59E0B;
+      --blue:     #3B82F6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #root { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+
+    @keyframes pulse-peak {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.06); }
+    }
+    @keyframes pulse-high {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .pulse-peak { animation: pulse-peak 1.4s ease-in-out infinite; }
+    .pulse-high { animation: pulse-high 2s ease-in-out infinite; }
+    .spin { animation: spin 0.9s linear infinite; }
+    .sheet { animation: slide-up 0.25s ease-out; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+    button { touch-action: manipulation; cursor: pointer; border: none; outline: none; }
+    input, select { outline: none; }
+
+    .safe-top    { padding-top: env(safe-area-inset-top, 0px); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+    /* Date/time input dark theme */
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.6);
+    }
+
+    /* Recharts tooltip */
+    .recharts-tooltip-wrapper { font-size: 11px !important; }
+    .recharts-default-tooltip { background: var(--surface2) !important; border-color: var(--surface3) !important; }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0A0F1C', surface: '#0F172A', surface2: '#1E293B', surface3: '#334155',
+            gold: '#D4AF37', 'gold-d': '#A88B2C', 'gold-l': '#F4E4A6',
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <div id="root">
+    <!-- Splash synchrone avant hydratation React -->
+    <div id="splash" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0A0F1C">
+      <div style="font-size:1.75rem;font-weight:900;color:#D4AF37;letter-spacing:.1em;">I&amp;N RUN</div>
+      <div style="font-size:.7rem;color:#64748B;margin:.25rem 0 1.5rem;letter-spacing:.2em;">OPS v0.3</div>
+      <div style="width:2rem;height:2rem;border-radius:50%;border:2px solid #D4AF37;border-top-color:transparent;animation:spin .9s linear infinite"></div>
+    </div>
+  </div>
+
+  <script type="module">
+  // ===== IMPORTS ESM =====
+  import React, { useState, useEffect, useCallback, useMemo, useRef } from 'https://esm.sh/react@18';
+  import { createRoot } from 'https://esm.sh/react-dom@18/client';
+  import htm from 'https://esm.sh/htm@3';
+  import {
+    AreaChart, Area, XAxis, YAxis, Tooltip,
+    ResponsiveContainer, BarChart, Bar, CartesianGrid,
+    PieChart, Pie, Cell
+  } from 'https://esm.sh/recharts@2?deps=react@18,react-dom@18';
+  import {
+    Car, TrendingUp, Clock, MapPin, Euro,
+    Plus, Settings, BarChart2, History,
+    Activity, CheckCircle, XCircle,
+    Wifi, WifiOff, Star, Trash2, Download, RefreshCw,
+    Zap, X, Check, ArrowRight
+  } from 'https://esm.sh/lucide-react@0.451?deps=react@18';
+
+  const html = htm.bind(React.createElement);
+
+  // ===== CONSTANTES =====
+  const C = {
+    gold:'#D4AF37', goldD:'#A88B2C', goldL:'#F4E4A6',
+    bg:'#0A0F1C', surface:'#0F172A', surface2:'#1E293B', surface3:'#334155',
+    text:'#F1F5F9', textM:'#94A3B8', textD:'#64748B',
+    green:'#10B981', red:'#EF4444', amber:'#F59E0B', blue:'#3B82F6'
+  };
+
+  const PLATFORMS = {
+    uber:   { label:'Uber',   emoji:'⚫', accent:'#FFFFFF' },
+    bolt:   { label:'Bolt',   emoji:'🟢', accent:'#111111' },
+    heetch: { label:'Heetch', emoji:'🟣', accent:'#FFFFFF' }
+  };
+
+  const DEMAND_COLOR  = { LOW:C.textD, NORMAL:C.blue, HIGH:C.amber, PEAK:C.red };
+  const DEMAND_LABEL  = { LOW:'FAIBLE', NORMAL:'NORMAL', HIGH:'ÉLEVÉ', PEAK:'PEAK !' };
+  const DEMAND_PULSE  = { LOW:'', NORMAL:'', HIGH:'pulse-high', PEAK:'pulse-peak' };
+
+  const DEFAULT_SETTINGS = {
+    dailyGoal: 200,
+    weeklyGoal: 1000,
+    vehicleCostPerKm: 0.27,
+    homeZone: 'Ris-Orangis'
+  };
+
+  // ===== DATABASE (Dexie — IndexedDB) =====
+  const db = new window.Dexie('InrunOps');
+  db.version(1).stores({
+    courses:  'id, datetime, platform',
+    settings: 'key',
+    meta:     'key'
+  });
+
+  const loadCourses   = ()    => db.courses.toArray();
+  const saveCourse    = c     => db.courses.put(c);
+  const deleteCourse  = id    => db.courses.delete(id);
+  const clearCourses  = ()    => db.courses.clear();
+  const loadSettings  = async () => {
+    const r = await db.settings.get('main');
+    return r ? r.value : { ...DEFAULT_SETTINGS };
+  };
+  const saveSettings  = s     => db.settings.put({ key:'main', value:s });
+
+  async function ensureSeed() {
+    const flag = await db.meta.get('seeded_v1');
+    if (flag) return;
+    const count = await db.courses.count();
+    if (count === 0) {
+      try {
+        const data = await fetch('./seed_data.json').then(r => r.json());
+        await db.courses.bulkAdd(data);
+        await db.meta.put({ key:'seeded_v1', value:true });
+        console.log('[INRUN] Seed: 119 courses chargées');
+      } catch(e) { console.warn('[INRUN] Seed skipped:', e.message); }
+    }
+  }
+
+  // ===== SIGNAL ENGINE =====
+  // Moteur déterministe v0.3 basé sur analyse de 119 courses historiques
+  // Remplacer ce bloc par module ML en v0.4 sans toucher au reste
+
+  function getDemandLevel(hour, dow) {
+    // dow: 0=Lun … 6=Dim (convention locale, != JS Date.getDay)
+    const isWeekend = dow >= 5;
+    const isFriday  = dow === 4;
+    if (hour < 5)               return (isWeekend || isFriday) ? 'NORMAL' : 'LOW';
+    if (hour < 7)               return 'LOW';
+    if (hour < 9)               return isWeekend ? 'NORMAL' : 'HIGH';
+    if (hour < 12)              return 'NORMAL';
+    if (hour < 14)              return 'HIGH';
+    if (hour < 16)              return 'LOW';
+    if (hour < 17)              return 'NORMAL';
+    if (hour < 20)              return 'HIGH';
+    if (hour < 23)              return (isWeekend || isFriday) ? 'PEAK' : 'NORMAL';
+    return isWeekend ? 'HIGH' : 'NORMAL';
+  }
+
+  function getNextPeak(h, dow) {
+    const isFriday  = dow === 4;
+    const isWeekend = dow >= 5;
+    const peaks     = [7, 12, 17, 20, ...(isFriday || isWeekend ? [22] : [])];
+    const next      = peaks.find(p => p > h);
+    if (!next) return 'demain 7h00';
+    const diff = next - h;
+    return diff === 1 ? `dans 1h (${next}h00)` : `dans ${diff}h (${next}h00)`;
+  }
+
+  function getPlatformPriority(hour, dow, lastDest) {
+    const isFriday  = dow === 4;
+    const isWeekend = dow >= 5;
+    if (isFriday && hour >= 19 && hour <= 23)
+      return { platform:'bolt',   reason:'Vendredi soir — Bolt: tarifs +24% observés', avg:19.99 };
+    if (hour < 4 && (isWeekend || isFriday))
+      return { platform:'heetch', reason:'Nuit week-end — Heetch: bonus nocturne', avg:16.50 };
+    return {
+      platform:'uber',
+      reason: hour >= 7 && hour <= 19
+        ? 'Heures ouvrées — Uber: volume et fiabilité maximaux'
+        : 'Heures creuses — Uber: meilleure couverture zone',
+      avg:15.80
+    };
+  }
+
+  function getRecommendedZone(lastDest, homeZone) {
+    if (!lastDest) return homeZone || 'Ris-Orangis';
+    if (lastDest.includes('CDG') || lastDest.includes('Roissy'))  return 'CDG → Paris Gare du Nord';
+    if (lastDest.includes('Orly'))                                return 'Orly → Paris 13e-14e';
+    if (lastDest.includes('Défense') || lastDest.includes('Neuilly')) return 'Défense → Paris 8e-17e';
+    if (lastDest.includes('Paris'))                               return 'Paris centre → banlieue sud';
+    return homeZone || 'Ris-Orangis';
+  }
+
+  function getHeuristics(hour, demand, platform) {
+    const accepts = [], refuses = [];
+    if (demand === 'PEAK') {
+      accepts.push('Surge probable — accepter sans hésiter');
+      accepts.push('Courses < 15 min: enchaîner le max');
+    } else if (demand === 'HIGH') {
+      accepts.push('Demande forte — rester actif');
+      accepts.push('Paris intramuros en priorité');
+    } else {
+      refuses.push('Trajets > 30 km sans surge: refuser');
+    }
+    if (hour >= 13 && hour < 17) refuses.push('Pause 13h-17h recommandée (faible rentabilité)');
+    if (hour >= 7  && hour < 9)  accepts.push('Rush matinal: gares et Paris');
+    if (hour >= 17 && hour < 20) accepts.push('Rush soir: éviter N7/A6 → N104');
+    if (platform === 'bolt')     accepts.push('Bolt: vérifier tarif avant acceptation');
+    if (!accepts.length)         accepts.push('Maintenir service normal');
+    return { accepts: accepts.slice(0,3), refuses: refuses.slice(0,2) };
+  }
+
+  function getSignal(now, todayCourses, allCourses) {
+    const h   = now.getHours();
+    const jsD = now.getDay(); // 0=Dim
+    const dow = jsD === 0 ? 6 : jsD - 1; // 0=Lun, 6=Dim
+    const demand   = getDemandLevel(h, dow);
+    const lastC    = todayCourses.at(-1) || allCourses.at(-1) || null;
+    const lastDest = lastC ? lastC.destination_city : null;
+    const { platform, reason, avg } = getPlatformPriority(h, dow, lastDest);
+    return {
+      demand,
+      platform, reason, avg,
+      zone:     getRecommendedZone(lastDest, DEFAULT_SETTINGS.homeZone),
+      nextPeak: getNextPeak(h, dow),
+      heuristics: getHeuristics(h, demand, platform)
+    };
+  }
+
+  // ===== UTILITAIRES =====
+  const fmtEuro = n =>
+    new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:2 }).format(n || 0);
+
+  const fmtTime = iso =>
+    new Date(iso).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
+  const fmtDateShort = iso =>
+    new Date(iso).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+
+  const todayISO = () => new Date().toISOString().slice(0, 10);
+
+  const isToday = iso => iso && iso.startsWith(todayISO());
+
+  const localDatetimeNow = () => {
+    const d = new Date();
+    return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
+
+  const generateId = () =>
+    'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+
+  function groupByDay(courses) {
+    const map = {};
+    [...courses]
+      .sort((a, b) => b.datetime.localeCompare(a.datetime))
+      .forEach(c => {
+        const d = c.datetime.slice(0, 10);
+        (map[d] = map[d] || []).push(c);
+      });
+    return Object.entries(map).sort((a, b) => b[0].localeCompare(a[0]));
+  }
+
+  function exportCSV(courses) {
+    const headers = ['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active'];
+    const esc = v => {
+      const s = String(v ?? '');
+      return /[,"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const rows = [headers.join(','), ...courses.map(c => headers.map(h => esc(c[h])).join(','))];
+    const blob = new Blob([rows.join('\n')], { type:'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    Object.assign(document.createElement('a'), { href:url, download:`inrun_${todayISO()}.csv` }).click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ===== COMPOSANTS =====
+
+  // --- StatusBar ---
+  function StatusBar({ signal, online }) {
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+      const id = setInterval(() => setTime(new Date()), 30000);
+      return () => clearInterval(id);
+    }, []);
+    const col   = DEMAND_COLOR[signal.demand];
+    const lbl   = DEMAND_LABEL[signal.demand];
+    const pulse = DEMAND_PULSE[signal.demand];
+    return html`
+      <div class="safe-top flex items-center justify-between px-4 py-2.5"
+           style=${{ background:C.surface, borderBottom:`1px solid ${C.surface3}` }}>
+        <div class="flex items-center gap-2">
+          <span class="font-black text-sm tracking-widest" style=${{ color:C.gold }}>I&amp;N RUN</span>
+          <span class="text-xs font-bold" style=${{ color:C.textD }}>OPS</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <span class="${pulse} text-xs font-bold px-2 py-0.5 rounded-full"
+                style=${{ color:col, border:`1px solid ${col}`, background:col+'18' }}>
+            ${lbl}
+          </span>
+          <span class="text-xs font-mono tabular-nums" style=${{ color:C.textM }}>
+            ${time.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })}
+          </span>
+          <${online ? Wifi : WifiOff} size=${13} color=${online ? C.green : C.textD} />
+        </div>
+      </div>`;
+  }
+
+  // --- SignalCard ---
+  function SignalCard({ signal }) {
+    const plt = PLATFORMS[signal.platform];
+    const { accepts, refuses } = signal.heuristics;
+    return html`
+      <div class="mx-3 mt-3 rounded-2xl p-4"
+           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-1.5">
+            <${Activity} size=${14} color=${C.gold} />
+            <span class="text-xs font-bold tracking-widest uppercase" style=${{ color:C.gold }}>Signal actif</span>
+          </div>
+          <span class="text-xs" style=${{ color:C.textD }}>Prochain pic: ${signal.nextPeak}</span>
+        </div>
+
+        <div class="rounded-xl p-3 mb-3"
+             style=${{ background:C.surface2, border:`1px solid ${C.surface3}` }}>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-lg leading-none">${plt.emoji}</span>
+            <span class="font-bold text-sm" style=${{ color:C.text }}>${plt.label}</span>
+            <span class="text-xs ml-auto font-bold" style=${{ color:C.gold }}>~${fmtEuro(signal.avg)}/course</span>
+          </div>
+          <p class="text-xs leading-relaxed" style=${{ color:C.textM }}>${signal.reason}</p>
+        </div>
+
+        <div class="flex items-center gap-2 mb-3 px-3 py-2 rounded-xl"
+             style=${{ background:C.surface2 }}>
+          <${MapPin} size=${12} color=${C.blue} />
+          <span class="text-xs" style=${{ color:C.textM }}>Zone: ${signal.zone}</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div class="space-y-1">
+            ${accepts.map((a, i) => html`
+              <div key=${i} class="flex items-start gap-1.5">
+                <${CheckCircle} size=${11} color=${C.green} style=${{ marginTop:2, flexShrink:0 }} />
+                <span class="text-xs leading-snug" style=${{ color:C.textM }}>${a}</span>
+              </div>`)}
+          </div>
+          <div class="space-y-1">
+            ${refuses.map((r, i) => html`
+              <div key=${i} class="flex items-start gap-1.5">
+                <${XCircle} size=${11} color=${C.red} style=${{ marginTop:2, flexShrink:0 }} />
+                <span class="text-xs leading-snug" style=${{ color:C.textM }}>${r}</span>
+              </div>`)}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // --- KPI Tiles ---
+  function KPITiles({ courses, settings }) {
+    const today   = useMemo(() => courses.filter(c => isToday(c.datetime)), [courses]);
+    const totalCA = today.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
+    const count   = today.length;
+    const durH    = Math.max(0.5, today.reduce((s, c) => s + (c.duration_min||0), 0) / 60);
+    const cph     = count ? totalCA / durH : 0;
+    const pct     = settings.dailyGoal > 0 ? Math.min(100, (totalCA / settings.dailyGoal) * 100) : 0;
+
+    const tiles = [
+      { l:'CA Jour',    v:fmtEuro(totalCA), s:`obj. ${fmtEuro(settings.dailyGoal)}`, col:C.gold,  Icon:Euro       },
+      { l:'Courses',    v:count,            s:`aujourd'hui`,                          col:C.blue,  Icon:Car        },
+      { l:'€/h actif',  v:fmtEuro(cph),     s:`${Math.round(durH*10)/10}h actives`,  col:C.green, Icon:TrendingUp },
+      { l:'Objectif',   v:`${Math.round(pct)}%`,
+        s: pct >= 100 ? '✓ Atteint !' : `${fmtEuro(settings.dailyGoal - totalCA)} restants`,
+        col: pct >= 100 ? C.green : C.amber, Icon:Star }
+    ];
+    return html`
+      <div class="grid grid-cols-2 gap-2 mx-3 mt-3">
+        ${tiles.map((t, i) => html`
+          <div key=${i} class="rounded-2xl p-3"
+               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs" style=${{ color:C.textD }}>${t.l}</span>
+              <${t.Icon} size=${13} color=${t.col} />
+            </div>
+            <div class="text-xl font-black leading-none" style=${{ color:t.col }}>${t.v}</div>
+            <div class="text-xs mt-1 leading-none" style=${{ color:C.textD }}>${t.s}</div>
+          </div>`)}
+      </div>`;
+  }
+
+  // --- CA Cumulé Chart ---
+  function CumulChart({ courses }) {
+    const today = useMemo(() => courses.filter(c => isToday(c.datetime)), [courses]);
+    const data  = useMemo(() => {
+      const byHour = {};
+      today.forEach(c => {
+        const h = new Date(c.datetime).getHours();
+        byHour[h] = (byHour[h] || 0) + (c.fare||0) + (c.tip||0);
+      });
+      let cum = 0;
+      const now = new Date().getHours();
+      return Array.from({ length: now + 2 }, (_, h) => {
+        cum += byHour[h] || 0;
+        return { h:`${h}h`, ca: Math.round(cum * 100) / 100 };
+      });
+    }, [today.length]);
+
+    if (!today.length) return html`
+      <div class="mx-3 mt-3 h-16 rounded-2xl flex items-center justify-center"
+           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+        <span class="text-xs" style=${{ color:C.textD }}>Aucune course aujourd'hui</span>
+      </div>`;
+
+    return html`
+      <div class="mx-3 mt-3 rounded-2xl p-4"
+           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+        <div class="flex items-center gap-1.5 mb-3">
+          <${TrendingUp} size=${13} color=${C.gold} />
+          <span class="text-xs font-bold tracking-wider uppercase" style=${{ color:C.textM }}>CA Cumulé Aujourd'hui</span>
+        </div>
+        <${ResponsiveContainer} width="100%" height=${70}>
+          <${AreaChart} data=${data} margin=${{ top:0, right:0, left:-28, bottom:0 }}>
+            <defs>
+              <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%"  stopColor=${C.gold} stopOpacity=${0.35} />
+                <stop offset="95%" stopColor=${C.gold} stopOpacity=${0}    />
+              </linearGradient>
+            </defs>
+            <${XAxis} dataKey="h" tick=${{ fontSize:9, fill:C.textD }} tickLine=${false} axisLine=${false} />
+            <${YAxis} tick=${{ fontSize:9, fill:C.textD }} tickLine=${false} axisLine=${false} />
+            <${Tooltip}
+              contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
+              labelStyle=${{ color:C.textM, fontSize:10 }}
+              formatter=${v => [fmtEuro(v), 'Cumulé']}
+            />
+            <${Area} type="monotone" dataKey="ca" stroke=${C.gold} strokeWidth=${2}
+                     fill="url(#goldGrad)" dot=${false} activeDot=${{ r:3, fill:C.gold }} />
+          </${AreaChart}>
+        </${ResponsiveContainer}>
+      </div>`;
+  }
+
+  // --- Course Row ---
+  function CourseRow({ course, onDelete }) {
+    const plt   = PLATFORMS[course.platform] || PLATFORMS.uber;
+    const total = (course.fare||0) + (course.tip||0);
+    return html`
+      <div class="flex items-center px-4 py-3 gap-3"
+           style=${{ borderBottom:`1px solid ${C.surface3}` }}>
+        <span class="text-xl w-8 text-center flex-shrink-0 leading-none">${plt.emoji}</span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1.5 mb-0.5">
+            <span class="text-xs font-bold" style=${{ color:C.text }}>${plt.label}</span>
+            ${course.surge_active ? html`<${Zap} size=${10} color=${C.amber} />` : null}
+            <span class="text-xs" style=${{ color:C.textD }}>${fmtTime(course.datetime)}</span>
+          </div>
+          <div class="text-xs truncate" style=${{ color:C.textM }}>
+            ${course.departure_city || '—'} → ${course.destination_city || '—'}
+          </div>
+          ${(course.distance_km || course.duration_min) ? html`
+            <div class="text-xs" style=${{ color:C.textD }}>
+              ${course.distance_km ? course.distance_km + ' km' : ''}
+              ${course.distance_km && course.duration_min ? ' · ' : ''}
+              ${course.duration_min ? course.duration_min + ' min' : ''}
+            </div>` : null}
+        </div>
+        <div class="flex flex-col items-end flex-shrink-0">
+          <span class="font-bold text-sm" style=${{ color:C.gold }}>${fmtEuro(total)}</span>
+          ${course.tip > 0 ? html`<span class="text-xs" style=${{ color:C.green }}>+tip ${fmtEuro(course.tip)}</span>` : null}
+          ${onDelete ? html`
+            <button onclick=${() => onDelete(course.id)}
+                    class="mt-1 p-1 rounded-lg"
+                    style=${{ color:C.textD, background:'transparent', minHeight:32 }}>
+              <${Trash2} size=${12} />
+            </button>` : null}
+        </div>
+      </div>`;
+  }
+
+  // --- Vue Live ---
+  function LiveView({ courses, signal, settings }) {
+    const today = useMemo(() =>
+      courses.filter(c => isToday(c.datetime)).sort((a, b) => b.datetime.localeCompare(a.datetime)),
+      [courses]);
+    return html`
+      <div class="pb-28">
+        <${StatusBar} signal=${signal} online=${navigator.onLine} />
+        <${SignalCard} signal=${signal} />
+        <${KPITiles}   courses=${courses} settings=${settings} />
+        <${CumulChart} courses=${courses} />
+        <div class="mx-3 mt-3">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-bold tracking-wider uppercase" style=${{ color:C.textM }}>Courses aujourd'hui</span>
+            <span class="text-xs" style=${{ color:C.textD }}>${today.length} course${today.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div class="rounded-2xl overflow-hidden"
+               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+            ${today.length === 0
+              ? html`<div class="py-8 text-center text-xs" style=${{ color:C.textD }}>Aucune course · Appuie sur + pour commencer</div>`
+              : today.map(c => html`<${CourseRow} key=${c.id} course=${c} />`)}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // --- Vue Stats ---
+  function StatsView({ courses }) {
+    const now     = new Date();
+    const weekAgo = new Date(now - 7 * 86400000);
+    const week    = useMemo(() => courses.filter(c => new Date(c.datetime) >= weekAgo), [courses]);
+
+    const totalCA = week.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
+    const avgC    = week.length ? totalCA / week.length : 0;
+    const totalKm = week.reduce((s, c) => s + (c.distance_km||0), 0);
+
+    const barData = useMemo(() =>
+      Array.from({ length:7 }, (_, i) => {
+        const d   = new Date(now - (6-i)*86400000);
+        const key = d.toISOString().slice(0,10);
+        const dc  = courses.filter(c => c.datetime.startsWith(key));
+        return {
+          day: d.toLocaleDateString('fr-FR', { weekday:'short' }),
+          ca: Math.round(dc.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0)),
+          n: dc.length
+        };
+      }), [courses]);
+
+    const platCA = useMemo(() => {
+      const m = { uber:0, bolt:0, heetch:0 };
+      week.forEach(c => { m[c.platform] = (m[c.platform]||0) + (c.fare||0) + (c.tip||0); });
+      return m;
+    }, [week]);
+
+    const pieData = Object.entries(platCA)
+      .filter(([, v]) => v > 0)
+      .map(([k, v]) => ({
+        name: PLATFORMS[k].label,
+        value: Math.round(v),
+        color: k==='uber' ? C.textM : k==='bolt' ? C.green : C.blue
+      }));
+
+    return html`
+      <div class="pb-28 pt-3">
+        <div class="px-4 mb-4 flex items-center gap-2">
+          <${BarChart2} size=${16} color=${C.gold} />
+          <h2 class="text-sm font-bold" style=${{ color:C.text }}>Stats — 7 derniers jours</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mx-3 mb-4">
+          ${[['CA Total', fmtEuro(totalCA), C.gold], ['Moy/Course', fmtEuro(avgC), C.blue], ['Km totaux', `${Math.round(totalKm)} km`, C.textM]]
+            .map(([l, v, col], i) => html`
+              <div key=${i} class="rounded-2xl p-3 text-center"
+                   style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+                <div class="text-xs mb-1" style=${{ color:C.textD }}>${l}</div>
+                <div class="text-sm font-bold" style=${{ color:col }}>${v}</div>
+              </div>`)}
+        </div>
+
+        <div class="mx-3 rounded-2xl p-4 mb-3"
+             style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+          <div class="text-xs font-bold mb-3 tracking-wider uppercase" style=${{ color:C.textM }}>CA par jour</div>
+          <${ResponsiveContainer} width="100%" height=${110}>
+            <${BarChart} data=${barData} margin=${{ top:0, right:0, left:-28, bottom:0 }}>
+              <${CartesianGrid} strokeDasharray="3 3" stroke=${C.surface3} vertical=${false} />
+              <${XAxis} dataKey="day" tick=${{ fontSize:10, fill:C.textD }} tickLine=${false} axisLine=${false} />
+              <${YAxis} tick=${{ fontSize:10, fill:C.textD }} tickLine=${false} axisLine=${false} />
+              <${Tooltip}
+                contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
+                formatter=${v => [fmtEuro(v), 'CA']}
+                labelStyle=${{ color:C.textM, fontSize:10 }}
+              />
+              <${Bar} dataKey="ca" fill=${C.gold} radius=${[4,4,0,0]} />
+            </${BarChart}>
+          </${ResponsiveContainer}>
+        </div>
+
+        ${pieData.length > 0 ? html`
+          <div class="mx-3 rounded-2xl p-4"
+               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+            <div class="text-xs font-bold mb-3 tracking-wider uppercase" style=${{ color:C.textM }}>Répartition plateformes</div>
+            <div class="flex items-center gap-4">
+              <${ResponsiveContainer} width="45%" height=${90}>
+                <${PieChart}>
+                  <${Pie} data=${pieData} cx="50%" cy="50%" innerRadius=${22} outerRadius=${40} dataKey="value" strokeWidth=${0}>
+                    ${pieData.map((e, i) => html`<${Cell} key=${i} fill=${e.color} />`)}
+                  </${Pie}>
+                  <${Tooltip}
+                    contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
+                    formatter=${v => [fmtEuro(v), 'CA']}
+                  />
+                </${PieChart}>
+              </${ResponsiveContainer}>
+              <div class="flex-1 space-y-2">
+                ${pieData.map((e, i) => html`
+                  <div key=${i} class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style=${{ background:e.color }}></div>
+                    <span class="text-xs" style=${{ color:C.textM }}>${e.name}</span>
+                    <span class="text-xs font-bold ml-auto" style=${{ color:C.text }}>${fmtEuro(e.value)}</span>
+                  </div>`)}
+              </div>
+            </div>
+          </div>` : null}
+      </div>`;
+  }
+
+  // --- Vue Historique ---
+  function HistoryView({ courses, onDelete }) {
+    const grouped = useMemo(() => groupByDay(courses), [courses.length]);
+    return html`
+      <div class="pb-28 pt-3">
+        <div class="px-4 mb-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <${History} size=${16} color=${C.gold} />
+            <h2 class="text-sm font-bold" style=${{ color:C.text }}>Historique</h2>
+          </div>
+          <span class="text-xs" style=${{ color:C.textD }}>${courses.length} courses</span>
+        </div>
+        ${grouped.length === 0
+          ? html`<div class="py-16 text-center text-xs" style=${{ color:C.textD }}>Aucune course enregistrée</div>`
+          : grouped.map(([day, dc]) => {
+              const dt = dc.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
+              return html`
+                <div key=${day} class="mx-3 mb-3">
+                  <div class="flex items-center justify-between px-1 mb-1.5">
+                    <span class="text-xs font-bold" style=${{ color:C.textD }}>${fmtDateShort(day + 'T12:00:00')}</span>
+                    <span class="text-xs font-bold" style=${{ color:C.gold }}>
+                      ${fmtEuro(dt)} · ${dc.length} course${dc.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <div class="rounded-2xl overflow-hidden"
+                       style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+                    ${dc.map(c => html`<${CourseRow} key=${c.id} course=${c} onDelete=${onDelete} />`)}
+                  </div>
+                </div>`;
+            })}
+      </div>`;
+  }
+
+  // --- Vue Réglages ---
+  function SettingsView({ settings, onSave, onReloadSeed, onExportCSV, onClearAll, courseCount }) {
+    const [local, setLocal]   = useState({ ...settings });
+    const [saved, setSaved]   = useState(false);
+
+    useEffect(() => setLocal({ ...settings }), [settings]);
+
+    const handleSave = () => {
+      onSave(local);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    };
+
+    const numField = (key, label, unit) => html`
+      <div class="mb-4">
+        <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>${label}</label>
+        <div class="flex items-center gap-2">
+          <input type="number" inputmode="decimal" step="any"
+                 value=${local[key]}
+                 onInput=${e => setLocal({ ...local, [key]: parseFloat(e.target.value) || 0 })}
+                 class="flex-1 rounded-xl px-3 py-2.5 text-sm"
+                 style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+          ${unit ? html`<span class="text-xs font-bold" style=${{ color:C.textD }}>${unit}</span>` : null}
+        </div>
+      </div>`;
+
+    return html`
+      <div class="pb-28 pt-3 px-4">
+        <div class="flex items-center gap-2 mb-5">
+          <${Settings} size=${16} color=${C.gold} />
+          <h2 class="text-sm font-bold" style=${{ color:C.text }}>Réglages</h2>
+        </div>
+
+        <div class="rounded-2xl p-4 mb-4" style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+          <div class="text-xs font-bold mb-4 tracking-wider uppercase" style=${{ color:C.textM }}>Objectifs</div>
+          ${numField('dailyGoal',       'Objectif journalier', '€/jour')}
+          ${numField('weeklyGoal',      'Objectif hebdo',      '€/sem.')}
+          ${numField('vehicleCostPerKm','Coût véhicule',       '€/km')}
+          <div class="mb-4">
+            <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Zone de base</label>
+            <input type="text"
+                   value=${local.homeZone || ''}
+                   onInput=${e => setLocal({ ...local, homeZone: e.target.value })}
+                   class="w-full rounded-xl px-3 py-2.5 text-sm"
+                   style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+          </div>
+          <button onclick=${handleSave}
+                  class="w-full py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+                  style=${{ background: saved ? C.green : C.gold, color: saved ? 'white' : C.bg }}>
+            ${saved ? html`<${Check} size=${16} /> Sauvegardé !` : 'Enregistrer'}
+          </button>
+        </div>
+
+        <div class="rounded-2xl p-4 mb-5" style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
+          <div class="text-xs font-bold mb-2 tracking-wider uppercase" style=${{ color:C.textM }}>Données</div>
+          <p class="text-xs mb-4" style=${{ color:C.textD }}>${courseCount} courses en base · IndexedDB locale</p>
+          <div class="space-y-2">
+            <button onclick=${onReloadSeed}
+                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                    style=${{ background:C.surface2, color:C.textM, border:`1px solid ${C.surface3}` }}>
+              <${RefreshCw} size=${14} /> Recharger seed (119 courses démo)
+            </button>
+            <button onclick=${onExportCSV}
+                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                    style=${{ background:C.surface2, color:C.textM, border:`1px solid ${C.surface3}` }}>
+              <${Download} size=${14} /> Exporter CSV
+            </button>
+            <button onclick=${onClearAll}
+                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                    style=${{ background:C.red+'18', color:C.red, border:`1px solid ${C.red}40` }}>
+              <${Trash2} size=${14} /> Effacer toutes les courses
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center space-y-1">
+          <p class="text-xs" style=${{ color:C.textD }}>I&amp;N RUN OPS v0.3</p>
+          <p class="text-xs" style=${{ color:C.textD }}>SIREN 993 776 467 00017 · Ris-Orangis (91130)</p>
+          <p class="text-xs" style=${{ color:C.textD }}>Suzuki Swace Hybrid 2022 · Uber Berline · Bolt · Heetch</p>
+          <!-- TODO v0.4: sync cloud, bot Telegram, ML adaptatif, OCR screenshots, GPS km à vide -->
+        </div>
+      </div>`;
+  }
+
+  // --- Zone Autocomplete Input ---
+  const ZONES = [
+    'Ris-Orangis','Évry-Courcouronnes','Corbeil-Essonnes','Juvisy-sur-Orge',
+    'Athis-Mons','Savigny-sur-Orge','Viry-Châtillon','Orly','Massy','Palaiseau',
+    'Paris 1er','Paris 2e','Paris 3e','Paris 4e','Paris 5e','Paris 6e','Paris 7e',
+    'Paris 8e','Paris 9e','Paris 10e','Paris 11e','Paris 12e','Paris 13e',
+    'Paris 14e','Paris 15e','Paris 16e','Paris 17e','Paris 18e','Paris 19e','Paris 20e',
+    'Orly Aéroport','CDG Aéroport','La Défense','Boulogne-Billancourt',
+    'Neuilly-sur-Seine','Versailles','Saint-Denis','Vincennes','Créteil',
+    'Vitry-sur-Seine','Ivry-sur-Seine','Villejuif','Rungis'
+  ];
+
+  function ZoneInput({ label, value, onChange }) {
+    const [q, setQ]         = useState(value || '');
+    const [open, setOpen]   = useState(false);
+    const filtered = useMemo(() =>
+      q.length > 0 ? ZONES.filter(z => z.toLowerCase().includes(q.toLowerCase())).slice(0, 6) : []
+    , [q]);
+
+    return html`
+      <div class="relative mb-3">
+        <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>${label}</label>
+        <input type="text" placeholder="Saisir ou choisir…"
+               value=${q}
+               onFocus=${() => setOpen(true)}
+               onInput=${e => { const v = e.target.value; setQ(v); onChange(v); setOpen(true); }}
+               onBlur=${() => setTimeout(() => setOpen(false), 180)}
+               class="w-full rounded-xl px-3 py-2.5 text-sm"
+               style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+        ${open && filtered.length > 0 ? html`
+          <div class="absolute z-50 w-full mt-1 rounded-xl overflow-hidden shadow-xl"
+               style=${{ background:C.surface2, border:`1px solid ${C.surface3}` }}>
+            ${filtered.map(z => html`
+              <div key=${z}
+                   class="px-3 py-2.5 text-sm cursor-pointer"
+                   style=${{ color:C.text, borderBottom:`1px solid ${C.surface3}40` }}
+                   onMouseOver=${e => e.currentTarget.style.background = C.surface3}
+                   onMouseOut=${e  => e.currentTarget.style.background = 'transparent'}
+                   onMouseDown=${() => { setQ(z); onChange(z); setOpen(false); }}>
+                ${z}
+              </div>`)}
+          </div>` : null}
+      </div>`;
+  }
+
+  // --- Modal Ajout Course ---
+  function AddCourseModal({ onClose, onSave }) {
+    const [form, setForm]   = useState({
+      platform:'uber', fare:'', tip:'', distance_km:'', duration_min:'',
+      departure_city:'', destination_city:'', surge_active:false, datetime:localDatetimeNow()
+    });
+    const [error, setError] = useState('');
+    const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+    const handleSubmit = () => {
+      const fare = parseFloat(form.fare);
+      if (!fare || fare <= 0) { setError('Le montant est obligatoire'); return; }
+      onSave({
+        id:                generateId(),
+        platform:          form.platform,
+        type:              form.platform !== 'heetch' ? 'berline' : 'standard',
+        fare,
+        tip:               parseFloat(form.tip) || 0,
+        distance_km:       parseFloat(form.distance_km) || null,
+        duration_min:      parseInt(form.duration_min)  || null,
+        departure_city:    form.departure_city,
+        destination_city:  form.destination_city,
+        surge_active:      form.surge_active,
+        datetime:          form.datetime ? form.datetime + ':00' : new Date().toISOString(),
+        created_at:        new Date().toISOString()
+      });
+    };
+
+    return html`
+      <div class="fixed inset-0 z-40 flex flex-col justify-end"
+           style=${{ background:'rgba(0,0,0,.72)', backdropFilter:'blur(6px)' }}
+           onClick=${e => e.target === e.currentTarget && onClose()}>
+        <div class="sheet rounded-t-3xl overflow-y-auto safe-bottom"
+             style=${{ background:C.surface, maxHeight:'92vh', maxWidth:480, margin:'0 auto', width:'100%' }}>
+
+          <div class="flex items-center justify-between px-5 py-4"
+               style=${{ borderBottom:`1px solid ${C.surface3}` }}>
+            <h3 class="font-bold" style=${{ color:C.text }}>Nouvelle course</h3>
+            <button onclick=${onClose} class="p-1.5 rounded-full" style=${{ color:C.textD, background:C.surface2 }}>
+              <${X} size=${16} />
+            </button>
+          </div>
+
+          <div class="px-5 py-4 space-y-1">
+
+            <!-- Plateforme -->
+            <div class="mb-4">
+              <label class="text-xs font-bold block mb-2 tracking-wider uppercase" style=${{ color:C.textM }}>Plateforme</label>
+              <div class="flex gap-2">
+                ${Object.entries(PLATFORMS).map(([k, p]) => html`
+                  <button key=${k} onclick=${() => set('platform', k)}
+                          class="flex-1 py-2.5 rounded-xl text-xs font-bold"
+                          style=${{
+                            background: form.platform === k ? C.gold : C.surface2,
+                            color:      form.platform === k ? C.bg  : C.textM,
+                            border: `1px solid ${form.platform === k ? C.gold : C.surface3}`
+                          }}>
+                    ${p.emoji} ${p.label}
+                  </button>`)}
+              </div>
+            </div>
+
+            <!-- Montant -->
+            <div class="mb-4">
+              <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>
+                Montant <span style=${{ color:C.red }}>*</span>
+              </label>
+              <input type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"
+                     value=${form.fare}
+                     onInput=${e => { setError(''); set('fare', e.target.value); }}
+                     class="w-full rounded-xl px-4 py-3 text-2xl font-black"
+                     style=${{ background:C.surface2, border:`2px solid ${error ? C.red : C.gold}40`, color:C.gold }} />
+              ${error ? html`<p class="text-xs mt-1" style=${{ color:C.red }}>${error}</p>` : null}
+            </div>
+
+            <!-- Tip + Distance -->
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Pourboire (€)</label>
+                <input type="number" inputmode="decimal" step="0.5" min="0" placeholder="0.00"
+                       value=${form.tip} onInput=${e => set('tip', e.target.value)}
+                       class="w-full rounded-xl px-3 py-2.5 text-sm"
+                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Distance (km)</label>
+                <input type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.0"
+                       value=${form.distance_km} onInput=${e => set('distance_km', e.target.value)}
+                       class="w-full rounded-xl px-3 py-2.5 text-sm"
+                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+              </div>
+            </div>
+
+            <!-- Durée + Date/heure -->
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Durée (min)</label>
+                <input type="number" inputmode="numeric" step="1" min="0" placeholder="0"
+                       value=${form.duration_min} onInput=${e => set('duration_min', e.target.value)}
+                       class="w-full rounded-xl px-3 py-2.5 text-sm"
+                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Date/heure</label>
+                <input type="datetime-local"
+                       value=${form.datetime} onInput=${e => set('datetime', e.target.value)}
+                       class="w-full rounded-xl px-3 py-2.5 text-sm"
+                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
+              </div>
+            </div>
+
+            <${ZoneInput} label="Départ"      value=${form.departure_city}   onChange=${v => set('departure_city', v)}   />
+            <${ZoneInput} label="Destination" value=${form.destination_city} onChange=${v => set('destination_city', v)} />
+
+            <!-- Surge toggle -->
+            <div class="flex items-center gap-3 py-3 px-3 rounded-xl mb-4"
+                 style=${{ background:C.surface2 }}>
+              <${Zap} size=${14} color=${form.surge_active ? C.amber : C.textD} />
+              <span class="text-sm flex-1" style=${{ color:C.textM }}>Surge / Prix majoré</span>
+              <button onclick=${() => set('surge_active', !form.surge_active)}
+                      class="relative rounded-full transition-colors"
+                      style=${{ width:46, height:26, background: form.surge_active ? C.amber : C.surface3 }}>
+                <span class="absolute top-0.5 rounded-full bg-white transition-all shadow"
+                      style=${{ width:22, height:22, left: form.surge_active ? '22px' : '2px' }}></span>
+              </button>
+            </div>
+
+            <button onclick=${handleSubmit}
+                    class="w-full py-3.5 rounded-2xl font-black text-sm tracking-wider mb-2"
+                    style=${{ background:C.gold, color:C.bg }}>
+              Enregistrer la course ✓
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // --- Bottom Navigation ---
+  function BottomNav({ view, onChange }) {
+    const tabs = [
+      { id:'live',     label:'Live',      Icon:Activity  },
+      { id:'stats',    label:'Stats',     Icon:BarChart2 },
+      { id:'history',  label:'Historique',Icon:History   },
+      { id:'settings', label:'Réglages',  Icon:Settings  },
+    ];
+    return html`
+      <div class="fixed bottom-0 left-0 right-0 safe-bottom z-20"
+           style=${{ background:C.surface, borderTop:`1px solid ${C.surface3}`, maxWidth:480, margin:'0 auto' }}>
+        <div class="flex">
+          ${tabs.map(t => html`
+            <button key=${t.id} onclick=${() => onChange(t.id)}
+                    class="flex-1 flex flex-col items-center pt-2 pb-1.5 gap-0.5"
+                    style=${{ color: view === t.id ? C.gold : C.textD, background:'transparent' }}>
+              <${t.Icon} size=${22} />
+              <span class="text-xs" style=${{ fontSize:10 }}>${t.label}</span>
+            </button>`)}
+        </div>
+      </div>`;
+  }
+
+  // --- FAB ---
+  function FAB({ onClick }) {
+    return html`
+      <button onclick=${onClick}
+              class="fixed z-30 rounded-full flex items-center justify-center"
+              style=${{
+                bottom:72, right:16, width:52, height:52,
+                background:C.gold, color:C.bg,
+                boxShadow:`0 4px 24px ${C.gold}55`
+              }}>
+        <${Plus} size=${24} />
+      </button>`;
+  }
+
+  // ===== APP ROOT =====
+  function App() {
+    const [view,     setView]     = useState('live');
+    const [courses,  setCourses]  = useState([]);
+    const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+    const [showAdd,  setShowAdd]  = useState(false);
+    const [loading,  setLoading]  = useState(true);
+    const [signal,   setSignal]   = useState(null);
+
+    // Signal refresh toutes les 30s
+    useEffect(() => {
+      const refresh = () => {
+        const now   = new Date();
+        const today = courses.filter(c => isToday(c.datetime));
+        setSignal(getSignal(now, today, courses));
+      };
+      refresh();
+      const id = setInterval(refresh, 30000);
+      return () => clearInterval(id);
+    }, [courses]);
+
+    // Chargement initial
+    useEffect(() => {
+      (async () => {
+        try {
+          await ensureSeed();
+          const [all, cfg] = await Promise.all([loadCourses(), loadSettings()]);
+          setCourses(all.sort((a, b) => a.datetime.localeCompare(b.datetime)));
+          setSettings(cfg);
+        } catch(e) {
+          console.error('[INRUN] Init error:', e);
+        } finally {
+          setLoading(false);
+          const splash = document.getElementById('splash');
+          if (splash) splash.remove();
+        }
+      })();
+    }, []);
+
+    const addCourse = useCallback(async c => {
+      await saveCourse(c);
+      setCourses(prev => [...prev, c].sort((a, b) => a.datetime.localeCompare(b.datetime)));
+      setShowAdd(false);
+    }, []);
+
+    const delCourse = useCallback(async id => {
+      if (!confirm('Supprimer cette course ?')) return;
+      await deleteCourse(id);
+      setCourses(prev => prev.filter(c => c.id !== id));
+    }, []);
+
+    const updateSettings = useCallback(async s => {
+      await saveSettings(s);
+      setSettings(s);
+    }, []);
+
+    const reloadSeed = useCallback(async () => {
+      if (!confirm('Recharger les 119 courses de démo ? Les courses existantes seront conservées.')) return;
+      await db.meta.delete('seeded_v1');
+      await ensureSeed();
+      setCourses(await loadCourses());
+    }, []);
+
+    const clearAll = useCallback(async () => {
+      if (!confirm('Effacer TOUTES les courses ? Action irréversible.')) return;
+      await clearCourses();
+      await db.meta.delete('seeded_v1');
+      setCourses([]);
+    }, []);
+
+    if (loading || !signal) return null; // splash affiché en HTML statique
+
+    return html`
+      <div>
+        ${view === 'live'     && html`<${LiveView}     courses=${courses} signal=${signal} settings=${settings} />`}
+        ${view === 'stats'    && html`<${StatsView}    courses=${courses} />`}
+        ${view === 'history'  && html`<${HistoryView}  courses=${courses} onDelete=${delCourse} />`}
+        ${view === 'settings' && html`
+          <${SettingsView}
+            settings=${settings}
+            onSave=${updateSettings}
+            onReloadSeed=${reloadSeed}
+            onExportCSV=${() => exportCSV(courses)}
+            onClearAll=${clearAll}
+            courseCount=${courses.length}
+          />`}
+
+        ${view !== 'settings' && html`<${FAB} onClick=${() => setShowAdd(true)} />`}
+        <${BottomNav} view=${view} onChange=${setView} />
+        ${showAdd && html`<${AddCourseModal} onClose=${() => setShowAdd(false)} onSave=${addCourse} />`}
+      </div>`;
+  }
+
+  // ===== BOOT =====
+  createRoot(document.getElementById('root')).render(html`<${App} />`);
+
+  // ===== SERVICE WORKER =====
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(r  => console.log('[INRUN] SW registered:', r.scope))
+        .catch(e => console.warn('[INRUN] SW registration failed:', e));
+    });
+  }
+  </script>
+</body>
+</html>
