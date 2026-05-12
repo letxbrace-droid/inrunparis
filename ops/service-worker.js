@@ -1,4 +1,4 @@
-const CACHE = 'inrun-ops-v1';
+const CACHE = 'inrun-ops-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -29,11 +29,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Only cache-first for same-origin assets; pass CDN requests through
   const url = new URL(e.request.url);
-  if (url.origin !== self.location.origin) {
-    return; // Let CDN requests fall through
-  }
+  if (url.origin !== self.location.origin) return;
   e.respondWith(
     caches.match(e.request).then(r => r || fetch(e.request))
   );

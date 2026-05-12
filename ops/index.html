@@ -12,1086 +12,767 @@
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>I&amp;N RUN OPS</title>
 
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Dexie.js — IndexedDB wrapper (UMD → window.Dexie, chargé avant le module) -->
   <script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <style>
     :root {
-      --bg:       #0A0F1C;
-      --surface:  #0F172A;
-      --surface2: #1E293B;
-      --surface3: #334155;
-      --gold:     #D4AF37;
-      --gold-d:   #A88B2C;
-      --gold-l:   #F4E4A6;
-      --text:     #F1F5F9;
-      --text-m:   #94A3B8;
-      --text-d:   #64748B;
-      --green:    #10B981;
-      --red:      #EF4444;
-      --amber:    #F59E0B;
-      --blue:     #3B82F6;
+      --bg:      #070C18;
+      --s1:      #0D1526;
+      --s2:      #1A2540;
+      --s3:      #263354;
+      --s4:      #334166;
+      --gold:    #D4AF37;
+      --goldD:   #A08828;
+      --goldL:   #F0D97A;
+      --text:    #E8EEF8;
+      --textM:   #8A9BBF;
+      --textD:   #4A5A7A;
+      --green:   #00C896;
+      --red:     #F04444;
+      --amber:   #F5A623;
+      --blue:    #3D8EF5;
+      --purple:  #9B59F5;
+      --mono:    'SF Mono','Fira Code','Roboto Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{background:var(--bg)}
+    body{
+      background:var(--bg);color:var(--text);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      min-height:100dvh;overflow-x:hidden;
+      -webkit-tap-highlight-color:transparent;
+      -webkit-font-smoothing:antialiased;
+    }
+    #app{max-width:480px;margin:0 auto;min-height:100dvh;position:relative}
+
+    /* ── LOADING ─────────────────────────────── */
+    #loading{
+      position:fixed;inset:0;background:var(--bg);z-index:200;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;
+      transition:opacity .35s ease;
+    }
+    #loading.out{opacity:0;pointer-events:none}
+    .load-logo{
+      font-size:1.6rem;font-weight:900;letter-spacing:.15em;
+      background:linear-gradient(135deg,var(--goldL),var(--gold),var(--goldD));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .load-ring{
+      width:36px;height:36px;border-radius:50%;
+      border:2px solid var(--s3);border-top-color:var(--gold);
+      animation:spin .7s linear infinite;
+    }
+    .load-ver{font-size:.65rem;letter-spacing:.12em;color:var(--textD);text-transform:uppercase}
+
+    /* ── ANIMATIONS ──────────────────────────── */
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes ppeak{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.1)}}
+    @keyframes phigh{0%,100%{opacity:1}50%{opacity:.6}}
+    @keyframes slideup{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes fadein{from{opacity:0}to{opacity:1}}
+    @keyframes glowgold{0%,100%{box-shadow:0 0 10px rgba(212,175,55,.25)}50%{box-shadow:0 0 22px rgba(212,175,55,.55)}}
+
+    /* ── LAYOUT ──────────────────────────────── */
+    #main{
+      display:flex;flex-direction:column;min-height:100dvh;
+      padding-bottom:calc(4.75rem + env(safe-area-inset-bottom));
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-font-smoothing: antialiased;
+    /* ── SIGNAL BAR ──────────────────────────── */
+    #sig-bar{
+      position:sticky;top:0;z-index:50;
+      background:rgba(13,21,38,.96);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(212,175,55,.12);
+      padding:.6rem 1rem;
+      display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.75rem;
+    }
+    .sig-brand{
+      font-size:.78rem;font-weight:900;letter-spacing:.12em;
+      color:var(--gold);white-space:nowrap;
+    }
+    .sig-center{display:flex;flex-direction:column;align-items:center;gap:.1rem}
+    .sig-badge{
+      display:inline-flex;align-items:center;gap:.3rem;
+      padding:.18rem .55rem;border-radius:99px;
+      font-size:.65rem;font-weight:800;letter-spacing:.1em;
+      font-family:var(--mono);border:1px solid;
+    }
+    .sig-badge.PEAK{background:rgba(240,68,68,.18);color:#f04444;border-color:rgba(240,68,68,.35);animation:ppeak 1.4s ease-in-out infinite}
+    .sig-badge.HIGH{background:rgba(212,175,55,.18);color:var(--gold);border-color:rgba(212,175,55,.35);animation:phigh 2s ease-in-out infinite}
+    .sig-badge.NORMAL{background:rgba(61,142,245,.15);color:var(--blue);border-color:rgba(61,142,245,.3)}
+    .sig-badge.LOW{background:rgba(74,90,122,.18);color:var(--textD);border-color:rgba(74,90,122,.3)}
+    .sig-reason{
+      font-size:.58rem;color:var(--textM);text-align:center;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;
+    }
+    .sig-time{
+      font-family:var(--mono);font-size:.82rem;font-weight:700;
+      color:var(--gold);white-space:nowrap;
     }
 
-    #root { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+    /* ── TABS ────────────────────────────────── */
+    .tab{display:none;animation:fadein .18s ease-out}
+    .tab.on{display:block}
 
-    @keyframes pulse-peak {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.65; transform: scale(1.06); }
+    /* ── SECTION LABEL ───────────────────────── */
+    .sec-label{
+      display:flex;align-items:center;gap:.5rem;
+      font-size:.58rem;font-weight:800;letter-spacing:.14em;
+      color:var(--textD);text-transform:uppercase;margin-bottom:.5rem;
     }
-    @keyframes pulse-high {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    .sec-label::after{content:'';flex:1;height:1px;background:var(--s3)}
+
+    /* ── SESSION PANEL ───────────────────────── */
+    #sess-panel{margin:.5rem .7rem;border-radius:.75rem;background:var(--s1);border:1px solid var(--s3);overflow:hidden}
+    #sess-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.55rem .75rem;cursor:pointer;user-select:none;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .sess-head-l{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600}
+    .sess-dot{width:8px;height:8px;border-radius:50%;background:var(--textD);transition:background .2s}
+    .sess-dot.active{background:var(--green);box-shadow:0 0 7px var(--green);animation:ppeak 1.5s ease-in-out infinite}
+    .sess-dot.paused{background:var(--amber)}
+    .chevron{width:16px;height:16px;color:var(--textD);transition:transform .2s;flex-shrink:0}
+    #sess-body{border-top:1px solid var(--s3);padding:.75rem;display:none}
 
-    .pulse-peak { animation: pulse-peak 1.4s ease-in-out infinite; }
-    .pulse-high { animation: pulse-high 2s ease-in-out infinite; }
-    .spin { animation: spin 0.9s linear infinite; }
-    .sheet { animation: slide-up 0.25s ease-out; }
+    .shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.65rem}
+    .shift-opt{
+      background:var(--s2);border-radius:.5rem;padding:.5rem .35rem;
+      border:2px solid transparent;cursor:pointer;text-align:center;
+      transition:border-color .15s,background .15s;
+    }
+    .shift-opt.sel{border-color:var(--gold);background:rgba(212,175,55,.08)}
+    .shift-opt-name{font-size:.65rem;font-weight:800;color:var(--text);margin-bottom:.15rem}
+    .shift-opt-desc{font-size:.52rem;color:var(--textM)}
+    .shift-opt-tgt{font-family:var(--mono);font-size:.65rem;color:var(--gold);margin-top:.2rem}
 
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+    .sess-btn{
+      flex:1;padding:.45rem .35rem;border-radius:.45rem;border:none;
+      font-size:.72rem;font-weight:700;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:.3rem;
+      transition:opacity .15s;
+    }
+    .sess-btn:active{opacity:.7}
+    .sess-btns{display:flex;gap:.4rem}
 
-    button { touch-action: manipulation; cursor: pointer; border: none; outline: none; }
-    input, select { outline: none; }
+    .sess-timer{
+      font-family:var(--mono);font-size:2.2rem;font-weight:700;
+      color:var(--gold);text-align:center;letter-spacing:.04em;
+      margin-bottom:.5rem;line-height:1;
+      text-shadow:0 0 20px rgba(212,175,55,.4);
+    }
+    .sess-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.65rem}
+    .sess-m{background:var(--s2);border-radius:.45rem;padding:.4rem;text-align:center}
+    .sess-m-val{font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--text)}
+    .sess-m-lbl{font-size:.55rem;color:var(--textM);margin-top:.1rem}
 
-    .safe-top    { padding-top: env(safe-area-inset-top, 0px); }
-    .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    /* ── KPI GRID ────────────────────────────── */
+    .kpi-sec{padding:.4rem .7rem}
+    .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.45rem}
+    .kpi{
+      background:var(--s1);border-radius:.7rem;padding:.7rem .75rem;
+      border:1px solid var(--s3);position:relative;overflow:hidden;
+    }
+    .kpi::before{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(135deg,rgba(212,175,55,.05) 0%,transparent 55%);
+    }
+    .kpi-lbl{font-size:.58rem;font-weight:700;letter-spacing:.06em;color:var(--textM);text-transform:uppercase;margin-bottom:.2rem}
+    .kpi-val{font-family:var(--mono);font-size:1.45rem;font-weight:700;line-height:1.05;letter-spacing:-.02em}
+    .kpi-sub{font-size:.58rem;color:var(--textM);margin-top:.18rem}
+    .kpi-ico{position:absolute;top:.65rem;right:.65rem;font-size:1.15rem;opacity:.3}
+    .kpi-val.gold{color:var(--gold)}
+    .kpi-val.green{color:var(--green)}
+    .kpi-val.blue{color:var(--blue)}
+    .kpi-val.purple{color:var(--purple)}
 
-    /* Date/time input dark theme */
-    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-      filter: invert(0.6);
+    /* ── HEATMAP ─────────────────────────────── */
+    .hm-wrap{margin:.35rem .7rem;background:var(--s1);border-radius:.7rem;border:1px solid var(--s3);padding:.7rem}
+    .hm-title{font-size:.58rem;font-weight:800;letter-spacing:.1em;color:var(--textD);text-transform:uppercase;margin-bottom:.5rem}
+    .hm-grid{display:grid;grid-template-columns:3.2rem repeat(7,1fr);gap:2px}
+    .hm-cell{
+      height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+      font-size:.47rem;font-family:var(--mono);font-weight:700;
+    }
+    .hm-cell.hdr{color:var(--textD);font-size:.5rem;font-family:system-ui}
+    .hm-cell.row-lbl{color:var(--textD);font-size:.48rem;justify-content:flex-start;font-family:system-ui}
+    .hm-cell.cur{outline:2px solid var(--gold);outline-offset:-1px;z-index:1}
+
+    /* ── CHARTS ──────────────────────────────── */
+    .chart-box{margin:.35rem .7rem;background:var(--s1);border-radius:.7rem;border:1px solid var(--s3);padding:.7rem}
+    .chart-ttl{font-size:.58rem;font-weight:800;letter-spacing:.1em;color:var(--textD);text-transform:uppercase;margin-bottom:.55rem}
+    .chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.35rem .7rem}
+
+    /* ── ZONE TABLE ──────────────────────────── */
+    .ztable{width:100%;border-collapse:collapse;font-size:.7rem}
+    .ztable td{padding:.28rem .35rem;border-bottom:1px solid rgba(38,51,84,.6)}
+    .ztable tr:last-child td{border-bottom:none}
+    .z-hot{color:var(--green);font-weight:700}
+    .z-cold{color:var(--textM)}
+    .z-val{font-family:var(--mono);text-align:right}
+
+    /* ── HISTORY ─────────────────────────────── */
+    .hist-wrap{padding:.5rem .7rem}
+    .filter-bar{display:flex;gap:.35rem;overflow-x:auto;padding-bottom:.25rem;margin-bottom:.65rem;scrollbar-width:none}
+    .filter-bar::-webkit-scrollbar{display:none}
+    .chip{
+      flex-shrink:0;padding:.28rem .65rem;border-radius:99px;
+      border:1px solid var(--s3);background:var(--s1);
+      color:var(--textM);font-size:.68rem;font-weight:700;cursor:pointer;
+      transition:all .15s;white-space:nowrap;
+    }
+    .chip.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+    .hist-list{display:flex;flex-direction:column;gap:.35rem}
+    .c-row{
+      background:var(--s1);border-radius:.6rem;border:1px solid var(--s3);
+      padding:.55rem .7rem;display:flex;align-items:center;gap:.65rem;
+      animation:slideup .18s ease-out;
+    }
+    .c-plat{
+      width:30px;height:30px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.8rem;flex-shrink:0;background:var(--s2);
+    }
+    .c-info{flex:1;min-width:0}
+    .c-fare{font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--gold)}
+    .c-tip{font-size:.62rem;color:var(--green);margin-left:.3rem}
+    .c-meta{font-size:.6rem;color:var(--textM);margin-top:.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .c-surge{width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0}
+    .c-del{
+      background:none;border:none;color:var(--textD);cursor:pointer;
+      padding:.3rem;font-size:.85rem;flex-shrink:0;border-radius:.3rem;
+      transition:color .15s;
+    }
+    .c-del:active{color:var(--red)}
+    .empty{text-align:center;padding:2.5rem 1rem;color:var(--textM)}
+    .empty-ico{font-size:2rem;margin-bottom:.5rem}
+    .empty-txt{font-size:.82rem}
+
+    /* ── SETTINGS ────────────────────────────── */
+    .set-wrap{padding:.6rem .7rem}
+    .set-sec{background:var(--s1);border-radius:.7rem;border:1px solid var(--s3);margin-bottom:.65rem;overflow:hidden}
+    .set-sec-ttl{
+      padding:.5rem .75rem;font-size:.58rem;font-weight:800;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--textM);
+      border-bottom:1px solid var(--s3);background:var(--s2);
+    }
+    .set-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.65rem .75rem;border-bottom:1px solid rgba(38,51,84,.5);
+    }
+    .set-row:last-child{border-bottom:none}
+    .set-lbl{font-size:.82rem;font-weight:600;color:var(--text)}
+    .set-desc{font-size:.62rem;color:var(--textM);margin-top:.08rem}
+    .set-btn{
+      padding:.32rem .7rem;border-radius:.4rem;border:none;
+      font-size:.7rem;font-weight:700;cursor:pointer;
+      transition:opacity .15s;flex-shrink:0;
+    }
+    .set-btn:active{opacity:.7}
+    .set-btn.pri{background:var(--gold);color:var(--bg)}
+    .set-btn.inf{background:rgba(61,142,245,.15);color:var(--blue);border:1px solid rgba(61,142,245,.3)}
+    .set-btn.dan{background:rgba(240,68,68,.15);color:var(--red);border:1px solid rgba(240,68,68,.3)}
+
+    /* ── TOGGLE ──────────────────────────────── */
+    .tog{
+      width:44px;height:24px;border-radius:99px;border:none;
+      cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;
+    }
+    .tog-thumb{
+      position:absolute;top:3px;width:18px;height:18px;
+      border-radius:50%;background:#fff;
+      transition:left .2s cubic-bezier(.4,0,.2,1);
+      box-shadow:0 1px 3px rgba(0,0,0,.4);
     }
 
-    /* Recharts tooltip */
-    .recharts-tooltip-wrapper { font-size: 11px !important; }
-    .recharts-default-tooltip { background: var(--surface2) !important; border-color: var(--surface3) !important; }
+    /* ── BOTTOM NAV ──────────────────────────── */
+    #bnav{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:480px;
+      background:rgba(13,21,38,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border-top:1px solid rgba(212,175,55,.12);
+      padding:.45rem 0 calc(.45rem + env(safe-area-inset-bottom));
+      display:flex;z-index:60;
+    }
+    .nb{
+      flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;
+      padding:.38rem .25rem;background:none;border:none;cursor:pointer;
+      color:var(--textD);transition:color .15s;
+    }
+    .nb.on{color:var(--gold)}
+    .nb svg{width:19px;height:19px;stroke-width:1.8}
+    .nb-lbl{font-size:.55rem;font-weight:700;letter-spacing:.05em}
+    .nb-bar{
+      position:absolute;top:0;height:2px;width:22px;background:var(--gold);
+      border-radius:0 0 2px 2px;transition:left .22s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── FAB ─────────────────────────────────── */
+    #fab{
+      position:fixed;
+      bottom:calc(5.6rem + env(safe-area-inset-bottom));
+      right:calc(.9rem + env(safe-area-inset-right));
+      width:50px;height:50px;border-radius:50%;
+      background:var(--gold);color:var(--bg);
+      border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.55rem;font-weight:300;line-height:1;
+      box-shadow:0 4px 18px rgba(212,175,55,.45);z-index:55;
+      transition:transform .15s,box-shadow .15s;
+      animation:glowgold 3s ease-in-out infinite;
+    }
+    #fab:active{transform:scale(.88);box-shadow:0 2px 8px rgba(212,175,55,.3)}
+
+    /* ── MODAL ───────────────────────────────── */
+    #modal-ov{
+      position:fixed;inset:0;background:rgba(7,12,24,.88);
+      backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+      z-index:70;display:flex;align-items:flex-end;justify-content:center;
+    }
+    #modal-ov.hide{display:none}
+    .modal-sh{
+      width:100%;max-width:480px;background:var(--s1);
+      border-radius:1.2rem 1.2rem 0 0;
+      padding:1rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+      max-height:92dvh;overflow-y:auto;
+      animation:slideup .22s cubic-bezier(.4,0,.2,1);
+    }
+    .m-handle{width:34px;height:4px;background:var(--s3);border-radius:2px;margin:0 auto .9rem}
+    .m-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+    .m-title{font-size:1rem;font-weight:800;color:var(--text)}
+    .m-close{
+      background:var(--s2);border:none;color:var(--textD);
+      width:28px;height:28px;border-radius:50%;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:.85rem;
+    }
+    .f-lbl{display:block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--textM);margin-bottom:.28rem}
+    .f-inp{
+      width:100%;background:var(--s2);border:1px solid var(--s3);
+      border-radius:.5rem;padding:.55rem .7rem;
+      color:var(--text);font-size:.88rem;outline:none;
+      transition:border-color .15s;font-family:var(--mono);
+    }
+    .f-inp:focus{border-color:var(--gold)}
+    .f-inp.err{border-color:var(--red)}
+    .f-grp{margin-bottom:.65rem}
+    .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+    .plat-tabs{display:flex;background:var(--s2);border-radius:.5rem;padding:.18rem}
+    .plat-tab{
+      flex:1;padding:.38rem;border:none;border-radius:.38rem;
+      background:transparent;color:var(--textM);font-size:.72rem;font-weight:700;
+      cursor:pointer;transition:all .15s;
+    }
+    .plat-tab.on{background:var(--gold);color:var(--bg)}
+    .f-surge-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem}
+    .btn-save{
+      width:100%;padding:.75rem;background:var(--gold);color:var(--bg);
+      border:none;border-radius:.7rem;font-size:.9rem;font-weight:800;
+      cursor:pointer;transition:opacity .15s;
+    }
+    .btn-save:active{opacity:.8}
+
+    /* ── SCROLLBAR ───────────────────────────── */
+    ::-webkit-scrollbar{width:3px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
   </style>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg: '#0A0F1C', surface: '#0F172A', surface2: '#1E293B', surface3: '#334155',
-            gold: '#D4AF37', 'gold-d': '#A88B2C', 'gold-l': '#F4E4A6',
-          }
-        }
-      }
-    };
-  </script>
 </head>
 <body>
-  <div id="root">
-    <!-- Splash synchrone avant hydratation React -->
-    <div id="splash" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0A0F1C">
-      <div style="font-size:1.75rem;font-weight:900;color:#D4AF37;letter-spacing:.1em;">I&amp;N RUN</div>
-      <div style="font-size:.7rem;color:#64748B;margin:.25rem 0 1.5rem;letter-spacing:.2em;">OPS v0.3</div>
-      <div style="width:2rem;height:2rem;border-radius:50%;border:2px solid #D4AF37;border-top-color:transparent;animation:spin .9s linear infinite"></div>
+<div id="app">
+
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="load-logo">I&amp;N RUN OPS</div>
+    <div class="load-ring"></div>
+    <div class="load-ver">v0.3 · initialisation</div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main" style="display:none">
+
+    <!-- SIGNAL BAR -->
+    <div id="sig-bar">
+      <div class="sig-brand">I&amp;N RUN</div>
+      <div class="sig-center">
+        <span id="sig-badge" class="sig-badge NORMAL">NORMAL · —</span>
+        <span id="sig-reason" class="sig-reason">Calcul en cours…</span>
+      </div>
+      <div id="sig-time" class="sig-time">--:--</div>
+    </div>
+
+    <!-- TAB DASHBOARD -->
+    <div id="tab-dashboard" class="tab on">
+
+      <!-- SESSION PANEL -->
+      <div id="sess-panel">
+        <div id="sess-head">
+          <div class="sess-head-l">
+            <div id="sess-dot" class="sess-dot"></div>
+            <span id="sess-status">Session inactive</span>
+          </div>
+          <svg class="chevron" id="sess-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div id="sess-body">
+          <div id="sess-start">
+            <div class="shift-grid" id="shift-grid"></div>
+            <button class="sess-btn" id="btn-start" style="background:rgba(0,200,150,.15);color:var(--green);border:1px solid rgba(0,200,150,.3);width:100%">▶ Démarrer la session</button>
+          </div>
+          <div id="sess-active" style="display:none">
+            <div id="sess-timer" class="sess-timer">00:00:00</div>
+            <div class="sess-meta">
+              <div class="sess-m"><div id="sm-courses" class="sess-m-val">0</div><div class="sess-m-lbl">courses</div></div>
+              <div class="sess-m"><div id="sm-ca" class="sess-m-val">0€</div><div class="sess-m-lbl">CA session</div></div>
+              <div class="sess-m"><div id="sm-eph" class="sess-m-val">—</div><div class="sess-m-lbl">€/h réel</div></div>
+            </div>
+            <div class="sess-btns">
+              <button class="sess-btn" id="btn-pause" style="background:rgba(245,166,35,.15);color:var(--amber);border:1px solid rgba(245,166,35,.3)">⏸ Pause</button>
+              <button class="sess-btn" id="btn-resume" style="background:rgba(0,200,150,.15);color:var(--green);border:1px solid rgba(0,200,150,.3);display:none">▶ Reprendre</button>
+              <button class="sess-btn" id="btn-end" style="background:rgba(240,68,68,.15);color:var(--red);border:1px solid rgba(240,68,68,.3)">■ Terminer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-sec">
+        <div class="sec-label">Performance</div>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-lbl">CA du jour</div><div id="k-today" class="kpi-val gold">—</div><div id="k-today-sub" class="kpi-sub">0 course</div><div class="kpi-ico">💰</div></div>
+          <div class="kpi"><div class="kpi-lbl">Moy / course</div><div id="k-avg" class="kpi-val green">—</div><div class="kpi-sub">tip inclus</div><div class="kpi-ico">📊</div></div>
+          <div class="kpi"><div class="kpi-lbl">Semaine</div><div id="k-week" class="kpi-val blue">—</div><div id="k-week-sub" class="kpi-sub">0 course</div><div class="kpi-ico">📈</div></div>
+          <div class="kpi"><div class="kpi-lbl">Ce mois</div><div id="k-month" class="kpi-val purple">—</div><div id="k-month-sub" class="kpi-sub">0 course</div><div class="kpi-ico">📅</div></div>
+        </div>
+      </div>
+
+      <div class="chart-box"><div class="chart-ttl">CA 30 jours · €</div><div style="height:130px;position:relative"><canvas id="chart-rev"></canvas></div></div>
+
+      <div class="chart-row2">
+        <div class="chart-box" style="margin:0"><div class="chart-ttl">Plateformes</div><div style="height:115px;position:relative"><canvas id="chart-plat"></canvas></div></div>
+        <div class="chart-box" style="margin:0"><div class="chart-ttl">Moy / jour</div><div style="height:115px;position:relative"><canvas id="chart-day"></canvas></div></div>
+      </div>
+
+      <div class="hm-wrap"><div class="hm-title">■ Heatmap demande IDF · €/h estimé</div><div id="hm-grid" class="hm-grid"></div></div>
+
+      <div class="chart-box" style="margin-bottom:.35rem"><div class="chart-ttl">Zones productivité Uber · §03 playbook</div><table class="ztable"><tbody id="zone-body"></tbody></table></div>
+      <div style="height:.4rem"></div>
+    </div>
+
+    <!-- TAB HISTORY -->
+    <div id="tab-history" class="tab">
+      <div class="hist-wrap">
+        <div class="filter-bar" id="filter-bar">
+          <button class="chip on" data-f="all">Tout</button>
+          <button class="chip" data-f="uber">⚫ Uber</button>
+          <button class="chip" data-f="bolt">🟢 Bolt</button>
+          <button class="chip" data-f="heetch">🟣 Heetch</button>
+        </div>
+        <div id="hist-list" class="hist-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB SETTINGS -->
+    <div id="tab-settings" class="tab">
+      <div class="set-wrap">
+        <div class="set-sec">
+          <div class="set-sec-ttl">Données</div>
+          <div class="set-row"><div><div class="set-lbl">Exporter CSV</div><div class="set-desc">Toutes les courses</div></div><button class="set-btn inf" id="btn-export">Exporter</button></div>
+          <div class="set-row"><div><div class="set-lbl">Recharger seed</div><div class="set-desc">119 courses démo historiques</div></div><button class="set-btn pri" id="btn-seed">Recharger</button></div>
+          <div class="set-row"><div><div class="set-lbl">Effacer tout</div><div class="set-desc" style="color:var(--red)">Irréversible</div></div><button class="set-btn dan" id="btn-clear">Effacer</button></div>
+        </div>
+        <div class="set-sec">
+          <div class="set-sec-ttl">Application</div>
+          <div class="set-row"><div><div class="set-lbl">Version</div><div class="set-desc">I&amp;N RUN OPS</div></div><span style="font-family:var(--mono);font-size:.7rem;color:var(--textM)">v0.3.0</span></div>
+          <div class="set-row"><div><div class="set-lbl">Total courses</div><div class="set-desc">IndexedDB local</div></div><span id="set-total" style="font-family:var(--mono);font-size:.95rem;color:var(--gold)">—</span></div>
+          <div class="set-row"><div><div class="set-lbl">Service Worker</div><div class="set-desc">Cache hors-ligne</div></div><span id="sw-st" style="font-size:.7rem;color:var(--textD)">…</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav id="bnav">
+      <div class="nb-bar" id="nb-bar"></div>
+      <button class="nb on" data-tab="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="nb-lbl">Dashboard</span>
+      </button>
+      <button class="nb" data-tab="history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h18M3 6h18M3 18h9"/></svg>
+        <span class="nb-lbl">Historique</span>
+      </button>
+      <button class="nb" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="nb-lbl">Réglages</span>
+      </button>
+    </nav>
+
+    <!-- FAB -->
+    <button id="fab" aria-label="Ajouter une course">+</button>
+  </div>
+
+  <!-- MODAL ADD COURSE -->
+  <div id="modal-ov" class="hide">
+    <div class="modal-sh">
+      <div class="m-handle"></div>
+      <div class="m-head"><div class="m-title">Nouvelle course</div><button class="m-close" id="btn-m-close">✕</button></div>
+      <div class="f-grp"><label class="f-lbl">Plateforme</label><div class="plat-tabs"><button class="plat-tab on" data-p="uber">⚫ Uber</button><button class="plat-tab" data-p="bolt">🟢 Bolt</button><button class="plat-tab" data-p="heetch">🟣 Heetch</button></div></div>
+      <div class="f-grid">
+        <div class="f-grp"><label class="f-lbl">Montant €*</label><input id="f-fare" class="f-inp" type="number" placeholder="0.00" min="0" step="0.01"></div>
+        <div class="f-grp"><label class="f-lbl">Pourboire €</label><input id="f-tip" class="f-inp" type="number" placeholder="0.00" min="0" step="0.01"></div>
+        <div class="f-grp"><label class="f-lbl">Distance km</label><input id="f-dist" class="f-inp" type="number" placeholder="0" min="0" step="0.1"></div>
+        <div class="f-grp"><label class="f-lbl">Durée min</label><input id="f-dur" class="f-inp" type="number" placeholder="0" min="0" step="1"></div>
+      </div>
+      <div class="f-grid">
+        <div class="f-grp"><label class="f-lbl">Départ</label><input id="f-dep" class="f-inp" type="text" placeholder="Ville" style="font-family:system-ui"></div>
+        <div class="f-grp"><label class="f-lbl">Destination</label><input id="f-dest" class="f-inp" type="text" placeholder="Ville" style="font-family:system-ui"></div>
+      </div>
+      <div class="f-surge-row"><span class="f-lbl" style="margin:0;flex:1">Surge actif</span><button id="tog-surge" class="tog" style="background:var(--s3)"><span class="tog-thumb" style="left:3px"></span></button></div>
+      <button class="btn-save" id="btn-save">Enregistrer la course</button>
     </div>
   </div>
 
-  <script type="module">
-  // ===== IMPORTS ESM =====
-  import React, { useState, useEffect, useCallback, useMemo, useRef } from 'https://esm.sh/react@18';
-  import { createRoot } from 'https://esm.sh/react-dom@18/client';
-  import htm from 'https://esm.sh/htm@3';
-  import {
-    AreaChart, Area, XAxis, YAxis, Tooltip,
-    ResponsiveContainer, BarChart, Bar, CartesianGrid,
-    PieChart, Pie, Cell
-  } from 'https://esm.sh/recharts@2?deps=react@18,react-dom@18';
-  import {
-    Car, TrendingUp, Clock, MapPin, Euro,
-    Plus, Settings, BarChart2, History,
-    Activity, CheckCircle, XCircle,
-    Wifi, WifiOff, Star, Trash2, Download, RefreshCw,
-    Zap, X, Check, ArrowRight
-  } from 'https://esm.sh/lucide-react@0.451?deps=react@18';
+</div>
 
-  const html = htm.bind(React.createElement);
+<script>
+'use strict';
 
-  // ===== CONSTANTES =====
-  const C = {
-    gold:'#D4AF37', goldD:'#A88B2C', goldL:'#F4E4A6',
-    bg:'#0A0F1C', surface:'#0F172A', surface2:'#1E293B', surface3:'#334155',
-    text:'#F1F5F9', textM:'#94A3B8', textD:'#64748B',
-    green:'#10B981', red:'#EF4444', amber:'#F59E0B', blue:'#3B82F6'
-  };
+const db = new Dexie('inrun-ops');
+db.version(1).stores({ courses:'id,datetime,platform', settings:'key', meta:'key' });
+db.version(2).stores({ courses:'id,datetime,platform', settings:'key', meta:'key', sessions:'id,startTime,status' });
 
-  const PLATFORMS = {
-    uber:   { label:'Uber',   emoji:'⚫', accent:'#FFFFFF' },
-    bolt:   { label:'Bolt',   emoji:'🟢', accent:'#111111' },
-    heetch: { label:'Heetch', emoji:'🟣', accent:'#FFFFFF' }
-  };
+const HEATMAP = [
+  { slot:'00-04', h:[0,4],  vals:[25,20,22,25,35,45,35] },
+  { slot:'04-08', h:[4,8],  vals:[38,35,42,45,50,55,45] },
+  { slot:'08-12', h:[8,12], vals:[42,38,42,48,50,52,48] },
+  { slot:'12-16', h:[12,16],vals:[28,25,30,35,38,38,35] },
+  { slot:'16-20', h:[16,20],vals:[35,32,38,42,48,48,42] },
+  { slot:'20-00', h:[20,24],vals:[40,32,38,45,55,60,50] },
+];
+const DAYS_FR = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const ZONES = [
+  { z:'77 Gretz',    v:65.1, hot:true  },
+  { z:'77 Grigny',   v:63.5, hot:true  },
+  { z:'78 Vélizy',   v:62.9, hot:true  },
+  { z:'78 Yvelines', v:58.4, hot:true  },
+  { z:'91 Essonne',  v:46.1, hot:false },
+  { z:'75 Paris',    v:37.4, hot:false },
+  { z:'94 Val-M',    v:36.0, hot:false },
+  { z:'92 H-Seine',  v:34.1, hot:false },
+  { z:'93 SSD',      v:32.4, hot:false },
+];
+const SHIFTS = {
+  A: { name:'Scénario A', desc:'Matinée 4h–13h', target:165 },
+  B: { name:'Scénario B ★', desc:'Double shift 4h–12h+19h–0h', target:275 },
+  C: { name:'Libre', desc:'Session personnalisée', target:null },
+};
+const PEMOJI = { uber:'⚫', bolt:'🟢', heetch:'🟣' };
 
-  const DEMAND_COLOR  = { LOW:C.textD, NORMAL:C.blue, HIGH:C.amber, PEAK:C.red };
-  const DEMAND_LABEL  = { LOW:'FAIBLE', NORMAL:'NORMAL', HIGH:'ÉLEVÉ', PEAK:'PEAK !' };
-  const DEMAND_PULSE  = { LOW:'', NORMAL:'', HIGH:'pulse-high', PEAK:'pulse-peak' };
+const S = {
+  courses:[], tab:'dashboard', filter:'all',
+  platform:'uber', surge:false, shiftType:'A',
+  session:null, timerID:null, charts:{},
+};
 
-  const DEFAULT_SETTINGS = {
-    dailyGoal: 200,
-    weeklyGoal: 1000,
-    vehicleCostPerKm: 0.27,
-    homeZone: 'Ris-Orangis'
-  };
+function dow(d){ return (d.getDay()+6)%7 }
+function heatScore(h,dw){ const r=HEATMAP.find(r=>h>=r.h[0]&&h<r.h[1]); return r?r.vals[dw]:35; }
+function demandLevel(s){ return s>=50?'PEAK':s>=42?'HIGH':s>=35?'NORMAL':'LOW'; }
+function platformSignal(h,dw){
+  if(h>=20){ if(dw===4)return{plat:'bolt',reason:'BOLT ★ Ven. soir — 19,99€/course observé',isPause:false}; if(dw===5)return{plat:'uber',reason:'Uber surge Sam. — 60€/h PEAK absolu',isPause:false}; }
+  if(h<4)  return{plat:'uber',reason:'Nuit creuse — Uber x2.5 surge tardif',isPause:false};
+  if(h<7)  return{plat:'uber',reason:'Uber — aéroport CDG/Orly actif dès 4h',isPause:false};
+  if(h<10) return{plat:'uber',reason:'Uber — rush matinal Île-de-France',isPause:false};
+  if(h<13) return{plat:'bolt',reason:'Bolt — meilleur taux commission matin',isPause:false};
+  if(h<17) return{plat:'bolt',reason:'Creux 13h–17h — PAUSE recommandée',isPause:true};
+  return         {plat:'uber',reason:'Uber — rush soir banlieue parisienne',isPause:false};
+}
 
-  // ===== DATABASE (Dexie — IndexedDB) =====
-  const db = new window.Dexie('InrunOps');
-  db.version(1).stores({
-    courses:  'id, datetime, platform',
-    settings: 'key',
-    meta:     'key'
+function fmtEur(v){ return v>0?v.toFixed(0)+'€':'0€' }
+function fmtTime(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function uid(){ return 'c_'+Date.now()+'_'+Math.random().toString(36).slice(2,6) }
+function sessElapsed(){ if(!S.session)return 0; const{startTime,pauseTime,totalPaused,status}=S.session,now=Date.now(),paused=status==='paused'?(now-pauseTime+totalPaused):totalPaused; return now-startTime-paused; }
+function sessCA(){ if(!S.session)return 0; return S.courses.filter(c=>new Date(c.datetime).getTime()>=S.session.startTime).reduce((a,c)=>a+(c.fare||0)+(c.tip||0),0); }
+
+function renderSignal(){
+  const now=new Date(),h=now.getHours(),dw=dow(now),score=heatScore(h,dw),level=demandLevel(score),sig=platformSignal(h,dw);
+  const b=document.getElementById('sig-badge');
+  b.className='sig-badge '+level;
+  b.textContent=level+' · '+score+'€/h · '+PEMOJI[sig.plat]+' '+sig.plat.charAt(0).toUpperCase()+sig.plat.slice(1);
+  document.getElementById('sig-reason').textContent=sig.reason;
+  document.getElementById('sig-time').textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+
+function renderHeatmap(){
+  const now=new Date(),h=now.getHours(),dw=dow(now),MAX=60;
+  let out='<div class="hm-cell hdr"></div>';
+  DAYS_FR.forEach(d=>{out+=`<div class="hm-cell hdr">${d}</div>`;});
+  HEATMAP.forEach(row=>{
+    const cur=h>=row.h[0]&&h<row.h[1];
+    out+=`<div class="hm-cell row-lbl">${row.slot}</div>`;
+    row.vals.forEach((v,i)=>{
+      const t=v/MAX;let r,g,b;
+      if(t>.75){r=240;g=68;b=68;}else if(t>.6){r=212;g=175;b=55;}else if(t>.45){r=61;g=142;b=245;}else{r=38;g=51;b=84;}
+      out+=`<div class="hm-cell${(cur&&i===dw)?' cur':''}" style="background:rgba(${r},${g},${b},${.25+t*.65});color:rgba(255,255,255,${.4+t*.6})">${v}</div>`;
+    });
   });
-
-  const loadCourses   = ()    => db.courses.toArray();
-  const saveCourse    = c     => db.courses.put(c);
-  const deleteCourse  = id    => db.courses.delete(id);
-  const clearCourses  = ()    => db.courses.clear();
-  const loadSettings  = async () => {
-    const r = await db.settings.get('main');
-    return r ? r.value : { ...DEFAULT_SETTINGS };
-  };
-  const saveSettings  = s     => db.settings.put({ key:'main', value:s });
-
-  async function ensureSeed() {
-    const flag = await db.meta.get('seeded_v1');
-    if (flag) return;
-    const count = await db.courses.count();
-    if (count === 0) {
-      try {
-        const data = await fetch('./seed_data.json').then(r => r.json());
-        await db.courses.bulkAdd(data);
-        await db.meta.put({ key:'seeded_v1', value:true });
-        console.log('[INRUN] Seed: 119 courses chargées');
-      } catch(e) { console.warn('[INRUN] Seed skipped:', e.message); }
-    }
-  }
-
-  // ===== SIGNAL ENGINE =====
-  // Moteur déterministe v0.3 basé sur analyse de 119 courses historiques
-  // Remplacer ce bloc par module ML en v0.4 sans toucher au reste
-
-  function getDemandLevel(hour, dow) {
-    // dow: 0=Lun … 6=Dim (convention locale, != JS Date.getDay)
-    const isWeekend = dow >= 5;
-    const isFriday  = dow === 4;
-    if (hour < 5)               return (isWeekend || isFriday) ? 'NORMAL' : 'LOW';
-    if (hour < 7)               return 'LOW';
-    if (hour < 9)               return isWeekend ? 'NORMAL' : 'HIGH';
-    if (hour < 12)              return 'NORMAL';
-    if (hour < 14)              return 'HIGH';
-    if (hour < 16)              return 'LOW';
-    if (hour < 17)              return 'NORMAL';
-    if (hour < 20)              return 'HIGH';
-    if (hour < 23)              return (isWeekend || isFriday) ? 'PEAK' : 'NORMAL';
-    return isWeekend ? 'HIGH' : 'NORMAL';
-  }
-
-  function getNextPeak(h, dow) {
-    const isFriday  = dow === 4;
-    const isWeekend = dow >= 5;
-    const peaks     = [7, 12, 17, 20, ...(isFriday || isWeekend ? [22] : [])];
-    const next      = peaks.find(p => p > h);
-    if (!next) return 'demain 7h00';
-    const diff = next - h;
-    return diff === 1 ? `dans 1h (${next}h00)` : `dans ${diff}h (${next}h00)`;
-  }
-
-  function getPlatformPriority(hour, dow, lastDest) {
-    const isFriday  = dow === 4;
-    const isWeekend = dow >= 5;
-    if (isFriday && hour >= 19 && hour <= 23)
-      return { platform:'bolt',   reason:'Vendredi soir — Bolt: tarifs +24% observés', avg:19.99 };
-    if (hour < 4 && (isWeekend || isFriday))
-      return { platform:'heetch', reason:'Nuit week-end — Heetch: bonus nocturne', avg:16.50 };
-    return {
-      platform:'uber',
-      reason: hour >= 7 && hour <= 19
-        ? 'Heures ouvrées — Uber: volume et fiabilité maximaux'
-        : 'Heures creuses — Uber: meilleure couverture zone',
-      avg:15.80
-    };
-  }
-
-  function getRecommendedZone(lastDest, homeZone) {
-    if (!lastDest) return homeZone || 'Ris-Orangis';
-    if (lastDest.includes('CDG') || lastDest.includes('Roissy'))  return 'CDG → Paris Gare du Nord';
-    if (lastDest.includes('Orly'))                                return 'Orly → Paris 13e-14e';
-    if (lastDest.includes('Défense') || lastDest.includes('Neuilly')) return 'Défense → Paris 8e-17e';
-    if (lastDest.includes('Paris'))                               return 'Paris centre → banlieue sud';
-    return homeZone || 'Ris-Orangis';
-  }
-
-  function getHeuristics(hour, demand, platform) {
-    const accepts = [], refuses = [];
-    if (demand === 'PEAK') {
-      accepts.push('Surge probable — accepter sans hésiter');
-      accepts.push('Courses < 15 min: enchaîner le max');
-    } else if (demand === 'HIGH') {
-      accepts.push('Demande forte — rester actif');
-      accepts.push('Paris intramuros en priorité');
-    } else {
-      refuses.push('Trajets > 30 km sans surge: refuser');
-    }
-    if (hour >= 13 && hour < 17) refuses.push('Pause 13h-17h recommandée (faible rentabilité)');
-    if (hour >= 7  && hour < 9)  accepts.push('Rush matinal: gares et Paris');
-    if (hour >= 17 && hour < 20) accepts.push('Rush soir: éviter N7/A6 → N104');
-    if (platform === 'bolt')     accepts.push('Bolt: vérifier tarif avant acceptation');
-    if (!accepts.length)         accepts.push('Maintenir service normal');
-    return { accepts: accepts.slice(0,3), refuses: refuses.slice(0,2) };
-  }
-
-  function getSignal(now, todayCourses, allCourses) {
-    const h   = now.getHours();
-    const jsD = now.getDay(); // 0=Dim
-    const dow = jsD === 0 ? 6 : jsD - 1; // 0=Lun, 6=Dim
-    const demand   = getDemandLevel(h, dow);
-    const lastC    = todayCourses.at(-1) || allCourses.at(-1) || null;
-    const lastDest = lastC ? lastC.destination_city : null;
-    const { platform, reason, avg } = getPlatformPriority(h, dow, lastDest);
-    return {
-      demand,
-      platform, reason, avg,
-      zone:     getRecommendedZone(lastDest, DEFAULT_SETTINGS.homeZone),
-      nextPeak: getNextPeak(h, dow),
-      heuristics: getHeuristics(h, demand, platform)
-    };
-  }
-
-  // ===== UTILITAIRES =====
-  const fmtEuro = n =>
-    new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:2 }).format(n || 0);
-
-  const fmtTime = iso =>
-    new Date(iso).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-
-  const fmtDateShort = iso =>
-    new Date(iso).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
-
-  const todayISO = () => new Date().toISOString().slice(0, 10);
-
-  const isToday = iso => iso && iso.startsWith(todayISO());
-
-  const localDatetimeNow = () => {
-    const d = new Date();
-    return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-  };
-
-  const generateId = () =>
-    'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-
-  function groupByDay(courses) {
-    const map = {};
-    [...courses]
-      .sort((a, b) => b.datetime.localeCompare(a.datetime))
-      .forEach(c => {
-        const d = c.datetime.slice(0, 10);
-        (map[d] = map[d] || []).push(c);
-      });
-    return Object.entries(map).sort((a, b) => b[0].localeCompare(a[0]));
-  }
-
-  function exportCSV(courses) {
-    const headers = ['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active'];
-    const esc = v => {
-      const s = String(v ?? '');
-      return /[,"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
-    };
-    const rows = [headers.join(','), ...courses.map(c => headers.map(h => esc(c[h])).join(','))];
-    const blob = new Blob([rows.join('\n')], { type:'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    Object.assign(document.createElement('a'), { href:url, download:`inrun_${todayISO()}.csv` }).click();
-    URL.revokeObjectURL(url);
-  }
-
-  // ===== COMPOSANTS =====
-
-  // --- StatusBar ---
-  function StatusBar({ signal, online }) {
-    const [time, setTime] = useState(new Date());
-    useEffect(() => {
-      const id = setInterval(() => setTime(new Date()), 30000);
-      return () => clearInterval(id);
-    }, []);
-    const col   = DEMAND_COLOR[signal.demand];
-    const lbl   = DEMAND_LABEL[signal.demand];
-    const pulse = DEMAND_PULSE[signal.demand];
-    return html`
-      <div class="safe-top flex items-center justify-between px-4 py-2.5"
-           style=${{ background:C.surface, borderBottom:`1px solid ${C.surface3}` }}>
-        <div class="flex items-center gap-2">
-          <span class="font-black text-sm tracking-widest" style=${{ color:C.gold }}>I&amp;N RUN</span>
-          <span class="text-xs font-bold" style=${{ color:C.textD }}>OPS</span>
-        </div>
-        <div class="flex items-center gap-2.5">
-          <span class="${pulse} text-xs font-bold px-2 py-0.5 rounded-full"
-                style=${{ color:col, border:`1px solid ${col}`, background:col+'18' }}>
-            ${lbl}
-          </span>
-          <span class="text-xs font-mono tabular-nums" style=${{ color:C.textM }}>
-            ${time.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })}
-          </span>
-          <${online ? Wifi : WifiOff} size=${13} color=${online ? C.green : C.textD} />
-        </div>
-      </div>`;
-  }
-
-  // --- SignalCard ---
-  function SignalCard({ signal }) {
-    const plt = PLATFORMS[signal.platform];
-    const { accepts, refuses } = signal.heuristics;
-    return html`
-      <div class="mx-3 mt-3 rounded-2xl p-4"
-           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-1.5">
-            <${Activity} size=${14} color=${C.gold} />
-            <span class="text-xs font-bold tracking-widest uppercase" style=${{ color:C.gold }}>Signal actif</span>
-          </div>
-          <span class="text-xs" style=${{ color:C.textD }}>Prochain pic: ${signal.nextPeak}</span>
-        </div>
-
-        <div class="rounded-xl p-3 mb-3"
-             style=${{ background:C.surface2, border:`1px solid ${C.surface3}` }}>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-lg leading-none">${plt.emoji}</span>
-            <span class="font-bold text-sm" style=${{ color:C.text }}>${plt.label}</span>
-            <span class="text-xs ml-auto font-bold" style=${{ color:C.gold }}>~${fmtEuro(signal.avg)}/course</span>
-          </div>
-          <p class="text-xs leading-relaxed" style=${{ color:C.textM }}>${signal.reason}</p>
-        </div>
-
-        <div class="flex items-center gap-2 mb-3 px-3 py-2 rounded-xl"
-             style=${{ background:C.surface2 }}>
-          <${MapPin} size=${12} color=${C.blue} />
-          <span class="text-xs" style=${{ color:C.textM }}>Zone: ${signal.zone}</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div class="space-y-1">
-            ${accepts.map((a, i) => html`
-              <div key=${i} class="flex items-start gap-1.5">
-                <${CheckCircle} size=${11} color=${C.green} style=${{ marginTop:2, flexShrink:0 }} />
-                <span class="text-xs leading-snug" style=${{ color:C.textM }}>${a}</span>
-              </div>`)}
-          </div>
-          <div class="space-y-1">
-            ${refuses.map((r, i) => html`
-              <div key=${i} class="flex items-start gap-1.5">
-                <${XCircle} size=${11} color=${C.red} style=${{ marginTop:2, flexShrink:0 }} />
-                <span class="text-xs leading-snug" style=${{ color:C.textM }}>${r}</span>
-              </div>`)}
-          </div>
-        </div>
-      </div>`;
-  }
-
-  // --- KPI Tiles ---
-  function KPITiles({ courses, settings }) {
-    const today   = useMemo(() => courses.filter(c => isToday(c.datetime)), [courses]);
-    const totalCA = today.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
-    const count   = today.length;
-    const durH    = Math.max(0.5, today.reduce((s, c) => s + (c.duration_min||0), 0) / 60);
-    const cph     = count ? totalCA / durH : 0;
-    const pct     = settings.dailyGoal > 0 ? Math.min(100, (totalCA / settings.dailyGoal) * 100) : 0;
-
-    const tiles = [
-      { l:'CA Jour',    v:fmtEuro(totalCA), s:`obj. ${fmtEuro(settings.dailyGoal)}`, col:C.gold,  Icon:Euro       },
-      { l:'Courses',    v:count,            s:`aujourd'hui`,                          col:C.blue,  Icon:Car        },
-      { l:'€/h actif',  v:fmtEuro(cph),     s:`${Math.round(durH*10)/10}h actives`,  col:C.green, Icon:TrendingUp },
-      { l:'Objectif',   v:`${Math.round(pct)}%`,
-        s: pct >= 100 ? '✓ Atteint !' : `${fmtEuro(settings.dailyGoal - totalCA)} restants`,
-        col: pct >= 100 ? C.green : C.amber, Icon:Star }
-    ];
-    return html`
-      <div class="grid grid-cols-2 gap-2 mx-3 mt-3">
-        ${tiles.map((t, i) => html`
-          <div key=${i} class="rounded-2xl p-3"
-               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs" style=${{ color:C.textD }}>${t.l}</span>
-              <${t.Icon} size=${13} color=${t.col} />
-            </div>
-            <div class="text-xl font-black leading-none" style=${{ color:t.col }}>${t.v}</div>
-            <div class="text-xs mt-1 leading-none" style=${{ color:C.textD }}>${t.s}</div>
-          </div>`)}
-      </div>`;
-  }
-
-  // --- CA Cumulé Chart ---
-  function CumulChart({ courses }) {
-    const today = useMemo(() => courses.filter(c => isToday(c.datetime)), [courses]);
-    const data  = useMemo(() => {
-      const byHour = {};
-      today.forEach(c => {
-        const h = new Date(c.datetime).getHours();
-        byHour[h] = (byHour[h] || 0) + (c.fare||0) + (c.tip||0);
-      });
-      let cum = 0;
-      const now = new Date().getHours();
-      return Array.from({ length: now + 2 }, (_, h) => {
-        cum += byHour[h] || 0;
-        return { h:`${h}h`, ca: Math.round(cum * 100) / 100 };
-      });
-    }, [today.length]);
-
-    if (!today.length) return html`
-      <div class="mx-3 mt-3 h-16 rounded-2xl flex items-center justify-center"
-           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-        <span class="text-xs" style=${{ color:C.textD }}>Aucune course aujourd'hui</span>
-      </div>`;
-
-    return html`
-      <div class="mx-3 mt-3 rounded-2xl p-4"
-           style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-        <div class="flex items-center gap-1.5 mb-3">
-          <${TrendingUp} size=${13} color=${C.gold} />
-          <span class="text-xs font-bold tracking-wider uppercase" style=${{ color:C.textM }}>CA Cumulé Aujourd'hui</span>
-        </div>
-        <${ResponsiveContainer} width="100%" height=${70}>
-          <${AreaChart} data=${data} margin=${{ top:0, right:0, left:-28, bottom:0 }}>
-            <defs>
-              <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor=${C.gold} stopOpacity=${0.35} />
-                <stop offset="95%" stopColor=${C.gold} stopOpacity=${0}    />
-              </linearGradient>
-            </defs>
-            <${XAxis} dataKey="h" tick=${{ fontSize:9, fill:C.textD }} tickLine=${false} axisLine=${false} />
-            <${YAxis} tick=${{ fontSize:9, fill:C.textD }} tickLine=${false} axisLine=${false} />
-            <${Tooltip}
-              contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
-              labelStyle=${{ color:C.textM, fontSize:10 }}
-              formatter=${v => [fmtEuro(v), 'Cumulé']}
-            />
-            <${Area} type="monotone" dataKey="ca" stroke=${C.gold} strokeWidth=${2}
-                     fill="url(#goldGrad)" dot=${false} activeDot=${{ r:3, fill:C.gold }} />
-          </${AreaChart}>
-        </${ResponsiveContainer}>
-      </div>`;
-  }
-
-  // --- Course Row ---
-  function CourseRow({ course, onDelete }) {
-    const plt   = PLATFORMS[course.platform] || PLATFORMS.uber;
-    const total = (course.fare||0) + (course.tip||0);
-    return html`
-      <div class="flex items-center px-4 py-3 gap-3"
-           style=${{ borderBottom:`1px solid ${C.surface3}` }}>
-        <span class="text-xl w-8 text-center flex-shrink-0 leading-none">${plt.emoji}</span>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-1.5 mb-0.5">
-            <span class="text-xs font-bold" style=${{ color:C.text }}>${plt.label}</span>
-            ${course.surge_active ? html`<${Zap} size=${10} color=${C.amber} />` : null}
-            <span class="text-xs" style=${{ color:C.textD }}>${fmtTime(course.datetime)}</span>
-          </div>
-          <div class="text-xs truncate" style=${{ color:C.textM }}>
-            ${course.departure_city || '—'} → ${course.destination_city || '—'}
-          </div>
-          ${(course.distance_km || course.duration_min) ? html`
-            <div class="text-xs" style=${{ color:C.textD }}>
-              ${course.distance_km ? course.distance_km + ' km' : ''}
-              ${course.distance_km && course.duration_min ? ' · ' : ''}
-              ${course.duration_min ? course.duration_min + ' min' : ''}
-            </div>` : null}
-        </div>
-        <div class="flex flex-col items-end flex-shrink-0">
-          <span class="font-bold text-sm" style=${{ color:C.gold }}>${fmtEuro(total)}</span>
-          ${course.tip > 0 ? html`<span class="text-xs" style=${{ color:C.green }}>+tip ${fmtEuro(course.tip)}</span>` : null}
-          ${onDelete ? html`
-            <button onclick=${() => onDelete(course.id)}
-                    class="mt-1 p-1 rounded-lg"
-                    style=${{ color:C.textD, background:'transparent', minHeight:32 }}>
-              <${Trash2} size=${12} />
-            </button>` : null}
-        </div>
-      </div>`;
-  }
-
-  // --- Vue Live ---
-  function LiveView({ courses, signal, settings }) {
-    const today = useMemo(() =>
-      courses.filter(c => isToday(c.datetime)).sort((a, b) => b.datetime.localeCompare(a.datetime)),
-      [courses]);
-    return html`
-      <div class="pb-28">
-        <${StatusBar} signal=${signal} online=${navigator.onLine} />
-        <${SignalCard} signal=${signal} />
-        <${KPITiles}   courses=${courses} settings=${settings} />
-        <${CumulChart} courses=${courses} />
-        <div class="mx-3 mt-3">
-          <div class="flex items-center justify-between mb-2 px-1">
-            <span class="text-xs font-bold tracking-wider uppercase" style=${{ color:C.textM }}>Courses aujourd'hui</span>
-            <span class="text-xs" style=${{ color:C.textD }}>${today.length} course${today.length !== 1 ? 's' : ''}</span>
-          </div>
-          <div class="rounded-2xl overflow-hidden"
-               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-            ${today.length === 0
-              ? html`<div class="py-8 text-center text-xs" style=${{ color:C.textD }}>Aucune course · Appuie sur + pour commencer</div>`
-              : today.map(c => html`<${CourseRow} key=${c.id} course=${c} />`)}
-          </div>
-        </div>
-      </div>`;
-  }
-
-  // --- Vue Stats ---
-  function StatsView({ courses }) {
-    const now     = new Date();
-    const weekAgo = new Date(now - 7 * 86400000);
-    const week    = useMemo(() => courses.filter(c => new Date(c.datetime) >= weekAgo), [courses]);
-
-    const totalCA = week.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
-    const avgC    = week.length ? totalCA / week.length : 0;
-    const totalKm = week.reduce((s, c) => s + (c.distance_km||0), 0);
-
-    const barData = useMemo(() =>
-      Array.from({ length:7 }, (_, i) => {
-        const d   = new Date(now - (6-i)*86400000);
-        const key = d.toISOString().slice(0,10);
-        const dc  = courses.filter(c => c.datetime.startsWith(key));
-        return {
-          day: d.toLocaleDateString('fr-FR', { weekday:'short' }),
-          ca: Math.round(dc.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0)),
-          n: dc.length
-        };
-      }), [courses]);
-
-    const platCA = useMemo(() => {
-      const m = { uber:0, bolt:0, heetch:0 };
-      week.forEach(c => { m[c.platform] = (m[c.platform]||0) + (c.fare||0) + (c.tip||0); });
-      return m;
-    }, [week]);
-
-    const pieData = Object.entries(platCA)
-      .filter(([, v]) => v > 0)
-      .map(([k, v]) => ({
-        name: PLATFORMS[k].label,
-        value: Math.round(v),
-        color: k==='uber' ? C.textM : k==='bolt' ? C.green : C.blue
-      }));
-
-    return html`
-      <div class="pb-28 pt-3">
-        <div class="px-4 mb-4 flex items-center gap-2">
-          <${BarChart2} size=${16} color=${C.gold} />
-          <h2 class="text-sm font-bold" style=${{ color:C.text }}>Stats — 7 derniers jours</h2>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 mx-3 mb-4">
-          ${[['CA Total', fmtEuro(totalCA), C.gold], ['Moy/Course', fmtEuro(avgC), C.blue], ['Km totaux', `${Math.round(totalKm)} km`, C.textM]]
-            .map(([l, v, col], i) => html`
-              <div key=${i} class="rounded-2xl p-3 text-center"
-                   style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-                <div class="text-xs mb-1" style=${{ color:C.textD }}>${l}</div>
-                <div class="text-sm font-bold" style=${{ color:col }}>${v}</div>
-              </div>`)}
-        </div>
-
-        <div class="mx-3 rounded-2xl p-4 mb-3"
-             style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-          <div class="text-xs font-bold mb-3 tracking-wider uppercase" style=${{ color:C.textM }}>CA par jour</div>
-          <${ResponsiveContainer} width="100%" height=${110}>
-            <${BarChart} data=${barData} margin=${{ top:0, right:0, left:-28, bottom:0 }}>
-              <${CartesianGrid} strokeDasharray="3 3" stroke=${C.surface3} vertical=${false} />
-              <${XAxis} dataKey="day" tick=${{ fontSize:10, fill:C.textD }} tickLine=${false} axisLine=${false} />
-              <${YAxis} tick=${{ fontSize:10, fill:C.textD }} tickLine=${false} axisLine=${false} />
-              <${Tooltip}
-                contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
-                formatter=${v => [fmtEuro(v), 'CA']}
-                labelStyle=${{ color:C.textM, fontSize:10 }}
-              />
-              <${Bar} dataKey="ca" fill=${C.gold} radius=${[4,4,0,0]} />
-            </${BarChart}>
-          </${ResponsiveContainer}>
-        </div>
-
-        ${pieData.length > 0 ? html`
-          <div class="mx-3 rounded-2xl p-4"
-               style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-            <div class="text-xs font-bold mb-3 tracking-wider uppercase" style=${{ color:C.textM }}>Répartition plateformes</div>
-            <div class="flex items-center gap-4">
-              <${ResponsiveContainer} width="45%" height=${90}>
-                <${PieChart}>
-                  <${Pie} data=${pieData} cx="50%" cy="50%" innerRadius=${22} outerRadius=${40} dataKey="value" strokeWidth=${0}>
-                    ${pieData.map((e, i) => html`<${Cell} key=${i} fill=${e.color} />`)}
-                  </${Pie}>
-                  <${Tooltip}
-                    contentStyle=${{ background:C.surface2, border:`1px solid ${C.surface3}`, borderRadius:8, padding:'4px 8px' }}
-                    formatter=${v => [fmtEuro(v), 'CA']}
-                  />
-                </${PieChart}>
-              </${ResponsiveContainer}>
-              <div class="flex-1 space-y-2">
-                ${pieData.map((e, i) => html`
-                  <div key=${i} class="flex items-center gap-2">
-                    <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style=${{ background:e.color }}></div>
-                    <span class="text-xs" style=${{ color:C.textM }}>${e.name}</span>
-                    <span class="text-xs font-bold ml-auto" style=${{ color:C.text }}>${fmtEuro(e.value)}</span>
-                  </div>`)}
-              </div>
-            </div>
-          </div>` : null}
-      </div>`;
-  }
-
-  // --- Vue Historique ---
-  function HistoryView({ courses, onDelete }) {
-    const grouped = useMemo(() => groupByDay(courses), [courses.length]);
-    return html`
-      <div class="pb-28 pt-3">
-        <div class="px-4 mb-3 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <${History} size=${16} color=${C.gold} />
-            <h2 class="text-sm font-bold" style=${{ color:C.text }}>Historique</h2>
-          </div>
-          <span class="text-xs" style=${{ color:C.textD }}>${courses.length} courses</span>
-        </div>
-        ${grouped.length === 0
-          ? html`<div class="py-16 text-center text-xs" style=${{ color:C.textD }}>Aucune course enregistrée</div>`
-          : grouped.map(([day, dc]) => {
-              const dt = dc.reduce((s, c) => s + (c.fare||0) + (c.tip||0), 0);
-              return html`
-                <div key=${day} class="mx-3 mb-3">
-                  <div class="flex items-center justify-between px-1 mb-1.5">
-                    <span class="text-xs font-bold" style=${{ color:C.textD }}>${fmtDateShort(day + 'T12:00:00')}</span>
-                    <span class="text-xs font-bold" style=${{ color:C.gold }}>
-                      ${fmtEuro(dt)} · ${dc.length} course${dc.length !== 1 ? 's' : ''}
-                    </span>
-                  </div>
-                  <div class="rounded-2xl overflow-hidden"
-                       style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-                    ${dc.map(c => html`<${CourseRow} key=${c.id} course=${c} onDelete=${onDelete} />`)}
-                  </div>
-                </div>`;
-            })}
-      </div>`;
-  }
-
-  // --- Vue Réglages ---
-  function SettingsView({ settings, onSave, onReloadSeed, onExportCSV, onClearAll, courseCount }) {
-    const [local, setLocal]   = useState({ ...settings });
-    const [saved, setSaved]   = useState(false);
-
-    useEffect(() => setLocal({ ...settings }), [settings]);
-
-    const handleSave = () => {
-      onSave(local);
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    };
-
-    const numField = (key, label, unit) => html`
-      <div class="mb-4">
-        <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>${label}</label>
-        <div class="flex items-center gap-2">
-          <input type="number" inputmode="decimal" step="any"
-                 value=${local[key]}
-                 onInput=${e => setLocal({ ...local, [key]: parseFloat(e.target.value) || 0 })}
-                 class="flex-1 rounded-xl px-3 py-2.5 text-sm"
-                 style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-          ${unit ? html`<span class="text-xs font-bold" style=${{ color:C.textD }}>${unit}</span>` : null}
-        </div>
-      </div>`;
-
-    return html`
-      <div class="pb-28 pt-3 px-4">
-        <div class="flex items-center gap-2 mb-5">
-          <${Settings} size=${16} color=${C.gold} />
-          <h2 class="text-sm font-bold" style=${{ color:C.text }}>Réglages</h2>
-        </div>
-
-        <div class="rounded-2xl p-4 mb-4" style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-          <div class="text-xs font-bold mb-4 tracking-wider uppercase" style=${{ color:C.textM }}>Objectifs</div>
-          ${numField('dailyGoal',       'Objectif journalier', '€/jour')}
-          ${numField('weeklyGoal',      'Objectif hebdo',      '€/sem.')}
-          ${numField('vehicleCostPerKm','Coût véhicule',       '€/km')}
-          <div class="mb-4">
-            <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Zone de base</label>
-            <input type="text"
-                   value=${local.homeZone || ''}
-                   onInput=${e => setLocal({ ...local, homeZone: e.target.value })}
-                   class="w-full rounded-xl px-3 py-2.5 text-sm"
-                   style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-          </div>
-          <button onclick=${handleSave}
-                  class="w-full py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
-                  style=${{ background: saved ? C.green : C.gold, color: saved ? 'white' : C.bg }}>
-            ${saved ? html`<${Check} size=${16} /> Sauvegardé !` : 'Enregistrer'}
-          </button>
-        </div>
-
-        <div class="rounded-2xl p-4 mb-5" style=${{ background:C.surface, border:`1px solid ${C.surface3}` }}>
-          <div class="text-xs font-bold mb-2 tracking-wider uppercase" style=${{ color:C.textM }}>Données</div>
-          <p class="text-xs mb-4" style=${{ color:C.textD }}>${courseCount} courses en base · IndexedDB locale</p>
-          <div class="space-y-2">
-            <button onclick=${onReloadSeed}
-                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
-                    style=${{ background:C.surface2, color:C.textM, border:`1px solid ${C.surface3}` }}>
-              <${RefreshCw} size=${14} /> Recharger seed (119 courses démo)
-            </button>
-            <button onclick=${onExportCSV}
-                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
-                    style=${{ background:C.surface2, color:C.textM, border:`1px solid ${C.surface3}` }}>
-              <${Download} size=${14} /> Exporter CSV
-            </button>
-            <button onclick=${onClearAll}
-                    class="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
-                    style=${{ background:C.red+'18', color:C.red, border:`1px solid ${C.red}40` }}>
-              <${Trash2} size=${14} /> Effacer toutes les courses
-            </button>
-          </div>
-        </div>
-
-        <div class="text-center space-y-1">
-          <p class="text-xs" style=${{ color:C.textD }}>I&amp;N RUN OPS v0.3</p>
-          <p class="text-xs" style=${{ color:C.textD }}>SIREN 993 776 467 00017 · Ris-Orangis (91130)</p>
-          <p class="text-xs" style=${{ color:C.textD }}>Suzuki Swace Hybrid 2022 · Uber Berline · Bolt · Heetch</p>
-          <!-- TODO v0.4: sync cloud, bot Telegram, ML adaptatif, OCR screenshots, GPS km à vide -->
-        </div>
-      </div>`;
-  }
-
-  // --- Zone Autocomplete Input ---
-  const ZONES = [
-    'Ris-Orangis','Évry-Courcouronnes','Corbeil-Essonnes','Juvisy-sur-Orge',
-    'Athis-Mons','Savigny-sur-Orge','Viry-Châtillon','Orly','Massy','Palaiseau',
-    'Paris 1er','Paris 2e','Paris 3e','Paris 4e','Paris 5e','Paris 6e','Paris 7e',
-    'Paris 8e','Paris 9e','Paris 10e','Paris 11e','Paris 12e','Paris 13e',
-    'Paris 14e','Paris 15e','Paris 16e','Paris 17e','Paris 18e','Paris 19e','Paris 20e',
-    'Orly Aéroport','CDG Aéroport','La Défense','Boulogne-Billancourt',
-    'Neuilly-sur-Seine','Versailles','Saint-Denis','Vincennes','Créteil',
-    'Vitry-sur-Seine','Ivry-sur-Seine','Villejuif','Rungis'
-  ];
-
-  function ZoneInput({ label, value, onChange }) {
-    const [q, setQ]         = useState(value || '');
-    const [open, setOpen]   = useState(false);
-    const filtered = useMemo(() =>
-      q.length > 0 ? ZONES.filter(z => z.toLowerCase().includes(q.toLowerCase())).slice(0, 6) : []
-    , [q]);
-
-    return html`
-      <div class="relative mb-3">
-        <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>${label}</label>
-        <input type="text" placeholder="Saisir ou choisir…"
-               value=${q}
-               onFocus=${() => setOpen(true)}
-               onInput=${e => { const v = e.target.value; setQ(v); onChange(v); setOpen(true); }}
-               onBlur=${() => setTimeout(() => setOpen(false), 180)}
-               class="w-full rounded-xl px-3 py-2.5 text-sm"
-               style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-        ${open && filtered.length > 0 ? html`
-          <div class="absolute z-50 w-full mt-1 rounded-xl overflow-hidden shadow-xl"
-               style=${{ background:C.surface2, border:`1px solid ${C.surface3}` }}>
-            ${filtered.map(z => html`
-              <div key=${z}
-                   class="px-3 py-2.5 text-sm cursor-pointer"
-                   style=${{ color:C.text, borderBottom:`1px solid ${C.surface3}40` }}
-                   onMouseOver=${e => e.currentTarget.style.background = C.surface3}
-                   onMouseOut=${e  => e.currentTarget.style.background = 'transparent'}
-                   onMouseDown=${() => { setQ(z); onChange(z); setOpen(false); }}>
-                ${z}
-              </div>`)}
-          </div>` : null}
-      </div>`;
-  }
-
-  // --- Modal Ajout Course ---
-  function AddCourseModal({ onClose, onSave }) {
-    const [form, setForm]   = useState({
-      platform:'uber', fare:'', tip:'', distance_km:'', duration_min:'',
-      departure_city:'', destination_city:'', surge_active:false, datetime:localDatetimeNow()
-    });
-    const [error, setError] = useState('');
-    const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-    const handleSubmit = () => {
-      const fare = parseFloat(form.fare);
-      if (!fare || fare <= 0) { setError('Le montant est obligatoire'); return; }
-      onSave({
-        id:                generateId(),
-        platform:          form.platform,
-        type:              form.platform !== 'heetch' ? 'berline' : 'standard',
-        fare,
-        tip:               parseFloat(form.tip) || 0,
-        distance_km:       parseFloat(form.distance_km) || null,
-        duration_min:      parseInt(form.duration_min)  || null,
-        departure_city:    form.departure_city,
-        destination_city:  form.destination_city,
-        surge_active:      form.surge_active,
-        datetime:          form.datetime ? form.datetime + ':00' : new Date().toISOString(),
-        created_at:        new Date().toISOString()
-      });
-    };
-
-    return html`
-      <div class="fixed inset-0 z-40 flex flex-col justify-end"
-           style=${{ background:'rgba(0,0,0,.72)', backdropFilter:'blur(6px)' }}
-           onClick=${e => e.target === e.currentTarget && onClose()}>
-        <div class="sheet rounded-t-3xl overflow-y-auto safe-bottom"
-             style=${{ background:C.surface, maxHeight:'92vh', maxWidth:480, margin:'0 auto', width:'100%' }}>
-
-          <div class="flex items-center justify-between px-5 py-4"
-               style=${{ borderBottom:`1px solid ${C.surface3}` }}>
-            <h3 class="font-bold" style=${{ color:C.text }}>Nouvelle course</h3>
-            <button onclick=${onClose} class="p-1.5 rounded-full" style=${{ color:C.textD, background:C.surface2 }}>
-              <${X} size=${16} />
-            </button>
-          </div>
-
-          <div class="px-5 py-4 space-y-1">
-
-            <!-- Plateforme -->
-            <div class="mb-4">
-              <label class="text-xs font-bold block mb-2 tracking-wider uppercase" style=${{ color:C.textM }}>Plateforme</label>
-              <div class="flex gap-2">
-                ${Object.entries(PLATFORMS).map(([k, p]) => html`
-                  <button key=${k} onclick=${() => set('platform', k)}
-                          class="flex-1 py-2.5 rounded-xl text-xs font-bold"
-                          style=${{
-                            background: form.platform === k ? C.gold : C.surface2,
-                            color:      form.platform === k ? C.bg  : C.textM,
-                            border: `1px solid ${form.platform === k ? C.gold : C.surface3}`
-                          }}>
-                    ${p.emoji} ${p.label}
-                  </button>`)}
-              </div>
-            </div>
-
-            <!-- Montant -->
-            <div class="mb-4">
-              <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>
-                Montant <span style=${{ color:C.red }}>*</span>
-              </label>
-              <input type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"
-                     value=${form.fare}
-                     onInput=${e => { setError(''); set('fare', e.target.value); }}
-                     class="w-full rounded-xl px-4 py-3 text-2xl font-black"
-                     style=${{ background:C.surface2, border:`2px solid ${error ? C.red : C.gold}40`, color:C.gold }} />
-              ${error ? html`<p class="text-xs mt-1" style=${{ color:C.red }}>${error}</p>` : null}
-            </div>
-
-            <!-- Tip + Distance -->
-            <div class="grid grid-cols-2 gap-3 mb-3">
-              <div>
-                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Pourboire (€)</label>
-                <input type="number" inputmode="decimal" step="0.5" min="0" placeholder="0.00"
-                       value=${form.tip} onInput=${e => set('tip', e.target.value)}
-                       class="w-full rounded-xl px-3 py-2.5 text-sm"
-                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-              </div>
-              <div>
-                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Distance (km)</label>
-                <input type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.0"
-                       value=${form.distance_km} onInput=${e => set('distance_km', e.target.value)}
-                       class="w-full rounded-xl px-3 py-2.5 text-sm"
-                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-              </div>
-            </div>
-
-            <!-- Durée + Date/heure -->
-            <div class="grid grid-cols-2 gap-3 mb-3">
-              <div>
-                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Durée (min)</label>
-                <input type="number" inputmode="numeric" step="1" min="0" placeholder="0"
-                       value=${form.duration_min} onInput=${e => set('duration_min', e.target.value)}
-                       class="w-full rounded-xl px-3 py-2.5 text-sm"
-                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-              </div>
-              <div>
-                <label class="text-xs font-bold block mb-1.5 tracking-wider uppercase" style=${{ color:C.textM }}>Date/heure</label>
-                <input type="datetime-local"
-                       value=${form.datetime} onInput=${e => set('datetime', e.target.value)}
-                       class="w-full rounded-xl px-3 py-2.5 text-sm"
-                       style=${{ background:C.surface2, border:`1px solid ${C.surface3}`, color:C.text }} />
-              </div>
-            </div>
-
-            <${ZoneInput} label="Départ"      value=${form.departure_city}   onChange=${v => set('departure_city', v)}   />
-            <${ZoneInput} label="Destination" value=${form.destination_city} onChange=${v => set('destination_city', v)} />
-
-            <!-- Surge toggle -->
-            <div class="flex items-center gap-3 py-3 px-3 rounded-xl mb-4"
-                 style=${{ background:C.surface2 }}>
-              <${Zap} size=${14} color=${form.surge_active ? C.amber : C.textD} />
-              <span class="text-sm flex-1" style=${{ color:C.textM }}>Surge / Prix majoré</span>
-              <button onclick=${() => set('surge_active', !form.surge_active)}
-                      class="relative rounded-full transition-colors"
-                      style=${{ width:46, height:26, background: form.surge_active ? C.amber : C.surface3 }}>
-                <span class="absolute top-0.5 rounded-full bg-white transition-all shadow"
-                      style=${{ width:22, height:22, left: form.surge_active ? '22px' : '2px' }}></span>
-              </button>
-            </div>
-
-            <button onclick=${handleSubmit}
-                    class="w-full py-3.5 rounded-2xl font-black text-sm tracking-wider mb-2"
-                    style=${{ background:C.gold, color:C.bg }}>
-              Enregistrer la course ✓
-            </button>
-          </div>
-        </div>
-      </div>`;
-  }
-
-  // --- Bottom Navigation ---
-  function BottomNav({ view, onChange }) {
-    const tabs = [
-      { id:'live',     label:'Live',      Icon:Activity  },
-      { id:'stats',    label:'Stats',     Icon:BarChart2 },
-      { id:'history',  label:'Historique',Icon:History   },
-      { id:'settings', label:'Réglages',  Icon:Settings  },
-    ];
-    return html`
-      <div class="fixed bottom-0 left-0 right-0 safe-bottom z-20"
-           style=${{ background:C.surface, borderTop:`1px solid ${C.surface3}`, maxWidth:480, margin:'0 auto' }}>
-        <div class="flex">
-          ${tabs.map(t => html`
-            <button key=${t.id} onclick=${() => onChange(t.id)}
-                    class="flex-1 flex flex-col items-center pt-2 pb-1.5 gap-0.5"
-                    style=${{ color: view === t.id ? C.gold : C.textD, background:'transparent' }}>
-              <${t.Icon} size=${22} />
-              <span class="text-xs" style=${{ fontSize:10 }}>${t.label}</span>
-            </button>`)}
-        </div>
-      </div>`;
-  }
-
-  // --- FAB ---
-  function FAB({ onClick }) {
-    return html`
-      <button onclick=${onClick}
-              class="fixed z-30 rounded-full flex items-center justify-center"
-              style=${{
-                bottom:72, right:16, width:52, height:52,
-                background:C.gold, color:C.bg,
-                boxShadow:`0 4px 24px ${C.gold}55`
-              }}>
-        <${Plus} size=${24} />
-      </button>`;
-  }
-
-  // ===== APP ROOT =====
-  function App() {
-    const [view,     setView]     = useState('live');
-    const [courses,  setCourses]  = useState([]);
-    const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-    const [showAdd,  setShowAdd]  = useState(false);
-    const [loading,  setLoading]  = useState(true);
-    const [signal,   setSignal]   = useState(null);
-
-    // Signal refresh toutes les 30s
-    useEffect(() => {
-      const refresh = () => {
-        const now   = new Date();
-        const today = courses.filter(c => isToday(c.datetime));
-        setSignal(getSignal(now, today, courses));
-      };
-      refresh();
-      const id = setInterval(refresh, 30000);
-      return () => clearInterval(id);
-    }, [courses]);
-
-    // Chargement initial
-    useEffect(() => {
-      (async () => {
-        try {
-          await ensureSeed();
-          const [all, cfg] = await Promise.all([loadCourses(), loadSettings()]);
-          setCourses(all.sort((a, b) => a.datetime.localeCompare(b.datetime)));
-          setSettings(cfg);
-        } catch(e) {
-          console.error('[INRUN] Init error:', e);
-        } finally {
-          setLoading(false);
-          const splash = document.getElementById('splash');
-          if (splash) splash.remove();
-        }
-      })();
-    }, []);
-
-    const addCourse = useCallback(async c => {
-      await saveCourse(c);
-      setCourses(prev => [...prev, c].sort((a, b) => a.datetime.localeCompare(b.datetime)));
-      setShowAdd(false);
-    }, []);
-
-    const delCourse = useCallback(async id => {
-      if (!confirm('Supprimer cette course ?')) return;
-      await deleteCourse(id);
-      setCourses(prev => prev.filter(c => c.id !== id));
-    }, []);
-
-    const updateSettings = useCallback(async s => {
-      await saveSettings(s);
-      setSettings(s);
-    }, []);
-
-    const reloadSeed = useCallback(async () => {
-      if (!confirm('Recharger les 119 courses de démo ? Les courses existantes seront conservées.')) return;
-      await db.meta.delete('seeded_v1');
-      await ensureSeed();
-      setCourses(await loadCourses());
-    }, []);
-
-    const clearAll = useCallback(async () => {
-      if (!confirm('Effacer TOUTES les courses ? Action irréversible.')) return;
-      await clearCourses();
-      await db.meta.delete('seeded_v1');
-      setCourses([]);
-    }, []);
-
-    if (loading || !signal) return null; // splash affiché en HTML statique
-
-    return html`
-      <div>
-        ${view === 'live'     && html`<${LiveView}     courses=${courses} signal=${signal} settings=${settings} />`}
-        ${view === 'stats'    && html`<${StatsView}    courses=${courses} />`}
-        ${view === 'history'  && html`<${HistoryView}  courses=${courses} onDelete=${delCourse} />`}
-        ${view === 'settings' && html`
-          <${SettingsView}
-            settings=${settings}
-            onSave=${updateSettings}
-            onReloadSeed=${reloadSeed}
-            onExportCSV=${() => exportCSV(courses)}
-            onClearAll=${clearAll}
-            courseCount=${courses.length}
-          />`}
-
-        ${view !== 'settings' && html`<${FAB} onClick=${() => setShowAdd(true)} />`}
-        <${BottomNav} view=${view} onChange=${setView} />
-        ${showAdd && html`<${AddCourseModal} onClose=${() => setShowAdd(false)} onSave=${addCourse} />`}
-      </div>`;
-  }
-
-  // ===== BOOT =====
-  createRoot(document.getElementById('root')).render(html`<${App} />`);
-
-  // ===== SERVICE WORKER =====
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(r  => console.log('[INRUN] SW registered:', r.scope))
-        .catch(e => console.warn('[INRUN] SW registration failed:', e));
-    });
-  }
-  </script>
+  document.getElementById('hm-grid').innerHTML=out;
+}
+
+function renderZones(){
+  document.getElementById('zone-body').innerHTML=ZONES.map(z=>`<tr><td class="${z.hot?'z-hot':'z-cold'}">${z.hot?'🔥':'·'} ${z.z}</td><td class="z-val ${z.hot?'z-hot':'z-cold'}">${z.v.toFixed(1)}€/h</td><td style="text-align:right;font-size:.55rem;color:var(--textD)">${z.hot?'HOT':''}</td></tr>`).join('');
+}
+
+function renderShiftPicker(){
+  document.getElementById('shift-grid').innerHTML=Object.entries(SHIFTS).map(([k,v])=>`<div class="shift-opt${S.shiftType===k?' sel':''}" data-s="${k}"><div class="shift-opt-name">${v.name}</div><div class="shift-opt-desc">${v.desc}</div>${v.target?`<div class="shift-opt-tgt">Cible: ${v.target}€</div>`:''}</div>`).join('');
+}
+
+function renderKPIs(){
+  const now=new Date(),ts=now.toISOString().slice(0,10);
+  const ms=new Date(now.getFullYear(),now.getMonth(),1);
+  const ws=new Date(now);ws.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1));ws.setHours(0,0,0,0);
+  const today=S.courses.filter(c=>c.datetime.slice(0,10)===ts);
+  const week=S.courses.filter(c=>new Date(c.datetime)>=ws);
+  const month=S.courses.filter(c=>new Date(c.datetime)>=ms);
+  const sum=a=>a.reduce((t,c)=>t+(c.fare||0)+(c.tip||0),0);
+  const tCA=sum(today),tAvg=today.length?tCA/today.length:0;
+  document.getElementById('k-today').textContent=fmtEur(tCA);
+  document.getElementById('k-today-sub').textContent=today.length+' course'+(today.length!==1?'s':'');
+  document.getElementById('k-avg').textContent=tAvg>0?tAvg.toFixed(2)+'€':'—';
+  document.getElementById('k-week').textContent=fmtEur(sum(week));
+  document.getElementById('k-week-sub').textContent=week.length+' course'+(week.length!==1?'s':'');
+  document.getElementById('k-month').textContent=fmtEur(sum(month));
+  document.getElementById('k-month-sub').textContent=month.length+' course'+(month.length!==1?'s':'');
+  document.getElementById('set-total').textContent=S.courses.length;
+}
+
+function renderSession(){
+  const dot=document.getElementById('sess-dot'),st=document.getElementById('sess-status'),sv=document.getElementById('sess-start'),av=document.getElementById('sess-active'),bp=document.getElementById('btn-pause'),br=document.getElementById('btn-resume');
+  if(!S.session){dot.className='sess-dot';st.textContent='Session inactive';st.style.color='var(--textM)';sv.style.display='block';av.style.display='none';renderShiftPicker();return;}
+  const{status,type}=S.session;
+  dot.className='sess-dot '+(status==='paused'?'paused':'active');
+  st.textContent=(status==='paused'?'⏸ En pause':'▶ En cours')+' — '+(SHIFTS[type]?.name||'Libre');
+  st.style.color=status==='paused'?'var(--amber)':'var(--green)';
+  sv.style.display='none';av.style.display='block';
+  const elapsed=sessElapsed(),ca=sessCA(),eph=elapsed>0?ca/(elapsed/3600000):0;
+  const cnt=S.courses.filter(c=>new Date(c.datetime).getTime()>=S.session.startTime).length;
+  document.getElementById('sess-timer').textContent=fmtTime(elapsed);
+  document.getElementById('sm-courses').textContent=cnt;
+  document.getElementById('sm-ca').textContent=ca.toFixed(0)+'€';
+  document.getElementById('sm-eph').textContent=eph>0?eph.toFixed(0)+'€/h':'—';
+  bp.style.display=status==='active'?'flex':'none';
+  br.style.display=status==='paused'?'flex':'none';
+}
+
+function renderHistory(){
+  const list=document.getElementById('hist-list');
+  let data=[...S.courses].sort((a,b)=>new Date(b.datetime)-new Date(a.datetime));
+  if(S.filter!=='all')data=data.filter(c=>c.platform===S.filter);
+  if(!data.length){list.innerHTML='<div class="empty"><div class="empty-ico">🚗</div><div class="empty-txt">Aucune course</div></div>';return;}
+  list.innerHTML=data.map(c=>{
+    const dt=new Date(c.datetime),ds=dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}),ts=dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const meta=[ds+' '+ts,c.distance_km?c.distance_km+'km':null,c.departure_city,c.destination_city].filter(Boolean).join(' · ');
+    return `<div class="c-row"><div class="c-plat">${PEMOJI[c.platform]||'🚗'}</div><div class="c-info"><div class="c-fare">${(c.fare||0).toFixed(2)}€${c.tip?`<span class="c-tip">+${c.tip.toFixed(2)}€ tip</span>`:''}</div><div class="c-meta">${meta}</div></div>${c.surge_active?'<div class="c-surge" title="Surge"></div>':''}<button class="c-del" data-del="${c.id}" title="Supprimer">✕</button></div>`;
+  }).join('');
+}
+
+const GRID='rgba(38,51,84,.6)',TXT='#4A5A7A';
+function chartRevData(){const days=[],data=[],now=new Date();for(let i=29;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);days.push(i===0?'Auj.':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}));data.push(parseFloat(S.courses.filter(c=>c.datetime.slice(0,10)===ds).reduce((a,c)=>a+(c.fare||0)+(c.tip||0),0).toFixed(2)));}return{days,data};}
+function chartPlatData(){const t={uber:0,bolt:0,heetch:0};S.courses.forEach(c=>{if(t[c.platform]!==undefined)t[c.platform]+=(c.fare||0)+(c.tip||0);});return{labels:['Uber','Bolt','Heetch'],data:[t.uber,t.bolt,t.heetch]};}
+function chartDayData(){const totals=[0,0,0,0,0,0,0],counts=[0,0,0,0,0,0,0];S.courses.forEach(c=>{const dw=dow(new Date(c.datetime));totals[dw]+=(c.fare||0)+(c.tip||0);counts[dw]++;});return{labels:DAYS_FR,data:totals.map((t,i)=>counts[i]?parseFloat((t/counts[i]).toFixed(2)):0)};}
+
+function initCharts(){
+  Chart.defaults.color=TXT;Chart.defaults.borderColor=GRID;Chart.defaults.font.family='system-ui';
+  const rc=document.getElementById('chart-rev').getContext('2d'),rg=rc.createLinearGradient(0,0,0,130);rg.addColorStop(0,'rgba(212,175,55,.28)');rg.addColorStop(1,'rgba(212,175,55,0)');
+  const rv=chartRevData();
+  S.charts.rev=new Chart(rc,{type:'line',data:{labels:rv.days,datasets:[{data:rv.data,borderColor:'#D4AF37',backgroundColor:rg,borderWidth:2,fill:true,tension:.4,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:'#D4AF37'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'€'}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:6,font:{size:8},color:TXT}},y:{grid:{color:GRID},ticks:{font:{size:8},color:TXT,callback:v=>v+'€'}}}}});
+  const pd=chartPlatData();
+  S.charts.plat=new Chart(document.getElementById('chart-plat').getContext('2d'),{type:'doughnut',data:{labels:pd.labels,datasets:[{data:pd.data,backgroundColor:['#111','#16a34a','#7c3aed'],borderColor:['#333','#16a34a66','#7c3aed66'],borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:8},boxWidth:8,padding:4,color:TXT}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw.toFixed(0)+'€'}}}}});
+  const dd=chartDayData();
+  S.charts.day=new Chart(document.getElementById('chart-day').getContext('2d'),{type:'bar',data:{labels:dd.labels,datasets:[{data:dd.data,backgroundColor:dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)'),borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'€/j'}}},scales:{x:{grid:{display:false},ticks:{font:{size:8},color:TXT}},y:{grid:{color:GRID},ticks:{font:{size:8},color:TXT,callback:v=>v+'€'}}}}});
+}
+
+function updateCharts(){
+  if(!S.charts.rev)return;
+  const rv=chartRevData();S.charts.rev.data.labels=rv.days;S.charts.rev.data.datasets[0].data=rv.data;S.charts.rev.update('none');
+  const pd=chartPlatData();S.charts.plat.data.datasets[0].data=pd.data;S.charts.plat.update('none');
+  const dd=chartDayData();S.charts.day.data.datasets[0].data=dd.data;S.charts.day.data.datasets[0].backgroundColor=dd.data.map(v=>v>0?'rgba(212,175,55,.65)':'rgba(38,51,84,.5)');S.charts.day.update('none');
+}
+
+function switchTab(id){
+  S.tab=id;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.id==='tab-'+id));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
+  const btns=document.querySelectorAll('.nb'),idx=[...btns].findIndex(b=>b.dataset.tab===id);
+  if(idx>=0){const w=document.getElementById('bnav').offsetWidth/btns.length;document.getElementById('nb-bar').style.left=(idx*w+w/2-11)+'px';}
+}
+
+function openModal(){
+  S.platform='uber';S.surge=false;
+  ['f-fare','f-tip','f-dist','f-dur','f-dep','f-dest'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.remove('err');});
+  document.querySelectorAll('.plat-tab').forEach(b=>b.classList.toggle('on',b.dataset.p==='uber'));
+  const tog=document.getElementById('tog-surge');tog.style.background='var(--s3)';tog.querySelector('.tog-thumb').style.left='3px';
+  document.getElementById('modal-ov').classList.remove('hide');
+  setTimeout(()=>document.getElementById('f-fare').focus(),300);
+}
+function closeModal(){document.getElementById('modal-ov').classList.add('hide');}
+
+async function saveCourse(){
+  const fareEl=document.getElementById('f-fare'),fare=parseFloat(fareEl.value);
+  if(!fare||fare<=0){fareEl.classList.add('err');fareEl.focus();setTimeout(()=>fareEl.classList.remove('err'),1600);return;}
+  const course={id:uid(),datetime:new Date().toISOString(),platform:S.platform,type:'standard',fare,tip:parseFloat(document.getElementById('f-tip').value)||0,distance_km:parseFloat(document.getElementById('f-dist').value)||null,duration_min:parseInt(document.getElementById('f-dur').value)||null,departure_city:document.getElementById('f-dep').value.trim()||null,destination_city:document.getElementById('f-dest').value.trim()||null,surge_active:S.surge,created_at:new Date().toISOString()};
+  await db.courses.add(course);S.courses.unshift(course);closeModal();renderAll();
+}
+
+async function deleteCourse(id){if(!confirm('Supprimer cette course ?'))return;await db.courses.delete(id);S.courses=S.courses.filter(c=>c.id!==id);renderAll();}
+async function exportCSV(){const cols=['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active','created_at'];const rows=S.courses.map(c=>cols.map(k=>JSON.stringify(c[k]??'')).join(','));const blob=new Blob([cols.join(',')+'
+'+rows.join('
+')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inrun_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);}
+async function reloadSeed(){if(!confirm('Recharger les 119 courses démo ?'))return;try{const r=await fetch('./seed_data.json');const seeds=await r.json();await db.courses.bulkPut(seeds);S.courses=await db.courses.orderBy('datetime').reverse().toArray();renderAll();}catch(e){alert('Erreur seed: '+e.message);}}
+async function clearAll(){if(!confirm('Effacer TOUTES les courses ? Action irréversible.'))return;await db.courses.clear();S.courses=[];renderAll();}
+
+function startSession(){S.session={startTime:Date.now(),totalPaused:0,pauseTime:null,status:'active',type:S.shiftType};clearInterval(S.timerID);S.timerID=setInterval(()=>{if(S.session)renderSession();},1000);renderSession();}
+function pauseSession(){if(!S.session||S.session.status!=='active')return;S.session.status='paused';S.session.pauseTime=Date.now();renderSession();}
+function resumeSession(){if(!S.session||S.session.status!=='paused')return;S.session.totalPaused+=Date.now()-S.session.pauseTime;S.session.pauseTime=null;S.session.status='active';renderSession();}
+function endSession(){if(!confirm('Terminer la session ?'))return;clearInterval(S.timerID);S.session=null;renderSession();}
+
+function renderAll(){renderKPIs();renderHistory();updateCharts();renderHeatmap();renderSession();}
+
+async function init(){
+  try{
+    S.courses=await db.courses.orderBy('datetime').reverse().toArray();
+    if(!S.courses.length){const meta=await db.meta.get('seeded');if(!meta){try{const r=await fetch('./seed_data.json');const seeds=await r.json();await db.courses.bulkPut(seeds);await db.meta.put({key:'seeded',value:true});S.courses=await db.courses.orderBy('datetime').reverse().toArray();}catch(e){}}}
+  }catch(e){console.error('DB:',e);}
+
+  document.getElementById('main').style.display='flex';
+  renderZones();renderShiftPicker();renderSignal();renderHeatmap();renderKPIs();renderHistory();renderSession();
+  setTimeout(()=>{const btns=document.querySelectorAll('.nb'),w=document.getElementById('bnav').offsetWidth/btns.length;document.getElementById('nb-bar').style.left=(w/2-11)+'px';},50);
+  initCharts();
+  setInterval(renderSignal,30000);
+  const ls=document.getElementById('loading');ls.classList.add('out');setTimeout(()=>ls.style.display='none',380);
+
+  document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
+  document.getElementById('fab').addEventListener('click',openModal);
+  document.getElementById('btn-m-close').addEventListener('click',closeModal);
+  document.getElementById('modal-ov').addEventListener('click',e=>{if(e.target===document.getElementById('modal-ov'))closeModal();});
+  document.querySelectorAll('.plat-tab').forEach(btn=>btn.addEventListener('click',()=>{S.platform=btn.dataset.p;document.querySelectorAll('.plat-tab').forEach(b=>b.classList.toggle('on',b===btn));}));
+  document.getElementById('tog-surge').addEventListener('click',()=>{S.surge=!S.surge;const el=document.getElementById('tog-surge');el.style.background=S.surge?'var(--gold)':'var(--s3)';el.querySelector('.tog-thumb').style.left=S.surge?'23px':'3px';});
+  document.getElementById('btn-save').addEventListener('click',saveCourse);
+  document.getElementById('filter-bar').addEventListener('click',e=>{const chip=e.target.closest('[data-f]');if(!chip)return;S.filter=chip.dataset.f;document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.f===S.filter));renderHistory();});
+  document.getElementById('hist-list').addEventListener('click',e=>{const btn=e.target.closest('[data-del]');if(btn)deleteCourse(btn.dataset.del);});
+  document.getElementById('btn-export').addEventListener('click',exportCSV);
+  document.getElementById('btn-seed').addEventListener('click',reloadSeed);
+  document.getElementById('btn-clear').addEventListener('click',clearAll);
+  document.getElementById('sess-head').addEventListener('click',()=>{const body=document.getElementById('sess-body'),chev=document.getElementById('sess-chev'),open=body.style.display!=='none';body.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});
+  document.getElementById('btn-start').addEventListener('click',startSession);
+  document.getElementById('btn-pause').addEventListener('click',pauseSession);
+  document.getElementById('btn-resume').addEventListener('click',resumeSession);
+  document.getElementById('btn-end').addEventListener('click',endSession);
+  document.getElementById('shift-grid').addEventListener('click',e=>{const opt=e.target.closest('[data-s]');if(!opt)return;S.shiftType=opt.dataset.s;renderShiftPicker();});
+
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').then(()=>{const el=document.getElementById('sw-st');el.textContent='✓ Actif';el.style.color='var(--green)';}).catch(()=>{const el=document.getElementById('sw-st');el.textContent='✗ Inactif';el.style.color='var(--red)';});}
+}
+
+init();
+</script>
 </body>
 </html>
