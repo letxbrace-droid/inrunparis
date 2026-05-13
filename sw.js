@@ -1,15 +1,15 @@
-/* I&N RUN — Service Worker v1 */
-const CACHE = 'inrun-v1';
+/* I&N RUN — Service Worker v2 */
+const CACHE = 'inrun-v2';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
+  '/inrunparis/icon-180.png',
   '/inrunparis/icon-192.png',
   '/inrunparis/icon-512.png',
   '/inrunparis/icon.svg',
   '/inrunparis/manifest.json',
   '/inrunparis/lib/leaflet.js',
   '/inrunparis/lib/leaflet.css',
-  'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap',
 ];
 
 self.addEventListener('install', e => {
