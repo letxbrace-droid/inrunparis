@@ -487,7 +487,7 @@ function renderHeatmap(){
     row.vals.forEach((v,i)=>{
       const t=v/MAX;let r,g,b;
       if(t>.75){r=240;g=68;b=68;}else if(t>.6){r=212;g=175;b=55;}else if(t>.45){r=61;g=142;b=245;}else{r=38;g=51;b=84;}
-      out+='<div class="hm-cell'+(cur&&i===dw?' cur':'')'" style="background:rgba('+r+','+g+','+b+','+(.25+t*.65)+');color:rgba(255,255,255,'+(.4+t*.6)+')">'+v+'</div>';
+      out+='<div class="hm-cell'+(cur&&i===dw?' cur':'')+'" style="background:rgba('+r+','+g+','+b+','+(.25+t*.65)+');color:rgba(255,255,255,'+(.4+t*.6)+')">'+v+'</div>';
     });
   });
   document.getElementById('hm-grid').innerHTML=out;
@@ -593,9 +593,7 @@ async function saveCourse(){
 }
 
 async function deleteCourse(id){if(!confirm('Supprimer cette course ?'))return;if(db)await db.courses.delete(id).catch(()=>{});S.courses=S.courses.filter(c=>c.id!==id);renderAll();}
-async function exportCSV(){const cols=['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active','created_at'];const rows=S.courses.map(c=>cols.map(k=>JSON.stringify(c[k]??'')).join(','));const blob=new Blob([cols.join(',')+'
-'+rows.join('
-')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inrun_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);}
+async function exportCSV(){const cols=['id','datetime','platform','type','fare','tip','distance_km','duration_min','departure_city','destination_city','surge_active','created_at'];const rows=S.courses.map(c=>cols.map(k=>JSON.stringify(c[k]??'')).join(','));const blob=new Blob([cols.join(',')+'\n'+rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inrun_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);}
 async function reloadSeed(){if(!confirm('Recharger les 119 courses démo ?'))return;try{const r=await fetch('./seed_data.json');const seeds=await r.json();if(db){await db.courses.bulkPut(seeds);S.courses=await db.courses.orderBy('datetime').reverse().toArray();}else{S.courses=seeds;}renderAll();}catch(e){alert('Erreur seed: '+e.message);}}
 async function clearAll(){if(!confirm('Effacer TOUTES les courses ? Action irréversible.'))return;if(db)await db.courses.clear().catch(()=>{});S.courses=[];renderAll();}
 
