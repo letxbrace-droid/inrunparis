@@ -1,4 +1,4 @@
-const CACHE = 'inrun-ops-v6';
+const CACHE = 'inrun-ops-v7';
 const ASSETS = [
   './',
   './index.html',
