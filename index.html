@@ -1479,20 +1479,21 @@ footer {
 
 <!-- ══ BOTTOM NAV ══ -->
 <nav class="bottom-nav" aria-label="Navigation principale mobile" role="navigation">
-  <a href="#hero" class="nav-tab active" data-tab="home" aria-label="Accueil" aria-current="page">
+  <button class="nav-tab active" data-tab="home" onclick="navTo('hero','home')" type="button" aria-label="Accueil" aria-current="page">
     <span class="tab-icon" aria-hidden="true">🏠</span>
     <span>Accueil</span>
-  </a>
-  <button class="nav-tab" data-tab="calc" onclick="scrollToCalc()" type="button" aria-label="Calculateur de tarif">
+  </button>
+  <button class="nav-tab" data-tab="calc" onclick="navTo('calculator','calc')" type="button" aria-label="Calculateur de tarif">
     <span class="tab-icon" aria-hidden="true">🧮</span>
     <span>Tarif</span>
   </button>
-  <a href="#tarifs" class="nav-tab" data-tab="tarifs" aria-label="Grille tarifaire">
+  <button class="nav-tab" data-tab="tarifs" onclick="navTo('tarifs','tarifs')" type="button" aria-label="Grille tarifaire">
     <span class="tab-icon" aria-hidden="true">💰</span>
     <span>Zones</span>
-  </a>
+  </button>
   <a href="https://wa.me/33783858031?text=Bonjour%2C%20je%20voudrais%20r%C3%A9server%20une%20course%20VTC."
      class="nav-tab"
+     data-tab="reserver"
      target="_blank" rel="noopener noreferrer"
      aria-label="Réserver via WhatsApp">
     <span class="tab-icon" aria-hidden="true">💬</span>
@@ -1665,7 +1666,7 @@ document.addEventListener('keydown', (e) => {
    SCROLL TO CALC
 ══════════════════════════════════════════════════════════ */
 function scrollToCalc() {
-  document.getElementById('calculator').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  navTo('calculator', 'calc');
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -2090,31 +2091,52 @@ if (typeof L !== 'undefined') {
 }
 
 /* ══════════════════════════════════════════════════════════
-   ACTIVE NAV ON SCROLL
+   NAV — scroll direct + état actif au scroll
 ══════════════════════════════════════════════════════════ */
-(function() {
-  const sections = ['hero', 'tarifs', 'avis', 'faq'];
-  const navLinks = document.querySelectorAll('[data-nav]');
-  const bottomTabs = document.querySelectorAll('[data-tab]');
+function navTo(sectionId, tabId) {
+  const el = document.getElementById(sectionId);
+  if (!el) return;
+  const hdr = document.querySelector('.site-header') || document.querySelector('.bottom-nav');
+  const offset = (document.querySelector('.site-header')?.offsetHeight || 0) + 8;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top, behavior: 'smooth' });
+  setActiveTab(tabId);
+  if (typeof haptic === 'function') haptic(8);
+}
 
-  function updateNav() {
-    const scrollY = window.scrollY + 100;
-    let active = null;
-    sections.forEach(id => {
+function setActiveTab(tabId) {
+  document.querySelectorAll('.nav-tab[data-tab]').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tabId);
+    if (t.dataset.tab === tabId) t.setAttribute('aria-current', 'page');
+    else t.removeAttribute('aria-current');
+  });
+}
+
+(function () {
+  /* Sections mappées sur les tabs — ordre croissant de position */
+  const MAP = [
+    { id: 'hero',       tab: 'home'   },
+    { id: 'calculator', tab: 'calc'   },
+    { id: 'tarifs',     tab: 'tarifs' },
+    { id: 'comment',    tab: 'tarifs' },
+    { id: 'avis',       tab: 'tarifs' },
+    { id: 'faq',        tab: 'tarifs' },
+    { id: 'reserver',   tab: 'tarifs' },
+  ];
+
+  function updateActiveTab() {
+    const mid = window.scrollY + window.innerHeight * 0.4;
+    let current = 'home';
+    MAP.forEach(({ id, tab }) => {
       const el = document.getElementById(id);
-      if (el && el.offsetTop <= scrollY) active = id;
+      if (el && el.getBoundingClientRect().top + window.pageYOffset <= mid) current = tab;
     });
-    navLinks.forEach(l => {
-      l.classList.toggle('active', l.dataset.nav === active);
-    });
-    bottomTabs.forEach(b => b.classList.remove('active'));
-    if (active === 'hero' || !active) {
-      document.querySelector('[data-tab="home"]')?.classList.add('active');
-    }
+    setActiveTab(current);
   }
 
-  window.addEventListener('scroll', updateNav, { passive: true });
-})();
+  window.addEventListener('scroll', updateActiveTab, { passive: true });
+  updateActiveTab();
+}());
 </script>
 
 </body>
