@@ -584,6 +584,28 @@ body {
 .hero-mode-toggle:hover { transform:scale(1.05); }
 .hero-mode-toggle svg { transition:transform .4s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
 .hero-mode-lbl { font-family:var(--font-mono); }
+/* Install button — visible uniquement quand PWA non installée */
+.hero-install-btn {
+  position:absolute; top:108px; right:14px; z-index:60;
+  height:34px; padding:0 11px; border-radius:17px;
+  background:rgba(12,244,216,.12); backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border:1px solid rgba(12,244,216,.35);
+  color:var(--teal); cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.08em;
+  display:none; align-items:center; justify-content:center; gap:5px;
+  transition:background .25s, transform .2s;
+  box-shadow:0 2px 14px rgba(12,244,216,.15);
+  animation: installPulse 2.8s ease-in-out 1.5s infinite;
+}
+.hero-install-btn:hover { background:rgba(12,244,216,.2); transform:scale(1.04); }
+.hero-install-btn svg { flex-shrink:0; }
+@keyframes installPulse {
+  0%,100% { box-shadow:0 2px 14px rgba(12,244,216,.15), 0 0 0 0 rgba(12,244,216,.3); }
+  50% { box-shadow:0 2px 14px rgba(12,244,216,.15), 0 0 0 6px rgba(12,244,216,0); }
+}
+@media (display-mode:standalone) {
+  .hero-install-btn { display:none !important; }
+}
 
 /* ── MODE JOUR — overrides ── */
 #heroMap.day-mode {
@@ -3169,6 +3191,11 @@ body::before {
       </svg>
       <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
     </button>
+    <!-- Install PWA button — shown by JS when installable, hidden in standalone -->
+    <button class="hero-install-btn" id="heroInstallBtn" aria-label="Installer I&N RUN">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M12 3v11M8 10l4 4 4-4"/><path d="M20 21H4"/></svg>
+      INSTALLER
+    </button>
 
     <!-- Pill trigger (mobile) -->
     <button class="inr-pill" id="inrPill" onclick="expandHeroPill()" aria-label="Ouvrir la réservation">
@@ -3814,9 +3841,10 @@ body::before {
     <div class="pwa-sheet-android" id="pwaAndroid" style="display:none">
       <button class="pwa-sheet-cta" id="pwaInstallBtn" aria-label="Installer I&N RUN">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20"><path d="M12 3v13M7 11l5 5 5-5"/><path d="M20 21H4"/></svg>
-        Ajouter à l'écran d'accueil
+        Installer l'application
       </button>
-      <p class="pwa-sheet-hint">Pas de Play Store · <span>Fonctionne hors-ligne</span> · Accès instantané</p>
+      <p class="pwa-sheet-hint">Icône native · <span>Sans badge Chrome</span> · Fonctionne hors-ligne</p>
+      <p class="pwa-sheet-hint" style="margin-top:6px;color:rgba(255,255,255,.35)">Utilisez ce bouton — pas "Ajouter" du menu Chrome</p>
     </div>
     <!-- iOS Safari: step-by-step guide -->
     <div class="pwa-sheet-ios" id="pwaIos" style="display:none">
@@ -5599,54 +5627,71 @@ function showToast(msg, duration = 2200) {
 }
 window.showToast = showToast;
 
-/* ── PWA install sheet ── */
+/* ── PWA install system ── */
 (function() {
-  let deferredPrompt = null;
-  const sheet    = document.getElementById('pwaSheet');
-  const closeBtn = document.getElementById('pwaSheetClose');
-  const installB = document.getElementById('pwaInstallBtn');
-  const androidEl = document.getElementById('pwaAndroid');
-  const iosEl    = document.getElementById('pwaIos');
+  const sheet      = document.getElementById('pwaSheet');
+  const closeBtn   = document.getElementById('pwaSheetClose');
+  const installB   = document.getElementById('pwaInstallBtn');
+  const androidEl  = document.getElementById('pwaAndroid');
+  const iosEl      = document.getElementById('pwaIos');
+  const heroBtn    = document.getElementById('heroInstallBtn');
 
-  /* Already installed as standalone → skip */
+  /* Déjà installé en standalone → masque tout */
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  if (isStandalone || !sheet) return;
-
-  /* User dismissed recently (7-day cooldown) */
-  const dismissed = localStorage.getItem('pwa-dismissed-until');
-  if (dismissed && Date.now() < parseInt(dismissed, 10)) return;
+  if (isStandalone) return;
 
   const ua = navigator.userAgent;
   const isIOS = /iphone|ipad|ipod/i.test(ua) && !window.MSStream;
-  /* iOS Safari only — Chrome/Firefox iOS can't install PWAs */
+  /* iOS Safari uniquement — Chrome/Firefox iOS ne supportent pas l'install PWA */
   const isSafariIOS = isIOS && /safari/i.test(ua) && !/crIOS|fxiOS|EdgiOS|OPiOS/i.test(ua);
 
+  let deferredPrompt = null;
+
+  function isDismissed() {
+    const d = localStorage.getItem('pwa-dismissed-until');
+    return d && Date.now() < parseInt(d, 10);
+  }
+  function snooze() {
+    localStorage.setItem('pwa-dismissed-until', Date.now() + 7 * 24 * 60 * 60 * 1000);
+  }
   function openSheet() {
     if (!sheet) return;
     sheet.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
-  function closeSheet(snooze) {
+  function closeSheet(doSnooze) {
+    if (!sheet) return;
     sheet.classList.remove('show');
     document.body.style.overflow = '';
-    if (snooze) {
-      const until = Date.now() + 7 * 24 * 60 * 60 * 1000;
-      localStorage.setItem('pwa-dismissed-until', until);
-    }
+    if (doSnooze) snooze();
   }
 
-  /* Tap backdrop to close */
-  sheet.addEventListener('click', (e) => {
+  /* Backdrop + close btn */
+  sheet && sheet.addEventListener('click', (e) => {
     if (e.target === sheet) { haptic && haptic(8); closeSheet(true); }
   });
   closeBtn && closeBtn.addEventListener('click', () => { haptic && haptic(8); closeSheet(true); });
 
-  /* Android / Chrome Desktop */
+  /* Hero button (toujours accessible même si sheet snooze) */
+  if (heroBtn) {
+    heroBtn.addEventListener('click', () => {
+      haptic && haptic(12);
+      localStorage.removeItem('pwa-dismissed-until');
+      openSheet();
+    });
+  }
+
+  /* ── Android Chrome / Desktop ─────────────────────────── */
+  /* IMPORTANT: toujours écouter cet événement — NE PAS retourner avant */
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     if (androidEl) androidEl.style.display = '';
-    setTimeout(openSheet, 2500);
+    if (iosEl)     iosEl.style.display = 'none';
+    /* Révèle le bouton hero dans le HUD */
+    if (heroBtn)   heroBtn.style.display = 'flex';
+    /* Auto-show sheet seulement si pas snooze */
+    if (!isDismissed()) setTimeout(openSheet, 2500);
   });
 
   installB && installB.addEventListener('click', async () => {
@@ -5656,20 +5701,27 @@ window.showToast = showToast;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     deferredPrompt = null;
-    if (outcome === 'accepted') showToast('I&N RUN installé !');
-    else localStorage.setItem('pwa-dismissed-until', Date.now() + 7 * 24 * 60 * 60 * 1000);
+    if (outcome === 'accepted') {
+      if (heroBtn) heroBtn.style.display = 'none';
+      showToast('I&N RUN installé !');
+    } else {
+      snooze();
+    }
   });
 
-  /* iOS Safari */
+  /* ── iOS Safari ───────────────────────────────────────── */
   if (isSafariIOS) {
-    if (iosEl) iosEl.style.display = '';
-    setTimeout(openSheet, 3000);
+    if (iosEl)   iosEl.style.display = '';
+    if (heroBtn) heroBtn.style.display = 'flex';
+    if (!isDismissed()) setTimeout(openSheet, 3000);
   }
 
-  /* Hide after successful install */
+  /* Post-install cleanup */
   window.addEventListener('appinstalled', () => {
     closeSheet(false);
+    if (heroBtn) heroBtn.style.display = 'none';
     showToast('I&N RUN installé avec succès !');
+    localStorage.removeItem('pwa-dismissed-until');
   });
 })();
 
