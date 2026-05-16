@@ -474,8 +474,10 @@ body {
 .inr-ac-drop {
   position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:200;
   background:rgba(6,6,6,.97); border:0.5px solid rgba(12,244,216,.22);
-  border-radius:14px; overflow:hidden; display:none;
+  border-radius:14px; overflow-y:auto; overflow-x:hidden; display:none;
+  max-height:180px;
   backdrop-filter:blur(24px); box-shadow:0 12px 40px rgba(0,0,0,.6);
+  overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
 }
 .inr-ac-drop.open { display:block; animation:acSlide .2s ease-out; }
 @keyframes acSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
@@ -2992,18 +2994,25 @@ body { overflow: hidden !important; }
 /* card cachée par défaut sur mobile → reveal au tap pill */
 @media (max-width: 639px) {
   .inr-card {
-    bottom: auto !important;
-    top: 50%; left: 14px; right: 14px;
-    transform: translateY(calc(-50% - 40px - env(safe-area-inset-bottom,0px) * .5)) scale(.9);
+    /* ancré juste au-dessus du dock — grandit vers le haut */
+    bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+    left: 14px; right: 14px;
+    /* hauteur max = espace dispo entre top safe-area et dock */
+    max-height: calc(100svh - 110px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(18px) scale(.95);
     margin: 0 !important;
     opacity: 0;
     pointer-events: none;
-    transition: opacity .42s cubic-bezier(.22,1,.36,1), transform .48s cubic-bezier(.22,1,.36,1);
+    transition: opacity .38s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1);
   }
   .inr-card.pill-expanded {
     opacity: 1;
     pointer-events: all;
-    transform: translateY(calc(-50% - 40px - env(safe-area-inset-bottom,0px) * .5)) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
