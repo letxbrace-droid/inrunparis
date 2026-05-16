@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lib/leaflet.css"/>
 <style>html,body{background:#0a0a0b;min-height:100dvh;}</style>
 <script src="lib/leaflet.js" id="leafletJs"></script>
@@ -52,6 +52,8 @@
   --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-mono: "JetBrains Mono", "SF Mono", monospace;
   --electric: #0CF4D8;   /* cyan électrique unifié avec la marque */
+  --teal: #0CF4D8;       /* alias explicit — utilisé dans dock actif, indicateur */
+  --gold-real: #D4A84B;  /* or véritable — call screen ring/glow */
   --page-bg: #1C2131;   /* navy anthracite — fond visible pour les ombres */
   --gutter: 20px;
   --radius-sm: 14px;
@@ -451,6 +453,8 @@ body {
 .inr-field-row:focus-within {
   border-color:var(--gold);
   background:rgba(12,244,216,.05);
+  border-left: 2px solid var(--gold);
+  padding-left: 10px;
   animation:fieldFlare .42s ease-out forwards;
 }
 .inr-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
@@ -2097,6 +2101,18 @@ body {
   );
 }
 
+/* ── Global grain texture overlay — breaks digital flatness ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998;
+  pointer-events: none;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  background-repeat: repeat;
+}
+[data-theme="light"] body::after { opacity: .018; }
+
 /* ── Corner bracket decorator on cards ── */
 .card, .compare-card, .status-card {
   position: relative;
@@ -2786,6 +2802,29 @@ a, button, [role="button"], input, select, textarea, label {
 .pwa-ios-step-icon { color: var(--mist); }
 .pwa-ios-step-icon svg { vertical-align: middle; }
 
+/* ── Typography refinements: balance, hierarchy ── */
+.hero-h1, .section-intro h2, .how-title, .card-title, .call-name {
+  text-wrap: balance;
+}
+/* Tarifs view: stronger heading hierarchy */
+#view-tarifs .how-section > [style],
+#view-tarifs .tarif-table-section > [style],
+#view-tarifs .faq-section > [style],
+#view-tarifs .reviews-strip > [style] {
+  text-wrap: balance;
+}
+/* First review card gets a subtle featured treatment */
+#view-tarifs .review-card:first-child {
+  border-color: rgba(12,244,216,.18);
+  background: linear-gradient(160deg, rgba(12,244,216,.04), rgba(12,244,216,.01));
+}
+#view-tarifs .review-card:first-child::before {
+  opacity: .65;
+  font-size: 2.8rem;
+}
+/* Reserve form: slightly more breathing room between fields */
+.reserve-scroll .field-ic svg { color: var(--gold); }
+
 /* ── Smooth dock transition (no jump on active change) ── */
 .dock-btn { transition: color .25s ease, background .25s ease; }
 .dock-btn svg { transition: transform .25s cubic-bezier(.34,1.56,.64,1), filter .25s ease, color .25s ease; }
@@ -2896,11 +2935,11 @@ body { overflow: hidden !important; }
   flex-shrink: 0;
 }
 .view-header-title {
-  font-family: var(--ff-display);
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--ff-brand);
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--bone);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 .view-header-sub {
   font-size: .72rem;
@@ -2918,7 +2957,10 @@ body { overflow: hidden !important; }
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 0; padding: var(--gutter); text-align: center; min-height: 100%;
-  background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(12,244,216,.07) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 25%, rgba(12,244,216,.11) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 50% 85%, rgba(212,168,75,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(12,244,216,.03) 0%, transparent 100%);
 }
 /* Texte géant derrière (editorial typography) */
 .call-bg-word {
@@ -2928,39 +2970,46 @@ body { overflow: hidden !important; }
   font-size: clamp(5rem, 28vw, 11rem);
   letter-spacing: -.04em; line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(12,244,216,.07);
+  -webkit-text-stroke: 1px rgba(12,244,216,.13);
+  text-stroke: 1px rgba(12,244,216,.13);
   pointer-events: none; user-select: none; z-index: 0;
   white-space: nowrap;
+  opacity: 0.9;
 }
 .call-ring-wrap {
   position: relative; z-index: 1;
-  width: 140px; height: 140px; margin-bottom: 32px;
+  width: 148px; height: 148px; margin-bottom: 36px;
 }
 @keyframes callRing {
-  0%   { transform: scale(1); opacity: .55; }
-  100% { transform: scale(2.2); opacity: 0; }
+  0%   { transform: scale(1); opacity: .6; }
+  100% { transform: scale(2.4); opacity: 0; }
 }
 .call-ring {
   position: absolute; inset: 0; border-radius: 50%;
-  border: 1px solid rgba(12,244,216,.4);
+  border: 1.5px solid rgba(12,244,216,.45);
   animation: callRing 2.8s ease-out infinite;
 }
-.call-ring.r2 { border-color: rgba(212,168,75,.3); animation-delay: .93s; }
-.call-ring.r3 { border-color: rgba(12,244,216,.2); animation-delay: 1.86s; }
+.call-ring.r2 { border-color: rgba(212,168,75,.35); animation-delay: .93s; }
+.call-ring.r3 { border-color: rgba(12,244,216,.22); animation-delay: 1.86s; }
 .call-avatar {
   position: absolute; inset: 0; border-radius: 50%;
-  background: linear-gradient(135deg, #0d7a6e, #084d46);
-  border: 1.5px solid rgba(12,244,216,.4);
-  box-shadow: 0 0 30px rgba(12,244,216,.25), 0 0 60px rgba(12,244,216,.1);
+  background: linear-gradient(140deg, #0f8a7d 0%, #0d7a6e 40%, #084d46 100%);
+  border: 2px solid rgba(12,244,216,.5);
+  box-shadow:
+    0 0 0 4px rgba(12,244,216,.08),
+    0 0 36px rgba(12,244,216,.3),
+    0 0 72px rgba(12,244,216,.12),
+    inset 0 1px 2px rgba(255,255,255,.2);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--ff-brand); font-size: 1.5rem; font-weight: 900;
+  font-family: var(--ff-brand); font-size: 1.55rem; font-weight: 900;
   color: #fff; letter-spacing: .05em;
 }
 .call-name {
   position: relative; z-index: 1;
-  font-family: var(--ff-brand); font-size: 2rem; font-weight: 900;
-  color: var(--bone); letter-spacing: -.03em; line-height: 1;
+  font-family: var(--ff-brand); font-size: 2.1rem; font-weight: 900;
+  color: var(--bone); letter-spacing: -.04em; line-height: 1;
   margin-bottom: 6px;
+  text-shadow: 0 2px 24px rgba(0,0,0,.3);
 }
 .call-sub {
   position: relative; z-index: 1;
@@ -2995,9 +3044,9 @@ body { overflow: hidden !important; }
 .call-btn:active { transform: scale(.96); }
 .call-btn:active::before { opacity: 1; }
 .call-btn-phone {
-  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
-  color: var(--oled);
-  box-shadow: 0 8px 32px rgba(212,168,75,.35), 0 0 0 1px rgba(212,168,75,.2);
+  background: linear-gradient(135deg, #e0b852, #d4a84b 55%, #b8912f);
+  color: #0a0808;
+  box-shadow: 0 8px 32px rgba(212,168,75,.45), 0 0 0 1px rgba(212,168,75,.25), inset 0 1px 2px rgba(255,255,255,.3);
 }
 .call-btn-wa {
   background: linear-gradient(135deg, #25d366, #128c7e);
@@ -3607,8 +3656,8 @@ body::before {
   <!-- ═══ HOW IT WORKS ═══ -->
   <section class="how-section reveal">
     <div class="eyebrow">En 3 étapes</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Un service sans mauvaise surprise.</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;">De la réservation à l'arrivée, vous savez exactement à quoi vous attendre.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:8px;text-wrap:balance;">Un service sans mauvaise surprise.</div>
+    <div style="font-size:.84rem;color:var(--mist);line-height:1.55;max-width:320px;">De la réservation à l'arrivée, vous savez exactement à quoi vous attendre.</div>
     <div class="how-steps">
       <div class="how-step">
         <div class="how-num">1</div>
@@ -3640,7 +3689,7 @@ body::before {
   <!-- ═══ TARIF TABLE ═══ -->
   <section class="tarif-table-section reveal" id="tarifs">
     <div class="eyebrow">Tarification</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:16px;">Tarif fixe contre prix variable.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:18px;text-wrap:balance;">Tarif fixe contre<br><span style="background:linear-gradient(135deg,var(--gold-warm),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">prix variable.</span></div>
     <div class="tarif-table-card">
       <div class="tarif-head">
         <div class="tarif-col-a">
@@ -3755,8 +3804,8 @@ body::before {
   <!-- ═══ FAQ ═══ -->
   <section class="faq-section reveal">
     <div class="eyebrow">Vos questions</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Questions fréquentes</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:6px;text-wrap:balance;">Questions fréquentes</div>
+    <div style="font-size:.84rem;color:var(--mist);line-height:1.55;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q">Peut-on réserver à la dernière minute ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
