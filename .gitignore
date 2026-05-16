@@ -2,3 +2,5 @@ __pycache__/
 node_modules/
 android/
 ios/
+# Added by code-review-graph
+.code-review-graph/
