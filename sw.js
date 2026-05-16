@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v3 */
-const CACHE = 'inrun-v3';
+/* I&N RUN — Service Worker v4 */
+const CACHE = 'inrun-v4';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
@@ -16,6 +16,7 @@ const STATIC = [
 const PASSTHROUGH = [
   '/inrunparis/bdr-admin.html',
   '/inrunparis/bdradmin.html',
+  '/inrunparis/hub.html',
   '/inrunparis/ops/',
   '/inrunparis/ops/index.html',
   '/inrunparis/mentions-legales.html',
