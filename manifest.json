@@ -1,10 +1,12 @@
 {
+  "id": "/inrunparis/",
   "name": "I&N RUN — Chauffeur Privé",
   "short_name": "I&N RUN",
   "description": "Réservez votre chauffeur privé VTC. Tarif fixe garanti, confirmation en 2 min.",
-  "start_url": "/inrunparis/",
+  "start_url": "/inrunparis/?source=pwa",
   "scope": "/inrunparis/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#0A0A0B",
   "background_color": "#0A0A0B",
