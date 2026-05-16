@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v5 */
-const CACHE = 'inrun-v5';
+/* I&N RUN — Service Worker v6 */
+const CACHE = 'inrun-v6';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
@@ -12,7 +12,6 @@ const STATIC = [
   '/inrunparis/lib/leaflet.css',
 ];
 
-/* Pages admin/outils qui doivent être servies directement, jamais remplacées par index.html */
 const PASSTHROUGH = [
   '/inrunparis/bdr-admin.html',
   '/inrunparis/bdradmin.html',
@@ -42,13 +41,11 @@ self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
 
-  /* Pages admin : réseau direct, jamais de cache SPA */
   if (PASSTHROUGH.some(p => url.pathname.startsWith(p))) {
     e.respondWith(fetch(request));
     return;
   }
 
-  /* Navigation SPA : servir index.html depuis le cache */
   if (request.mode === 'navigate') {
     e.respondWith(
       caches.match('/inrunparis/index.html').then(r => r || fetch(request))
@@ -56,7 +53,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  /* Tuiles carte + APIs externes : réseau d'abord */
   if (
     url.hostname.includes('cartocdn.com') ||
     url.hostname.includes('openstreetmap.org') ||
@@ -68,7 +64,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  /* Tout le reste : cache d'abord, réseau en fallback */
   e.respondWith(
     caches.match(request).then(r => r || fetch(request).then(res => {
       if (res.ok && res.type !== 'opaque') {
