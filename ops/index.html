@@ -36,8 +36,10 @@
     @keyframes slideup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
     @keyframes fadein{from{opacity:0}to{opacity:1}}
     @keyframes glowgold{0%,100%{box-shadow:0 0 12px rgba(212,175,55,.3)}50%{box-shadow:0 0 28px rgba(212,175,55,.65)}}
+    @keyframes tabenter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes valpop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
 
-    #main{display:flex;flex-direction:column;min-height:100dvh;padding-bottom:calc(5.2rem + env(safe-area-inset-bottom));}
+    #main{display:flex;flex-direction:column;min-height:100dvh;padding-bottom:calc(5.4rem + env(safe-area-inset-bottom));}
 
     #sig-bar{
       position:sticky;top:0;z-index:50;
@@ -56,16 +58,26 @@
     .sig-reason{font-size:.65rem;color:var(--textM);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px;}
     .sig-time{font-family:var(--mono);font-size:.92rem;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-    .tab{display:none;animation:fadein .18s ease-out}
-    .tab.on{display:block}
+    .tab{display:none}
+    .tab.on{display:block;animation:tabenter .22s cubic-bezier(.4,0,.2,1)}
+    #tab-kpi.on{background:radial-gradient(ellipse 140% 35% at 50% -5%,rgba(212,175,55,.05) 0%,transparent 100%)}
+    #tab-session.on{background:radial-gradient(ellipse 140% 35% at 50% -5%,rgba(0,200,150,.05) 0%,transparent 100%)}
+    #tab-analyse.on{background:radial-gradient(ellipse 140% 35% at 50% -5%,rgba(61,142,245,.05) 0%,transparent 100%)}
+    #tab-history.on{background:radial-gradient(ellipse 140% 35% at 50% -5%,rgba(155,89,245,.05) 0%,transparent 100%)}
+    #tab-settings.on{background:radial-gradient(ellipse 140% 35% at 50% -5%,rgba(138,155,191,.04) 0%,transparent 100%)}
 
     .sec-label{display:flex;align-items:center;gap:.5rem;font-size:.67rem;font-weight:800;letter-spacing:.13em;color:var(--textD);text-transform:uppercase;margin-bottom:.65rem;}
     .sec-label::after{content:'';flex:1;height:1px;background:var(--s3)}
+    #tab-kpi .sec-label{color:var(--gold)}
+    #tab-session .sec-label{color:var(--green)}
+    #tab-analyse .sec-label{color:var(--blue)}
+    #tab-history .sec-label{color:var(--purple)}
+    #tab-settings .sec-label{color:var(--textM)}
 
     /* ── KPI tab ── */
     .kpi-wrap{padding:.7rem .8rem}
     .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
-    .kpi{background:var(--s1);border-radius:.9rem;padding:.9rem 1rem;border:1px solid var(--s3);position:relative;overflow:hidden;}
+    .kpi{background:rgba(13,21,38,.55);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);border-radius:.9rem;padding:.9rem 1rem;border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;}
     .kpi::before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(212,175,55,.07) 0%,transparent 55%);}
     .kpi-lbl{font-size:.67rem;font-weight:700;letter-spacing:.06em;color:var(--textM);text-transform:uppercase;margin-bottom:.3rem}
     .kpi-val{font-family:var(--mono);font-size:1.75rem;font-weight:700;line-height:1.05;letter-spacing:-.02em}
@@ -80,20 +92,20 @@
     /* ── Session tab ── */
     .sess-wrap{padding:.7rem .8rem}
     .shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.8rem}
-    .shift-opt{background:var(--s1);border-radius:.7rem;padding:.7rem .4rem;border:2px solid var(--s3);cursor:pointer;text-align:center;transition:border-color .18s,background .18s;}
+    .shift-opt{background:rgba(13,21,38,.55);backdrop-filter:blur(12px) saturate(130%);-webkit-backdrop-filter:blur(12px) saturate(130%);border-radius:.7rem;padding:.7rem .4rem;border:2px solid rgba(255,255,255,.06);cursor:pointer;text-align:center;transition:border-color .18s,background .18s;}
     .shift-opt.sel{border-color:var(--gold);background:rgba(212,175,55,.1)}
     .shift-opt-name{font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:.18rem}
     .shift-opt-desc{font-size:.6rem;color:var(--textM);line-height:1.35}
     .shift-opt-tgt{font-family:var(--mono);font-size:.7rem;color:var(--gold);margin-top:.22rem}
     .sess-timer{font-family:var(--mono);font-size:3.2rem;font-weight:700;color:var(--gold);text-align:center;letter-spacing:.04em;margin:.4rem 0 .8rem;line-height:1;text-shadow:0 0 30px rgba(212,175,55,.45);}
     .sess-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.8rem}
-    .sess-m{background:var(--s1);border-radius:.65rem;padding:.65rem .5rem;text-align:center;border:1px solid var(--s3)}
+    .sess-m{background:rgba(13,21,38,.55);backdrop-filter:blur(12px) saturate(130%);-webkit-backdrop-filter:blur(12px) saturate(130%);border-radius:.65rem;padding:.65rem .5rem;text-align:center;border:1px solid rgba(255,255,255,.06)}
     .sess-m-val{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--text)}
     .sess-m-lbl{font-size:.62rem;color:var(--textM);margin-top:.12rem}
     .sess-btns{display:flex;gap:.5rem;margin-bottom:.8rem}
     .sess-btn{flex:1;padding:.65rem .4rem;border-radius:.6rem;border:none;font-size:.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;transition:opacity .15s,transform .1s;}
     .sess-btn:active{opacity:.7;transform:scale(.97)}
-    .sess-status-card{background:var(--s1);border-radius:.9rem;border:1px solid var(--s3);padding:1.6rem 1rem;text-align:center;margin-bottom:.8rem;}
+    .sess-status-card{background:rgba(13,21,38,.55);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);border-radius:.9rem;border:1px solid rgba(255,255,255,.06);padding:1.6rem 1rem;text-align:center;margin-bottom:.8rem;}
     .sess-status-icon{width:48px;height:48px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;margin:0 auto .7rem}
     .sess-status-icon svg{width:22px;height:22px;stroke-width:1.8;color:var(--textD)}
     .sess-status-title{font-size:1rem;font-weight:700;color:var(--textM);margin-bottom:.25rem}
@@ -101,11 +113,11 @@
 
     /* ── Analyse tab ── */
     .analyse-wrap{padding:.7rem .8rem}
-    .chart-box{background:var(--s1);border-radius:.9rem;border:1px solid var(--s3);padding:.85rem;margin-bottom:.6rem}
+    .chart-box{background:rgba(13,21,38,.55);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);border-radius:.9rem;border:1px solid rgba(255,255,255,.06);padding:.85rem;margin-bottom:.6rem}
     .chart-ttl{font-size:.67rem;font-weight:800;letter-spacing:.1em;color:var(--textD);text-transform:uppercase;margin-bottom:.65rem}
     .chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem}
     .chart-row2 .chart-box{margin-bottom:0}
-    .hm-wrap{background:var(--s1);border-radius:.9rem;border:1px solid var(--s3);padding:.85rem;margin-bottom:.6rem}
+    .hm-wrap{background:rgba(13,21,38,.55);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);border-radius:.9rem;border:1px solid rgba(255,255,255,.06);padding:.85rem;margin-bottom:.6rem}
     .hm-title{font-size:.67rem;font-weight:800;letter-spacing:.1em;color:var(--textD);text-transform:uppercase;margin-bottom:.6rem}
     .hm-grid{display:grid;grid-template-columns:3.6rem repeat(7,1fr);gap:3px}
     .hm-cell{height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-family:var(--mono);font-weight:700;}
@@ -127,7 +139,7 @@
     .chip{flex-shrink:0;padding:.35rem .8rem;border-radius:99px;border:1px solid var(--s3);background:var(--s1);color:var(--textM);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
     .chip.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
     .hist-list{display:flex;flex-direction:column;gap:.45rem}
-    .c-row{background:var(--s1);border-radius:.75rem;border:1px solid var(--s3);padding:.7rem .85rem;display:flex;align-items:center;gap:.75rem;animation:slideup .18s ease-out;}
+    .c-row{background:rgba(13,21,38,.55);backdrop-filter:blur(12px) saturate(130%);-webkit-backdrop-filter:blur(12px) saturate(130%);border-radius:.75rem;border:1px solid rgba(255,255,255,.06);padding:.7rem .85rem;display:flex;align-items:center;gap:.75rem;animation:slideup .18s ease-out;}
     .c-plat{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;color:#fff;}
     .c-info{flex:1;min-width:0}
     .c-fare{font-family:var(--mono);font-size:.98rem;font-weight:700;color:var(--gold)}
@@ -143,8 +155,8 @@
 
     /* ── Settings tab ── */
     .set-wrap{padding:.7rem .8rem}
-    .set-sec{background:var(--s1);border-radius:.9rem;border:1px solid var(--s3);margin-bottom:.7rem;overflow:hidden}
-    .set-sec-ttl{padding:.55rem .9rem;font-size:.67rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--textM);border-bottom:1px solid var(--s3);background:var(--s2);}
+    .set-sec{background:rgba(13,21,38,.55);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);border-radius:.9rem;border:1px solid rgba(255,255,255,.06);margin-bottom:.7rem;overflow:hidden}
+    .set-sec-ttl{padding:.55rem .9rem;font-size:.67rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--textM);border-bottom:1px solid rgba(255,255,255,.06);background:rgba(26,37,64,.45);}
     .set-row{display:flex;align-items:center;justify-content:space-between;padding:.8rem .9rem;border-bottom:1px solid rgba(38,51,84,.5);}
     .set-row:last-child{border-bottom:none}
     .set-lbl{font-size:.9rem;font-weight:600;color:var(--text)}
@@ -159,15 +171,20 @@
 
     /* ── Bottom nav ── */
     #bnav{
-      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-      width:100%;max-width:480px;
-      background:rgba(7,12,24,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-      border-top:1px solid rgba(212,175,55,.15);
-      padding:.38rem 0 calc(.38rem + env(safe-area-inset-bottom));
+      position:fixed;bottom:calc(.75rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+      width:calc(100% - 1.5rem);max-width:464px;
+      background:rgba(7,12,24,.85);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+      border:1px solid rgba(255,255,255,.08);border-radius:1.4rem;
+      padding:.38rem 0;
       display:flex;z-index:60;
+      box-shadow:0 8px 32px rgba(0,0,0,.5);
     }
-    .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.32rem .15rem;background:none;border:none;cursor:pointer;color:var(--textD);transition:color .18s;}
-    .nb.on{color:var(--gold)}
+    .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.32rem .15rem;background:none;border:none;cursor:pointer;color:var(--textD);transition:color .2s;}
+    [data-tab="kpi"].on{color:var(--gold)}
+    [data-tab="session"].on{color:var(--green)}
+    [data-tab="analyse"].on{color:var(--blue)}
+    [data-tab="history"].on{color:var(--purple)}
+    [data-tab="settings"].on{color:var(--textM)}
     .nb svg{width:20px;height:20px;stroke-width:1.8;transition:stroke-width .18s}
     .nb.on svg{stroke-width:2.2}
     .nb-lbl{font-size:.56rem;font-weight:700;letter-spacing:.04em}
@@ -175,7 +192,7 @@
 
     #fab{
       position:fixed;
-      bottom:calc(5.5rem + env(safe-area-inset-bottom));
+      bottom:calc(4.8rem + env(safe-area-inset-bottom));
       right:calc(.85rem + env(safe-area-inset-right));
       width:52px;height:52px;border-radius:50%;
       background:var(--gold);color:var(--bg);border:none;cursor:pointer;
@@ -341,7 +358,7 @@
         </div>
         <div class="set-sec">
           <div class="set-sec-ttl">Application</div>
-          <div class="set-row"><div><div class="set-lbl">Version</div><div class="set-desc">I&amp;N RUN OPS</div></div><span style="font-family:var(--mono);font-size:.78rem;color:var(--textM)">v0.3.1</span></div>
+          <div class="set-row"><div><div class="set-lbl">Version</div><div class="set-desc">I&amp;N RUN OPS</div></div><span style="font-family:var(--mono);font-size:.78rem;color:var(--textM)">v0.3.3</span></div>
           <div class="set-row"><div><div class="set-lbl">Total courses</div><div class="set-desc">IndexedDB local</div></div><span id="set-total" style="font-family:var(--mono);font-size:1rem;color:var(--gold)">—</span></div>
           <div class="set-row"><div><div class="set-lbl">Service Worker</div><div class="set-desc">Cache hors-ligne</div></div><span id="sw-st" style="font-size:.72rem;color:var(--textD)">…</span></div>
         </div>
@@ -507,6 +524,8 @@ function renderShiftPicker(){
   document.getElementById('shift-grid').innerHTML=Object.entries(SHIFTS).map(([k,v])=>'<div class="shift-opt'+(S.shiftType===k?' sel':'')+'" data-s="'+k+'"><div class="shift-opt-name">'+v.name+'</div><div class="shift-opt-desc">'+v.desc+'</div>'+(v.target?'<div class="shift-opt-tgt">Cible '+v.target+'€</div>':'')+'</div>').join('');
 }
 
+function popEl(id){const el=document.getElementById(id);if(!el)return;el.style.animation='none';void el.offsetHeight;el.style.animation='valpop .35s ease-out';}
+
 function renderKPIs(){
   const now=new Date(),ts=now.toISOString().slice(0,10);
   const ms=new Date(now.getFullYear(),now.getMonth(),1);
@@ -516,12 +535,12 @@ function renderKPIs(){
   const month=S.courses.filter(c=>new Date(c.datetime)>=ms);
   const sum=a=>a.reduce((t,c)=>t+(c.fare||0)+(c.tip||0),0);
   const tCA=sum(today),tAvg=today.length?tCA/today.length:0;
-  document.getElementById('k-today').textContent=fmtEur(tCA);
+  document.getElementById('k-today').textContent=fmtEur(tCA);popEl('k-today');
   document.getElementById('k-today-sub').textContent=today.length+' course'+(today.length!==1?'s':'');
-  document.getElementById('k-avg').textContent=tAvg>0?tAvg.toFixed(2)+'€':'—';
-  document.getElementById('k-week').textContent=fmtEur(sum(week));
+  document.getElementById('k-avg').textContent=tAvg>0?tAvg.toFixed(2)+'€':'—';popEl('k-avg');
+  document.getElementById('k-week').textContent=fmtEur(sum(week));popEl('k-week');
   document.getElementById('k-week-sub').textContent=week.length+' course'+(week.length!==1?'s':'');
-  document.getElementById('k-month').textContent=fmtEur(sum(month));
+  document.getElementById('k-month').textContent=fmtEur(sum(month));popEl('k-month');
   document.getElementById('k-month-sub').textContent=month.length+' course'+(month.length!==1?'s':'');
   document.getElementById('set-total').textContent=S.courses.length;
 }

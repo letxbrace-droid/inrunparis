@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex, nofollow">
+<title>Hub — I&N RUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --oled: #000000;
+  --surface: #0d0d0d;
+  --surface-2: #141414;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(12,244,216,0.3);
+  --cyan: #0CF4D8;
+  --cyan-dim: rgba(12,244,216,0.12);
+  --cyan-glow: rgba(12,244,216,0.25);
+  --text: #f5f5f5;
+  --text-muted: #6b7280;
+  --text-secondary: #9ca3af;
+  --badge-pub-bg: rgba(12,244,216,0.1);
+  --badge-pub-text: #0CF4D8;
+  --badge-int-bg: rgba(168,85,247,0.1);
+  --badge-int-text: #c084fc;
+  --danger: #ef4444;
+  --ff: "Inter", system-ui, sans-serif;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html { background: var(--oled); }
+
+body {
+  font-family: var(--ff);
+  background: var(--oled);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px 16px 80px;
+  background-image: radial-gradient(
+    ellipse 70% 40% at 50% 0%,
+    rgba(12,244,216,0.05) 0%,
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ─── CONTAINER ─── */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ─── HEADER ─── */
+.hub-header {
+  text-align: center;
+  padding: 32px 0 28px;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.hub-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hover);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-icon svg { color: var(--cyan); }
+
+.hub-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hub-brand span {
+  color: var(--cyan);
+}
+
+.hub-subtitle {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-left: 2px;
+}
+
+/* ─── SITE CARDS ─── */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(12,244,216,0.15), transparent);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-2);
+  box-shadow: 0 0 20px rgba(12,244,216,0.06);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.badge-public {
+  background: var(--badge-pub-bg);
+  color: var(--badge-pub-text);
+  border: 1px solid rgba(12,244,216,0.2);
+}
+
+.badge-interne {
+  background: var(--badge-int-bg);
+  color: var(--badge-int-text);
+  border: 1px solid rgba(168,85,247,0.2);
+}
+
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ff);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 100ms ease;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--cyan);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background: #0ae8ce;
+  box-shadow: 0 0 12px rgba(12,244,216,0.35);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.09);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.btn svg { flex-shrink: 0; }
+
+/* ─── PWA SECTION ─── */
+.pwa-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  margin-bottom: 40px;
+}
+
+.pwa-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.pwa-icon-wrap {
+  width: 32px;
+  height: 32px;
+  background: rgba(168,85,247,0.1);
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pwa-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pwa-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.025);
+  border-radius: 8px;
+  border-left: 2px solid rgba(12,244,216,0.3);
+}
+
+.pwa-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pwa-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border-radius: 50%;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.step-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ─── FOOTER ─── */
+.hub-footer {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 0.5px solid var(--border);
+}
+
+.footer-text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.footer-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+/* ─── ACCESS DENIED ─── */
+#access-denied {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.denied-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.denied-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.denied-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* ─── TOAST ─── */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--cyan);
+  color: #000;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 40px;
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(12,244,216,0.35);
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ACCESS DENIED -->
+<div id="access-denied">
+  <div class="denied-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+    </svg>
+  </div>
+  <div class="denied-title">Accès refusé</div>
+  <div class="denied-sub">Cette page est réservée à l'équipe I&amp;N RUN.<br>Clé d'accès requise.</div>
+</div>
+
+<!-- HUB CONTENT -->
+<div id="hub-content">
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="hub-header">
+      <div class="hub-logo">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="hub-brand">I<span>&amp;</span>N RUN</div>
+      </div>
+      <div class="hub-subtitle">Hub de gestion</div>
+    </header>
+
+    <!-- SITE CARDS -->
+    <div class="section-label">Pages &amp; outils</div>
+    <div class="cards">
+
+      <!-- Card 1: Site de réservation -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">Site de réservation</div>
+          <span class="badge badge-public">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
+            Public
+          </span>
+        </div>
+        <div class="card-desc">Site client — carte GPS, calcul de tarif, WhatsApp</div>
+        <div class="card-actions">
+          <a
+            class="btn btn-primary"
+            href="https://letxbrace-droid.github.io/inrunparis/"
+            target="_blank"
+            rel="noopener"
+            aria-label="Ouvrir le site de réservation"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Ouvrir
+          </a>
+          <button
+            class="btn btn-secondary"
+            onclick="copyLink('https://letxbrace-droid.github.io/inrunparis/')"
+            aria-label="Copier le lien du site de réservation"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copier le lien
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 2: BDR -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">Bon de Réservation (BDR)</div>
+          <span class="badge badge-interne">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
+            Interne
+          </span>
+        </div>
+        <div class="card-desc">Générateur de bons de commande VTC (PDF + QR)</div>
+        <div class="card-actions">
+          <a
+            class="btn btn-primary"
+            href="https://letxbrace-droid.github.io/inrunparis/bdr-admin.html?key=nia"
+            target="_blank"
+            rel="noopener"
+            aria-label="Ouvrir le BDR Admin"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Ouvrir
+          </a>
+          <button
+            class="btn btn-secondary"
+            onclick="copyLink('https://letxbrace-droid.github.io/inrunparis/bdr-admin.html?key=nia')"
+            aria-label="Copier le lien du BDR"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copier le lien
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Dashboard Ops -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">Dashboard Ops</div>
+          <span class="badge badge-interne">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
+            Interne
+          </span>
+        </div>
+        <div class="card-desc">Tableau de bord chauffeur — courses, revenus, stats</div>
+        <div class="card-actions">
+          <a
+            class="btn btn-primary"
+            href="https://letxbrace-droid.github.io/inrunparis/ops/"
+            target="_blank"
+            rel="noopener"
+            aria-label="Ouvrir le Dashboard Ops"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Ouvrir
+          </a>
+          <button
+            class="btn btn-secondary"
+            onclick="copyLink('https://letxbrace-droid.github.io/inrunparis/ops/')"
+            aria-label="Copier le lien du Dashboard Ops"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copier le lien
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 4: QR Code -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">QR Code</div>
+          <span class="badge badge-public">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>
+            Public
+          </span>
+        </div>
+        <div class="card-desc">QR code de réservation rapide</div>
+        <div class="card-actions">
+          <a
+            class="btn btn-primary"
+            href="https://letxbrace-droid.github.io/inrunparis/qr.html"
+            target="_blank"
+            rel="noopener"
+            aria-label="Ouvrir la page QR Code"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Ouvrir
+          </a>
+          <button
+            class="btn btn-secondary"
+            onclick="copyLink('https://letxbrace-droid.github.io/inrunparis/qr.html')"
+            aria-label="Copier le lien QR Code"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copier le lien
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /cards -->
+
+    <!-- PWA SECTION -->
+    <div class="section-label">Installation PWA</div>
+    <div class="pwa-section">
+      <div class="pwa-header">
+        <div class="pwa-icon-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </div>
+        <div class="pwa-title">Installer le site client</div>
+      </div>
+      <div class="pwa-note">
+        Seul le <strong>Site de réservation</strong> dispose d'une PWA installable sur l'écran d'accueil.
+      </div>
+      <ol class="pwa-steps">
+        <li class="pwa-step">
+          <div class="step-num">1</div>
+          <div class="step-text">Ouvrir <strong>https://letxbrace-droid.github.io/inrunparis/</strong> dans Safari (iOS) ou Chrome (Android).</div>
+        </li>
+        <li class="pwa-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>iOS :</strong> Appuyer sur le bouton Partager puis <strong>« Sur l'écran d'accueil »</strong>.</div>
+        </li>
+        <li class="pwa-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Android :</strong> Menu Chrome (trois points) puis <strong>« Ajouter à l'écran d'accueil »</strong>.</div>
+        </li>
+        <li class="pwa-step">
+          <div class="step-num">4</div>
+          <div class="step-text">Confirmer l'installation — l'icône I&amp;N RUN apparaît sur l'écran d'accueil.</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="hub-footer">
+      <div class="footer-text">
+        I&amp;N RUN
+        <span class="footer-dot"></span>
+        Hub interne
+        <span class="footer-dot"></span>
+        Accès restreint
+      </div>
+    </footer>
+
+  </div><!-- /container -->
+</div><!-- /hub-content -->
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite">Lien copié !</div>
+
+<script>
+// ─── AUTH CHECK ───
+(function () {
+  const KEY = 'nia';
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('key') !== KEY) {
+    document.getElementById('hub-content').style.display = 'none';
+    const denied = document.getElementById('access-denied');
+    denied.style.display = 'flex';
+  }
+})();
+
+// ─── COPY LINK ───
+function copyLink(url) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(showToast).catch(function () {
+      fallbackCopy(url);
+    });
+  } else {
+    fallbackCopy(url);
+  }
+}
+
+function fallbackCopy(url) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast();
+  } catch (e) {}
+}
+
+// ─── TOAST ───
+let toastTimer = null;
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () {
+    toast.classList.remove('show');
+  }, 2000);
+}
+</script>
+</body>
+</html>

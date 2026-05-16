@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lib/leaflet.css"/>
 <style>html,body{background:#0a0a0b;min-height:100dvh;}</style>
 <script src="lib/leaflet.js" id="leafletJs"></script>
@@ -39,7 +39,7 @@
   --gold-glow: rgba(12, 244, 216, 0.45);
   --bone: #f5f1e8;
   --paper: #ffffff;
-  --mist: #a8a29e;
+  --mist: #94a3b8;   /* slate-400 — 4.6:1 sur fond sombre */
   --shadow-ink: #4a4744;
   --muted: #6b6560;
   --dim: #3a3734;
@@ -47,6 +47,7 @@
   --danger: #ef4444;
   --wa: #25d366;
   --wa-deep: #128c4a;
+  --ff-brand: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-mono: "JetBrains Mono", "SF Mono", monospace;
@@ -87,7 +88,6 @@ html, body {
 }
 
 body {
-  padding-bottom: calc(80px + var(--safe-bot));
   animation: pageEntry .6s cubic-bezier(.16,1,.3,1) both;
   position: relative; /* REQUIS iOS Safari : active le clipping overflow-x */
   width: 100%;
@@ -132,18 +132,17 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   max-width: 520px; margin: 0 auto;
 }
-.brand { display: flex; align-items: baseline; gap: 6px; font-family: var(--ff-display); }
+.brand { display: flex; align-items: baseline; gap: 6px; font-family: var(--ff-brand); }
 .brand-monogram {
-  font-family: var(--ff-display);
-  font-variation-settings: "opsz" 72;
-  font-weight: 600; font-style: italic; font-size: 1.4rem;
+  font-family: var(--ff-brand);
+  font-weight: 800; font-style: normal; font-size: 1.45rem;
   background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   letter-spacing: -0.01em; line-height: 1;
 }
 .brand-name {
-  font-family: var(--ff-mono); font-weight: 500; font-size: 0.62rem;
-  color: var(--gold); letter-spacing: 0.4em; text-transform: uppercase;
+  font-family: var(--ff-brand); font-weight: 800; font-size: 0.72rem;
+  color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase;
   margin-left: 4px; padding-top: 2px;
 }
 .badge-live {
@@ -429,12 +428,12 @@ body {
 /* ── HUD header ── */
 .inr-card-hud { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .inr-monogram {
-  font-family:var(--ff-mono); font-size:.58rem; font-weight:700; letter-spacing:.24em;
+  font-family:var(--ff-brand); font-size:.62rem; font-weight:800; letter-spacing:.2em;
   color:var(--gold); background:rgba(12,244,216,.1);
   border:0.5px solid rgba(12,244,216,.28); padding:3px 9px; border-radius:5px;
 }
 .inr-hud-status { display:flex; align-items:center; gap:5px; margin-left:auto; font-family:var(--ff-mono); font-size:.5rem; color:var(--mist); letter-spacing:.08em; }
-.inr-live-dot { width:5px; height:5px; border-radius:50%; background:var(--success); box-shadow:0 0 6px var(--success); animation:livePulse 2s ease-in-out infinite; }
+.inr-live-dot { width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success); animation:livePulse 2s ease-in-out infinite; flex-shrink:0; }
 @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 /* ── Fields ── */
@@ -475,8 +474,10 @@ body {
 .inr-ac-drop {
   position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:200;
   background:rgba(6,6,6,.97); border:0.5px solid rgba(12,244,216,.22);
-  border-radius:14px; overflow:hidden; display:none;
+  border-radius:14px; overflow-y:auto; overflow-x:hidden; display:none;
+  max-height:180px;
   backdrop-filter:blur(24px); box-shadow:0 12px 40px rgba(0,0,0,.6);
+  overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
 }
 .inr-ac-drop.open { display:block; animation:acSlide .2s ease-out; }
 @keyframes acSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
@@ -597,43 +598,96 @@ body {
   background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.03) 3px, rgba(255,255,255,.03) 4px);
 }
 #heroMap.day-mode .inr-card {
-  background:rgba(255,255,255,.60);
-  backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
-  -webkit-backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
-  border-color:rgba(13,107,98,.22);
+  /* Opacité haute pour lisibilité — skill: bg-white/80+ en light mode */
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  border-color: rgba(13,107,98,.28);
   box-shadow:
-    0 2px 10px rgba(90,120,155,.07),
-    0 14px 56px rgba(90,120,155,.13),
-    inset 0 1.5px 0 rgba(255,255,255,.96);
+    0 2px 8px rgba(0,0,0,.06),
+    0 12px 48px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,1);
 }
 #heroMap.day-mode .inr-monogram {
-  color:#0f5c55; background:rgba(13,107,98,.1); border-color:rgba(13,107,98,.28);
+  /* Outfit 800, teal profond 8:1 WCAG AAA */
+  font-family: var(--ff-brand); font-weight: 800;
+  color: #0f5c55; background: rgba(13,107,98,.08); border-color: rgba(13,107,98,.24);
 }
-#heroMap.day-mode .inr-hud-status { color:#4b5563; }
-#heroMap.day-mode .inr-live-dot { background:#059669; box-shadow:0 0 6px rgba(5,150,105,.5); }
-#heroMap.day-mode .inr-field-lbl { color:#6b7280; }
-#heroMap.day-mode .inr-input { color:#111827; }
-#heroMap.day-mode .inr-input::placeholder { color:rgba(0,0,0,.28); }
-#heroMap.day-mode .inr-field-row { border-color:rgba(0,0,0,.07); }
-#heroMap.day-mode .inr-field-line { background:linear-gradient(to bottom,rgba(13,107,98,.5),rgba(13,107,98,.15)); }
+/* HUD status — #1f2937 = 14.7:1 sur blanc */
+#heroMap.day-mode .inr-hud-status { color: #1f2937; }
+#heroMap.day-mode .inr-live-dot { background: #059669; box-shadow: 0 0 6px rgba(5,150,105,.5); }
+/* Labels — #374151 = 7.6:1 sur blanc (était #6b7280 = 4.5:1 borderline) */
+#heroMap.day-mode .inr-field-lbl { color: #374151; }
+/* Input — #111827 = 16:1 */
+#heroMap.day-mode .inr-input { color: #111827; }
+/* Placeholder — rgba(.55) ≈ #747474 = 5:1 (était .28 ≈ #B5B5B5 = 1.7:1 FAIL) */
+#heroMap.day-mode .inr-input::placeholder { color: rgba(0,0,0,.48); }
+/* Bordures champs — plus visibles en lumière */
+#heroMap.day-mode .inr-field-row {
+  border-color: rgba(0,0,0,.14);
+  background: rgba(0,0,0,.025);
+}
+#heroMap.day-mode .inr-field-row:focus-within {
+  border-color: rgba(13,107,98,.5);
+  background: rgba(13,107,98,.03);
+}
+#heroMap.day-mode .inr-field-line { background: linear-gradient(to bottom, #0d6b62, rgba(13,107,98,.2)); }
 #heroMap.day-mode .inr-ac-drop {
-  background:rgba(255,255,255,.98);
-  border-color:rgba(0,0,0,.08);
-  box-shadow:0 8px 30px rgba(0,0,0,.12);
+  background: rgba(255,255,255,.99);
+  border-color: rgba(0,0,0,.1);
+  box-shadow: 0 8px 30px rgba(0,0,0,.14);
 }
-#heroMap.day-mode .inr-ac-name { color:#111827; }
-#heroMap.day-mode .inr-ac-sub { color:#6b7280; }
-#heroMap.day-mode .inr-ac-item:hover, #heroMap.day-mode .inr-ac-item.focused { background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-price-val { text-shadow: none; color: var(--gold-warm); }
-#heroMap.day-mode .inr-price-meta { color: #374151; }
-#heroMap.day-mode .inr-btn-custom { color:#374151; border-color:rgba(0,0,0,.12); background:rgba(0,0,0,.04); }
-#heroMap.day-mode .inr-btn-custom:hover { color:#0f5c55; border-color:rgba(13,107,98,.35); background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-custom-lbl { color:#374151; }
-#heroMap.day-mode .p-badge.airport { background:rgba(10,92,84,.1); color:#065f56; border-color:rgba(10,92,84,.45); }
-#heroMap.day-mode .p-badge.savings { background:#d1fae5; color:#047857; border-color:rgba(4,120,87,.45); }
-#heroMap.day-mode .inr-custom-panel.open { border-top-color:rgba(0,0,0,.08); }
-#heroMap.day-mode .inr-wa-link { color:#777; }
-#heroMap.day-mode .inr-wa-link:hover { color:var(--success); }
+/* Autocomplete — #111827 = 16:1, sous-texte #4b5563 = 6.1:1 */
+#heroMap.day-mode .inr-ac-name { color: #111827; }
+#heroMap.day-mode .inr-ac-sub  { color: #4b5563; }
+#heroMap.day-mode .inr-ac-item:hover,
+#heroMap.day-mode .inr-ac-item.focused { background: rgba(13,107,98,.07); }
+/* Prix — gold sur blanc: text-shadow supprimé, couleur foncée */
+#heroMap.day-mode .inr-price-val  { text-shadow: none; color: #92400e; }
+#heroMap.day-mode .inr-price-meta { color: #1f2937; }
+/* Bouton Perso */
+#heroMap.day-mode .inr-btn-custom { color: #1f2937; border-color: rgba(0,0,0,.15); background: rgba(0,0,0,.04); }
+#heroMap.day-mode .inr-btn-custom:hover { color: #0f5c55; border-color: rgba(13,107,98,.4); background: rgba(13,107,98,.07); }
+/* Personnalisation labels */
+#heroMap.day-mode .inr-custom-lbl { color: #1f2937; }
+/* Badges */
+#heroMap.day-mode .p-badge.airport { background: rgba(10,92,84,.1); color: #065f56; border-color: rgba(10,92,84,.45); }
+#heroMap.day-mode .p-badge.savings { background: #d1fae5; color: #047857; border-color: rgba(4,120,87,.45); }
+#heroMap.day-mode .inr-custom-panel.open { border-top-color: rgba(0,0,0,.1); }
+/* WA link — #4b5563 = 6.1:1 (était #777 = 4.48:1 borderline) */
+#heroMap.day-mode .inr-wa-link { color: #4b5563; }
+#heroMap.day-mode .inr-wa-link:hover { color: #065f56; }
+
+/* ── Pill jour : fond blanc, texte sombre ── */
+#heroMap.day-mode .inr-pill {
+  background: rgba(255,255,255,.97);
+  border-color: rgba(13,107,98,.38);
+  box-shadow: 0 4px 24px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.08), inset 0 1px 0 #fff;
+}
+#heroMap.day-mode .inr-pill-icon {
+  background: rgba(13,107,98,.1);
+  border-color: rgba(13,107,98,.3);
+  color: #0f5c55;
+}
+#heroMap.day-mode .inr-pill-text { color: #0f172a; }
+#heroMap.day-mode .inr-pill-sep  { background: rgba(0,0,0,.14); }
+/* Badge "Disponible" jour — vert foncé sur fond vert pâle */
+#heroMap.day-mode .inr-pill-avail {
+  background: rgba(5,150,105,.1);
+  border-color: rgba(5,150,105,.35);
+  color: #065f46;
+}
+#heroMap.day-mode .inr-pill-avail .inr-live-dot {
+  background: #059669;
+  box-shadow: 0 0 6px rgba(5,150,105,.6);
+}
+/* shimmer jour — tones teal subtils */
+#heroMap.day-mode .inr-pill::after {
+  background: linear-gradient(105deg,
+    transparent 30%, rgba(13,107,98,.1) 48%,
+    rgba(10,92,84,.08) 52%, transparent 70%
+  );
+}
 #heroMap.day-mode .hero-mode-toggle {
   background:rgba(0,0,0,.62); border-color:rgba(255,255,255,.22); color:#fff;
   box-shadow:0 2px 14px rgba(0,0,0,.35);
@@ -653,9 +707,9 @@ body {
   --gold-deep: #0d7a6e;
   --gold-glow: rgba(10,92,84,0.14);
   --bone:      #0f172a;   /* titres quasi-noir */
-  --mist:      #374151;   /* texte secondaire — bien lisible */
-  --muted:     #4b5563;
-  --dim:       #9ca3af;
+  --mist:      #475569;   /* slate-600 — 7.2:1 sur blanc (était #374151) */
+  --muted:     #374151;   /* slate-700 — 9.7:1 */
+  --dim:       #64748b;   /* slate-500 — 5.9:1 */
   --ink:       #f3f4f6;
   --ink-2:     #e9ecf0;
   --ink-3:     #dee4ec;
@@ -836,6 +890,19 @@ body {
   background: rgba(238,242,247,.97);
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
+}
+/* Dock jour — inactif #374151 (9.7:1), actif teal foncé */
+[data-theme="light"] .dock-btn { color: #374151; }
+[data-theme="light"] .dock-btn.active {
+  color: #0f5c55;
+}
+[data-theme="light"] .dock-btn.active svg {
+  filter: drop-shadow(0 0 6px rgba(13,107,98,.4));
+}
+[data-theme="light"] .dock-btn.reserve {
+  color: #fff;
+  background: linear-gradient(135deg, #0a5c54, #0d7a6e);
+  box-shadow: 0 0 20px rgba(13,107,98,.35), 0 4px 14px rgba(0,0,0,.18);
 }
 
 /* ── How steps (jour) ── */
@@ -1348,17 +1415,46 @@ body {
 }
 .card-title { font-family: var(--ff-display); font-variation-settings: "opsz" 72; font-weight: 400; font-size: 1.15rem; letter-spacing: -0.01em; color: var(--bone); margin-bottom: 4px; }
 .card-sub { font-family: var(--ff-mono); font-size: .56rem; color: var(--muted); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; margin-bottom: 18px; }
-.section-title { font-family: var(--ff-mono); font-size: .6rem; color: var(--mist); letter-spacing: .2em; text-transform: uppercase; font-weight: 600; margin: 20px 0 10px; }
+.section-title {
+  font-family: var(--ff-brand); font-size: .72rem; font-weight: 800;
+  color: var(--mist); letter-spacing: .18em; text-transform: uppercase;
+  margin: 24px 0 12px; padding-left: 12px;
+  position: relative;
+}
+.section-title::before {
+  content: '';
+  position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  border-radius: 2px;
+}
 
 /* ── FIELDS ── */
 .field {
   display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; background: rgba(0,0,0,.5);
-  border: 0.5px solid rgba(12,244,216,.15); border-radius: var(--radius-md);
-  margin-bottom: 10px; transition: all .25s ease; position: relative;
+  padding: 12px 14px; background: rgba(0,0,0,.45);
+  border: none;
+  border-left: 2.5px solid rgba(12,244,216,.2);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-bottom: 10px; transition: all .25s cubic-bezier(.22,1,.36,1);
+  position: relative;
 }
-.field:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(12,244,216,.12),0 0 20px rgba(12,244,216,.15); }
-.field.filled { border-color: rgba(52,211,153,.35); }
+.field::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: inherit;
+  border: 0.5px solid rgba(12,244,216,.08);
+  pointer-events: none;
+}
+.field:focus-within {
+  border-left-color: var(--gold);
+  border-left-width: 3px;
+  background: rgba(12,244,216,.04);
+  box-shadow: 4px 0 24px rgba(12,244,216,.1);
+}
+.field.filled {
+  border-left-color: rgba(52,211,153,.55);
+}
 .field-ic {
   width: 36px; height: 36px; border-radius: 10px;
   background: radial-gradient(circle at 30% 25%, rgba(12,244,216,.25), rgba(12,244,216,.08));
@@ -2675,12 +2771,357 @@ a, button, [role="button"], input, select, textarea, label {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--success); box-shadow: 0 0 6px var(--success); flex-shrink: 0;
 }
+
+/* ══ Native View System ══ */
+body { overflow: hidden !important; }
+.app-view {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  bottom: calc(60px + var(--safe-bot));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(18px);
+  transition: opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1);
+  z-index: 10;
+  background: var(--ink);
+}
+.app-view.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 11;
+}
+#view-home { overflow: hidden; padding-bottom: 0; }
+#view-reserve {
+  background: var(--ink);
+  padding-top: 0;
+}
+#view-tarifs {
+  padding-top: 0;
+}
+#view-call {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── View header ── */
+.view-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(10,10,12,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(255,255,255,.06);
+  padding: calc(var(--safe-top) + 12px) var(--gutter) 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.view-back-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.06);
+  color: var(--bone);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.view-header-title {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bone);
+  letter-spacing: -0.01em;
+}
+.view-header-sub {
+  font-size: .72rem;
+  color: var(--mist);
+  margin-left: auto;
+}
+
+/* ── Reserve scroll container ── */
+.reserve-scroll {
+  padding: 16px var(--gutter) calc(60px + var(--safe-bot) + 24px);
+}
+
+/* ── Call screen cinematic ── */
+.call-screen {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0; padding: var(--gutter); text-align: center; min-height: 100%;
+  background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(12,244,216,.07) 0%, transparent 70%);
+}
+/* Texte géant derrière (editorial typography) */
+.call-bg-word {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -58%) rotate(-8deg);
+  font-family: var(--ff-brand); font-weight: 900;
+  font-size: clamp(5rem, 28vw, 11rem);
+  letter-spacing: -.04em; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(12,244,216,.07);
+  pointer-events: none; user-select: none; z-index: 0;
+  white-space: nowrap;
+}
+.call-ring-wrap {
+  position: relative; z-index: 1;
+  width: 140px; height: 140px; margin-bottom: 32px;
+}
+@keyframes callRing {
+  0%   { transform: scale(1); opacity: .55; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.call-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1px solid rgba(12,244,216,.4);
+  animation: callRing 2.8s ease-out infinite;
+}
+.call-ring.r2 { border-color: rgba(212,168,75,.3); animation-delay: .93s; }
+.call-ring.r3 { border-color: rgba(12,244,216,.2); animation-delay: 1.86s; }
+.call-avatar {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: linear-gradient(135deg, #0d7a6e, #084d46);
+  border: 1.5px solid rgba(12,244,216,.4);
+  box-shadow: 0 0 30px rgba(12,244,216,.25), 0 0 60px rgba(12,244,216,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-brand); font-size: 1.5rem; font-weight: 900;
+  color: #fff; letter-spacing: .05em;
+}
+.call-name {
+  position: relative; z-index: 1;
+  font-family: var(--ff-brand); font-size: 2rem; font-weight: 900;
+  color: var(--bone); letter-spacing: -.03em; line-height: 1;
+  margin-bottom: 6px;
+}
+.call-sub {
+  position: relative; z-index: 1;
+  font-size: .78rem; color: var(--mist); letter-spacing: .08em;
+  text-transform: uppercase; font-family: var(--ff-mono);
+  margin-bottom: 40px;
+}
+/* séparateur diagonal */
+.call-sub::after {
+  content: ''; display: block;
+  width: 40px; height: 1.5px; margin: 12px auto 0;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.call-actions {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 12px;
+  width: 100%; max-width: 300px;
+}
+.call-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 18px 28px; border-radius: 16px;
+  font-size: 1rem; font-weight: 700; font-family: var(--ff-brand);
+  text-decoration: none; letter-spacing: .01em;
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .2s ease;
+  position: relative; overflow: hidden;
+}
+.call-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,.08);
+  opacity: 0; transition: opacity .2s;
+}
+.call-btn:active { transform: scale(.96); }
+.call-btn:active::before { opacity: 1; }
+.call-btn-phone {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+  color: var(--oled);
+  box-shadow: 0 8px 32px rgba(212,168,75,.35), 0 0 0 1px rgba(212,168,75,.2);
+}
+.call-btn-wa {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(37,211,102,.25);
+}
+.call-note {
+  position: relative; z-index: 1;
+  margin-top: 28px; font-size: .68rem;
+  color: var(--mist); letter-spacing: .1em;
+  font-family: var(--ff-mono); text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   PILL → CARD expand (Option 3, mobile)
+══════════════════════════════════════ */
+.inr-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  padding: 0 20px 0 12px;
+  height: 52px;
+  border-radius: 26px;
+  background: rgba(10,12,22,.82);
+  backdrop-filter: blur(40px) saturate(1.8);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  border: 0.5px solid rgba(12,244,216,.32);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform .2s cubic-bezier(.22,1,.36,1), opacity .2s ease, box-shadow .2s ease;
+}
+.inr-pill:hover {
+  box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(12,244,216,.45), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.inr-pill:active { transform: translateX(-50%) scale(.96); }
+.inr-pill.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) scale(.88) translateY(10px);
+}
+.inr-pill-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(12,244,216,.12);
+  border: 0.5px solid rgba(12,244,216,.28);
+  color: var(--accent); flex-shrink: 0;
+}
+.inr-pill-text {
+  font-size: .9rem; font-family: var(--ff-brand); font-weight: 700;
+  color: rgba(255,255,255,.92); letter-spacing: .01em;
+}
+.inr-pill-sep { width: 1px; height: 20px; background: rgba(255,255,255,.18); }
+.inr-pill-avail {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--ff-brand); font-size: .52rem; font-weight: 700;
+  /* badge vert nuit — contraste élevé */
+  background: rgba(52,211,153,.14);
+  border: 0.5px solid rgba(52,211,153,.35);
+  color: #34d399;
+  padding: 3px 8px; border-radius: 10px;
+  letter-spacing: .06em; white-space: nowrap;
+}
+/* dot "Disponible" — plus grand et plus visible */
+.inr-pill-avail .inr-live-dot {
+  width: 7px; height: 7px;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52,211,153,.8);
+  flex-shrink: 0;
+}
+
+/* backdrop flouté */
+.inr-card-backdrop {
+  position: absolute; inset: 0; z-index: 9;
+  background: rgba(0,0,0,.42);
+  backdrop-filter: blur(4px) saturate(.8);
+  -webkit-backdrop-filter: blur(4px) saturate(.8);
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s ease;
+}
+.inr-card-backdrop.visible { opacity: 1; pointer-events: all; }
+
+/* pill masqué sur desktop — carte toujours visible */
+@media (min-width: 640px) {
+  .inr-pill, .inr-card-backdrop { display: none !important; }
+}
+
+/* card cachée par défaut sur mobile → reveal au tap pill */
+@media (max-width: 639px) {
+  .inr-card {
+    /* ancré juste au-dessus du dock — grandit vers le haut */
+    bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+    left: 14px; right: 14px;
+    /* hauteur max = espace dispo entre top safe-area et dock */
+    max-height: calc(100svh - 110px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(18px) scale(.95);
+    margin: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .38s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1);
+  }
+  .inr-card.pill-expanded {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* shimmer animé sur le bord du pill (liquid glass) */
+@keyframes pillShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.inr-pill::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(12,244,216,.18) 48%,
+    rgba(212,168,75,.22) 52%,
+    transparent 70%
+  );
+  background-size: 300% 100%;
+  animation: pillShimmer 3.6s linear infinite;
+  pointer-events: none;
+}
+
+/* prefers-reduced-motion — désactive toutes les transitions du pill */
+@media (prefers-reduced-motion: reduce) {
+  .inr-pill, .inr-card, .inr-card-backdrop { transition: none !important; animation: none !important; }
+  .inr-pill::after { animation: none !important; }
+}
+/* ══ AURORA BEAM — tracé route hero ══ */
+@keyframes auroraBeamTravel {
+  0%   { stroke-dashoffset: var(--beam-len, 3000); opacity: 0; }
+  4%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes auroraBeamTravel2 {
+  0%   { stroke-dashoffset: var(--beam-len, 3000); opacity: 0; }
+  4%   { opacity: .7; }
+  88%  { opacity: .7; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.hero-beam-core {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px #0cf4d8) drop-shadow(0 0 10px rgba(12,244,216,.6));
+  animation: auroraBeamTravel 2.6s cubic-bezier(.4,0,.25,1) infinite;
+  pointer-events: none;
+}
+.hero-beam-halo {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 12px #d4a84b) drop-shadow(0 0 22px rgba(212,168,75,.5));
+  animation: auroraBeamTravel2 2.6s cubic-bezier(.4,0,.25,1) infinite;
+  animation-delay: .06s;
+  pointer-events: none;
+}
+
+/* Grain atmosphérique — depth premium */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none; user-select: none;
+  opacity: .042;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
 </style>
 </head>
 <body>
 
 <!-- ═══ HEADER ═══ -->
-<header class="hdr">
+<header class="hdr" id="appHeader">
   <div class="hdr-inner">
     <div class="brand">
       <span class="brand-monogram">I&amp;N</span>
@@ -2692,7 +3133,7 @@ a, button, [role="button"], input, select, textarea, label {
 
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<main class="main">
+<div class="app-view active" id="view-home" aria-label="Accueil">
 
   <!-- ═══ HERO MAP — INR SIGNATURE ═══ -->
   <section id="heroMap" aria-label="Calculez votre tarif instantanément">
@@ -2712,6 +3153,19 @@ a, button, [role="button"], input, select, textarea, label {
       </svg>
       <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
     </button>
+
+    <!-- Pill trigger (mobile) -->
+    <button class="inr-pill" id="inrPill" onclick="expandHeroPill()" aria-label="Ouvrir la réservation">
+      <span class="inr-pill-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="15" height="15"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </span>
+      <span class="inr-pill-text">Où allons-nous ?</span>
+      <span class="inr-pill-sep"></span>
+      <span class="inr-pill-avail"><span class="inr-live-dot"></span>Disponible</span>
+    </button>
+
+    <!-- Backdrop (ferme la carte au tap) -->
+    <div class="inr-card-backdrop" id="inrCardBackdrop" onclick="collapseHeroPill()"></div>
 
     <!-- INR Floating card -->
     <div class="inr-card" id="inrCard" role="main">
@@ -2819,6 +3273,239 @@ a, button, [role="button"], input, select, textarea, label {
     </div>
     <div class="urgency-right" id="urgencyCounter">3 courses aujourd'hui</div>
   </div>
+
+</div><!-- /view-home -->
+
+<!-- ═══ VIEW — RÉSERVATION ═══ -->
+<div class="app-view" id="view-reserve" aria-label="Réservation">
+  <div class="view-header">
+    <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="view-header-title">Réservation</div>
+    <div class="view-header-sub">I&amp;N RUN · Tarif fixe garanti</div>
+  </div>
+  <div id="reserveScroll" class="reserve-scroll">
+
+    <div class="sheet-status">
+      <div class="sheet-stat-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M19.07 4.93l-1.41 1.41M2 12h2M20 12h2"/></svg>
+        <span id="sheetWxLabel"><span class="skel" style="width:72px;height:11px"></span></span>
+      </div>
+      <div class="sheet-stat-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <span id="sheetTrafficLabel"><span class="skel" style="width:80px;height:11px"></span></span>
+      </div>
+      <div class="sheet-stat-pill sheet-stat-live">
+        <span class="sheet-live-dot"></span>
+        Disponible
+      </div>
+    </div>
+
+    <!-- Badge NFC — visible uniquement si ?nfc=1 -->
+    <div class="nfc-badge" id="nfcBadge" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M20 12V8H6a2 2 0 0 1-2-2V4"/><path d="M4 20V16H18a2 2 0 0 0 2-2v-4"/><path d="M8 12h8"/></svg>
+      <span>NFC · À bord du véhicule</span>
+      <span class="nfc-driver" id="nfcDriver"></span>
+    </div>
+
+    <div class="step-ind" id="stepper">
+      <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-lbl">Trajet</div></div>
+      <div class="step-line" data-line="1"></div>
+      <div class="step-item future" data-step="2"><div class="step-circle">2</div><div class="step-lbl">Confirmer</div></div>
+    </div>
+
+    <!-- ÉTAPE 1 — TRAJET -->
+    <section class="card" id="card-step1">
+      <div class="eyebrow">Étape 01</div>
+      <div class="card-title">Votre itinéraire</div>
+      <div class="card-sub">Départ · Destination · Date</div>
+
+      <div class="field">
+        <div class="field-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="field-body">
+          <div class="field-lbl">Prise en charge</div>
+          <input type="datetime-local" id="pickup-time" aria-label="Date et heure de prise en charge" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="field" id="depart-field">
+        <div class="field-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="field-body">
+          <div class="field-lbl">Lieu de départ</div>
+          <input type="text" id="depart" placeholder="Ex : Ris-Orangis, Paris…" autocomplete="off" aria-label="Adresse de départ" aria-autocomplete="list" aria-haspopup="listbox">
+        </div>
+        <button class="geoloc-btn" id="geolocBtn" type="button" aria-label="Utiliser ma position GPS actuelle" title="Détecter ma position">
+          <svg id="geolocIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        </button>
+        <div class="ac-drop" id="ac-depart"></div>
+      </div>
+      <div class="geoloc-hint" id="geolocHint" role="status" aria-live="polite"></div>
+      <div class="terminals" id="term-depart"></div>
+
+      <div class="field" id="arrive-field">
+        <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg></div>
+        <div class="field-body">
+          <div class="field-lbl">Destination</div>
+          <input type="text" id="arrive" placeholder="Où souhaitez-vous aller ?" autocomplete="off" aria-label="Adresse de destination" aria-autocomplete="list" aria-haspopup="listbox">
+        </div>
+        <div class="ac-drop" id="ac-arrive"></div>
+      </div>
+      <div class="terminals" id="term-arrive"></div>
+    </section>
+
+    <!-- CONTINUER → STEP 2 -->
+    <div class="sheet-next-wrap" id="step1-next">
+      <button class="btn-primary" id="continuerBtn" onclick="sheetStep1Next()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        Voir mon tarif
+      </button>
+    </div>
+
+    <!-- ÉTAPE 2 — CONFIRMER -->
+    <section class="card" id="card-step2" style="display:none;opacity:0;transform:translateY(18px);">
+
+      <button class="s2-back-btn" onclick="sheetGoBack()" aria-label="Revenir et modifier le trajet">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Modifier le trajet
+      </button>
+
+      <div id="step2-loading" class="s2-loading" style="display:none" aria-hidden="true">
+        <div class="s2-sk-price">
+          <span class="skel" style="width:72px;height:56px;border-radius:10px"></span>
+          <span class="skel" style="width:18px;height:28px;border-radius:6px;margin-top:6px"></span>
+        </div>
+        <div class="s2-sk-line skel" style="width:170px;height:11px"></div>
+        <div class="s2-sk-badge skel" style="width:110px;height:20px;border-radius:100px"></div>
+      </div>
+      <div class="price-box" id="priceBox">
+        <div class="price-lbl">Votre tarif fixe, sans surprise</div>
+        <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
+        <div class="price-detail" id="priceDetail">—</div>
+        <div class="price-badges" id="priceBadges"></div>
+        <div id="routeMap"></div>
+      </div>
+
+      <!-- Ambiance -->
+      <div class="section-title" style="margin-top:20px">Ambiance</div>
+      <div class="amb-sel" id="amb-seg">
+        <button class="amb-btn active" data-v="musique">
+          <div class="amb-icon">
+            <div class="eq-bars">
+              <div class="eq-bar" style="--s:.48s;height:12px"></div>
+              <div class="eq-bar" style="--s:.62s;height:18px"></div>
+              <div class="eq-bar" style="--s:.55s;height:8px"></div>
+              <div class="eq-bar" style="--s:.70s;height:15px"></div>
+              <div class="eq-bar" style="--s:.42s;height:10px"></div>
+            </div>
+          </div>
+          <span class="amb-lbl">Musique</span>
+        </button>
+        <button class="amb-btn" data-v="radio">
+          <div class="amb-icon">
+            <div class="radio-rings">
+              <div class="radio-dot"></div>
+              <div class="radio-ring" style="width:14px;height:14px;top:-4.5px;left:-4.5px"></div>
+              <div class="radio-ring" style="width:22px;height:22px;top:-8.5px;left:-8.5px;animation-delay:.45s"></div>
+            </div>
+          </div>
+          <span class="amb-lbl">Radio</span>
+        </button>
+        <button class="amb-btn" data-v="silence">
+          <div class="amb-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          </div>
+          <span class="amb-lbl">Silence</span>
+        </button>
+      </div>
+
+      <!-- Options à bord -->
+      <div class="section-title" style="margin-top:18px">Options à bord</div>
+      <div class="s2-toggle-row">
+        <div class="s2-toggle-chip on" data-opt="eau" onclick="toggleChip(this)">
+          <span class="chip-dot"></span>Eau
+        </div>
+        <div class="s2-toggle-chip on" data-opt="usb" onclick="toggleChip(this)">
+          <span class="chip-dot"></span>USB
+        </div>
+        <div class="s2-toggle-chip" data-opt="wifi" onclick="toggleChip(this)">
+          <span class="chip-dot"></span>Wi-Fi
+        </div>
+        <div class="s2-toggle-chip" data-opt="siege" onclick="toggleChip(this)">
+          <span class="chip-dot"></span>Siège enfant
+        </div>
+      </div>
+
+      <!-- Règlement -->
+      <div class="section-title" style="margin-top:18px">Règlement</div>
+      <div class="pay-grid">
+        <div class="pay-card sel" data-method="Carte" role="radio" aria-checked="true" tabindex="0" aria-label="Carte bancaire">
+          <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
+          <div class="pay-icon"><svg viewBox="0 0 32 32"><defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs><rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cg2)"/><rect x="3" y="11" width="26" height="3" fill="#0CF4D8" opacity=".65"/><rect x="7" y="17" width="6" height="5" rx="1" fill="#35FFE8"/><circle cx="23" cy="20" r="1.8" fill="#0CF4D8"/><circle cx="25.5" cy="20" r="1.8" fill="var(--gold-deep)" opacity=".85"/></svg></div>
+          <div class="pay-info"><div class="pay-title">Carte</div><div class="pay-sub">Sans contact</div></div>
+        </div>
+        <div class="pay-card" data-method="Espèces" role="radio" aria-checked="false" tabindex="0" aria-label="Espèces">
+          <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
+          <div class="pay-icon"><svg viewBox="0 0 32 32"><rect x="5" y="10" width="22" height="13" rx="2" fill="#34d399" opacity=".55" transform="rotate(-5 16 16)"/><rect x="5" y="8" width="22" height="13" rx="2" fill="#6ee7b7"/><circle cx="16" cy="14.5" r="3.5" fill="none" stroke="#065f46" stroke-width="1.2"/><text x="16" y="16.5" text-anchor="middle" font-family="Inter" font-size="5" font-weight="700" fill="#065f46">€</text></svg></div>
+          <div class="pay-info"><div class="pay-title">Espèces</div><div class="pay-sub">Préféré</div></div>
+        </div>
+      </div>
+      <input type="hidden" id="paymentMethod" value="Carte">
+
+      <!-- Note + promo -->
+      <details class="s2-extras">
+        <summary>
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Note · Code promo
+        </summary>
+        <div class="s2-extras-body">
+          <div class="field">
+            <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="field-body"><div class="field-lbl">Note (optionnel)</div><input type="text" id="note" placeholder="N° de vol, bagages…" maxlength="120" autocomplete="off"></div>
+          </div>
+          <div class="promo-wrap" style="margin:0">
+            <input type="text" class="promo-in" id="promoCode" placeholder="Code avantage" maxlength="20" autocomplete="off" aria-label="Code promotionnel" aria-describedby="promoMsg">
+            <div class="promo-msg" id="promoMsg" role="alert" aria-live="polite"></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Coordonnées -->
+      <div class="section-title" style="margin-top:20px">Votre prénom</div>
+      <div class="field" id="name-field">
+        <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="field-body"><div class="field-lbl">Pour personnaliser votre bon de réservation <span style="color:var(--gold);font-weight:700">·</span></div><input type="text" id="clientName" placeholder="Ex : Jean" autocomplete="given-name" maxlength="60" required aria-required="true"></div>
+      </div>
+      <div class="field">
+        <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="field-body"><div class="field-lbl">Email (optionnel) — pour votre facture</div><input type="email" id="clientEmail" placeholder="votre@email.fr" autocomplete="email" maxlength="100" inputmode="email"></div>
+      </div>
+
+      <!-- bouton calcBtn caché -->
+      <button id="calcBtn" style="display:none" aria-hidden="true" tabindex="-1">calc</button>
+
+      <!-- CTA WhatsApp -->
+      <button class="btn-wa" id="waBtn" disabled style="margin-top:20px">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span id="waBtnLabel">Entrez votre prénom pour confirmer</span>
+      </button>
+      <button class="btn-secondary" id="recalcBtn">← Modifier la course</button>
+
+    </section>
+
+  </div><!-- /reserveScroll -->
+</div><!-- /view-reserve -->
+
+<!-- ═══ VIEW — TARIFS ═══ -->
+<div class="app-view" id="view-tarifs" aria-label="Tarifs">
+  <div class="view-header">
+    <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="view-header-title">Tarifs &amp; Services</div>
+    <div class="view-header-sub">I&amp;N RUN · Prix fixes garantis</div>
+  </div>
+  <div style="padding-bottom: calc(60px + var(--safe-bot) + 24px);">
 
   <!-- ═══ PROOF + TRUST BAR (fusionnés) ═══ -->
   <div style="padding: 20px 0 0;">
@@ -3058,238 +3745,35 @@ a, button, [role="button"], input, select, textarea, label {
     </div>
   </footer>
 
-</main>
+  </div><!-- /tarifs inner padding -->
+</div><!-- /view-tarifs -->
 
-<!-- ═══ BOTTOM SHEET RÉSERVATION ═══ -->
-<div id="bookingSheet" class="sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Réservation I&N RUN">
-  <div class="sheet-panel" id="sheetPanel">
-
-    <div class="sheet-handle-wrap" id="sheetHandle">
-      <div class="sheet-handle"></div>
+<!-- ═══ VIEW — APPELER ═══ -->
+<div class="app-view" id="view-call" aria-label="Appeler">
+  <div class="call-screen">
+    <div class="call-bg-word" aria-hidden="true">APPEL</div>
+    <div class="call-ring-wrap" aria-hidden="true">
+      <div class="call-ring r1"></div>
+      <div class="call-ring r2"></div>
+      <div class="call-ring r3"></div>
+      <div class="call-avatar">I&amp;N</div>
     </div>
-
-    <div class="sheet-hdr">
-      <div>
-        <div class="sheet-hdr-title">Réservation</div>
-        <div class="sheet-hdr-sub">I&amp;N RUN · Tarif fixe garanti</div>
-      </div>
-      <button class="sheet-close" onclick="closeBookingSheet()" aria-label="Fermer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+    <div class="call-name">I&amp;N RUN</div>
+    <div class="call-sub">Chauffeur privé · Paris &amp; IDF</div>
+    <div class="call-actions">
+      <a href="tel:+33767742220" class="call-btn call-btn-phone" onclick="haptic(20)" aria-label="Appeler le 07 67 74 22 20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>07 67 74 22 20</span>
+      </a>
+      <a href="https://wa.me/33767742220?text=Bonjour%2C%20je%20souhaite%20réserver%20une%20course." class="call-btn call-btn-wa" target="_blank" rel="noopener" onclick="haptic(20)" aria-label="Contacter par WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span>WhatsApp</span>
+      </a>
     </div>
+    <div class="call-note">Disponible 24h/24 · 7j/7 · Réponse &lt; 2 min</div>
+  </div>
+</div><!-- /view-call -->
 
-    <div class="sheet-status">
-      <div class="sheet-stat-pill">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M19.07 4.93l-1.41 1.41M2 12h2M20 12h2"/></svg>
-        <span id="sheetWxLabel"><span class="skel" style="width:72px;height:11px"></span></span>
-      </div>
-      <div class="sheet-stat-pill">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        <span id="sheetTrafficLabel"><span class="skel" style="width:80px;height:11px"></span></span>
-      </div>
-      <div class="sheet-stat-pill sheet-stat-live">
-        <span class="sheet-live-dot"></span>
-        Disponible
-      </div>
-    </div>
-
-    <!-- Badge NFC — visible uniquement si ?nfc=1 -->
-    <div class="nfc-badge" id="nfcBadge" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="14" height="14"><path d="M20 12V8H6a2 2 0 0 1-2-2V4"/><path d="M4 20V16H18a2 2 0 0 0 2-2v-4"/><path d="M8 12h8"/></svg>
-      <span>NFC · À bord du véhicule</span>
-      <span class="nfc-driver" id="nfcDriver"></span>
-    </div>
-
-    <div class="step-ind" id="stepper">
-      <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-lbl">Trajet</div></div>
-      <div class="step-line" data-line="1"></div>
-      <div class="step-item future" data-step="2"><div class="step-circle">2</div><div class="step-lbl">Confirmer</div></div>
-    </div>
-
-    <div class="sheet-scroll" id="sheetScroll">
-
-      <!-- ÉTAPE 1 — TRAJET -->
-      <section class="card" id="card-step1">
-        <div class="eyebrow">Étape 01</div>
-        <div class="card-title">Votre itinéraire</div>
-        <div class="card-sub">Départ · Destination · Date</div>
-
-        <div class="field">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-          <div class="field-body">
-            <div class="field-lbl">Prise en charge</div>
-            <input type="datetime-local" id="pickup-time" aria-label="Date et heure de prise en charge" autocomplete="off">
-          </div>
-        </div>
-
-        <div class="field" id="depart-field">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg></div>
-          <div class="field-body">
-            <div class="field-lbl">Lieu de départ</div>
-            <input type="text" id="depart" placeholder="Ex : Ris-Orangis, Paris…" autocomplete="off" aria-label="Adresse de départ" aria-autocomplete="list" aria-haspopup="listbox">
-          </div>
-          <button class="geoloc-btn" id="geolocBtn" type="button" aria-label="Utiliser ma position GPS actuelle" title="Détecter ma position">
-            <svg id="geolocIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-          </button>
-          <div class="ac-drop" id="ac-depart"></div>
-        </div>
-        <div class="geoloc-hint" id="geolocHint" role="status" aria-live="polite"></div>
-        <div class="terminals" id="term-depart"></div>
-
-        <div class="field" id="arrive-field">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg></div>
-          <div class="field-body">
-            <div class="field-lbl">Destination</div>
-            <input type="text" id="arrive" placeholder="Où souhaitez-vous aller ?" autocomplete="off" aria-label="Adresse de destination" aria-autocomplete="list" aria-haspopup="listbox">
-          </div>
-          <div class="ac-drop" id="ac-arrive"></div>
-        </div>
-        <div class="terminals" id="term-arrive"></div>
-      </section>
-
-      <!-- CONTINUER → STEP 2 -->
-      <div class="sheet-next-wrap" id="step1-next">
-        <button class="btn-primary" id="continuerBtn" onclick="sheetStep1Next()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          Voir mon tarif
-        </button>
-      </div>
-
-      <!-- ÉTAPE 2 — CONFIRMER (tunnel simplifié 2 étapes) -->
-      <section class="card" id="card-step2" style="display:none;opacity:0;transform:translateY(18px);">
-
-        <button class="s2-back-btn" onclick="sheetGoBack()" aria-label="Revenir et modifier le trajet">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-          Modifier le trajet
-        </button>
-
-        <!-- Prix auto-calculé — affiché en haut -->
-        <div id="step2-loading" class="s2-loading" style="display:none" aria-hidden="true">
-          <div class="s2-sk-price">
-            <span class="skel" style="width:72px;height:56px;border-radius:10px"></span>
-            <span class="skel" style="width:18px;height:28px;border-radius:6px;margin-top:6px"></span>
-          </div>
-          <div class="s2-sk-line skel" style="width:170px;height:11px"></div>
-          <div class="s2-sk-badge skel" style="width:110px;height:20px;border-radius:100px"></div>
-        </div>
-        <div class="price-box" id="priceBox">
-          <div class="price-lbl">Votre tarif fixe, sans surprise</div>
-          <div class="price-val"><span id="priceVal">—</span><span class="eur">€</span></div>
-          <div class="price-detail" id="priceDetail">—</div>
-          <div class="price-badges" id="priceBadges"></div>
-          <div id="routeMap"></div>
-        </div>
-
-        <!-- Ambiance (3 chips compactes) -->
-        <div class="section-title" style="margin-top:20px">Ambiance</div>
-        <div class="amb-sel" id="amb-seg">
-          <button class="amb-btn active" data-v="musique">
-            <div class="amb-icon">
-              <div class="eq-bars">
-                <div class="eq-bar" style="--s:.48s;height:12px"></div>
-                <div class="eq-bar" style="--s:.62s;height:18px"></div>
-                <div class="eq-bar" style="--s:.55s;height:8px"></div>
-                <div class="eq-bar" style="--s:.70s;height:15px"></div>
-                <div class="eq-bar" style="--s:.42s;height:10px"></div>
-              </div>
-            </div>
-            <span class="amb-lbl">Musique</span>
-          </button>
-          <button class="amb-btn" data-v="radio">
-            <div class="amb-icon">
-              <div class="radio-rings">
-                <div class="radio-dot"></div>
-                <div class="radio-ring" style="width:14px;height:14px;top:-4.5px;left:-4.5px"></div>
-                <div class="radio-ring" style="width:22px;height:22px;top:-8.5px;left:-8.5px;animation-delay:.45s"></div>
-              </div>
-            </div>
-            <span class="amb-lbl">Radio</span>
-          </button>
-          <button class="amb-btn" data-v="silence">
-            <div class="amb-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-            </div>
-            <span class="amb-lbl">Silence</span>
-          </button>
-        </div>
-
-        <!-- Options en chips (plus léger que les toggles) -->
-        <div class="section-title" style="margin-top:18px">Options à bord</div>
-        <div class="s2-toggle-row">
-          <div class="s2-toggle-chip on" data-opt="eau" onclick="toggleChip(this)">
-            <span class="chip-dot"></span>Eau
-          </div>
-          <div class="s2-toggle-chip on" data-opt="usb" onclick="toggleChip(this)">
-            <span class="chip-dot"></span>USB
-          </div>
-          <div class="s2-toggle-chip" data-opt="wifi" onclick="toggleChip(this)">
-            <span class="chip-dot"></span>Wi-Fi
-          </div>
-          <div class="s2-toggle-chip" data-opt="siege" onclick="toggleChip(this)">
-            <span class="chip-dot"></span>Siège enfant
-          </div>
-        </div>
-
-        <!-- Règlement -->
-        <div class="section-title" style="margin-top:18px">Règlement</div>
-        <div class="pay-grid">
-          <div class="pay-card sel" data-method="Carte" role="radio" aria-checked="true" tabindex="0" aria-label="Carte bancaire">
-            <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
-            <div class="pay-icon"><svg viewBox="0 0 32 32"><defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs><rect x="3" y="7" width="26" height="18" rx="3" fill="url(#cg2)"/><rect x="3" y="11" width="26" height="3" fill="#0CF4D8" opacity=".65"/><rect x="7" y="17" width="6" height="5" rx="1" fill="#35FFE8"/><circle cx="23" cy="20" r="1.8" fill="#0CF4D8"/><circle cx="25.5" cy="20" r="1.8" fill="var(--gold-deep)" opacity=".85"/></svg></div>
-            <div class="pay-info"><div class="pay-title">Carte</div><div class="pay-sub">Sans contact</div></div>
-          </div>
-          <div class="pay-card" data-method="Espèces" role="radio" aria-checked="false" tabindex="0" aria-label="Espèces">
-            <div class="pay-check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
-            <div class="pay-icon"><svg viewBox="0 0 32 32"><rect x="5" y="10" width="22" height="13" rx="2" fill="#34d399" opacity=".55" transform="rotate(-5 16 16)"/><rect x="5" y="8" width="22" height="13" rx="2" fill="#6ee7b7"/><circle cx="16" cy="14.5" r="3.5" fill="none" stroke="#065f46" stroke-width="1.2"/><text x="16" y="16.5" text-anchor="middle" font-family="Inter" font-size="5" font-weight="700" fill="#065f46">€</text></svg></div>
-            <div class="pay-info"><div class="pay-title">Espèces</div><div class="pay-sub">Préféré</div></div>
-          </div>
-        </div>
-        <input type="hidden" id="paymentMethod" value="Carte">
-
-        <!-- Note + promo (repliés par défaut) -->
-        <details class="s2-extras">
-          <summary>
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Note · Code promo
-          </summary>
-          <div class="s2-extras-body">
-            <div class="field">
-              <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-              <div class="field-body"><div class="field-lbl">Note (optionnel)</div><input type="text" id="note" placeholder="N° de vol, bagages…" maxlength="120" autocomplete="off"></div>
-            </div>
-            <div class="promo-wrap" style="margin:0">
-              <input type="text" class="promo-in" id="promoCode" placeholder="Code avantage" maxlength="20" autocomplete="off" aria-label="Code promotionnel" aria-describedby="promoMsg">
-              <div class="promo-msg" id="promoMsg" role="alert" aria-live="polite"></div>
-            </div>
-          </div>
-        </details>
-
-        <!-- Coordonnées -->
-        <div class="section-title" style="margin-top:20px">Votre prénom</div>
-        <div class="field" id="name-field">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <div class="field-body"><div class="field-lbl">Pour personnaliser votre bon de réservation <span style="color:var(--gold);font-weight:700">·</span></div><input type="text" id="clientName" placeholder="Ex : Jean" autocomplete="given-name" maxlength="60" required aria-required="true"></div>
-        </div>
-        <div class="field">
-          <div class="field-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="field-body"><div class="field-lbl">Email (optionnel) — pour votre facture</div><input type="email" id="clientEmail" placeholder="votre@email.fr" autocomplete="email" maxlength="100" inputmode="email"></div>
-        </div>
-
-        <!-- bouton calcBtn caché — déclenché automatiquement -->
-        <button id="calcBtn" style="display:none" aria-hidden="true" tabindex="-1">calc</button>
-
-        <!-- CTA WhatsApp -->
-        <button class="btn-wa" id="waBtn" disabled style="margin-top:20px">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span id="waBtnLabel">Entrez votre prénom pour confirmer</span>
-        </button>
-        <button class="btn-secondary" id="recalcBtn">← Modifier la course</button>
-
-      </section>
-
-    </div><!-- /sheet-scroll -->
-  </div><!-- /sheet-panel -->
-</div><!-- /bookingSheet -->
 
 <!-- ═══ PWA INSTALL BANNER ═══ -->
 <div class="pwa-banner" id="pwaBanner" role="banner" aria-label="Installer l'application">
@@ -3333,22 +3817,22 @@ a, button, [role="button"], input, select, textarea, label {
 <!-- ═══ CTA DOCK ═══ -->
 <nav class="cta-dock" aria-label="Navigation principale" id="bottomNav">
   <div class="dock-indicator" id="dockIndicator" aria-hidden="true"></div>
-  <a href="#top" class="dock-btn active" id="dockHome" aria-label="Accueil" onclick="goHome();return false;">
+  <button class="dock-btn active" id="dockHome" aria-label="Accueil">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Accueil
-  </a>
-  <button class="dock-btn reserve ripple-host" onclick="openBookingSheet();dockRipple(event)" id="dockReserve" aria-label="Réserver une course">
+  </button>
+  <button class="dock-btn reserve ripple-host" id="dockReserve" aria-label="Réserver une course">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     Réserver
   </button>
-  <a href="#tarifs" class="dock-btn" id="dockTarifs" aria-label="Voir les tarifs" onclick="smoothScrollTo(document.getElementById('tarifs'));return false;">
+  <button class="dock-btn" id="dockTarifs" aria-label="Voir les tarifs">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     Tarifs
-  </a>
-  <a href="tel:+33767742220" class="dock-btn ripple-host" id="dockTel" aria-label="Appeler" onclick="dockRipple(event)">
+  </button>
+  <button class="dock-btn ripple-host" id="dockTel" aria-label="Appeler">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     Appeler
-  </a>
+  </button>
 </nav>
 
 <!-- ═══ LEGAL MODAL ═══ -->
@@ -4310,6 +4794,19 @@ async function heroComputeRoute() {
   actions.style.animation = 'priceRise .4s cubic-bezier(.34,1.56,.64,1)';
 }
 
+function _launchAuroraBeam(beamCore, beamHalo) {
+  /* Leaflet expose getElement() sur les polylines pour accéder au <path> SVG */
+  [beamCore, beamHalo].forEach((layer, idx) => {
+    const el = layer.getElement ? layer.getElement() : null;
+    if (!el) return;
+    const len = el.getTotalLength ? Math.ceil(el.getTotalLength()) : 2400;
+    const beamLen = Math.round(len * 0.055); /* beam = ~5.5% de la longueur totale */
+    el.style.setProperty('--beam-len', len);
+    el.style.strokeDasharray  = `${beamLen} ${len}`;
+    el.style.strokeDashoffset = len;
+  });
+}
+
 function heroDrawRoute(geometry) {
   if (!_heroMap || !geometry) return;
   if (_heroRoute) _heroMap.removeLayer(_heroRoute);
@@ -4333,7 +4830,11 @@ function heroDrawRoute(geometry) {
   });
   const destMarker = L.marker([_heroArrive.lat, _heroArrive.lng], { icon: destIcon });
 
-  _heroRoute = L.layerGroup([glow1, glow2, core, destMarker]).addTo(_heroMap);
+  /* Beam layers (invisible au départ, révélés après le tracé) */
+  const beamCore = L.polyline(latlngs, { color: '#ffffff', weight: 3, opacity: 1, className: 'hero-beam-core' });
+  const beamHalo = L.polyline(latlngs, { color: '#d4a84b', weight: 6, opacity: 1, className: 'hero-beam-halo' });
+
+  _heroRoute = L.layerGroup([glow1, glow2, core, beamHalo, beamCore, destMarker]).addTo(_heroMap);
 
   /* Animation tracé progressif sur core */
   let i = 0;
@@ -4345,6 +4846,8 @@ function heroDrawRoute(geometry) {
       requestAnimationFrame(draw);
     } else {
       core.setLatLngs(latlngs);
+      /* Lancer le beam après que le tracé soit complet */
+      _launchAuroraBeam(beamCore, beamHalo);
     }
   };
   draw();
@@ -4403,6 +4906,47 @@ function setupHeroAmb() {
       });
     });
   });
+}
+
+/* ── Pill → Card expand (mobile) ── */
+function expandHeroPill() {
+  if (window.innerWidth >= 640) return;
+  const pill     = document.getElementById('inrPill');
+  const card     = document.getElementById('inrCard');
+  const backdrop = document.getElementById('inrCardBackdrop');
+  if (!pill || !card || !backdrop) return;
+  /* rendre la card visible avant la transition */
+  card.style.visibility = '';
+  card.style.opacity    = '';
+  card.style.pointerEvents = '';
+  pill.classList.add('hidden');
+  backdrop.classList.add('visible');
+  /* léger délai pour que le browser applique la transition CSS */
+  requestAnimationFrame(() => card.classList.add('pill-expanded'));
+  if (typeof haptic === 'function') haptic(12);
+  setTimeout(() => {
+    const input = card.querySelector('.inr-input');
+    if (input) input.focus();
+  }, 420);
+}
+
+function collapseHeroPill() {
+  if (window.innerWidth >= 640) return;
+  const pill     = document.getElementById('inrPill');
+  const card     = document.getElementById('inrCard');
+  const backdrop = document.getElementById('inrCardBackdrop');
+  if (!pill || !card || !backdrop) return;
+  card.classList.remove('pill-expanded');
+  backdrop.classList.remove('visible');
+  const drop = document.getElementById('hAcDrop');
+  if (drop) { drop.classList.remove('open'); drop.innerHTML = ''; }
+  /* re-masquer après la transition (480ms) */
+  setTimeout(() => {
+    card.style.opacity    = '0';
+    card.style.pointerEvents = 'none';
+    card.style.visibility = 'hidden';
+    pill.classList.remove('hidden');
+  }, 500);
 }
 
 /* ── Réserver → sync + ouvre sheet ── */
@@ -4755,37 +5299,107 @@ const LEGAL_CONTENT = {
     html: `<div class="legal-meta">Conforme RGPD · Avril 2026</div><h3>Responsable</h3><p><strong>I&amp;N RUN</strong> (SIREN 993 776 467), représentée par Nourdine BRAHA.</p><h3>Données collectées</h3><ul><li>Adresses de départ et d'arrivée</li><li>Date et heure de prise en charge</li><li>Numéro de téléphone (si contact initié)</li><li>Préférences de course</li></ul><p>Aucune donnée bancaire n'est stockée.</p><h3>Partage des données</h3><p>Données jamais vendues. Transmises uniquement à Photon, OSRM, Open-Meteo et WhatsApp pour le fonctionnement du service.</p><h3>Vos droits RGPD</h3><p>Accès, rectification, effacement, portabilité : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a></p><h3>Cookies</h3><p>Aucun cookie de tracking ni publicitaire.</p>`
   }
 };
-/* ═══ BOTTOM SHEET ═══ */
-function openBookingSheet() {
-  const sheet = document.getElementById('bookingSheet');
-  if (!sheet) return;
-  sheet.classList.add('open');
-  sheet.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  // Sync mini status pills (fallback si fetch déjà terminé avant ouverture)
-  const wxTemp = document.getElementById('wxTemp');
-  const wxDesc = document.getElementById('wxDesc');
-  const sheetWx = document.getElementById('sheetWxLabel');
-  if (wxTemp && sheetWx && wxTemp.textContent.trim() !== '—') {
-    sheetWx.textContent = wxTemp.textContent.trim() + ' · ' + (wxDesc ? wxDesc.textContent : '');
-  }
-  // Focus first input
-  setTimeout(() => {
-    const first = document.getElementById('pickup-time');
-    if (first) first.focus();
-  }, 450);
-  if (typeof haptic === 'function') haptic('strong');
+/* ═══ NATIVE VIEW SYSTEM ═══ */
+const VIEWS = ['home', 'reserve', 'tarifs', 'call'];
+const DOCK_IDS = ['dockHome', 'dockReserve', 'dockTarifs', 'dockTel'];
+let _currentView = 'home';
+
+function moveIndicator(btn) {
+  const indicator = document.getElementById('dockIndicator');
+  const nav = document.getElementById('bottomNav');
+  if (!indicator || !btn || !nav) return;
+  const nr = nav.getBoundingClientRect();
+  const br = btn.getBoundingClientRect();
+  indicator.style.left = (br.left - nr.left) + 'px';
+  indicator.style.width = br.width + 'px';
 }
 
-function closeBookingSheet() {
-  const sheet = document.getElementById('bookingSheet');
-  if (!sheet) return;
-  sheet.classList.remove('open');
-  sheet.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  /* Réinitialise l'état pour la prochaine ouverture */
-  sheetGoBack(true);
+function switchView(viewName) {
+  if (viewName === _currentView) return;
+  const newIdx = VIEWS.indexOf(viewName);
+  const oldIdx = VIEWS.indexOf(_currentView);
+  if (newIdx === -1) return;
+  haptic(8);
+  const direction = newIdx > oldIdx ? 1 : -1;
+  const oldEl = document.getElementById('view-' + _currentView);
+  const newEl = document.getElementById('view-' + viewName);
+  const header = document.getElementById('appHeader');
+  /* Exit old */
+  if (oldEl) {
+    oldEl.style.transition = 'opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1)';
+    oldEl.style.transform = `translateX(${direction * -14}%)`;
+    oldEl.style.opacity = '0';
+    oldEl.style.pointerEvents = 'none';
+    setTimeout(() => {
+      oldEl.classList.remove('active');
+      oldEl.style.transform = '';
+      oldEl.style.opacity = '';
+      oldEl.style.pointerEvents = '';
+    }, 300);
+  }
+  /* Enter new */
+  if (newEl) {
+    newEl.style.transition = 'none';
+    newEl.style.transform = `translateX(${direction * 20}%)`;
+    newEl.style.opacity = '0';
+    newEl.classList.add('active');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        newEl.style.transition = 'opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1)';
+        newEl.style.transform = '';
+        newEl.style.opacity = '';
+      });
+    });
+  }
+  /* Header visibility */
+  if (header) header.style.display = viewName === 'home' ? 'none' : '';
+  /* Scroll progress */
+  const sp = document.getElementById('scrollProgress');
+  if (sp) sp.style.display = viewName === 'home' ? 'none' : '';
+  /* Update nav buttons + indicator */
+  DOCK_IDS.forEach((id, i) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('active', i === newIdx);
+  });
+  const activeBtn = document.getElementById(DOCK_IDS[newIdx]);
+  if (activeBtn) moveIndicator(activeBtn);
+  _currentView = viewName;
 }
+
+/* Init: hide header on home + masque inrCard sur mobile */
+(function() {
+  const h = document.getElementById('appHeader');
+  const sp = document.getElementById('scrollProgress');
+  if (h) h.style.display = 'none';
+  if (sp) sp.style.display = 'none';
+  requestAnimationFrame(() => {
+    const btn = document.getElementById('dockHome');
+    if (btn) moveIndicator(btn);
+  });
+  /* Mobile : card cachée par défaut, révélée uniquement via expandHeroPill() */
+  if (window.innerWidth < 640) {
+    const card = document.getElementById('inrCard');
+    if (card) {
+      card.style.opacity = '0';
+      card.style.pointerEvents = 'none';
+      card.style.visibility = 'hidden';
+    }
+  }
+})();
+
+/* Wire up dock buttons */
+document.getElementById('dockHome')?.addEventListener('click', () => switchView('home'));
+document.getElementById('dockReserve')?.addEventListener('click', () => { haptic(12); switchView('reserve'); });
+document.getElementById('dockTarifs')?.addEventListener('click', () => switchView('tarifs'));
+document.getElementById('dockTel')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  switchView('call');
+});
+
+/* Override functions */
+function goHome() { switchView('home'); }
+function openBookingSheet() { switchView('reserve'); haptic(12); }
+function closeBookingSheet() { switchView('home'); sheetGoBack(true); }
 
 function sheetGoBack(silent = false) {
   const step2   = document.getElementById('card-step2');
@@ -4805,17 +5419,9 @@ function sheetGoBack(silent = false) {
   setStep(1);
   if (!silent) {
     haptic(8);
-    const scroll = document.getElementById('sheetScroll');
+    const scroll = document.getElementById('reserveScroll');
     if (scroll) scroll.scrollTop = 0;
   }
-}
-
-function goHome() {
-  const sheet = document.getElementById('bookingSheet');
-  if (sheet && sheet.classList.contains('open')) {
-    closeBookingSheet();
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function sheetStep1Next() {
@@ -4863,75 +5469,13 @@ function toggleChip(el) {
   haptic(5);
 }
 
-// Close sheet on backdrop click
-document.getElementById('bookingSheet').addEventListener('click', function(e) {
-  if (e.target === this) closeBookingSheet();
+// Keyboard: Escape — ferme la card si ouverte, sinon revient home
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const card = document.getElementById('inrCard');
+  if (card && card.classList.contains('pill-expanded')) { collapseHeroPill(); }
+  else { switchView('home'); }
 });
-
-// Swipe-down to dismiss — suivi temps réel + vélocité + snap-back
-(function() {
-  const sheet  = document.getElementById('bookingSheet');
-  const panel  = document.getElementById('sheetPanel');
-  const scroll = document.getElementById('sheetScroll');
-  if (!panel || !sheet) return;
-
-  let y0 = 0, dy = 0, t0 = 0, active = false;
-
-  function onStart(e) {
-    if (!sheet.classList.contains('open')) return;
-    const scrollTop = scroll ? scroll.scrollTop : 0;
-    // N'active le swipe que si le contenu est en haut OU si on touche le handle
-    const onHandle = e.target.closest('#sheetHandle');
-    if (scrollTop > 2 && !onHandle) return;
-    y0 = e.touches[0].clientY;
-    t0 = Date.now();
-    dy = 0; active = false;
-  }
-
-  function onMove(e) {
-    if (y0 === 0) return;
-    const rawDy = e.touches[0].clientY - y0;
-    if (rawDy <= 0) { y0 = 0; return; } // glissement vers le haut — laisse défiler
-    active = true;
-    dy = rawDy;
-    e.preventDefault(); // bloque le scroll pendant le drag
-    const scale = 1 - dy * 0.00018;
-    const alpha = Math.max(0.38, 1 - dy / 520);
-    panel.style.transition = 'none';
-    panel.style.transform  = `translateY(${dy}px) scale(${scale})`;
-    panel.style.opacity    = alpha;
-    // Handle : s'illumine au fur et à mesure
-    const h = document.querySelector('.sheet-handle');
-    if (h) h.style.background = `rgba(12,244,216,${Math.min(.9, .28 + dy * .004)})`;
-  }
-
-  function onEnd() {
-    if (!active) { y0 = 0; return; }
-    const velocity = dy / Math.max(1, Date.now() - t0); // px/ms
-    const dismiss  = dy > 110 || velocity > 0.55;
-    const h = document.querySelector('.sheet-handle');
-    if (h) h.style.background = '';
-    panel.style.transition = '';
-    panel.style.opacity    = '';
-    if (dismiss) {
-      panel.style.transform = 'translateY(100%) scale(.98)';
-      haptic('dismiss');
-      setTimeout(() => { closeBookingSheet(); panel.style.transform = ''; }, 320);
-    } else {
-      // Snap-back élastique
-      panel.style.transform = 'translateY(0) scale(1)';
-    }
-    y0 = 0; dy = 0; active = false;
-  }
-
-  panel.addEventListener('touchstart',  onStart, { passive: true });
-  panel.addEventListener('touchmove',   onMove,  { passive: false });
-  panel.addEventListener('touchend',    onEnd,   { passive: true });
-  panel.addEventListener('touchcancel', onEnd,   { passive: true });
-})();
-
-// Keyboard: Escape closes sheet
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBookingSheet(); });
 
 // Keyboard avoidance — visualViewport API (iOS 13+ / Android Chrome)
 (function () {
@@ -4941,30 +5485,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBooking
   let rafId = null;
 
   function apply() {
-    const sheet = document.getElementById('bookingSheet');
-    const panel = document.getElementById('sheetPanel');
-    const scrl  = document.getElementById('sheetScroll');
-    if (!panel) return;
+    const reserveView = document.getElementById('view-reserve');
+    const scrl = document.getElementById('reserveScroll');
+    if (!reserveView) return;
 
     const keyH = window.innerHeight - vv.height;
 
-    if (keyH > 60 && sheet && sheet.classList.contains('open')) {
-      // Clavier ouvert : réduit le panel à l'espace disponible
-      panel.style.height = vv.height + 'px';
-
+    if (keyH > 60 && reserveView.classList.contains('active')) {
       // Scroll l'input actif au-dessus du bord bas visible
       requestAnimationFrame(() => {
         const focused = document.activeElement;
         if (focused && focused !== document.body && scrl) {
           const elRect   = focused.getBoundingClientRect();
           const scrlRect = scrl.getBoundingClientRect();
-          const overlap  = elRect.bottom - scrlRect.bottom + 24;
+          const overlap  = elRect.bottom - (window.innerHeight - keyH) + 24;
           if (overlap > 0) scrl.scrollBy({ top: overlap, behavior: 'smooth' });
         }
       });
-    } else {
-      // Clavier fermé : restaure la hauteur CSS (93dvh)
-      panel.style.height = '';
     }
   }
 
@@ -4991,49 +5528,6 @@ function closeLegal() {
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('legalOverlay').classList.contains('show')) closeLegal(); });
 window.openLegal = openLegal; window.closeLegal = closeLegal;
 
-/* ── Bottom nav active state + sliding indicator ── */
-(function() {
-  const home   = document.getElementById('dockHome');
-  const tarifs = document.getElementById('dockTarifs');
-  const tel    = document.getElementById('dockTel');
-  const indicator = document.getElementById('dockIndicator');
-  const nav    = document.getElementById('bottomNav');
-  const sections = [
-    { el: document.getElementById('tarifs'), btn: tarifs }
-  ];
-
-  function moveIndicator(btn) {
-    if (!indicator || !btn || !nav) return;
-    const navRect = nav.getBoundingClientRect();
-    const btnRect = btn.getBoundingClientRect();
-    indicator.style.left  = (btnRect.left - navRect.left) + 'px';
-    indicator.style.width = btnRect.width + 'px';
-  }
-
-  function updateNav() {
-    const y = window.scrollY + window.innerHeight * 0.4;
-    let active = home;
-    for (const { el, btn } of sections) {
-      if (el && el.getBoundingClientRect().top + window.scrollY <= y) active = btn;
-    }
-    [home, tarifs, tel].forEach(b => b && b.classList.remove('active'));
-    if (active) { active.classList.add('active'); moveIndicator(active); }
-  }
-
-  window.addEventListener('scroll', updateNav, { passive: true });
-  /* init after layout */
-  requestAnimationFrame(() => { requestAnimationFrame(() => updateNav()); });
-
-  /* Move indicator on tab click */
-  [home, tarifs, tel].forEach(btn => {
-    btn && btn.addEventListener('click', () => {
-      [home, tarifs, tel].forEach(b => b && b.classList.remove('active'));
-      btn.classList.add('active');
-      moveIndicator(btn);
-      haptic(8);
-    });
-  });
-})();
 
 /* ── Ripple effect for dock buttons ── */
 function dockRipple(e) {
