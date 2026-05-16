@@ -2956,7 +2956,7 @@ body { overflow: hidden !important; }
   display: flex;
   align-items: center;
   gap: 10px;
-  position: absolute;
+  position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
@@ -5356,6 +5356,18 @@ function switchView(viewName) {
   /* Scroll progress */
   const sp = document.getElementById('scrollProgress');
   if (sp) sp.style.display = viewName === 'home' ? 'none' : '';
+  /* Pill visibility — position:fixed escapes overflow:hidden but must hide on non-home views */
+  const pill = document.getElementById('inrPill');
+  if (pill) {
+    if (viewName === 'home') {
+      const card = document.getElementById('inrCard');
+      if (!card || !card.classList.contains('pill-expanded')) {
+        pill.classList.remove('hidden');
+      }
+    } else {
+      pill.classList.add('hidden');
+    }
+  }
   /* Update nav buttons + indicator */
   DOCK_IDS.forEach((id, i) => {
     const btn = document.getElementById(id);
