@@ -320,8 +320,8 @@ body {
 }
 #heroMapCanvas {
   position:absolute; inset:0; z-index:0; width:100%; height:100%;
-  /* Nuit : brightness en premier → rues visibles puis teinture cyan */
-  filter: brightness(1.45) sepia(1) hue-rotate(145deg) saturate(5) contrast(1.2);
+  /* Nuit : invert préserve les ombres de bâtiments (profondeur 3D), hue-rotate → teal */
+  filter: invert(1) hue-rotate(165deg) brightness(0.72) saturate(2.2) contrast(1.08);
   transition: filter .8s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
@@ -927,13 +927,19 @@ body {
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
 }
-/* Dock jour — inactif #374151 (9.7:1), actif teal foncé */
+/* Dock jour — inactif #374151 (9.7:1), actif teal foncé + chip */
 [data-theme="light"] .dock-btn { color: #374151; }
-[data-theme="light"] .dock-btn.active {
-  color: #0f5c55;
+[data-theme="light"] .dock-btn:not(.reserve).active {
+  color: #065f52;
+  background: rgba(6,95,82,.10);
+  border-radius: 14px;
 }
-[data-theme="light"] .dock-btn.active svg {
-  filter: drop-shadow(0 0 6px rgba(13,107,98,.4));
+[data-theme="light"] .dock-btn:not(.reserve).active svg {
+  filter: drop-shadow(0 0 6px rgba(6,95,82,.5));
+}
+[data-theme="light"] .dock-indicator {
+  background: linear-gradient(90deg, rgba(6,95,82,.4), #065f52, rgba(6,95,82,.5));
+  box-shadow: 0 0 10px rgba(6,95,82,.5), 0 0 18px rgba(6,95,82,.2);
 }
 [data-theme="light"] .dock-btn.reserve {
   color: #fff;
@@ -1962,8 +1968,12 @@ body {
 .dock-btn:active { transform: scale(0.90); }
 .dock-btn svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1), filter .25s ease; }
 .dock-btn:active svg { transform: scale(0.84); }
-.dock-btn.active { color: var(--gold); }
-.dock-btn.active svg { filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 16px rgba(12,244,216,.2)); }
+.dock-btn:not(.reserve).active {
+  color: var(--teal);
+  background: rgba(12,244,216,.10);
+  border-radius: 14px;
+}
+.dock-btn:not(.reserve).active svg { filter: drop-shadow(0 0 8px rgba(12,244,216,.55)) drop-shadow(0 0 14px rgba(12,244,216,.25)); }
 .dock-btn.tapping { animation: dockTap .38s cubic-bezier(.34,1.56,.64,1) forwards; }
 .dock-btn.tapping svg { animation: dockIconFlare .38s ease-out forwards; }
 .dock-btn.reserve {
@@ -2601,10 +2611,10 @@ a, button, [role="button"], input, select, textarea, label {
 .dock-indicator {
   position: absolute;
   top: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-deep));
-  border-radius: 0 0 3px 3px;
-  box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(12,244,216,.25);
+  height: 3px;
+  background: linear-gradient(90deg, rgba(12,244,216,.5), var(--teal), rgba(12,244,216,.6));
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 0 12px rgba(12,244,216,.7), 0 0 22px rgba(12,244,216,.3);
   transition: left .35s cubic-bezier(.34,1.56,.64,1), width .35s cubic-bezier(.34,1.56,.64,1), opacity .2s;
   pointer-events: none;
 }
@@ -4600,7 +4610,7 @@ function setupHero() {
 let _heroMap = null, _heroRoute = null, _heroGpsDot = null, _heroTileLayer = null;
 let _heroDayMode = false;
 const HERO_TILES = {
-  night: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  night: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
   day:   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 };
 let _heroDepart = null, _heroArrive = null;
