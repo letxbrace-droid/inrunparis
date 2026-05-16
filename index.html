@@ -3041,6 +3041,32 @@ body { overflow: hidden !important; }
   .inr-pill, .inr-card, .inr-card-backdrop { transition: none !important; animation: none !important; }
   .inr-pill::after { animation: none !important; }
 }
+/* ══ AURORA BEAM — tracé route hero ══ */
+@keyframes auroraBeamTravel {
+  0%   { stroke-dashoffset: var(--beam-len, 3000); opacity: 0; }
+  4%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes auroraBeamTravel2 {
+  0%   { stroke-dashoffset: var(--beam-len, 3000); opacity: 0; }
+  4%   { opacity: .7; }
+  88%  { opacity: .7; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.hero-beam-core {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px #0cf4d8) drop-shadow(0 0 10px rgba(12,244,216,.6));
+  animation: auroraBeamTravel 2.6s cubic-bezier(.4,0,.25,1) infinite;
+  pointer-events: none;
+}
+.hero-beam-halo {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 12px #d4a84b) drop-shadow(0 0 22px rgba(212,168,75,.5));
+  animation: auroraBeamTravel2 2.6s cubic-bezier(.4,0,.25,1) infinite;
+  animation-delay: .06s;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -4718,6 +4744,19 @@ async function heroComputeRoute() {
   actions.style.animation = 'priceRise .4s cubic-bezier(.34,1.56,.64,1)';
 }
 
+function _launchAuroraBeam(beamCore, beamHalo) {
+  /* Leaflet expose getElement() sur les polylines pour accéder au <path> SVG */
+  [beamCore, beamHalo].forEach((layer, idx) => {
+    const el = layer.getElement ? layer.getElement() : null;
+    if (!el) return;
+    const len = el.getTotalLength ? Math.ceil(el.getTotalLength()) : 2400;
+    const beamLen = Math.round(len * 0.055); /* beam = ~5.5% de la longueur totale */
+    el.style.setProperty('--beam-len', len);
+    el.style.strokeDasharray  = `${beamLen} ${len}`;
+    el.style.strokeDashoffset = len;
+  });
+}
+
 function heroDrawRoute(geometry) {
   if (!_heroMap || !geometry) return;
   if (_heroRoute) _heroMap.removeLayer(_heroRoute);
@@ -4741,7 +4780,11 @@ function heroDrawRoute(geometry) {
   });
   const destMarker = L.marker([_heroArrive.lat, _heroArrive.lng], { icon: destIcon });
 
-  _heroRoute = L.layerGroup([glow1, glow2, core, destMarker]).addTo(_heroMap);
+  /* Beam layers (invisible au départ, révélés après le tracé) */
+  const beamCore = L.polyline(latlngs, { color: '#ffffff', weight: 3, opacity: 1, className: 'hero-beam-core' });
+  const beamHalo = L.polyline(latlngs, { color: '#d4a84b', weight: 6, opacity: 1, className: 'hero-beam-halo' });
+
+  _heroRoute = L.layerGroup([glow1, glow2, core, beamHalo, beamCore, destMarker]).addTo(_heroMap);
 
   /* Animation tracé progressif sur core */
   let i = 0;
@@ -4753,6 +4796,8 @@ function heroDrawRoute(geometry) {
       requestAnimationFrame(draw);
     } else {
       core.setLatLngs(latlngs);
+      /* Lancer le beam après que le tracé soit complet */
+      _launchAuroraBeam(beamCore, beamHalo);
     }
   };
   draw();
