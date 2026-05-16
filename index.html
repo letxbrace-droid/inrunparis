@@ -4733,14 +4733,19 @@ function expandHeroPill() {
   const card     = document.getElementById('inrCard');
   const backdrop = document.getElementById('inrCardBackdrop');
   if (!pill || !card || !backdrop) return;
+  /* rendre la card visible avant la transition */
+  card.style.visibility = '';
+  card.style.opacity    = '';
+  card.style.pointerEvents = '';
   pill.classList.add('hidden');
   backdrop.classList.add('visible');
-  card.classList.add('pill-expanded');
+  /* léger délai pour que le browser applique la transition CSS */
+  requestAnimationFrame(() => card.classList.add('pill-expanded'));
   if (typeof haptic === 'function') haptic(12);
   setTimeout(() => {
     const input = card.querySelector('.inr-input');
     if (input) input.focus();
-  }, 400);
+  }, 420);
 }
 
 function collapseHeroPill() {
@@ -4753,7 +4758,13 @@ function collapseHeroPill() {
   backdrop.classList.remove('visible');
   const drop = document.getElementById('hAcDrop');
   if (drop) { drop.classList.remove('open'); drop.innerHTML = ''; }
-  setTimeout(() => pill.classList.remove('hidden'), 160);
+  /* re-masquer après la transition (480ms) */
+  setTimeout(() => {
+    card.style.opacity    = '0';
+    card.style.pointerEvents = 'none';
+    card.style.visibility = 'hidden';
+    pill.classList.remove('hidden');
+  }, 500);
 }
 
 /* ── Réserver → sync + ouvre sheet ── */
@@ -5173,7 +5184,7 @@ function switchView(viewName) {
   _currentView = viewName;
 }
 
-/* Init: hide header on home */
+/* Init: hide header on home + masque inrCard sur mobile */
 (function() {
   const h = document.getElementById('appHeader');
   const sp = document.getElementById('scrollProgress');
@@ -5183,6 +5194,15 @@ function switchView(viewName) {
     const btn = document.getElementById('dockHome');
     if (btn) moveIndicator(btn);
   });
+  /* Mobile : card cachée par défaut, révélée uniquement via expandHeroPill() */
+  if (window.innerWidth < 640) {
+    const card = document.getElementById('inrCard');
+    if (card) {
+      card.style.opacity = '0';
+      card.style.pointerEvents = 'none';
+      card.style.visibility = 'hidden';
+    }
+  }
 })();
 
 /* Wire up dock buttons */
