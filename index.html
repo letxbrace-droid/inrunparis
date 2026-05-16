@@ -2842,6 +2842,118 @@ body { overflow: hidden !important; }
   color: var(--mist);
   letter-spacing: .02em;
 }
+
+/* ══════════════════════════════════════
+   PILL → CARD expand (Option 3, mobile)
+══════════════════════════════════════ */
+.inr-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  padding: 0 20px 0 12px;
+  height: 52px;
+  border-radius: 26px;
+  background: rgba(10,12,22,.82);
+  backdrop-filter: blur(40px) saturate(1.8);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  border: 0.5px solid rgba(12,244,216,.32);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform .2s cubic-bezier(.22,1,.36,1), opacity .2s ease, box-shadow .2s ease;
+}
+.inr-pill:hover {
+  box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(12,244,216,.45), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.inr-pill:active { transform: translateX(-50%) scale(.96); }
+.inr-pill.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) scale(.88) translateY(10px);
+}
+.inr-pill-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(12,244,216,.12);
+  border: 0.5px solid rgba(12,244,216,.28);
+  color: var(--accent); flex-shrink: 0;
+}
+.inr-pill-text {
+  font-size: .9rem; font-family: var(--ff-body);
+  color: rgba(255,255,255,.88); letter-spacing: .01em;
+}
+.inr-pill-sep { width: 1px; height: 20px; background: rgba(255,255,255,.12); }
+.inr-pill-avail {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--ff-mono); font-size: .48rem;
+  color: var(--mist); letter-spacing: .08em;
+}
+
+/* backdrop flouté */
+.inr-card-backdrop {
+  position: absolute; inset: 0; z-index: 9;
+  background: rgba(0,0,0,.42);
+  backdrop-filter: blur(4px) saturate(.8);
+  -webkit-backdrop-filter: blur(4px) saturate(.8);
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s ease;
+}
+.inr-card-backdrop.visible { opacity: 1; pointer-events: all; }
+
+/* pill masqué sur desktop — carte toujours visible */
+@media (min-width: 640px) {
+  .inr-pill, .inr-card-backdrop { display: none !important; }
+}
+
+/* card cachée par défaut sur mobile → reveal au tap pill */
+@media (max-width: 639px) {
+  .inr-card {
+    bottom: auto !important;
+    top: 50%; left: 14px; right: 14px;
+    transform: translateY(calc(-50% - 40px - env(safe-area-inset-bottom,0px) * .5)) scale(.9);
+    margin: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .42s cubic-bezier(.22,1,.36,1), transform .48s cubic-bezier(.22,1,.36,1);
+  }
+  .inr-card.pill-expanded {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(calc(-50% - 40px - env(safe-area-inset-bottom,0px) * .5)) scale(1);
+  }
+}
+
+/* shimmer animé sur le bord du pill (liquid glass) */
+@keyframes pillShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.inr-pill::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(12,244,216,.18) 48%,
+    rgba(212,168,75,.22) 52%,
+    transparent 70%
+  );
+  background-size: 300% 100%;
+  animation: pillShimmer 3.6s linear infinite;
+  pointer-events: none;
+}
+
+/* prefers-reduced-motion — désactive toutes les transitions du pill */
+@media (prefers-reduced-motion: reduce) {
+  .inr-pill, .inr-card, .inr-card-backdrop { transition: none !important; animation: none !important; }
+  .inr-pill::after { animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -2879,6 +2991,19 @@ body { overflow: hidden !important; }
       </svg>
       <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
     </button>
+
+    <!-- Pill trigger (mobile) -->
+    <button class="inr-pill" id="inrPill" onclick="expandHeroPill()" aria-label="Ouvrir la réservation">
+      <span class="inr-pill-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="15" height="15"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </span>
+      <span class="inr-pill-text">Où allons-nous ?</span>
+      <span class="inr-pill-sep"></span>
+      <span class="inr-pill-avail"><span class="inr-live-dot"></span>Disponible</span>
+    </button>
+
+    <!-- Backdrop (ferme la carte au tap) -->
+    <div class="inr-card-backdrop" id="inrCardBackdrop" onclick="collapseHeroPill()"></div>
 
     <!-- INR Floating card -->
     <div class="inr-card" id="inrCard" role="main">
@@ -4601,6 +4726,36 @@ function setupHeroAmb() {
   });
 }
 
+/* ── Pill → Card expand (mobile) ── */
+function expandHeroPill() {
+  if (window.innerWidth >= 640) return;
+  const pill     = document.getElementById('inrPill');
+  const card     = document.getElementById('inrCard');
+  const backdrop = document.getElementById('inrCardBackdrop');
+  if (!pill || !card || !backdrop) return;
+  pill.classList.add('hidden');
+  backdrop.classList.add('visible');
+  card.classList.add('pill-expanded');
+  if (typeof haptic === 'function') haptic(12);
+  setTimeout(() => {
+    const input = card.querySelector('.inr-input');
+    if (input) input.focus();
+  }, 400);
+}
+
+function collapseHeroPill() {
+  if (window.innerWidth >= 640) return;
+  const pill     = document.getElementById('inrPill');
+  const card     = document.getElementById('inrCard');
+  const backdrop = document.getElementById('inrCardBackdrop');
+  if (!pill || !card || !backdrop) return;
+  card.classList.remove('pill-expanded');
+  backdrop.classList.remove('visible');
+  const drop = document.getElementById('hAcDrop');
+  if (drop) { drop.classList.remove('open'); drop.innerHTML = ''; }
+  setTimeout(() => pill.classList.remove('hidden'), 160);
+}
+
 /* ── Réserver → sync + ouvre sheet ── */
 function heroReserve() {
   STATE.depart  = _heroDepart || STATE.depart;
@@ -5112,8 +5267,13 @@ function toggleChip(el) {
   haptic(5);
 }
 
-// Keyboard: Escape goes home
-document.addEventListener('keydown', e => { if (e.key === 'Escape') switchView('home'); });
+// Keyboard: Escape — ferme la card si ouverte, sinon revient home
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const card = document.getElementById('inrCard');
+  if (card && card.classList.contains('pill-expanded')) { collapseHeroPill(); }
+  else { switchView('home'); }
+});
 
 // Keyboard avoidance — visualViewport API (iOS 13+ / Android Chrome)
 (function () {
