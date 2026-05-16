@@ -2455,6 +2455,226 @@ button:not(:disabled):active,
   .hero-cta-primary { animation: none !important; }
   .reveal, .reveal-stagger { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM UI v3 — Micro-interactions & Polish
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Touch: remove 300ms tap delay globally ── */
+a, button, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+/* ── Bottom nav: sliding active indicator ── */
+.dock-indicator {
+  position: absolute;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-deep));
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(12,244,216,.25);
+  transition: left .35s cubic-bezier(.34,1.56,.64,1), width .35s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+  pointer-events: none;
+}
+
+/* ── Bottom nav: hover state refinement ── */
+.dock-btn:not(.reserve):hover {
+  color: rgba(255,255,255,.7);
+}
+.dock-btn:not(.reserve):hover svg {
+  transform: translateY(-2px);
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Reserve button: premium pulse ring ── */
+@keyframes reservePulse {
+  0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(12,244,216,.55); }
+  70%  { transform: scale(1); box-shadow: 0 0 0 10px rgba(12,244,216,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(12,244,216,0); }
+}
+.dock-btn.reserve {
+  animation: reservePulse 2.8s cubic-bezier(.35,0,.25,1) infinite !important;
+}
+.dock-btn.reserve:active {
+  transform: scale(0.92) !important;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1) !important;
+  animation: none !important;
+}
+
+/* ── inr-card: entrance animation on load ── */
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.inr-card {
+  animation: cardRise .55s cubic-bezier(.16,1,.3,1) .35s both;
+}
+
+/* ── Ripple effect ── */
+.ripple-host { position: relative; overflow: hidden; }
+@keyframes rippleAnim {
+  from { transform: scale(0); opacity: .35; }
+  to   { transform: scale(3.5); opacity: 0; }
+}
+.ripple-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(12,244,216,.45);
+  pointer-events: none;
+  width: 60px; height: 60px;
+  margin: -30px 0 0 -30px;
+  animation: rippleAnim .55s cubic-bezier(.35,0,.25,1) forwards;
+}
+
+/* ── PWA install banner ── */
+.pwa-banner {
+  position: fixed;
+  bottom: calc(68px + var(--safe-bot));
+  left: 12px; right: 12px;
+  z-index: 90;
+  background: rgba(10,10,12,.94);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 0.5px solid rgba(12,244,216,.28);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 0.5px rgba(12,244,216,.1) inset;
+  transform: translateY(120%);
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  opacity: 0;
+}
+.pwa-banner.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.pwa-banner-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(12,244,216,.15), rgba(12,244,216,.05));
+  border: 0.5px solid rgba(12,244,216,.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.pwa-banner-icon svg { color: var(--gold); }
+.pwa-banner-body { flex: 1; min-width: 0; }
+.pwa-banner-title {
+  font-family: var(--ff-display); font-size: .85rem; font-weight: 600;
+  color: var(--bone); line-height: 1.2; margin-bottom: 2px;
+}
+.pwa-banner-sub {
+  font-family: var(--ff-mono); font-size: .55rem; color: var(--mist);
+  letter-spacing: .06em;
+}
+.pwa-banner-actions { display: flex; gap: 8px; align-items: center; }
+.pwa-install-btn {
+  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+  border: none; border-radius: 10px; padding: 8px 14px;
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 700;
+  color: var(--oled); cursor: pointer; white-space: nowrap;
+  letter-spacing: .06em; text-transform: uppercase;
+  transition: transform .15s, box-shadow .15s;
+  touch-action: manipulation;
+}
+.pwa-install-btn:active { transform: scale(0.95); }
+.pwa-dismiss-btn {
+  background: transparent; border: none; padding: 8px;
+  color: var(--mist); cursor: pointer; touch-action: manipulation;
+  transition: color .2s;
+}
+.pwa-dismiss-btn:hover { color: var(--bone); }
+.pwa-dismiss-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* ── iOS install tooltip ── */
+.pwa-ios-tip {
+  position: fixed;
+  bottom: calc(68px + var(--safe-bot) + 4px);
+  left: 12px; right: 12px;
+  z-index: 95;
+  background: rgba(10,10,12,.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 0.5px solid rgba(12,244,216,.28);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  transform: translateY(120%);
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  opacity: 0;
+  display: none;
+}
+.pwa-ios-tip.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.pwa-ios-tip-title {
+  font-family: var(--ff-display); font-size: .88rem; font-weight: 600;
+  color: var(--bone); margin-bottom: 10px;
+}
+.pwa-ios-tip-steps {
+  list-style: none; display: flex; flex-direction: column; gap: 8px;
+}
+.pwa-ios-tip-steps li {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--ff-mono); font-size: .62rem; color: var(--mist); letter-spacing: .04em;
+}
+.pwa-ios-tip-steps li strong { color: var(--bone); font-weight: 600; }
+.pwa-ios-close {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255,255,255,.07); border: 0.5px solid rgba(255,255,255,.1);
+  border-radius: 50%; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--mist); cursor: pointer; touch-action: manipulation;
+  transition: all .2s;
+}
+.pwa-ios-close:hover { color: var(--bone); background: rgba(255,255,255,.12); }
+.pwa-ios-close svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* ── Smooth dock transition (no jump on active change) ── */
+.dock-btn { transition: color .25s ease, background .25s ease; }
+.dock-btn svg { transition: transform .25s cubic-bezier(.34,1.56,.64,1), filter .25s ease, color .25s ease; }
+.dock-btn.active svg { transform: translateY(-1px); }
+.dock-btn:not(.reserve).active svg { transform: translateY(-2px) scale(1.08); }
+
+/* ── GeoBtn loading state ── */
+.inr-geo-btn.loading { pointer-events: none; }
+.inr-geo-btn.loading svg { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Scroll to reveal sections ── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
+}
+.reveal-up.in { opacity: 1; transform: translateY(0); }
+
+/* ── Toast notification premium ── */
+.toast-premium {
+  position: fixed;
+  top: calc(var(--safe-top) + 64px);
+  left: 50%; transform: translateX(-50%) translateY(-20px);
+  z-index: 300;
+  background: rgba(10,10,12,.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(12,244,216,.3);
+  border-radius: 100px;
+  padding: 10px 18px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: .62rem; color: var(--bone); letter-spacing: .06em;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  opacity: 0;
+  transition: opacity .25s, transform .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+.toast-premium.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast-premium-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success); box-shadow: 0 0 6px var(--success); flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -3071,13 +3291,53 @@ button:not(:disabled):active,
   </div><!-- /sheet-panel -->
 </div><!-- /bookingSheet -->
 
+<!-- ═══ PWA INSTALL BANNER ═══ -->
+<div class="pwa-banner" id="pwaBanner" role="banner" aria-label="Installer l'application">
+  <div class="pwa-banner-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 21H4a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1z"/></svg>
+  </div>
+  <div class="pwa-banner-body">
+    <div class="pwa-banner-title">Installer I&amp;N RUN</div>
+    <div class="pwa-banner-sub">Accès rapide · Fonctionne hors-ligne</div>
+  </div>
+  <div class="pwa-banner-actions">
+    <button class="pwa-install-btn" id="pwaInstallBtn" aria-label="Installer l'application">Installer</button>
+    <button class="pwa-dismiss-btn" id="pwaDismissBtn" aria-label="Fermer">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- iOS install tip -->
+<div class="pwa-ios-tip" id="pwaIosTip" role="dialog" aria-modal="true" aria-label="Instructions installation iOS">
+  <button class="pwa-ios-close" id="pwaIosClose" aria-label="Fermer">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="pwa-ios-tip-title">Ajouter à l'écran d'accueil</div>
+  <ul class="pwa-ios-tip-steps">
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Appuyez sur <strong>Partager</strong> dans Safari
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Sélectionnez <strong>Sur l'écran d'accueil</strong>
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Appuyez sur <strong>Ajouter</strong>
+    </li>
+  </ul>
+</div>
+
 <!-- ═══ CTA DOCK ═══ -->
 <nav class="cta-dock" aria-label="Navigation principale" id="bottomNav">
+  <div class="dock-indicator" id="dockIndicator" aria-hidden="true"></div>
   <a href="#top" class="dock-btn active" id="dockHome" aria-label="Accueil" onclick="goHome();return false;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Accueil
   </a>
-  <button class="dock-btn reserve" onclick="openBookingSheet()" id="dockReserve" aria-label="Réserver une course">
+  <button class="dock-btn reserve ripple-host" onclick="openBookingSheet();dockRipple(event)" id="dockReserve" aria-label="Réserver une course">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     Réserver
   </button>
@@ -3085,7 +3345,7 @@ button:not(:disabled):active,
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     Tarifs
   </a>
-  <a href="tel:+33767742220" class="dock-btn" id="dockTel" aria-label="Appeler">
+  <a href="tel:+33767742220" class="dock-btn ripple-host" id="dockTel" aria-label="Appeler" onclick="dockRipple(event)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     Appeler
   </a>
@@ -3842,11 +4102,15 @@ function initHeroMap() {
 function initHeroAC() {
   heroSetupAC('hDepart', true);
   heroSetupAC('hArrive', false);
-  document.getElementById('hGeoBtn').addEventListener('click', () => {
+  const geoBtn = document.getElementById('hGeoBtn');
+  geoBtn && geoBtn.addEventListener('click', () => {
     if (!navigator.geolocation) return;
+    haptic(10);
+    geoBtn.classList.add('loading');
     navigator.geolocation.getCurrentPosition(pos => {
+      geoBtn.classList.remove('loading');
       heroSetGPS(pos.coords.latitude, pos.coords.longitude, 16);
-    }, () => {}, { enableHighAccuracy: true, timeout: 6000 });
+    }, () => { geoBtn.classList.remove('loading'); }, { enableHighAccuracy: true, timeout: 6000 });
   });
 }
 
@@ -4727,20 +4991,25 @@ function closeLegal() {
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('legalOverlay').classList.contains('show')) closeLegal(); });
 window.openLegal = openLegal; window.closeLegal = closeLegal;
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' }).catch(() => {});
-  });
-}
-
-/* ── Bottom nav active state au scroll ── */
+/* ── Bottom nav active state + sliding indicator ── */
 (function() {
   const home   = document.getElementById('dockHome');
   const tarifs = document.getElementById('dockTarifs');
   const tel    = document.getElementById('dockTel');
+  const indicator = document.getElementById('dockIndicator');
+  const nav    = document.getElementById('bottomNav');
   const sections = [
     { el: document.getElementById('tarifs'), btn: tarifs }
   ];
+
+  function moveIndicator(btn) {
+    if (!indicator || !btn || !nav) return;
+    const navRect = nav.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.left  = (btnRect.left - navRect.left) + 'px';
+    indicator.style.width = btnRect.width + 'px';
+  }
+
   function updateNav() {
     const y = window.scrollY + window.innerHeight * 0.4;
     let active = home;
@@ -4748,10 +5017,120 @@ if ('serviceWorker' in navigator) {
       if (el && el.getBoundingClientRect().top + window.scrollY <= y) active = btn;
     }
     [home, tarifs, tel].forEach(b => b && b.classList.remove('active'));
-    if (active) active.classList.add('active');
+    if (active) { active.classList.add('active'); moveIndicator(active); }
   }
+
   window.addEventListener('scroll', updateNav, { passive: true });
+  /* init after layout */
+  requestAnimationFrame(() => { requestAnimationFrame(() => updateNav()); });
+
+  /* Move indicator on tab click */
+  [home, tarifs, tel].forEach(btn => {
+    btn && btn.addEventListener('click', () => {
+      [home, tarifs, tel].forEach(b => b && b.classList.remove('active'));
+      btn.classList.add('active');
+      moveIndicator(btn);
+      haptic(8);
+    });
+  });
 })();
+
+/* ── Ripple effect for dock buttons ── */
+function dockRipple(e) {
+  const btn = e.currentTarget;
+  if (!btn.classList.contains('ripple-host')) return;
+  const r = document.createElement('div');
+  r.className = 'ripple-circle';
+  const rect = btn.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  r.style.left = x + 'px'; r.style.top = y + 'px';
+  btn.appendChild(r);
+  r.addEventListener('animationend', () => r.remove());
+}
+
+/* ── Toast premium ── */
+function showToast(msg, duration = 2200) {
+  let t = document.getElementById('toastPremium');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toastPremium';
+    t.className = 'toast-premium';
+    t.innerHTML = '<div class="toast-premium-dot"></div><span id="toastPremiumMsg"></span>';
+    document.body.appendChild(t);
+  }
+  t.querySelector('#toastPremiumMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), duration);
+}
+window.showToast = showToast;
+
+/* ── PWA install prompt ── */
+(function() {
+  let deferredPrompt = null;
+  const banner   = document.getElementById('pwaBanner');
+  const installB = document.getElementById('pwaInstallBtn');
+  const dismissB = document.getElementById('pwaDismissBtn');
+  const iosTip   = document.getElementById('pwaIosTip');
+  const iosClose = document.getElementById('pwaIosClose');
+
+  /* Respect user dismissal */
+  const dismissed = sessionStorage.getItem('pwa-dismissed');
+  if (dismissed) return;
+
+  /* Android / Chrome: beforeinstallprompt */
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => banner && banner.classList.add('show'), 3000);
+  });
+
+  /* iOS Safari detection */
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (isIOS && !isStandalone) {
+    if (iosTip) {
+      iosTip.style.display = 'block';
+      setTimeout(() => iosTip.classList.add('show'), 3500);
+    }
+  }
+
+  installB && installB.addEventListener('click', async () => {
+    haptic(15);
+    if (deferredPrompt) {
+      banner.classList.remove('show');
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      if (outcome === 'accepted') showToast('Application installée !');
+    }
+  });
+
+  dismissB && dismissB.addEventListener('click', () => {
+    haptic(8);
+    banner.classList.remove('show');
+    sessionStorage.setItem('pwa-dismissed', '1');
+  });
+
+  iosClose && iosClose.addEventListener('click', () => {
+    haptic(8);
+    iosTip.classList.remove('show');
+    sessionStorage.setItem('pwa-dismissed', '1');
+  });
+
+  /* Hide when already installed */
+  window.addEventListener('appinstalled', () => {
+    banner && banner.classList.remove('show');
+    showToast('I&N RUN installé avec succès !');
+  });
+})();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' }).catch(() => {});
+  });
+}
 </script>
 
 </body>
