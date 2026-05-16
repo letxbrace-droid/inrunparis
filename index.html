@@ -39,7 +39,7 @@
   --gold-glow: rgba(12, 244, 216, 0.45);
   --bone: #f5f1e8;
   --paper: #ffffff;
-  --mist: #a8a29e;
+  --mist: #94a3b8;   /* slate-400 — 4.6:1 sur fond sombre */
   --shadow-ink: #4a4744;
   --muted: #6b6560;
   --dim: #3a3734;
@@ -433,7 +433,7 @@ body {
   border:0.5px solid rgba(12,244,216,.28); padding:3px 9px; border-radius:5px;
 }
 .inr-hud-status { display:flex; align-items:center; gap:5px; margin-left:auto; font-family:var(--ff-mono); font-size:.5rem; color:var(--mist); letter-spacing:.08em; }
-.inr-live-dot { width:5px; height:5px; border-radius:50%; background:var(--success); box-shadow:0 0 6px var(--success); animation:livePulse 2s ease-in-out infinite; }
+.inr-live-dot { width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success); animation:livePulse 2s ease-in-out infinite; flex-shrink:0; }
 @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 /* ── Fields ── */
@@ -655,6 +655,37 @@ body {
 /* WA link — #4b5563 = 6.1:1 (était #777 = 4.48:1 borderline) */
 #heroMap.day-mode .inr-wa-link { color: #4b5563; }
 #heroMap.day-mode .inr-wa-link:hover { color: #065f56; }
+
+/* ── Pill jour : fond blanc, texte sombre ── */
+#heroMap.day-mode .inr-pill {
+  background: rgba(255,255,255,.97);
+  border-color: rgba(13,107,98,.38);
+  box-shadow: 0 4px 24px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.08), inset 0 1px 0 #fff;
+}
+#heroMap.day-mode .inr-pill-icon {
+  background: rgba(13,107,98,.1);
+  border-color: rgba(13,107,98,.3);
+  color: #0f5c55;
+}
+#heroMap.day-mode .inr-pill-text { color: #0f172a; }
+#heroMap.day-mode .inr-pill-sep  { background: rgba(0,0,0,.14); }
+/* Badge "Disponible" jour — vert foncé sur fond vert pâle */
+#heroMap.day-mode .inr-pill-avail {
+  background: rgba(5,150,105,.1);
+  border-color: rgba(5,150,105,.35);
+  color: #065f46;
+}
+#heroMap.day-mode .inr-pill-avail .inr-live-dot {
+  background: #059669;
+  box-shadow: 0 0 6px rgba(5,150,105,.6);
+}
+/* shimmer jour — tones teal subtils */
+#heroMap.day-mode .inr-pill::after {
+  background: linear-gradient(105deg,
+    transparent 30%, rgba(13,107,98,.1) 48%,
+    rgba(10,92,84,.08) 52%, transparent 70%
+  );
+}
 #heroMap.day-mode .hero-mode-toggle {
   background:rgba(0,0,0,.62); border-color:rgba(255,255,255,.22); color:#fff;
   box-shadow:0 2px 14px rgba(0,0,0,.35);
@@ -674,9 +705,9 @@ body {
   --gold-deep: #0d7a6e;
   --gold-glow: rgba(10,92,84,0.14);
   --bone:      #0f172a;   /* titres quasi-noir */
-  --mist:      #374151;   /* texte secondaire — bien lisible */
-  --muted:     #4b5563;
-  --dim:       #9ca3af;
+  --mist:      #475569;   /* slate-600 — 7.2:1 sur blanc (était #374151) */
+  --muted:     #374151;   /* slate-700 — 9.7:1 */
+  --dim:       #64748b;   /* slate-500 — 5.9:1 */
   --ink:       #f3f4f6;
   --ink-2:     #e9ecf0;
   --ink-3:     #dee4ec;
@@ -857,6 +888,19 @@ body {
   background: rgba(238,242,247,.97);
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
+}
+/* Dock jour — inactif #374151 (9.7:1), actif teal foncé */
+[data-theme="light"] .dock-btn { color: #374151; }
+[data-theme="light"] .dock-btn.active {
+  color: #0f5c55;
+}
+[data-theme="light"] .dock-btn.active svg {
+  filter: drop-shadow(0 0 6px rgba(13,107,98,.4));
+}
+[data-theme="light"] .dock-btn.reserve {
+  color: #fff;
+  background: linear-gradient(135deg, #0a5c54, #0d7a6e);
+  box-shadow: 0 0 20px rgba(13,107,98,.35), 0 4px 14px rgba(0,0,0,.18);
 }
 
 /* ── How steps (jour) ── */
@@ -2910,11 +2954,23 @@ body { overflow: hidden !important; }
   font-size: .9rem; font-family: var(--ff-brand); font-weight: 700;
   color: rgba(255,255,255,.92); letter-spacing: .01em;
 }
-.inr-pill-sep { width: 1px; height: 20px; background: rgba(255,255,255,.12); }
+.inr-pill-sep { width: 1px; height: 20px; background: rgba(255,255,255,.18); }
 .inr-pill-avail {
   display: flex; align-items: center; gap: 5px;
-  font-family: var(--ff-mono); font-size: .48rem;
-  color: var(--mist); letter-spacing: .08em;
+  font-family: var(--ff-brand); font-size: .52rem; font-weight: 700;
+  /* badge vert nuit — contraste élevé */
+  background: rgba(52,211,153,.14);
+  border: 0.5px solid rgba(52,211,153,.35);
+  color: #34d399;
+  padding: 3px 8px; border-radius: 10px;
+  letter-spacing: .06em; white-space: nowrap;
+}
+/* dot "Disponible" — plus grand et plus visible */
+.inr-pill-avail .inr-live-dot {
+  width: 7px; height: 7px;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52,211,153,.8);
+  flex-shrink: 0;
 }
 
 /* backdrop flouté */
