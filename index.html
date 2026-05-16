@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lib/leaflet.css"/>
 <style>html,body{background:#0a0a0b;min-height:100dvh;}</style>
 <script src="lib/leaflet.js" id="leafletJs"></script>
@@ -47,6 +47,7 @@
   --danger: #ef4444;
   --wa: #25d366;
   --wa-deep: #128c4a;
+  --ff-brand: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-mono: "JetBrains Mono", "SF Mono", monospace;
@@ -131,18 +132,17 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   max-width: 520px; margin: 0 auto;
 }
-.brand { display: flex; align-items: baseline; gap: 6px; font-family: var(--ff-display); }
+.brand { display: flex; align-items: baseline; gap: 6px; font-family: var(--ff-brand); }
 .brand-monogram {
-  font-family: var(--ff-display);
-  font-variation-settings: "opsz" 72;
-  font-weight: 600; font-style: italic; font-size: 1.4rem;
+  font-family: var(--ff-brand);
+  font-weight: 800; font-style: normal; font-size: 1.45rem;
   background: linear-gradient(135deg, var(--gold-warm), var(--gold), var(--gold-deep));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   letter-spacing: -0.01em; line-height: 1;
 }
 .brand-name {
-  font-family: var(--ff-mono); font-weight: 500; font-size: 0.62rem;
-  color: var(--gold); letter-spacing: 0.4em; text-transform: uppercase;
+  font-family: var(--ff-brand); font-weight: 800; font-size: 0.72rem;
+  color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase;
   margin-left: 4px; padding-top: 2px;
 }
 .badge-live {
@@ -428,7 +428,7 @@ body {
 /* ── HUD header ── */
 .inr-card-hud { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .inr-monogram {
-  font-family:var(--ff-mono); font-size:.58rem; font-weight:700; letter-spacing:.24em;
+  font-family:var(--ff-brand); font-size:.62rem; font-weight:800; letter-spacing:.2em;
   color:var(--gold); background:rgba(12,244,216,.1);
   border:0.5px solid rgba(12,244,216,.28); padding:3px 9px; border-radius:5px;
 }
@@ -596,43 +596,65 @@ body {
   background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.03) 3px, rgba(255,255,255,.03) 4px);
 }
 #heroMap.day-mode .inr-card {
-  background:rgba(255,255,255,.60);
-  backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
-  -webkit-backdrop-filter:blur(40px) saturate(2.0) brightness(1.04);
-  border-color:rgba(13,107,98,.22);
+  /* Opacité haute pour lisibilité — skill: bg-white/80+ en light mode */
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  border-color: rgba(13,107,98,.28);
   box-shadow:
-    0 2px 10px rgba(90,120,155,.07),
-    0 14px 56px rgba(90,120,155,.13),
-    inset 0 1.5px 0 rgba(255,255,255,.96);
+    0 2px 8px rgba(0,0,0,.06),
+    0 12px 48px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,1);
 }
 #heroMap.day-mode .inr-monogram {
-  color:#0f5c55; background:rgba(13,107,98,.1); border-color:rgba(13,107,98,.28);
+  /* Outfit 800, teal profond 8:1 WCAG AAA */
+  font-family: var(--ff-brand); font-weight: 800;
+  color: #0f5c55; background: rgba(13,107,98,.08); border-color: rgba(13,107,98,.24);
 }
-#heroMap.day-mode .inr-hud-status { color:#4b5563; }
-#heroMap.day-mode .inr-live-dot { background:#059669; box-shadow:0 0 6px rgba(5,150,105,.5); }
-#heroMap.day-mode .inr-field-lbl { color:#6b7280; }
-#heroMap.day-mode .inr-input { color:#111827; }
-#heroMap.day-mode .inr-input::placeholder { color:rgba(0,0,0,.28); }
-#heroMap.day-mode .inr-field-row { border-color:rgba(0,0,0,.07); }
-#heroMap.day-mode .inr-field-line { background:linear-gradient(to bottom,rgba(13,107,98,.5),rgba(13,107,98,.15)); }
+/* HUD status — #1f2937 = 14.7:1 sur blanc */
+#heroMap.day-mode .inr-hud-status { color: #1f2937; }
+#heroMap.day-mode .inr-live-dot { background: #059669; box-shadow: 0 0 6px rgba(5,150,105,.5); }
+/* Labels — #374151 = 7.6:1 sur blanc (était #6b7280 = 4.5:1 borderline) */
+#heroMap.day-mode .inr-field-lbl { color: #374151; }
+/* Input — #111827 = 16:1 */
+#heroMap.day-mode .inr-input { color: #111827; }
+/* Placeholder — rgba(.55) ≈ #747474 = 5:1 (était .28 ≈ #B5B5B5 = 1.7:1 FAIL) */
+#heroMap.day-mode .inr-input::placeholder { color: rgba(0,0,0,.48); }
+/* Bordures champs — plus visibles en lumière */
+#heroMap.day-mode .inr-field-row {
+  border-color: rgba(0,0,0,.14);
+  background: rgba(0,0,0,.025);
+}
+#heroMap.day-mode .inr-field-row:focus-within {
+  border-color: rgba(13,107,98,.5);
+  background: rgba(13,107,98,.03);
+}
+#heroMap.day-mode .inr-field-line { background: linear-gradient(to bottom, #0d6b62, rgba(13,107,98,.2)); }
 #heroMap.day-mode .inr-ac-drop {
-  background:rgba(255,255,255,.98);
-  border-color:rgba(0,0,0,.08);
-  box-shadow:0 8px 30px rgba(0,0,0,.12);
+  background: rgba(255,255,255,.99);
+  border-color: rgba(0,0,0,.1);
+  box-shadow: 0 8px 30px rgba(0,0,0,.14);
 }
-#heroMap.day-mode .inr-ac-name { color:#111827; }
-#heroMap.day-mode .inr-ac-sub { color:#6b7280; }
-#heroMap.day-mode .inr-ac-item:hover, #heroMap.day-mode .inr-ac-item.focused { background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-price-val { text-shadow: none; color: var(--gold-warm); }
-#heroMap.day-mode .inr-price-meta { color: #374151; }
-#heroMap.day-mode .inr-btn-custom { color:#374151; border-color:rgba(0,0,0,.12); background:rgba(0,0,0,.04); }
-#heroMap.day-mode .inr-btn-custom:hover { color:#0f5c55; border-color:rgba(13,107,98,.35); background:rgba(13,107,98,.08); }
-#heroMap.day-mode .inr-custom-lbl { color:#374151; }
-#heroMap.day-mode .p-badge.airport { background:rgba(10,92,84,.1); color:#065f56; border-color:rgba(10,92,84,.45); }
-#heroMap.day-mode .p-badge.savings { background:#d1fae5; color:#047857; border-color:rgba(4,120,87,.45); }
-#heroMap.day-mode .inr-custom-panel.open { border-top-color:rgba(0,0,0,.08); }
-#heroMap.day-mode .inr-wa-link { color:#777; }
-#heroMap.day-mode .inr-wa-link:hover { color:var(--success); }
+/* Autocomplete — #111827 = 16:1, sous-texte #4b5563 = 6.1:1 */
+#heroMap.day-mode .inr-ac-name { color: #111827; }
+#heroMap.day-mode .inr-ac-sub  { color: #4b5563; }
+#heroMap.day-mode .inr-ac-item:hover,
+#heroMap.day-mode .inr-ac-item.focused { background: rgba(13,107,98,.07); }
+/* Prix — gold sur blanc: text-shadow supprimé, couleur foncée */
+#heroMap.day-mode .inr-price-val  { text-shadow: none; color: #92400e; }
+#heroMap.day-mode .inr-price-meta { color: #1f2937; }
+/* Bouton Perso */
+#heroMap.day-mode .inr-btn-custom { color: #1f2937; border-color: rgba(0,0,0,.15); background: rgba(0,0,0,.04); }
+#heroMap.day-mode .inr-btn-custom:hover { color: #0f5c55; border-color: rgba(13,107,98,.4); background: rgba(13,107,98,.07); }
+/* Personnalisation labels */
+#heroMap.day-mode .inr-custom-lbl { color: #1f2937; }
+/* Badges */
+#heroMap.day-mode .p-badge.airport { background: rgba(10,92,84,.1); color: #065f56; border-color: rgba(10,92,84,.45); }
+#heroMap.day-mode .p-badge.savings { background: #d1fae5; color: #047857; border-color: rgba(4,120,87,.45); }
+#heroMap.day-mode .inr-custom-panel.open { border-top-color: rgba(0,0,0,.1); }
+/* WA link — #4b5563 = 6.1:1 (était #777 = 4.48:1 borderline) */
+#heroMap.day-mode .inr-wa-link { color: #4b5563; }
+#heroMap.day-mode .inr-wa-link:hover { color: #065f56; }
 #heroMap.day-mode .hero-mode-toggle {
   background:rgba(0,0,0,.62); border-color:rgba(255,255,255,.22); color:#fff;
   box-shadow:0 2px 14px rgba(0,0,0,.35);
@@ -2885,8 +2907,8 @@ body { overflow: hidden !important; }
   color: var(--accent); flex-shrink: 0;
 }
 .inr-pill-text {
-  font-size: .9rem; font-family: var(--ff-body);
-  color: rgba(255,255,255,.88); letter-spacing: .01em;
+  font-size: .9rem; font-family: var(--ff-brand); font-weight: 700;
+  color: rgba(255,255,255,.92); letter-spacing: .01em;
 }
 .inr-pill-sep { width: 1px; height: 20px; background: rgba(255,255,255,.12); }
 .inr-pill-avail {
