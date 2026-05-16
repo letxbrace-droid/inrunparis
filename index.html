@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lib/leaflet.css"/>
 <style>html,body{background:#0a0a0b;min-height:100dvh;}</style>
 <script src="lib/leaflet.js" id="leafletJs"></script>
@@ -39,7 +39,7 @@
   --gold-glow: rgba(12, 244, 216, 0.45);
   --bone: #f5f1e8;
   --paper: #ffffff;
-  --mist: #94a3b8;   /* slate-400 — 4.6:1 sur fond sombre */
+  --mist: #94a3b8;   /* slate-400 — 7.72:1 AAA sur fond sombre (audit WCAG 2025) */
   --shadow-ink: #4a4744;
   --muted: #6b6560;
   --dim: #3a3734;
@@ -52,6 +52,8 @@
   --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-mono: "JetBrains Mono", "SF Mono", monospace;
   --electric: #0CF4D8;   /* cyan électrique unifié avec la marque */
+  --teal: #0CF4D8;       /* alias explicit — utilisé dans dock actif, indicateur */
+  --gold-real: #D4A84B;  /* or véritable — call screen ring/glow */
   --page-bg: #1C2131;   /* navy anthracite — fond visible pour les ombres */
   --gutter: 20px;
   --radius-sm: 14px;
@@ -320,8 +322,8 @@ body {
 }
 #heroMapCanvas {
   position:absolute; inset:0; z-index:0; width:100%; height:100%;
-  /* Nuit : brightness en premier → rues visibles puis teinture cyan */
-  filter: brightness(1.45) sepia(1) hue-rotate(145deg) saturate(5) contrast(1.2);
+  /* Nuit : invert préserve les ombres de bâtiments (profondeur 3D), hue-rotate → teal */
+  filter: invert(1) hue-rotate(165deg) brightness(0.72) saturate(2.2) contrast(1.08);
   transition: filter .8s ease;
 }
 #heroMap.day-mode #heroMapCanvas {
@@ -451,6 +453,8 @@ body {
 .inr-field-row:focus-within {
   border-color:var(--gold);
   background:rgba(12,244,216,.05);
+  border-left: 2px solid var(--gold);
+  padding-left: 10px;
   animation:fieldFlare .42s ease-out forwards;
 }
 .inr-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
@@ -584,6 +588,28 @@ body {
 .hero-mode-toggle:hover { transform:scale(1.05); }
 .hero-mode-toggle svg { transition:transform .4s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
 .hero-mode-lbl { font-family:var(--font-mono); }
+/* Install button — visible uniquement quand PWA non installée */
+.hero-install-btn {
+  position:absolute; top:108px; right:14px; z-index:60;
+  height:34px; padding:0 11px; border-radius:17px;
+  background:rgba(12,244,216,.12); backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border:1px solid rgba(12,244,216,.35);
+  color:var(--teal); cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.08em;
+  display:none; align-items:center; justify-content:center; gap:5px;
+  transition:background .25s, transform .2s;
+  box-shadow:0 2px 14px rgba(12,244,216,.15);
+  animation: installPulse 2.8s ease-in-out 1.5s infinite;
+}
+.hero-install-btn:hover { background:rgba(12,244,216,.2); transform:scale(1.04); }
+.hero-install-btn svg { flex-shrink:0; }
+@keyframes installPulse {
+  0%,100% { box-shadow:0 2px 14px rgba(12,244,216,.15), 0 0 0 0 rgba(12,244,216,.3); }
+  50% { box-shadow:0 2px 14px rgba(12,244,216,.15), 0 0 0 6px rgba(12,244,216,0); }
+}
+@media (display-mode:standalone) {
+  .hero-install-btn { display:none !important; }
+}
 
 /* ── MODE JOUR — overrides ── */
 #heroMap.day-mode {
@@ -615,7 +641,7 @@ body {
 }
 /* HUD status — #1f2937 = 14.7:1 sur blanc */
 #heroMap.day-mode .inr-hud-status { color: #1f2937; }
-#heroMap.day-mode .inr-live-dot { background: #059669; box-shadow: 0 0 6px rgba(5,150,105,.5); }
+#heroMap.day-mode .inr-live-dot { background: #047857; box-shadow: 0 0 6px rgba(4,120,87,.5); }
 /* Labels — #374151 = 7.6:1 sur blanc (était #6b7280 = 4.5:1 borderline) */
 #heroMap.day-mode .inr-field-lbl { color: #374151; }
 /* Input — #111827 = 16:1 */
@@ -643,7 +669,7 @@ body {
 #heroMap.day-mode .inr-ac-item:hover,
 #heroMap.day-mode .inr-ac-item.focused { background: rgba(13,107,98,.07); }
 /* Prix — gold sur blanc: text-shadow supprimé, couleur foncée */
-#heroMap.day-mode .inr-price-val  { text-shadow: none; color: #92400e; }
+#heroMap.day-mode .inr-price-val  { text-shadow: none; color: #78350f; } /* 8.25:1 AAA */
 #heroMap.day-mode .inr-price-meta { color: #1f2937; }
 /* Bouton Perso */
 #heroMap.day-mode .inr-btn-custom { color: #1f2937; border-color: rgba(0,0,0,.15); background: rgba(0,0,0,.04); }
@@ -678,8 +704,8 @@ body {
   color: #065f46;
 }
 #heroMap.day-mode .inr-pill-avail .inr-live-dot {
-  background: #059669;
-  box-shadow: 0 0 6px rgba(5,150,105,.6);
+  background: #047857;
+  box-shadow: 0 0 6px rgba(4,120,87,.6);
 }
 /* shimmer jour — tones teal subtils */
 #heroMap.day-mode .inr-pill::after {
@@ -701,20 +727,34 @@ body {
    Palette jour : teal profond #0f5c55 (ratio 8:1 sur blanc = WCAG AAA)
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="light"] {
-  /* ── Tokens jour — teal foncé pour contraste WCAG AAA sur blanc ── */
-  --gold:      #0a5c54;   /* 7.2:1 sur blanc */
-  --gold-warm: #084d46;   /* 9.1:1 sur blanc */
-  --gold-deep: #0d7a6e;
-  --gold-glow: rgba(10,92,84,0.14);
-  --bone:      #0f172a;   /* titres quasi-noir */
-  --mist:      #475569;   /* slate-600 — 7.2:1 sur blanc (était #374151) */
-  --muted:     #374151;   /* slate-700 — 9.7:1 */
-  --dim:       #64748b;   /* slate-500 — 5.9:1 */
-  --ink:       #f3f4f6;
+  /* ── Design tokens jour — audit WCAG AA 2025 ── */
+  /* Fond : #f4f4f4 (Apple systemGroupedBackground) */
+
+  /* Accent teal jour — lisible sur fond clair */
+  --gold:      #0a5c54;   /* 7.15:1 AAA sur #f4f4f4 — CTA, liens */
+  --gold-warm: #0d7a6e;   /* 4.74:1 AA  sur #f4f4f4 — hover */
+  --gold-deep: #084d46;   /* 9.1:1 AAA  — emphase */
+  --gold-glow: rgba(10,92,84,0.12);
+
+  /* Texte hiérarchie */
+  --bone:      #0f172a;   /* 16.23:1 AAA — primaire (slate-900) */
+  --mist:      #374151;   /*  9.37:1 AAA — secondaire (gray-700) */
+  --muted:     #4b5563;   /*  6.87:1 AA  — tertiaire (gray-600) */
+  --dim:       #6b7280;   /*  4.53:1 AA  — placeholders (gray-500) */
+
+  /* Fonds */
+  --ink:       #f4f4f4;   /* Apple systemGroupedBackground */
   --ink-2:     #e9ecf0;
   --ink-3:     #dee4ec;
-  --oled:      #f8fafc;
-  --success:   #047857;   /* vert foncé WCAG AA */
+  --oled:      #ffffff;
+
+  /* États sémantiques WCAG AA sur fond clair */
+  --success:   #047857;   /* 4.99:1 AA  — badge Disponible (rem. #059669=3.42:1) */
+  --error:     #b91c1c;   /* 5.88:1 AA  — erreurs (rem. #dc2626=4.39:1) */
+  --warning:   #b45309;   /* 4.57:1 AA  — alertes */
+
+  /* Prix / monétaire en mode jour */
+  --price-day: #78350f;   /* 8.25:1 AAA — amber-900 (rem. #92400e) */
 }
 [data-theme="light"] {
   --page-bg: #E0E5EC;   /* gris clair cassé — fond neumorphique jour */
@@ -891,13 +931,19 @@ body {
   border-top-color: rgba(0,0,0,.06);
   box-shadow: 0 -4px 24px rgba(0,0,0,.06);
 }
-/* Dock jour — inactif #374151 (9.7:1), actif teal foncé */
+/* Dock jour — inactif #374151 (9.7:1), actif teal foncé + chip */
 [data-theme="light"] .dock-btn { color: #374151; }
-[data-theme="light"] .dock-btn.active {
-  color: #0f5c55;
+[data-theme="light"] .dock-btn:not(.reserve).active {
+  color: #065f52;
+  background: rgba(6,95,82,.10);
+  border-radius: 14px;
 }
-[data-theme="light"] .dock-btn.active svg {
-  filter: drop-shadow(0 0 6px rgba(13,107,98,.4));
+[data-theme="light"] .dock-btn:not(.reserve).active svg {
+  filter: drop-shadow(0 0 6px rgba(6,95,82,.5));
+}
+[data-theme="light"] .dock-indicator {
+  background: linear-gradient(90deg, rgba(6,95,82,.4), #065f52, rgba(6,95,82,.5));
+  box-shadow: 0 0 10px rgba(6,95,82,.5), 0 0 18px rgba(6,95,82,.2);
 }
 [data-theme="light"] .dock-btn.reserve {
   color: #fff;
@@ -1926,8 +1972,12 @@ body {
 .dock-btn:active { transform: scale(0.90); }
 .dock-btn svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1), filter .25s ease; }
 .dock-btn:active svg { transform: scale(0.84); }
-.dock-btn.active { color: var(--gold); }
-.dock-btn.active svg { filter: drop-shadow(0 0 8px var(--gold-glow)) drop-shadow(0 0 16px rgba(12,244,216,.2)); }
+.dock-btn:not(.reserve).active {
+  color: var(--teal);
+  background: rgba(12,244,216,.10);
+  border-radius: 14px;
+}
+.dock-btn:not(.reserve).active svg { filter: drop-shadow(0 0 8px rgba(12,244,216,.55)) drop-shadow(0 0 14px rgba(12,244,216,.25)); }
 .dock-btn.tapping { animation: dockTap .38s cubic-bezier(.34,1.56,.64,1) forwards; }
 .dock-btn.tapping svg { animation: dockIconFlare .38s ease-out forwards; }
 .dock-btn.reserve {
@@ -2050,6 +2100,18 @@ body {
     rgba(0,0,0,.022) 3px, rgba(0,0,0,.022) 4px
   );
 }
+
+/* ── Global grain texture overlay — breaks digital flatness ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998;
+  pointer-events: none;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  background-repeat: repeat;
+}
+[data-theme="light"] body::after { opacity: .018; }
 
 /* ── Corner bracket decorator on cards ── */
 .card, .compare-card, .status-card {
@@ -2565,10 +2627,10 @@ a, button, [role="button"], input, select, textarea, label {
 .dock-indicator {
   position: absolute;
   top: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-deep));
-  border-radius: 0 0 3px 3px;
-  box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(12,244,216,.25);
+  height: 3px;
+  background: linear-gradient(90deg, rgba(12,244,216,.5), var(--teal), rgba(12,244,216,.6));
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 0 12px rgba(12,244,216,.7), 0 0 22px rgba(12,244,216,.3);
   transition: left .35s cubic-bezier(.34,1.56,.64,1), width .35s cubic-bezier(.34,1.56,.64,1), opacity .2s;
   pointer-events: none;
 }
@@ -2622,107 +2684,146 @@ a, button, [role="button"], input, select, textarea, label {
   animation: rippleAnim .55s cubic-bezier(.35,0,.25,1) forwards;
 }
 
-/* ── PWA install banner ── */
-.pwa-banner {
-  position: fixed;
-  bottom: calc(68px + var(--safe-bot));
-  left: 12px; right: 12px;
-  z-index: 90;
-  background: rgba(10,10,12,.94);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 0.5px solid rgba(12,244,216,.28);
-  border-radius: 18px;
-  padding: 14px 16px;
-  display: flex; align-items: center; gap: 12px;
-  box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 0.5px rgba(12,244,216,.1) inset;
-  transform: translateY(120%);
-  transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-  opacity: 0;
+/* ── PWA Install Sheet ── */
+.pwa-sheet {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: flex-end;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+  transition: background .35s ease;
 }
-.pwa-banner.show {
-  transform: translateY(0);
-  opacity: 1;
+.pwa-sheet.show {
+  background: rgba(0,0,0,.6);
+  pointer-events: all;
 }
-.pwa-banner-icon {
-  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-  background: linear-gradient(135deg, rgba(12,244,216,.15), rgba(12,244,216,.05));
-  border: 0.5px solid rgba(12,244,216,.3);
-  display: flex; align-items: center; justify-content: center;
+.pwa-sheet-card {
+  position: relative; width: 100%; overflow: hidden;
+  background: rgba(8,10,18,.97);
+  border: 0.5px solid rgba(12,244,216,.18);
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  padding: 0 22px calc(28px + env(safe-area-inset-bottom,0px));
+  transform: translateY(100%);
+  transition: transform .48s cubic-bezier(.16,1,.3,1);
 }
-.pwa-banner-icon svg { color: var(--gold); }
-.pwa-banner-body { flex: 1; min-width: 0; }
-.pwa-banner-title {
-  font-family: var(--ff-display); font-size: .85rem; font-weight: 600;
-  color: var(--bone); line-height: 1.2; margin-bottom: 2px;
+.pwa-sheet.show .pwa-sheet-card { transform: translateY(0); }
+.pwa-sheet-card::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .042; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-.pwa-banner-sub {
-  font-family: var(--ff-mono); font-size: .55rem; color: var(--mist);
-  letter-spacing: .06em;
+.pwa-sheet-handle {
+  width: 36px; height: 4px;
+  background: rgba(255,255,255,.1);
+  border-radius: 2px;
+  margin: 14px auto 22px;
+  position: relative; z-index: 1;
 }
-.pwa-banner-actions { display: flex; gap: 8px; align-items: center; }
-.pwa-install-btn {
-  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
-  border: none; border-radius: 10px; padding: 8px 14px;
-  font-family: var(--ff-mono); font-size: .6rem; font-weight: 700;
-  color: var(--oled); cursor: pointer; white-space: nowrap;
-  letter-spacing: .06em; text-transform: uppercase;
-  transition: transform .15s, box-shadow .15s;
-  touch-action: manipulation;
-}
-.pwa-install-btn:active { transform: scale(0.95); }
-.pwa-dismiss-btn {
-  background: transparent; border: none; padding: 8px;
-  color: var(--mist); cursor: pointer; touch-action: manipulation;
-  transition: color .2s;
-}
-.pwa-dismiss-btn:hover { color: var(--bone); }
-.pwa-dismiss-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
-
-/* ── iOS install tooltip ── */
-.pwa-ios-tip {
-  position: fixed;
-  bottom: calc(68px + var(--safe-bot) + 4px);
-  left: 12px; right: 12px;
-  z-index: 95;
-  background: rgba(10,10,12,.96);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 0.5px solid rgba(12,244,216,.28);
-  border-radius: 18px;
-  padding: 16px 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,.5);
-  transform: translateY(120%);
-  transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-  opacity: 0;
-  display: none;
-}
-.pwa-ios-tip.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-.pwa-ios-tip-title {
-  font-family: var(--ff-display); font-size: .88rem; font-weight: 600;
-  color: var(--bone); margin-bottom: 10px;
-}
-.pwa-ios-tip-steps {
-  list-style: none; display: flex; flex-direction: column; gap: 8px;
-}
-.pwa-ios-tip-steps li {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--ff-mono); font-size: .62rem; color: var(--mist); letter-spacing: .04em;
-}
-.pwa-ios-tip-steps li strong { color: var(--bone); font-weight: 600; }
-.pwa-ios-close {
-  position: absolute; top: 12px; right: 12px;
+.pwa-sheet-close {
+  position: absolute; top: 14px; right: 16px; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%;
   background: rgba(255,255,255,.07); border: 0.5px solid rgba(255,255,255,.1);
-  border-radius: 50%; width: 28px; height: 28px;
+  color: var(--mist); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  color: var(--mist); cursor: pointer; touch-action: manipulation;
-  transition: all .2s;
+  touch-action: manipulation; transition: all .2s;
 }
-.pwa-ios-close:hover { color: var(--bone); background: rgba(255,255,255,.12); }
-.pwa-ios-close svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.pwa-sheet-close svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.pwa-sheet-app {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 20px; position: relative; z-index: 1;
+}
+.pwa-sheet-appicon {
+  width: 68px; height: 68px; border-radius: 16px; flex-shrink: 0;
+  overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.6), 0 0 0 0.5px rgba(12,244,216,.2);
+}
+.pwa-sheet-appicon img { width: 100%; height: 100%; display: block; }
+.pwa-sheet-appmeta { flex: 1; min-width: 0; }
+.pwa-sheet-appname {
+  font-family: var(--ff-brand); font-size: 1.6rem; font-weight: 900;
+  line-height: 1; letter-spacing: -.02em;
+  background: linear-gradient(135deg, #0cf4d8 30%, #d4a84b);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pwa-sheet-appdesc {
+  font-family: var(--ff-mono); font-size: .6rem; color: var(--mist);
+  letter-spacing: .05em; margin-top: 5px; line-height: 1.5;
+}
+.pwa-sheet-divider {
+  height: 0.5px; background: rgba(255,255,255,.06);
+  margin: 0 0 18px; position: relative; z-index: 1;
+}
+/* Android CTA */
+.pwa-sheet-android { position: relative; z-index: 1; }
+.pwa-sheet-cta {
+  width: 100%; padding: 17px;
+  background: linear-gradient(135deg, #0cf4d8 0%, #08c4ae 100%);
+  border: none; border-radius: 14px; cursor: pointer;
+  font-family: var(--ff-brand); font-size: 1rem; font-weight: 800;
+  color: #020a08; letter-spacing: -.01em;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  touch-action: manipulation;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 24px rgba(12,244,216,.35);
+}
+.pwa-sheet-cta:active { transform: scale(.97); box-shadow: 0 2px 12px rgba(12,244,216,.2); }
+.pwa-sheet-cta svg { flex-shrink: 0; }
+.pwa-sheet-hint {
+  text-align: center; margin-top: 11px;
+  font-family: var(--ff-mono); font-size: .55rem;
+  color: var(--mist); letter-spacing: .05em; line-height: 1.6;
+}
+.pwa-sheet-hint span { color: rgba(12,244,216,.6); }
+/* iOS guide */
+.pwa-sheet-ios { position: relative; z-index: 1; }
+.pwa-ios-guide-title {
+  font-family: var(--ff-mono); font-size: .58rem; font-weight: 700;
+  color: var(--mist); letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.pwa-ios-step {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 0;
+  border-bottom: 0.5px solid rgba(255,255,255,.055);
+}
+.pwa-ios-step:last-child { border-bottom: none; }
+.pwa-ios-step-num {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(12,244,216,.08);
+  border: 0.5px solid rgba(12,244,216,.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-mono); font-size: .65rem; font-weight: 700;
+  color: var(--teal);
+}
+.pwa-ios-step-body {
+  font-family: var(--ff-body); font-size: .82rem; color: var(--bone); line-height: 1.4;
+}
+.pwa-ios-step-body strong { color: var(--teal); font-weight: 600; }
+.pwa-ios-step-icon { color: var(--mist); }
+.pwa-ios-step-icon svg { vertical-align: middle; }
+
+/* ── Typography refinements: balance, hierarchy ── */
+.hero-h1, .section-intro h2, .how-title, .card-title, .call-name {
+  text-wrap: balance;
+}
+/* Tarifs view: stronger heading hierarchy */
+#view-tarifs .how-section > [style],
+#view-tarifs .tarif-table-section > [style],
+#view-tarifs .faq-section > [style],
+#view-tarifs .reviews-strip > [style] {
+  text-wrap: balance;
+}
+/* First review card gets a subtle featured treatment */
+#view-tarifs .review-card:first-child {
+  border-color: rgba(12,244,216,.18);
+  background: linear-gradient(160deg, rgba(12,244,216,.04), rgba(12,244,216,.01));
+}
+#view-tarifs .review-card:first-child::before {
+  opacity: .65;
+  font-size: 2.8rem;
+}
+/* Reserve form: slightly more breathing room between fields */
+.reserve-scroll .field-ic svg { color: var(--gold); }
 
 /* ── Smooth dock transition (no jump on active change) ── */
 .dock-btn { transition: color .25s ease, background .25s ease; }
@@ -2834,11 +2935,11 @@ body { overflow: hidden !important; }
   flex-shrink: 0;
 }
 .view-header-title {
-  font-family: var(--ff-display);
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--ff-brand);
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--bone);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 .view-header-sub {
   font-size: .72rem;
@@ -2856,7 +2957,10 @@ body { overflow: hidden !important; }
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 0; padding: var(--gutter); text-align: center; min-height: 100%;
-  background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(12,244,216,.07) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 25%, rgba(12,244,216,.11) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 50% 85%, rgba(212,168,75,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(12,244,216,.03) 0%, transparent 100%);
 }
 /* Texte géant derrière (editorial typography) */
 .call-bg-word {
@@ -2866,39 +2970,46 @@ body { overflow: hidden !important; }
   font-size: clamp(5rem, 28vw, 11rem);
   letter-spacing: -.04em; line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(12,244,216,.07);
+  -webkit-text-stroke: 1px rgba(12,244,216,.13);
+  text-stroke: 1px rgba(12,244,216,.13);
   pointer-events: none; user-select: none; z-index: 0;
   white-space: nowrap;
+  opacity: 0.9;
 }
 .call-ring-wrap {
   position: relative; z-index: 1;
-  width: 140px; height: 140px; margin-bottom: 32px;
+  width: 148px; height: 148px; margin-bottom: 36px;
 }
 @keyframes callRing {
-  0%   { transform: scale(1); opacity: .55; }
-  100% { transform: scale(2.2); opacity: 0; }
+  0%   { transform: scale(1); opacity: .6; }
+  100% { transform: scale(2.4); opacity: 0; }
 }
 .call-ring {
   position: absolute; inset: 0; border-radius: 50%;
-  border: 1px solid rgba(12,244,216,.4);
+  border: 1.5px solid rgba(12,244,216,.45);
   animation: callRing 2.8s ease-out infinite;
 }
-.call-ring.r2 { border-color: rgba(212,168,75,.3); animation-delay: .93s; }
-.call-ring.r3 { border-color: rgba(12,244,216,.2); animation-delay: 1.86s; }
+.call-ring.r2 { border-color: rgba(212,168,75,.35); animation-delay: .93s; }
+.call-ring.r3 { border-color: rgba(12,244,216,.22); animation-delay: 1.86s; }
 .call-avatar {
   position: absolute; inset: 0; border-radius: 50%;
-  background: linear-gradient(135deg, #0d7a6e, #084d46);
-  border: 1.5px solid rgba(12,244,216,.4);
-  box-shadow: 0 0 30px rgba(12,244,216,.25), 0 0 60px rgba(12,244,216,.1);
+  background: linear-gradient(140deg, #0f8a7d 0%, #0d7a6e 40%, #084d46 100%);
+  border: 2px solid rgba(12,244,216,.5);
+  box-shadow:
+    0 0 0 4px rgba(12,244,216,.08),
+    0 0 36px rgba(12,244,216,.3),
+    0 0 72px rgba(12,244,216,.12),
+    inset 0 1px 2px rgba(255,255,255,.2);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--ff-brand); font-size: 1.5rem; font-weight: 900;
+  font-family: var(--ff-brand); font-size: 1.55rem; font-weight: 900;
   color: #fff; letter-spacing: .05em;
 }
 .call-name {
   position: relative; z-index: 1;
-  font-family: var(--ff-brand); font-size: 2rem; font-weight: 900;
-  color: var(--bone); letter-spacing: -.03em; line-height: 1;
+  font-family: var(--ff-brand); font-size: 2.1rem; font-weight: 900;
+  color: var(--bone); letter-spacing: -.04em; line-height: 1;
   margin-bottom: 6px;
+  text-shadow: 0 2px 24px rgba(0,0,0,.3);
 }
 .call-sub {
   position: relative; z-index: 1;
@@ -2933,9 +3044,9 @@ body { overflow: hidden !important; }
 .call-btn:active { transform: scale(.96); }
 .call-btn:active::before { opacity: 1; }
 .call-btn-phone {
-  background: linear-gradient(135deg, var(--gold-warm), var(--gold));
-  color: var(--oled);
-  box-shadow: 0 8px 32px rgba(212,168,75,.35), 0 0 0 1px rgba(212,168,75,.2);
+  background: linear-gradient(135deg, #e0b852, #d4a84b 55%, #b8912f);
+  color: #0a0808;
+  box-shadow: 0 8px 32px rgba(212,168,75,.45), 0 0 0 1px rgba(212,168,75,.25), inset 0 1px 2px rgba(255,255,255,.3);
 }
 .call-btn-wa {
   background: linear-gradient(135deg, #25d366, #128c7e);
@@ -2956,7 +3067,7 @@ body { overflow: hidden !important; }
   display: flex;
   align-items: center;
   gap: 10px;
-  position: absolute;
+  position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
@@ -3152,6 +3263,11 @@ body::before {
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
       </svg>
       <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
+    </button>
+    <!-- Install PWA button — shown by JS when installable, hidden in standalone -->
+    <button class="hero-install-btn" id="heroInstallBtn" aria-label="Installer I&N RUN">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M12 3v11M8 10l4 4 4-4"/><path d="M20 21H4"/></svg>
+      INSTALLER
     </button>
 
     <!-- Pill trigger (mobile) -->
@@ -3540,8 +3656,8 @@ body::before {
   <!-- ═══ HOW IT WORKS ═══ -->
   <section class="how-section reveal">
     <div class="eyebrow">En 3 étapes</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Un service sans mauvaise surprise.</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;">De la réservation à l'arrivée, vous savez exactement à quoi vous attendre.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:8px;text-wrap:balance;">Un service sans mauvaise surprise.</div>
+    <div style="font-size:.84rem;color:var(--mist);line-height:1.55;max-width:320px;">De la réservation à l'arrivée, vous savez exactement à quoi vous attendre.</div>
     <div class="how-steps">
       <div class="how-step">
         <div class="how-num">1</div>
@@ -3573,7 +3689,7 @@ body::before {
   <!-- ═══ TARIF TABLE ═══ -->
   <section class="tarif-table-section reveal" id="tarifs">
     <div class="eyebrow">Tarification</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--bone);letter-spacing:-0.02em;margin-bottom:16px;">Tarif fixe contre prix variable.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:18px;text-wrap:balance;">Tarif fixe contre<br><span style="background:linear-gradient(135deg,var(--gold-warm),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">prix variable.</span></div>
     <div class="tarif-table-card">
       <div class="tarif-head">
         <div class="tarif-col-a">
@@ -3688,8 +3804,8 @@ body::before {
   <!-- ═══ FAQ ═══ -->
   <section class="faq-section reveal">
     <div class="eyebrow">Vos questions</div>
-    <div style="font-family:var(--ff-display);font-variation-settings:'opsz' 72;font-size:1.5rem;font-weight:400;color:var(--bone);letter-spacing:-0.02em;margin-bottom:4px;">Questions fréquentes</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.5;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
+    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:6px;text-wrap:balance;">Questions fréquentes</div>
+    <div style="font-size:.84rem;color:var(--mist);line-height:1.55;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q">Peut-on réserver à la dernière minute ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
@@ -3776,42 +3892,54 @@ body::before {
 
 
 <!-- ═══ PWA INSTALL BANNER ═══ -->
-<div class="pwa-banner" id="pwaBanner" role="banner" aria-label="Installer l'application">
-  <div class="pwa-banner-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 21H4a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1z"/></svg>
-  </div>
-  <div class="pwa-banner-body">
-    <div class="pwa-banner-title">Installer I&amp;N RUN</div>
-    <div class="pwa-banner-sub">Accès rapide · Fonctionne hors-ligne</div>
-  </div>
-  <div class="pwa-banner-actions">
-    <button class="pwa-install-btn" id="pwaInstallBtn" aria-label="Installer l'application">Installer</button>
-    <button class="pwa-dismiss-btn" id="pwaDismissBtn" aria-label="Fermer">
+<!-- PWA Install Sheet (Android + iOS) -->
+<div class="pwa-sheet" id="pwaSheet" role="dialog" aria-modal="true" aria-label="Installer I&N RUN">
+  <div class="pwa-sheet-card" id="pwaSheetCard">
+    <div class="pwa-sheet-handle"></div>
+    <button class="pwa-sheet-close" id="pwaSheetClose" aria-label="Fermer">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
+    <!-- App identity -->
+    <div class="pwa-sheet-app">
+      <div class="pwa-sheet-appicon">
+        <img src="icon-192.png" alt="I&N RUN icon" width="68" height="68" loading="eager">
+      </div>
+      <div class="pwa-sheet-appmeta">
+        <div class="pwa-sheet-appname">I&amp;N RUN</div>
+        <div class="pwa-sheet-appdesc">Chauffeur privé · Paris &amp; Île-de-France<br>Tarif fixe · Confirmation 2 min</div>
+      </div>
+    </div>
+    <div class="pwa-sheet-divider"></div>
+    <!-- Android: native install button -->
+    <div class="pwa-sheet-android" id="pwaAndroid" style="display:none">
+      <button class="pwa-sheet-cta" id="pwaInstallBtn" aria-label="Installer I&N RUN">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20"><path d="M12 3v13M7 11l5 5 5-5"/><path d="M20 21H4"/></svg>
+        Installer l'application
+      </button>
+      <p class="pwa-sheet-hint">Icône native · <span>Sans badge Chrome</span> · Fonctionne hors-ligne</p>
+      <p class="pwa-sheet-hint" style="margin-top:6px;color:rgba(255,255,255,.35)">Utilisez ce bouton — pas "Ajouter" du menu Chrome</p>
+    </div>
+    <!-- iOS Safari: step-by-step guide -->
+    <div class="pwa-sheet-ios" id="pwaIos" style="display:none">
+      <div class="pwa-ios-guide-title">Comment installer</div>
+      <div class="pwa-ios-step">
+        <div class="pwa-ios-step-num">1</div>
+        <div class="pwa-ios-step-body">
+          Appuyez sur
+          <svg class="pwa-ios-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          <strong>Partager</strong> dans la barre Safari
+        </div>
+      </div>
+      <div class="pwa-ios-step">
+        <div class="pwa-ios-step-num">2</div>
+        <div class="pwa-ios-step-body">Faites défiler et choisissez <strong>Sur l'écran d'accueil</strong></div>
+      </div>
+      <div class="pwa-ios-step">
+        <div class="pwa-ios-step-num">3</div>
+        <div class="pwa-ios-step-body">Confirmez en appuyant sur <strong>Ajouter</strong></div>
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- iOS install tip -->
-<div class="pwa-ios-tip" id="pwaIosTip" role="dialog" aria-modal="true" aria-label="Instructions installation iOS">
-  <button class="pwa-ios-close" id="pwaIosClose" aria-label="Fermer">
-    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-  <div class="pwa-ios-tip-title">Ajouter à l'écran d'accueil</div>
-  <ul class="pwa-ios-tip-steps">
-    <li>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-      Appuyez sur <strong>Partager</strong> dans Safari
-    </li>
-    <li>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Sélectionnez <strong>Sur l'écran d'accueil</strong>
-    </li>
-    <li>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Appuyez sur <strong>Ajouter</strong>
-    </li>
-  </ul>
 </div>
 
 <!-- ═══ CTA DOCK ═══ -->
@@ -4531,7 +4659,7 @@ function setupHero() {
 let _heroMap = null, _heroRoute = null, _heroGpsDot = null, _heroTileLayer = null;
 let _heroDayMode = false;
 const HERO_TILES = {
-  night: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  night: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
   day:   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 };
 let _heroDepart = null, _heroArrive = null;
@@ -5356,6 +5484,18 @@ function switchView(viewName) {
   /* Scroll progress */
   const sp = document.getElementById('scrollProgress');
   if (sp) sp.style.display = viewName === 'home' ? 'none' : '';
+  /* Pill visibility — position:fixed escapes overflow:hidden but must hide on non-home views */
+  const pill = document.getElementById('inrPill');
+  if (pill) {
+    if (viewName === 'home') {
+      const card = document.getElementById('inrCard');
+      if (!card || !card.classList.contains('pill-expanded')) {
+        pill.classList.remove('hidden');
+      }
+    } else {
+      pill.classList.add('hidden');
+    }
+  }
   /* Update nav buttons + indicator */
   DOCK_IDS.forEach((id, i) => {
     const btn = document.getElementById(id);
@@ -5560,63 +5700,101 @@ function showToast(msg, duration = 2200) {
 }
 window.showToast = showToast;
 
-/* ── PWA install prompt ── */
+/* ── PWA install system ── */
 (function() {
+  const sheet      = document.getElementById('pwaSheet');
+  const closeBtn   = document.getElementById('pwaSheetClose');
+  const installB   = document.getElementById('pwaInstallBtn');
+  const androidEl  = document.getElementById('pwaAndroid');
+  const iosEl      = document.getElementById('pwaIos');
+  const heroBtn    = document.getElementById('heroInstallBtn');
+
+  /* Déjà installé en standalone → masque tout */
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (isStandalone) return;
+
+  const ua = navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua) && !window.MSStream;
+  /* iOS Safari uniquement — Chrome/Firefox iOS ne supportent pas l'install PWA */
+  const isSafariIOS = isIOS && /safari/i.test(ua) && !/crIOS|fxiOS|EdgiOS|OPiOS/i.test(ua);
+
   let deferredPrompt = null;
-  const banner   = document.getElementById('pwaBanner');
-  const installB = document.getElementById('pwaInstallBtn');
-  const dismissB = document.getElementById('pwaDismissBtn');
-  const iosTip   = document.getElementById('pwaIosTip');
-  const iosClose = document.getElementById('pwaIosClose');
 
-  /* Respect user dismissal */
-  const dismissed = sessionStorage.getItem('pwa-dismissed');
-  if (dismissed) return;
+  function isDismissed() {
+    const d = localStorage.getItem('pwa-dismissed-until');
+    return d && Date.now() < parseInt(d, 10);
+  }
+  function snooze() {
+    localStorage.setItem('pwa-dismissed-until', Date.now() + 7 * 24 * 60 * 60 * 1000);
+  }
+  function openSheet() {
+    if (!sheet) return;
+    sheet.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSheet(doSnooze) {
+    if (!sheet) return;
+    sheet.classList.remove('show');
+    document.body.style.overflow = '';
+    if (doSnooze) snooze();
+  }
 
-  /* Android / Chrome: beforeinstallprompt */
+  /* Backdrop + close btn */
+  sheet && sheet.addEventListener('click', (e) => {
+    if (e.target === sheet) { haptic && haptic(8); closeSheet(true); }
+  });
+  closeBtn && closeBtn.addEventListener('click', () => { haptic && haptic(8); closeSheet(true); });
+
+  /* Hero button (toujours accessible même si sheet snooze) */
+  if (heroBtn) {
+    heroBtn.addEventListener('click', () => {
+      haptic && haptic(12);
+      localStorage.removeItem('pwa-dismissed-until');
+      openSheet();
+    });
+  }
+
+  /* ── Android Chrome / Desktop ─────────────────────────── */
+  /* IMPORTANT: toujours écouter cet événement — NE PAS retourner avant */
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    setTimeout(() => banner && banner.classList.add('show'), 3000);
+    if (androidEl) androidEl.style.display = '';
+    if (iosEl)     iosEl.style.display = 'none';
+    /* Révèle le bouton hero dans le HUD */
+    if (heroBtn)   heroBtn.style.display = 'flex';
+    /* Auto-show sheet seulement si pas snooze */
+    if (!isDismissed()) setTimeout(openSheet, 2500);
   });
-
-  /* iOS Safari detection */
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  if (isIOS && !isStandalone) {
-    if (iosTip) {
-      iosTip.style.display = 'block';
-      setTimeout(() => iosTip.classList.add('show'), 3500);
-    }
-  }
 
   installB && installB.addEventListener('click', async () => {
-    haptic(15);
-    if (deferredPrompt) {
-      banner.classList.remove('show');
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      if (outcome === 'accepted') showToast('Application installée !');
+    haptic && haptic(15);
+    if (!deferredPrompt) return;
+    closeSheet(false);
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      if (heroBtn) heroBtn.style.display = 'none';
+      showToast('I&N RUN installé !');
+    } else {
+      snooze();
     }
   });
 
-  dismissB && dismissB.addEventListener('click', () => {
-    haptic(8);
-    banner.classList.remove('show');
-    sessionStorage.setItem('pwa-dismissed', '1');
-  });
+  /* ── iOS Safari ───────────────────────────────────────── */
+  if (isSafariIOS) {
+    if (iosEl)   iosEl.style.display = '';
+    if (heroBtn) heroBtn.style.display = 'flex';
+    if (!isDismissed()) setTimeout(openSheet, 3000);
+  }
 
-  iosClose && iosClose.addEventListener('click', () => {
-    haptic(8);
-    iosTip.classList.remove('show');
-    sessionStorage.setItem('pwa-dismissed', '1');
-  });
-
-  /* Hide when already installed */
+  /* Post-install cleanup */
   window.addEventListener('appinstalled', () => {
-    banner && banner.classList.remove('show');
+    closeSheet(false);
+    if (heroBtn) heroBtn.style.display = 'none';
     showToast('I&N RUN installé avec succès !');
+    localStorage.removeItem('pwa-dismissed-until');
   });
 })();
 
