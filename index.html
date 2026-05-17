@@ -4723,11 +4723,35 @@ html, body { background: var(--bg-night) !important; }
 </div>
 
 <!-- ═══ BURGER — direct child of body, hors de tout stacking context app-view ═══ -->
-<button class="hero-burger" id="heroBurger" onclick="openDrawer()" aria-label="Menu principal" aria-expanded="false" aria-controls="sideDrawer">
+<button class="hero-burger" id="heroBurger" aria-label="Menu principal" aria-expanded="false" aria-controls="sideDrawer">
   <span class="burger-bar"></span>
   <span class="burger-bar"></span>
   <span class="burger-bar"></span>
 </button>
+<script>
+/* Listener inline — s'exécute immédiatement après le burger, avant tout autre JS */
+(function(){
+  var b = document.getElementById('heroBurger');
+  var d = document.getElementById('sideDrawer');
+  function showDrawer() {
+    if (!d) { d = document.getElementById('sideDrawer'); }
+    if (!d) return;
+    d.style.cssText = [
+      'display:flex','position:fixed','top:0','left:0','right:0','bottom:0',
+      'z-index:999999','background:#050D18','color:#F5F1E8',
+      'flex-direction:column','visibility:visible','opacity:1','overflow:hidden'
+    ].join('!important;') + '!important;';
+    d.classList.add('open');
+    d.setAttribute('aria-hidden','false');
+    b.setAttribute('aria-expanded','true');
+    b.classList.add('open');
+  }
+  if (b) {
+    b.addEventListener('touchstart', function(e){ e.stopPropagation(); showDrawer(); }, {passive:false});
+    b.addEventListener('click',      function(e){ e.stopPropagation(); showDrawer(); });
+  }
+})();
+</script>
 
 <!-- ═══ DRAWER OVERLAY ═══ -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()" aria-hidden="true"></div>
@@ -6825,7 +6849,18 @@ window.showToast = showToast;
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' }).catch(() => {});
+    navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' })
+      .then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'activated') window.location.reload();
+          });
+        });
+      })
+      .catch(() => {});
+    /* Auto-reload quand un nouveau SW prend le contrôle */
+    navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
   });
 }
 </script>
