@@ -3210,6 +3210,38 @@ body { overflow: hidden !important; }
   color: var(--mist); letter-spacing: .1em;
   font-family: var(--ff-mono); text-transform: uppercase;
 }
+.call-context-hint {
+  position: relative; z-index: 1;
+  margin-top: 20px; padding: 12px 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+  background: rgba(255,255,255,.04);
+  border: 0.5px solid rgba(255,255,255,.07);
+  border-radius: 14px; max-width: 300px; margin-inline: auto;
+}
+.call-context-row { display: flex; flex-direction: column; gap: 6px; }
+.call-context-item { display: flex; align-items: baseline; gap: 6px; font-size: .72rem; line-height: 1.4; color: var(--mist); }
+.call-context-icon { font-style: normal; flex-shrink: 0; }
+
+/* Tarifs sticky CTA */
+.tarifs-sticky-cta {
+  position: sticky; bottom: calc(var(--safe-bot) + 60px);
+  padding: 10px 16px; z-index: 40;
+  pointer-events: none;
+}
+.tarifs-sticky-cta-btn {
+  pointer-events: all;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  width: 100%;
+  padding: 15px 20px;
+  background: var(--teal); color: #030f0e;
+  border: none; border-radius: 16px; cursor: pointer;
+  font-family: var(--ff-brand); font-size: .95rem; font-weight: 800;
+  letter-spacing: .02em;
+  box-shadow: 0 8px 28px rgba(12,244,216,.30), 0 2px 8px rgba(0,0,0,.4);
+  transition: transform .15s, box-shadow .15s;
+  touch-action: manipulation;
+}
+.tarifs-sticky-cta-btn:active { transform: scale(.97); box-shadow: 0 4px 14px rgba(12,244,216,.20); }
 
 /* Tarifs sticky CTA */
 .tarifs-sticky-cta {
@@ -3653,10 +3685,10 @@ html, body { background: var(--bg-night) !important; }
 
 /* ── BURGER — haut gauche ── */
 .hero-burger {
-  position: absolute;
+  position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + 16px);
   left: 16px;
-  z-index: 30;
+  z-index: 90000;
   width: 48px; height: 48px;
   border-radius: 50%;
   border: 0.5px solid var(--rule-strong);
@@ -3711,7 +3743,7 @@ html, body { background: var(--bg-night) !important; }
 
 /* ── DRAWER OVERLAY ── */
 .drawer-overlay {
-  position: fixed; inset: 0; z-index: 200;
+  position: fixed; inset: 0; z-index: 99999;
   background: rgba(0,0,0,.6);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   opacity: 0; pointer-events: none;
@@ -3724,7 +3756,7 @@ html, body { background: var(--bg-night) !important; }
   display: none;                    /* masqué par défaut — toggle via JS */
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 9990;
+  z-index: 100000;
   width: 100%; max-width: 100%;
   background: #050D18;
   color: #F5F1E8;
