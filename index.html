@@ -3088,6 +3088,111 @@ body { overflow: hidden !important; }
   margin-left: auto;
 }
 
+/* ═══ PAGES DÉDIÉES — FAQ / LÉGAL / À PROPOS ═══ */
+.ded-scroll {
+  padding: 6px var(--gutter) calc(var(--safe-bot) + 48px);
+}
+.ded-intro { margin: 18px 0 22px; }
+.ded-intro h2 {
+  font-family: var(--ff-brand);
+  font-size: 1.7rem; font-weight: 800;
+  color: var(--bone); letter-spacing: -.035em;
+  line-height: 1.08; margin-bottom: 7px; text-wrap: balance;
+}
+.ded-intro p {
+  font-size: .87rem; color: var(--mist); line-height: 1.55;
+}
+.ded-text {
+  font-size: .9rem; color: var(--mist); line-height: 1.62;
+  margin-bottom: 13px;
+}
+
+/* Légal */
+.ld-doc {
+  margin-bottom: 28px; padding-bottom: 24px;
+  border-bottom: 0.5px solid rgba(255,255,255,.07);
+}
+.ld-doc:last-child { border-bottom: none; padding-bottom: 0; }
+.ld-title {
+  font-family: var(--ff-brand);
+  font-size: 1.3rem; font-weight: 800;
+  color: var(--bone); letter-spacing: -.028em; margin-bottom: 3px;
+}
+.ld-meta {
+  font-family: var(--ff-mono); font-size: .6rem;
+  color: var(--ink-muted); letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.ld-doc h3 {
+  font-family: var(--ff-brand);
+  font-size: .98rem; font-weight: 700;
+  color: var(--bone); margin: 18px 0 6px; letter-spacing: -.01em;
+}
+.ld-doc p {
+  font-size: .85rem; color: var(--mist); line-height: 1.6; margin-bottom: 8px;
+}
+.ld-doc ul { margin: 6px 0 8px; padding-left: 17px; }
+.ld-doc li {
+  font-size: .85rem; color: var(--mist); line-height: 1.5; margin-bottom: 3px;
+}
+.ld-doc a { color: var(--gold); text-decoration: none; }
+.ld-key {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; padding: 10px 13px; margin: 7px 0;
+  background: rgba(12,244,216,.04);
+  border: 0.5px solid rgba(12,244,216,.12);
+  border-radius: 10px;
+}
+.ld-key-k {
+  font-family: var(--ff-mono); font-size: .56rem;
+  color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+  padding-top: 2px;
+}
+.ld-key-v {
+  font-family: var(--ff-mono); font-size: .73rem;
+  color: var(--gold); font-weight: 600; text-align: right;
+}
+
+/* À propos */
+.about-hero {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 26px 0 8px;
+}
+.about-monogram {
+  width: 78px; height: 78px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-brand); font-weight: 900; font-style: italic;
+  font-size: 1.9rem; color: #06070D;
+  background: linear-gradient(155deg, #E8C56A, #C79F43);
+  box-shadow: 0 10px 30px rgba(212,168,75,.28), inset 0 1px 0 rgba(255,255,255,.45);
+  margin-bottom: 15px;
+}
+.about-name {
+  font-family: var(--ff-brand);
+  font-size: 1.45rem; font-weight: 800;
+  color: var(--bone); letter-spacing: -.03em; margin-bottom: 3px;
+}
+.about-role {
+  font-size: .8rem; color: var(--gold); letter-spacing: .01em;
+}
+.about-facts {
+  margin-top: 22px; display: flex; flex-direction: column; gap: 8px;
+}
+.about-fact {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; padding: 13px 15px;
+  background: rgba(255,255,255,.025);
+  border: 0.5px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+}
+.about-fact-k {
+  font-family: var(--ff-mono); font-size: .58rem;
+  color: var(--muted); letter-spacing: .09em; text-transform: uppercase;
+}
+.about-fact-v {
+  font-size: .82rem; color: var(--bone); font-weight: 600; text-align: right;
+}
+
 /* ── Reserve scroll container ── */
 .reserve-scroll {
   padding: 16px var(--gutter) calc(60px + var(--safe-bot) + 24px);
@@ -4642,37 +4747,6 @@ html, body { background: var(--bg-night) !important; }
   </div>
 
   <!-- ═══ FAQ ═══ -->
-  <section class="faq-section reveal">
-    <div class="eyebrow">Vos questions</div>
-    <div style="font-family:var(--ff-brand);font-size:1.75rem;font-weight:800;color:var(--bone);letter-spacing:-0.03em;line-height:1.05;margin-bottom:6px;text-wrap:balance;">Questions fréquentes</div>
-    <div style="font-size:.84rem;color:var(--mist);line-height:1.55;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q">Quel délai minimum pour réserver ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Inrun fonctionne exclusivement sur réservation à l'avance. Envoyez votre demande par WhatsApp en précisant date, heure et destination — vous recevez une confirmation et un devis garanti sous peu.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Le tarif affiché est-il définitif ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Absolument. Le tarif calculé et confirmé par WhatsApp est <strong>garanti et définitif</strong>. Aucun supplément surprise en fin de course, contrairement aux taxis avec compteur.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Comment se passe la prise en charge à l'aéroport ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Votre chauffeur vous attend à la sortie des arrivées avec une pancarte à votre nom. <strong>15 minutes de courtoisie</strong> sont offertes après l'heure de débarquement. Il surveille votre vol en temps réel pour adapter son heure d'arrivée.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Peut-on annuler gratuitement ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Oui, toute annulation effectuée <strong>plus d'1 heure avant</strong> la prise en charge est totalement gratuite. En dessous de ce délai, des frais de déplacement forfaitaires de 15€ s'appliquent.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Intervenez-vous en dehors de Paris ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Oui, notre zone de service couvre toute l'<strong>Île-de-France</strong> et les destinations hors région (province, Belgique, Luxembourg) sur devis. Contactez-nous pour un trajet longue distance.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Proposez-vous des factures pour les entreprises ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Oui. Sur demande, nous établissons une facture complète pour vos notes de frais. Indiquez votre email dans le formulaire de réservation ou précisez-le dans votre message WhatsApp.</div>
-      </div>
-    </div>
-  </section>
 
   <div class="divider" style="margin-top:36px;"><span>I&amp;N RUN</span></div>
 
@@ -4689,11 +4763,11 @@ html, body { background: var(--bg-night) !important; }
       <a href="tel:+33767742220">07 67 74 22 20</a>
     </div>
     <div class="footer-links">
-      <a href="#" onclick="openLegal('mentions'); return false;">Mentions légales</a>
+      <a href="#" onclick="switchView('legal'); return false;">Mentions légales</a>
       <span class="footer-dot">·</span>
-      <a href="#" onclick="openLegal('cgv'); return false;">CGV</a>
+      <a href="#" onclick="switchView('legal'); return false;">CGV</a>
       <span class="footer-dot">·</span>
-      <a href="#" onclick="openLegal('confidentialite'); return false;">Confidentialité</a>
+      <a href="#" onclick="switchView('legal'); return false;">Confidentialité</a>
     </div>
     <div class="footer-legal-base">
       © 2026 I&amp;N RUN &middot; SIREN 993 776 467 &middot; SIRET 993 776 467 00017<br>
@@ -4737,6 +4811,141 @@ html, body { background: var(--bg-night) !important; }
     <div class="call-note">Réservation à l'avance · Aéroports & longue distance</div>
   </div>
 </div><!-- /view-call -->
+
+<!-- ═══ VIEW — FAQ ═══ -->
+<div class="app-view" id="view-faq" aria-label="Questions fréquentes">
+  <div class="view-header">
+    <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="view-header-title">Questions fréquentes</div>
+  </div>
+  <div class="ded-scroll">
+    <div class="ded-intro">
+      <h2>Tout savoir avant de réserver</h2>
+      <p>Les réponses aux questions les plus posées sur le service I&amp;N RUN.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Quel délai minimum pour réserver ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Inrun fonctionne exclusivement sur réservation à l'avance. Envoyez votre demande par WhatsApp en précisant date, heure et destination — vous recevez une confirmation et un devis garanti sous peu.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Le tarif affiché est-il définitif ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Absolument. Le tarif calculé et confirmé par WhatsApp est <strong>garanti et définitif</strong>. Aucun supplément surprise en fin de course, contrairement aux taxis avec compteur.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Comment se passe la prise en charge à l'aéroport ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Votre chauffeur vous attend à la sortie des arrivées avec une pancarte à votre nom. <strong>15 minutes de courtoisie</strong> sont offertes après l'heure de débarquement. Il surveille votre vol en temps réel pour adapter son heure d'arrivée.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Peut-on annuler gratuitement ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Oui, toute annulation effectuée <strong>plus d'1 heure avant</strong> la prise en charge est totalement gratuite. En dessous de ce délai, des frais de déplacement forfaitaires de 15€ s'appliquent.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Intervenez-vous en dehors de Paris ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Oui, notre zone de service couvre toute l'<strong>Île-de-France</strong> et les destinations hors région (province, Belgique, Luxembourg) sur devis. Contactez-nous pour un trajet longue distance.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Proposez-vous des factures pour les entreprises ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Oui. Sur demande, nous établissons une facture complète pour vos notes de frais. Indiquez votre email dans le formulaire de réservation ou précisez-le dans votre message WhatsApp.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW — LÉGAL ═══ -->
+<div class="app-view" id="view-legal" aria-label="Informations légales">
+  <div class="view-header">
+    <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="view-header-title">Informations légales</div>
+  </div>
+  <div class="ded-scroll">
+
+    <article class="ld-doc">
+      <h2 class="ld-title">Mentions légales</h2>
+      <div class="ld-meta">Mise à jour · Avril 2026</div>
+      <h3>Éditeur</h3>
+      <p>Le site <strong>inrunparis</strong> est édité par <strong>I&amp;N RUN</strong>, entreprise individuelle.</p>
+      <div class="ld-key"><span class="ld-key-k">Dirigeant</span><span class="ld-key-v">BRAHA Nourdine</span></div>
+      <div class="ld-key"><span class="ld-key-k">SIREN</span><span class="ld-key-v">993 776 467</span></div>
+      <div class="ld-key"><span class="ld-key-k">SIRET</span><span class="ld-key-v">993 776 467 00017</span></div>
+      <div class="ld-key"><span class="ld-key-k">Siège social</span><span class="ld-key-v">Ris-Orangis (91130)</span></div>
+      <div class="ld-key"><span class="ld-key-k">Carte pro VTC</span><span class="ld-key-v">Registre EVTC</span></div>
+      <h3>Contact</h3>
+      <p>Email : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a><br>Téléphone : <a href="tel:+33767742220">07 67 74 22 20</a></p>
+      <h3>Hébergeur</h3>
+      <p>GitHub Pages (GitHub, Inc.) — San Francisco, CA, États-Unis.</p>
+      <h3>Propriété intellectuelle</h3>
+      <p>L'ensemble du contenu est la propriété d'I&amp;N RUN. Toute reproduction sans autorisation est interdite.</p>
+    </article>
+
+    <article class="ld-doc">
+      <h2 class="ld-title">Conditions Générales de Vente</h2>
+      <div class="ld-meta">Mise à jour · Avril 2026</div>
+      <h3>Article 1 — Objet</h3>
+      <p>Les présentes CGV régissent les relations entre <strong>I&amp;N RUN</strong> (SIREN 993 776 467) et tout client souhaitant réserver une prestation de transport VTC.</p>
+      <h3>Article 2 — Réservation</h3>
+      <p>La réservation s'effectue via WhatsApp, téléphone ou email. Elle est définitive à réception de la confirmation.</p>
+      <h3>Article 3 — Tarifs</h3>
+      <div class="ld-key"><span class="ld-key-k">Prise en charge</span><span class="ld-key-v">15,00 €</span></div>
+      <div class="ld-key"><span class="ld-key-k">Tarif kilométrique</span><span class="ld-key-v">0,84 €/km</span></div>
+      <div class="ld-key"><span class="ld-key-k">Tarif minute</span><span class="ld-key-v">0,17 €/min</span></div>
+      <div class="ld-key"><span class="ld-key-k">Minimum de course</span><span class="ld-key-v">35,00 €</span></div>
+      <div class="ld-key"><span class="ld-key-k">Majoration nuit 22h-6h</span><span class="ld-key-v">+10,00 €</span></div>
+      <h3>Article 4 — Paiement</h3>
+      <p>Règlement directement auprès du chauffeur en fin de course par carte ou espèces.</p>
+      <h3>Article 5 — Annulation</h3>
+      <p>Annulation gratuite jusqu'à 1h avant la prise en charge. En dessous, forfait de 15 €.</p>
+      <h3>Article 6 — Droit applicable</h3>
+      <p>Droit français. Tribunaux français compétents.</p>
+    </article>
+
+    <article class="ld-doc">
+      <h2 class="ld-title">Confidentialité — RGPD</h2>
+      <div class="ld-meta">Conforme RGPD · Avril 2026</div>
+      <h3>Responsable</h3>
+      <p><strong>I&amp;N RUN</strong> (SIREN 993 776 467), représentée par Nourdine BRAHA.</p>
+      <h3>Données collectées</h3>
+      <ul>
+        <li>Adresses de départ et d'arrivée</li>
+        <li>Date et heure de prise en charge</li>
+        <li>Numéro de téléphone (si contact initié)</li>
+        <li>Préférences de course</li>
+      </ul>
+      <p>Aucune donnée bancaire n'est stockée.</p>
+      <h3>Partage des données</h3>
+      <p>Données jamais vendues. Transmises uniquement à Photon, OSRM, Open-Meteo et WhatsApp pour le fonctionnement du service.</p>
+      <h3>Vos droits</h3>
+      <p>Accès, rectification, effacement, portabilité : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a></p>
+      <h3>Cookies</h3>
+      <p>Aucun cookie de tracking ni publicitaire.</p>
+    </article>
+
+  </div>
+</div>
+
+<!-- ═══ VIEW — À PROPOS ═══ -->
+<div class="app-view" id="view-about" aria-label="À propos">
+  <div class="view-header">
+    <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="view-header-title">À propos</div>
+  </div>
+  <div class="ded-scroll">
+    <div class="about-hero">
+      <div class="about-monogram">IN</div>
+      <h2 class="about-name">Nourdine BRAHA</h2>
+      <p class="about-role">Chauffeur privé VTC · Île-de-France</p>
+    </div>
+    <p class="ded-text">Chauffeur VTC indépendant basé à Ris-Orangis (91), je vous accompagne pour tous vos transferts vers les aéroports de Paris — CDG, Orly, Beauvais, Le Bourget — ainsi que pour vos courses longue distance vers la province, la Belgique ou les gares TGV.</p>
+    <p class="ded-text">Spécialiste de la mise à disposition à l'heure ou à la journée, I&amp;N RUN privilégie la réservation à l'avance pour vous garantir une disponibilité et un tarif fixe sans surprise.</p>
+    <div class="about-facts">
+      <div class="about-fact"><span class="about-fact-k">Zone de service</span><span class="about-fact-v">Paris &amp; Île-de-France</span></div>
+      <div class="about-fact"><span class="about-fact-k">Base</span><span class="about-fact-v">Ris-Orangis (91)</span></div>
+      <div class="about-fact"><span class="about-fact-k">SIREN</span><span class="about-fact-v">993 776 467</span></div>
+      <div class="about-fact"><span class="about-fact-k">TVA</span><span class="about-fact-v">Non applicable · art. 293 B</span></div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- ═══ PWA INSTALL BANNER ═══ -->
@@ -4860,11 +5069,11 @@ html, body { background: var(--bg-night) !important; }
       d.querySelectorAll('[data-action]').forEach(function(item){
         var a=item.getAttribute('data-action');
         function doAction(){
-          if(a==='legal'   && typeof openLegal==='function')        openLegal();
-          if(a==='about'   && typeof openAboutModal==='function')   openAboutModal();
+          if(a==='faq')     navTo('faq');
+          if(a==='legal')   navTo('legal');
+          if(a==='about')   navTo('about');
           if(a==='courses' && typeof openCoursesModal==='function') openCoursesModal();
           if(a==='promo'   && typeof openPromoModal==='function')   openPromoModal();
-          if(a==='faq')    navTo('tarifs');
           closeD();
         }
         on(item,'touchstart',function(e){ e.preventDefault(); doAction(); },{passive:false});
@@ -4994,21 +5203,6 @@ html, body { background: var(--bg-night) !important; }
 </div>
 
 <!-- ═══ MODAL — À PROPOS ═══ -->
-<div class="inr-modal" id="modalAbout" role="dialog" aria-modal="true" aria-label="À propos" style="display:none">
-  <div class="inr-modal-box">
-    <div class="inr-modal-hdr">
-      <span class="inr-modal-title">À propos</span>
-      <button class="inr-modal-close" onclick="document.getElementById('modalAbout').style.display='none'" aria-label="Fermer">×</button>
-    </div>
-    <div class="inr-modal-body">
-      <p class="inr-modal-sub" style="font-style:italic;font-size:1.05rem;margin-bottom:16px">Votre chauffeur privé en Île-de-France</p>
-      <p class="inr-modal-sub">Nourdine BRAHA, chauffeur VTC indépendant basé à Ris-Orangis (91), vous accompagne pour tous vos transferts vers les aéroports de Paris — CDG, Orly, Beauvais, Le Bourget — ainsi que pour vos courses longue distance vers la province, la Belgique ou les gares TGV.</p>
-      <p class="inr-modal-sub" style="margin-top:12px">Spécialiste de la mise à disposition à l'heure ou à la journée, Inrun privilégie la réservation à l'avance pour vous garantir une disponibilité et un tarif fixe sans surprise.</p>
-      <div class="inr-modal-rule"></div>
-      <p class="inr-modal-sub" style="font-family:var(--ff-mono);font-size:.72rem;color:var(--ink-muted)">SIREN 993 776 467 · TVA non applicable, art. 293 B du CGI</p>
-    </div>
-  </div>
-</div>
 
 <!-- ═══ CTA DOCK ═══ -->
 <nav class="cta-dock" aria-label="Navigation principale" id="bottomNav">
@@ -5032,17 +5226,7 @@ html, body { background: var(--bg-night) !important; }
 </nav>
 
 <!-- ═══ LEGAL MODAL ═══ -->
-<div class="legal-overlay" id="legalOverlay" onclick="if(event.target===this) closeLegal()">
-  <div class="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
-    <div class="legal-head">
-      <div class="legal-head-title" id="legalTitle">Mentions légales</div>
-      <button class="legal-close" onclick="closeLegal()" aria-label="Fermer">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="legal-body" id="legalBody"></div>
-  </div>
-</div>
+
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -6574,22 +6758,8 @@ window.addEventListener('load', () => {
 
 <script>
 /* ═══ LEGAL MODAL ═══ */
-const LEGAL_CONTENT = {
-  mentions: {
-    title: 'Mentions légales',
-    html: `<div class="legal-meta">Dernière mise à jour · Avril 2026</div><h3>Éditeur du site</h3><p>Le présent site <strong>inrunparis</strong> est édité par <strong>I&amp;N RUN</strong>, entreprise individuelle.</p><div class="legal-key"><span class="legal-key-lbl">Dirigeant</span><span class="legal-key-val">BRAHA Nourdine</span></div><div class="legal-key"><span class="legal-key-lbl">SIREN</span><span class="legal-key-val">993 776 467</span></div><div class="legal-key"><span class="legal-key-lbl">SIRET</span><span class="legal-key-val">993 776 467 00017</span></div><div class="legal-key"><span class="legal-key-lbl">Siège social</span><span class="legal-key-val">Ris-Orangis (91130)</span></div><div class="legal-key"><span class="legal-key-lbl">Carte pro VTC</span><span class="legal-key-val">Registre EVTC</span></div><h3>Contact</h3><p>Email : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a><br>Téléphone : <a href="tel:+33767742220">07 67 74 22 20</a></p><h3>Hébergeur</h3><p>GitHub Pages (GitHub, Inc.) — San Francisco, CA, États-Unis.</p><h3>Propriété intellectuelle</h3><p>L'ensemble du contenu est la propriété d'I&amp;N RUN. Toute reproduction sans autorisation est interdite.</p>`
-  },
-  cgv: {
-    title: 'Conditions Générales de Vente',
-    html: `<div class="legal-meta">Dernière mise à jour · Avril 2026</div><h3>Article 1 — Objet</h3><p>Les présentes CGV régissent les relations entre <strong>I&amp;N RUN</strong> (SIREN 993 776 467) et tout client souhaitant réserver une prestation de transport VTC.</p><h3>Article 2 — Réservation</h3><p>La réservation s'effectue via WhatsApp, téléphone ou email. Elle est définitive à réception de la confirmation sous 2 minutes.</p><h3>Article 3 — Tarifs</h3><div class="legal-key"><span class="legal-key-lbl">Prise en charge</span><span class="legal-key-val">15,00 €</span></div><div class="legal-key"><span class="legal-key-lbl">Tarif kilométrique</span><span class="legal-key-val">0,84 €/km</span></div><div class="legal-key"><span class="legal-key-lbl">Tarif minute</span><span class="legal-key-val">0,17 €/min</span></div><div class="legal-key"><span class="legal-key-lbl">Minimum de course</span><span class="legal-key-val">35,00 €</span></div><div class="legal-key"><span class="legal-key-lbl">Majoration nuit (22h-6h)</span><span class="legal-key-val">+10,00 €</span></div><h3>Article 4 — Paiement</h3><p>Règlement directement auprès du chauffeur en fin de course par carte ou espèces.</p><h3>Article 5 — Annulation</h3><p>Annulation gratuite jusqu'à 1h avant la prise en charge. En dessous, forfait de 15€.</p><h3>Article 6 — Droit applicable</h3><p>Droit français. Tribunaux français compétents.</p>`
-  },
-  confidentialite: {
-    title: 'Politique de confidentialité',
-    html: `<div class="legal-meta">Conforme RGPD · Avril 2026</div><h3>Responsable</h3><p><strong>I&amp;N RUN</strong> (SIREN 993 776 467), représentée par Nourdine BRAHA.</p><h3>Données collectées</h3><ul><li>Adresses de départ et d'arrivée</li><li>Date et heure de prise en charge</li><li>Numéro de téléphone (si contact initié)</li><li>Préférences de course</li></ul><p>Aucune donnée bancaire n'est stockée.</p><h3>Partage des données</h3><p>Données jamais vendues. Transmises uniquement à Photon, OSRM, Open-Meteo et WhatsApp pour le fonctionnement du service.</p><h3>Vos droits RGPD</h3><p>Accès, rectification, effacement, portabilité : <a href="mailto:contact.inrun@gmail.com">contact.inrun@gmail.com</a></p><h3>Cookies</h3><p>Aucun cookie de tracking ni publicitaire.</p>`
-  }
-};
 /* ═══ NATIVE VIEW SYSTEM ═══ */
-const VIEWS = ['home', 'reserve', 'tarifs', 'call'];
+const VIEWS = ['home', 'reserve', 'tarifs', 'call', 'faq', 'legal', 'about'];
 const DOCK_IDS = ['dockHome', 'dockReserve', 'dockTarifs', 'dockTel'];
 let _currentView = 'home';
 
@@ -6869,18 +7039,7 @@ document.addEventListener('keydown', e => {
   vv.addEventListener('scroll', schedule);
 }());
 
-function openLegal(type) {
-  const modal = document.getElementById('legalOverlay'), title = document.getElementById('legalTitle'), body = document.getElementById('legalBody');
-  const content = LEGAL_CONTENT[type]; if (!content) return;
-  title.textContent = content.title; body.innerHTML = content.html; body.scrollTop = 0;
-  modal.classList.add('show'); document.body.style.overflow = 'hidden'; haptic(10);
-}
-function closeLegal() {
-  document.getElementById('legalOverlay').classList.remove('show');
-  document.body.style.overflow = ''; haptic(5);
-}
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('legalOverlay').classList.contains('show')) closeLegal(); });
-window.openLegal = openLegal; window.closeLegal = closeLegal;
+function openLegal(){ switchView('legal'); }
 
 
 /* ── Ripple effect for dock buttons ── */
@@ -7107,14 +7266,11 @@ function applyPromoCode() {
 }
 
 /* ── Modal à propos ── */
-function openAboutModal() {
-  const modal = document.getElementById('modalAbout');
-  if (modal) modal.style.display = 'flex';
-}
+function openAboutModal(){ switchView('about'); }
 
 /* ── Fermer modaux au clic fond ── */
 document.addEventListener('click', e => {
-  ['modalCourses','modalPromo','modalAbout'].forEach(id => {
+  ['modalCourses','modalPromo'].forEach(id => {
     const modal = document.getElementById(id);
     if (modal && e.target === modal) modal.style.display = 'none';
   });
