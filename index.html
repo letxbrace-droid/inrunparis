@@ -3744,165 +3744,210 @@ html, body { background: var(--bg-night) !important; }
 /* ── DRAWER OVERLAY ── */
 .drawer-overlay {
   position: fixed; inset: 0; z-index: 99999;
-  background: rgba(0,0,0,.6);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(0,0,0,.5);
   opacity: 0; pointer-events: none;
   transition: opacity .3s ease;
 }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 
-/* ── DRAWER FULL-SCREEN (Heetch style) ── */
+/* ═══ DRAWER ULTRA-TECH v2 ═══ */
 .side-drawer {
-  display: none;                    /* masqué par défaut — toggle via JS */
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 100000;
-  width: 100%; max-width: 100%;
-  background: #050D18;
-  color: #F5F1E8;
+  display: none;
+  position: fixed; inset: 0; z-index: 100000;
+  background: #06070D;
   flex-direction: column;
   overflow: hidden;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
-.side-drawer.open {
-  display: flex !important;         /* affiché quand .open est présent */
+.side-drawer.open { display: flex; }
+
+/* Grille de fond */
+.side-drawer::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(12,244,216,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12,244,216,.032) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Ligne de scan animée */
+.side-drawer::after {
+  content: '';
+  position: absolute; left: 0; right: 0; height: 1px; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(12,244,216,.55) 50%, transparent 100%);
+  animation: drawerScan 4s linear infinite;
+}
+@keyframes drawerScan {
+  from { top: -1px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  to   { top: 100%; opacity: 0; }
 }
 
 .drawer-inner {
+  position: relative; z-index: 2;
   display: flex; flex-direction: column;
   height: 100%;
   padding-top: env(safe-area-inset-top, 0px);
-  overflow-y: auto;
 }
 
-/* × close button — top-left circle */
-.drawer-close {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 20px);
-  left: 24px;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 0.5px solid rgba(212,175,55,.3);
-  background: rgba(212,175,55,.1);
-  color: var(--gold-accent);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: background .2s ease, transform .15s ease;
-  z-index: 1;
-}
-.drawer-close:active { background: rgba(212,175,55,.2); transform: scale(0.92); }
-
-/* Logo pill — top-right in drawer */
+/* Header */
 .drawer-hdr {
-  padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px 0;
-  display: flex; justify-content: flex-end; align-items: flex-start;
-  min-height: 92px; position: relative;
-}
-.drawer-monogram-small {
-  font-family: var(--ff-display);
-  font-style: italic; font-weight: 700; font-size: 22px;
-  color: var(--gold-accent); letter-spacing: -.02em;
-}
-.drawer-run-small {
-  font-family: var(--ff-mono);
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .35em; text-transform: uppercase;
-  color: var(--gold-accent); opacity: .6;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  flex-shrink: 0;
 }
 
-/* ── MAIN NAV — huge uppercase items ── */
-.drawer-main-nav {
-  flex: 1;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 16px 32px 24px;
-  min-height: 0;
+/* Bouton fermer */
+.drawer-close {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 0.5px solid rgba(245,241,232,.14);
+  background: rgba(245,241,232,.05);
+  color: #F5F1E8; font-size: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background .2s, border-color .2s, transform .15s;
+  flex-shrink: 0;
 }
-.drawer-main-item {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-weight: 900 !important;
-  font-size: clamp(2.2rem, 10vw, 3.2rem) !important;
-  letter-spacing: -.04em;
-  text-transform: uppercase;
-  color: #F5F1E8 !important;
-  background: transparent !important;
-  -webkit-appearance: none;
-  border: none !important;
-  border-bottom: 0.5px solid rgba(168,181,201,.12) !important;
-  padding: 18px 0;
-  cursor: pointer; text-align: left; width: 100%;
-  display: block;
-  transition: color .15s ease, transform .18s cubic-bezier(.34,1.56,.64,1);
-  line-height: 1.1;
+.drawer-close:active {
+  background: rgba(12,244,216,.15);
+  border-color: rgba(12,244,216,.45);
+  transform: scale(.92);
+}
+
+/* Logo */
+.drawer-brand {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
+}
+.drawer-brand-in {
+  font-family: 'Outfit', sans-serif; font-weight: 900;
+  font-size: 1.5rem; letter-spacing: .06em;
+  color: #D4A84B; line-height: 1; font-style: italic;
+}
+.drawer-brand-run {
+  font-family: 'Outfit', sans-serif; font-weight: 300;
+  font-size: .6rem; letter-spacing: .38em;
+  color: rgba(245,241,232,.4); text-transform: uppercase;
+}
+
+/* Navigation principale */
+.drawer-nav {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: 0 24px; min-height: 0;
+}
+.drawer-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 13px 0;
+  background: transparent; border: none;
+  border-bottom: 0.5px solid rgba(245,241,232,.07);
+  cursor: pointer; text-align: left;
   -webkit-tap-highlight-color: transparent;
-  opacity: 1 !important;
-  visibility: visible !important;
+  position: relative; overflow: hidden;
+  transition: transform .14s cubic-bezier(.4,0,.2,1);
+  transform-origin: left center;
 }
-.drawer-main-item:first-child { border-top: 0.5px solid rgba(168,181,201,.12) !important; }
-.drawer-main-item:active { color: #D4AF37 !important; transform: translateX(8px); }
-.drawer-main-item.dm-reserve {
-  color: #5B9BFF !important;
+.drawer-nav-item:first-child { border-top: 0.5px solid rgba(245,241,232,.07); }
+.drawer-nav-item::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(12,244,216,.09), transparent);
+  transition: left .35s ease;
+  pointer-events: none;
 }
-.drawer-main-item.dm-reserve:active { color: #D4AF37 !important; }
+.drawer-nav-item:active::after { left: 150%; }
+.drawer-nav-item:active { transform: perspective(500px) rotateX(3deg) scale(.985); }
 
-/* ── SECONDARY NAV — compact list ── */
-.drawer-sec-nav {
-  list-style: none;
-  padding: 0 32px 8px;
-  display: flex; flex-direction: column; gap: 0;
+.drawer-nav-num {
+  font-family: 'Courier New', monospace; font-size: .58rem;
+  color: rgba(12,244,216,.55); letter-spacing: .08em;
+  min-width: 18px; flex-shrink: 0; padding-top: 2px;
+}
+.drawer-nav-label {
+  font-family: 'Outfit', -apple-system, sans-serif; font-weight: 900;
+  font-size: clamp(2rem, 10.5vw, 3.2rem);
+  letter-spacing: -.04em; text-transform: uppercase;
+  color: #F5F1E8; line-height: 1; flex: 1;
+}
+.drawer-nav-item[data-view="reserve"] .drawer-nav-label { color: #5B9BFF; }
+
+.drawer-nav-arrow {
+  font-size: 1rem; color: rgba(12,244,216,.35);
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .2s, transform .2s, color .2s;
+  flex-shrink: 0;
+}
+.drawer-nav-item:active .drawer-nav-arrow {
+  opacity: 1; transform: translateX(0); color: #0CF4D8;
+}
+
+/* Animations d'entree — stagger */
+.side-drawer.open .drawer-nav-item {
+  animation: dNavIn .45s cubic-bezier(.16,1,.3,1) both;
+}
+.side-drawer.open .drawer-nav-item:nth-child(1) { animation-delay: .04s; }
+.side-drawer.open .drawer-nav-item:nth-child(2) { animation-delay: .09s; }
+.side-drawer.open .drawer-nav-item:nth-child(3) { animation-delay: .14s; }
+.side-drawer.open .drawer-nav-item:nth-child(4) { animation-delay: .19s; }
+
+@keyframes dNavIn {
+  from { opacity: 0; transform: translateX(-28px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateX(0);     filter: blur(0); }
+}
+.side-drawer.open .drawer-inner { animation: dFadeIn .2s ease both; }
+@keyframes dFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Navigation secondaire */
+.drawer-sec {
+  list-style: none; padding: 8px 24px;
+  border-top: 0.5px solid rgba(245,241,232,.07);
+  display: flex; flex-direction: column;
 }
 .drawer-sec-item {
-  display: flex; align-items: center; gap: 10px;
-  min-height: 44px; padding: 0 0;
-  cursor: pointer; border: none !important; background: transparent !important;
-  width: 100%; text-align: left;
-  font-family: "Inter", -apple-system, sans-serif;
-  font-size: 14px; font-weight: 400;
-  color: #A8B5C9 !important;
-  border-bottom: 0.5px solid rgba(168,181,201,.07) !important;
-  transition: color .15s ease;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: none;
-  opacity: 1 !important;
-}
-.drawer-sec-item:last-child { border-bottom: none !important; }
-.drawer-sec-item:active { color: #F5F1E8 !important; }
-
-/* ── DRAWER BOTTOM — mode toggle + SIREN ── */
-.drawer-bottom {
-  padding: 16px 32px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
-  border-top: 0.5px solid rgba(168,181,201,.1);
-  display: flex; flex-direction: column; gap: 14px;
-}
-.drawer-mode-row {
-  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Outfit', sans-serif; font-size: .92rem; font-weight: 400;
+  color: rgba(245,241,232,.45); padding: 10px 0;
+  border-bottom: 0.5px solid rgba(245,241,232,.05);
   cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: color .15s;
 }
-.drawer-mode-label {
-  font-family: var(--ff-body); font-size: 15px; color: var(--ink-secondary);
+.drawer-sec-item:last-child { border-bottom: none; }
+.drawer-sec-item:active { color: #F5F1E8; }
+
+/* Footer */
+.drawer-foot {
+  padding: 10px 24px calc(env(safe-area-inset-bottom, 0px) + 14px);
+  border-top: 0.5px solid rgba(245,241,232,.07);
+  flex-shrink: 0;
+}
+.drawer-theme-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 0; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.drawer-theme-lbl {
+  font-family: 'Outfit', sans-serif; font-size: .83rem;
+  color: rgba(245,241,232,.45);
 }
 .drawer-toggle {
-  width: 46px; height: 26px; border-radius: 13px;
-  background: rgba(168,181,201,.2);
-  position: relative; transition: background .25s ease;
+  width: 42px; height: 24px; border-radius: 12px;
+  background: rgba(245,241,232,.1);
+  border: 0.5px solid rgba(245,241,232,.15);
+  position: relative; transition: background .3s, border-color .3s;
   flex-shrink: 0;
 }
 .drawer-toggle::after {
-  content: ''; position: absolute;
-  top: 3px; left: 3px;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--ink-secondary);
-  transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .25s ease;
+  content: '';
+  position: absolute; top: 4px; left: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #F5F1E8;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
 }
-.drawer-toggle.on { background: rgba(91,155,255,.35); }
-.drawer-toggle.on::after { transform: translateX(20px); background: var(--blue-electric); }
+.drawer-toggle.on { background: rgba(12,244,216,.35); border-color: rgba(12,244,216,.5); }
+.drawer-toggle.on::after { transform: translateX(18px); }
 .drawer-meta {
-  font-family: var(--ff-mono);
-  font-size: 10px; color: var(--ink-muted); letter-spacing: .05em;
+  font-family: 'Courier New', monospace; font-size: .6rem;
+  color: rgba(245,241,232,.2); letter-spacing: .07em; margin-top: 8px;
 }
 
-/* ── DOCK CACHÉ (conservé pour le JS) ── */
+/* ── DOCK CACHE (conserve pour le JS) ── */
 #bottomNav { display: none !important; }
 
 /* ── MODAUX GÉNÉRIQUES ── */
@@ -4729,77 +4774,142 @@ html, body { background: var(--bg-night) !important; }
   <span class="burger-bar"></span>
 </button>
 <script>
-/* Listener inline — s'exécute immédiatement après le burger, avant tout autre JS */
+/* Drawer — event system autonome, sans dépendance aux fonctions du script principal */
 (function(){
-  var b = document.getElementById('heroBurger');
-  var d = document.getElementById('sideDrawer');
-  function showDrawer() {
-    if (!d) { d = document.getElementById('sideDrawer'); }
-    if (!d) return;
-    d.style.cssText = [
-      'display:flex','position:fixed','top:0','left:0','right:0','bottom:0',
-      'z-index:999999','background:#050D18','color:#F5F1E8',
-      'flex-direction:column','visibility:visible','opacity:1','overflow:hidden'
-    ].join('!important;') + '!important;';
-    d.classList.add('open');
-    d.setAttribute('aria-hidden','false');
-    b.setAttribute('aria-expanded','true');
-    b.classList.add('open');
+  function init(){
+    var burger = document.getElementById('heroBurger');
+    if(!burger) return;
+    function D(){ return document.getElementById('sideDrawer'); }
+
+    function openD(){
+      var d=D(); if(!d) return;
+      d.style.display='flex'; d.style.position='fixed'; d.style.inset='0';
+      d.style.zIndex='999999'; d.style.background='#06070D'; d.style.flexDirection='column';
+      d.classList.add('open'); d.setAttribute('aria-hidden','false');
+      burger.setAttribute('aria-expanded','true'); burger.classList.add('open');
+      if(typeof updateDrawerTheme==='function') updateDrawerTheme();
+    }
+    function closeD(){
+      var d=D(); if(!d) return;
+      d.classList.remove('open'); d.style.display='none';
+      d.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false'); burger.classList.remove('open');
+    }
+    function navTo(v){
+      if(typeof switchView==='function'){ switchView(v); return; }
+      document.querySelectorAll('.app-view').forEach(function(el){ el.classList.remove('active'); });
+      var t=document.getElementById('view-'+v); if(t) t.classList.add('active');
+    }
+    function on(el,ev,fn,opt){ if(el) el.addEventListener(ev,fn,opt||false); }
+
+    /* Burger */
+    on(burger,'touchstart',function(e){ e.preventDefault(); e.stopPropagation(); openD(); },{passive:false});
+    on(burger,'click',     function(e){ e.stopPropagation(); openD(); });
+
+    /* Drawer interne — bind quand disponible */
+    function bindD(){
+      var d=D(); if(!d){ setTimeout(bindD,60); return; }
+
+      /* Fermer */
+      var cb=d.querySelector('.drawer-close');
+      on(cb,'touchstart',function(e){ e.preventDefault(); closeD(); },{passive:false});
+      on(cb,'click',     function(e){ e.stopPropagation(); closeD(); });
+
+      /* Overlay fond */
+      var ov=document.getElementById('drawerOverlay');
+      on(ov,'touchstart',function(e){ e.preventDefault(); closeD(); },{passive:false});
+      on(ov,'click',function(){ closeD(); });
+
+      /* Items nav principale */
+      d.querySelectorAll('[data-view]').forEach(function(item){
+        var v=item.getAttribute('data-view');
+        on(item,'touchstart',function(e){ e.preventDefault(); e.stopPropagation(); navTo(v); closeD(); },{passive:false});
+        on(item,'click',     function(e){ e.stopPropagation(); navTo(v); closeD(); });
+      });
+
+      /* Items secondaires */
+      d.querySelectorAll('[data-action]').forEach(function(item){
+        var a=item.getAttribute('data-action');
+        function doAction(){
+          if(a==='legal'   && typeof openLegal==='function')        openLegal();
+          if(a==='about'   && typeof openAboutModal==='function')   openAboutModal();
+          if(a==='courses' && typeof openCoursesModal==='function') openCoursesModal();
+          if(a==='promo'   && typeof openPromoModal==='function')   openPromoModal();
+          if(a==='faq')    navTo('tarifs');
+          closeD();
+        }
+        on(item,'touchstart',function(e){ e.preventDefault(); doAction(); },{passive:false});
+        on(item,'click',     function(e){ e.stopPropagation(); doAction(); });
+      });
+
+      /* Toggle theme */
+      var tr=d.querySelector('.drawer-theme-row');
+      on(tr,'click',function(){
+        if(typeof toggleHeroMode==='function') toggleHeroMode();
+        if(typeof updateDrawerTheme==='function') updateDrawerTheme();
+      });
+
+      /* Echap */
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeD(); });
+    }
+    bindD();
   }
-  if (b) {
-    b.addEventListener('touchstart', function(e){ e.stopPropagation(); showDrawer(); }, {passive:false});
-    b.addEventListener('click',      function(e){ e.stopPropagation(); showDrawer(); });
-  }
+  if(document.readyState!=='loading') init();
+  else document.addEventListener('DOMContentLoaded',init);
 })();
 </script>
 
 <!-- ═══ DRAWER OVERLAY ═══ -->
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()" aria-hidden="true"></div>
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
 
-<!-- ═══ SIDE DRAWER — full-screen Heetch style ═══ -->
+<!-- ═══ SIDE DRAWER — Ultra-Tech v2 ═══ -->
 <nav class="side-drawer" id="sideDrawer" aria-label="Menu principal" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="drawer-inner">
 
-    <!-- Hdr : × gauche + logo droite -->
     <div class="drawer-hdr">
-      <button class="drawer-close" onclick="closeDrawer()" aria-label="Fermer le menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="22" height="22"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <button class="drawer-close" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-        <div class="drawer-monogram-small">IN</div>
-        <div class="drawer-run-small">RUN</div>
+      <div class="drawer-brand">
+        <span class="drawer-brand-in">IN</span>
+        <span class="drawer-brand-run">RUN</span>
       </div>
     </div>
 
-    <!-- Navigation principale — grand format uppercase -->
-    <div class="drawer-main-nav" role="list">
-      <button class="drawer-main-item" onclick="switchView('home');closeDrawer();" aria-label="Accueil">
-        ACCUEIL
+    <div class="drawer-nav">
+      <button class="drawer-nav-item" data-view="home" aria-label="Accueil">
+        <span class="drawer-nav-num">01</span>
+        <span class="drawer-nav-label">ACCUEIL</span>
+        <span class="drawer-nav-arrow">&#8594;</span>
       </button>
-      <button class="drawer-main-item dm-reserve" onclick="switchView('reserve');closeDrawer();" aria-label="Réserver">
-        RÉSERVER
+      <button class="drawer-nav-item" data-view="reserve" aria-label="Réserver">
+        <span class="drawer-nav-num">02</span>
+        <span class="drawer-nav-label">RÉSERVER</span>
+        <span class="drawer-nav-arrow">&#8594;</span>
       </button>
-      <button class="drawer-main-item" onclick="switchView('tarifs');closeDrawer();" aria-label="Tarifs">
-        TARIFS
+      <button class="drawer-nav-item" data-view="tarifs" aria-label="Tarifs">
+        <span class="drawer-nav-num">03</span>
+        <span class="drawer-nav-label">TARIFS</span>
+        <span class="drawer-nav-arrow">&#8594;</span>
       </button>
-      <button class="drawer-main-item" onclick="switchView('call');closeDrawer();" aria-label="Appeler">
-        APPELER
+      <button class="drawer-nav-item" data-view="call" aria-label="Appeler">
+        <span class="drawer-nav-num">04</span>
+        <span class="drawer-nav-label">APPELER</span>
+        <span class="drawer-nav-arrow">&#8594;</span>
       </button>
     </div>
 
-    <!-- Navigation secondaire — liens utiles -->
-    <ul class="drawer-sec-nav" role="list">
-      <li class="drawer-sec-item" onclick="openCoursesModal();closeDrawer();" role="button" tabindex="0">Mes courses</li>
-      <li class="drawer-sec-item" onclick="openPromoModal();closeDrawer();" role="button" tabindex="0">Code promo</li>
-      <li class="drawer-sec-item" onclick="switchView('tarifs');closeDrawer();setTimeout(()=>{const faq=document.querySelector('.faq-section');if(faq)faq.scrollIntoView({behavior:'smooth'});},450);" role="button" tabindex="0">Aide &amp; FAQ</li>
-      <li class="drawer-sec-item" onclick="openLegal();closeDrawer();" role="button" tabindex="0">Mentions légales</li>
-      <li class="drawer-sec-item" onclick="openAboutModal();closeDrawer();" role="button" tabindex="0">À propos</li>
+    <ul class="drawer-sec">
+      <li class="drawer-sec-item" data-action="courses" role="button" tabindex="0">Mes courses</li>
+      <li class="drawer-sec-item" data-action="promo"   role="button" tabindex="0">Code promo</li>
+      <li class="drawer-sec-item" data-action="faq"     role="button" tabindex="0">Aide &amp; FAQ</li>
+      <li class="drawer-sec-item" data-action="legal"   role="button" tabindex="0">Mentions légales</li>
+      <li class="drawer-sec-item" data-action="about"   role="button" tabindex="0">À propos</li>
     </ul>
 
-    <!-- Bas : toggle mode clair + SIREN -->
-    <div class="drawer-bottom">
-      <div class="drawer-mode-row" onclick="toggleHeroMode();updateDrawerTheme();" role="button" tabindex="0" aria-label="Activer le mode clair">
-        <span class="drawer-mode-label" id="drawerThemeLabel">Activer le mode clair</span>
+    <div class="drawer-foot">
+      <div class="drawer-theme-row" id="drawerThemeRow" role="button" tabindex="0" aria-label="Basculer mode clair">
+        <span class="drawer-theme-lbl" id="drawerThemeLabel">Activer le mode clair</span>
         <div class="drawer-toggle" id="drawerThemeToggle"></div>
       </div>
       <p class="drawer-meta">SIREN 993 776 467 · TVA art. 293 B · v3.0</p>
@@ -6867,57 +6977,25 @@ if ('serviceWorker' in navigator) {
 
 <!-- ═══ V3 — DRAWER + MODAUX JS ═══ -->
 <script>
-/* ── Drawer ── */
-function openDrawer() {
-  const drawer = document.getElementById('sideDrawer');
-  const burger = document.getElementById('heroBurger');
-  if (!drawer) return;
-  /* Double sécurité : class + style direct pour iOS Safari PWA */
-  drawer.classList.add('open');
-  drawer.style.display = 'flex';
-  drawer.style.visibility = 'visible';
-  drawer.setAttribute('aria-hidden', 'false');
-  burger && burger.setAttribute('aria-expanded', 'true');
-  burger && burger.classList.add('open');
-  updateDrawerTheme();
-}
-function closeDrawer() {
-  const drawer = document.getElementById('sideDrawer');
-  const burger = document.getElementById('heroBurger');
-  if (!drawer) return;
-  drawer.classList.remove('open');
-  drawer.style.display = '';
-  drawer.style.visibility = '';
-  drawer.setAttribute('aria-hidden', 'true');
-  burger && burger.setAttribute('aria-expanded', 'false');
-  burger && burger.classList.remove('open');
-}
+/* updateDrawerTheme — appelé par le script inline et par toggleHeroMode */
 function updateDrawerTheme() {
   const isDay = document.body.classList.contains('day-mode') ||
                 document.getElementById('heroMap')?.classList.contains('day-mode');
   const toggle = document.getElementById('drawerThemeToggle');
   const label  = document.getElementById('drawerThemeLabel');
-  const icon   = document.getElementById('drawerThemeIcon');
   if (toggle) toggle.classList.toggle('on', isDay);
   if (label)  label.textContent = isDay ? 'Désactiver le mode clair' : 'Activer le mode clair';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-
-/* ── Failsafe burger listener — binds après définition de toutes les fonctions ── */
-(function() {
-  var b = document.getElementById('heroBurger');
-  var d = document.getElementById('sideDrawer');
-  if (!b || !d) return;
-  b.addEventListener('click', function(e) {
-    e.stopPropagation();
-    d.style.cssText = 'display:flex!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;z-index:999999!important;background:#050D18!important;color:#F5F1E8!important;flex-direction:column!important;visibility:visible!important;opacity:1!important;overflow:hidden!important;';
-    d.classList.add('open');
-    d.setAttribute('aria-hidden', 'false');
-    b.setAttribute('aria-expanded', 'true');
-    b.classList.add('open');
-    if (typeof updateDrawerTheme === 'function') updateDrawerTheme();
-  });
-})();
+/* openDrawer / closeDrawer — proxies vers le système inline */
+function openDrawer()  { var b=document.getElementById('heroBurger'); if(b) b.click(); }
+function closeDrawer() {
+  var d=document.getElementById('sideDrawer');
+  if(!d) return;
+  d.classList.remove('open'); d.style.display='none';
+  d.setAttribute('aria-hidden','true');
+  var b=document.getElementById('heroBurger');
+  if(b){ b.setAttribute('aria-expanded','false'); b.classList.remove('open'); }
+}
 
 /* ── Modal mes courses ── */
 function openCoursesModal() {
