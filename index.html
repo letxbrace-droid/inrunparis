@@ -3721,20 +3721,19 @@ html, body { background: var(--bg-night) !important; }
 
 /* ── DRAWER FULL-SCREEN (Heetch style) ── */
 .side-drawer {
+  display: none;                    /* masqué par défaut — toggle via JS */
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 9990;
   width: 100%; max-width: 100%;
-  background: #050D18 !important;
-  color: #F5F1E8 !important;
-  transform: translateX(-100%);
-  transition: transform .38s cubic-bezier(.4,0,.2,1);
-  display: flex; flex-direction: column;
+  background: #050D18;
+  color: #F5F1E8;
+  flex-direction: column;
   overflow: hidden;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
-.side-drawer.open { transform: translateX(0) !important; }
+.side-drawer.open {
+  display: flex !important;         /* affiché quand .open est présent */
+}
 
 .drawer-inner {
   display: flex; flex-direction: column;
@@ -4005,11 +4004,7 @@ html, body { background: var(--bg-night) !important; }
     </button>
 
     <!-- ═══ LOGO PILL — haut centre ═══ -->
-    <div class="hero-logo-pill" aria-label="Inrun">
-      <span class="hero-logo-mono">IN</span>
-      <span class="hero-logo-sep">·</span>
-      <span class="hero-logo-run">RUN</span>
-    </div>
+    <!-- logo pill supprimé -->
 
     <!-- Toggle jour/nuit (conservé, utilisé par le drawer aussi) -->
     <button class="hero-mode-toggle" id="heroModeToggle" aria-label="Basculer mode jour/nuit" title="Mode jour / nuit" style="display:none">
@@ -6806,28 +6801,27 @@ if ('serviceWorker' in navigator) {
 /* ── Drawer ── */
 function openDrawer() {
   const drawer = document.getElementById('sideDrawer');
-  const overlay = document.getElementById('drawerOverlay');
   const burger = document.getElementById('heroBurger');
   if (!drawer) return;
+  /* Double sécurité : class + style direct pour iOS Safari PWA */
   drawer.classList.add('open');
+  drawer.style.display = 'flex';
+  drawer.style.visibility = 'visible';
   drawer.setAttribute('aria-hidden', 'false');
-  overlay && overlay.classList.add('open');
   burger && burger.setAttribute('aria-expanded', 'true');
   burger && burger.classList.add('open');
-  document.body.style.overflow = 'hidden';
   updateDrawerTheme();
 }
 function closeDrawer() {
   const drawer = document.getElementById('sideDrawer');
-  const overlay = document.getElementById('drawerOverlay');
   const burger = document.getElementById('heroBurger');
   if (!drawer) return;
   drawer.classList.remove('open');
+  drawer.style.display = '';
+  drawer.style.visibility = '';
   drawer.setAttribute('aria-hidden', 'true');
-  overlay && overlay.classList.remove('open');
   burger && burger.setAttribute('aria-expanded', 'false');
   burger && burger.classList.remove('open');
-  document.body.style.overflow = '';
 }
 function updateDrawerTheme() {
   const isDay = document.body.classList.contains('day-mode') ||
