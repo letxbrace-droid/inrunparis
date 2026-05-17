@@ -2488,14 +2488,14 @@ button:not(:disabled):active,
   border-bottom: none;
   border-radius: 22px 22px 0 0;
   display: flex; flex-direction: column;
-  transform: translateY(100%) scale(.98);
+  transform: translateY(100%);
   opacity: 0;
-  transition: transform .46s cubic-bezier(.32,1,.55,1), opacity .3s ease;
+  transition: transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease;
   overflow: hidden;
   box-shadow: 0 -12px 60px rgba(0,0,0,.7), 0 -1px 0 rgba(212,168,75,.12);
   will-change: transform, opacity;
 }
-.sheet-overlay.open .sheet-panel { transform: translateY(0) scale(1); opacity: 1; }
+.sheet-overlay.open .sheet-panel { transform: translateY(0); opacity: 1; }
 
 .sheet-handle-wrap {
   display: flex; justify-content: center;
@@ -3872,13 +3872,24 @@ html, body { background: var(--bg-night) !important; }
 
 /* ═══ DRAWER ULTRA-TECH v2 ═══ */
 .side-drawer {
-  display: none;
+  display: flex;
   position: fixed; inset: 0; z-index: 100000;
   background: #06070D;
   flex-direction: column;
   overflow: hidden;
+  /* ── 60 FPS : uniquement transform sur le GPU ── */
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform .34s cubic-bezier(.16,1,.3,1),
+              visibility 0s linear .34s;
+  will-change: transform;
 }
-.side-drawer.open { display: flex; }
+.side-drawer.open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform .34s cubic-bezier(.16,1,.3,1),
+              visibility 0s linear 0s;
+}
 
 /* Halo subtil — profondeur sans grille */
 .side-drawer::before {
@@ -5365,8 +5376,6 @@ html, body { background: var(--bg-night) !important; }
 
     function openD(){
       var d=D(); if(!d) return;
-      d.style.display='flex'; d.style.position='fixed'; d.style.inset='0';
-      d.style.zIndex='999999'; d.style.background='#06070D'; d.style.flexDirection='column';
       d.classList.add('open'); d.setAttribute('aria-hidden','false');
       burger.setAttribute('aria-expanded','true'); burger.classList.add('open');
       /* Visibilité « Code promo » — pilotée depuis le hub via localStorage */
@@ -5379,7 +5388,7 @@ html, body { background: var(--bg-night) !important; }
     }
     function closeD(){
       var d=D(); if(!d) return;
-      d.classList.remove('open'); d.style.display='none';
+      d.classList.remove('open');
       d.setAttribute('aria-hidden','true');
       burger.setAttribute('aria-expanded','false'); burger.classList.remove('open');
     }
@@ -7558,7 +7567,7 @@ function openDrawer()  { var b=document.getElementById('heroBurger'); if(b) b.cl
 function closeDrawer() {
   var d=document.getElementById('sideDrawer');
   if(!d) return;
-  d.classList.remove('open'); d.style.display='none';
+  d.classList.remove('open');
   d.setAttribute('aria-hidden','true');
   var b=document.getElementById('heroBurger');
   if(b){ b.setAttribute('aria-expanded','false'); b.classList.remove('open'); }
