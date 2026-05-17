@@ -4329,6 +4329,170 @@ html, body { background: var(--bg-night) !important; }
   .review-card { flex: 1; max-width: none; }
   .how-steps::before { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HD POLISH — Lot 3 · FAQ / Légal / À propos + correctifs
+══════════════════════════════════════════════════════════════ */
+
+/* Fix: interior-strip margin-top incorrectement écrasé en Lot 2 */
+.interior-strip { margin-top: var(--section-gap); }
+
+/* ── ded-intro heading — plus large, plus dramatique ── */
+.ded-intro h2 {
+  font-size: clamp(1.9rem, 7.5vw, 2.5rem);
+  letter-spacing: -.042em;
+  line-height: 1.0;
+}
+
+/* ── FAQ items — left accent border (cohérent avec .field) ── */
+.faq-item {
+  background: rgba(12,14,20,.6);
+  border: none;
+  border-left: 2.5px solid rgba(12,244,216,.18);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: 2px 4px 16px rgba(0,0,0,.28);
+  transition: border-left-color .25s ease, background .25s ease, box-shadow .25s ease;
+}
+.faq-item.open {
+  border-left-color: var(--teal);
+  background: rgba(12,244,216,.04);
+  box-shadow: 2px 4px 20px rgba(0,0,0,.35), 0 0 20px rgba(12,244,216,.1);
+}
+.faq-q { font-size: .9rem; letter-spacing: .005em; }
+.faq-q svg { stroke: var(--muted); transition: stroke .2s; }
+.faq-item.open .faq-q svg { stroke: var(--teal); }
+.faq-a { font-size: .85rem; }
+
+/* FAQ stagger — slide-in depuis la gauche à l'activation */
+#view-faq.active .faq-item {
+  animation: faqSlideIn .38s cubic-bezier(.22,1,.36,1) both;
+}
+#view-faq.active .faq-item:nth-child(1) { animation-delay: .04s; }
+#view-faq.active .faq-item:nth-child(2) { animation-delay: .09s; }
+#view-faq.active .faq-item:nth-child(3) { animation-delay: .14s; }
+#view-faq.active .faq-item:nth-child(4) { animation-delay: .19s; }
+#view-faq.active .faq-item:nth-child(5) { animation-delay: .24s; }
+#view-faq.active .faq-item:nth-child(6) { animation-delay: .29s; }
+@keyframes faqSlideIn {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Legal ld-doc — card avec accent gauche ── */
+.ld-doc {
+  border: none;
+  border-left: 2.5px solid rgba(12,244,216,.14);
+  border-bottom: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: rgba(12,14,20,.42);
+  padding: 20px 18px 18px;
+  margin-bottom: 10px;
+}
+.ld-doc:last-child { border-bottom: none; padding-bottom: 18px; }
+
+/* Legal article stagger */
+#view-legal.active .ld-doc {
+  animation: legalFadeUp .42s cubic-bezier(.22,1,.36,1) both;
+}
+#view-legal.active .ld-doc:nth-child(1) { animation-delay: .04s; }
+#view-legal.active .ld-doc:nth-child(2) { animation-delay: .12s; }
+#view-legal.active .ld-doc:nth-child(3) { animation-delay: .20s; }
+@keyframes legalFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Legal title — plus grand, bolder ── */
+.ld-title { font-size: 1.45rem; letter-spacing: -.028em; }
+
+/* ── About — monogram plus grand, halo plus dramatique ── */
+.about-monogram {
+  width: 96px; height: 96px; border-radius: 30px;
+  font-size: 2.3rem;
+  box-shadow:
+    0 0 0 10px rgba(232,197,106,.05),
+    0 0 0 20px rgba(232,197,106,.025),
+    0 20px 56px rgba(212,168,75,.38),
+    inset 0 1.5px 0 rgba(255,255,255,.55);
+}
+
+/* About — name + role */
+.about-name { font-size: 1.7rem; letter-spacing: -.035em; margin-bottom: 5px; }
+.about-role { font-size: .82rem; opacity: .85; }
+
+/* About stagger animations */
+#view-about.active .about-hero {
+  animation: aboutHeroIn .55s cubic-bezier(.16,1,.3,1) both;
+}
+#view-about.active .ded-text {
+  animation: aboutContentIn .4s cubic-bezier(.22,1,.36,1) both;
+}
+#view-about.active .ded-text:nth-of-type(1) { animation-delay: .1s; }
+#view-about.active .ded-text:nth-of-type(2) { animation-delay: .17s; }
+#view-about.active .about-facts { animation: aboutContentIn .4s .24s cubic-bezier(.22,1,.36,1) both; }
+#view-about.active .about-cta-wrap { animation: aboutContentIn .4s .32s cubic-bezier(.22,1,.36,1) both; }
+@keyframes aboutHeroIn {
+  from { opacity: 0; transform: translateY(-14px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes aboutContentIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* About CTA wrapper */
+.about-cta-wrap {
+  margin-top: 28px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.about-cta-note {
+  font-family: var(--ff-mono); font-size: .6rem;
+  color: var(--muted); letter-spacing: .1em;
+  text-transform: uppercase; text-align: center;
+  margin-top: 4px;
+}
+
+/* ── MAD description — remplace inline style ── */
+.mad-desc {
+  color: var(--mist); font-size: .86rem; line-height: 1.55; margin-bottom: 8px;
+}
+.mad-desc strong { color: var(--bone); }
+
+/* ── Call screen — grain texture overlay ── */
+.call-screen::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .28;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* ── view-header subtitle pills — FAQ / Légal / À propos ── */
+#view-faq .view-header-title,
+#view-legal .view-header-title,
+#view-about .view-header-title {
+  position: relative; padding-bottom: 3px;
+}
+#view-faq .view-header-title::after,
+#view-legal .view-header-title::after,
+#view-about .view-header-title::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 36px; height: 1.5px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+  border-radius: 1px;
+}
+
+/* ── ded-scroll top — flush sous header ── */
+#view-faq .ded-scroll,
+#view-legal .ded-scroll,
+#view-about .ded-scroll { padding-top: 4px; }
+
+/* Light mode overrides for Lot 3 */
+[data-theme="light"] .faq-item { background: rgba(255,255,255,.7); border-left-color: rgba(13,107,98,.25); }
+[data-theme="light"] .faq-item.open { background: rgba(13,107,98,.06); border-left-color: #087a6e; }
+[data-theme="light"] .ld-doc { background: rgba(255,255,255,.6); border-left-color: rgba(13,107,98,.22); }
 </style>
 </head>
 <body>
@@ -4873,7 +5037,7 @@ html, body { background: var(--bg-night) !important; }
       <div class="eyebrow">Service Premium</div>
       <div class="card-title">Mise à disposition</div>
       <div class="card-sub">Chauffeur privé à l'heure ou à la journée</div>
-      <p style="color:var(--mist);font-size:.86rem;line-height:1.55;margin-bottom:8px;">Pour vos <strong style="color:var(--bone)">rendez-vous business</strong>, <strong style="color:var(--bone)">mariages</strong>, <strong style="color:var(--bone)">visites touristiques</strong> ou <strong style="color:var(--bone)">journées VIP</strong>.</p>
+      <p class="mad-desc">Pour vos <strong>rendez-vous business</strong>, <strong>mariages</strong>, <strong>visites touristiques</strong> ou <strong>journées VIP</strong>.</p>
       <div class="mad-features">
         <span class="mad-feat-chip">Sans kilomètres limités</span>
         <span class="mad-feat-chip">Attentes incluses</span>
@@ -4968,6 +5132,7 @@ html, body { background: var(--bg-night) !important; }
   <div class="view-header">
     <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="view-header-title">Questions fréquentes</div>
+    <div class="view-header-sub">I&amp;N RUN</div>
   </div>
   <div class="ded-scroll">
     <div class="ded-intro">
@@ -5008,6 +5173,7 @@ html, body { background: var(--bg-night) !important; }
   <div class="view-header">
     <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="view-header-title">Informations légales</div>
+    <div class="view-header-sub">RGPD · CGV</div>
   </div>
   <div class="ded-scroll">
 
@@ -5079,6 +5245,7 @@ html, body { background: var(--bg-night) !important; }
   <div class="view-header">
     <button class="view-back-btn" onclick="switchView('home')" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="view-header-title">À propos</div>
+    <div class="view-header-sub">I&amp;N RUN</div>
   </div>
   <div class="ded-scroll">
     <div class="about-hero">
@@ -5093,6 +5260,13 @@ html, body { background: var(--bg-night) !important; }
       <div class="about-fact"><span class="about-fact-k">Base</span><span class="about-fact-v">Ris-Orangis (91)</span></div>
       <div class="about-fact"><span class="about-fact-k">SIREN</span><span class="about-fact-v">993 776 467</span></div>
       <div class="about-fact"><span class="about-fact-k">TVA</span><span class="about-fact-v">Non applicable · art. 293 B</span></div>
+    </div>
+    <div class="about-cta-wrap">
+      <button class="btn-primary" onclick="switchView('reserve'); haptic(20);" aria-label="Réserver une course">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Réserver une course
+      </button>
+      <p class="about-cta-note">Tarif fixe · Confirmation &lt; 2 min</p>
     </div>
   </div>
 </div>
