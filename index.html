@@ -4810,6 +4810,12 @@ html, body { background: var(--bg-night) !important; }
       d.style.zIndex='999999'; d.style.background='#06070D'; d.style.flexDirection='column';
       d.classList.add('open'); d.setAttribute('aria-hidden','false');
       burger.setAttribute('aria-expanded','true'); burger.classList.add('open');
+      /* Visibilité « Code promo » — pilotée depuis le hub via localStorage */
+      try {
+        var pi = d.querySelector('[data-action="promo"]');
+        if (pi) pi.style.display =
+          (localStorage.getItem('inrun_promo_enabled') === 'false') ? 'none' : '';
+      } catch(e){}
       if(typeof updateDrawerTheme==='function') updateDrawerTheme();
     }
     function closeD(){
