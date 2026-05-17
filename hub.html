@@ -161,6 +161,40 @@ body {
 
 .card:hover::before { opacity: 1; }
 
+/* ─── MANAGE TOGGLE ─── */
+.manage-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 14px;
+}
+.manage-state {
+  font-size: 0.82rem; font-weight: 600; color: var(--cyan);
+  letter-spacing: 0.01em;
+}
+.manage-state.off { color: var(--text-muted); }
+.hub-switch {
+  width: 50px; height: 28px; border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  position: relative; cursor: pointer; flex-shrink: 0;
+  padding: 0; outline: none;
+  transition: background 250ms ease, border-color 250ms ease;
+}
+.hub-switch.on {
+  background: var(--cyan-dim);
+  border-color: var(--border-hover);
+}
+.hub-switch-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #f5f5f5;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  transition: transform 280ms cubic-bezier(.34,1.4,.5,1), background 250ms ease;
+}
+.hub-switch.on .hub-switch-knob {
+  transform: translateX(22px);
+  background: var(--cyan);
+}
+
 .card-top {
   display: flex;
   align-items: flex-start;
@@ -625,6 +659,23 @@ body {
 
     </div><!-- /cards -->
 
+    <!-- GESTION -->
+    <div class="section-label">Gestion du site client</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">Codes promo</div>
+        </div>
+        <div class="card-desc">Affiche ou masque l'entrée « Code promo » dans le menu (Burger) du site client.</div>
+        <div class="manage-row">
+          <span class="manage-state" id="promoState">Activé</span>
+          <button class="hub-switch on" id="promoSwitch" role="switch" aria-checked="true" aria-label="Activer ou désactiver les codes promo">
+            <span class="hub-switch-knob"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- PWA SECTION -->
     <div class="section-label">Installation PWA</div>
     <div class="pwa-section">
@@ -692,13 +743,37 @@ body {
 // ─── COPY LINK ───
 function copyLink(url) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(showToast).catch(function () {
+    navigator.clipboard.writeText(url).then(function () {
+      showToast('Lien copié !');
+    }).catch(function () {
       fallbackCopy(url);
     });
   } else {
     fallbackCopy(url);
   }
 }
+
+// ─── GESTION CODES PROMO ───
+(function () {
+  var KEY = 'inrun_promo_enabled';
+  var sw = document.getElementById('promoSwitch');
+  var st = document.getElementById('promoState');
+  if (!sw || !st) return;
+  function render(on) {
+    sw.classList.toggle('on', on);
+    sw.setAttribute('aria-checked', on ? 'true' : 'false');
+    st.textContent = on ? 'Activé' : 'Désactivé';
+    st.classList.toggle('off', !on);
+  }
+  var enabled = localStorage.getItem(KEY) !== 'false';
+  render(enabled);
+  sw.addEventListener('click', function () {
+    enabled = !enabled;
+    try { localStorage.setItem(KEY, enabled ? 'true' : 'false'); } catch (e) {}
+    render(enabled);
+    showToast(enabled ? 'Codes promo activés' : 'Codes promo désactivés');
+  });
+})();
 
 function fallbackCopy(url) {
   try {
@@ -711,14 +786,15 @@ function fallbackCopy(url) {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    showToast();
+    showToast('Lien copié !');
   } catch (e) {}
 }
 
 // ─── TOAST ───
 let toastTimer = null;
-function showToast() {
+function showToast(msg) {
   const toast = document.getElementById('toast');
+  if (msg) toast.textContent = msg;
   toast.classList.add('show');
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = setTimeout(function () {
