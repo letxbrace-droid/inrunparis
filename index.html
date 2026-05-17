@@ -63,6 +63,7 @@
   --section-gap: 52px;
   --safe-top: env(safe-area-inset-top, 0);
   --safe-bot: env(safe-area-inset-bottom, 0);
+  color-scheme: dark;  /* HIG: system UI elements (scrollbars, inputs) follow app theme */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -727,6 +728,7 @@ body {
    Palette jour : teal profond #0f5c55 (ratio 8:1 sur blanc = WCAG AAA)
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="light"] {
+  color-scheme: light;  /* HIG: native controls switch to light mode */
   /* ── Design tokens jour — audit WCAG AA 2025 ── */
   /* Fond : #f4f4f4 (Apple systemGroupedBackground) */
 
@@ -1977,7 +1979,11 @@ body {
   background: rgba(12,244,216,.10);
   border-radius: 14px;
 }
-.dock-btn:not(.reserve).active svg { filter: drop-shadow(0 0 8px rgba(12,244,216,.55)) drop-shadow(0 0 14px rgba(12,244,216,.25)); }
+/* HIG: filled = selected (simulate filled by stroke-width + glow) */
+.dock-btn:not(.reserve).active svg {
+  filter: drop-shadow(0 0 8px rgba(12,244,216,.55)) drop-shadow(0 0 14px rgba(12,244,216,.25));
+  stroke-width: 2.5;
+}
 .dock-btn.tapping { animation: dockTap .38s cubic-bezier(.34,1.56,.64,1) forwards; }
 .dock-btn.tapping svg { animation: dockIconFlare .38s ease-out forwards; }
 .dock-btn.reserve {
@@ -2598,20 +2604,35 @@ button:not(:disabled):active,
 /* Petits indicateurs de confirmation */
 .pay-check svg { stroke-width: 3; }
 
-/* ── prefers-reduced-motion: disable decorative animations ── */
+/* ── prefers-reduced-motion: HIG §5 — disable ALL decorative animations ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
   }
   .hero-bg { animation: none !important; transform: scale(1.03) !important; }
-  .btn-wa::before { animation: none !important; }
+  .btn-wa::before, .hero-cta-primary::before { animation: none !important; }
   .badge-live::before { animation: none !important; opacity: 1 !important; }
   .urgency-pulse { animation: none !important; }
   .cta-dock { animation: none !important; }
   .hero-cta-primary { animation: none !important; }
   .reveal, .reveal-stagger { opacity: 1 !important; transform: none !important; transition: none !important; }
+  /* Call screen rings — purely decorative */
+  .call-ring { animation: none !important; opacity: .3 !important; }
+  /* Map overlays — decorative scanning/grid */
+  .hero-scan-beam { animation: none !important; opacity: 0 !important; }
+  .hero-grid-overlay { animation: none !important; }
+  /* Scroll hint bounce */
+  .hero-scroll-hint { animation: none !important; }
+  /* Step pulse */
+  .step-item.active .step-circle { animation: none !important; }
+  /* Grain overlay — static, no animation needed anyway */
+  /* Reserve button pulse */
+  .dock-btn.reserve { animation: none !important; }
+  /* Live dot blink */
+  .badge-live::before, .inr-live-dot { animation: none !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2720,12 +2741,17 @@ a, button, [role="button"], input, select, textarea, label {
   position: relative; z-index: 1;
 }
 .pwa-sheet-close {
-  position: absolute; top: 14px; right: 16px; z-index: 2;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(255,255,255,.07); border: 0.5px solid rgba(255,255,255,.1);
+  position: absolute; top: 8px; right: 10px; z-index: 2;
+  width: 44px; height: 44px; border-radius: 50%; /* HIG: 44pt minimum */
+  background: transparent; border: none;
   color: var(--mist); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  touch-action: manipulation; transition: all .2s;
+  touch-action: manipulation; transition: color .2s;
+}
+.pwa-sheet-close::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: rgba(255,255,255,.07); border: 0.5px solid rgba(255,255,255,.1);
+  width: 30px; height: 30px; margin: auto;
 }
 .pwa-sheet-close svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
 .pwa-sheet-app {
@@ -2925,7 +2951,7 @@ body { overflow: hidden !important; }
   gap: 12px;
 }
 .view-back-btn {
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;   /* HIG: 44pt minimum touch target */
   border-radius: 50%;
   border: none;
   background: rgba(255,255,255,.06);
@@ -2933,7 +2959,9 @@ body { overflow: hidden !important; }
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background .18s ease;
 }
+.view-back-btn:active { background: rgba(255,255,255,.12); }
 .view-header-title {
   font-family: var(--ff-brand);
   font-size: 1.05rem;
@@ -3945,7 +3973,7 @@ body::before {
 <!-- ═══ CTA DOCK ═══ -->
 <nav class="cta-dock" aria-label="Navigation principale" id="bottomNav">
   <div class="dock-indicator" id="dockIndicator" aria-hidden="true"></div>
-  <button class="dock-btn active" id="dockHome" aria-label="Accueil">
+  <button class="dock-btn active" id="dockHome" aria-label="Accueil" aria-current="page">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Accueil
   </button>
@@ -5496,15 +5524,68 @@ function switchView(viewName) {
       pill.classList.add('hidden');
     }
   }
-  /* Update nav buttons + indicator */
+  /* Update nav buttons + indicator + aria-current (HIG: VoiceOver nav state) */
   DOCK_IDS.forEach((id, i) => {
     const btn = document.getElementById(id);
-    if (btn) btn.classList.toggle('active', i === newIdx);
+    if (!btn) return;
+    btn.classList.toggle('active', i === newIdx);
+    btn.setAttribute('aria-current', i === newIdx ? 'page' : 'false');
   });
   const activeBtn = document.getElementById(DOCK_IDS[newIdx]);
   if (activeBtn) moveIndicator(activeBtn);
+  /* History API — iOS back swipe navigates between views (HIG: never override back) */
+  if (viewName !== 'home') {
+    history.pushState({ view: viewName }, '');
+  } else {
+    history.replaceState({ view: 'home' }, '');
+  }
   _currentView = viewName;
 }
+
+/* HIG: intercept browser back → navigate within app, not exit */
+window.addEventListener('popstate', (e) => {
+  const target = e.state?.view || 'home';
+  if (target !== _currentView && VIEWS.includes(target)) {
+    // Call internal transition without pushing new history entry
+    const newIdx = VIEWS.indexOf(target);
+    const oldIdx = VIEWS.indexOf(_currentView);
+    const direction = newIdx > oldIdx ? 1 : -1;
+    const oldEl = document.getElementById('view-' + _currentView);
+    const newEl = document.getElementById('view-' + target);
+    const header = document.getElementById('appHeader');
+    if (oldEl) {
+      oldEl.style.transition = 'opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1)';
+      oldEl.style.transform = `translateX(${direction * -14}%)`;
+      oldEl.style.opacity = '0';
+      oldEl.style.pointerEvents = 'none';
+      setTimeout(() => { oldEl.classList.remove('active'); oldEl.style.cssText = ''; }, 300);
+    }
+    if (newEl) {
+      newEl.style.transition = 'none';
+      newEl.style.transform = `translateX(${direction * 20}%)`;
+      newEl.style.opacity = '0';
+      newEl.classList.add('active');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        newEl.style.transition = 'opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1)';
+        newEl.style.transform = '';
+        newEl.style.opacity = '';
+      }));
+    }
+    if (header) header.style.display = target === 'home' ? 'none' : '';
+    const pill = document.getElementById('inrPill');
+    if (pill) pill.classList.toggle('hidden', target !== 'home');
+    DOCK_IDS.forEach((id, i) => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.classList.toggle('active', i === newIdx);
+      btn.setAttribute('aria-current', i === newIdx ? 'page' : 'false');
+    });
+    const activeBtn = document.getElementById(DOCK_IDS[newIdx]);
+    if (activeBtn) moveIndicator(activeBtn);
+    _currentView = target;
+    haptic(8);
+  }
+});
 
 /* Init: hide header on home + masque inrCard sur mobile */
 (function() {
