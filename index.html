@@ -3765,9 +3765,9 @@ html, body { background: var(--bg-night) !important; }
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background-image:
-    linear-gradient(rgba(12,244,216,.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(12,244,216,.032) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(rgba(12,244,216,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12,244,216,.018) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
 /* Ligne de scan animée */
@@ -3794,7 +3794,7 @@ html, body { background: var(--bg-night) !important; }
 /* Header */
 .drawer-hdr {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 24px;
+  padding: 18px 22px 12px;
   flex-shrink: 0;
 }
 
@@ -3821,7 +3821,7 @@ html, body { background: var(--bg-night) !important; }
 }
 .drawer-brand-in {
   font-family: 'Outfit', sans-serif; font-weight: 900;
-  font-size: 1.5rem; letter-spacing: .06em;
+  font-size: 1.2rem; letter-spacing: .04em;
   color: #D4A84B; line-height: 1; font-style: italic;
 }
 .drawer-brand-run {
@@ -3833,11 +3833,11 @@ html, body { background: var(--bg-night) !important; }
 /* Navigation principale */
 .drawer-nav {
   flex: 1; display: flex; flex-direction: column; justify-content: center;
-  padding: 0 24px; min-height: 0;
+  padding: 0 22px; min-height: 0;
 }
 .drawer-nav-item {
-  display: flex; align-items: center; gap: 10px;
-  width: 100%; padding: 13px 0;
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; padding: 15px 0;
   background: transparent; border: none;
   border-bottom: 0.5px solid rgba(245,241,232,.07);
   cursor: pointer; text-align: left;
@@ -3858,14 +3858,14 @@ html, body { background: var(--bg-night) !important; }
 .drawer-nav-item:active { transform: perspective(500px) rotateX(3deg) scale(.985); }
 
 .drawer-nav-num {
-  font-family: 'Courier New', monospace; font-size: .58rem;
-  color: rgba(12,244,216,.55); letter-spacing: .08em;
-  min-width: 18px; flex-shrink: 0; padding-top: 2px;
+  font-family: 'Courier New', monospace; font-size: .62rem;
+  color: rgba(12,244,216,.5); letter-spacing: .06em;
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
 }
 .drawer-nav-label {
-  font-family: 'Outfit', -apple-system, sans-serif; font-weight: 900;
-  font-size: clamp(2rem, 10.5vw, 3.2rem);
-  letter-spacing: -.04em; text-transform: uppercase;
+  font-family: 'Outfit', -apple-system, sans-serif; font-weight: 700;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  letter-spacing: -.015em; text-transform: uppercase;
   color: #F5F1E8; line-height: 1; flex: 1;
 }
 .drawer-nav-item[data-view="reserve"] .drawer-nav-label { color: #5B9BFF; }
@@ -3898,13 +3898,13 @@ html, body { background: var(--bg-night) !important; }
 
 /* Navigation secondaire */
 .drawer-sec {
-  list-style: none; padding: 8px 24px;
+  list-style: none; padding: 4px 22px;
   border-top: 0.5px solid rgba(245,241,232,.07);
   display: flex; flex-direction: column;
 }
 .drawer-sec-item {
-  font-family: 'Outfit', sans-serif; font-size: .92rem; font-weight: 400;
-  color: rgba(245,241,232,.45); padding: 10px 0;
+  font-family: 'Outfit', sans-serif; font-size: .855rem; font-weight: 400;
+  color: rgba(245,241,232,.5); padding: 11.5px 0; letter-spacing: -.005em;
   border-bottom: 0.5px solid rgba(245,241,232,.05);
   cursor: pointer; -webkit-tap-highlight-color: transparent;
   transition: color .15s;
@@ -3914,34 +3914,47 @@ html, body { background: var(--bg-night) !important; }
 
 /* Footer */
 .drawer-foot {
-  padding: 10px 24px calc(env(safe-area-inset-bottom, 0px) + 14px);
+  padding: 14px 22px calc(env(safe-area-inset-bottom, 0px) + 16px);
   border-top: 0.5px solid rgba(245,241,232,.07);
   flex-shrink: 0;
 }
 .drawer-theme-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 0; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .drawer-theme-lbl {
-  font-family: 'Outfit', sans-serif; font-size: .83rem;
-  color: rgba(245,241,232,.45);
+  font-family: 'Outfit', sans-serif; font-size: .9rem; font-weight: 500;
+  color: rgba(245,241,232,.62); letter-spacing: -.01em;
 }
-.drawer-toggle {
-  width: 42px; height: 24px; border-radius: 12px;
-  background: rgba(245,241,232,.1);
-  border: 0.5px solid rgba(245,241,232,.15);
-  position: relative; transition: background .3s, border-color .3s;
-  flex-shrink: 0;
+/* Toggle theme — premium */
+.theme-switch {
+  width: 50px; height: 28px; border-radius: 14px;
+  background: rgba(245,241,232,.07);
+  border: 0.5px solid rgba(245,241,232,.16);
+  position: relative; flex-shrink: 0;
+  transition: background .3s ease, border-color .3s ease;
 }
-.drawer-toggle::after {
-  content: '';
-  position: absolute; top: 4px; left: 4px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: #F5F1E8;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+.theme-switch.on {
+  background: rgba(12,244,216,.16);
+  border-color: rgba(12,244,216,.42);
 }
-.drawer-toggle.on { background: rgba(12,244,216,.35); border-color: rgba(12,244,216,.5); }
-.drawer-toggle.on::after { transform: translateX(18px); }
+.theme-switch-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 21px; height: 21px; border-radius: 50%;
+  background: linear-gradient(155deg, #FBF8F0, #C7C0AE);
+  box-shadow: 0 2px 5px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.7);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .34s cubic-bezier(.34,1.45,.5,1);
+}
+.theme-switch.on .theme-switch-knob { transform: translateX(22px); }
+.theme-knob-ic {
+  position: absolute; width: 12px; height: 12px;
+  color: #06070D;
+  transition: opacity .22s ease;
+}
+.theme-knob-sun { opacity: 0; }
+.theme-switch.on .theme-knob-moon { opacity: 0; }
+.theme-switch.on .theme-knob-sun  { opacity: 1; }
 .drawer-meta {
   font-family: 'Courier New', monospace; font-size: .6rem;
   color: rgba(245,241,232,.2); letter-spacing: .07em; margin-top: 8px;
@@ -4844,10 +4857,12 @@ html, body { background: var(--bg-night) !important; }
 
       /* Toggle theme */
       var tr=d.querySelector('.drawer-theme-row');
-      on(tr,'click',function(){
+      function doTheme(){
         if(typeof toggleHeroMode==='function') toggleHeroMode();
         if(typeof updateDrawerTheme==='function') updateDrawerTheme();
-      });
+      }
+      on(tr,'touchstart',function(e){ e.preventDefault(); doTheme(); },{passive:false});
+      on(tr,'click',     function(e){ e.stopPropagation(); doTheme(); });
 
       /* Echap */
       document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeD(); });
@@ -4908,9 +4923,14 @@ html, body { background: var(--bg-night) !important; }
     </ul>
 
     <div class="drawer-foot">
-      <div class="drawer-theme-row" id="drawerThemeRow" role="button" tabindex="0" aria-label="Basculer mode clair">
-        <span class="drawer-theme-lbl" id="drawerThemeLabel">Activer le mode clair</span>
-        <div class="drawer-toggle" id="drawerThemeToggle"></div>
+      <div class="drawer-theme-row" id="drawerThemeRow" role="button" tabindex="0" aria-label="Basculer le thème clair ou sombre">
+        <span class="drawer-theme-lbl" id="drawerThemeLabel">Mode sombre</span>
+        <div class="theme-switch" id="drawerThemeToggle">
+          <span class="theme-switch-knob">
+            <svg class="theme-knob-ic theme-knob-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="theme-knob-ic theme-knob-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 1.5v2.4M12 20.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M1.5 12h2.4M20.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+          </span>
+        </div>
       </div>
       <p class="drawer-meta">SIREN 993 776 467 · TVA art. 293 B · v3.0</p>
     </div>
@@ -5873,6 +5893,13 @@ function initHeroMode() {
     heroApplyMode();
     haptic && haptic(10);
   });
+}
+
+/* Bascule jour/nuit — appelée par le drawer (était manquante) */
+function toggleHeroMode() {
+  _heroDayMode = !_heroDayMode;
+  heroApplyMode();
+  if (typeof haptic === 'function') haptic(10);
 }
 
 async function heroSetGPS(lat, lng, zoom = 13) {
@@ -6979,12 +7006,12 @@ if ('serviceWorker' in navigator) {
 <script>
 /* updateDrawerTheme — appelé par le script inline et par toggleHeroMode */
 function updateDrawerTheme() {
-  const isDay = document.body.classList.contains('day-mode') ||
+  const isDay = document.documentElement.getAttribute('data-theme') === 'light' ||
                 document.getElementById('heroMap')?.classList.contains('day-mode');
   const toggle = document.getElementById('drawerThemeToggle');
   const label  = document.getElementById('drawerThemeLabel');
   if (toggle) toggle.classList.toggle('on', isDay);
-  if (label)  label.textContent = isDay ? 'Désactiver le mode clair' : 'Activer le mode clair';
+  if (label)  label.textContent = isDay ? 'Mode clair' : 'Mode sombre';
 }
 /* openDrawer / closeDrawer — proxies vers le système inline */
 function openDrawer()  { var b=document.getElementById('heroBurger'); if(b) b.click(); }
