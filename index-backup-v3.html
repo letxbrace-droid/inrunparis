@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'; base-uri 'self'; object-src 'none'; connect-src 'self' https://photon.komoot.io https://nominatim.openstreetmap.org https://api.open-meteo.com https://router.project-osrm.org https://fonts.googleapis.com https://fonts.gstatic.com https://basemaps.cartocdn.com; upgrade-insecure-requests; worker-src 'self';">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0A1628">
+<meta name="theme-color" content="#0A0A0B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Inrun">
+<meta name="apple-mobile-web-app-title" content="I&amp;N RUN">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -19,61 +19,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lib/leaflet.css"/>
 <style>html,body{background:#0a0a0b;min-height:100dvh;}</style>
 <script src="lib/leaflet.js" id="leafletJs"></script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════════
-   DESIGN SYSTEM — INRUN Bleu Nuit Minéral v3
+   DESIGN SYSTEM — I&N RUN OLED Premium v2
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  /* ── Palette Bleu Nuit Minéral ── */
-  --bg-night:    #0A1628;
-  --bg-deep:     #050D18;
-  --bg-elevated: #14253D;
-  --bg-glass:    rgba(20,37,61,0.72);
-
-  --ink-primary:   #F5F1E8;
-  --ink-secondary: #A8B5C9;
-  --ink-muted:     #6B7A91;
-
-  --gold-accent: #D4AF37;
-  --gold-warm:   #E8C770;
-
-  --blue-glow:     #4A7AC9;
-  --blue-electric: #5B9BFF;
-
-  --rule-soft:   rgba(168,181,201,0.12);
-  --rule-strong: rgba(168,181,201,0.22);
-
-  /* ── Aliases de compatibilité ── */
-  --oled:       #050D18;
-  --ink:        #0A1628;
-  --ink-2:      #0D1E35;
-  --ink-3:      #14253D;
-  --gold:       #5B9BFF;          /* CTA principal — bleu électrique */
-  --gold-real:  #D4AF37;          /* or véritable — accents logo/hairlines */
-  --gold-deep:  #2A5BA0;
-  --gold-glow:  rgba(91,155,255,0.45);
-  --bone:       #F5F1E8;
-  --paper:      #ffffff;
-  --mist:       #A8B5C9;
-  --shadow-ink: #1a2a42;
-  --muted:      #6B7A91;
-  --dim:        #3a4a62;
-  --success:    #34d399;
-  --danger:     #ef4444;
-  --wa:         #25d366;
-  --wa-deep:    #128c4a;
-  --ff-brand:   "Fraunces", "Georgia", "Times New Roman", serif;
-  --ff-display: "Fraunces", "Georgia", "Times New Roman", serif;
-  --ff-body:    "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --ff-mono:    "JetBrains Mono", "SF Mono", monospace;
-  --electric:   #5B9BFF;
-  --teal:       #5B9BFF;
-  --page-bg:    #0A1628;
+  --oled: #000000;
+  --ink: #0a0a0a;
+  --ink-2: #111112;
+  --ink-3: #1a1a1c;
+  --gold: #0CF4D8;
+  --gold-warm: #35FFE8;
+  --gold-deep: #0AABA0;
+  --gold-glow: rgba(12, 244, 216, 0.45);
+  --bone: #f5f1e8;
+  --paper: #ffffff;
+  --mist: #94a3b8;   /* slate-400 — 7.72:1 AAA sur fond sombre (audit WCAG 2025) */
+  --shadow-ink: #4a4744;
+  --muted: #6b6560;
+  --dim: #3a3734;
+  --success: #34d399;
+  --danger: #ef4444;
+  --wa: #25d366;
+  --wa-deep: #128c4a;
+  --ff-brand: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono: "JetBrains Mono", "SF Mono", monospace;
+  --electric: #0CF4D8;   /* cyan électrique unifié avec la marque */
+  --teal: #0CF4D8;       /* alias explicit — utilisé dans dock actif, indicateur */
+  --gold-real: #D4A84B;  /* or véritable — call screen ring/glow */
+  --page-bg: #1C2131;   /* navy anthracite — fond visible pour les ombres */
   --gutter: 20px;
   --radius-sm: 14px;
   --radius-md: 20px;
@@ -82,7 +63,7 @@
   --section-gap: 52px;
   --safe-top: env(safe-area-inset-top, 0);
   --safe-bot: env(safe-area-inset-bottom, 0);
-  color-scheme: dark;
+  color-scheme: dark;  /* HIG: system UI elements (scrollbars, inputs) follow app theme */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -2130,7 +2111,7 @@ body {
 .divider span { font-family: var(--ff-mono); font-size:.65rem; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
 
 /* ── FOOTER ── */
-.footer { margin-top: 40px; padding: 36px var(--gutter) calc(48px + var(--safe-bot)); text-align: center; border-top: 0.5px solid rgba(12,244,216,.15); background: rgba(0,0,0,.4); }
+.footer { margin-top: 40px; padding: 36px var(--gutter) calc(100px + var(--safe-bot)); text-align: center; border-top: 0.5px solid rgba(12,244,216,.15); background: rgba(0,0,0,.4); }
 .footer-logo { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
 .footer-monogram { font-family: var(--ff-display); font-variation-settings:"opsz" 144; font-weight: 600; font-style: italic; font-size: 1.8rem; background: linear-gradient(135deg,var(--gold-warm),var(--gold),var(--gold-deep)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em; line-height: 1; }
 .footer-run { font-family: var(--ff-mono); font-weight: 500; font-size: .72rem; color: var(--gold); letter-spacing: .45em; text-transform: uppercase; padding-top: 4px; }
@@ -3210,38 +3191,6 @@ body { overflow: hidden !important; }
   color: var(--mist); letter-spacing: .1em;
   font-family: var(--ff-mono); text-transform: uppercase;
 }
-.call-context-hint {
-  position: relative; z-index: 1;
-  margin-top: 20px; padding: 12px 18px;
-  display: flex; gap: 14px; align-items: flex-start;
-  background: rgba(255,255,255,.04);
-  border: 0.5px solid rgba(255,255,255,.07);
-  border-radius: 14px; max-width: 300px; margin-inline: auto;
-}
-.call-context-row { display: flex; flex-direction: column; gap: 6px; }
-.call-context-item { display: flex; align-items: baseline; gap: 6px; font-size: .72rem; line-height: 1.4; color: var(--mist); }
-.call-context-icon { font-style: normal; flex-shrink: 0; }
-
-/* Tarifs sticky CTA */
-.tarifs-sticky-cta {
-  position: sticky; bottom: calc(var(--safe-bot) + 60px);
-  padding: 10px 16px; z-index: 40;
-  pointer-events: none;
-}
-.tarifs-sticky-cta-btn {
-  pointer-events: all;
-  display: flex; align-items: center; justify-content: center; gap: 9px;
-  width: 100%;
-  padding: 15px 20px;
-  background: var(--teal); color: #030f0e;
-  border: none; border-radius: 16px; cursor: pointer;
-  font-family: var(--ff-brand); font-size: .95rem; font-weight: 800;
-  letter-spacing: .02em;
-  box-shadow: 0 8px 28px rgba(12,244,216,.30), 0 2px 8px rgba(0,0,0,.4);
-  transition: transform .15s, box-shadow .15s;
-  touch-action: manipulation;
-}
-.tarifs-sticky-cta-btn:active { transform: scale(.97); box-shadow: 0 4px 14px rgba(12,244,216,.20); }
 
 /* Tarifs sticky CTA */
 .tarifs-sticky-cta {
@@ -3672,383 +3621,45 @@ body {
     0 12px 36px rgba(8,122,114,.22),
     inset 0 1.5px 0 rgba(255,255,255,.35) !important;
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   V3 — BLEU NUIT MINÉRAL : burger, logo, drawer, modaux
-   ═══════════════════════════════════════════════════════════════ */
-
-/* ── Fond page principal ── */
-html, body { background: var(--bg-night) !important; }
-::-webkit-scrollbar-track { background: var(--bg-deep) !important; }
-::-webkit-scrollbar-thumb { background: rgba(91,155,255,.35) !important; border-radius: 3px; }
-::selection { background: var(--blue-electric); color: #fff; }
-
-/* ── BURGER — haut gauche ── */
-.hero-burger {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 16px);
-  left: 16px;
-  z-index: 90000;
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  border: 0.5px solid var(--rule-strong);
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 5px; padding: 0; cursor: pointer;
-  transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.hero-burger:active { transform: scale(0.92); background: rgba(20,37,61,.9); }
-.hero-burger:hover .burger-bar { width: 20px; }
-.burger-bar {
-  display: block;
-  width: 20px; height: 1.5px;
-  background: var(--gold-accent);
-  border-radius: 2px;
-  transition: width .3s ease, transform .3s ease, opacity .3s ease;
-}
-.hero-burger.open .burger-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hero-burger.open .burger-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hero-burger.open .burger-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* ── LOGO PILL — haut centre ── */
-.hero-logo-pill {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 16px);
-  left: 50%; transform: translateX(-50%);
-  z-index: 30;
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 18px;
-  border-radius: 100px;
-  border: 0.5px solid rgba(212,175,55,.25);
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  white-space: nowrap; pointer-events: none;
-}
-.hero-logo-mono {
-  font-family: var(--ff-display);
-  font-style: italic; font-weight: 700; font-size: 18px;
-  color: var(--gold-accent); line-height: 1;
-}
-.hero-logo-sep { color: rgba(212,175,55,.45); font-size: 14px; }
-.hero-logo-run {
-  font-family: var(--ff-mono);
-  font-size: 11px; font-weight: 500;
-  letter-spacing: .3em; text-transform: uppercase;
-  color: var(--gold-accent); padding-top: 1px;
-}
-
-/* ── DRAWER OVERLAY ── */
-.drawer-overlay {
-  position: fixed; inset: 0; z-index: 99999;
-  background: rgba(0,0,0,.6);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  opacity: 0; pointer-events: none;
-  transition: opacity .3s ease;
-}
-.drawer-overlay.open { opacity: 1; pointer-events: all; }
-
-/* ── DRAWER FULL-SCREEN (Heetch style) ── */
-.side-drawer {
-  display: none;                    /* masqué par défaut — toggle via JS */
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 100000;
-  width: 100%; max-width: 100%;
-  background: #050D18;
-  color: #F5F1E8;
-  flex-direction: column;
-  overflow: hidden;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-.side-drawer.open {
-  display: flex !important;         /* affiché quand .open est présent */
-}
-
-.drawer-inner {
-  display: flex; flex-direction: column;
-  height: 100%;
-  padding-top: env(safe-area-inset-top, 0px);
-  overflow-y: auto;
-}
-
-/* × close button — top-left circle */
-.drawer-close {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 20px);
-  left: 24px;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 0.5px solid rgba(212,175,55,.3);
-  background: rgba(212,175,55,.1);
-  color: var(--gold-accent);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: background .2s ease, transform .15s ease;
-  z-index: 1;
-}
-.drawer-close:active { background: rgba(212,175,55,.2); transform: scale(0.92); }
-
-/* Logo pill — top-right in drawer */
-.drawer-hdr {
-  padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px 0;
-  display: flex; justify-content: flex-end; align-items: flex-start;
-  min-height: 92px; position: relative;
-}
-.drawer-monogram-small {
-  font-family: var(--ff-display);
-  font-style: italic; font-weight: 700; font-size: 22px;
-  color: var(--gold-accent); letter-spacing: -.02em;
-}
-.drawer-run-small {
-  font-family: var(--ff-mono);
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .35em; text-transform: uppercase;
-  color: var(--gold-accent); opacity: .6;
-}
-
-/* ── MAIN NAV — huge uppercase items ── */
-.drawer-main-nav {
-  flex: 1;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 16px 32px 24px;
-  min-height: 0;
-}
-.drawer-main-item {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-weight: 900 !important;
-  font-size: clamp(2.2rem, 10vw, 3.2rem) !important;
-  letter-spacing: -.04em;
-  text-transform: uppercase;
-  color: #F5F1E8 !important;
-  background: transparent !important;
-  -webkit-appearance: none;
-  border: none !important;
-  border-bottom: 0.5px solid rgba(168,181,201,.12) !important;
-  padding: 18px 0;
-  cursor: pointer; text-align: left; width: 100%;
-  display: block;
-  transition: color .15s ease, transform .18s cubic-bezier(.34,1.56,.64,1);
-  line-height: 1.1;
-  -webkit-tap-highlight-color: transparent;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-.drawer-main-item:first-child { border-top: 0.5px solid rgba(168,181,201,.12) !important; }
-.drawer-main-item:active { color: #D4AF37 !important; transform: translateX(8px); }
-.drawer-main-item.dm-reserve {
-  color: #5B9BFF !important;
-}
-.drawer-main-item.dm-reserve:active { color: #D4AF37 !important; }
-
-/* ── SECONDARY NAV — compact list ── */
-.drawer-sec-nav {
-  list-style: none;
-  padding: 0 32px 8px;
-  display: flex; flex-direction: column; gap: 0;
-}
-.drawer-sec-item {
-  display: flex; align-items: center; gap: 10px;
-  min-height: 44px; padding: 0 0;
-  cursor: pointer; border: none !important; background: transparent !important;
-  width: 100%; text-align: left;
-  font-family: "Inter", -apple-system, sans-serif;
-  font-size: 14px; font-weight: 400;
-  color: #A8B5C9 !important;
-  border-bottom: 0.5px solid rgba(168,181,201,.07) !important;
-  transition: color .15s ease;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: none;
-  opacity: 1 !important;
-}
-.drawer-sec-item:last-child { border-bottom: none !important; }
-.drawer-sec-item:active { color: #F5F1E8 !important; }
-
-/* ── DRAWER BOTTOM — mode toggle + SIREN ── */
-.drawer-bottom {
-  padding: 16px 32px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
-  border-top: 0.5px solid rgba(168,181,201,.1);
-  display: flex; flex-direction: column; gap: 14px;
-}
-.drawer-mode-row {
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-}
-.drawer-mode-label {
-  font-family: var(--ff-body); font-size: 15px; color: var(--ink-secondary);
-}
-.drawer-toggle {
-  width: 46px; height: 26px; border-radius: 13px;
-  background: rgba(168,181,201,.2);
-  position: relative; transition: background .25s ease;
-  flex-shrink: 0;
-}
-.drawer-toggle::after {
-  content: ''; position: absolute;
-  top: 3px; left: 3px;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--ink-secondary);
-  transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .25s ease;
-}
-.drawer-toggle.on { background: rgba(91,155,255,.35); }
-.drawer-toggle.on::after { transform: translateX(20px); background: var(--blue-electric); }
-.drawer-meta {
-  font-family: var(--ff-mono);
-  font-size: 10px; color: var(--ink-muted); letter-spacing: .05em;
-}
-
-/* ── DOCK CACHÉ (conservé pour le JS) ── */
-#bottomNav { display: none !important; }
-
-/* ── MODAUX GÉNÉRIQUES ── */
-.inr-modal {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(5,13,24,.85);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  display: flex; align-items: flex-end; justify-content: center;
-  padding: 0 0 env(safe-area-inset-bottom, 0px);
-  animation: modalIn .3s cubic-bezier(.16,1,.3,1);
-}
-@keyframes modalIn { from { opacity: 0; } to { opacity: 1; } }
-.inr-modal-box {
-  width: 100%; max-width: 520px;
-  background: var(--bg-elevated);
-  border: 0.5px solid var(--rule-soft);
-  border-bottom: none;
-  border-radius: 24px 24px 0 0;
-  max-height: 80vh; overflow: hidden;
-  display: flex; flex-direction: column;
-  animation: sheetUp .4s cubic-bezier(.34,1.3,.64,1);
-}
-@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.inr-modal-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 20px 16px;
-  border-bottom: 0.5px solid var(--rule-soft);
-  flex-shrink: 0;
-}
-.inr-modal-title {
-  font-family: var(--ff-display);
-  font-style: italic; font-size: 1.15rem;
-  color: var(--ink-primary);
-}
-.inr-modal-close {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 0.5px solid var(--rule-soft);
-  background: rgba(168,181,201,.08);
-  color: var(--ink-secondary); font-size: 20px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-}
-.inr-modal-body {
-  padding: 20px; overflow-y: auto; flex: 1;
-  display: flex; flex-direction: column; gap: 12px;
-}
-.inr-modal-sub {
-  font-family: var(--ff-body); font-size: .88rem;
-  color: var(--ink-secondary); line-height: 1.6;
-}
-.inr-modal-input {
-  width: 100%; padding: 14px 16px;
-  background: rgba(20,37,61,.8);
-  border: 0.5px solid var(--rule-strong);
-  border-radius: 12px; color: var(--ink-primary);
-  font-family: var(--ff-mono); font-size: 1rem;
-  letter-spacing: .08em; text-transform: uppercase;
-  outline: none; transition: border-color .2s;
-}
-.inr-modal-input:focus { border-color: var(--blue-electric); }
-.inr-modal-btn {
-  width: 100%; padding: 16px;
-  background: var(--blue-electric); color: #fff;
-  border: none; border-radius: 100px;
-  font-family: var(--ff-body); font-weight: 700; font-size: .95rem;
-  cursor: pointer; letter-spacing: .04em;
-  box-shadow: 0 0 24px rgba(91,155,255,.35);
-  transition: transform .15s, box-shadow .15s;
-}
-.inr-modal-btn:active { transform: scale(.97); box-shadow: 0 0 12px rgba(91,155,255,.2); }
-.inr-modal-feedback {
-  font-family: var(--ff-mono); font-size: .78rem;
-  text-align: center; min-height: 20px;
-  color: var(--blue-electric);
-}
-.inr-modal-rule {
-  height: 1px; background: var(--rule-soft); margin: 8px 0;
-}
-
-/* ── DOCK : inr-live-dot bleu ── */
-.inr-live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--blue-electric);
-  box-shadow: 0 0 6px var(--blue-electric), 0 0 14px rgba(91,155,255,.4);
-}
-
-/* ── Scrollbar héro supprimée ── */
-.scroll-progress { background: linear-gradient(90deg, var(--blue-glow), var(--blue-electric)); }
-
-/* ── Layout sans dock — override bottom offsets ── */
-.app-view {
-  bottom: 0 !important;
-}
-.reserve-scroll {
-  padding-bottom: calc(var(--safe-bot) + 32px) !important;
-}
-.tarifs-sticky-cta {
-  bottom: calc(var(--safe-bot) + 12px) !important;
-}
-.inr-pill {
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
-}
-#pwaBanner, .pwa-install-banner {
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
-}
 </style>
 </head>
 <body>
 
-<!-- ═══ HEADER masqué — remplacé par burger + logo sur la carte ═══ -->
-<header class="hdr" id="appHeader" style="display:none" aria-hidden="true"></header>
+<!-- ═══ HEADER ═══ -->
+<header class="hdr" id="appHeader">
+  <div class="hdr-inner">
+    <div class="brand">
+      <span class="brand-monogram">I&amp;N</span>
+      <span class="brand-name">RUN</span>
+    </div>
+    <div class="badge-live">Disponible</div>
+  </div>
+</header>
 
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <div class="app-view active" id="view-home" aria-label="Accueil">
 
   <!-- ═══ HERO MAP — INR SIGNATURE ═══ -->
-  <section id="heroMap" aria-label="Réservation Inrun — Transferts aéroports & longue distance">
+  <section id="heroMap" aria-label="Calculez votre tarif instantanément">
     <div id="heroMapCanvas"></div>
     <div class="hero-map-vignette" aria-hidden="true"></div>
     <div class="hero-map-scanline" aria-hidden="true"></div>
 
-    <!-- HUD masqués — préservés pour heroUpdateHud() -->
+    <!-- HUD Coordonnées (masqué — remplacé par spans vides pour garder heroUpdateHud sans erreur) -->
     <span id="heroCoordLat" style="display:none"></span>
     <span id="heroCoordLng" style="display:none"></span>
     <span id="heroZoomHud"  style="display:none"></span>
 
-    <!-- ═══ BURGER — haut gauche ═══ -->
-    <button class="hero-burger" id="heroBurger" onclick="openDrawer()" aria-label="Menu principal" aria-expanded="false" aria-controls="sideDrawer">
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-    </button>
-
-    <!-- ═══ LOGO PILL — haut centre ═══ -->
-    <!-- logo pill supprimé -->
-
-    <!-- Toggle jour/nuit (conservé, utilisé par le drawer aussi) -->
-    <button class="hero-mode-toggle" id="heroModeToggle" aria-label="Basculer mode jour/nuit" title="Mode jour / nuit" style="display:none">
+    <!-- Toggle jour/nuit -->
+    <button class="hero-mode-toggle" id="heroModeToggle" aria-label="Basculer mode jour/nuit" title="Mode jour / nuit">
       <svg id="heroModeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
       </svg>
       <span class="hero-mode-lbl" id="heroModeLbl">NUIT</span>
     </button>
-    <!-- Install PWA button — shown by JS when installable -->
-    <button class="hero-install-btn" id="heroInstallBtn" aria-label="Installer Inrun">
+    <!-- Install PWA button — shown by JS when installable, hidden in standalone -->
+    <button class="hero-install-btn" id="heroInstallBtn" aria-label="Installer I&N RUN">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M12 3v11M8 10l4 4 4-4"/><path d="M20 21H4"/></svg>
       INSTALLER
     </button>
@@ -4060,7 +3671,7 @@ html, body { background: var(--bg-night) !important; }
       </span>
       <span class="inr-pill-text">Où allons-nous ?</span>
       <span class="inr-pill-sep"></span>
-      <span class="inr-pill-avail"><span class="inr-live-dot"></span>Réservation à l'avance</span>
+      <span class="inr-pill-avail"><span class="inr-live-dot"></span>Disponible</span>
     </button>
 
     <!-- Backdrop (ferme la carte au tap) -->
@@ -4074,7 +3685,7 @@ html, body { background: var(--bg-night) !important; }
         <span class="inr-monogram">INR</span>
         <div class="inr-hud-status">
           <span class="inr-live-dot"></span>
-          <span>Réservation à l'avance · Aéroports & longue distance</span>
+          <span>Disponible · 24/7</span>
         </div>
       </div>
 
@@ -4164,9 +3775,13 @@ html, body { background: var(--bg-night) !important; }
     </div>
   </section>
 
-  <!-- URGENCY STRIP retiré — repositionnement commercial v3 -->
-  <div style="display:none" aria-hidden="true">
-    <div id="urgencyCounter"></div>
+  <!-- ═══ URGENCY STRIP ═══ -->
+  <div class="urgency-strip">
+    <div class="urgency-left">
+      <div class="urgency-pulse"></div>
+      <div class="urgency-text">Disponible maintenant · Prise en charge ~15 min</div>
+    </div>
+    <div class="urgency-right" id="urgencyCounter">3 courses aujourd'hui</div>
   </div>
 
 </div><!-- /view-home -->
@@ -4193,7 +3808,7 @@ html, body { background: var(--bg-night) !important; }
       </div>
       <div class="sheet-stat-pill sheet-stat-live">
         <span class="sheet-live-dot"></span>
-        Sur réservation
+        Disponible
       </div>
     </div>
 
@@ -4425,9 +4040,9 @@ html, body { background: var(--bg-night) !important; }
         <div class="proof-lbl">RC Pro</div>
       </div>
       <div class="proof-sep"></div>
-      <div class="proof-cell" title="Réservation à l'avance — Aéroports & longue distance">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#5B9BFF" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 3px;display:block"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <div class="proof-lbl">Avance</div>
+      <div class="proof-cell" title="Service disponible 24h/24, 7j/7">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#83F9FF" stroke-width="1.8" stroke-linecap="round" style="margin:0 auto 3px;display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="proof-lbl">24h/7j</div>
       </div>
     </div>
   </div>
@@ -4519,7 +4134,7 @@ html, body { background: var(--bg-night) !important; }
       </div>
       <div class="review-card">
         <div class="review-stars" aria-label="5 étoiles sur 5" role="img">★★★★★</div>
-        <div class="review-text">"Réservation via WhatsApp, confirmation rapide et devis garanti. Ponctuel, discret, professionnel. Je recommande."</div>
+        <div class="review-text">"Réservation en 2 minutes via WhatsApp, confirmation immédiate. Ponctuel, discret, professionnel. Je recommande."</div>
         <div class="review-footer">
           <div class="review-avatar">TR</div>
           <div class="review-info">
@@ -4587,8 +4202,8 @@ html, body { background: var(--bg-night) !important; }
     <div style="font-size:.84rem;color:var(--mist);line-height:1.55;margin-bottom:0;">Tout ce que vous devez savoir avant de réserver.</div>
     <div class="faq-list">
       <div class="faq-item">
-        <div class="faq-q">Quel délai minimum pour réserver ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">Inrun fonctionne exclusivement sur réservation à l'avance. Envoyez votre demande par WhatsApp en précisant date, heure et destination — vous recevez une confirmation et un devis garanti sous peu.</div>
+        <div class="faq-q">Peut-on réserver à la dernière minute ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="faq-a">Oui, nous acceptons les réservations immédiates. Pour une prise en charge immédiate, contactez-nous directement par WhatsApp ou téléphone. La confirmation arrive en moins de 2 minutes.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Le tarif affiché est-il définitif ?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
@@ -4673,7 +4288,7 @@ html, body { background: var(--bg-night) !important; }
         <span>WhatsApp</span>
       </a>
     </div>
-    <div class="call-note">Réservation à l'avance · Aéroports & longue distance</div>
+    <div class="call-note">Disponible 24h/24 · 7j/7 · Réponse &lt; 2 min</div>
   </div>
 </div><!-- /view-call -->
 
@@ -4725,105 +4340,6 @@ html, body { background: var(--bg-night) !important; }
         <div class="pwa-ios-step-num">3</div>
         <div class="pwa-ios-step-body">Confirmez en appuyant sur <strong>Ajouter</strong></div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ DRAWER OVERLAY ═══ -->
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()" aria-hidden="true"></div>
-
-<!-- ═══ SIDE DRAWER — full-screen Heetch style ═══ -->
-<nav class="side-drawer" id="sideDrawer" aria-label="Menu principal" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="drawer-inner">
-
-    <!-- Hdr : × gauche + logo droite -->
-    <div class="drawer-hdr">
-      <button class="drawer-close" onclick="closeDrawer()" aria-label="Fermer le menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="22" height="22"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-        <div class="drawer-monogram-small">IN</div>
-        <div class="drawer-run-small">RUN</div>
-      </div>
-    </div>
-
-    <!-- Navigation principale — grand format uppercase -->
-    <div class="drawer-main-nav" role="list">
-      <button class="drawer-main-item" onclick="switchView('home');closeDrawer();" aria-label="Accueil">
-        ACCUEIL
-      </button>
-      <button class="drawer-main-item dm-reserve" onclick="switchView('reserve');closeDrawer();" aria-label="Réserver">
-        RÉSERVER
-      </button>
-      <button class="drawer-main-item" onclick="switchView('tarifs');closeDrawer();" aria-label="Tarifs">
-        TARIFS
-      </button>
-      <button class="drawer-main-item" onclick="switchView('call');closeDrawer();" aria-label="Appeler">
-        APPELER
-      </button>
-    </div>
-
-    <!-- Navigation secondaire — liens utiles -->
-    <ul class="drawer-sec-nav" role="list">
-      <li class="drawer-sec-item" onclick="openCoursesModal();closeDrawer();" role="button" tabindex="0">Mes courses</li>
-      <li class="drawer-sec-item" onclick="openPromoModal();closeDrawer();" role="button" tabindex="0">Code promo</li>
-      <li class="drawer-sec-item" onclick="switchView('tarifs');closeDrawer();setTimeout(()=>{const faq=document.querySelector('.faq-section');if(faq)faq.scrollIntoView({behavior:'smooth'});},450);" role="button" tabindex="0">Aide &amp; FAQ</li>
-      <li class="drawer-sec-item" onclick="openLegal();closeDrawer();" role="button" tabindex="0">Mentions légales</li>
-      <li class="drawer-sec-item" onclick="openAboutModal();closeDrawer();" role="button" tabindex="0">À propos</li>
-    </ul>
-
-    <!-- Bas : toggle mode clair + SIREN -->
-    <div class="drawer-bottom">
-      <div class="drawer-mode-row" onclick="toggleHeroMode();updateDrawerTheme();" role="button" tabindex="0" aria-label="Activer le mode clair">
-        <span class="drawer-mode-label" id="drawerThemeLabel">Activer le mode clair</span>
-        <div class="drawer-toggle" id="drawerThemeToggle"></div>
-      </div>
-      <p class="drawer-meta">SIREN 993 776 467 · TVA art. 293 B · v3.0</p>
-    </div>
-
-  </div>
-</nav>
-
-<!-- ═══ MODAL — MES COURSES ═══ -->
-<div class="inr-modal" id="modalCourses" role="dialog" aria-modal="true" aria-label="Mes courses" style="display:none">
-  <div class="inr-modal-box">
-    <div class="inr-modal-hdr">
-      <span class="inr-modal-title">Mes courses</span>
-      <button class="inr-modal-close" onclick="document.getElementById('modalCourses').style.display='none'" aria-label="Fermer">×</button>
-    </div>
-    <div class="inr-modal-body" id="coursesModalBody"></div>
-  </div>
-</div>
-
-<!-- ═══ MODAL — CODE PROMO ═══ -->
-<div class="inr-modal" id="modalPromo" role="dialog" aria-modal="true" aria-label="Code promo" style="display:none">
-  <div class="inr-modal-box">
-    <div class="inr-modal-hdr">
-      <span class="inr-modal-title">Code promo</span>
-      <button class="inr-modal-close" onclick="document.getElementById('modalPromo').style.display='none'" aria-label="Fermer">×</button>
-    </div>
-    <div class="inr-modal-body">
-      <p class="inr-modal-sub">Saisissez votre code pour obtenir une réduction sur votre prochaine course.</p>
-      <input class="inr-modal-input" id="promoCodeInput" type="text" placeholder="Ex : BIENVENUE10" autocapitalize="characters" autocomplete="off">
-      <button class="inr-modal-btn" onclick="applyPromoCode()">Appliquer</button>
-      <p class="inr-modal-feedback" id="promoFeedback"></p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL — À PROPOS ═══ -->
-<div class="inr-modal" id="modalAbout" role="dialog" aria-modal="true" aria-label="À propos" style="display:none">
-  <div class="inr-modal-box">
-    <div class="inr-modal-hdr">
-      <span class="inr-modal-title">À propos</span>
-      <button class="inr-modal-close" onclick="document.getElementById('modalAbout').style.display='none'" aria-label="Fermer">×</button>
-    </div>
-    <div class="inr-modal-body">
-      <p class="inr-modal-sub" style="font-style:italic;font-size:1.05rem;margin-bottom:16px">Votre chauffeur privé en Île-de-France</p>
-      <p class="inr-modal-sub">Nourdine BRAHA, chauffeur VTC indépendant basé à Ris-Orangis (91), vous accompagne pour tous vos transferts vers les aéroports de Paris — CDG, Orly, Beauvais, Le Bourget — ainsi que pour vos courses longue distance vers la province, la Belgique ou les gares TGV.</p>
-      <p class="inr-modal-sub" style="margin-top:12px">Spécialiste de la mise à disposition à l'heure ou à la journée, Inrun privilégie la réservation à l'avance pour vous garantir une disponibilité et un tarif fixe sans surprise.</p>
-      <div class="inr-modal-rule"></div>
-      <p class="inr-modal-sub" style="font-family:var(--ff-mono);font-size:.72rem;color:var(--ink-muted)">SIREN 993 776 467 · TVA non applicable, art. 293 B du CGI</p>
     </div>
   </div>
 </div>
@@ -5591,7 +5107,7 @@ function setupDateTime() {
 function setupUrgency() {
   const el = document.getElementById('urgencyCounter');
   if (!el) return;
-  const counts = ['CDG · Orly · Beauvais · Le Bourget', 'Province · Belgique · Gares TGV', 'Mise à disposition à l\'heure', 'Réservation à l\'avance'];
+  const counts = ['3 courses aujourd\'hui', '5 courses aujourd\'hui', '2 en ce moment', 'Dernière résa · 8 min'];
   let i = 0;
   setInterval(() => { i = (i + 1) % counts.length; el.style.opacity = '0'; setTimeout(() => { el.textContent = counts[i]; el.style.opacity = '1'; }, 300); }, 8000);
   el.style.transition = 'opacity .3s';
@@ -6362,7 +5878,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (origUrgency) {
     const origSetText = origUrgency.textContent;
     let uc = 0;
-    const phrases = ['CDG · Orly · Beauvais', 'Province & Belgique', 'Réservation à l\'avance'];
+    const phrases = ['3 courses aujourd\'hui', '12 clients satisfaits', '24h/7j · toujours là'];
     setInterval(() => {
       origUrgency.classList.remove('glitch');
       void origUrgency.offsetWidth;
@@ -6828,113 +6344,6 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' }).catch(() => {});
   });
 }
-</script>
-
-<!-- ═══ V3 — DRAWER + MODAUX JS ═══ -->
-<script>
-/* ── Drawer ── */
-function openDrawer() {
-  const drawer = document.getElementById('sideDrawer');
-  const burger = document.getElementById('heroBurger');
-  if (!drawer) return;
-  /* Double sécurité : class + style direct pour iOS Safari PWA */
-  drawer.classList.add('open');
-  drawer.style.display = 'flex';
-  drawer.style.visibility = 'visible';
-  drawer.setAttribute('aria-hidden', 'false');
-  burger && burger.setAttribute('aria-expanded', 'true');
-  burger && burger.classList.add('open');
-  updateDrawerTheme();
-}
-function closeDrawer() {
-  const drawer = document.getElementById('sideDrawer');
-  const burger = document.getElementById('heroBurger');
-  if (!drawer) return;
-  drawer.classList.remove('open');
-  drawer.style.display = '';
-  drawer.style.visibility = '';
-  drawer.setAttribute('aria-hidden', 'true');
-  burger && burger.setAttribute('aria-expanded', 'false');
-  burger && burger.classList.remove('open');
-}
-function updateDrawerTheme() {
-  const isDay = document.body.classList.contains('day-mode') ||
-                document.getElementById('heroMap')?.classList.contains('day-mode');
-  const toggle = document.getElementById('drawerThemeToggle');
-  const label  = document.getElementById('drawerThemeLabel');
-  const icon   = document.getElementById('drawerThemeIcon');
-  if (toggle) toggle.classList.toggle('on', isDay);
-  if (label)  label.textContent = isDay ? 'Désactiver le mode clair' : 'Activer le mode clair';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-
-/* ── Modal mes courses ── */
-function openCoursesModal() {
-  const modal = document.getElementById('modalCourses');
-  const body  = document.getElementById('coursesModalBody');
-  if (!modal || !body) return;
-  let courses = [];
-  try { courses = JSON.parse(localStorage.getItem('inrun_courses_history') || '[]'); } catch(_) {}
-  if (!courses.length) {
-    body.innerHTML = '<p style="color:var(--ink-muted);font-size:.88rem;text-align:center;padding:24px 0">Aucune course enregistrée pour le moment.</p>';
-  } else {
-    body.innerHTML = courses.slice().reverse().map(c => `
-      <div style="padding:12px 0;border-bottom:0.5px solid var(--rule-soft)">
-        <p style="font-family:var(--ff-mono);font-size:.72rem;color:var(--ink-muted)">${c.date || ''}</p>
-        <p style="color:var(--ink-primary);font-size:.88rem;margin-top:4px">${c.depart || ''} → ${c.arrive || ''}</p>
-        ${c.price ? `<p style="font-family:var(--ff-display);font-style:italic;font-size:1.2rem;color:var(--gold-accent);margin-top:4px">${c.price}€</p>` : ''}
-      </div>`).join('');
-  }
-  modal.style.display = 'flex';
-}
-
-/* ── Modal code promo ── */
-const PROMO_CODES = {
-  'BIENVENUE10': { type: 'percent', val: 10, label: 'Bienvenue · −10% découverte' },
-  'MERCI15':     { type: 'percent', val: 15, label: 'Merci · −15% fidélité' },
-  'VIP20':       { type: 'percent', val: 20, label: 'VIP · −20% premium' },
-  'AMI10':       { type: 'percent', val: 10, label: 'Parrainage · −10%' },
-};
-function openPromoModal() {
-  const modal = document.getElementById('modalPromo');
-  if (!modal) return;
-  const input = document.getElementById('promoCodeInput');
-  const fb    = document.getElementById('promoFeedback');
-  if (input) input.value = '';
-  if (fb)    fb.textContent = '';
-  modal.style.display = 'flex';
-  setTimeout(() => input && input.focus(), 300);
-}
-function applyPromoCode() {
-  const input = document.getElementById('promoCodeInput');
-  const fb    = document.getElementById('promoFeedback');
-  if (!input || !fb) return;
-  const code = input.value.trim().toUpperCase();
-  const promo = PROMO_CODES[code];
-  if (promo) {
-    if (typeof STATE !== 'undefined') STATE.promo = { code, ...promo };
-    fb.style.color = 'var(--blue-electric)';
-    fb.textContent = `✓ Code appliqué : ${promo.label}`;
-    setTimeout(() => { document.getElementById('modalPromo').style.display = 'none'; }, 1800);
-  } else {
-    fb.style.color = '#ef4444';
-    fb.textContent = 'Code invalide. Vérifiez et réessayez.';
-  }
-}
-
-/* ── Modal à propos ── */
-function openAboutModal() {
-  const modal = document.getElementById('modalAbout');
-  if (modal) modal.style.display = 'flex';
-}
-
-/* ── Fermer modaux au clic fond ── */
-document.addEventListener('click', e => {
-  ['modalCourses','modalPromo','modalAbout'].forEach(id => {
-    const modal = document.getElementById(id);
-    if (modal && e.target === modal) modal.style.display = 'none';
-  });
-});
 </script>
 
 </body>

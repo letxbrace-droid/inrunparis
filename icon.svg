@@ -1,48 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F1118"/>
-      <stop offset="100%" stop-color="#070809"/>
-    </linearGradient>
-    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4DFCE4"/>
-      <stop offset="50%" stop-color="#0CF4D8"/>
-      <stop offset="100%" stop-color="#09B8A6"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <radialGradient id="bgGrad" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#14253D"/>
+      <stop offset="100%" stop-color="#050D18"/>
+    </radialGradient>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay" result="blended"/>
+      <feComposite in="blended" in2="SourceGraphic" operator="in"/>
     </filter>
   </defs>
-
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <rect width="512" height="512" rx="112" fill="none" stroke="#0CF4D8" stroke-width="2" opacity="0.25"/>
-
-  <path d="M 90 60 L 60 60 L 60 90" fill="none" stroke="#0CF4D8" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-  <path d="M 422 60 L 452 60 L 452 90" fill="none" stroke="#0CF4D8" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-  <path d="M 90 452 L 60 452 L 60 422" fill="none" stroke="#0CF4D8" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-  <path d="M 422 452 L 452 452 L 452 422" fill="none" stroke="#0CF4D8" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-
-  <text
-    x="256" y="298"
-    text-anchor="middle"
-    font-family="Inter, Helvetica Neue, Arial, sans-serif"
-    font-size="186"
-    font-weight="800"
-    font-style="italic"
-    letter-spacing="-8"
-    fill="url(#text-grad)"
-    filter="url(#glow)"
-  >INR</text>
-
-  <text
-    x="256" y="356"
-    text-anchor="middle"
-    font-family="Inter, Helvetica Neue, Arial, sans-serif"
-    font-size="28"
-    font-weight="500"
-    letter-spacing="10"
-    fill="#0CF4D8"
-    opacity="0.55"
-  >RUN</text>
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bgGrad)"/>
+  <rect width="512" height="512" rx="112" ry="112" fill="transparent" filter="url(#grain)" opacity="0.04"/>
+  <text x="256" y="320" text-anchor="middle"
+    font-family="Fraunces, Georgia, 'Times New Roman', serif"
+    font-style="italic" font-weight="700" font-size="300"
+    fill="#D4AF37" letter-spacing="-8">IN</text>
+  <rect x="216" y="418" width="80" height="2" rx="1" fill="#D4AF37" opacity="0.6"/>
 </svg>
