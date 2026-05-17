@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v32 */
-const CACHE = 'inrun-v32';
+/* I&N RUN — Service Worker v33 */
+const CACHE = 'inrun-v33';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
