@@ -1,15 +1,15 @@
 {
-  "name": "I&N RUN — Chauffeur Privé",
-  "short_name": "I&N RUN",
-  "description": "Réservez votre chauffeur privé VTC. Tarif fixe garanti, confirmation en 2 min.",
+  "name": "Inrun — Chauffeur Privé Aéroports",
+  "short_name": "Inrun",
+  "description": "Spécialiste transferts aéroports CDG, Orly, Beauvais et courses longue distance. Réservation directe à l'avance, tarif fixe garanti.",
   "start_url": "/inrunparis/",
   "scope": "/inrunparis/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#0A0A0B",
-  "background_color": "#0A0A0B",
-  "lang": "fr",
-  "categories": ["travel", "transportation"],
+  "background_color": "#0A1628",
+  "theme_color": "#0A1628",
+  "lang": "fr-FR",
+  "categories": ["travel", "transportation", "business"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -21,8 +21,13 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "prefer_related_applications": false
+  ]
 }
