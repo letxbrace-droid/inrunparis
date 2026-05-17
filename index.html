@@ -1841,7 +1841,7 @@ body {
   box-shadow: 0 0 40px rgba(37,211,102,.4),0 6px 16px rgba(18,140,74,.4),0 12px 32px rgba(0,0,0,.4),inset 0 1px 2px rgba(255,255,255,.3);
   transition: transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; overflow: hidden;
 }
-.btn-wa::before { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); animation: shimmer 2.8s ease-in-out infinite; }
+.btn-wa::before { content: none; } /* replaced by GPU shimmer in quality block */
 @keyframes shimmer { 0%{left:-50%} 60%,100%{left:150%} }
 .btn-wa:hover { transform: translateY(-2px); }
 .btn-wa svg { width: 18px; height: 18px; fill: #fff; position: relative; z-index: 1; }
@@ -3347,6 +3347,246 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
   mix-blend-mode: overlay;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UI QUALITY SYSTEM — GPU compositing, sharp borders, HD render
+   Engineer pass: every animated element is compositor-only
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Rendu sub-pixel haute définition ── */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── GPU compositing — promote animated layers ── */
+.app-view {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.call-ring {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.step-circle {
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+.dock-indicator {
+  will-change: left, width;
+}
+.geoloc-btn {
+  will-change: transform, box-shadow;
+}
+.call-btn {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.btn-primary, .btn-wa, .btn-secondary {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.tarifs-sticky-cta-btn {
+  will-change: transform, box-shadow;
+}
+
+/* ── Shimmer : left → translateX (compositor-only, 60fps garanti) ── */
+.btn-wa::before,
+.btn-primary::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent);
+  transform: translateX(-200%);
+  will-change: transform;
+  animation: shimmerGPU 2.8s ease-in-out infinite;
+}
+@keyframes shimmerGPU {
+  0%   { transform: translateX(-200%); }
+  60%, 100% { transform: translateX(500%); }
+}
+/* Override ancienne animation left-based */
+@keyframes shimmer { 0% { transform: none; } 100% { transform: none; } }
+
+/* ── Call rings — timing & easing premium ── */
+.call-ring {
+  border-width: 1.5px;
+  animation: callRingHD 3.2s cubic-bezier(.2,.6,.36,1) infinite;
+}
+.call-ring.r1 { border-color: rgba(12,244,216,.55); animation-duration: 3.2s; animation-delay: 0s; }
+.call-ring.r2 { border-color: rgba(212,168,75,.4);  animation-duration: 3.2s; animation-delay: 1.07s; }
+.call-ring.r3 { border-color: rgba(12,244,216,.28); animation-duration: 3.2s; animation-delay: 2.13s; }
+@keyframes callRingHD {
+  0%   { transform: scale(1);   opacity: .75; }
+  60%  { opacity: .15; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+/* Override ancienne keyframe */
+@keyframes callRing {
+  0%   { transform: scale(1);   opacity: .6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ── Call avatar — glass specular ── */
+.call-avatar {
+  background: linear-gradient(135deg, #12a294 0%, #0d8a7c 35%, #075f55 100%);
+  border: 1.5px solid rgba(12,244,216,.55);
+  box-shadow:
+    0 0 0 5px rgba(12,244,216,.07),
+    0 0 0 10px rgba(12,244,216,.04),
+    0 0 44px rgba(12,244,216,.35),
+    0 0 80px rgba(12,244,216,.14),
+    inset 0 1.5px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(0,0,0,.25);
+}
+
+/* ── Call buttons — specular gloss ── */
+.call-btn-phone {
+  box-shadow:
+    0 10px 36px rgba(212,168,75,.50),
+    0 20px 56px rgba(212,168,75,.22),
+    0 0 0 1px rgba(212,168,75,.30),
+    inset 0 1.5px 0 rgba(255,255,255,.40),
+    inset 0 -1px 0 rgba(0,0,0,.18);
+}
+.call-btn-phone::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), transparent);
+  border-radius: 16px 16px 0 0;
+  pointer-events: none;
+}
+.call-btn-wa {
+  box-shadow:
+    0 10px 36px rgba(37,211,102,.32),
+    0 20px 56px rgba(37,211,102,.14),
+    0 0 0 1px rgba(37,211,102,.25),
+    inset 0 1.5px 0 rgba(255,255,255,.30);
+}
+
+/* ── Step indicator — bord et fond premium ── */
+.step-ind {
+  background: rgba(16,18,20,.5);
+  border: 0.5px solid rgba(12,244,216,.14);
+  border-top-color: rgba(12,244,216,.22);
+  box-shadow: 0 1px 0 rgba(255,255,255,.04), inset 0 1px 0 rgba(255,255,255,.03), 0 4px 16px rgba(0,0,0,.3);
+}
+/* Pulse plus fluide — scale+shadow, évite layout */
+@keyframes pulse-step {
+  0%,100% {
+    box-shadow: 0 0 0 3px rgba(12,244,216,.20), 0 0 20px rgba(12,244,216,.35);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(12,244,216,.10), 0 0 32px rgba(12,244,216,.25);
+    transform: scale(1.04);
+  }
+}
+/* Step line animated fill */
+.step-line {
+  position: relative; overflow: hidden;
+}
+.step-line::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--gold), var(--gold-warm));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+.step-line.done::after {
+  transform: scaleX(1);
+}
+
+/* ── Fields — bordure focus précise 2px ── */
+.field {
+  transition: border-left-color .2s ease, background .2s ease, box-shadow .25s ease;
+}
+.field:focus-within {
+  border-left-width: 3px;
+  border-left-color: var(--teal);
+  box-shadow:
+    4px 0 28px rgba(12,244,216,.14),
+    inset 0 0 0 0.5px rgba(12,244,216,.1);
+}
+/* Outline net retina au lieu du box-shadow flou */
+.field input:focus,
+.field textarea:focus { outline: none; }
+
+/* ── Carte — bord verre de précision ── */
+.card {
+  border: 0.5px solid rgba(255,255,255,.06);
+  border-top-color: rgba(255,255,255,.11);
+  border-bottom-color: rgba(0,0,0,.25);
+}
+
+/* ── Dock reserve button — meilleure animation pulse ── */
+@keyframes ctaPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(12,244,216,.5), 0 8px 28px rgba(12,244,216,.4), inset 0 1px 0 rgba(255,255,255,.4); transform: scale(1); }
+  50%      { box-shadow: 0 0 0 8px rgba(12,244,216,.0), 0 8px 28px rgba(12,244,216,.4), inset 0 1px 0 rgba(255,255,255,.4); transform: scale(1.02); }
+}
+
+/* ── View transitions plus naturelles ── */
+.app-view {
+  transition: opacity .24s cubic-bezier(.4,0,.2,1), transform .30s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Bouton retour — hover précis ── */
+.view-back-btn {
+  transition: background .18s ease, transform .15s cubic-bezier(.34,1.56,.64,1);
+}
+.view-back-btn:hover { background: rgba(255,255,255,.1); }
+
+/* ── Sticky CTA tarifs — bordure glass ── */
+.tarifs-sticky-cta-btn {
+  border: 0.5px solid rgba(12,244,216,.35);
+  box-shadow:
+    0 10px 32px rgba(12,244,216,.35),
+    0 20px 48px rgba(12,244,216,.15),
+    inset 0 1.5px 0 rgba(255,255,255,.35),
+    inset 0 -1px 0 rgba(0,0,0,.12);
+  letter-spacing: .04em;
+}
+
+/* ── Light mode — refonte pour mode jour HD ── */
+[data-theme="light"] .card {
+  border-top-color: rgba(255,255,255,1);
+  border-left-color: rgba(255,255,255,.85);
+}
+[data-theme="light"] .field:focus-within {
+  border-left-color: #0b8a7e;
+  box-shadow:
+    inset 3px 3px 8px rgba(155,170,195,.55),
+    inset -3px -3px 7px rgba(255,255,255,.9),
+    4px 0 24px rgba(8,122,114,.22);
+}
+[data-theme="light"] .btn-primary {
+  box-shadow:
+    0 10px 32px rgba(8,122,114,.45),
+    0 20px 48px rgba(8,122,114,.22),
+    inset 0 2px 0 rgba(255,255,255,.35),
+    inset 0 -1px 0 rgba(0,0,0,.1);
+}
+[data-theme="light"] .step-ind {
+  box-shadow:
+    -6px -6px 16px rgba(255,255,255,1),
+    6px 6px 18px rgba(145,160,185,.65),
+    inset 0 1.5px 0 rgba(255,255,255,1),
+    inset 0 -0.5px 0 rgba(145,160,185,.2);
+}
+[data-theme="light"] .step-item.active .step-circle {
+  box-shadow:
+    0 0 0 4px rgba(8,122,114,.15),
+    0 6px 22px rgba(8,122,114,.50),
+    0 12px 36px rgba(8,122,114,.22),
+    inset 0 1.5px 0 rgba(255,255,255,.35) !important;
 }
 </style>
 </head>
