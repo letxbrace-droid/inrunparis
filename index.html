@@ -3449,9 +3449,9 @@ body {
 
 /* ── GPU compositing — promote animated layers ── */
 .app-view {
-  will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* will-change retiré : créait un containing block pour position:fixed (bug Chrome/Samsung) */
 }
 .call-ring {
   will-change: transform, opacity;
@@ -4029,13 +4029,6 @@ html, body { background: var(--bg-night) !important; }
     <span id="heroCoordLat" style="display:none"></span>
     <span id="heroCoordLng" style="display:none"></span>
     <span id="heroZoomHud"  style="display:none"></span>
-
-    <!-- ═══ BURGER — haut gauche ═══ -->
-    <button class="hero-burger" id="heroBurger" onclick="openDrawer()" aria-label="Menu principal" aria-expanded="false" aria-controls="sideDrawer">
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-    </button>
 
     <!-- ═══ LOGO PILL — haut centre ═══ -->
     <!-- logo pill supprimé -->
@@ -4728,6 +4721,13 @@ html, body { background: var(--bg-night) !important; }
     </div>
   </div>
 </div>
+
+<!-- ═══ BURGER — direct child of body, hors de tout stacking context app-view ═══ -->
+<button class="hero-burger" id="heroBurger" onclick="openDrawer()" aria-label="Menu principal" aria-expanded="false" aria-controls="sideDrawer">
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+</button>
 
 <!-- ═══ DRAWER OVERLAY ═══ -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()" aria-hidden="true"></div>
@@ -6867,6 +6867,22 @@ function updateDrawerTheme() {
   if (label)  label.textContent = isDay ? 'Désactiver le mode clair' : 'Activer le mode clair';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+/* ── Failsafe burger listener — binds après définition de toutes les fonctions ── */
+(function() {
+  var b = document.getElementById('heroBurger');
+  var d = document.getElementById('sideDrawer');
+  if (!b || !d) return;
+  b.addEventListener('click', function(e) {
+    e.stopPropagation();
+    d.style.cssText = 'display:flex!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;z-index:999999!important;background:#050D18!important;color:#F5F1E8!important;flex-direction:column!important;visibility:visible!important;opacity:1!important;overflow:hidden!important;';
+    d.classList.add('open');
+    d.setAttribute('aria-hidden', 'false');
+    b.setAttribute('aria-expanded', 'true');
+    b.classList.add('open');
+    if (typeof updateDrawerTheme === 'function') updateDrawerTheme();
+  });
+})();
 
 /* ── Modal mes courses ── */
 function openCoursesModal() {
