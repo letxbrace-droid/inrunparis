@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v18 */
-const CACHE = 'inrun-v18';
+/* I&N RUN — Service Worker v22 */
+const CACHE = 'inrun-v22';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
@@ -57,7 +57,6 @@ self.addEventListener('fetch', e => {
     url.hostname.includes('cartocdn.com') ||
     url.hostname.includes('openstreetmap.org') ||
     url.hostname.includes('komoot.io') ||
-    url.hostname.includes('open-meteo.com') ||
     url.hostname.includes('project-osrm.org')
   ) {
     e.respondWith(fetch(request).catch(() => new Response('', { status: 503 })));

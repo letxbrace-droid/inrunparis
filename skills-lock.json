@@ -13,6 +13,72 @@
       "skillPath": "skills/taste-skill/SKILL.md",
       "computedHash": "9d1e82c5c409d2b0247245a005bc0f7e4447c0999b78dcea60f568c1ba4a6694"
     },
+    "eagle-ad-review": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-ad-review/SKILL.md",
+      "computedHash": "3c9f3d7ab7d04510e4c90b3209de57cb061c0f471fab9b326f5d174835e9e084"
+    },
+    "eagle-anti-slop": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-anti-slop/SKILL.md",
+      "computedHash": "abbd4d7b69e7cfd646727c855d70b399a3bda42b6b6b4a894efa11800dd32bbf"
+    },
+    "eagle-bootstrap": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-bootstrap/SKILL.md",
+      "computedHash": "33336c363e8640b28586514a19574b99b68fcbe6ebf4f84cba8ff0ca33fa82e0"
+    },
+    "eagle-claude-md": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-claude-md/SKILL.md",
+      "computedHash": "9a2542c1c4b65ec3ada9d855e3bc899c5ec8bb1b8f0e35dd4d21e6d30bed8e48"
+    },
+    "eagle-clean-doc": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-clean-doc/SKILL.md",
+      "computedHash": "0a736cad3238edf82c72928cbc4970f6515855ae18ecefdf59ba3a76347bf164"
+    },
+    "eagle-clean-sheet": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-clean-sheet/SKILL.md",
+      "computedHash": "09a465f76afac162f1e023b4645fe5545bce3126db06dc5346e04d0a17e57a46"
+    },
+    "eagle-compact-add": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-compact-add/SKILL.md",
+      "computedHash": "61943de22129a18766db0c4e2b158eb65fdf54977495722301a8e080451496ce"
+    },
+    "eagle-feature-flow": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-feature-flow/SKILL.md",
+      "computedHash": "f8872432c8dc8befed101341ca017681b7eb06d6f98ede3ac8aea830e7bbdaec"
+    },
+    "eagle-multi-stack-scaffolder": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-multi-stack-scaffolder/SKILL.md",
+      "computedHash": "26380d7449420ffa9714ba21341c92ae6551ff434ee51b70b19d2b3092d699e9"
+    },
+    "eagle-product-diagnostics": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-product-diagnostics/SKILL.md",
+      "computedHash": "9d7e3ce5ea987431c4f05336804d4e68efeb78280b1fc5d077ec3cd9ee7cc704"
+    },
+    "eagle-ux-review": {
+      "source": "eagleisbatman/eagle-skills",
+      "sourceType": "github",
+      "skillPath": "eagle-ux-review/SKILL.md",
+      "computedHash": "675fa19e4a5a1aa5e14a61e30adf6500ef4efe828e3c5c0750c43056d232be2e"
+    },
     "full-output-enforcement": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",
@@ -54,6 +120,12 @@
       "sourceType": "github",
       "skillPath": "skills/brutalist-skill/SKILL.md",
       "computedHash": "8fc355c4aadb7d29c53ca28bc41be3cd6eea765d121e3737c4dc2d0f90a8effa"
+    },
+    "ios-hig-design": {
+      "source": "mikeoptimax/ios-hig-design",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "225364278d11425ffb55b26d6f200f896da9cf4a94151472e26dd056b2edaf1d"
     },
     "minimalist-ui": {
       "source": "Leonxlnx/taste-skill",
