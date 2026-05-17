@@ -1908,6 +1908,9 @@ body {
 .geoloc-hint.show { opacity: 1; margin-bottom: 12px; }
 .geoloc-hint.success { color: var(--success); }
 .geoloc-hint.error { color: var(--danger); }
+[data-theme="light"] .geoloc-hint { color: #4b5563; }
+[data-theme="light"] .geoloc-hint.error { color: #dc2626; }
+[data-theme="light"] .geoloc-hint.success { color: #059669; }
 
 /* ── VALIDATION ── */
 #name-field.invalid { border-color: rgba(239,68,68,.4); animation: shakeName .4s ease-in-out; }
@@ -4700,6 +4703,8 @@ function setupFAQ() {
 }
 
 /* ─ GEOLOC ─ */
+let _lastKnownPos = null; /* cache la dernière position connue pour réutiliser dans le formulaire */
+
 async function reverseGeocode(lat, lng) {
   /* Try Photon first */
   try {
@@ -4707,17 +4712,18 @@ async function reverseGeocode(lat, lng) {
     const tid = setTimeout(() => ctrl.abort(), 6000);
     const r = await fetch(`https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}&lang=fr`, { signal: ctrl.signal });
     clearTimeout(tid);
-    const data = await r.json();
-    if (data.features?.length) {
-      const f = data.features[0]; const p = f.properties;
-      /* Build display from available props — Photon varies by location type */
-      const num  = p.housenumber ? `${p.housenumber} ` : '';
-      const street = p.street || p.road || '';
-      const city   = p.city || p.town || p.village || p.county || '';
-      const zip    = p.postcode || '';
-      const parts  = [num + street, zip + (zip && city ? ' ' : '') + city].map(s => s.trim()).filter(Boolean);
-      const display = parts.length ? parts.join(', ') : (p.name || '');
-      if (display) return { name: display, displayName: display, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    if (r.ok) {
+      const data = await r.json();
+      if (data.features?.length) {
+        const f = data.features[0]; const p = f.properties;
+        const num    = p.housenumber ? `${p.housenumber} ` : '';
+        const street = p.street || p.road || '';
+        const city   = p.city || p.town || p.village || p.county || '';
+        const zip    = p.postcode || '';
+        const parts  = [num + street, zip + (zip && city ? ' ' : '') + city].map(s => s.trim()).filter(Boolean);
+        const display = parts.length ? parts.join(', ') : (p.name || '');
+        if (display) return { name: display, displayName: display, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+      }
     }
   } catch (_) {}
   /* Fallback: Nominatim */
@@ -4726,19 +4732,23 @@ async function reverseGeocode(lat, lng) {
     const tid2 = setTimeout(() => ctrl2.abort(), 7000);
     const r2 = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fr`, { signal: ctrl2.signal });
     clearTimeout(tid2);
-    const d = await r2.json();
-    if (d?.display_name) {
-      const a = d.address || {};
-      const num  = a.house_number ? `${a.house_number} ` : '';
-      const street = a.road || a.pedestrian || a.footway || '';
-      const city   = a.city || a.town || a.village || a.suburb || '';
-      const zip    = a.postcode || '';
-      const parts  = [num + street, zip + (zip && city ? ' ' : '') + city].map(s => s.trim()).filter(Boolean);
-      const display = parts.length ? parts.join(', ') : d.display_name.split(',').slice(0, 2).join(',').trim();
-      return { name: display, displayName: display, lat, lng };
+    if (r2.ok) {
+      const d = await r2.json();
+      if (d?.display_name) {
+        const a = d.address || {};
+        const num    = a.house_number ? `${a.house_number} ` : '';
+        const street = a.road || a.pedestrian || a.footway || '';
+        const city   = a.city || a.town || a.village || a.suburb || '';
+        const zip    = a.postcode || '';
+        const parts  = [num + street, zip + (zip && city ? ' ' : '') + city].map(s => s.trim()).filter(Boolean);
+        const display = parts.length ? parts.join(', ') : d.display_name.split(',').slice(0, 2).join(',').trim();
+        return { name: display, displayName: display, lat, lng };
+      }
     }
   } catch (_) {}
-  return null;
+  /* Dernier recours — coordonnées brutes (toujours fonctionnel) */
+  const coordDisplay = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  return { name: coordDisplay, displayName: coordDisplay, lat, lng };
 }
 function showGeolocHint(msg, type = '') {
   const hint = document.getElementById('geolocHint');
@@ -4747,28 +4757,58 @@ function showGeolocHint(msg, type = '') {
   if (type) setTimeout(() => { hint.classList.remove('show'); setTimeout(() => hint.textContent = '', 300); }, 4000);
 }
 async function useMyLocation() {
-  const btn = document.getElementById('geolocBtn'); const input = document.getElementById('depart');
-  if (!btn || !input || !navigator.geolocation) { showGeolocHint('Géolocalisation non disponible', 'error'); return; }
-  btn.classList.add('loading'); showGeolocHint('Recherche de votre position…'); haptic(10);
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
-      const result = await reverseGeocode(latitude, longitude);
-      btn.classList.remove('loading');
-      if (result) {
-        input.value = result.displayName; STATE.depart = { name: result.name, lat: result.lat, lng: result.lng };
-        input.parentElement.classList.add('filled'); btn.classList.add('success'); showGeolocHint('✓ Position détectée', 'success'); haptic('medium');
-        if (STATE.depart && STATE.arrive) setStep(2);
-        setTimeout(() => btn.classList.remove('success'), 3000);
-      } else { showGeolocHint("Impossible de déterminer l'adresse", 'error'); }
-    },
-    (error) => {
-      btn.classList.remove('loading');
-      const msgs = { 1: 'Autorisez la géolocalisation', 2: 'Position indisponible', 3: "Délai d'attente dépassé" };
-      showGeolocHint(msgs[error.code] || 'Impossible', 'error');
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-  );
+  const btn = document.getElementById('geolocBtn');
+  const input = document.getElementById('depart');
+  if (!btn || !input) return;
+
+  if (!navigator.geolocation) {
+    showGeolocHint('GPS non disponible sur cet appareil', 'error');
+    return;
+  }
+
+  btn.classList.add('loading');
+  showGeolocHint('Localisation en cours…', '');
+  haptic(10);
+
+  /* Wrapper Promise avec timeout manuel — iOS PWA peut bloquer sans jamais appeler les callbacks */
+  const getPos = () => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject({ code: 3 }), 12000);
+    navigator.geolocation.getCurrentPosition(
+      pos => { clearTimeout(timer); resolve(pos); },
+      err => { clearTimeout(timer); reject(err); },
+      { enableHighAccuracy: true, timeout: 11000, maximumAge: 30000 }
+    );
+  });
+
+  let position;
+  try {
+    position = await getPos();
+    _lastKnownPos = position; /* cache pour réutilisation */
+  } catch (err) {
+    btn.classList.remove('loading');
+    const msgs = { 1: 'Autorisez la localisation dans les réglages', 2: 'Signal GPS indisponible', 3: 'Délai dépassé — réessayez' };
+    showGeolocHint(msgs[err.code] || 'Géolocalisation impossible', 'error');
+    return;
+  }
+
+  const { latitude, longitude } = position.coords;
+  showGeolocHint('Identification de l\'adresse…', '');
+
+  /* reverseGeocode retourne toujours un résultat (coordonnées en dernier recours) */
+  const result = await reverseGeocode(latitude, longitude);
+  btn.classList.remove('loading');
+
+  if (result) {
+    input.value = result.displayName;
+    STATE.depart = { name: result.name, lat: result.lat, lng: result.lng };
+    const field = document.getElementById('depart-field');
+    if (field) field.classList.add('filled');
+    btn.classList.add('success');
+    showGeolocHint('✓ Position détectée', 'success');
+    haptic('medium');
+    if (STATE.depart && STATE.arrive) setStep(2);
+    setTimeout(() => btn.classList.remove('success'), 3000);
+  }
 }
 
 /* ─ VALIDATION NOM ─ */
@@ -5445,14 +5485,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroMode();
   setupHeroAmb();
 
-  /* Auto-trigger geolocation on first visit — reduces time-to-first-value (Goal Gradient) */
+  /* Auto-trigger geolocation on first visit — cache position pour formulaire réservation */
   if (navigator.geolocation && !sessionStorage.getItem('inrun-geo-asked')) {
     sessionStorage.setItem('inrun-geo-asked', '1');
-    /* Small delay so map is ready before GPS fires */
     setTimeout(() => {
       navigator.geolocation.getCurrentPosition(
-        pos => heroSetGPS(pos.coords.latitude, pos.coords.longitude, 16),
-        () => {}, /* silent: user denied — no error, button still available */
+        pos => {
+          _lastKnownPos = pos;
+          heroSetGPS(pos.coords.latitude, pos.coords.longitude, 16);
+        },
+        () => {}, /* silent: user denied */
         { enableHighAccuracy: true, timeout: 8000 }
       );
     }, 800);
