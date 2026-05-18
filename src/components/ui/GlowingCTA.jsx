@@ -5,17 +5,22 @@ export default function GlowingCTA({ children, onClick, disabled, type = 'button
       onClick={onClick}
       disabled={disabled}
       className={`
-        relative flex items-center justify-center gap-2
+        cta-glow
+        relative flex items-center justify-center gap-2.5
         w-full py-4 px-6 rounded-2xl
-        bg-accent text-white font-bold text-base tracking-wide
-        transition-all duration-200 cursor-pointer
-        hover:bg-accent-2 active:scale-[.97]
+        text-white font-bold text-[15px] tracking-wide
+        transition-transform duration-150 cursor-pointer
+        active:scale-[.97]
         disabled:opacity-40 disabled:pointer-events-none
-        select-none
+        select-none overflow-hidden
         ${className}
       `}
-      style={{ boxShadow: '0 0 28px rgba(255,65,3,0.40), 0 4px 20px rgba(0,0,0,0.5)' }}
     >
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent)' }}
+      />
       {children}
     </button>
   )

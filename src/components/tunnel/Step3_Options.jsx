@@ -5,20 +5,64 @@ import iOSToggle  from '../ui/iOSToggle'
 import FloatingInput from '../ui/FloatingInput'
 
 const AMBIANCE_OPTS = [
-  { value: 'musique', label: '🎵 Musique' },
-  { value: 'radio',   label: '📻 Radio' },
-  { value: 'silence', label: '🔇 Silence' },
+  { value: 'musique', label: 'Musique', icon: '♪' },
+  { value: 'radio',   label: 'Radio',   icon: '◉' },
+  { value: 'silence', label: 'Silence', icon: '◌' },
 ]
 const PAYMENT_OPTS = ['Carte', 'Espèces', 'Virement']
 
+const OPTION_LIST = [
+  { key: 'wifi',        label: 'Wi-Fi 5G' },
+  { key: 'eau',         label: "Eau minérale" },
+  { key: 'usb',         label: 'Recharge USB' },
+  { key: 'confiseries', label: 'Confiseries' },
+  { key: 'siege',       label: 'Siège enfant' },
+]
+
+function SectionLabel({ children }) {
+  return (
+    <div className="flex items-center gap-2 mb-3">
+      <span
+        className="text-[10px] font-bold uppercase tracking-[.12em]"
+        style={{ color: 'rgba(255,65,3,.7)' }}
+      >
+        {children}
+      </span>
+      <div className="flex-1 h-px" style={{ background: 'rgba(255,65,3,.15)' }} />
+    </div>
+  )
+}
+
+function PillButton({ active, onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex-1 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95 transition-all duration-200 select-none"
+      style={{
+        background: active
+          ? 'linear-gradient(135deg, rgba(255,90,31,.18), rgba(255,65,3,.12))'
+          : 'rgba(0,10,18,.45)',
+        boxShadow: active
+          ? '0 0 16px rgba(255,65,3,.2), inset 0 1px 0 rgba(255,255,255,.08)'
+          : 'inset 2px 2px 6px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
+        border: active
+          ? '1px solid rgba(255,65,3,.4)'
+          : '1px solid rgba(255,255,255,.05)',
+        color: active ? '#F5F1E8' : 'rgba(245,241,232,.4)',
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
 export default function Step3Options({ onBack }) {
-  const store = useBookingStore()
   const {
     ambiance, setAmbiance, volume, setVolume, clim, setClim,
     options, toggleOption, payment, setPayment,
     clientName, setClientName, clientEmail, setClientEmail,
     note, setNote,
-  } = store
+  } = useBookingStore()
 
   const handleSend = () => {
     const booking = useBookingStore.getState()
@@ -30,20 +74,12 @@ export default function Step3Options({ onBack }) {
     sendWhatsApp(useBookingStore.getState())
   }
 
-  const OPTION_LIST = [
-    { key: 'wifi',        label: 'Wi-Fi 5G' },
-    { key: 'eau',         label: "Eau minérale" },
-    { key: 'usb',         label: 'Recharge USB' },
-    { key: 'confiseries', label: 'Confiseries' },
-    { key: 'siege',       label: 'Siège enfant' },
-  ]
-
   return (
     <div className="flex flex-col gap-5 px-5 pb-6">
 
       {/* Identité */}
       <section>
-        <h3 className="text-xs text-ink-muted uppercase tracking-widest mb-3">Votre identité</h3>
+        <SectionLabel>Votre identité</SectionLabel>
         <div className="flex flex-col gap-3">
           <FloatingInput
             label="Prénom"
@@ -64,108 +100,139 @@ export default function Step3Options({ onBack }) {
 
       {/* Ambiance */}
       <section>
-        <h3 className="text-xs text-ink-muted uppercase tracking-widest mb-3">Ambiance</h3>
+        <SectionLabel>Ambiance sonore</SectionLabel>
         <div className="flex gap-2">
           {AMBIANCE_OPTS.map((opt) => (
-            <button
+            <PillButton
               key={opt.value}
+              active={ambiance === opt.value}
               onClick={() => setAmbiance(opt.value)}
-              className={`
-                flex-1 py-2.5 rounded-xl text-xs font-medium cursor-pointer
-                transition-all duration-200 border
-                ${ambiance === opt.value
-                  ? 'bg-accent/15 border-accent/50 text-ink-primary'
-                  : 'bg-bg-elevated border-[var(--rule-strong)] text-ink-muted'}
-              `}
             >
-              {opt.label}
-            </button>
+              {opt.icon} {opt.label}
+            </PillButton>
           ))}
         </div>
         {ambiance !== 'silence' && (
-          <div className="flex items-center gap-3 mt-3">
-            <span className="text-xs text-ink-muted w-12">Vol. {volume}%</span>
-            <input
-              type="range" min="0" max="100" value={volume}
-              onChange={(e) => setVolume(Number(e.target.value))}
-              className="flex-1 accent-[#ff4103] h-1"
-              aria-label="Volume"
-            />
+          <div className="flex items-center gap-3 mt-3 px-1">
+            <span className="font-mono text-xs w-14" style={{ color: 'rgba(245,241,232,.5)' }}>
+              {volume}%
+            </span>
+            <div className="flex-1 relative">
+              <input
+                type="range" min="0" max="100" value={volume}
+                onChange={(e) => setVolume(Number(e.target.value))}
+                className="w-full h-1 rounded-full outline-none cursor-pointer appearance-none"
+                style={{ accentColor: '#ff4103' }}
+                aria-label="Volume"
+              />
+            </div>
           </div>
         )}
       </section>
 
       {/* Climatisation */}
       <section>
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs text-ink-muted uppercase tracking-widest">Clim ❄️ {clim}°C</h3>
+        <SectionLabel>Climatisation</SectionLabel>
+        <div
+          className="flex items-center justify-between px-4 py-3 rounded-2xl"
+          style={{
+            background: 'rgba(0,10,18,.45)',
+            boxShadow: 'inset 2px 2px 8px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
+            border: '1px solid rgba(255,255,255,.05)',
+          }}
+        >
+          <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>
+            <span style={{ color: 'rgba(130,200,255,.7)', marginRight: 6 }}>❄</span>
+            {clim}°C
+          </span>
           <div className="flex gap-2">
-            <button onClick={() => setClim(Math.max(16, clim - 1))} className="w-7 h-7 rounded-lg bg-bg-elevated text-ink-secondary cursor-pointer">−</button>
-            <button onClick={() => setClim(Math.min(28, clim + 1))} className="w-7 h-7 rounded-lg bg-bg-elevated text-ink-secondary cursor-pointer">+</button>
+            {[
+              { label: '−', action: () => setClim(Math.max(16, clim - 1)) },
+              { label: '+', action: () => setClim(Math.min(28, clim + 1)) },
+            ].map(({ label, action }) => (
+              <button
+                key={label}
+                onClick={action}
+                className="w-8 h-8 rounded-xl flex items-center justify-center cursor-pointer active:scale-90 transition-transform font-bold text-sm select-none"
+                style={{
+                  background: 'linear-gradient(145deg, #002535, #001a28)',
+                  boxShadow: '3px 3px 8px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)',
+                  border: '1px solid rgba(255,255,255,.06)',
+                  color: 'rgba(245,241,232,.7)',
+                }}
+              >
+                {label}
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Options */}
+      {/* Prestations */}
       <section>
-        <h3 className="text-xs text-ink-muted uppercase tracking-widest mb-3">Prestations à bord</h3>
-        <div className="flex flex-col gap-3 bg-bg-elevated rounded-2xl p-4 border border-[var(--rule-strong)]">
-          {OPTION_LIST.map(({ key, label }) => (
-            <iOSToggle
+        <SectionLabel>Prestations à bord</SectionLabel>
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg, #002535, #001a28)',
+            boxShadow: '5px 5px 18px rgba(0,0,0,.55), -2px -2px 8px rgba(255,255,255,.025)',
+            border: '1px solid rgba(255,255,255,.05)',
+          }}
+        >
+          {OPTION_LIST.map(({ key, label }, i) => (
+            <div
               key={key}
-              id={`opt-${key}`}
-              label={label}
-              checked={options[key]}
-              onChange={() => toggleOption(key)}
-            />
+              className="px-4 py-3"
+              style={{
+                borderBottom: i < OPTION_LIST.length - 1 ? '1px solid rgba(255,255,255,.05)' : 'none',
+              }}
+            >
+              <iOSToggle
+                id={`opt-${key}`}
+                label={label}
+                checked={options[key]}
+                onChange={() => toggleOption(key)}
+              />
+            </div>
           ))}
         </div>
       </section>
 
       {/* Règlement */}
       <section>
-        <h3 className="text-xs text-ink-muted uppercase tracking-widest mb-3">Règlement</h3>
+        <SectionLabel>Mode de règlement</SectionLabel>
         <div className="flex gap-2">
           {PAYMENT_OPTS.map((p) => (
-            <button
-              key={p}
-              onClick={() => setPayment(p)}
-              className={`
-                flex-1 py-2.5 rounded-xl text-xs font-medium cursor-pointer
-                transition-all duration-200 border
-                ${payment === p
-                  ? 'bg-accent/15 border-accent/50 text-ink-primary'
-                  : 'bg-bg-elevated border-[var(--rule-strong)] text-ink-muted'}
-              `}
-            >
+            <PillButton key={p} active={payment === p} onClick={() => setPayment(p)}>
               {p}
-            </button>
+            </PillButton>
           ))}
         </div>
       </section>
 
       {/* Note */}
       <section>
+        <SectionLabel>Note (facultatif)</SectionLabel>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="Note (vol, bagages, instructions...)"
+          placeholder="Vol, bagages, instructions particulières…"
           rows={2}
-          className="
-            w-full px-4 py-3 rounded-2xl resize-none
-            bg-bg-elevated border border-[var(--rule-strong)]
-            text-ink-primary text-sm placeholder-ink-muted
-            focus:outline-none focus:border-accent
-            transition-colors duration-200
-          "
+          className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none transition-all duration-200"
+          style={{
+            background: 'rgba(0,10,18,.55)',
+            boxShadow: 'inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03)',
+            border: '1px solid rgba(255,255,255,.05)',
+            color: '#F5F1E8',
+          }}
           aria-label="Note complémentaire"
         />
       </section>
 
       {/* CTA */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pt-1">
         <GlowingCTA onClick={handleSend}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="flex-shrink-0">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
             <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.335-1.507A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.895 0-3.666-.53-5.177-1.449l-.371-.22-3.763.895.955-3.646-.242-.381A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
           </svg>
@@ -173,7 +240,8 @@ export default function Step3Options({ onBack }) {
         </GlowingCTA>
         <button
           onClick={onBack}
-          className="text-sm text-ink-muted cursor-pointer text-center"
+          className="text-sm text-center cursor-pointer py-2 active:opacity-60 transition-opacity"
+          style={{ color: 'rgba(245,241,232,.35)' }}
         >
           ← Modifier le tarif
         </button>

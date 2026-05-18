@@ -4,6 +4,7 @@ import TopBar          from './components/layout/TopBar'
 import SideDrawer      from './components/layout/SideDrawer'
 import BottomSheet     from './components/tunnel/BottomSheet'
 import TarifsView      from './components/views/TarifsView'
+import CallView        from './components/views/CallView'
 import MesCoursesView  from './components/views/MesCoursesView'
 import CodePromoView   from './components/views/CodePromoView'
 import AideFaqView     from './components/views/AideFaqView'
@@ -11,7 +12,7 @@ import LegalView       from './components/views/LegalView'
 import HomePill        from './components/home/HomePill'
 import useBookingStore from './store/useBookingStore'
 
-const OVERLAY_VIEWS = ['tarifs', 'courses', 'promo', 'faq', 'legal']
+const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'faq', 'legal']
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -44,7 +45,7 @@ export default function App() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
-      {/* Map — always rendered beneath everything */}
+      {/* Map */}
       <LeafletMap
         depart={depart}
         arrive={arrive}
@@ -52,7 +53,7 @@ export default function App() {
         isDark={isDark}
       />
 
-      {/* Bottom vignette */}
+      {/* Vignette overlay */}
       <div
         aria-hidden="true"
         className="absolute inset-0 z-[1] pointer-events-none"
@@ -69,35 +70,20 @@ export default function App() {
         burgerOpen={drawerOpen}
       />
 
-      {/* Home pill — only visible on home, hidden under overlay views */}
+      {/* Home pill — hidden while overlay is active */}
       {!OVERLAY_VIEWS.includes(activeView) && (
         <HomePill
           onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
         />
       )}
 
-      {/* Overlay views — slide in from right */}
-      <TarifsView
-        open={activeView === 'tarifs'}
-        onClose={handleClose}
-        onReserve={handleTarifsReserve}
-      />
-      <MesCoursesView
-        open={activeView === 'courses'}
-        onClose={handleClose}
-      />
-      <CodePromoView
-        open={activeView === 'promo'}
-        onClose={handleClose}
-      />
-      <AideFaqView
-        open={activeView === 'faq'}
-        onClose={handleClose}
-      />
-      <LegalView
-        open={activeView === 'legal'}
-        onClose={handleClose}
-      />
+      {/* Slide-in views */}
+      <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
+      <CallView       open={activeView === 'call'}    onClose={handleClose} />
+      <MesCoursesView open={activeView === 'courses'} onClose={handleClose} />
+      <CodePromoView  open={activeView === 'promo'}   onClose={handleClose} />
+      <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
+      <LegalView      open={activeView === 'legal'}   onClose={handleClose} />
 
       {/* Side drawer */}
       <SideDrawer

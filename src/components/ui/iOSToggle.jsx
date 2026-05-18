@@ -2,10 +2,10 @@ export default function iOSToggle({ checked, onChange, label, id }) {
   return (
     <label
       htmlFor={id}
-      className="flex items-center justify-between gap-3 cursor-pointer select-none"
+      className="flex items-center justify-between gap-3 cursor-pointer select-none py-0.5"
     >
       {label && (
-        <span className="text-sm text-ink-secondary">{label}</span>
+        <span className="text-sm" style={{ color: 'rgba(245,241,232,.7)' }}>{label}</span>
       )}
       <div className="relative flex-shrink-0">
         <input
@@ -15,18 +15,27 @@ export default function iOSToggle({ checked, onChange, label, id }) {
           onChange={(e) => onChange(e.target.checked)}
           className="sr-only"
         />
+        {/* Track */}
         <div
-          className={`
-            w-11 h-6 rounded-full transition-colors duration-200
-            ${checked ? 'bg-accent' : 'bg-bg-elevated border border-[var(--rule-strong)]'}
-          `}
+          className="w-11 h-6 rounded-full transition-all duration-250"
+          style={{
+            background: checked
+              ? 'linear-gradient(135deg, #ff5a1f, #ff4103)'
+              : 'rgba(0,10,18,0.6)',
+            boxShadow: checked
+              ? '0 0 14px rgba(255,65,3,.45), inset 0 1px 0 rgba(255,255,255,.15)'
+              : 'inset 2px 2px 6px rgba(0,0,0,.5), inset -1px -1px 3px rgba(255,255,255,.03)',
+            border: checked ? 'none' : '1px solid rgba(255,255,255,.08)',
+          }}
         />
+        {/* Knob */}
         <div
-          className={`
-            absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md
-            transition-transform duration-200
-            ${checked ? 'translate-x-5' : 'translate-x-0.5'}
-          `}
+          className="absolute top-[2px] w-5 h-5 rounded-full transition-transform duration-250"
+          style={{
+            transform: checked ? 'translateX(22px)' : 'translateX(2px)',
+            background: 'radial-gradient(circle at 35% 30%, #ffffff 0%, #e8e8e8 45%, #c8c8c8 100%)',
+            boxShadow: '0 2px 6px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35), inset 0 1px 1px rgba(255,255,255,.9)',
+          }}
         />
       </div>
     </label>
