@@ -189,7 +189,13 @@ export default function HomePill({ onOpenSheet }) {
           border:        '1px solid rgba(255,255,255,.1)',
           backdropFilter: 'blur(24px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
-          boxShadow:     '0 8px 32px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06)',
+          boxShadow: [
+            '0 24px 50px -12px rgba(0,0,0,.72)',   // wide diffuse floor shadow
+            '0 12px 26px -6px rgba(0,0,0,.5)',     // mid lift shadow
+            '0 3px 8px rgba(0,0,0,.42)',           // tight contact shadow
+            'inset 0 1px 0.5px rgba(255,255,255,.26)', // luminous top edge — light on glass
+            'inset 0 -1px 2px rgba(0,0,0,.35)',    // inner bottom depth
+          ].join(', '),
           opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
           transition:    'opacity .22s ease, border-radius .25s ease',
