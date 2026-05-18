@@ -7,6 +7,11 @@ delete L.Icon.Default.prototype._getIconUrl
 const TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const PARIS = [48.8566, 2.3522]
 
+const userPosIcon = L.divIcon({
+  html: `<div class="gps-user-dot" style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2.5px solid white;box-shadow:0 0 12px rgba(59,130,246,.8)"></div>`,
+  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
+})
+
 const departIcon = L.divIcon({
   html: `<div style="width:12px;height:12px;border-radius:50%;background:#ff4103;box-shadow:0 0 18px rgba(255,65,3,.95),0 0 6px rgba(255,65,3,.6);border:2px solid rgba(255,255,255,.9)"></div>`,
   iconSize: [12, 12], iconAnchor: [6, 6], className: '',
@@ -18,10 +23,12 @@ const arriveIcon = L.divIcon({
 })
 
 export default function LeafletMap({ route, depart, arrive, onMapReady }) {
-  const containerRef = useRef(null)
-  const mapRef       = useRef(null)
-  const routeRef     = useRef([])
-  const markersRef   = useRef([])
+  const containerRef  = useRef(null)
+  const mapRef        = useRef(null)
+  const routeRef      = useRef([])
+  const markersRef    = useRef([])
+  const userMarkerRef = useRef(null)
+  const watchIdRef    = useRef(null)
 
   // Initialize map once
   useEffect(() => {
@@ -42,6 +49,33 @@ export default function LeafletMap({ route, depart, arrive, onMapReady }) {
     return () => {
       map.remove()
       mapRef.current = null
+    }
+  }, [])
+
+  // Live user position blue dot
+  useEffect(() => {
+    if (!navigator.geolocation) return
+    const id = navigator.geolocation.watchPosition(
+      ({ coords }) => {
+        const m = mapRef.current
+        if (!m) return
+        const pos = [coords.latitude, coords.longitude]
+        if (userMarkerRef.current) {
+          userMarkerRef.current.setLatLng(pos)
+        } else {
+          userMarkerRef.current = L.marker(pos, { icon: userPosIcon, zIndexOffset: -100 }).addTo(m)
+        }
+      },
+      () => {},
+      { enableHighAccuracy: false, maximumAge: 30000, timeout: 20000 },
+    )
+    watchIdRef.current = id
+    return () => {
+      navigator.geolocation.clearWatch(id)
+      if (userMarkerRef.current && mapRef.current) {
+        mapRef.current.removeLayer(userMarkerRef.current)
+        userMarkerRef.current = null
+      }
     }
   }, [])
 

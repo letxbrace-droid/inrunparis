@@ -42,16 +42,14 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         aria-modal="true"
         aria-label="Menu principal"
         aria-hidden={!open}
-        className="
-          fixed inset-0 z-[100000] flex flex-col
-          bg-[#001621] overflow-hidden
-          transition-[transform,visibility] duration-[340ms]
-          ease-[cubic-bezier(.16,1,.3,1)]
-          will-change-transform
-        "
+        className="fixed inset-0 z-[100000] flex flex-col bg-[#001621] overflow-hidden will-change-transform"
         style={{
-          transform:  open ? 'translateX(0)' : 'translateX(-100%)',
-          visibility: open ? 'visible' : 'hidden',
+          width:        '100vw',
+          height:       '100dvh',
+          transform:    open ? 'translateX(0)' : 'translateX(-100%)',
+          visibility:   open ? 'visible' : 'hidden',
+          pointerEvents: open ? 'auto' : 'none',
+          transition:   'transform .34s cubic-bezier(.16,1,.3,1), visibility 0s linear ' + (open ? '0s' : '.34s'),
         }}
       >
         {/* Ambient halo */}

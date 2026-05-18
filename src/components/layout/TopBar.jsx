@@ -39,20 +39,7 @@ export default function TopBar({ onBurgerClick, burgerOpen }) {
         `} />
       </button>
 
-      {/* Brand */}
-      <div className="pointer-events-none flex flex-col items-center">
-        <span className="font-brand font-bold text-ink-primary text-sm tracking-widest uppercase">
-          I&amp;N RUN
-        </span>
-        <span className="flex items-center gap-1.5 mt-0.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
-          <span className="font-mono text-[10px] text-ink-secondary tracking-widest uppercase">
-            Disponible
-          </span>
-        </span>
-      </div>
-
-      {/* Placeholder for right action (theme toggle etc.) */}
+      {/* Spacer right */}
       <div className="w-11 h-11" aria-hidden="true" />
     </header>
   )

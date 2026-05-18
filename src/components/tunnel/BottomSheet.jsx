@@ -23,10 +23,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label="Réservation"
-        className="
-          fixed bottom-0 left-0 right-0 z-[95]
-          flex justify-center
-        "
+        className="fixed bottom-0 left-0 right-0 z-[95] flex justify-center"
+        style={{ pointerEvents: open ? 'auto' : 'none' }}
       >
         <div
           className="
