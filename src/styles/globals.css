@@ -94,11 +94,18 @@
   .cta-glow {
     background: linear-gradient(135deg, #ff5a1f 0%, #ff4103 45%, #e83800 100%);
     box-shadow:
+      /* orange halo */
       0 0 0 1px rgba(255,65,3,.35),
       0 0 28px rgba(255,65,3,.55),
       0 0 70px rgba(255,65,3,.18),
-      0 8px 24px rgba(0,0,0,.55),
-      inset 0 1px 0 rgba(255,255,255,.18);
+      /* 3D floating drop shadow — wide & diffuse */
+      0 24px 50px -12px rgba(0,0,0,.72),
+      0 12px 26px -6px rgba(0,0,0,.5),
+      0 3px 8px rgba(0,0,0,.45),
+      /* luminous top edge — light on the glass */
+      inset 0 1px 0.5px rgba(255,255,255,.34),
+      /* inner bottom depth */
+      inset 0 -2px 5px rgba(120,22,0,.45);
     animation: cta-breathe 3.5s ease-in-out infinite;
   }
 
@@ -129,16 +136,22 @@
       0 0 0 1px rgba(255,65,3,.35),
       0 0 28px rgba(255,65,3,.55),
       0 0 70px rgba(255,65,3,.18),
-      0 8px 24px rgba(0,0,0,.55),
-      inset 0 1px 0 rgba(255,255,255,.18);
+      0 24px 50px -12px rgba(0,0,0,.72),
+      0 12px 26px -6px rgba(0,0,0,.5),
+      0 3px 8px rgba(0,0,0,.45),
+      inset 0 1px 0.5px rgba(255,255,255,.34),
+      inset 0 -2px 5px rgba(120,22,0,.45);
   }
   50% {
     box-shadow:
       0 0 0 1px rgba(255,65,3,.45),
       0 0 42px rgba(255,65,3,.75),
       0 0 110px rgba(255,65,3,.28),
-      0 8px 24px rgba(0,0,0,.55),
-      inset 0 1px 0 rgba(255,255,255,.18);
+      0 24px 50px -12px rgba(0,0,0,.72),
+      0 12px 26px -6px rgba(0,0,0,.5),
+      0 3px 8px rgba(0,0,0,.45),
+      inset 0 1px 0.5px rgba(255,255,255,.34),
+      inset 0 -2px 5px rgba(120,22,0,.45);
   }
 }
 
