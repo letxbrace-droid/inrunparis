@@ -17,6 +17,7 @@ const useBookingStore = create(
       ambiance:    'musique',  // 'musique' | 'radio' | 'silence'
       volume:      50,
       clim:        21,
+      isDark:      true,       // carte sombre/claire
       options: {
         wifi:        false,
         eau:         true,
@@ -48,6 +49,7 @@ const useBookingStore = create(
       setAmbiance:     (v) => set({ ambiance: v }),
       setVolume:       (v) => set({ volume: v }),
       setClim:         (v) => set({ clim: v }),
+      setIsDark:       (v) => set({ isDark: v }),
       toggleOption:    (key) => set((s) => ({ options: { ...s.options, [key]: !s.options[key] } })),
       setPayment:      (v) => set({ payment: v }),
       setNote:         (v) => set({ note: v }),
@@ -79,6 +81,7 @@ const useBookingStore = create(
         ambiance: s.ambiance,
         volume: s.volume,
         clim: s.clim,
+        isDark: s.isDark,
         options: s.options,
         payment: s.payment,
         vehicleType: s.vehicleType,

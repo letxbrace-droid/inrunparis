@@ -4,8 +4,9 @@ import 'leaflet/dist/leaflet.css'
 
 delete L.Icon.Default.prototype._getIconUrl
 
-const TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-const PARIS = [48.8566, 2.3522]
+const PARIS       = [48.8566, 2.3522]
+const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
   html: `<div class="gps-user-dot" style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2.5px solid white;box-shadow:0 0 12px rgba(59,130,246,.8)"></div>`,
@@ -22,37 +23,36 @@ const arriveIcon = L.divIcon({
   iconSize: [12, 12], iconAnchor: [6, 6], className: '',
 })
 
-export default function LeafletMap({ route, depart, arrive, onMapReady }) {
+export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true }) {
   const containerRef  = useRef(null)
   const mapRef        = useRef(null)
+  const tileRef       = useRef(null)
   const routeRef      = useRef([])
   const markersRef    = useRef([])
   const userMarkerRef = useRef(null)
-  const watchIdRef    = useRef(null)
 
-  // Initialize map once
+  // Initialize map without tile layer (tile effect creates it)
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return
-
     const map = L.map(containerRef.current, {
-      center:             PARIS,
-      zoom:               12,
-      zoomControl:        false,
-      attributionControl: false,
+      center: PARIS, zoom: 12, zoomControl: false, attributionControl: false,
     })
-
-    L.tileLayer(TILES, { attribution: '', subdomains: 'abcd', maxZoom: 20 }).addTo(map)
-
     mapRef.current = map
     onMapReady?.(map)
+    return () => { map.remove(); mapRef.current = null }
+  }, []) // eslint-disable-line
 
-    return () => {
-      map.remove()
-      mapRef.current = null
-    }
-  }, [])
+  // Switch tile layer on isDark change (also runs on first mount)
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    if (tileRef.current) { try { map.removeLayer(tileRef.current) } catch {} }
+    tileRef.current = L.tileLayer(isDark ? TILES_DARK : TILES_LIGHT, {
+      attribution: '', subdomains: 'abcd', maxZoom: 20,
+    }).addTo(map)
+  }, [isDark])
 
-  // Live user position blue dot
+  // Live GPS user position blue dot
   useEffect(() => {
     if (!navigator.geolocation) return
     const id = navigator.geolocation.watchPosition(
@@ -69,11 +69,10 @@ export default function LeafletMap({ route, depart, arrive, onMapReady }) {
       () => {},
       { enableHighAccuracy: false, maximumAge: 30000, timeout: 20000 },
     )
-    watchIdRef.current = id
     return () => {
       navigator.geolocation.clearWatch(id)
       if (userMarkerRef.current && mapRef.current) {
-        mapRef.current.removeLayer(userMarkerRef.current)
+        try { mapRef.current.removeLayer(userMarkerRef.current) } catch {}
         userMarkerRef.current = null
       }
     }
@@ -83,24 +82,15 @@ export default function LeafletMap({ route, depart, arrive, onMapReady }) {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
-
-    routeRef.current.forEach(l => map.removeLayer(l))
+    routeRef.current.forEach(l => { try { map.removeLayer(l) } catch {} })
     routeRef.current = []
-
     if (!route?.geometry) return
-
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
-
     const glow1 = L.polyline(coords, { color: '#ff4103', weight: 20, opacity: 0.06 })
     const glow2 = L.polyline(coords, { color: '#ff4103', weight: 8,  opacity: 0.20 })
     const core  = L.polyline(coords, { color: '#ff4103', weight: 3,  opacity: 0.92 })
-
-    glow1.addTo(map)
-    glow2.addTo(map)
-    core.addTo(map)
+    glow1.addTo(map); glow2.addTo(map); core.addTo(map)
     routeRef.current = [glow1, glow2, core]
-
-    // Animate: start from depart zoom then fly to full route (Uber style)
     if (coords.length) {
       const bounds = L.latLngBounds(coords)
       if (depart) {
@@ -112,41 +102,26 @@ export default function LeafletMap({ route, depart, arrive, onMapReady }) {
         map.fitBounds(bounds, { padding: [60, 60] })
       }
     }
-  }, [route])
+  }, [route]) // eslint-disable-line
 
-  // Place / update point A & B markers independently
+  // Place / update markers A & B independently
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
-
-    markersRef.current.forEach(m => map.removeLayer(m))
+    markersRef.current.forEach(m => { try { map.removeLayer(m) } catch {} })
     markersRef.current = []
-
-    if (depart) {
-      markersRef.current.push(L.marker([depart.lat, depart.lng], { icon: departIcon }).addTo(map))
-    }
-    if (arrive) {
-      markersRef.current.push(L.marker([arrive.lat, arrive.lng], { icon: arriveIcon }).addTo(map))
-    }
-
-    // Move camera only when no route is drawn yet
+    if (depart) markersRef.current.push(L.marker([depart.lat, depart.lng], { icon: departIcon }).addTo(map))
+    if (arrive) markersRef.current.push(L.marker([arrive.lat, arrive.lng], { icon: arriveIcon }).addTo(map))
     if (!route?.geometry) {
       if (depart && arrive) {
-        map.fitBounds(
-          [[depart.lat, depart.lng], [arrive.lat, arrive.lng]],
-          { padding: [80, 80], animate: true },
-        )
+        map.fitBounds([[depart.lat, depart.lng], [arrive.lat, arrive.lng]], { padding: [80, 80], animate: true })
       } else if (depart) {
         map.flyTo([depart.lat, depart.lng], 14, { animate: true, duration: 0.8 })
       }
     }
-  }, [depart, arrive])
+  }, [depart, arrive]) // eslint-disable-line
 
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 z-0"
-      aria-label="Carte de Paris"
-    />
+    <div ref={containerRef} className="absolute inset-0 z-0" aria-label="Carte de Paris" />
   )
 }

@@ -16,6 +16,7 @@ export default function App() {
   const depart        = useBookingStore((s) => s.depart)
   const arrive        = useBookingStore((s) => s.arrive)
   const routeGeometry = useBookingStore((s) => s.routeGeometry)
+  const isDark        = useBookingStore((s) => s.isDark)
 
   const route = routeGeometry ? { geometry: routeGeometry } : null
 
@@ -40,6 +41,7 @@ export default function App() {
         depart={depart}
         arrive={arrive}
         route={route}
+        isDark={isDark}
       />
 
       {/* Bottom vignette for readability */}
@@ -47,7 +49,9 @@ export default function App() {
         aria-hidden="true"
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,22,33,.55) 0%, transparent 28%, transparent 58%, rgba(0,22,33,.9) 100%)',
+          background: isDark
+            ? 'linear-gradient(to bottom, rgba(0,22,33,.55) 0%, transparent 28%, transparent 58%, rgba(0,22,33,.9) 100%)'
+            : 'linear-gradient(to bottom, rgba(240,240,240,.45) 0%, transparent 28%, transparent 58%, rgba(240,240,240,.85) 100%)',
         }}
       />
 

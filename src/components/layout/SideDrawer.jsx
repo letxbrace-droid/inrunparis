@@ -1,14 +1,142 @@
 import { useEffect } from 'react'
+import useBookingStore from '../../store/useBookingStore'
+
+function IconHome() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  )
+}
+
+function IconCar() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 17H3a2 2 0 0 1-2-2V9l3-6h12l3 6v6a2 2 0 0 1-2 2h-2"/>
+      <circle cx="7.5" cy="17" r="2.5"/>
+      <circle cx="16.5" cy="17" r="2.5"/>
+    </svg>
+  )
+}
+
+function IconTag() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    </svg>
+  )
+}
+
+function IconPhone() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.66 3.55a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.91 6.91l.82-.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/>
+    </svg>
+  )
+}
+
+function DarkToggle({ isDark, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      role="switch"
+      aria-checked={isDark}
+      aria-label="Basculer le mode sombre"
+      style={{
+        position:   'relative',
+        width:      68,
+        height:     36,
+        borderRadius: 99,
+        background: '#0d1f2d',
+        border:     `1.5px solid ${isDark ? 'rgba(255,65,3,.6)' : 'rgba(255,65,3,.3)'}`,
+        boxShadow:  isDark
+          ? '0 0 18px rgba(255,65,3,.45), inset 0 2px 4px rgba(0,0,0,.55)'
+          : '0 0 6px rgba(255,65,3,.15), inset 0 2px 4px rgba(0,0,0,.3)',
+        cursor:     'pointer',
+        flexShrink: 0,
+        transition: 'border-color .3s, box-shadow .3s',
+        overflow:   'hidden',
+        padding:    0,
+      }}
+    >
+      {/* Moon icon */}
+      <span style={{
+        position:  'absolute',
+        left:      9,
+        top:       '50%',
+        transform: 'translateY(-50%)',
+        display:   'flex',
+        opacity:   isDark ? 0.9 : 0.3,
+        transition: 'opacity .25s',
+        pointerEvents: 'none',
+      }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(180,190,255,.95)">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </span>
+
+      {/* Sun icon */}
+      <span style={{
+        position:  'absolute',
+        right:     9,
+        top:       '50%',
+        transform: 'translateY(-50%)',
+        display:   'flex',
+        opacity:   isDark ? 0.3 : 0.85,
+        transition: 'opacity .25s',
+        pointerEvents: 'none',
+      }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,200,50,.95)" strokeWidth="2.5" strokeLinecap="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+
+      {/* Glossy 3D knob */}
+      <span style={{
+        position:   'absolute',
+        top:        2,
+        left:       0,
+        width:      30,
+        height:     30,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 34% 30%, #ffffff 0%, #e8e8e8 38%, #c4c4c4 68%, #969696 100%)',
+        boxShadow:  '0 3px 10px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4), inset 0 1.5px 2px rgba(255,255,255,.9)',
+        transform:  isDark ? 'translateX(36px)' : 'translateX(2px)',
+        transition: 'transform .28s cubic-bezier(.34,1.56,.64,1)',
+        pointerEvents: 'none',
+      }} />
+    </button>
+  )
+}
 
 const NAV_ITEMS = [
-  { view: 'home',    label: 'Accueil',  arrow: '→' },
-  { view: 'reserve', label: 'Réserver', arrow: '→', accent: true },
-  { view: 'tarifs',  label: 'Tarifs',   arrow: '→' },
-  { view: 'call',    label: 'Appeler',  arrow: '→' },
+  { view: 'home',    label: 'Accueil',          Icon: IconHome  },
+  { view: 'reserve', label: 'Réserver',          Icon: IconCar,  accent: true },
+  { view: 'tarifs',  label: 'Tarifs & services', Icon: IconTag   },
+  { view: 'call',    label: 'Appeler',           Icon: IconPhone },
+]
+
+const SECONDARY = [
+  { label: 'Mes courses',      view: null },
+  { label: 'Code promo',       view: null },
+  { label: 'Aide & FAQ',       view: null },
+  { label: 'Mentions légales', view: 'legal' },
 ]
 
 export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
-  // Close on Escape
+  const isDark    = useBookingStore(s => s.isDark)
+  const setIsDark = useBookingStore(s => s.setIsDark)
+
   useEffect(() => {
     if (!open) return
     const handler = (e) => { if (e.key === 'Escape') onClose() }
@@ -16,7 +144,6 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
     return () => document.removeEventListener('keydown', handler)
   }, [open, onClose])
 
-  // Prevent body scroll when open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -24,15 +151,12 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Dark overlay */}
       <div
         onClick={onClose}
         aria-hidden="true"
-        className={`
-          fixed inset-0 z-[99999] bg-black/50
-          transition-opacity duration-300
-          ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-        `}
+        className="fixed inset-0 z-[99998] bg-black/60 transition-opacity duration-300"
+        style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none' }}
       />
 
       {/* Drawer panel */}
@@ -42,90 +166,106 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         aria-modal="true"
         aria-label="Menu principal"
         aria-hidden={!open}
-        className="fixed inset-0 z-[100000] flex flex-col bg-[#001621] overflow-hidden will-change-transform"
+        className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden will-change-transform"
         style={{
-          width:        '100vw',
-          height:       '100dvh',
+          width:        'min(78vw, 320px)',
+          background:   '#001621',
           transform:    open ? 'translateX(0)' : 'translateX(-100%)',
           visibility:   open ? 'visible' : 'hidden',
           pointerEvents: open ? 'auto' : 'none',
-          transition:   'transform .34s cubic-bezier(.16,1,.3,1), visibility 0s linear ' + (open ? '0s' : '.34s'),
+          transition:   `transform .32s cubic-bezier(.16,1,.3,1), visibility 0s linear ${open ? '0s' : '.32s'}`,
+          boxShadow:    open ? '8px 0 48px rgba(0,0,0,.6)' : 'none',
         }}
       >
-        {/* Ambient halo */}
+        {/* Ambient top halo */}
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,65,3,.05), transparent 70%)' }}
+          style={{ background: 'radial-gradient(ellipse 100% 55% at 50% 0%, rgba(255,65,3,.06), transparent 70%)' }}
         />
 
-        {/* Inner */}
-        <div className="relative z-10 flex flex-col h-full pt-safe" style={{ paddingTop: `calc(var(--safe-top) + 16px)` }}>
-
+        <div
+          className="relative z-10 flex flex-col h-full"
+          style={{ paddingTop: 'calc(var(--safe-top) + 18px)' }}
+        >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 pb-4">
-            <span className="font-brand font-bold text-ink-primary text-base tracking-widest uppercase">
-              I&amp;N RUN
+          <div className="flex items-center justify-between px-5 pb-6">
+            <span className="font-brand text-[15px] font-bold tracking-widest uppercase select-none">
+              <span style={{ color: '#F5F1E8' }}>I&amp;N </span>
+              <span style={{ color: '#ff4103' }}>RUN</span>
             </span>
             <button
               onClick={onClose}
               aria-label="Fermer le menu"
-              className="w-9 h-9 flex items-center justify-center glass rounded-xl cursor-pointer active:scale-95 transition-transform"
+              className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform select-none"
+              style={{ background: 'rgba(245,241,232,.07)', border: '1px solid rgba(245,241,232,.12)' }}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M1 1l12 12M13 1L1 13" />
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="rgba(245,241,232,.7)" strokeWidth="2" strokeLinecap="round">
+                <path d="M1 1l12 12M13 1L1 13"/>
               </svg>
             </button>
           </div>
 
-          {/* Main nav */}
-          <ul className="flex-1 flex flex-col justify-center px-6 list-none">
-            {NAV_ITEMS.map((item, i) => (
-              <li
-                key={item.view}
-                className="border-b border-[var(--rule)]"
-                style={{ animationDelay: open ? `${i * 0.05 + 0.04}s` : '0s' }}
-              >
-                <button
-                  onClick={() => { onNavigate(item.view); onClose() }}
-                  className="
-                    flex items-center gap-4 w-full py-[22px]
-                    bg-transparent border-none text-left cursor-pointer
-                    group transition-transform duration-150 active:scale-[.98]
-                    -webkit-tap-highlight-color-transparent
-                  "
-                >
-                  <span
-                    className="flex-1 font-[Outfit,system-ui,sans-serif] font-bold uppercase tracking-[0.04em] leading-none"
+          {/* Primary nav */}
+          <ul className="flex flex-col px-3 list-none" style={{ gap: 3 }}>
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeView === item.view
+              const highlight = isActive || item.accent
+              return (
+                <li key={item.view}>
+                  <button
+                    onClick={() => { onNavigate(item.view); onClose() }}
+                    className="flex items-center gap-3.5 w-full rounded-xl px-3.5 py-3.5 cursor-pointer select-none transition-all duration-150 active:scale-[.97]"
                     style={{
-                      fontSize: 'clamp(1.8rem, 7vw, 2.4rem)',
-                      color: item.accent
-                        ? '#ff4103'
-                        : activeView === item.view
-                          ? 'var(--ink-primary)'
-                          : 'rgba(245,241,232,.5)',
-                      textShadow: item.accent ? '0 0 28px rgba(255,65,3,.4)' : 'none',
+                      background: highlight ? 'rgba(255,65,3,.1)' : 'transparent',
+                      border:     highlight ? '1px solid rgba(255,65,3,.22)' : '1px solid transparent',
                     }}
                   >
-                    {item.label}
-                  </span>
-                  <span
-                    className="text-lg opacity-0 group-active:opacity-100 transition-opacity"
-                    style={{ color: item.accent ? '#ff4103' : 'var(--ink-muted)' }}
-                    aria-hidden="true"
-                  >
-                    {item.arrow}
-                  </span>
-                </button>
-              </li>
-            ))}
+                    <span style={{ color: highlight ? '#ff4103' : 'rgba(245,241,232,.42)', flexShrink: 0 }}>
+                      <item.Icon />
+                    </span>
+                    <span
+                      className="text-[15px] font-semibold leading-none"
+                      style={{ color: highlight ? '#F5F1E8' : 'rgba(245,241,232,.58)' }}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
 
-          {/* Footer */}
-          <div className="px-6 pb-safe" style={{ paddingBottom: `calc(var(--safe-bot) + 24px)` }}>
-            <p className="font-mono text-[10px] text-ink-muted tracking-widest text-center uppercase">
-              I&amp;N RUN · Paris &amp; Île-de-France
-            </p>
+          {/* Secondary links */}
+          <div
+            className="flex flex-col px-3 mt-4 pt-4"
+            style={{ borderTop: '1px solid rgba(245,241,232,.07)', gap: 0 }}
+          >
+            {SECONDARY.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => { if (item.view) onNavigate(item.view); onClose() }}
+                className="text-left px-3.5 py-2.5 rounded-lg cursor-pointer active:opacity-60 transition-opacity select-none"
+                style={{ color: 'rgba(245,241,232,.38)', fontSize: 13 }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Footer: Mode sombre toggle */}
+          <div
+            className="flex items-center justify-between px-5 mt-auto"
+            style={{
+              borderTop:     '1px solid rgba(245,241,232,.08)',
+              paddingTop:    16,
+              paddingBottom: 'calc(var(--safe-bot) + 16px)',
+            }}
+          >
+            <span style={{ fontSize: 13, color: 'rgba(245,241,232,.5)', userSelect: 'none' }}>
+              Mode sombre
+            </span>
+            <DarkToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
           </div>
         </div>
       </nav>
