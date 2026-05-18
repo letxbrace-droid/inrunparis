@@ -180,7 +180,7 @@ function PillButton({ active, onClick, icon: Icon, children }) {
           : 'rgba(0,10,18,.45)',
         boxShadow: active
           ? '0 0 16px rgba(255,65,3,.2), inset 0 1px 0 rgba(255,255,255,.08)'
-          : 'inset 2px 2px 6px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
+          : 'inset 0 1px 2px rgba(0,0,0,.3)',
         border: active
           ? '1px solid rgba(255,65,3,.4)'
           : '1px solid rgba(255,255,255,.05)',
@@ -290,7 +290,6 @@ export default function Step3Options({ onBack }) {
           className="px-4 py-4 rounded-2xl flex flex-col gap-3"
           style={{
             background: 'rgba(0,10,18,.45)',
-            boxShadow: 'inset 2px 2px 8px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
             border: '1px solid rgba(255,255,255,.05)',
           }}
         >
@@ -332,8 +331,7 @@ export default function Step3Options({ onBack }) {
         <div
           className="rounded-2xl overflow-hidden"
           style={{
-            background: 'linear-gradient(145deg, #002535, #001a28)',
-            boxShadow: '5px 5px 18px rgba(0,0,0,.55), -2px -2px 8px rgba(255,255,255,.025)',
+            background: '#0c1e2e',
             border: '1px solid rgba(255,255,255,.05)',
           }}
         >
@@ -382,7 +380,6 @@ export default function Step3Options({ onBack }) {
           className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none transition-all duration-200"
           style={{
             background: 'rgba(0,10,18,.55)',
-            boxShadow: 'inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03)',
             border: '1px solid rgba(255,255,255,.05)',
             color: '#F5F1E8',
           }}

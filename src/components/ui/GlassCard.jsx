@@ -9,7 +9,7 @@ export default function GlassCard({ children, className = '', onClick, accent = 
       `}
       style={accent ? {
         borderTop: '2px solid #ff4103',
-        boxShadow: '5px 5px 20px rgba(0,0,0,.6), -2px -2px 8px rgba(255,255,255,.025), 0 0 40px rgba(255,65,3,.08)',
+        boxShadow: '0 8px 24px rgba(0,0,0,.45), 0 0 32px rgba(255,65,3,.07)',
       } : undefined}
     >
       {accent && (

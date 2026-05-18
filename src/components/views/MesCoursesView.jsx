@@ -17,8 +17,7 @@ function BackBtn({ onClose }) {
       aria-label="Retour"
       className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform flex-shrink-0"
       style={{
-        background: 'linear-gradient(145deg, #002535, #001a28)',
-        boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)',
+        background: '#0c1e2e',
         border: '1px solid rgba(255,255,255,.07)',
       }}
     >
@@ -58,10 +57,10 @@ export default function MesCoursesView({ open, onClose }) {
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,26,40,.65)',
+          background: 'rgba(0,22,33,.7)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,.07)',
+          borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
         <BackBtn onClose={onClose} />
@@ -83,9 +82,8 @@ export default function MesCoursesView({ open, onClose }) {
             <div
               className="w-20 h-20 rounded-full flex items-center justify-center"
               style={{
-                background: 'linear-gradient(145deg, #002535, #001a28)',
-                boxShadow: '5px 5px 18px rgba(0,0,0,.55), -2px -2px 8px rgba(255,255,255,.025), 0 0 30px rgba(255,65,3,.06)',
-                border: '1px solid rgba(255,65,3,.15)',
+                background: '#0c1e2e',
+                border: '1px solid rgba(255,255,255,.05)',
               }}
             >
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -105,11 +103,11 @@ export default function MesCoursesView({ open, onClose }) {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 }}
-                className="rounded-2xl overflow-hidden"
+                className="overflow-hidden"
                 style={{
-                  background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
-                  boxShadow: '4px 4px 16px rgba(0,0,0,.55), -2px -2px 6px rgba(255,255,255,.02)',
-                  border: '1px solid rgba(255,255,255,.06)',
+                  background: '#0c1e2e',
+                  border: '1px solid rgba(255,255,255,.05)',
+                  borderRadius: 16,
                 }}
               >
                 {/* Bon + date */}
@@ -126,7 +124,7 @@ export default function MesCoursesView({ open, onClose }) {
                 {/* Route */}
                 <div className="px-4 py-3 flex flex-col gap-1.5">
                   <div className="flex items-start gap-2">
-                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#ff4103', boxShadow: '0 0 6px rgba(255,65,3,.7)' }} />
+                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#ff4103' }} />
                     <p className="text-xs leading-snug" style={{ color: 'rgba(245,241,232,.68)' }}>
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>

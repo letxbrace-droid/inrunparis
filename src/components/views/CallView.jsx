@@ -72,11 +72,7 @@ export default function CallView({ open, onClose }) {
           onClick={onClose}
           aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{
-            background: 'linear-gradient(145deg, #0c1e2e, #081521)',
-            boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)',
-            border: '1px solid rgba(255,255,255,.07)',
-          }}
+          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>

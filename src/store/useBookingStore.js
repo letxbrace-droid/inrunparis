@@ -26,6 +26,7 @@ const useBookingStore = create(
       volume:      50,
       clim:        21,
       isDark:      true,
+      theme:       'dark',    // 'light' | 'dark' | 'system'
       options: {
         wifi:        false,
         eau:         true,
@@ -65,6 +66,12 @@ const useBookingStore = create(
       setVolume:       (v) => set({ volume: v }),
       setClim:         (v) => set({ clim: v }),
       setIsDark:       (v) => set({ isDark: v }),
+      setTheme: (v) => {
+        const isDark = v === 'system'
+          ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          : v === 'dark'
+        set({ theme: v, isDark })
+      },
       toggleOption:    (key) => set((s) => ({ options: { ...s.options, [key]: !s.options[key] } })),
       setPayment:      (v) => set({ payment: v }),
       setNote:         (v) => set({ note: v }),
@@ -113,6 +120,7 @@ const useBookingStore = create(
         volume:         s.volume,
         clim:           s.clim,
         isDark:         s.isDark,
+        theme:          s.theme,
         options:        s.options,
         payment:        s.payment,
         vehicleType:    s.vehicleType,
