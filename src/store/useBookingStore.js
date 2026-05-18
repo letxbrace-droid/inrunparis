@@ -1,13 +1,32 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-const PROMO_CODES = {
+const PROMO_CODES_BASE = {
   'BIENVENUE': { discount: 10, label: '10% de réduction' },
   'VIP15':     { discount: 15, label: '15% de réduction' },
   'PARIS25':   { discount: 25, label: '25% sur votre 1ère course' },
 }
 
-export { PROMO_CODES }
+export function getPromoCodes() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('inr-promo-codes') || '{}')
+    const active = {}
+    Object.entries(stored).forEach(([code, p]) => {
+      if (!p.active) return
+      if (p.expiry && new Date(p.expiry) < new Date()) return
+      active[code] = {
+        discount: p.type === 'percent' ? p.amount : null,
+        fixed:    p.type === 'fixed'   ? p.amount : null,
+        label:    p.label,
+      }
+    })
+    return { ...PROMO_CODES_BASE, ...active }
+  } catch {
+    return PROMO_CODES_BASE
+  }
+}
+
+export { PROMO_CODES_BASE as PROMO_CODES }
 
 const useBookingStore = create(
   persist(
