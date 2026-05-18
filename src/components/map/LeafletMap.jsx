@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 delete L.Icon.Default.prototype._getIconUrl
 
 const PARIS       = [48.8566, 2.3522]
-const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png'
+const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
