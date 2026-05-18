@@ -138,7 +138,7 @@ export default function Step1Route({ onNext }) {
   const { status: geoStatus, error: geoError, detect } = useGeolocation()
 
   const handleCalculate = useCallback(async () => {
-    if (!depart || !arrive) return
+    if (!depart || !arrive || !pickup) return
     const result = await fetchRoute(depart, arrive)
     if (result) {
       setRouteGeometry(result.geometry)
@@ -154,7 +154,7 @@ export default function Step1Route({ onNext }) {
     })
   }, [detect, setDepart, setRouteGeometry])
 
-  const canProceed = depart && arrive && route
+  const canProceed = depart && arrive && route && pickup
 
   return (
     <div className="flex flex-col gap-4 px-5 pb-6">
@@ -230,24 +230,40 @@ export default function Step1Route({ onNext }) {
       />
 
       {/* Date/time */}
-      <div
-        className="flex items-center gap-3 rounded-2xl px-4 py-3"
-        style={{
-          background: 'rgba(0,10,18,0.45)',
-          border: '1px solid rgba(255,255,255,.05)',
-        }}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.55)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-        </svg>
-        <input
-          type="datetime-local"
-          defaultValue={pickup ?? ''}
-          onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
-          className="flex-1 bg-transparent text-sm outline-none"
-          style={{ color: 'rgba(245,241,232,.8)', colorScheme: 'dark' }}
-          aria-label="Date et heure de prise en charge"
-        />
+      <div>
+        <div
+          className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
+          style={{
+            background: 'rgba(0,10,18,0.45)',
+            border: depart && arrive && !pickup
+              ? '1px solid rgba(255,65,3,.55)'
+              : '1px solid rgba(255,255,255,.05)',
+            boxShadow: depart && arrive && !pickup
+              ? '0 0 0 3px rgba(255,65,3,.12)'
+              : undefined,
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke={depart && arrive && !pickup ? '#ff4103' : 'rgba(255,65,3,.55)'}
+            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+          <input
+            type="datetime-local"
+            defaultValue={pickup ?? ''}
+            min={new Date().toISOString().slice(0, 16)}
+            onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
+            className="flex-1 bg-transparent text-sm outline-none"
+            style={{ color: 'rgba(245,241,232,.8)', colorScheme: 'dark' }}
+            aria-label="Date et heure de prise en charge"
+            aria-required="true"
+          />
+        </div>
+        {depart && arrive && !pickup && (
+          <p className="text-xs px-1 mt-1.5" style={{ color: 'rgba(255,65,3,.8)' }}>
+            Sélectionnez une date et heure pour calculer le tarif
+          </p>
+        )}
       </div>
 
       {error && (
@@ -275,7 +291,7 @@ export default function Step1Route({ onNext }) {
 
       <GlowingCTA
         onClick={canProceed ? onNext : handleCalculate}
-        disabled={(!depart || !arrive) || loading}
+        disabled={(!depart || !arrive || !pickup) || loading}
       >
         {loading ? (
           <>
@@ -284,6 +300,8 @@ export default function Step1Route({ onNext }) {
           </>
         ) : canProceed ? (
           <>Voir le tarif →</>
+        ) : depart && arrive && !pickup ? (
+          <>Choisir une date</>
         ) : (
           <>Calculer le trajet</>
         )}
