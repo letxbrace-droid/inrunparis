@@ -138,22 +138,22 @@ function ThemeSwitcher({ theme, onChange }) {
         flexShrink:   0,
       }}
     >
-      {/* Sliding glass indicator */}
+      {/* Sliding glass indicator — perfect circle, centered in each slot */}
       <motion.div
         aria-hidden="true"
         initial={false}
-        animate={{ x: idx * SLOT_W + 3 }}
+        animate={{ x: 4 + idx * SLOT_W }}
         transition={{ type: 'spring', damping: 28, stiffness: 320, restDelta: 0.5 }}
         style={{
           position:     'absolute',
           top:          3,
           left:         0,
-          width:        SLOT_W - 6,
+          width:        38,
           height:       38,
-          borderRadius: 999,
-          background:   'rgba(255,255,255,.11)',
-          border:       '1px solid rgba(255,255,255,.14)',
-          boxShadow:    '0 2px 8px rgba(0,0,0,.35)',
+          borderRadius: '50%',
+          background:   'linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.07))',
+          border:       '1px solid rgba(255,255,255,.18)',
+          boxShadow:    '0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.18)',
           pointerEvents:'none',
         }}
       />
