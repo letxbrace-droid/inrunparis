@@ -191,11 +191,14 @@ export default function Step1Route({ onNext }) {
               style={{ borderColor: 'rgba(255,65,3,.3)', borderTopColor: '#ff4103' }} />
           ) : (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#ff4103"
-              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              stroke="#ff4103" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              <circle cx="12" cy="12" r="7"/>
+              <circle cx="12" cy="12" r="2.5" fill="#ff4103" stroke="none"/>
+              <line x1="12" y1="1"  x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="1"  y1="12" x2="5"  y2="12"/>
+              <line x1="19" y1="12" x2="23" y2="12"/>
             </svg>
           )}
         </button>
