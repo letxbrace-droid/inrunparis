@@ -171,14 +171,14 @@ export default function Step1Route({ onNext }) {
           className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer active:scale-95 transition-all duration-200"
           style={{
             background: geoStatus === 'success'
-              ? 'rgba(52,211,153,.12)'
-              : geoStatus === 'error'
-              ? 'rgba(248,113,113,.1)'
+              ? 'rgba(255,65,3,.15)'
               : 'linear-gradient(145deg, #002535, #001a28)',
             boxShadow: geoStatus === 'success'
-              ? '0 0 14px rgba(52,211,153,.3), 5px 5px 16px rgba(0,0,0,.5)'
+              ? '0 0 16px rgba(255,65,3,.3), 5px 5px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.025)'
               : '5px 5px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.025)',
-            border: '1px solid rgba(255,255,255,.06)',
+            border: geoStatus === 'success'
+              ? '1px solid rgba(255,65,3,.35)'
+              : '1px solid rgba(255,255,255,.06)',
           }}
         >
           {geoStatus === 'loading' ? (
@@ -186,7 +186,7 @@ export default function Step1Route({ onNext }) {
               style={{ borderColor: 'rgba(255,65,3,.3)', borderTopColor: '#ff4103' }} />
           ) : (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke={geoStatus === 'success' ? '#34d399' : geoStatus === 'error' ? '#f87171' : '#ff4103'}
+              stroke="#ff4103"
               strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="3"/>
@@ -201,7 +201,7 @@ export default function Step1Route({ onNext }) {
         <p className="text-xs px-1" style={{ color: 'rgba(248,113,113,.8)' }}>{geoError}</p>
       )}
       {geoStatus === 'success' && (
-        <p className="text-xs px-1" style={{ color: 'rgba(52,211,153,.8)' }}>Position détectée</p>
+        <p className="text-xs px-1" style={{ color: 'rgba(255,65,3,.8)' }}>Position détectée</p>
       )}
 
       {/* Connector */}

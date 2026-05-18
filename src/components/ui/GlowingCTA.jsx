@@ -11,7 +11,7 @@ export default function GlowingCTA({ children, onClick, disabled, type = 'button
         text-white font-bold text-[15px] tracking-wide
         transition-transform duration-150 cursor-pointer
         active:scale-[.97]
-        disabled:opacity-40 disabled:pointer-events-none
+        disabled:opacity-55 disabled:pointer-events-none
         select-none overflow-hidden
         ${className}
       `}
