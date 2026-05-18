@@ -1,15 +1,149 @@
+import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { sendWhatsApp, generateBonNumber } from '../../utils/whatsappEncoder'
-import GlowingCTA from '../ui/GlowingCTA'
-import iOSToggle  from '../ui/iOSToggle'
+import GlowingCTA    from '../ui/GlowingCTA'
+import iOSToggle     from '../ui/iOSToggle'
 import FloatingInput from '../ui/FloatingInput'
 
-const AMBIANCE_OPTS = [
-  { value: 'musique', label: 'Musique', icon: '♪' },
-  { value: 'radio',   label: 'Radio',   icon: '◉' },
-  { value: 'silence', label: 'Silence', icon: '◌' },
+// ─── Animated ambiance icons ────────────────────────────────────────────────
+
+const BAR_KF = [
+  { heights: [6, 16, 9, 18, 6],   ys: [16, 6, 13, 4, 16] },
+  { heights: [12, 5, 18, 8, 12],  ys: [10, 17, 4, 14, 10] },
+  { heights: [17, 10, 5, 13, 17], ys: [5, 12, 17, 9, 5] },
 ]
-const PAYMENT_OPTS = ['Carte', 'Espèces', 'Virement']
+
+function MusiqueIcon({ active }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+      {BAR_KF.map(({ heights, ys }, i) => (
+        <motion.rect
+          key={i}
+          x={3 + i * 7}
+          width={4}
+          rx={1.5}
+          animate={active ? { height: heights, y: ys } : { height: 4, y: 18 }}
+          transition={
+            active
+              ? { duration: 0.65, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }
+              : { duration: 0.25, ease: 'easeOut' }
+          }
+          fill={active ? '#ff4103' : 'rgba(245,241,232,.4)'}
+        />
+      ))}
+    </svg>
+  )
+}
+
+function RadioIcon({ active }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="2" fill={active ? '#ff4103' : 'rgba(245,241,232,.5)'}/>
+      <motion.g
+        animate={active ? { opacity: [0.4, 1, 0.4] } : { opacity: 0.35 }}
+        transition={{ duration: 0.85, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}
+      >
+        <path d="M8.5 8.5a5 5 0 0 0 0 7"  stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.35)'} strokeWidth="1.8"/>
+        <path d="M15.5 8.5a5 5 0 0 1 0 7" stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.35)'} strokeWidth="1.8"/>
+      </motion.g>
+      <motion.g
+        animate={active ? { opacity: [0.1, 0.65, 0.1] } : { opacity: 0.18 }}
+        transition={{ duration: 0.85, repeat: Infinity, ease: 'easeInOut', delay: 0.35 }}
+      >
+        <path d="M5.6 5.6a9 9 0 0 0 0 12.8"  stroke={active ? 'rgba(255,65,3,.55)' : 'rgba(245,241,232,.2)'} strokeWidth="1.5"/>
+        <path d="M18.4 5.6a9 9 0 0 1 0 12.8" stroke={active ? 'rgba(255,65,3,.55)' : 'rgba(245,241,232,.2)'} strokeWidth="1.5"/>
+      </motion.g>
+    </svg>
+  )
+}
+
+function SilenceIcon({ active }) {
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.45)'
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={c} fill={active ? 'rgba(255,65,3,.12)' : 'none'}/>
+      <line x1="23" y1="9"  x2="17" y2="15" stroke={c}/>
+      <line x1="17" y1="9"  x2="23" y2="15" stroke={c}/>
+    </svg>
+  )
+}
+
+// ─── Payment icons ───────────────────────────────────────────────────────────
+
+function CardIcon({ active }) {
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+      <line x1="1" y1="10" x2="23" y2="10"/>
+    </svg>
+  )
+}
+
+function CashIcon({ active }) {
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="6" width="20" height="12" rx="2"/>
+      <circle cx="12" cy="12" r="2.5"/>
+      <path d="M6 12h.01M18 12h.01"/>
+    </svg>
+  )
+}
+
+function TransferIcon({ active }) {
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="17 1 21 5 17 9"/>
+      <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+      <polyline points="7 23 3 19 7 15"/>
+      <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+    </svg>
+  )
+}
+
+// ─── Dynamic thermometer ─────────────────────────────────────────────────────
+
+function ThermometerIcon({ clim }) {
+  const ratio      = (clim - 16) / 12
+  const fillColor  = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'rgba(255,65,3,.95)'
+  const shellColor = ratio < 0.3 ? 'rgba(130,200,255,.5)'  : ratio < 0.65 ? 'rgba(255,175,70,.45)' : 'rgba(255,65,3,.5)'
+  const mercuryY2  = 15 - ratio * 9
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path
+        d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"
+        stroke={shellColor}
+        strokeWidth="1.8"
+      />
+      <motion.line
+        x1="12" x2="12"
+        y1="17"
+        animate={{ y2: mercuryY2 }}
+        initial={{ y2: 15 }}
+        transition={{ type: 'spring', stiffness: 90, damping: 18 }}
+        stroke={fillColor}
+        strokeWidth="2.5"
+      />
+      <circle cx="12" cy="17" r="2" fill={fillColor}/>
+    </svg>
+  )
+}
+
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const AMBIANCE_OPTS = [
+  { value: 'musique', label: 'Musique', Icon: MusiqueIcon },
+  { value: 'radio',   label: 'Radio',   Icon: RadioIcon },
+  { value: 'silence', label: 'Silence', Icon: SilenceIcon },
+]
+
+const PAYMENT_OPTS = [
+  { value: 'Carte',    label: 'Carte',    Icon: CardIcon },
+  { value: 'Espèces',  label: 'Espèces',  Icon: CashIcon },
+  { value: 'Virement', label: 'Virement', Icon: TransferIcon },
+]
 
 const OPTION_LIST = [
   { key: 'wifi',        label: 'Wi-Fi 5G' },
@@ -18,6 +152,8 @@ const OPTION_LIST = [
   { key: 'confiseries', label: 'Confiseries' },
   { key: 'siege',       label: 'Siège enfant' },
 ]
+
+// ─── Sub-components ──────────────────────────────────────────────────────────
 
 function SectionLabel({ children }) {
   return (
@@ -33,7 +169,7 @@ function SectionLabel({ children }) {
   )
 }
 
-function PillButton({ active, onClick, children }) {
+function PillButton({ active, onClick, icon: Icon, children }) {
   return (
     <button
       onClick={onClick}
@@ -51,28 +187,33 @@ function PillButton({ active, onClick, children }) {
         color: active ? '#F5F1E8' : 'rgba(245,241,232,.4)',
       }}
     >
-      {children}
+      <span className="flex items-center justify-center gap-1.5">
+        {Icon && <Icon active={active} />}
+        {children}
+      </span>
     </button>
   )
 }
 
+// ─── Main ────────────────────────────────────────────────────────────────────
+
 export default function Step3Options({ onBack }) {
-  const ambiance     = useBookingStore((s) => s.ambiance)
-  const setAmbiance  = useBookingStore((s) => s.setAmbiance)
-  const volume       = useBookingStore((s) => s.volume)
-  const setVolume    = useBookingStore((s) => s.setVolume)
-  const clim         = useBookingStore((s) => s.clim)
-  const setClim      = useBookingStore((s) => s.setClim)
-  const options      = useBookingStore((s) => s.options)
-  const toggleOption = useBookingStore((s) => s.toggleOption)
-  const payment      = useBookingStore((s) => s.payment)
-  const setPayment   = useBookingStore((s) => s.setPayment)
-  const clientName   = useBookingStore((s) => s.clientName)
+  const ambiance       = useBookingStore((s) => s.ambiance)
+  const setAmbiance    = useBookingStore((s) => s.setAmbiance)
+  const volume         = useBookingStore((s) => s.volume)
+  const setVolume      = useBookingStore((s) => s.setVolume)
+  const clim           = useBookingStore((s) => s.clim)
+  const setClim        = useBookingStore((s) => s.setClim)
+  const options        = useBookingStore((s) => s.options)
+  const toggleOption   = useBookingStore((s) => s.toggleOption)
+  const payment        = useBookingStore((s) => s.payment)
+  const setPayment     = useBookingStore((s) => s.setPayment)
+  const clientName     = useBookingStore((s) => s.clientName)
   const setClientName  = useBookingStore((s) => s.setClientName)
-  const clientEmail  = useBookingStore((s) => s.clientEmail)
+  const clientEmail    = useBookingStore((s) => s.clientEmail)
   const setClientEmail = useBookingStore((s) => s.setClientEmail)
-  const note         = useBookingStore((s) => s.note)
-  const setNote      = useBookingStore((s) => s.setNote)
+  const note           = useBookingStore((s) => s.note)
+  const setNote        = useBookingStore((s) => s.setNote)
 
   const handleSend = () => {
     const booking = useBookingStore.getState()
@@ -118,8 +259,9 @@ export default function Step3Options({ onBack }) {
               key={opt.value}
               active={ambiance === opt.value}
               onClick={() => setAmbiance(opt.value)}
+              icon={opt.Icon}
             >
-              {opt.icon} {opt.label}
+              {opt.label}
             </PillButton>
           ))}
         </div>
@@ -128,7 +270,7 @@ export default function Step3Options({ onBack }) {
             <span className="font-mono text-xs w-14" style={{ color: 'rgba(245,241,232,.5)' }}>
               {volume}%
             </span>
-            <div className="flex-1 relative">
+            <div className="flex-1">
               <input
                 type="range" min="0" max="100" value={volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
@@ -154,10 +296,10 @@ export default function Step3Options({ onBack }) {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(130,200,255,.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>Température</span>
+              <ThermometerIcon clim={clim} />
+              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>
+                Température
+              </span>
             </div>
             <span
               className="font-mono font-bold text-[15px]"
@@ -199,9 +341,7 @@ export default function Step3Options({ onBack }) {
             <div
               key={key}
               className="px-4 py-3"
-              style={{
-                borderBottom: i < OPTION_LIST.length - 1 ? '1px solid rgba(255,255,255,.05)' : 'none',
-              }}
+              style={{ borderBottom: i < OPTION_LIST.length - 1 ? '1px solid rgba(255,255,255,.05)' : 'none' }}
             >
               <iOSToggle
                 id={`opt-${key}`}
@@ -219,8 +359,13 @@ export default function Step3Options({ onBack }) {
         <SectionLabel>Mode de règlement</SectionLabel>
         <div className="flex gap-2">
           {PAYMENT_OPTS.map((p) => (
-            <PillButton key={p} active={payment === p} onClick={() => setPayment(p)}>
-              {p}
+            <PillButton
+              key={p.value}
+              active={payment === p.value}
+              onClick={() => setPayment(p.value)}
+              icon={p.Icon}
+            >
+              {p.label}
             </PillButton>
           ))}
         </div>
