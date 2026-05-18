@@ -193,6 +193,8 @@
 
   /* ── Primary CTA — the one element that truly floats ────────── */
   .cta-glow {
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(135deg, #ff5a1f 0%, #ff4103 45%, #e83800 100%);
     box-shadow:
       /* orange halo */
@@ -208,6 +210,26 @@
       /* inner bottom depth */
       inset 0 -2px 5px rgba(120,22,0,.45);
     animation: cta-breathe 3.5s ease-in-out infinite;
+  }
+
+  /* Diagonal shine sweep — starts bottom-left, sweeps to top-right on hover */
+  .cta-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,.26)   0%,
+      rgba(255,200,120,.16)  40%,
+      transparent            65%
+    );
+    transform: translate(-100%, 100%);
+    transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .cta-glow:not(:disabled):hover::before {
+    transform: translate(0, 0);
   }
 
   /* Safe-area helpers */

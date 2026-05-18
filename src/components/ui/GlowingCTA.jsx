@@ -16,12 +16,16 @@ export default function GlowingCTA({ children, onClick, disabled, type = 'button
         ${className}
       `}
     >
+      {/* Top luminous edge */}
       <span
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent)' }}
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent)', zIndex: 1 }}
       />
-      {children}
+      {/* Content sits above ::before sweep */}
+      <span className="relative flex items-center gap-2.5" style={{ zIndex: 1 }}>
+        {children}
+      </span>
     </button>
   )
 }
