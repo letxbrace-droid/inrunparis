@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 
 function IconHome() {
@@ -190,24 +191,31 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
       />
 
       {/* Drawer panel */}
-      <nav
+      <motion.nav
         id="side-drawer"
         role="dialog"
         aria-modal="true"
         aria-label="Menu principal"
         aria-hidden={!open}
-        className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden will-change-transform"
+        initial={false}
+        animate={{ x: open ? 0 : '-110%' }}
+        transition={{ type: 'spring', damping: 30, stiffness: 280, restDelta: 0.5 }}
+        drag={open ? 'x' : false}
+        dragConstraints={{ right: 0, left: -350 }}
+        dragElastic={{ left: 0.25, right: 0 }}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -70 || info.velocity.x < -400) onClose()
+        }}
+        className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden"
         style={{
           width:        'min(78vw, 320px)',
           background:   'rgba(0,17,28,0.88)',
           backdropFilter: 'blur(28px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
           borderRight:  '1px solid rgba(255,255,255,.07)',
-          transform:    open ? 'translateX(0)' : 'translateX(-100%)',
-          visibility:   open ? 'visible' : 'hidden',
           pointerEvents: open ? 'auto' : 'none',
-          transition:   `transform .32s cubic-bezier(.16,1,.3,1), visibility 0s linear ${open ? '0s' : '.32s'}`,
           boxShadow:    open ? '8px 0 60px rgba(0,0,0,.7), 2px 0 0 rgba(255,65,3,.04)' : 'none',
+          willChange:   'transform, opacity',
         }}
       >
         {/* Ambient top halo */}
@@ -333,7 +341,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             <DarkToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
           </div>
         </div>
-      </nav>
+      </motion.nav>
     </>
   )
 }

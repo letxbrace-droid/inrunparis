@@ -23,7 +23,7 @@ const arriveIcon = L.divIcon({
   iconSize: [12, 12], iconAnchor: [6, 6], className: '',
 })
 
-export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true }) {
+export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true, frozen = false }) {
   const containerRef  = useRef(null)
   const mapRef        = useRef(null)
   const tileRef       = useRef(null)
@@ -122,6 +122,11 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   }, [depart, arrive]) // eslint-disable-line
 
   return (
-    <div ref={containerRef} className="absolute inset-0 z-0" aria-label="Carte de Paris" />
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-0"
+      aria-label="Carte de Paris"
+      style={{ pointerEvents: frozen ? 'none' : 'auto', willChange: 'transform' }}
+    />
   )
 }

@@ -63,8 +63,9 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         style={{ pointerEvents: open ? 'auto' : 'none' }}
       >
         <div
-          className="w-full max-w-[560px] flex flex-col will-change-transform"
+          className="w-full max-w-[560px] flex flex-col"
           style={{
+            willChange:     'transform, opacity',
             height:         '93dvh',
             borderRadius:   '22px 22px 0 0',
             overflow:       'hidden',

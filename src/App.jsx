@@ -25,7 +25,8 @@ export default function App() {
   const routeGeometry = useBookingStore((s) => s.routeGeometry)
   const isDark        = useBookingStore((s) => s.isDark)
 
-  const route = routeGeometry ? { geometry: routeGeometry } : null
+  const route      = routeGeometry ? { geometry: routeGeometry } : null
+  const mapFrozen  = drawerOpen || sheetOpen || OVERLAY_VIEWS.includes(activeView)
 
   const handleNavigate = (view) => {
     setActiveView(view)
@@ -45,12 +46,13 @@ export default function App() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
-      {/* Map */}
+      {/* Map — frozen (pointer-events-none) when any overlay is open */}
       <LeafletMap
         depart={depart}
         arrive={arrive}
         route={route}
         isDark={isDark}
+        frozen={mapFrozen}
       />
 
       {/* Vignette overlay */}
