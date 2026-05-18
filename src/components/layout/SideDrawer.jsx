@@ -164,6 +164,43 @@ const SECONDARY = [
   { label: 'Mentions légales', view: 'legal',   Icon: IconShield  },
 ]
 
+// ── Animation variants ────────────────────────────────────────────────────────
+// Power4.easeOut ≈ [0.22, 1, 0.36, 1]
+const EXPO = [0.22, 1, 0.36, 1]
+
+// X close button — each arm enters from its corner
+const arm1Var = {
+  closed: { x: -12, y: -12, opacity: 0, transition: { duration: 0.1 } },
+  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.58, ease: EXPO, delay: 0.28 } },
+}
+const arm2Var = {
+  closed: { x: 12,  y: -12, opacity: 0, transition: { duration: 0.1 } },
+  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.58, ease: EXPO, delay: 0.38 } },
+}
+
+// Primary nav rows — stagger from bottom of panel
+const navListVar = {
+  closed: { transition: { staggerChildren: 0.025, staggerDirection: -1 } },
+  open:   { transition: { staggerChildren: 0.07,  delayChildren: 0.14 } },
+}
+
+// Secondary nav rows — later cascade
+const secListVar = {
+  closed: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+  open:   { transition: { staggerChildren: 0.05, delayChildren: 0.40 } },
+}
+
+const rowVar = {
+  closed: { opacity: 0, y: 18, transition: { duration: 0.14 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.52, ease: EXPO } },
+}
+
+const footerVar = {
+  closed: { opacity: 0, y: 10, transition: { duration: 0.12 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.42, ease: EXPO, delay: 0.58 } },
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const isDark    = useBookingStore(s => s.isDark)
   const setIsDark = useBookingStore(s => s.setIsDark)
@@ -179,6 +216,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [open])
+
+  const ani = open ? 'open' : 'closed'
 
   return (
     <>
@@ -215,7 +254,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           borderRight:  '1px solid rgba(255,255,255,.07)',
           pointerEvents: open ? 'auto' : 'none',
           boxShadow:    open ? '8px 0 60px rgba(0,0,0,.7), 2px 0 0 rgba(255,65,3,.04)' : 'none',
-          willChange:   'transform, opacity',
+          willChange:   'transform',
         }}
       >
         {/* Ambient top halo */}
@@ -229,7 +268,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           className="relative z-10 flex flex-col h-full"
           style={{ paddingTop: 'calc(var(--safe-top) + 18px)' }}
         >
-          {/* Header — close button only, no logo */}
+          {/* Header — close button, arms enter from corners */}
           <div className="flex items-center justify-end px-5 pb-6">
             <button
               onClick={onClose}
@@ -240,19 +279,34 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 border: '1px solid var(--separator)',
               }}
             >
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="rgba(245,241,232,.7)" strokeWidth="2" strokeLinecap="round">
-                <path d="M1 1l12 12M13 1L1 13"/>
+              <svg
+                width="12" height="12" viewBox="0 0 14 14"
+                fill="none" strokeWidth="2" strokeLinecap="round"
+                overflow="visible"
+              >
+                <motion.g initial="closed" animate={ani} variants={arm1Var}>
+                  <path d="M1 1l12 12" stroke="rgba(245,241,232,.8)" />
+                </motion.g>
+                <motion.g initial="closed" animate={ani} variants={arm2Var}>
+                  <path d="M13 1L1 13" stroke="rgba(245,241,232,.8)" />
+                </motion.g>
               </svg>
             </button>
           </div>
 
           {/* Primary nav */}
-          <ul className="flex flex-col px-3 list-none" style={{ gap: 3 }}>
+          <motion.ul
+            initial="closed"
+            animate={ani}
+            variants={navListVar}
+            className="flex flex-col px-3 list-none"
+            style={{ gap: 3 }}
+          >
             {NAV_ITEMS.map((item) => {
-              const isActive = activeView === item.view
+              const isActive  = activeView === item.view
               const highlight = isActive || item.accent
               return (
-                <li key={item.view}>
+                <motion.li key={item.view} variants={rowVar}>
                   <button
                     onClick={() => { onNavigate(item.view); onClose() }}
                     className="flex items-center gap-3.5 w-full rounded-xl px-3.5 py-3.5 cursor-pointer select-none transition-all duration-150 active:scale-[.97]"
@@ -260,14 +314,14 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                       background: highlight
                         ? 'linear-gradient(135deg, rgba(255,90,31,.16) 0%, rgba(255,65,3,.09) 100%)'
                         : 'transparent',
-                      border:     highlight ? '1px solid rgba(255,65,3,.3)' : '1px solid transparent',
-                      boxShadow:  highlight ? '0 0 18px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.05)' : 'none',
+                      border:    highlight ? '1px solid rgba(255,65,3,.3)' : '1px solid transparent',
+                      boxShadow: highlight ? '0 0 18px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.05)' : 'none',
                     }}
                   >
                     <span style={{
-                      color: highlight ? '#ff6120' : 'rgba(245,241,232,.38)',
+                      color:      highlight ? '#ff6120' : 'rgba(245,241,232,.38)',
                       flexShrink: 0,
-                      filter: highlight ? 'drop-shadow(0 0 5px rgba(255,80,10,.9))' : 'none',
+                      filter:     highlight ? 'drop-shadow(0 0 5px rgba(255,80,10,.9))' : 'none',
                       transition: 'filter .2s, color .2s',
                     }}>
                       <item.Icon />
@@ -279,25 +333,28 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                       {item.label}
                     </span>
                   </button>
-                </li>
+                </motion.li>
               )
             })}
-          </ul>
+          </motion.ul>
 
           {/* Separator */}
           <div className="mx-5 mt-4 mb-3" style={{ height: 1, background: 'rgba(255,65,3,.12)' }} />
 
-          {/* Secondary links — redesigned with proper size & icons */}
-          <ul className="flex flex-col px-3 list-none" style={{ gap: 1 }}>
+          {/* Secondary links */}
+          <motion.ul
+            initial="closed"
+            animate={ani}
+            variants={secListVar}
+            className="flex flex-col px-3 list-none"
+            style={{ gap: 1 }}
+          >
             {SECONDARY.map((item) => (
-              <li key={item.label}>
+              <motion.li key={item.label} variants={rowVar}>
                 <button
                   onClick={() => { if (item.view) onNavigate(item.view); onClose() }}
                   className="flex items-center gap-3 w-full rounded-xl px-3.5 py-3 cursor-pointer active:scale-[.97] transition-all duration-150 select-none"
-                  style={{
-                    background: 'transparent',
-                    border: '1px solid transparent',
-                  }}
+                  style={{ background: 'transparent', border: '1px solid transparent' }}
                   onMouseEnter={e => {
                     e.currentTarget.style.background = 'rgba(255,65,3,.06)'
                     e.currentTarget.style.border = '1px solid rgba(255,65,3,.12)'
@@ -321,12 +378,15 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
                 </button>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
 
-          {/* Footer: Mode sombre toggle */}
-          <div
+          {/* Footer — dark mode toggle */}
+          <motion.div
+            initial="closed"
+            animate={ani}
+            variants={footerVar}
             className="flex items-center justify-between px-5 mt-auto"
             style={{
               borderTop:     '1px solid rgba(245,241,232,.07)',
@@ -338,7 +398,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               Mode sombre
             </span>
             <DarkToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
-          </div>
+          </motion.div>
         </div>
       </motion.nav>
     </>
