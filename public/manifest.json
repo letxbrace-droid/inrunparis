@@ -1,0 +1,33 @@
+{
+  "name": "Inrun — Chauffeur Privé Aéroports",
+  "short_name": "Inrun",
+  "description": "Spécialiste transferts aéroports CDG, Orly, Beauvais et courses longue distance. Réservation directe à l'avance, tarif fixe garanti.",
+  "start_url": "/inrunparis/",
+  "scope": "/inrunparis/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0C0C0E",
+  "theme_color": "#0C0C0E",
+  "lang": "fr-FR",
+  "categories": ["travel", "transportation", "business"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
