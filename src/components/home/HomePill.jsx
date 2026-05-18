@@ -81,7 +81,8 @@ export default function HomePill({ onOpenSheet }) {
     depart, arrive, pickup, vehicleType,
     setDepart, setArrive, setPrice, setRouteGeometry,
   } = useBookingStore()
-  const price = useBookingStore(s => s.price)
+  const price  = useBookingStore(s => s.price)
+  const isDark = useBookingStore(s => s.isDark)
 
   // Route — local instance for display in the card
   const { route, loading: routeLoading, fetchRoute } = useOSRM()
@@ -184,16 +185,23 @@ export default function HomePill({ onOpenSheet }) {
           maxWidth:      560,
           marginInline:  'auto',
           borderRadius:  depart && arrive ? 22 : 999,
-          background:    'rgba(0,18,28,0.82)',
-          border:        '1px solid rgba(255,255,255,.1)',
+          background:    isDark ? 'rgba(4,22,36,0.92)' : 'rgba(0,18,28,0.82)',
+          border:        isDark
+            ? '1px solid rgba(255,65,3,.38)'
+            : '1px solid rgba(255,255,255,.1)',
           backdropFilter: 'blur(24px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
-          boxShadow: [
-            '0 24px 50px -12px rgba(0,0,0,.72)',   // wide diffuse floor shadow
-            '0 12px 26px -6px rgba(0,0,0,.5)',     // mid lift shadow
-            '0 3px 8px rgba(0,0,0,.42)',           // tight contact shadow
-            'inset 0 1px 0.5px rgba(255,255,255,.26)', // luminous top edge — light on glass
-            'inset 0 -1px 2px rgba(0,0,0,.35)',    // inner bottom depth
+          boxShadow: isDark ? [
+            '0 0 0 1px rgba(255,65,3,.12)',
+            '0 0 28px rgba(255,65,3,.14)',
+            '0 12px 40px -8px rgba(0,0,0,.8)',
+            'inset 0 1px 0.5px rgba(255,255,255,.1)',
+          ].join(', ') : [
+            '0 24px 50px -12px rgba(0,0,0,.72)',
+            '0 12px 26px -6px rgba(0,0,0,.5)',
+            '0 3px 8px rgba(0,0,0,.42)',
+            'inset 0 1px 0.5px rgba(255,255,255,.26)',
+            'inset 0 -1px 2px rgba(0,0,0,.35)',
           ].join(', '),
           opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
