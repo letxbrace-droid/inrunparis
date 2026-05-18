@@ -106,6 +106,7 @@ export default function App() {
       <TopBar
         onBurgerClick={() => setDrawerOpen(true)}
         burgerOpen={drawerOpen}
+        isDark={isDark}
       />
 
       {/* Home pill — hidden while overlay is active */}

@@ -1,16 +1,21 @@
 import { motion } from 'framer-motion'
 
-const BAR = {
-  display:         'block',
-  width:           24,
-  height:          2.5,
-  borderRadius:    99,
-  background:      '#F5F1E8',
-  transformOrigin: 'center',
-  filter:          'drop-shadow(0 1px 4px rgba(0,0,0,.75))',
+function barStyle(isDark) {
+  return {
+    display:         'block',
+    width:           24,
+    height:          2.5,
+    borderRadius:    99,
+    background:      isDark ? '#F5F1E8' : '#0c1e2e',
+    transformOrigin: 'center',
+    filter:          isDark
+      ? 'drop-shadow(0 1px 4px rgba(0,0,0,.75))'
+      : 'drop-shadow(0 1px 3px rgba(255,255,255,.6))',
+  }
 }
 
-export default function TopBar({ onBurgerClick, burgerOpen }) {
+export default function TopBar({ onBurgerClick, burgerOpen, isDark = true }) {
+  const BAR = barStyle(isDark)
   return (
     <header
       className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-5 pointer-events-none"
