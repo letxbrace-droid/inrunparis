@@ -10,7 +10,6 @@ permissions:
   pages: write
   id-token: write
 
-# One concurrent deployment — cancel in-flight runs on new push
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -22,17 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build with Vite
-        run: npm run build
+      - name: Prepare static site
+        run: |
+          mkdir -p _site
+          cp index-v3-legacy.html _site/index.html
+          cp manifest.json sw.js icon*.png icon.svg _site/
+          cp -r lib/ _site/lib/
+          cp 404.html _site/ 2>/dev/null || true
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -40,7 +35,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: _site
 
   deploy:
     needs: build
