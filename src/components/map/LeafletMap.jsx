@@ -3,36 +3,38 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconUrl:       'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-})
 
 const TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const PARIS = [48.8566, 2.3522]
 
+const departIcon = L.divIcon({
+  html: `<div style="width:12px;height:12px;border-radius:50%;background:#ff4103;box-shadow:0 0 18px rgba(255,65,3,.95),0 0 6px rgba(255,65,3,.6);border:2px solid rgba(255,255,255,.9)"></div>`,
+  iconSize: [12, 12], iconAnchor: [6, 6], className: '',
+})
+
+const arriveIcon = L.divIcon({
+  html: `<div style="width:12px;height:12px;border-radius:50%;background:#F5F1E8;box-shadow:0 0 14px rgba(245,241,232,.8);border:2.5px solid rgba(255,65,3,.85)"></div>`,
+  iconSize: [12, 12], iconAnchor: [6, 6], className: '',
+})
+
 export default function LeafletMap({ route, depart, arrive, onMapReady }) {
   const containerRef = useRef(null)
   const mapRef       = useRef(null)
-  const routeRef     = useRef(null)
+  const routeRef     = useRef([])
   const markersRef   = useRef([])
 
+  // Initialize map once
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return
 
     const map = L.map(containerRef.current, {
-      center:          PARIS,
-      zoom:            12,
-      zoomControl:     false,
+      center:             PARIS,
+      zoom:               12,
+      zoomControl:        false,
       attributionControl: false,
     })
 
-    L.tileLayer(TILES, {
-      attribution: '',
-      subdomains:  'abcd',
-      maxZoom:     20,
-    }).addTo(map)
+    L.tileLayer(TILES, { attribution: '', subdomains: 'abcd', maxZoom: 20 }).addTo(map)
 
     mapRef.current = map
     onMapReady?.(map)
@@ -43,52 +45,68 @@ export default function LeafletMap({ route, depart, arrive, onMapReady }) {
     }
   }, [])
 
-  // Draw route
+  // Draw triple-layer luminous route
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
-    routeRef.current?.forEach((l) => map.removeLayer(l))
+    routeRef.current.forEach(l => map.removeLayer(l))
     routeRef.current = []
-    markersRef.current.forEach((m) => map.removeLayer(m))
-    markersRef.current = []
 
     if (!route?.geometry) return
 
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
 
-    const glow1 = L.polyline(coords, { color: '#ff4103', weight: 18, opacity: 0.06 })
-    const glow2 = L.polyline(coords, { color: '#ff4103', weight: 8,  opacity: 0.18 })
-    const line  = L.polyline(coords, { color: '#ff4103', weight: 3,  opacity: 0.9 })
+    const glow1 = L.polyline(coords, { color: '#ff4103', weight: 20, opacity: 0.06 })
+    const glow2 = L.polyline(coords, { color: '#ff4103', weight: 8,  opacity: 0.20 })
+    const core  = L.polyline(coords, { color: '#ff4103', weight: 3,  opacity: 0.92 })
 
     glow1.addTo(map)
     glow2.addTo(map)
-    line.addTo(map)
-    routeRef.current = [glow1, glow2, line]
+    core.addTo(map)
+    routeRef.current = [glow1, glow2, core]
+
+    // Animate: start from depart zoom then fly to full route (Uber style)
+    if (coords.length) {
+      const bounds = L.latLngBounds(coords)
+      if (depart) {
+        map.setView([depart.lat, depart.lng], 15, { animate: false })
+        setTimeout(() => {
+          map.flyToBounds(bounds, { padding: [56, 56], animate: true, duration: 1.6, easeLinearity: 0.12 })
+        }, 180)
+      } else {
+        map.fitBounds(bounds, { padding: [60, 60] })
+      }
+    }
+  }, [route])
+
+  // Place / update point A & B markers independently
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+
+    markersRef.current.forEach(m => map.removeLayer(m))
+    markersRef.current = []
 
     if (depart) {
-      const m = L.marker([depart.lat, depart.lng], {
-        icon: L.divIcon({
-          html: `<div style="width:10px;height:10px;border-radius:50%;background:#ff4103;box-shadow:0 0 14px rgba(255,65,3,.9),0 0 4px rgba(255,65,3,.5);border:2px solid rgba(255,255,255,.9)"></div>`,
-          iconSize: [10, 10], iconAnchor: [5, 5], className: '',
-        }),
-      }).addTo(map)
-      markersRef.current.push(m)
+      markersRef.current.push(L.marker([depart.lat, depart.lng], { icon: departIcon }).addTo(map))
     }
-
     if (arrive) {
-      const m = L.marker([arrive.lat, arrive.lng], {
-        icon: L.divIcon({
-          html: `<div style="width:10px;height:10px;border-radius:50%;background:#F5F1E8;box-shadow:0 0 10px rgba(245,241,232,.8);border:2px solid rgba(255,65,3,.7)"></div>`,
-          iconSize: [10, 10], iconAnchor: [5, 5], className: '',
-        }),
-      }).addTo(map)
-      markersRef.current.push(m)
+      markersRef.current.push(L.marker([arrive.lat, arrive.lng], { icon: arriveIcon }).addTo(map))
     }
 
-    const allCoords = [...coords]
-    if (allCoords.length) map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] })
-  }, [route, depart, arrive])
+    // Move camera only when no route is drawn yet
+    if (!route?.geometry) {
+      if (depart && arrive) {
+        map.fitBounds(
+          [[depart.lat, depart.lng], [arrive.lat, arrive.lng]],
+          { padding: [80, 80], animate: true },
+        )
+      } else if (depart) {
+        map.flyTo([depart.lat, depart.lng], 14, { animate: true, duration: 0.8 })
+      }
+    }
+  }, [depart, arrive])
 
   return (
     <div

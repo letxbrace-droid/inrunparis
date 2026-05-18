@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
+import useGeolocation  from '../../hooks/useGeolocation'
 import { computePriceForBooking } from '../../utils/priceEngine'
 import GlowingCTA from '../ui/GlowingCTA'
 
@@ -44,7 +45,7 @@ function LocationInput({ label, value, onSelect, placeholder }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative flex-1">
       <div className="relative flex items-center">
         <span className="absolute left-4 text-ink-muted text-sm">{label === 'Départ' ? '📍' : '🏁'}</span>
         <input
@@ -97,38 +98,83 @@ function LocationInput({ label, value, onSelect, placeholder }) {
 }
 
 export default function Step1Route({ onNext }) {
-  const { depart, arrive, pickup, vehicleType, setDepart, setArrive, setPrice } = useBookingStore()
+  const { depart, arrive, pickup, vehicleType, setDepart, setArrive, setPrice, setRouteGeometry } = useBookingStore()
   const { route, loading, error, fetchRoute } = useOSRM()
+  const { status: geoStatus, error: geoError, detect } = useGeolocation()
 
   const handleCalculate = useCallback(async () => {
     if (!depart || !arrive) return
     const result = await fetchRoute(depart, arrive)
     if (result) {
+      setRouteGeometry(result.geometry)
       const price = computePriceForBooking(result.km, result.mins, { pickup, depart, arrive, vehicleType })
       setPrice(price)
     }
-  }, [depart, arrive, pickup, vehicleType, fetchRoute, setPrice])
+  }, [depart, arrive, pickup, vehicleType, fetchRoute, setPrice, setRouteGeometry])
+
+  const handleGeolocate = useCallback(() => {
+    detect((result) => {
+      setDepart(result)
+      setRouteGeometry(null)
+    })
+  }, [detect, setDepart, setRouteGeometry])
 
   const canProceed = depart && arrive && route
 
   return (
     <div className="flex flex-col gap-4 px-5 pb-6">
-      <LocationInput
-        label="Départ"
-        value={depart}
-        onSelect={setDepart}
-        placeholder="Adresse de départ"
-      />
+      {/* Departure + GPS button */}
+      <div className="flex items-center gap-2">
+        <LocationInput
+          label="Départ"
+          value={depart}
+          onSelect={(item) => { setDepart(item); setRouteGeometry(null) }}
+          placeholder="Adresse de départ"
+        />
+        <button
+          onClick={handleGeolocate}
+          disabled={geoStatus === 'loading'}
+          aria-label="Détecter ma position GPS"
+          className={`
+            flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center
+            border transition-all duration-200 cursor-pointer active:scale-95
+            ${geoStatus === 'loading'  ? 'bg-accent/10 border-accent/30' :
+              geoStatus === 'success'  ? 'bg-green-400/10 border-green-400/30' :
+              geoStatus === 'error'    ? 'bg-red-400/10 border-red-400/30' :
+                                        'bg-bg-elevated border-[var(--rule-strong)]'}
+          `}
+        >
+          {geoStatus === 'loading' ? (
+            <span className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke={geoStatus === 'success' ? '#34d399' : geoStatus === 'error' ? '#f87171' : '#ff4103'}
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Geo hint */}
+      {geoStatus === 'error' && geoError && (
+        <p className="text-xs text-red-400 -mt-2 px-1">{geoError}</p>
+      )}
+      {geoStatus === 'success' && (
+        <p className="text-xs text-green-400 -mt-2 px-1">✓ Position détectée</p>
+      )}
 
       {/* Route connector */}
-      <div className="flex justify-center">
-        <div className="w-px h-6 bg-gradient-to-b from-accent/40 to-accent/10" />
+      <div className="flex justify-center -my-1">
+        <div className="w-px h-5 bg-gradient-to-b from-accent/40 to-accent/10" />
       </div>
 
       <LocationInput
         label="Arrivée"
         value={arrive}
-        onSelect={setArrive}
+        onSelect={(item) => { setArrive(item); setRouteGeometry(null) }}
         placeholder="Adresse d'arrivée"
       />
 
