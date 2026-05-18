@@ -5,8 +5,8 @@ import 'leaflet/dist/leaflet.css'
 delete L.Icon.Default.prototype._getIconUrl
 
 const PARIS       = [48.8566, 2.3522]
-const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png'
+const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
   html: `<div class="gps-user-dot" style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2.5px solid white;box-shadow:0 0 12px rgba(59,130,246,.8)"></div>`,
