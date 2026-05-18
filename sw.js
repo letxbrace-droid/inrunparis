@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v40 */
-const CACHE = 'inrun-v40';
+/* I&N RUN — Service Worker v41 */
+const CACHE = 'inrun-v41';
 const STATIC = [
   '/inrunparis/',
   '/inrunparis/index.html',
@@ -9,8 +9,6 @@ const STATIC = [
   '/inrunparis/icon-maskable-512.png',
   '/inrunparis/icon.svg',
   '/inrunparis/manifest.json',
-  '/inrunparis/lib/leaflet.js',
-  '/inrunparis/lib/leaflet.css',
 ];
 const PASSTHROUGH = [
   '/inrunparis/bdr-admin.html',
