@@ -354,12 +354,16 @@ export default function HomePill({ onOpenSheet }) {
                     {geoStatus === 'loading' ? (
                       <span className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                     ) : (
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke={geoStatus === 'success' ? '#34d399' : '#ff4103'}
-                        strokeWidth="2" strokeLinecap="round"
+                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                       >
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+                        <circle cx="12" cy="12" r="7"/>
+                        <circle cx="12" cy="12" r="2.5" fill={geoStatus === 'success' ? '#34d399' : '#ff4103'} stroke="none"/>
+                        <line x1="12" y1="1"  x2="12" y2="5"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="1"  y1="12" x2="5"  y2="12"/>
+                        <line x1="19" y1="12" x2="23" y2="12"/>
                       </svg>
                     )}
                   </button>

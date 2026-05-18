@@ -1,11 +1,11 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { sendWhatsApp, generateBonNumber } from '../../utils/whatsappEncoder'
 import GlowingCTA    from '../ui/GlowingCTA'
-import iOSToggle     from '../ui/iOSToggle'
 import FloatingInput from '../ui/FloatingInput'
 
-// ─── Animated ambiance icons ────────────────────────────────────────────────
+// ─── Animated ambiance icons ─────────────────────────────────────────────────
 
 const BAR_KF = [
   { heights: [6, 16, 9, 18, 6],   ys: [16, 6, 13, 4, 16] },
@@ -68,12 +68,37 @@ function SilenceIcon({ active }) {
   )
 }
 
-// ─── Payment icons ───────────────────────────────────────────────────────────
+// ─── Volume icon ─────────────────────────────────────────────────────────────
+
+function VolumeIcon({ level }) {
+  const c = 'rgba(255,65,3,.7)'
+  if (level === 0) return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  )
+  if (level < 40) return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+  )
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  )
+}
+
+// ─── Payment icons ────────────────────────────────────────────────────────────
 
 function CardIcon({ active }) {
   const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
       <line x1="1" y1="10" x2="23" y2="10"/>
     </svg>
@@ -83,7 +108,7 @@ function CardIcon({ active }) {
 function CashIcon({ active }) {
   const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="6" width="20" height="12" rx="2"/>
       <circle cx="12" cy="12" r="2.5"/>
       <path d="M6 12h.01M18 12h.01"/>
@@ -94,7 +119,7 @@ function CashIcon({ active }) {
 function TransferIcon({ active }) {
   const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="17 1 21 5 17 9"/>
       <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
       <polyline points="7 23 3 19 7 15"/>
@@ -103,88 +128,127 @@ function TransferIcon({ active }) {
   )
 }
 
-// ─── Dynamic thermometer ─────────────────────────────────────────────────────
+// ─── Thermometer ──────────────────────────────────────────────────────────────
 
 function ThermometerIcon({ clim }) {
-  const ratio      = (clim - 16) / 12
-  const fillColor  = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'rgba(255,65,3,.95)'
-  const shellColor = ratio < 0.3 ? 'rgba(130,200,255,.5)'  : ratio < 0.65 ? 'rgba(255,175,70,.45)' : 'rgba(255,65,3,.5)'
-  const mercuryY2  = 15 - ratio * 9
+  const ratio     = (clim - 16) / 12
+  const fillColor = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'rgba(255,65,3,.95)'
+  const shellColor= ratio < 0.3 ? 'rgba(130,200,255,.5)'  : ratio < 0.65 ? 'rgba(255,175,70,.45)' : 'rgba(255,65,3,.5)'
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path
-        d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"
-        stroke={shellColor}
-        strokeWidth="1.8"
-      />
+      <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" stroke={shellColor} strokeWidth="1.8"/>
       <motion.line
-        x1="12" x2="12"
-        y1="17"
-        animate={{ y2: mercuryY2 }}
+        x1="12" x2="12" y1="17"
+        animate={{ y2: 15 - ratio * 9 }}
         initial={{ y2: 15 }}
         transition={{ type: 'spring', stiffness: 90, damping: 18 }}
-        stroke={fillColor}
-        strokeWidth="2.5"
+        stroke={fillColor} strokeWidth="2.5"
       />
       <circle cx="12" cy="17" r="2" fill={fillColor}/>
     </svg>
   )
 }
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Prestation icons ─────────────────────────────────────────────────────────
+
+function WifiIcon({ active }) {
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+      <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+      <circle cx="12" cy="20" r="1" fill={c} stroke="none"/>
+    </svg>
+  )
+}
+
+function WaterIcon({ active }) {
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C6 8 4 12.5 4 15a8 8 0 0 0 16 0c0-2.5-2-7-8-13z"/>
+    </svg>
+  )
+}
+
+function ChargerIcon({ active }) {
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="6" y="2" width="12" height="20" rx="2"/>
+      <line x1="12" y1="6" x2="12" y2="10"/>
+      <polyline points="9 14 12 11 15 14"/>
+      <line x1="9"  y1="18" x2="15" y2="18"/>
+    </svg>
+  )
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const AMBIANCE_OPTS = [
   { value: 'musique', label: 'Musique', Icon: MusiqueIcon },
-  { value: 'radio',   label: 'Radio',   Icon: RadioIcon },
+  { value: 'radio',   label: 'Radio',   Icon: RadioIcon   },
   { value: 'silence', label: 'Silence', Icon: SilenceIcon },
 ]
 
 const PAYMENT_OPTS = [
-  { value: 'Carte',    label: 'Carte',    Icon: CardIcon },
-  { value: 'Espèces',  label: 'Espèces',  Icon: CashIcon },
+  { value: 'Carte',    label: 'Carte',    Icon: CardIcon    },
+  { value: 'Espèces',  label: 'Espèces',  Icon: CashIcon    },
   { value: 'Virement', label: 'Virement', Icon: TransferIcon },
 ]
 
-const OPTION_LIST = [
-  { key: 'wifi',        label: 'Wi-Fi 5G' },
-  { key: 'eau',         label: "Eau minérale" },
-  { key: 'usb',         label: 'Recharge USB' },
-  { key: 'confiseries', label: 'Confiseries' },
-  { key: 'siege',       label: 'Siège enfant' },
+const PRESTATIONS = [
+  { key: 'wifi', label: 'Wi-Fi 5G',    Icon: WifiIcon    },
+  { key: 'eau',  label: 'Eau minérale',Icon: WaterIcon   },
+  { key: 'usb',  label: 'Chargeur',    Icon: ChargerIcon },
 ]
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function SectionLabel({ children }) {
   return (
     <div className="flex items-center gap-2 mb-3">
       <span
-        className="text-[10px] font-bold uppercase tracking-[.12em]"
-        style={{ color: 'rgba(255,65,3,.7)' }}
+        className="text-[10px] font-bold uppercase tracking-[.14em]"
+        style={{
+          color: '#ff4103',
+          textShadow: '0 0 12px rgba(255,65,3,.5)',
+        }}
       >
         {children}
       </span>
-      <div className="flex-1 h-px" style={{ background: 'rgba(255,65,3,.15)' }} />
+      <div className="flex-1 h-px" style={{ background: 'rgba(255,65,3,.2)' }} />
     </div>
   )
 }
 
 function PillButton({ active, onClick, icon: Icon, children }) {
+  const [hovered, setHovered] = useState(false)
   return (
     <button
       onClick={onClick}
-      className="flex-1 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95 transition-all duration-200 select-none"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="flex-1 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95 transition-transform duration-150 select-none"
       style={{
         background: active
-          ? 'linear-gradient(135deg, rgba(255,90,31,.18), rgba(255,65,3,.12))'
+          ? 'linear-gradient(135deg, rgba(255,90,31,.22), rgba(255,65,3,.14))'
+          : hovered
+          ? 'rgba(255,65,3,.08)'
           : 'rgba(0,10,18,.45)',
         boxShadow: active
           ? '0 0 16px rgba(255,65,3,.2), inset 0 1px 0 rgba(255,255,255,.08)'
+          : hovered
+          ? '0 0 10px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.04)'
           : 'inset 0 1px 2px rgba(0,0,0,.3)',
         border: active
-          ? '1px solid rgba(255,65,3,.4)'
-          : '1px solid rgba(255,255,255,.05)',
-        color: active ? '#F5F1E8' : 'rgba(245,241,232,.4)',
+          ? '1px solid rgba(255,65,3,.45)'
+          : hovered
+          ? '1px solid rgba(255,65,3,.22)'
+          : '1px solid rgba(255,255,255,.06)',
+        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.65)' : 'rgba(245,241,232,.4)',
+        transition: 'background .18s, border .18s, box-shadow .18s, color .18s',
       }}
     >
       <span className="flex items-center justify-center gap-1.5">
@@ -195,7 +259,54 @@ function PillButton({ active, onClick, icon: Icon, children }) {
   )
 }
 
-// ─── Main ────────────────────────────────────────────────────────────────────
+function PrestationCard({ active, onClick, Icon, label }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <motion.button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      whileTap={{ scale: 0.94 }}
+      animate={{
+        background: active
+          ? 'linear-gradient(145deg, rgba(255,90,31,.18), rgba(255,65,3,.10))'
+          : hovered
+          ? 'rgba(255,65,3,.06)'
+          : 'rgba(0,10,18,.45)',
+        borderColor: active
+          ? 'rgba(255,65,3,.5)'
+          : hovered
+          ? 'rgba(255,65,3,.2)'
+          : 'rgba(255,255,255,.06)',
+        boxShadow: active
+          ? '0 0 20px rgba(255,65,3,.22), inset 0 1px 0 rgba(255,255,255,.08)'
+          : 'none',
+      }}
+      transition={{ duration: 0.18 }}
+      className="flex flex-col items-center justify-center gap-2 py-4 rounded-2xl cursor-pointer select-none flex-1"
+      style={{
+        border: '1px solid rgba(255,255,255,.06)',
+        minHeight: 90,
+      }}
+    >
+      <Icon active={active} />
+      <span
+        className="text-[11px] font-semibold text-center leading-tight"
+        style={{ color: active ? '#F5F1E8' : 'rgba(245,241,232,.45)' }}
+      >
+        {label}
+      </span>
+      <motion.div
+        animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+        className="w-1.5 h-1.5 rounded-full"
+        style={{ background: '#ff4103', boxShadow: '0 0 6px rgba(255,65,3,.8)' }}
+      />
+    </motion.button>
+  )
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function Step3Options({ onBack }) {
   const ambiance       = useBookingStore((s) => s.ambiance)
@@ -265,11 +376,11 @@ export default function Step3Options({ onBack }) {
             </PillButton>
           ))}
         </div>
+
+        {/* Volume slider */}
         {ambiance !== 'silence' && (
           <div className="flex items-center gap-3 mt-3 px-1">
-            <span className="font-mono text-xs w-14" style={{ color: 'rgba(245,241,232,.5)' }}>
-              {volume}%
-            </span>
+            <VolumeIcon level={volume} />
             <div className="flex-1">
               <input
                 type="range" min="0" max="100" value={volume}
@@ -279,6 +390,9 @@ export default function Step3Options({ onBack }) {
                 aria-label="Volume"
               />
             </div>
+            <span className="font-mono text-xs w-8 text-right" style={{ color: 'rgba(245,241,232,.5)' }}>
+              {volume}%
+            </span>
           </div>
         )}
       </section>
@@ -288,66 +402,45 @@ export default function Step3Options({ onBack }) {
         <SectionLabel>Climatisation</SectionLabel>
         <div
           className="px-4 py-4 rounded-2xl flex flex-col gap-3"
-          style={{
-            background: 'rgba(0,10,18,.45)',
-            border: '1px solid rgba(255,255,255,.05)',
-          }}
+          style={{ background: 'rgba(0,10,18,.45)', border: '1px solid rgba(255,255,255,.06)' }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ThermometerIcon clim={clim} />
-              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>
+              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.85)' }}>
                 Température
               </span>
             </div>
-            <span
-              className="font-mono font-bold text-[15px]"
-              style={{ color: '#F5F1E8', minWidth: 44, textAlign: 'right' }}
-            >
+            <span className="font-mono font-bold text-[15px]" style={{ color: '#F5F1E8', minWidth: 44, textAlign: 'right' }}>
               {clim}°C
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.3)' }}>16°</span>
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.35)' }}>16°</span>
             <input
-              type="range"
-              min={16}
-              max={28}
-              step={1}
-              value={clim}
+              type="range" min={16} max={28} step={1} value={clim}
               onChange={(e) => setClim(Number(e.target.value))}
               className="flex-1 cursor-pointer"
               style={{ accentColor: '#ff4103', height: 4 }}
               aria-label="Température climatisation"
             />
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.3)' }}>28°</span>
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.35)' }}>28°</span>
           </div>
         </div>
       </section>
 
-      {/* Prestations */}
+      {/* Prestations à bord */}
       <section>
         <SectionLabel>Prestations à bord</SectionLabel>
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{
-            background: '#0c1e2e',
-            border: '1px solid rgba(255,255,255,.05)',
-          }}
-        >
-          {OPTION_LIST.map(({ key, label }, i) => (
-            <div
+        <div className="flex gap-3">
+          {PRESTATIONS.map(({ key, label, Icon }) => (
+            <PrestationCard
               key={key}
-              className="px-4 py-3"
-              style={{ borderBottom: i < OPTION_LIST.length - 1 ? '1px solid rgba(255,255,255,.05)' : 'none' }}
-            >
-              <iOSToggle
-                id={`opt-${key}`}
-                label={label}
-                checked={options[key]}
-                onChange={() => toggleOption(key)}
-              />
-            </div>
+              active={!!options[key]}
+              onClick={() => toggleOption(key)}
+              Icon={Icon}
+              label={label}
+            />
           ))}
         </div>
       </section>
@@ -377,12 +470,15 @@ export default function Step3Options({ onBack }) {
           onChange={(e) => setNote(e.target.value)}
           placeholder="Vol, bagages, instructions particulières…"
           rows={2}
-          className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none transition-all duration-200"
+          className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none"
           style={{
             background: 'rgba(0,10,18,.55)',
-            border: '1px solid rgba(255,255,255,.05)',
-            color: '#F5F1E8',
+            border:     '1px solid rgba(255,255,255,.07)',
+            color:      '#F5F1E8',
+            transition: 'border-color .2s',
           }}
+          onFocus={e  => e.target.style.borderColor = 'rgba(255,65,3,.35)'}
+          onBlur={e   => e.target.style.borderColor = 'rgba(255,255,255,.07)'}
           aria-label="Note complémentaire"
         />
       </section>
