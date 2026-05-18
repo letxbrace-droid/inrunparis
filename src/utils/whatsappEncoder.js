@@ -1,5 +1,25 @@
 const WA_NUMBER = '33767742220'
 
+// Unicode escapes — immune to file encoding / build tool issues
+const E = {
+  ticket:    '\u{1F3AB}',
+  person:    '\u{1F464}',
+  email:     '\u{1F4E7}',
+  clock:     '\u{1F552}',
+  pin:       '\u{1F4CD}',
+  flag:      '\u{1F3C1}',
+  money:     '\u{1F4B0}',
+  moon:      '\u{1F319}',
+  plane:     '✈️',
+  gift:      '\u{1F381}',
+  music:     '\u{1F3B5}',
+  snowflake: '❄️',
+  sparkles:  '\u{2728}',
+  card:      '\u{1F4B3}',
+  memo:      '\u{1F4DD}',
+  mute:      '\u{1F507}',
+}
+
 function sanitize(str = '') {
   return String(str)
     .replace(/[<>]/g, '')
@@ -26,46 +46,46 @@ export function buildWhatsAppMessage(booking) {
   const lines = [
     '*NOUVELLE RÉSERVATION I&N RUN*',
     '',
-    `🎫 N° BON : ${bonNumber || '—'}`,
+    `${E.ticket} N° BON : ${bonNumber || '—'}`,
     '',
-    `👤 Client : ${sanitize(clientName) || '—'}`,
+    `${E.person} Client : ${sanitize(clientName) || '—'}`,
   ]
 
-  if (clientEmail) lines.push(`📧 Email : ${sanitize(clientEmail)}`)
+  if (clientEmail) lines.push(`${E.email} Email : ${sanitize(clientEmail)}`)
 
   lines.push(
     '',
-    `🕒 Prise en charge : ${formatDate(pickup)}`,
-    `📍 Départ : ${depart?.name || '—'}`,
-    `🏁 Arrivée : ${arrive?.name || '—'}`,
+    `${E.clock} Prise en charge : ${formatDate(pickup)}`,
+    `${E.pin} Départ : ${depart?.name || '—'}`,
+    `${E.flag} Arrivée : ${arrive?.name || '—'}`,
     '',
   )
 
   if (price) {
-    lines.push(`💰 Tarif : ${price.final}€ (${price.km} km · ${price.mins} min)`)
-    if (price.isNight) lines.push('🌙 Tarif nuit appliqué')
-    if (price.isAirport) lines.push('✈️ Supplément aéroport inclus')
-    if (promo) lines.push(`🎁 Code : ${sanitize(promo.code)}`)
+    lines.push(`${E.money} Tarif : ${price.final}€ (${price.km} km · ${price.mins} min)`)
+    if (price.isNight)   lines.push(`${E.moon} Tarif nuit appliqué`)
+    if (price.isAirport) lines.push(`${E.plane} Supplément aéroport inclus`)
+    if (promo)           lines.push(`${E.gift} Code : ${sanitize(promo.code)}`)
     lines.push('')
   }
 
-  if (ambiance === 'silence') lines.push('🔇 Ambiance : silence demandé')
-  else lines.push(`🎵 ${ambiance === 'musique' ? 'Musique' : 'Radio'} · Volume ${volume}%`)
+  if (ambiance === 'silence') lines.push(`${E.mute} Ambiance : silence demandé`)
+  else lines.push(`${E.music} ${ambiance === 'musique' ? 'Musique' : 'Radio'} · Volume ${volume}%`)
 
-  lines.push(`❄️ Climatisation : ${clim}°C`)
+  lines.push(`${E.snowflake} Climatisation : ${clim}°C`)
 
   const optNames = []
   if (options?.wifi)        optNames.push('Wi-Fi 5G')
   if (options?.eau)         optNames.push("Bouteille d'eau")
-  if (options?.usb)         optNames.push('USB recharge')
+  if (options?.usb)         optNames.push('Chargeur USB')
   if (options?.confiseries) optNames.push('Confiseries')
   if (options?.siege)       optNames.push('Siège enfant')
-  if (optNames.length)      lines.push(`✨ Prestations : ${optNames.join(', ')}`)
+  if (optNames.length)      lines.push(`${E.sparkles} Prestations : ${optNames.join(', ')}`)
 
-  lines.push(`💳 Règlement : ${payment || 'Carte'}`)
+  lines.push(`${E.card} Règlement : ${payment || 'Carte'}`)
 
   const cleanNote = sanitize(note)
-  if (cleanNote) lines.push('', `📝 Note : ${cleanNote}`)
+  if (cleanNote) lines.push('', `${E.memo} Note : ${cleanNote}`)
 
   lines.push('', 'Merci de bien vouloir confirmer ma réservation.')
 
