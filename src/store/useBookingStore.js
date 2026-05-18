@@ -46,6 +46,10 @@ const useBookingStore = create(
       // History (persisted)
       bookingHistory: [], // [{ bonNumber, depart, arrive, price, date }]
 
+      // Transient — WhatsApp round-trip tracking (not persisted)
+      awaitingReturn: false,
+      setAwaitingReturn: (v) => set({ awaitingReturn: v }),
+
       // Actions — route
       setDepart:  (depart)  => set({ depart }),
       setArrive:  (arrive)  => set({ arrive }),

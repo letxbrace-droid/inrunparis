@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
@@ -22,6 +22,11 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
   const [loading,     setLoading] = useState(false)
   const [focused,     setFocused] = useState(false)
   const timerRef = useRef(null)
+
+  // Sync field when value is set externally (GPS detection, store hydration)
+  useEffect(() => {
+    if (value?.name) setQuery(value.name.split(',')[0])
+  }, [value])
 
   const handleChange = (e) => {
     const q = e.target.value

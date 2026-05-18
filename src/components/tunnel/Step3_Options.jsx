@@ -81,6 +81,7 @@ export default function Step3Options({ onBack }) {
       useBookingStore.setState({ bonNumber: num })
     }
     useBookingStore.getState().addToHistory()
+    useBookingStore.getState().setAwaitingReturn(true)
     sendWhatsApp(useBookingStore.getState())
   }
 

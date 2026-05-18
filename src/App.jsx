@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import LeafletMap      from './components/map/LeafletMap'
-import TopBar          from './components/layout/TopBar'
-import SideDrawer      from './components/layout/SideDrawer'
-import BottomSheet     from './components/tunnel/BottomSheet'
-import TarifsView      from './components/views/TarifsView'
-import CallView        from './components/views/CallView'
-import MesCoursesView  from './components/views/MesCoursesView'
-import CodePromoView   from './components/views/CodePromoView'
-import AideFaqView     from './components/views/AideFaqView'
-import LegalView       from './components/views/LegalView'
-import HomePill        from './components/home/HomePill'
-import useBookingStore from './store/useBookingStore'
+import { useState, useEffect } from 'react'
+import LeafletMap          from './components/map/LeafletMap'
+import TopBar              from './components/layout/TopBar'
+import SideDrawer          from './components/layout/SideDrawer'
+import BottomSheet         from './components/tunnel/BottomSheet'
+import TarifsView          from './components/views/TarifsView'
+import CallView            from './components/views/CallView'
+import MesCoursesView      from './components/views/MesCoursesView'
+import CodePromoView       from './components/views/CodePromoView'
+import AideFaqView         from './components/views/AideFaqView'
+import LegalView           from './components/views/LegalView'
+import HomePill            from './components/home/HomePill'
+import BookingConfirmToast from './components/ui/BookingConfirmToast'
+import useBookingStore     from './store/useBookingStore'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'faq', 'legal']
 
 export default function App() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [sheetOpen,  setSheetOpen]  = useState(false)
-  const [sheetStep,  setSheetStep]  = useState(1)
-  const [activeView, setActiveView] = useState('home')
+  const [drawerOpen,  setDrawerOpen]  = useState(false)
+  const [sheetOpen,   setSheetOpen]   = useState(false)
+  const [sheetStep,   setSheetStep]   = useState(1)
+  const [activeView,  setActiveView]  = useState('home')
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [confirmBon,  setConfirmBon]  = useState(null)
 
   const depart        = useBookingStore((s) => s.depart)
   const arrive        = useBookingStore((s) => s.arrive)
@@ -37,6 +40,38 @@ export default function App() {
   }
 
   const handleClose = () => setActiveView('home')
+
+  // Detect return from WhatsApp → confirm booking + back to home.
+  // Requires a real hidden→visible round-trip so a blocked window.open
+  // never triggers a spurious toast.
+  useEffect(() => {
+    let sawHidden = false
+    const onChange = () => {
+      if (document.visibilityState === 'hidden') {
+        sawHidden = true
+        return
+      }
+      if (!sawHidden) return
+      sawHidden = false
+      const st = useBookingStore.getState()
+      if (!st.awaitingReturn) return
+      st.setAwaitingReturn(false)
+      setConfirmBon(st.bonNumber)
+      setSheetOpen(false)
+      setSheetStep(1)
+      setActiveView('home')
+      setConfirmOpen(true)
+    }
+    document.addEventListener('visibilitychange', onChange)
+    return () => document.removeEventListener('visibilitychange', onChange)
+  }, [])
+
+  // Auto-dismiss the confirmation toast
+  useEffect(() => {
+    if (!confirmOpen) return
+    const t = setTimeout(() => setConfirmOpen(false), 5500)
+    return () => clearTimeout(t)
+  }, [confirmOpen])
 
   const handleTarifsReserve = () => {
     setActiveView('home')
@@ -101,6 +136,13 @@ export default function App() {
         step={sheetStep}
         onStepChange={setSheetStep}
         onClose={() => setSheetOpen(false)}
+      />
+
+      {/* Booking-sent confirmation toast */}
+      <BookingConfirmToast
+        open={confirmOpen}
+        bonNumber={confirmBon}
+        onClose={() => setConfirmOpen(false)}
       />
     </div>
   )
