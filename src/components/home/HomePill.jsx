@@ -160,13 +160,12 @@ export default function HomePill({ onOpenSheet }) {
   const closeCard = () => { setOpen(false); setSuggestions([]) }
 
   // CTA label
-  const ctaLabel = route && price
-    ? 'Réserver ce trajet →'
-    : routeLoading
-      ? 'Calcul…'
-      : !depart ? 'Entrez votre départ'
-      : !arrive ? 'Entrez votre destination'
-      : 'Calculer le trajet…'
+  const ctaLabel = !depart ? 'Entrez votre départ'
+    : !arrive ? 'Entrez votre destination'
+    : depart && arrive && !pickup ? 'Choisir une date'
+    : routeLoading ? 'Calcul…'
+    : route && price ? 'Réserver ce trajet →'
+    : 'Calculer le trajet…'
 
   return (
     <>
@@ -445,10 +444,49 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
               )}
 
+              {/* Date/time */}
+              <div>
+                <div
+                  className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
+                  style={{
+                    background: 'rgba(0,10,18,0.45)',
+                    border: depart && arrive && !pickup
+                      ? '1px solid rgba(255,65,3,.55)'
+                      : '1px solid rgba(255,255,255,.05)',
+                    boxShadow: depart && arrive && !pickup
+                      ? '0 0 0 3px rgba(255,65,3,.12)'
+                      : undefined,
+                  }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke={depart && arrive && !pickup ? '#ff4103' : 'rgba(255,65,3,.55)'}
+                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    style={{ flexShrink: 0 }}
+                  >
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                  </svg>
+                  <input
+                    type="datetime-local"
+                    defaultValue={pickup ?? ''}
+                    min={new Date().toISOString().slice(0, 16)}
+                    onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
+                    className="flex-1 bg-transparent text-sm outline-none"
+                    style={{ color: pickup ? 'rgba(245,241,232,.85)' : 'rgba(245,241,232,.45)', colorScheme: 'dark' }}
+                    aria-label="Date et heure de prise en charge"
+                    aria-required="true"
+                  />
+                </div>
+                {depart && arrive && !pickup && (
+                  <p className="text-xs px-1 mt-1.5" style={{ color: 'rgba(255,65,3,.8)' }}>
+                    Sélectionnez une date et heure pour continuer
+                  </p>
+                )}
+              </div>
+
               {/* Reserve CTA */}
               <button
                 onClick={handleReserve}
-                disabled={!depart || !arrive || routeLoading}
+                disabled={!depart || !arrive || !pickup || routeLoading}
                 className="cta-glow w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
                   cursor-pointer select-none active:scale-[.97] transition-transform duration-150
                   disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden"
