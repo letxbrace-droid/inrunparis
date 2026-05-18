@@ -58,8 +58,8 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
         style={{
           background: 'rgba(0,10,18,0.55)',
           boxShadow: focused
-            ? 'inset 3px 3px 10px rgba(0,0,0,.55), inset -1px -1px 4px rgba(255,255,255,.03), 0 0 0 1.5px rgba(255,65,3,.55)'
-            : 'inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03)',
+            ? 'inset 0 1px 2px rgba(0,0,0,.4), 0 0 0 1.5px rgba(255,65,3,.55)'
+            : 'inset 0 1px 2px rgba(0,0,0,.4)',
           border: '1px solid rgba(255,255,255,.05)',
         }}
       >
@@ -91,8 +91,8 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
           role="listbox"
           className="absolute top-full left-0 right-0 mt-1.5 z-20 rounded-2xl overflow-hidden"
           style={{
-            background: 'linear-gradient(145deg, #002535, #001a28)',
-            boxShadow: '5px 5px 20px rgba(0,0,0,.6), -2px -2px 8px rgba(255,255,255,.025)',
+            background: '#0c1e2e',
+            boxShadow: '0 8px 24px rgba(0,0,0,.55)',
             border: '1px solid rgba(255,255,255,.07)',
             maxHeight: 200,
             overflowY: 'auto',
@@ -177,10 +177,10 @@ export default function Step1Route({ onNext }) {
           style={{
             background: geoStatus === 'success'
               ? 'rgba(255,65,3,.15)'
-              : 'linear-gradient(145deg, #002535, #001a28)',
+              : '#0c1e2e',
             boxShadow: geoStatus === 'success'
-              ? '0 0 16px rgba(255,65,3,.3), 5px 5px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.025)'
-              : '5px 5px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.025)',
+              ? '0 0 12px rgba(255,65,3,.25)'
+              : undefined,
             border: geoStatus === 'success'
               ? '1px solid rgba(255,65,3,.35)'
               : '1px solid rgba(255,255,255,.06)',
@@ -234,7 +234,6 @@ export default function Step1Route({ onNext }) {
         className="flex items-center gap-3 rounded-2xl px-4 py-3"
         style={{
           background: 'rgba(0,10,18,0.45)',
-          boxShadow: 'inset 2px 2px 8px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
           border: '1px solid rgba(255,255,255,.05)',
         }}
       >

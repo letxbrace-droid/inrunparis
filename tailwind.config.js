@@ -5,28 +5,43 @@ export default {
     extend: {
       colors: {
         accent:     '#ff4103',
-        'accent-2': '#ff5a25',
+        'accent-2': '#ff5a1f',
         bg: {
-          base:     '#001621',
-          elevated: '#002030',
-          glass:    'rgba(0,22,33,0.82)',
+          grouped:   '#00101a',
+          base:      '#001621',
+          secondary: '#0c1e2e',
+          tertiary:  '#13283a',
+          elevated:  '#16293a',
+          glass:     'rgba(0,18,28,0.72)',
         },
         ink: {
-          primary:   '#F5F1E8',
-          secondary: '#9A9FA8',
-          muted:     '#5A5F68',
+          primary:    '#F5F1E8',
+          secondary:  'rgba(245,241,232,0.56)',
+          tertiary:   'rgba(245,241,232,0.34)',
+          muted:      'rgba(245,241,232,0.34)',
+          quaternary: 'rgba(245,241,232,0.20)',
+        },
+        separator: {
+          DEFAULT: 'rgba(255,255,255,0.07)',
+          strong:  'rgba(255,255,255,0.11)',
         },
         wa: '#25d366',
       },
       fontFamily: {
-        brand: ['Fraunces', 'Georgia', 'serif'],
-        body:  ['Inter', 'system-ui', 'sans-serif'],
-        mono:  ['"JetBrains Mono"', 'monospace'],
+        body:  ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        brand: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'system-ui', 'sans-serif'],
+        mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
+        cell:  '12px',
+        card:  '14px',
         '2xl': '1.25rem',
         '3xl': '1.5rem',
         '4xl': '2rem',
+      },
+      boxShadow: {
+        'elev-1': '0 1px 3px rgba(0,0,0,0.35)',
+        'elev-2': '0 8px 28px rgba(0,0,0,0.5)',
       },
       keyframes: {
         slideUp:   { from: { transform: 'translateY(100%)' }, to: { transform: 'translateY(0)' } },

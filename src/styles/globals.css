@@ -2,36 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ════════════════════════════════════════════════════════════════
+   I&N RUN — iOS-native design system
+   One accent · flat grouped surfaces · hairline separators
+   ════════════════════════════════════════════════════════════════ */
+
 @layer base {
   :root {
-    --accent:       #ff4103;
-    --accent-2:     #ff5a1f;
-    --accent-dim:   rgba(255,65,3,0.12);
-    --accent-glow:  rgba(255,65,3,0.50);
+    /* ── Accent — single brand accent ───────────────────────────── */
+    --accent:        #ff4103;
+    --accent-2:      #ff5a1f;
+    --accent-press:  #e83800;
+    --accent-dim:    rgba(255,65,3,0.12);
+    --accent-glow:   rgba(255,65,3,0.50);
 
-    /* Dark premium backgrounds */
-    --bg-base:      #001621;
-    --bg-elevated:  #002030;
-    --bg-card:      linear-gradient(145deg, #002535 0%, #001a28 100%);
-    --bg-glass:     rgba(0,26,40,0.75);
-    --bg-inset:     rgba(0,10,18,0.6);
+    /* ── Background hierarchy (iOS dark · teal-black) ───────────── */
+    --bg-grouped:    #00101a;            /* deepest — screen behind groups */
+    --bg-base:       #001621;            /* main app background           */
+    --bg-secondary:  #0c1e2e;            /* grouped card / cell fill      */
+    --bg-tertiary:   #13283a;            /* nested / lighter cell         */
+    --bg-elevated:   #16293a;            /* sheets · modals · popovers    */
+    --bg-glass:      rgba(0,18,28,0.72); /* nav bars · floating chrome    */
 
-    /* Ink */
-    --ink-primary:   #F5F1E8;
-    --ink-secondary: #9AA0AB;
-    --ink-muted:     #56606A;
+    /* ── Labels (iOS 4-level hierarchy) ─────────────────────────── */
+    --label:            #F5F1E8;
+    --label-secondary:  rgba(245,241,232,0.56);
+    --label-tertiary:   rgba(245,241,232,0.34);
+    --label-quaternary: rgba(245,241,232,0.20);
 
-    /* Rules */
-    --rule:        rgba(245,241,232,0.06);
-    --rule-strong: rgba(245,241,232,0.12);
+    /* ── Separators · fills ─────────────────────────────────────── */
+    --separator:        rgba(255,255,255,0.07);
+    --separator-strong: rgba(255,255,255,0.11);
+    --fill:             rgba(130,150,170,0.16);
+    --fill-secondary:   rgba(130,150,170,0.10);
 
-    /* Shadows */
-    --shadow-card:  5px 5px 20px rgba(0,0,0,.6), -2px -2px 8px rgba(255,255,255,.025);
-    --shadow-inset: inset 3px 3px 10px rgba(0,0,0,.55), inset -1px -1px 4px rgba(255,255,255,.03);
+    /* ── Geometry ───────────────────────────────────────────────── */
+    --r-card:    14px;
+    --r-cell:    12px;
+    --r-control: 10px;
 
+    /* ── Elevation — flat content, real lift only for floating ──── */
+    --elev-1:     0 1px 3px rgba(0,0,0,0.35);
+    --elev-2:     0 8px 28px rgba(0,0,0,0.5);
+    --elev-float:
+      0 24px 50px -12px rgba(0,0,0,0.72),
+      0 12px 26px -6px  rgba(0,0,0,0.50),
+      0 3px 8px         rgba(0,0,0,0.45);
+
+    /* ── Brand · system ─────────────────────────────────────────── */
     --wa:       #25d366;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bot: env(safe-area-inset-bottom, 0px);
+
+    /* ── Back-compat aliases (legacy var names still referenced) ── */
+    --bg-card:       var(--bg-secondary);
+    --bg-inset:      rgba(0,10,18,0.55);
+    --ink-primary:   var(--label);
+    --ink-secondary: var(--label-secondary);
+    --ink-muted:     var(--label-tertiary);
+    --rule:          var(--separator);
+    --rule-strong:   var(--separator-strong);
+    --shadow-card:   var(--elev-1);
+    --shadow-inset:  inset 0 1px 2px rgba(0,0,0,0.4);
+
     color-scheme: dark;
   }
 
@@ -47,10 +80,13 @@
 
   body {
     background: var(--bg-base);
-    color: var(--ink-primary);
-    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--label);
+    /* iOS-native type — SF Pro on Apple devices, Inter elsewhere */
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
+                 Roboto, system-ui, sans-serif;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.47;
+    letter-spacing: -0.01em;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -64,33 +100,98 @@
     position: relative;
     overflow: hidden;
   }
+
+  /* Numeric / tabular text — keeps prices & timers from jittering */
+  .tnum { font-variant-numeric: tabular-nums; }
 }
 
 @layer components {
-  /* ── Glass surface ── */
+
+  /* ── iOS grouped surfaces ───────────────────────────────────── */
+
+  /* Inset grouped list / card — flat fill, hairline border */
+  .ios-group {
+    background: var(--bg-secondary);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-card);
+    overflow: hidden;
+  }
+
+  /* A single row inside a group — 44pt min touch target */
+  .ios-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 13px 16px;
+  }
+  /* Hairline between consecutive cells, inset from the leading edge */
+  .ios-cell + .ios-cell { border-top: 1px solid var(--separator); }
+
+  /* Section header above a group */
+  .ios-section {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--label-tertiary);
+    padding: 0 4px;
+    margin-bottom: 8px;
+  }
+
+  /* Translucent nav bar / footer chrome */
+  .ios-chrome {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  }
+
+  /* Circular icon button (back, close, …) */
+  .ios-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: var(--fill-secondary);
+    border: 1px solid var(--separator);
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease;
+  }
+  .ios-icon-btn:active { transform: scale(0.9); }
+
+  /* Plain flat card (no list rows) */
+  .ios-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-card);
+  }
+
+  /* ── Legacy classes — re-pointed to flat iOS surfaces ───────── */
+
   .glass {
     background: var(--bg-glass);
-    backdrop-filter: blur(28px) saturate(1.6);
-    -webkit-backdrop-filter: blur(28px) saturate(1.6);
-    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid var(--separator);
   }
 
-  /* ── Neumorphic raised card ── */
+  /* Was neumorphic raised — now a flat grouped card */
   .card-neu {
-    background: linear-gradient(145deg, #002535 0%, #001a28 100%);
-    box-shadow: var(--shadow-card);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-top-color: rgba(255,255,255,0.08);
+    background: var(--bg-secondary);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-card);
   }
 
-  /* ── Inset pressed surface (inputs, areas) ── */
+  /* Was neumorphic pressed — now a flat inset field surface */
   .inset-neu {
     background: var(--bg-inset);
-    box-shadow: var(--shadow-inset);
-    border: 1px solid rgba(255,255,255,0.04);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-control);
   }
 
-  /* ── CTA glow button class ── */
+  /* ── Primary CTA — the one element that truly floats ────────── */
   .cta-glow {
     background: linear-gradient(135deg, #ff5a1f 0%, #ff4103 45%, #e83800 100%);
     box-shadow:
@@ -109,17 +210,16 @@
     animation: cta-breathe 3.5s ease-in-out infinite;
   }
 
-  /* Safe area helpers */
+  /* Safe-area helpers */
   .pt-safe { padding-top: var(--safe-top); }
   .pb-safe { padding-bottom: var(--safe-bot); }
 
-  /* Divider */
-  .divider { width: 100%; height: 1px; background: var(--rule); }
+  /* Hairline divider */
+  .divider { width: 100%; height: 1px; background: var(--separator); }
 
-  /* Scrollbar */
-  .scrollbar-thin::-webkit-scrollbar { width: 2px; }
-  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,65,3,0.25); border-radius: 2px; }
+  /* Scrollbar — barely-there */
+  .scrollbar-thin::-webkit-scrollbar { width: 0; height: 0; }
+  .scrollbar-thin { scrollbar-width: none; }
 
   /* Leaflet overrides */
   .leaflet-container { background: #001621 !important; }

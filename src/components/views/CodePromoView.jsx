@@ -26,7 +26,7 @@ export default function CodePromoView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    'linear-gradient(180deg, #001f30 0%, #001621 55%)',
+        background:    '#001621',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -44,15 +44,15 @@ export default function CodePromoView({ open, onClose }) {
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,26,40,.65)',
+          background: 'rgba(0,22,33,.7)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,.07)',
+          borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
         <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: 'linear-gradient(145deg, #002535, #001a28)', boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)' }}>
+          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
@@ -74,9 +74,9 @@ export default function CodePromoView({ open, onClose }) {
           <div
             className="flex items-center justify-between rounded-2xl px-4 py-4 mb-6"
             style={{
-              background: 'rgba(52,211,153,.07)',
-              boxShadow: '4px 4px 16px rgba(0,0,0,.4), 0 0 24px rgba(52,211,153,.08)',
-              border: '1px solid rgba(52,211,153,.25)',
+              background: '#0c1e2e',
+              borderRadius: 16,
+              border: '1px solid rgba(52,211,153,.3)',
               animation: 'scale-in .3s ease both',
             }}
           >
@@ -102,8 +102,7 @@ export default function CodePromoView({ open, onClose }) {
             className="flex-1 px-4 py-4 rounded-2xl text-sm font-mono font-bold tracking-widest outline-none transition-all duration-200"
             style={{
               background: 'rgba(0,10,18,.55)',
-              boxShadow: `inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03), 0 0 0 ${status === 'error' ? '1.5px rgba(248,113,113,.5)' : status === 'ok' ? '1.5px rgba(52,211,153,.4)' : '0px transparent'}`,
-              border: '1px solid rgba(255,255,255,.05)',
+              border: `1px solid ${status === 'error' ? 'rgba(248,113,113,.5)' : status === 'ok' ? 'rgba(52,211,153,.4)' : 'rgba(255,255,255,.05)'}`,
               color: '#F5F1E8',
             }}
             aria-label="Code promotionnel"
@@ -133,13 +132,13 @@ export default function CodePromoView({ open, onClose }) {
         <div
           className="rounded-2xl px-4 py-4 mt-6"
           style={{
-            background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
-            boxShadow: '4px 4px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.02)',
-            border: '1px solid rgba(255,255,255,.06)',
+            background: '#0c1e2e',
+            borderRadius: 16,
+            border: '1px solid rgba(255,255,255,.05)',
             animation: 'fade-up .38s ease both 80ms',
           }}
         >
-          <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,65,3,.6)' }}>
+          <p className="mb-3" style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.08em', color: 'rgba(245,241,232,.4)' }}>
             Comment obtenir un code ?
           </p>
           {[
@@ -148,7 +147,7 @@ export default function CodePromoView({ open, onClose }) {
             "Newsletter I&N RUN",
           ].map((t) => (
             <div key={t} className="flex items-start gap-2 mb-2">
-              <span style={{ color: '#ff4103', flexShrink: 0, marginTop: 2 }}>·</span>
+              <span style={{ color: 'rgba(245,241,232,.34)', flexShrink: 0, marginTop: 2 }}>·</span>
               <span className="text-xs" style={{ color: 'rgba(245,241,232,.45)', lineHeight: 1.5 }}>{t}</span>
             </div>
           ))}

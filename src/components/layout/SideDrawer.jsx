@@ -236,9 +236,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               aria-label="Fermer le menu"
               className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform select-none"
               style={{
-                background: 'linear-gradient(145deg, #002535, #001a28)',
-                boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,255,255,.07)',
+                background: 'var(--fill-secondary)',
+                border: '1px solid var(--separator)',
               }}
             >
               <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="rgba(245,241,232,.7)" strokeWidth="2" strokeLinecap="round">

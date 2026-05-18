@@ -14,7 +14,7 @@ export default function LegalView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    'linear-gradient(180deg, #001f30 0%, #001621 55%)',
+        background:    '#001621',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -23,24 +23,21 @@ export default function LegalView({ open, onClose }) {
           : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
       }}
     >
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,65,3,.07), transparent 65%)' }} />
-
       {/* Header */}
       <div
         className="flex items-center gap-4 px-5 flex-shrink-0 relative z-10"
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,26,40,.65)',
+          background: 'rgba(0,22,33,.7)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,.07)',
+          borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
         <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: 'linear-gradient(145deg, #002535, #001a28)', boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)' }}>
+          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
@@ -74,25 +71,25 @@ export default function LegalView({ open, onClose }) {
           </LegalSection>
 
           <LegalSection title="Données personnelles (RGPD)" index={2} open={open} variants={sectionVariants}>
-            <p className="text-sm leading-relaxed py-1" style={{ color: 'rgba(245,241,232,.52)' }}>
+            <p className="text-sm py-1" style={{ color: 'rgba(245,241,232,.56)', lineHeight: 1.55 }}>
               Les informations collectées lors d'une réservation (prénom, email, adresses) sont utilisées uniquement pour traiter votre course. Elles ne sont ni vendues ni transmises à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données en écrivant à : contact@inrun.fr.
             </p>
           </LegalSection>
 
           <LegalSection title="Cookies & stockage local" index={3} open={open} variants={sectionVariants}>
-            <p className="text-sm leading-relaxed py-1" style={{ color: 'rgba(245,241,232,.52)' }}>
+            <p className="text-sm py-1" style={{ color: 'rgba(245,241,232,.56)', lineHeight: 1.55 }}>
               Cette application utilise le stockage local (localStorage) pour mémoriser vos préférences (ambiance, climatisation, mode sombre). Aucun cookie de tracking tiers n'est utilisé.
             </p>
           </LegalSection>
 
           <LegalSection title="Responsabilité" index={4} open={open} variants={sectionVariants}>
-            <p className="text-sm leading-relaxed py-1" style={{ color: 'rgba(245,241,232,.52)' }}>
+            <p className="text-sm py-1" style={{ color: 'rgba(245,241,232,.56)', lineHeight: 1.55 }}>
               I&N RUN s'engage à fournir des informations aussi précises que possible. Les tarifs sont donnés à titre indicatif. I&N RUN ne peut être tenu responsable des imprécisions de l'itinéraire fourni par les services de cartographie tiers (OpenStreetMap, OSRM).
             </p>
           </LegalSection>
 
           <LegalSection title="Propriété intellectuelle" index={5} open={open} variants={sectionVariants}>
-            <p className="text-sm leading-relaxed py-1" style={{ color: 'rgba(245,241,232,.52)' }}>
+            <p className="text-sm py-1" style={{ color: 'rgba(245,241,232,.56)', lineHeight: 1.55 }}>
               L'ensemble des éléments graphiques, textuels et fonctionnels de cette application est la propriété exclusive de I&N RUN. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
             </p>
           </LegalSection>
@@ -123,17 +120,20 @@ function LegalSection({ title, children, index, open, variants }) {
       animate={open ? 'visible' : 'hidden'}
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] font-bold uppercase tracking-[.12em]" style={{ color: 'rgba(255,65,3,.7)' }}>
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[.08em]"
+          style={{ color: '#ff4103' }}
+        >
           {title}
         </span>
-        <div className="flex-1 h-px" style={{ background: 'rgba(255,65,3,.15)' }} />
+        <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,.06)' }} />
       </div>
       <div
-        className="rounded-2xl overflow-hidden"
+        className="overflow-hidden"
         style={{
-          background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
-          boxShadow: '4px 4px 16px rgba(0,0,0,.55), -2px -2px 6px rgba(255,255,255,.02)',
-          border: '1px solid rgba(255,255,255,.06)',
+          background: '#0c1e2e',
+          border: '1px solid rgba(255,255,255,.05)',
+          borderRadius: 16,
         }}
       >
         <div className="px-4 py-3 flex flex-col">
@@ -150,10 +150,13 @@ function LegalRow({ label, children, last = false }) {
       className="flex flex-col gap-0.5 py-2.5"
       style={{ borderBottom: last ? 'none' : '1px solid rgba(255,255,255,.05)' }}
     >
-      <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,65,3,.55)' }}>
+      <span
+        className="text-[11px] font-semibold uppercase tracking-[.08em]"
+        style={{ color: 'rgba(245,241,232,.4)' }}
+      >
         {label}
       </span>
-      <span className="text-sm leading-snug" style={{ color: 'rgba(245,241,232,.7)' }}>{children}</span>
+      <span className="text-sm" style={{ color: 'rgba(245,241,232,.56)', lineHeight: 1.55 }}>{children}</span>
     </div>
   )
 }

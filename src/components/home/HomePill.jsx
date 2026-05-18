@@ -397,7 +397,7 @@ export default function HomePill({ onOpenSheet }) {
                       className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
                       style={{
                         top:        'calc(100% + 8px)',
-                        background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
+                        background: '#0c1e2e',
                         boxShadow:  '0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(255,65,3,.08)',
                       }}
                     >
