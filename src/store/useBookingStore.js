@@ -30,8 +30,9 @@ const useBookingStore = create(
       vehicleType: 'berline', // 'berline' | 'van'
 
       // Computed
-      price:     null,  // { final, km, mins, isNight, isAirport, savings }
-      bonNumber: null,
+      price:         null,  // { final, km, mins, isNight, isAirport, savings }
+      routeGeometry: null,  // GeoJSON LineString — not persisted
+      bonNumber:     null,
 
       // Actions — route
       setDepart:  (depart)  => set({ depart }),
@@ -53,8 +54,9 @@ const useBookingStore = create(
       setPromo:        (v) => set({ promo: v }),
       setVehicleType:  (v) => set({ vehicleType: v }),
 
-      // Actions — price
-      setPrice: (price) => set({ price }),
+      // Actions — price + geometry
+      setPrice:         (price)    => set({ price }),
+      setRouteGeometry: (geometry) => set({ routeGeometry: geometry }),
 
       // Actions — bon
       generateBonNumber: () => {
@@ -67,7 +69,7 @@ const useBookingStore = create(
       resetBooking: () => set({
         depart: null, arrive: null, pickup: null,
         clientName: '', clientEmail: '',
-        price: null, bonNumber: null, note: '',
+        price: null, routeGeometry: null, bonNumber: null, note: '',
       }),
     }),
     {

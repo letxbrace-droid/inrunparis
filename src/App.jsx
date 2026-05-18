@@ -1,21 +1,22 @@
 import { useState } from 'react'
-import LeafletMap  from './components/map/LeafletMap'
-import TopBar      from './components/layout/TopBar'
-import SideDrawer  from './components/layout/SideDrawer'
-import BottomSheet from './components/tunnel/BottomSheet'
+import LeafletMap   from './components/map/LeafletMap'
+import TopBar       from './components/layout/TopBar'
+import SideDrawer   from './components/layout/SideDrawer'
+import BottomSheet  from './components/tunnel/BottomSheet'
+import TarifsView   from './components/views/TarifsView'
 import useBookingStore from './store/useBookingStore'
 
 export default function App() {
-  const [drawerOpen,  setDrawerOpen]  = useState(false)
-  const [sheetOpen,   setSheetOpen]   = useState(false)
-  const [sheetStep,   setSheetStep]   = useState(1)
-  const [activeView,  setActiveView]  = useState('home')
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [sheetOpen,  setSheetOpen]  = useState(false)
+  const [sheetStep,  setSheetStep]  = useState(1)
+  const [activeView, setActiveView] = useState('home')
 
-  const { depart, arrive } = useBookingStore()
+  const depart        = useBookingStore((s) => s.depart)
+  const arrive        = useBookingStore((s) => s.arrive)
+  const routeGeometry = useBookingStore((s) => s.routeGeometry)
 
-  const route = useBookingStore((s) => s.price ? {
-    geometry: null,  // geometry stored separately via useOSRM in Step1
-  } : null)
+  const route = routeGeometry ? { geometry: routeGeometry } : null
 
   const handleNavigate = (view) => {
     setActiveView(view)
@@ -25,23 +26,27 @@ export default function App() {
     }
   }
 
-  const handleSheetClose = () => setSheetOpen(false)
+  const handleTarifsReserve = () => {
+    setActiveView('home')
+    setSheetOpen(true)
+    setSheetStep(1)
+  }
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
-      {/* Map layer — always rendered */}
+      {/* Map — always rendered beneath everything */}
       <LeafletMap
         depart={depart}
         arrive={arrive}
-        route={null}
+        route={route}
       />
 
-      {/* Overlay gradient for readability */}
+      {/* Bottom vignette for readability */}
       <div
         aria-hidden="true"
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(12,12,14,.6) 0%, transparent 30%, transparent 60%, rgba(12,12,14,.9) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,22,33,.55) 0%, transparent 28%, transparent 58%, rgba(0,22,33,.9) 100%)',
         }}
       />
 
@@ -51,11 +56,11 @@ export default function App() {
         burgerOpen={drawerOpen}
       />
 
-      {/* Floating CTA — reserve button on home */}
+      {/* Home — floating reserve CTA */}
       {activeView === 'home' && !sheetOpen && (
         <div
-          className="absolute bottom-0 left-0 right-0 z-[10] flex justify-center pb-safe px-5"
-          style={{ paddingBottom: `calc(var(--safe-bot) + 24px)` }}
+          className="absolute bottom-0 left-0 right-0 z-[10] flex justify-center px-5"
+          style={{ paddingBottom: 'calc(var(--safe-bot) + 24px)' }}
         >
           <button
             onClick={() => handleNavigate('reserve')}
@@ -67,7 +72,7 @@ export default function App() {
             "
             style={{
               background: '#ff4103',
-              boxShadow: '0 0 32px rgba(255,65,3,0.45), 0 6px 24px rgba(0,0,0,.5)',
+              boxShadow:  '0 0 32px rgba(255,65,3,0.45), 0 6px 24px rgba(0,0,0,.5)',
             }}
             aria-label="Réserver un chauffeur"
           >
@@ -75,6 +80,13 @@ export default function App() {
           </button>
         </div>
       )}
+
+      {/* Tarifs view — slides in from right */}
+      <TarifsView
+        open={activeView === 'tarifs'}
+        onClose={() => setActiveView('home')}
+        onReserve={handleTarifsReserve}
+      />
 
       {/* Side drawer */}
       <SideDrawer
@@ -89,7 +101,7 @@ export default function App() {
         open={sheetOpen}
         step={sheetStep}
         onStepChange={setSheetStep}
-        onClose={handleSheetClose}
+        onClose={() => setSheetOpen(false)}
       />
     </div>
   )
