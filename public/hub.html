@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>I&amp;N RUN — Hub</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000a12;--card:#001621;--card2:#0c1e2e;
+  --accent:#ff4103;--accent2:rgba(255,65,3,.18);
+  --text:#F5F1E8;--muted:rgba(245,241,232,.55);--subtle:rgba(245,241,232,.35);
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.05);
+  --success:#34d399;--error:rgba(248,113,113,1);
+  --r:14px;--r2:10px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;background:none;border:none;color:inherit;outline:none}
+textarea{resize:vertical}
+
+/* ── PIN SCREEN ── */
+#pin-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:100;padding:24px}
+.pin-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px 32px 36px;width:100%;max-width:360px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.pin-logo{font-size:28px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:4px}
+.pin-logo span{color:var(--accent)}
+.pin-sub{font-size:12px;color:var(--subtle);margin-bottom:32px;text-transform:uppercase;letter-spacing:.08em}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:28px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all .15s}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(255,65,3,.5)}
+.pin-err{font-size:12px;color:var(--error);min-height:18px;margin-bottom:12px}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin-key{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:20px;font-weight:600;color:var(--text);transition:all .1s;user-select:none;-webkit-tap-highlight-color:transparent}
+.pin-key:active,.pin-key.pressed{background:rgba(255,65,3,.15);border-color:rgba(255,65,3,.3);transform:scale(.94)}
+.pin-key.del{font-size:14px;color:var(--muted)}
+
+/* ── APP ── */
+#app{display:none;flex-direction:column;height:100vh;max-width:680px;margin:0 auto}
+#app.visible{display:flex}
+
+/* Header */
+.hub-header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(0,22,33,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.hub-logo{font-size:18px;font-weight:900;letter-spacing:-.3px}
+.hub-logo span{color:var(--accent)}
+.hub-logout{font-size:12px;color:var(--subtle);padding:6px 12px;border:1px solid var(--border);border-radius:20px;transition:all .2s}
+.hub-logout:hover{color:var(--error);border-color:rgba(248,113,113,.4)}
+
+/* Tabs */
+.hub-tabs{flex-shrink:0;display:flex;border-bottom:1px solid var(--border);background:var(--card);overflow-x:auto;scrollbar-width:none}
+.hub-tabs::-webkit-scrollbar{display:none}
+.hub-tab{flex:1;padding:12px 8px;font-size:13px;font-weight:600;color:var(--subtle);border-bottom:2px solid transparent;white-space:nowrap;text-align:center;transition:all .2s;min-width:100px}
+.hub-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* Content */
+.hub-content{flex:1;overflow-y:auto;scrollbar-width:thin;padding:20px}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* Section */
+.section{margin-bottom:28px}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtle);margin-bottom:12px}
+
+/* Card */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card2{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);padding:12px;margin-bottom:8px}
+
+/* Form */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--subtle);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.field input,.field select,.field textarea{display:block;width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);color:var(--text);font-size:14px;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(255,65,3,.4);box-shadow:0 0 0 3px rgba(255,65,3,.08)}
+.field select option{background:#001621}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;transition:all .15s;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(255,65,3,.3)}
+.btn-primary:hover{background:#e83800}
+.btn-secondary{background:var(--card2);border:1px solid var(--border);color:var(--text)}
+.btn-secondary:hover{border-color:rgba(255,255,255,.15)}
+.btn-danger{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);color:var(--error)}
+.btn-success{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25);color:var(--success)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-full{width:100%}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2)}
+.toggle-row:last-child{border-bottom:none}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:12px;transition:.2s;cursor:pointer}
+.toggle-slider:before{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.toggle input:checked + .toggle-slider{background:var(--accent)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(18px)}
+
+/* Badge */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(52,211,153,.15);color:var(--success);border:1px solid rgba(52,211,153,.3)}
+.badge-red{background:rgba(248,113,113,.12);color:var(--error);border:1px solid rgba(248,113,113,.25)}
+.badge-orange{background:rgba(255,65,3,.15);color:var(--accent);border:1px solid rgba(255,65,3,.3)}
+.badge-gray{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border)}
+
+/* Promo list item */
+.promo-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:8px}
+.promo-item-info{flex:1;min-width:0}
+.promo-code{font-size:14px;font-weight:700;font-family:monospace;letter-spacing:.1em;color:var(--text)}
+.promo-label{font-size:12px;color:var(--muted);margin-top:1px}
+.promo-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.promo-hardcoded{opacity:.55}
+
+/* Parsed field */
+.parsed-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.parsed-row:last-child{border-bottom:none}
+.parsed-key{font-size:11px;color:var(--subtle);width:120px;flex-shrink:0;padding-top:2px}
+.parsed-val{flex:1;font-size:13px;color:var(--text)}
+
+/* History */
+.hist-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:6px;cursor:pointer;transition:border-color .2s}
+.hist-item:hover{border-color:rgba(255,65,3,.3)}
+.hist-num{font-size:12px;font-weight:700;font-family:monospace;color:var(--accent)}
+.hist-info{flex:1;min-width:0}
+.hist-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-date{font-size:11px;color:var(--subtle)}
+.hist-amt{font-size:13px;font-weight:700;color:var(--success);flex-shrink:0}
+
+/* Toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#0c1e2e;border:1px solid var(--border);border-radius:20px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--text);opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;color:var(--subtle);font-size:13px}
+.empty svg{display:block;margin:0 auto 12px;opacity:.4}
+
+/* ── PRINT TEMPLATE ── */
+@media screen {
+  #print-preview { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── PIN SCREEN ── -->
+<div id="pin-screen">
+  <div class="pin-card">
+    <div class="pin-logo">I<span>&</span>N RUN</div>
+    <div class="pin-sub">Hub de gestion</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="d0"></div>
+      <div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div>
+      <div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-err" id="pin-err"></div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key" onclick="pinKey('')" style="visibility:hidden"></button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app">
+  <header class="hub-header">
+    <div class="hub-logo">I<span>&</span>N RUN <span style="font-size:11px;font-weight:500;color:var(--subtle);margin-left:4px">Hub</span></div>
+    <button class="hub-logout" onclick="logout()">Déconnexion</button>
+  </header>
+
+  <nav class="hub-tabs">
+    <button class="hub-tab active" onclick="setTab('promos')">Codes Promo</button>
+    <button class="hub-tab" onclick="setTab('bons')">Bons &amp; Factures</button>
+    <button class="hub-tab" onclick="setTab('settings')">Paramètres</button>
+  </nav>
+
+  <div class="hub-content">
+
+    <!-- ── TAB: PROMOS ── -->
+    <div class="tab-pane active" id="tab-promos">
+
+      <div class="section">
+        <div class="section-title">Créer un code promo</div>
+        <div class="card">
+          <div class="field-row">
+            <div class="field">
+              <label>Code</label>
+              <input id="p-code" type="text" placeholder="EX25 ou VIPETE" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <div class="field">
+              <label>Type</label>
+              <select id="p-type">
+                <option value="percent">% de réduction</option>
+                <option value="fixed">Montant fixe (€)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Montant</label>
+              <input id="p-amount" type="number" min="1" max="100" placeholder="10">
+            </div>
+            <div class="field">
+              <label>Usages max (0 = illimité)</label>
+              <input id="p-uses" type="number" min="0" placeholder="0" value="0">
+            </div>
+          </div>
+          <div class="field">
+            <label>Expiration (laisser vide = jamais)</label>
+            <input id="p-expiry" type="datetime-local">
+          </div>
+          <div class="field">
+            <label>Libellé affiché</label>
+            <input id="p-label" type="text" placeholder="10% de réduction fidélité">
+          </div>
+          <button class="btn btn-primary btn-full" onclick="createPromo()">Créer le code</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Codes actifs</div>
+        <div id="promo-list"></div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: BONS & FACTURES ── -->
+    <div class="tab-pane" id="tab-bons">
+
+      <div class="section">
+        <div class="section-title">Coller le message WhatsApp</div>
+        <div class="card">
+          <div class="field">
+            <textarea id="wa-paste" rows="7" placeholder="Collez ici le message de réservation reçu sur WhatsApp…"
+              style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:13px;line-height:1.6;width:100%"></textarea>
+          </div>
+          <button class="btn btn-secondary btn-full" onclick="parseWA()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Analyser le message
+          </button>
+        </div>
+      </div>
+
+      <div class="section" id="parsed-section" style="display:none">
+        <div class="section-title">Détails de la course</div>
+        <div class="card">
+          <div class="field-row">
+            <div class="field">
+              <label>Nom client</label>
+              <input id="f-client" type="text">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input id="f-email" type="email">
+            </div>
+          </div>
+          <div class="field">
+            <label>Prise en charge</label>
+            <input id="f-pickup" type="text">
+          </div>
+          <div class="field">
+            <label>Départ</label>
+            <input id="f-depart" type="text">
+          </div>
+          <div class="field">
+            <label>Arrivée</label>
+            <input id="f-arrive" type="text">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Montant TTC (€)</label>
+              <input id="f-price" type="number" step="0.01">
+            </div>
+            <div class="field">
+              <label>Règlement</label>
+              <input id="f-payment" type="text">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Distance (km)</label>
+              <input id="f-km" type="text">
+            </div>
+            <div class="field">
+              <label>Durée (min)</label>
+              <input id="f-mins" type="text">
+            </div>
+          </div>
+          <div class="field">
+            <label>Prestations</label>
+            <input id="f-presta" type="text" placeholder="Wi-Fi, Eau, Chargeur…">
+          </div>
+          <div class="field">
+            <label>N° BON d'origine</label>
+            <input id="f-bon" type="text" placeholder="INR-XXXXX">
+          </div>
+          <div class="field">
+            <label>Note interne</label>
+            <input id="f-note" type="text">
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+            <button class="btn btn-secondary" style="flex:1;min-width:140px" onclick="genDoc('bdr')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              Bon de réservation
+            </button>
+            <button class="btn btn-primary" style="flex:1;min-width:140px" onclick="genDoc('facture')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              Générer une facture
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="hist-section">
+        <div class="section-title">Documents générés</div>
+        <div id="doc-history"></div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: PARAMÈTRES ── -->
+    <div class="tab-pane" id="tab-settings">
+
+      <div class="section">
+        <div class="section-title">Informations de la société</div>
+        <div class="card">
+          <div class="field">
+            <label>Nom / Raison sociale</label>
+            <input id="s-name" type="text" placeholder="I&amp;N RUN">
+          </div>
+          <div class="field">
+            <label>SIRET</label>
+            <input id="s-siret" type="text" placeholder="XXX XXX XXX XXXXX">
+          </div>
+          <div class="field">
+            <label>N° TVA intracommunautaire</label>
+            <input id="s-tva" type="text" placeholder="FR XX XXX XXX XXX">
+          </div>
+          <div class="field">
+            <label>Adresse</label>
+            <textarea id="s-address" rows="2" style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:14px;width:100%;color:var(--text)"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Téléphone</label>
+              <input id="s-phone" type="tel" placeholder="+33 7 XX XX XX XX">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input id="s-email" type="email" placeholder="contact@inrun.fr">
+            </div>
+          </div>
+          <div class="field">
+            <label>Taux TVA transport (%)</label>
+            <input id="s-tvarate" type="number" step="0.1" placeholder="10" value="10">
+          </div>
+          <div class="field">
+            <label>Pied de page facture</label>
+            <textarea id="s-footer" rows="2" placeholder="Adhérent à l'association…" style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:14px;width:100%;color:var(--text)"></textarea>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="saveSettings()">Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Sécurité</div>
+        <div class="card">
+          <div class="field">
+            <label>Nouveau code PIN (4 chiffres)</label>
+            <input id="s-pin" type="password" maxlength="4" inputmode="numeric" placeholder="····">
+          </div>
+          <div class="field">
+            <label>Confirmer le PIN</label>
+            <input id="s-pin2" type="password" maxlength="4" inputmode="numeric" placeholder="····">
+          </div>
+          <button class="btn btn-secondary btn-full" onclick="changePin()">Changer le PIN</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Données</div>
+        <div class="card" style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-secondary" style="flex:1" onclick="exportData()">Exporter JSON</button>
+          <button class="btn btn-danger" style="flex:1" onclick="resetHub()">Réinitialiser</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ────────────────────────────────────────────────────────────
+// CONSTANTS & DEFAULTS
+// ────────────────────────────────────────────────────────────
+const HARDCODED = {
+  'BIENVENUE': { discount: 10, label: '10% de réduction', fixed: null },
+  'VIP15':     { discount: 15, label: '15% de réduction', fixed: null },
+  'PARIS25':   { discount: 25, label: '25% sur votre 1ère course', fixed: null },
+}
+
+const DEFAULT_COMPANY = {
+  name: 'I&N RUN', siret: '', tva: '', address: 'Paris, France',
+  phone: '+33 7 67 74 22 20', email: 'contact@inrunparis.fr',
+  tvarate: '10', footer: '',
+}
+
+// ────────────────────────────────────────────────────────────
+// PIN LOGIC
+// ────────────────────────────────────────────────────────────
+let pinBuffer = ''
+
+function pinKey(digit) {
+  if (!digit || pinBuffer.length >= 4) return
+  pinBuffer += digit
+  updatePinDots()
+  if (pinBuffer.length === 4) setTimeout(checkPin, 150)
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1)
+  updatePinDots()
+  document.getElementById('pin-err').textContent = ''
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('d' + i).className = 'pin-dot' + (i < pinBuffer.length ? ' filled' : '')
+  }
+}
+
+function checkPin() {
+  const stored = localStorage.getItem('hub-pin') || '1234'
+  if (pinBuffer === stored) {
+    document.getElementById('pin-screen').style.display = 'none'
+    document.getElementById('app').classList.add('visible')
+    initApp()
+  } else {
+    document.getElementById('pin-err').textContent = 'Code incorrect'
+    pinBuffer = ''
+    updatePinDots()
+    document.getElementById('pin-screen').querySelector('.pin-card').animate(
+      [{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],
+      {duration: 350, easing: 'ease-out'}
+    )
+  }
+}
+
+function logout() {
+  document.getElementById('app').classList.remove('visible')
+  document.getElementById('pin-screen').style.display = 'flex'
+  pinBuffer = ''
+  updatePinDots()
+  document.getElementById('pin-err').textContent = ''
+}
+
+// keyboard support for PIN
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('pin-screen').style.display || document.getElementById('pin-screen').style.display === 'flex') {
+    if (e.key >= '0' && e.key <= '9') pinKey(e.key)
+    if (e.key === 'Backspace') pinDel()
+  }
+})
+
+// ────────────────────────────────────────────────────────────
+// TAB NAVIGATION
+// ────────────────────────────────────────────────────────────
+function setTab(name) {
+  document.querySelectorAll('.hub-tab').forEach((t,i) => {
+    const tabs = ['promos','bons','settings']
+    t.className = 'hub-tab' + (tabs[i] === name ? ' active' : '')
+  })
+  document.querySelectorAll('.tab-pane').forEach(p => p.className = 'tab-pane')
+  document.getElementById('tab-' + name).className = 'tab-pane active'
+}
+
+// ────────────────────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────────────────────
+function initApp() {
+  renderPromos()
+  renderDocHistory()
+  loadSettings()
+}
+
+// ────────────────────────────────────────────────────────────
+// PROMO CODES
+// ────────────────────────────────────────────────────────────
+function getStoredPromos() {
+  try { return JSON.parse(localStorage.getItem('inr-promo-codes') || '{}') } catch { return {} }
+}
+
+function saveStoredPromos(obj) {
+  localStorage.setItem('inr-promo-codes', JSON.stringify(obj))
+}
+
+function createPromo() {
+  const code   = document.getElementById('p-code').value.trim().toUpperCase()
+  const type   = document.getElementById('p-type').value
+  const amount = parseFloat(document.getElementById('p-amount').value)
+  const uses   = parseInt(document.getElementById('p-uses').value || '0')
+  const expiry = document.getElementById('p-expiry').value
+  const label  = document.getElementById('p-label').value.trim()
+
+  if (!code)         return showToast('Entrez un code', 'error')
+  if (!amount || amount <= 0) return showToast('Montant invalide', 'error')
+  if (HARDCODED[code]) return showToast('Ce code est réservé', 'error')
+
+  const promos = getStoredPromos()
+  promos[code] = {
+    amount, type, label: label || (type === 'percent' ? `${amount}% de réduction` : `${amount}€ de réduction`),
+    expiry: expiry || null, maxUses: uses, uses: 0, active: true,
+    createdAt: new Date().toISOString(),
+  }
+  saveStoredPromos(promos)
+
+  // reset form
+  ;['p-code','p-amount','p-label','p-expiry'].forEach(id => document.getElementById(id).value = '')
+  document.getElementById('p-uses').value = '0'
+  document.getElementById('p-type').value = 'percent'
+
+  renderPromos()
+  showToast('Code créé ✓')
+}
+
+function togglePromo(code) {
+  const promos = getStoredPromos()
+  if (!promos[code]) return
+  promos[code].active = !promos[code].active
+  saveStoredPromos(promos)
+  renderPromos()
+}
+
+function deletePromo(code) {
+  if (!confirm(`Supprimer le code ${code} ?`)) return
+  const promos = getStoredPromos()
+  delete promos[code]
+  saveStoredPromos(promos)
+  renderPromos()
+  showToast('Code supprimé')
+}
+
+function renderPromos() {
+  const list = document.getElementById('promo-list')
+  const stored = getStoredPromos()
+  let html = ''
+
+  // Hardcoded first
+  Object.entries(HARDCODED).forEach(([code, p]) => {
+    html += `
+    <div class="promo-item promo-hardcoded">
+      <div class="promo-item-info">
+        <div class="promo-code">${code}</div>
+        <div class="promo-label">${p.label}</div>
+      </div>
+      <span class="badge badge-gray">Système</span>
+    </div>`
+  })
+
+  // Custom promos
+  const custom = Object.entries(stored)
+  if (custom.length === 0 && html) {
+    // OK, just hardcoded
+  } else if (custom.length === 0) {
+    list.innerHTML = '<div class="empty">Aucun code personnalisé</div>'
+    return
+  }
+
+  custom.forEach(([code, p]) => {
+    const isActive = p.active && (!p.expiry || new Date(p.expiry) > new Date())
+    const expiryStr = p.expiry ? `Exp. ${new Date(p.expiry).toLocaleDateString('fr-FR')}` : 'Sans expiration'
+    const valStr = p.type === 'percent' ? `${p.amount}%` : `${p.amount}€`
+    html += `
+    <div class="promo-item">
+      <div class="promo-item-info">
+        <div class="promo-code">${code} <span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--muted)">${valStr}</span></div>
+        <div class="promo-label">${p.label} · ${expiryStr}${p.maxUses ? ` · ${p.uses||0}/${p.maxUses} usages` : ''}</div>
+      </div>
+      <div class="promo-actions">
+        <span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Actif' : 'Inactif'}</span>
+        <label class="toggle" title="${isActive ? 'Désactiver' : 'Activer'}">
+          <input type="checkbox" ${p.active ? 'checked' : ''} onchange="togglePromo('${code}')">
+          <span class="toggle-slider"></span>
+        </label>
+        <button class="btn btn-danger btn-sm" onclick="deletePromo('${code}')">✕</button>
+      </div>
+    </div>`
+  })
+
+  list.innerHTML = html
+}
+
+// ────────────────────────────────────────────────────────────
+// PARSE WHATSAPP MESSAGE
+// ────────────────────────────────────────────────────────────
+function parseWA() {
+  const text = document.getElementById('wa-paste').value.trim()
+  if (!text) return showToast('Collez un message WhatsApp', 'error')
+
+  const lines = text.split('\n').map(l => l.trim())
+  const get = (key) => {
+    const l = lines.find(l => l.includes(key))
+    return l ? l.substring(l.indexOf(key) + key.length).trim() : ''
+  }
+
+  const data = {
+    bon:     get('N° BON :'),
+    client:  get('Client :'),
+    email:   get('Email :'),
+    pickup:  get('Prise en charge :'),
+    depart:  get('Départ :'),
+    arrive:  get('Arrivée :'),
+    payment: get('Règlement :'),
+    note:    get('Note :'),
+    presta:  get('Prestations :'),
+  }
+
+  // Price line: "💰 Tarif : 38€ (12 km · 25 min)"
+  const tarifLine = lines.find(l => l.includes('Tarif :'))
+  if (tarifLine) {
+    const m = tarifLine.match(/(\d+(?:[.,]\d+)?)\s*€\s*\((\d+(?:[.,]\d+)?)\s*km\s*·\s*(\d+)\s*min\)/)
+    if (m) { data.price = m[1]; data.km = m[2]; data.mins = m[3] }
+  }
+
+  // Fill form
+  document.getElementById('f-client').value  = data.client
+  document.getElementById('f-email').value   = data.email
+  document.getElementById('f-pickup').value  = data.pickup
+  document.getElementById('f-depart').value  = data.depart
+  document.getElementById('f-arrive').value  = data.arrive
+  document.getElementById('f-price').value   = data.price || ''
+  document.getElementById('f-payment').value = data.payment
+  document.getElementById('f-km').value      = data.km || ''
+  document.getElementById('f-mins').value    = data.mins || ''
+  document.getElementById('f-presta').value  = data.presta
+  document.getElementById('f-bon').value     = data.bon
+  document.getElementById('f-note').value    = data.note
+
+  document.getElementById('parsed-section').style.display = 'block'
+  document.getElementById('parsed-section').scrollIntoView({ behavior: 'smooth', block: 'start' })
+  showToast('Message analysé ✓')
+}
+
+// ────────────────────────────────────────────────────────────
+// DOCUMENT GENERATION (BDR / FACTURE)
+// ────────────────────────────────────────────────────────────
+function getFormData() {
+  return {
+    client:  document.getElementById('f-client').value.trim(),
+    email:   document.getElementById('f-email').value.trim(),
+    pickup:  document.getElementById('f-pickup').value.trim(),
+    depart:  document.getElementById('f-depart').value.trim(),
+    arrive:  document.getElementById('f-arrive').value.trim(),
+    price:   parseFloat(document.getElementById('f-price').value) || 0,
+    payment: document.getElementById('f-payment').value.trim(),
+    km:      document.getElementById('f-km').value.trim(),
+    mins:    document.getElementById('f-mins').value.trim(),
+    presta:  document.getElementById('f-presta').value.trim(),
+    bon:     document.getElementById('f-bon').value.trim(),
+    note:    document.getElementById('f-note').value.trim(),
+  }
+}
+
+function getNextSeq(type) {
+  const key = `hub-seq-${type}`
+  const n = parseInt(localStorage.getItem(key) || '0') + 1
+  localStorage.setItem(key, String(n))
+  const d = new Date()
+  const dd = d.getFullYear().toString() + (d.getMonth()+1).toString().padStart(2,'0') + d.getDate().toString().padStart(2,'0')
+  return `${type.toUpperCase()}-${dd}-${n.toString().padStart(3,'0')}`
+}
+
+function getCompany() {
+  try { return { ...DEFAULT_COMPANY, ...JSON.parse(localStorage.getItem('hub-company') || '{}') } }
+  catch { return DEFAULT_COMPANY }
+}
+
+function genDoc(type) {
+  const f = getFormData()
+  if (!f.client && !f.depart) return showToast('Remplissez au moins le client et le départ', 'error')
+
+  const c = getCompany()
+  const docNum = getNextSeq(type === 'bdr' ? 'BDR' : 'FAC')
+  const dateNow = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' })
+
+  // TVA calc for facture
+  const tvaRate = parseFloat(c.tvarate) || 10
+  const ttc = f.price
+  const ht  = ttc ? +(ttc / (1 + tvaRate / 100)).toFixed(2) : 0
+  const tva = ttc ? +(ttc - ht).toFixed(2) : 0
+
+  const isBdr = type === 'bdr'
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>${docNum}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#111;background:#fff;padding:32px 40px 40px}
+  h1{font-size:26px;font-weight:900;letter-spacing:-1px;color:#111}
+  h1 span{color:#ff4103}
+  .doc-type{font-size:28px;font-weight:700;color:#111;margin:0 0 4px}
+  .doc-num{font-size:13px;color:#666;margin-bottom:24px}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;gap:24px}
+  .header-right{text-align:right}
+  .co-name{font-size:15px;font-weight:700;margin-bottom:4px}
+  .co-detail{font-size:12px;color:#555;line-height:1.7}
+  hr{border:none;border-top:1.5px solid #111;margin:20px 0}
+  hr.thin{border-top:1px solid #ddd;margin:12px 0}
+  .section{margin-bottom:20px}
+  .section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:8px}
+  .info-grid{display:grid;grid-template-columns:140px 1fr;gap:4px 12px;font-size:12.5px;line-height:1.8}
+  .info-key{color:#666}
+  .info-val{font-weight:600}
+  .price-table{width:100%;border-collapse:collapse;margin-top:8px}
+  .price-table td{padding:8px 12px;font-size:13px}
+  .price-table .label{color:#444}
+  .price-table .value{text-align:right;font-weight:600}
+  .price-table .total-row td{border-top:2px solid #111;font-size:15px;font-weight:700;padding-top:10px}
+  .signature-box{border:1px solid #ddd;border-radius:8px;padding:16px;min-height:80px;margin-top:8px;color:#aaa;font-size:12px}
+  .footer{margin-top:32px;padding-top:16px;border-top:1px solid #ddd;font-size:10.5px;color:#888;line-height:1.7}
+  .badge-ok{display:inline-block;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700}
+  @media print{body{padding:20px 28px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>I<span>&</span>N RUN</h1>
+    <div style="color:#888;font-size:12px;margin-top:2px">Transport VTC · Paris</div>
+  </div>
+  <div class="header-right">
+    <div class="doc-type">${isBdr ? 'BON DE RÉSERVATION' : 'FACTURE'}</div>
+    <div class="doc-num">N° ${docNum} · ${dateNow}</div>
+    ${f.bon && !isBdr ? `<div style="font-size:11px;color:#888;margin-top:2px">Réf. bon : ${f.bon}</div>` : ''}
+  </div>
+</div>
+
+<hr>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
+  <div class="section">
+    <div class="section-label">Prestataire</div>
+    <div class="co-name">${c.name}</div>
+    <div class="co-detail">
+      ${c.address ? c.address + '<br>' : ''}
+      ${c.siret ? 'SIRET : ' + c.siret + '<br>' : ''}
+      ${c.tva ? 'TVA : ' + c.tva + '<br>' : ''}
+      ${c.phone ? c.phone + '<br>' : ''}
+      ${c.email ? c.email : ''}
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Client</div>
+    <div class="co-name">${f.client || '—'}</div>
+    <div class="co-detail">
+      ${f.email ? f.email + '<br>' : ''}
+    </div>
+  </div>
+</div>
+
+<hr class="thin">
+
+<div class="section" style="margin-top:20px">
+  <div class="section-label">Détails de la course</div>
+  <div class="info-grid">
+    <span class="info-key">Prise en charge</span><span class="info-val">${f.pickup || '—'}</span>
+    <span class="info-key">Départ</span><span class="info-val">${f.depart || '—'}</span>
+    <span class="info-key">Arrivée</span><span class="info-val">${f.arrive || '—'}</span>
+    ${f.km ? `<span class="info-key">Distance</span><span class="info-val">${f.km} km · ${f.mins || '—'} min</span>` : ''}
+    ${f.presta ? `<span class="info-key">Prestations</span><span class="info-val">${f.presta}</span>` : ''}
+    <span class="info-key">Mode de règlement</span><span class="info-val">${f.payment || 'Carte bancaire'}</span>
+    ${f.note ? `<span class="info-key">Note</span><span class="info-val">${f.note}</span>` : ''}
+  </div>
+</div>
+
+<hr class="thin">
+
+<div class="section" style="margin-top:20px">
+  <div class="section-label">Tarification</div>
+  ${isBdr ? `
+  <table class="price-table">
+    <tr>
+      <td class="label">Transport VTC — ${f.depart || '—'} → ${f.arrive || '—'}</td>
+      <td class="value">${f.price ? f.price.toFixed(2) + ' €' : '—'}</td>
+    </tr>
+    <tr class="total-row">
+      <td>Total TTC</td>
+      <td>${f.price ? f.price.toFixed(2) + ' €' : '—'} <span class="badge-ok">${f.payment || 'Carte'}</span></td>
+    </tr>
+  </table>` : `
+  <table class="price-table">
+    <tr>
+      <td class="label">Transport VTC — ${f.depart || '—'} → ${f.arrive || '—'}</td>
+      <td class="value">${ht ? ht.toFixed(2) + ' €' : '—'}</td>
+    </tr>
+    <tr>
+      <td class="label" style="color:#888">TVA ${tvaRate}% (transport de personnes)</td>
+      <td class="value" style="color:#888">${tva ? tva.toFixed(2) + ' €' : '—'}</td>
+    </tr>
+    <tr class="total-row">
+      <td>Total TTC</td>
+      <td>${ttc ? ttc.toFixed(2) + ' €' : '—'}</td>
+    </tr>
+  </table>`}
+</div>
+
+${isBdr ? `
+<hr class="thin">
+<div class="section" style="margin-top:20px">
+  <div class="section-label">Signature du chauffeur</div>
+  <div class="signature-box">Signature &amp; date :</div>
+</div>` : ''}
+
+<div class="footer">
+  ${c.name} · ${c.siret ? 'SIRET ' + c.siret + ' · ' : ''}${c.tva ? 'TVA ' + c.tva + ' · ' : ''}${c.address || ''}
+  ${c.footer ? '<br>' + c.footer : ''}
+  ${!isBdr ? '<br>Conformément à l\'article 289 du CGI, toute facture doit être conservée pendant 10 ans.' : ''}
+</div>
+
+<script>window.onload = () => { window.print(); }<\/script>
+</body>
+</html>`
+
+  // Save to history
+  const hist = getDocHistory()
+  hist.unshift({
+    num: docNum, type, client: f.client, price: f.price, date: new Date().toISOString(), depart: f.depart, arrive: f.arrive,
+  })
+  localStorage.setItem('hub-doc-history', JSON.stringify(hist.slice(0, 50)))
+  renderDocHistory()
+
+  const w = window.open('', '_blank')
+  if (w) { w.document.write(html); w.document.close() }
+  else showToast('Autorisez les popups pour imprimer', 'error')
+}
+
+function getDocHistory() {
+  try { return JSON.parse(localStorage.getItem('hub-doc-history') || '[]') } catch { return [] }
+}
+
+function renderDocHistory() {
+  const hist = getDocHistory()
+  const el = document.getElementById('doc-history')
+  const sec = document.getElementById('hist-section')
+  if (!hist.length) { sec.style.display = 'none'; return }
+  sec.style.display = 'block'
+  el.innerHTML = hist.slice(0, 15).map(h => `
+    <div class="hist-item">
+      <div>
+        <div class="hist-num">${h.num}</div>
+        <div style="font-size:10px;color:var(--subtle);margin-top:1px">${h.type === 'bdr' ? 'Bon de réservation' : 'Facture'}</div>
+      </div>
+      <div class="hist-info">
+        <div class="hist-name">${h.client || '—'}</div>
+        <div class="hist-date">${h.depart ? h.depart.split(',')[0] : ''} → ${h.arrive ? h.arrive.split(',')[0] : ''}</div>
+        <div class="hist-date">${new Date(h.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})}</div>
+      </div>
+      <div class="hist-amt">${h.price ? h.price.toFixed(2) + ' €' : '—'}</div>
+    </div>`).join('')
+}
+
+// ────────────────────────────────────────────────────────────
+// SETTINGS
+// ────────────────────────────────────────────────────────────
+function loadSettings() {
+  const c = getCompany()
+  document.getElementById('s-name').value    = c.name
+  document.getElementById('s-siret').value   = c.siret
+  document.getElementById('s-tva').value     = c.tva
+  document.getElementById('s-address').value = c.address
+  document.getElementById('s-phone').value   = c.phone
+  document.getElementById('s-email').value   = c.email
+  document.getElementById('s-tvarate').value = c.tvarate
+  document.getElementById('s-footer').value  = c.footer
+}
+
+function saveSettings() {
+  const c = {
+    name:    document.getElementById('s-name').value.trim(),
+    siret:   document.getElementById('s-siret').value.trim(),
+    tva:     document.getElementById('s-tva').value.trim(),
+    address: document.getElementById('s-address').value.trim(),
+    phone:   document.getElementById('s-phone').value.trim(),
+    email:   document.getElementById('s-email').value.trim(),
+    tvarate: document.getElementById('s-tvarate').value.trim() || '10',
+    footer:  document.getElementById('s-footer').value.trim(),
+  }
+  localStorage.setItem('hub-company', JSON.stringify(c))
+  showToast('Paramètres enregistrés ✓')
+}
+
+function changePin() {
+  const p1 = document.getElementById('s-pin').value.trim()
+  const p2 = document.getElementById('s-pin2').value.trim()
+  if (!/^\d{4}$/.test(p1)) return showToast('PIN doit être 4 chiffres', 'error')
+  if (p1 !== p2) return showToast('Les PINs ne correspondent pas', 'error')
+  localStorage.setItem('hub-pin', p1)
+  document.getElementById('s-pin').value = ''
+  document.getElementById('s-pin2').value = ''
+  showToast('PIN modifié ✓')
+}
+
+function exportData() {
+  const data = {
+    promos:   getStoredPromos(),
+    company:  getCompany(),
+    history:  getDocHistory(),
+    exported: new Date().toISOString(),
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `inrun-hub-${new Date().toISOString().slice(0,10)}.json`
+  a.click()
+}
+
+function resetHub() {
+  if (!confirm('Réinitialiser toutes les données du Hub ? (Codes promo, paramètres, historique)')) return
+  ['inr-promo-codes','hub-company','hub-doc-history','hub-seq-BDR','hub-seq-FAC'].forEach(k => localStorage.removeItem(k))
+  loadSettings()
+  renderPromos()
+  renderDocHistory()
+  showToast('Données réinitialisées')
+}
+
+// ────────────────────────────────────────────────────────────
+// TOAST
+// ────────────────────────────────────────────────────────────
+let toastTimer
+function showToast(msg, type) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.style.borderColor = type === 'error' ? 'rgba(248,113,113,.4)' : 'var(--border)'
+  t.style.color = type === 'error' ? 'var(--error)' : 'var(--text)'
+  t.className = 'show'
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => t.className = '', 2800)
+}
+</script>
+</body>
+</html>

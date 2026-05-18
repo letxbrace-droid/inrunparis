@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useBookingStore, { PROMO_CODES } from '../../store/useBookingStore'
+import useBookingStore, { getPromoCodes } from '../../store/useBookingStore'
 
 export default function CodePromoView({ open, onClose }) {
   const promo    = useBookingStore((s) => s.promo)
@@ -11,7 +11,8 @@ export default function CodePromoView({ open, onClose }) {
   const handleApply = () => {
     const code = input.trim().toUpperCase()
     if (!code) return
-    const found = PROMO_CODES[code]
+    const codes = getPromoCodes()
+    const found = codes[code]
     if (found) { setPromo({ code, ...found }); setStatus('ok') }
     else        { setStatus('error') }
   }
