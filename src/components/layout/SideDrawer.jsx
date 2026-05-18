@@ -199,19 +199,22 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden will-change-transform"
         style={{
           width:        'min(78vw, 320px)',
-          background:   'linear-gradient(180deg, #001f30 0%, #001621 100%)',
+          background:   'rgba(0,17,28,0.88)',
+          backdropFilter: 'blur(28px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+          borderRight:  '1px solid rgba(255,255,255,.07)',
           transform:    open ? 'translateX(0)' : 'translateX(-100%)',
           visibility:   open ? 'visible' : 'hidden',
           pointerEvents: open ? 'auto' : 'none',
           transition:   `transform .32s cubic-bezier(.16,1,.3,1), visibility 0s linear ${open ? '0s' : '.32s'}`,
-          boxShadow:    open ? '8px 0 48px rgba(0,0,0,.6)' : 'none',
+          boxShadow:    open ? '8px 0 60px rgba(0,0,0,.7), 2px 0 0 rgba(255,65,3,.04)' : 'none',
         }}
       >
         {/* Ambient top halo */}
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 100% 55% at 50% 0%, rgba(255,65,3,.08), transparent 70%)' }}
+          style={{ background: 'radial-gradient(ellipse 120% 50% at 0% 0%, rgba(255,65,3,.14), transparent 65%)' }}
         />
 
         <div
@@ -247,11 +250,19 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     onClick={() => { onNavigate(item.view); onClose() }}
                     className="flex items-center gap-3.5 w-full rounded-xl px-3.5 py-3.5 cursor-pointer select-none transition-all duration-150 active:scale-[.97]"
                     style={{
-                      background: highlight ? 'rgba(255,65,3,.1)' : 'transparent',
-                      border:     highlight ? '1px solid rgba(255,65,3,.22)' : '1px solid transparent',
+                      background: highlight
+                        ? 'linear-gradient(135deg, rgba(255,90,31,.16) 0%, rgba(255,65,3,.09) 100%)'
+                        : 'transparent',
+                      border:     highlight ? '1px solid rgba(255,65,3,.3)' : '1px solid transparent',
+                      boxShadow:  highlight ? '0 0 18px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.05)' : 'none',
                     }}
                   >
-                    <span style={{ color: highlight ? '#ff4103' : 'rgba(245,241,232,.42)', flexShrink: 0 }}>
+                    <span style={{
+                      color: highlight ? '#ff6120' : 'rgba(245,241,232,.38)',
+                      flexShrink: 0,
+                      filter: highlight ? 'drop-shadow(0 0 5px rgba(255,80,10,.9))' : 'none',
+                      transition: 'filter .2s, color .2s',
+                    }}>
                       <item.Icon />
                     </span>
                     <span
@@ -289,12 +300,12 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     e.currentTarget.style.border = '1px solid transparent'
                   }}
                 >
-                  <span style={{ color: 'rgba(255,65,3,.45)', flexShrink: 0 }}>
+                  <span style={{ color: 'rgba(255,80,20,.65)', flexShrink: 0 }}>
                     <item.Icon />
                   </span>
                   <span
                     className="text-sm font-medium leading-none"
-                    style={{ color: 'rgba(245,241,232,.65)' }}
+                    style={{ color: 'rgba(245,241,232,.72)' }}
                   >
                     {item.label}
                   </span>
