@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 
 function IconHome() {
@@ -71,82 +71,124 @@ function IconShield() {
   )
 }
 
-function DarkToggle({ isDark, onToggle }) {
+// ── Theme icons ───────────────────────────────────────────────────────────────
+function IconSun({ active }) {
   return (
-    <button
-      onClick={onToggle}
-      role="switch"
-      aria-checked={isDark}
-      aria-label="Basculer le mode sombre"
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1"  x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1"  y1="12" x2="3"  y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+      <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+    </svg>
+  )
+}
+
+function IconMoon({ active }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  )
+}
+
+function IconAuto({ active }) {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 18a5 5 0 0 0-10 0"/>
+      <line x1="12" y1="9" x2="12" y2="2"/>
+      <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
+      <line x1="1" y1="18" x2="3" y2="18"/>
+      <line x1="21" y1="18" x2="23" y2="18"/>
+      <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
+      <line x1="23" y1="22" x2="1" y2="22"/>
+      <polyline points="16 5 12 1 8 5"/>
+    </svg>
+  )
+}
+
+const THEME_OPTIONS = [
+  { value: 'light',  Icon: IconSun,  label: 'Mode clair'  },
+  { value: 'dark',   Icon: IconMoon, label: 'Mode sombre' },
+  { value: 'system', Icon: IconAuto, label: 'Automatique' },
+]
+
+const SLOT_W = 46
+
+function ThemeSwitcher({ theme, onChange }) {
+  const idx = Math.max(0, THEME_OPTIONS.findIndex(t => t.value === theme))
+  return (
+    <div
+      role="radiogroup"
+      aria-label="Thème de l'interface"
       style={{
-        position:   'relative',
-        width:      68,
-        height:     36,
-        borderRadius: 99,
-        background: '#0d1f2d',
-        border:     `1.5px solid ${isDark ? 'rgba(255,65,3,.6)' : 'rgba(255,65,3,.3)'}`,
-        boxShadow:  isDark
-          ? '0 0 18px rgba(255,65,3,.45), inset 0 2px 4px rgba(0,0,0,.55)'
-          : '0 0 6px rgba(255,65,3,.15), inset 0 2px 4px rgba(0,0,0,.3)',
-        cursor:     'pointer',
-        flexShrink: 0,
-        transition: 'border-color .3s, box-shadow .3s',
-        overflow:   'hidden',
-        padding:    0,
+        position:     'relative',
+        display:      'flex',
+        width:        SLOT_W * 3,
+        height:       44,
+        borderRadius: 999,
+        background:   '#091520',
+        border:       '1px solid rgba(255,255,255,.08)',
+        flexShrink:   0,
       }}
     >
-      <span style={{
-        position:  'absolute',
-        left:      9,
-        top:       '50%',
-        transform: 'translateY(-50%)',
-        display:   'flex',
-        opacity:   isDark ? 0.9 : 0.3,
-        transition: 'opacity .25s',
-        pointerEvents: 'none',
-      }}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(180,190,255,.95)">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </span>
+      {/* Sliding glass indicator */}
+      <motion.div
+        aria-hidden="true"
+        initial={false}
+        animate={{ x: idx * SLOT_W + 3 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 320, restDelta: 0.5 }}
+        style={{
+          position:     'absolute',
+          top:          3,
+          left:         0,
+          width:        SLOT_W - 6,
+          height:       38,
+          borderRadius: 999,
+          background:   'rgba(255,255,255,.11)',
+          border:       '1px solid rgba(255,255,255,.14)',
+          boxShadow:    '0 2px 8px rgba(0,0,0,.35)',
+          pointerEvents:'none',
+        }}
+      />
 
-      <span style={{
-        position:  'absolute',
-        right:     9,
-        top:       '50%',
-        transform: 'translateY(-50%)',
-        display:   'flex',
-        opacity:   isDark ? 0.3 : 0.85,
-        transition: 'opacity .25s',
-        pointerEvents: 'none',
-      }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,200,50,.95)" strokeWidth="2.5" strokeLinecap="round">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1"  x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1"  y1="12" x2="3"  y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
-          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
-        </svg>
-      </span>
-
-      <span style={{
-        position:   'absolute',
-        top:        2,
-        left:       0,
-        width:      30,
-        height:     30,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle at 34% 30%, #ffffff 0%, #e8e8e8 38%, #c4c4c4 68%, #969696 100%)',
-        boxShadow:  '0 3px 10px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4), inset 0 1.5px 2px rgba(255,255,255,.9)',
-        transform:  isDark ? 'translateX(36px)' : 'translateX(2px)',
-        transition: 'transform .28s cubic-bezier(.34,1.56,.64,1)',
-        pointerEvents: 'none',
-      }} />
-    </button>
+      {/* Option buttons */}
+      {THEME_OPTIONS.map((t) => {
+        const active = theme === t.value
+        return (
+          <button
+            key={t.value}
+            role="radio"
+            aria-checked={active}
+            aria-label={t.label}
+            onClick={() => onChange(t.value)}
+            style={{
+              position:        'relative',
+              zIndex:          1,
+              width:           SLOT_W,
+              height:          44,
+              display:         'flex',
+              alignItems:      'center',
+              justifyContent:  'center',
+              cursor:          'pointer',
+              background:      'none',
+              border:          'none',
+              padding:         0,
+              color:           active ? '#F5F1E8' : 'rgba(245,241,232,.28)',
+              transition:      'color .25s',
+            }}
+          >
+            <t.Icon active={active} />
+          </button>
+        )
+      })}
+    </div>
   )
 }
 
@@ -202,8 +244,8 @@ const footerVar = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
-  const isDark    = useBookingStore(s => s.isDark)
-  const setIsDark = useBookingStore(s => s.setIsDark)
+  const theme    = useBookingStore(s => s.theme)
+  const setTheme = useBookingStore(s => s.setTheme)
 
   useEffect(() => {
     if (!open) return
@@ -382,7 +424,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             ))}
           </motion.ul>
 
-          {/* Footer — dark mode toggle */}
+          {/* Footer — theme switcher */}
           <motion.div
             initial="closed"
             animate={ani}
@@ -394,10 +436,19 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               paddingBottom: 'calc(var(--safe-bot) + 16px)',
             }}
           >
-            <span style={{ fontSize: 14, fontWeight: 500, color: 'rgba(245,241,232,.55)', userSelect: 'none' }}>
-              Mode sombre
-            </span>
-            <DarkToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={theme}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.18 }}
+                style={{ fontSize: 14, fontWeight: 500, color: 'rgba(245,241,232,.55)', userSelect: 'none' }}
+              >
+                {THEME_OPTIONS.find(t => t.value === theme)?.label ?? 'Mode sombre'}
+              </motion.span>
+            </AnimatePresence>
+            <ThemeSwitcher theme={theme} onChange={setTheme} />
           </motion.div>
         </div>
       </motion.nav>
