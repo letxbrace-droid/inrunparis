@@ -30,6 +30,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   const routeRef      = useRef([])
   const markersRef    = useRef([])
   const userMarkerRef = useRef(null)
+  const didFlyRef     = useRef(false)
 
   // Initialize map without tile layer (tile effect creates it)
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }).addTo(map)
   }, [isDark])
 
-  // Live GPS user position blue dot
+  // Live GPS user position blue dot + animated zoom-in on first fix
   useEffect(() => {
     if (!navigator.geolocation) return
     const id = navigator.geolocation.watchPosition(
@@ -64,6 +65,13 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
           userMarkerRef.current.setLatLng(pos)
         } else {
           userMarkerRef.current = L.marker(pos, { icon: userPosIcon, zIndexOffset: -100 }).addTo(m)
+        }
+        // Cinematic fly-in to the user's position once, on app open
+        if (!didFlyRef.current && !depart && !route?.geometry) {
+          didFlyRef.current = true
+          const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          if (reduced) m.setView(pos, 15.5, { animate: false })
+          else         m.flyTo(pos, 15.5, { animate: true, duration: 2.6, easeLinearity: 0.1 })
         }
       },
       () => {},
