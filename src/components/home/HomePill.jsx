@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
@@ -336,34 +337,45 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
 
                 {/* Autocomplete dropdown */}
-                {suggestions.length > 0 && (
-                  <ul
-                    role="listbox"
-                    className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
-                    style={{
-                      top:       'calc(100% + 8px)',
-                      background: '#001A28',
-                      boxShadow: '0 8px 32px rgba(0,0,0,.6)',
-                    }}
-                  >
-                    {suggestions.map((s, i) => (
-                      <li key={i}>
-                        <button
-                          onClick={() => pickSuggestion(s, acField)}
-                          className="w-full text-left flex items-center gap-3 px-4 py-3 border-b border-[var(--rule)] last:border-0 hover:bg-accent/10 active:bg-accent/15 transition-colors cursor-pointer"
+                <AnimatePresence>
+                  {suggestions.length > 0 && (
+                    <motion.ul
+                      role="listbox"
+                      initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
+                      style={{
+                        top:        'calc(100% + 8px)',
+                        background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
+                        boxShadow:  '0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(255,65,3,.08)',
+                      }}
+                    >
+                      {suggestions.map((s, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <span className="text-sm flex-shrink-0">{ICON[s.type] ?? '📌'}</span>
-                          <span className="text-sm text-ink-secondary truncate">{s.name.split(',')[0]}</span>
-                        </button>
-                      </li>
-                    ))}
-                    {acLoading && (
-                      <li className="flex justify-center py-2">
-                        <span className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
-                      </li>
-                    )}
-                  </ul>
-                )}
+                          <button
+                            onClick={() => pickSuggestion(s, acField)}
+                            className="w-full text-left flex items-center gap-3 px-4 py-3 border-b border-[var(--rule)] last:border-0 hover:bg-accent/10 active:bg-accent/15 transition-colors cursor-pointer"
+                          >
+                            <span className="text-sm flex-shrink-0">{ICON[s.type] ?? '📌'}</span>
+                            <span className="text-sm text-ink-secondary truncate">{s.name.split(',')[0]}</span>
+                          </button>
+                        </motion.li>
+                      ))}
+                      {acLoading && (
+                        <li className="flex justify-center py-2">
+                          <span className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+                        </li>
+                      )}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Route info */}
@@ -388,16 +400,12 @@ export default function HomePill({ onOpenSheet }) {
               <button
                 onClick={handleReserve}
                 disabled={!depart || !arrive || routeLoading}
-                className="
-                  w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
+                className="cta-glow w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
                   cursor-pointer select-none active:scale-[.97] transition-transform duration-150
-                  disabled:opacity-40 disabled:cursor-not-allowed
-                "
-                style={{
-                  background: '#ff4103',
-                  boxShadow:  (depart && arrive) ? '0 0 24px rgba(255,65,3,.35), 0 4px 12px rgba(0,0,0,.4)' : 'none',
-                }}
+                  disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden"
               >
+                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
                 {ctaLabel}
               </button>
 

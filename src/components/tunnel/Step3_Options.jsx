@@ -57,12 +57,22 @@ function PillButton({ active, onClick, children }) {
 }
 
 export default function Step3Options({ onBack }) {
-  const {
-    ambiance, setAmbiance, volume, setVolume, clim, setClim,
-    options, toggleOption, payment, setPayment,
-    clientName, setClientName, clientEmail, setClientEmail,
-    note, setNote,
-  } = useBookingStore()
+  const ambiance     = useBookingStore((s) => s.ambiance)
+  const setAmbiance  = useBookingStore((s) => s.setAmbiance)
+  const volume       = useBookingStore((s) => s.volume)
+  const setVolume    = useBookingStore((s) => s.setVolume)
+  const clim         = useBookingStore((s) => s.clim)
+  const setClim      = useBookingStore((s) => s.setClim)
+  const options      = useBookingStore((s) => s.options)
+  const toggleOption = useBookingStore((s) => s.toggleOption)
+  const payment      = useBookingStore((s) => s.payment)
+  const setPayment   = useBookingStore((s) => s.setPayment)
+  const clientName   = useBookingStore((s) => s.clientName)
+  const setClientName  = useBookingStore((s) => s.setClientName)
+  const clientEmail  = useBookingStore((s) => s.clientEmail)
+  const setClientEmail = useBookingStore((s) => s.setClientEmail)
+  const note         = useBookingStore((s) => s.note)
+  const setNote      = useBookingStore((s) => s.setNote)
 
   const handleSend = () => {
     const booking = useBookingStore.getState()
@@ -134,36 +144,41 @@ export default function Step3Options({ onBack }) {
       <section>
         <SectionLabel>Climatisation</SectionLabel>
         <div
-          className="flex items-center justify-between px-4 py-3 rounded-2xl"
+          className="px-4 py-4 rounded-2xl flex flex-col gap-3"
           style={{
             background: 'rgba(0,10,18,.45)',
             boxShadow: 'inset 2px 2px 8px rgba(0,0,0,.45), inset -1px -1px 3px rgba(255,255,255,.03)',
             border: '1px solid rgba(255,255,255,.05)',
           }}
         >
-          <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>
-            <span style={{ color: 'rgba(130,200,255,.7)', marginRight: 6 }}>❄</span>
-            {clim}°C
-          </span>
-          <div className="flex gap-2">
-            {[
-              { label: '−', action: () => setClim(Math.max(16, clim - 1)) },
-              { label: '+', action: () => setClim(Math.min(28, clim + 1)) },
-            ].map(({ label, action }) => (
-              <button
-                key={label}
-                onClick={action}
-                className="w-8 h-8 rounded-xl flex items-center justify-center cursor-pointer active:scale-90 transition-transform font-bold text-sm select-none"
-                style={{
-                  background: 'linear-gradient(145deg, #002535, #001a28)',
-                  boxShadow: '3px 3px 8px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)',
-                  border: '1px solid rgba(255,255,255,.06)',
-                  color: 'rgba(245,241,232,.7)',
-                }}
-              >
-                {label}
-              </button>
-            ))}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(130,200,255,.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>Température</span>
+            </div>
+            <span
+              className="font-mono font-bold text-[15px]"
+              style={{ color: '#F5F1E8', minWidth: 44, textAlign: 'right' }}
+            >
+              {clim}°C
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.3)' }}>16°</span>
+            <input
+              type="range"
+              min={16}
+              max={28}
+              step={1}
+              value={clim}
+              onChange={(e) => setClim(Number(e.target.value))}
+              className="flex-1 cursor-pointer"
+              style={{ accentColor: '#ff4103', height: 4 }}
+              aria-label="Température climatisation"
+            />
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.3)' }}>28°</span>
           </div>
         </div>
       </section>

@@ -6,25 +6,17 @@ export default function CodePromoView({ open, onClose }) {
   const setPromo = useBookingStore((s) => s.setPromo)
 
   const [input,  setInput]  = useState('')
-  const [status, setStatus] = useState(null) // 'ok' | 'error'
+  const [status, setStatus] = useState(null)
 
   const handleApply = () => {
     const code = input.trim().toUpperCase()
     if (!code) return
     const found = PROMO_CODES[code]
-    if (found) {
-      setPromo({ code, ...found })
-      setStatus('ok')
-    } else {
-      setStatus('error')
-    }
+    if (found) { setPromo({ code, ...found }); setStatus('ok') }
+    else        { setStatus('error') }
   }
 
-  const handleRemove = () => {
-    setPromo(null)
-    setInput('')
-    setStatus(null)
-  }
+  const handleRemove = () => { setPromo(null); setInput(''); setStatus(null) }
 
   return (
     <div
@@ -34,7 +26,7 @@ export default function CodePromoView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    '#001621',
+        background:    'linear-gradient(180deg, #001f30 0%, #001621 55%)',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -43,54 +35,63 @@ export default function CodePromoView({ open, onClose }) {
           : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
       }}
     >
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,65,3,.07), transparent 65%)' }} />
+
       {/* Header */}
       <div
-        className="flex items-center gap-4 px-5 flex-shrink-0"
-        style={{ paddingTop: 'calc(var(--safe-top) + 18px)', paddingBottom: 16 }}
+        className="flex items-center gap-4 px-5 flex-shrink-0 relative z-10"
+        style={{
+          paddingTop: 'calc(var(--safe-top) + 16px)',
+          paddingBottom: 14,
+          background: 'rgba(0,26,40,.65)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255,255,255,.07)',
+        }}
       >
-        <button
-          onClick={onClose}
-          aria-label="Retour"
+        <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: 'rgba(245,241,232,.07)', border: '1px solid rgba(245,241,232,.12)' }}
-        >
+          style={{ background: 'linear-gradient(145deg, #002535, #001a28)', boxShadow: '3px 3px 10px rgba(0,0,0,.5), -1px -1px 4px rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </button>
         <div>
           <h1 className="text-[17px] font-bold" style={{ color: '#F5F1E8' }}>Code promo</h1>
-          <p className="text-xs" style={{ color: 'rgba(245,241,232,.38)' }}>Entrez votre code pour réduire votre tarif</p>
+          <p className="text-xs" style={{ color: 'rgba(245,241,232,.38)' }}>Réduisez votre tarif</p>
         </div>
       </div>
 
-      <div className="flex-1 px-5 pt-6" style={{ paddingBottom: 'calc(var(--safe-bot) + 32px)' }}>
+      <div
+        key={open}
+        className="flex-1 px-5 pt-6 overflow-y-auto scrollbar-thin relative z-10"
+        style={{ paddingBottom: 'calc(var(--safe-bot) + 32px)' }}
+      >
 
-        {/* Active promo banner */}
+        {/* Active promo */}
         {promo && (
           <div
             className="flex items-center justify-between rounded-2xl px-4 py-4 mb-6"
             style={{
-              background: 'rgba(52,211,153,.08)',
+              background: 'rgba(52,211,153,.07)',
+              boxShadow: '4px 4px 16px rgba(0,0,0,.4), 0 0 24px rgba(52,211,153,.08)',
               border: '1px solid rgba(52,211,153,.25)',
+              animation: 'scale-in .3s ease both',
             }}
           >
             <div>
               <p className="text-sm font-bold" style={{ color: '#34d399' }}>{promo.code}</p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(52,211,153,.7)' }}>{promo.label}</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(52,211,153,.65)' }}>{promo.label}</p>
             </div>
-            <button
-              onClick={handleRemove}
-              className="text-xs underline cursor-pointer"
-              style={{ color: 'rgba(52,211,153,.6)' }}
-            >
+            <button onClick={handleRemove} className="text-xs underline cursor-pointer" style={{ color: 'rgba(52,211,153,.55)' }}>
               Retirer
             </button>
           </div>
         )}
 
-        {/* Input */}
-        <div className="flex gap-3 mb-3">
+        {/* Input row */}
+        <div className="flex gap-3 mb-3" style={{ animation: 'fade-up .38s ease both 40ms' }}>
           <input
             type="text"
             value={input}
@@ -98,62 +99,59 @@ export default function CodePromoView({ open, onClose }) {
             onKeyDown={(e) => { if (e.key === 'Enter') handleApply() }}
             placeholder="CODE PROMO"
             maxLength={20}
-            className="flex-1 px-4 py-4 rounded-2xl text-sm font-mono font-bold tracking-widest outline-none transition-colors duration-200"
+            className="flex-1 px-4 py-4 rounded-2xl text-sm font-mono font-bold tracking-widest outline-none transition-all duration-200"
             style={{
-              background:   'rgba(245,241,232,.05)',
-              border:       `1px solid ${status === 'error' ? 'rgba(248,113,113,.5)' : status === 'ok' ? 'rgba(52,211,153,.4)' : 'rgba(245,241,232,.12)'}`,
-              color:        '#F5F1E8',
+              background: 'rgba(0,10,18,.55)',
+              boxShadow: `inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03), 0 0 0 ${status === 'error' ? '1.5px rgba(248,113,113,.5)' : status === 'ok' ? '1.5px rgba(52,211,153,.4)' : '0px transparent'}`,
+              border: '1px solid rgba(255,255,255,.05)',
+              color: '#F5F1E8',
             }}
             aria-label="Code promotionnel"
           />
           <button
             onClick={handleApply}
             disabled={!input.trim()}
-            className="px-5 py-4 rounded-2xl text-sm font-semibold cursor-pointer disabled:opacity-40 active:scale-95 transition-all duration-200"
-            style={{
-              background: '#ff4103',
-              color: '#F5F1E8',
-              boxShadow: input.trim() ? '0 0 20px rgba(255,65,3,.35)' : 'none',
-            }}
+            className="cta-glow px-5 py-4 rounded-2xl text-sm font-bold text-white cursor-pointer disabled:opacity-40 active:scale-95 transition-transform overflow-hidden relative"
           >
+            <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
             Appliquer
           </button>
         </div>
 
         {status === 'error' && (
-          <p className="text-xs px-1" style={{ color: 'rgba(248,113,113,.8)' }}>
+          <p className="text-xs px-1 mb-2" style={{ color: 'rgba(248,113,113,.8)', animation: 'fade-in .2s ease' }}>
             Code invalide. Vérifiez l'orthographe ou contactez-nous.
           </p>
         )}
         {status === 'ok' && (
-          <p className="text-xs px-1" style={{ color: 'rgba(52,211,153,.8)' }}>
-            Code appliqué ! La réduction sera visible à l'étape Tarif.
+          <p className="text-xs px-1 mb-2" style={{ color: 'rgba(52,211,153,.8)', animation: 'fade-in .2s ease' }}>
+            Code appliqué — la réduction sera visible à l'étape Tarif.
           </p>
         )}
 
-        {/* Hint */}
+        {/* Hint card */}
         <div
-          className="mt-8 rounded-2xl px-4 py-4"
+          className="rounded-2xl px-4 py-4 mt-6"
           style={{
-            background: 'rgba(245,241,232,.03)',
-            border: '1px solid rgba(245,241,232,.08)',
+            background: 'linear-gradient(145deg, #002535 0%, #001a28 100%)',
+            boxShadow: '4px 4px 16px rgba(0,0,0,.5), -2px -2px 6px rgba(255,255,255,.02)',
+            border: '1px solid rgba(255,255,255,.06)',
+            animation: 'fade-up .38s ease both 80ms',
           }}
         >
-          <p className="text-xs font-semibold mb-2" style={{ color: 'rgba(245,241,232,.5)' }}>
+          <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,65,3,.6)' }}>
             Comment obtenir un code ?
           </p>
-          <ul className="flex flex-col gap-1.5">
-            {[
-              "Fidélité : après votre 5ème course",
-              "Parrainage : partagez l'app avec un ami",
-              "Newsletter I&N RUN",
-            ].map((t) => (
-              <li key={t} className="flex items-start gap-2">
-                <span style={{ color: '#ff4103', flexShrink: 0, marginTop: 2 }}>·</span>
-                <span className="text-xs" style={{ color: 'rgba(245,241,232,.38)' }}>{t}</span>
-              </li>
-            ))}
-          </ul>
+          {[
+            "Fidélité : après votre 5ème course",
+            "Parrainage : partagez l'app avec un ami",
+            "Newsletter I&N RUN",
+          ].map((t) => (
+            <div key={t} className="flex items-start gap-2 mb-2">
+              <span style={{ color: '#ff4103', flexShrink: 0, marginTop: 2 }}>·</span>
+              <span className="text-xs" style={{ color: 'rgba(245,241,232,.45)', lineHeight: 1.5 }}>{t}</span>
+            </div>
+          ))}
         </div>
 
       </div>
