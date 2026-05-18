@@ -1,12 +1,22 @@
-/* I&N RUN — Service Worker v42 */
-const CACHE = 'inrun-v42';
+/* I&N RUN — Service Worker v43 */
+const CACHE = 'inrun-v43';
 const STATIC = [
+  '/inrunparis/manifest.json',
+  '/inrunparis/favicon.ico',
   '/inrunparis/icon-180.png',
   '/inrunparis/icon-192.png',
   '/inrunparis/icon-512.png',
   '/inrunparis/icon-maskable-512.png',
-  '/inrunparis/icon.svg',
-  '/inrunparis/manifest.json',
+  '/inrunparis/icons/icon-48.png',
+  '/inrunparis/icons/icon-72.png',
+  '/inrunparis/icons/icon-96.png',
+  '/inrunparis/icons/icon-144.png',
+  '/inrunparis/icons/icon-152.png',
+  '/inrunparis/icons/icon-180.png',
+  '/inrunparis/icons/icon-192.png',
+  '/inrunparis/icons/icon-384.png',
+  '/inrunparis/icons/icon-512.png',
+  '/inrunparis/icons/icon-maskable-512.png',
 ];
 const PASSTHROUGH = [
   '/inrunparis/bdr-admin.html',
@@ -28,7 +38,6 @@ self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
   if (PASSTHROUGH.some(p => url.pathname.startsWith(p))) { e.respondWith(fetch(request)); return; }
-  // Navigation: toujours réseau d'abord → cache en fallback offline uniquement
   if (request.mode === 'navigate') {
     e.respondWith(
       fetch(request).then(res => {
