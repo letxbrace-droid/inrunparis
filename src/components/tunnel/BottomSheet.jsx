@@ -32,7 +32,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           className="
             w-full max-w-[560px]
             flex flex-col
-            bg-gradient-to-b from-[#131315] to-[#0a0a0a]
+            bg-gradient-to-b from-[#001A28] to-[#001621]
             border border-b-0 rounded-t-[22px] overflow-hidden
             transition-[transform,opacity] will-change-transform
           "

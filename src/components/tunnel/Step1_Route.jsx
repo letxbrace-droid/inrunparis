@@ -72,7 +72,7 @@ function LocationInput({ label, value, onSelect, placeholder }) {
           role="listbox"
           className="
             absolute top-full left-0 right-0 mt-1 z-10
-            bg-[#0a0a0a] border border-[var(--rule-strong)] rounded-2xl
+            bg-[#001621] border border-[var(--rule-strong)] rounded-2xl
             overflow-hidden max-h-52 overflow-y-auto
           "
         >

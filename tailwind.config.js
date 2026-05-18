@@ -7,9 +7,9 @@ export default {
         accent:     '#ff4103',
         'accent-2': '#ff5a25',
         bg: {
-          base:     '#0C0C0E',
-          elevated: '#161618',
-          glass:    'rgba(22,22,24,0.82)',
+          base:     '#001621',
+          elevated: '#002030',
+          glass:    'rgba(0,22,33,0.82)',
         },
         ink: {
           primary:   '#F5F1E8',

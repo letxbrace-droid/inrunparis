@@ -44,7 +44,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         aria-hidden={!open}
         className="
           fixed inset-0 z-[100000] flex flex-col
-          bg-[#06070D] overflow-hidden
+          bg-[#001621] overflow-hidden
           transition-[transform,visibility] duration-[340ms]
           ease-[cubic-bezier(.16,1,.3,1)]
           will-change-transform

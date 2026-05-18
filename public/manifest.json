@@ -6,8 +6,8 @@
   "scope": "/inrunparis/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0C0C0E",
-  "theme_color": "#0C0C0E",
+  "background_color": "#001621",
+  "theme_color": "#001621",
   "lang": "fr-FR",
   "categories": ["travel", "transportation", "business"],
   "icons": [
