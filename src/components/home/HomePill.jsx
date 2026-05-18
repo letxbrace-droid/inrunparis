@@ -173,43 +173,86 @@ export default function HomePill({ onOpenSheet }) {
       {/* ──────────── PILL (collapsed) ──────────── */}
       <button
         onClick={openCard}
-        aria-label="Ouvrir la réservation"
+        aria-label={depart && arrive ? 'Modifier la réservation' : 'Ouvrir la réservation'}
         aria-expanded={open}
-        className="fixed left-5 right-5 z-[20] flex items-center rounded-full cursor-pointer
-          active:scale-[.98] transition-transform duration-150 select-none overflow-hidden"
+        className="fixed z-[20] flex items-center cursor-pointer active:scale-[.98] transition-transform duration-150 select-none overflow-hidden"
         style={{
-          bottom:     'calc(var(--safe-bot) + 20px)',
-          background: 'rgba(0,22,33,0.9)',
-          border:     '1px solid rgba(255,65,3,.25)',
-          backdropFilter: 'blur(24px)',
-          boxShadow:  '0 0 28px rgba(255,65,3,.12), 0 6px 24px rgba(0,0,0,.55)',
-          opacity:    open ? 0 : 1,
+          bottom:        'calc(var(--safe-bot) + 20px)',
+          left:          0,
+          right:         0,
+          marginLeft:    20,
+          marginRight:   20,
+          maxWidth:      560,
+          marginInline:  'auto',
+          borderRadius:  depart && arrive ? 22 : 999,
+          background:    'rgba(0,18,28,0.82)',
+          border:        '1px solid rgba(255,255,255,.1)',
+          backdropFilter: 'blur(24px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+          boxShadow:     '0 8px 32px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06)',
+          opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
-          transition: 'opacity .22s ease',
-          maxWidth:   560,
-          margin:     '0 auto',
-          left:       0,
-          right:      0,
-          marginLeft: 20,
-          marginRight: 20,
+          transition:    'opacity .22s ease, border-radius .25s ease',
         }}
       >
-        <span className="flex items-center gap-2 px-5 py-[14px]">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4103" strokeWidth="2.2" strokeLinecap="round">
-            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-          </svg>
-          <span className="text-ink-primary text-sm font-medium">Où allons-nous ?</span>
-        </span>
-        <div className="w-px self-stretch bg-[var(--rule-strong)]" aria-hidden="true" />
-        <span className="flex items-center gap-1.5 px-4 py-[14px]">
-          <span
-            className={`w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
-            style={{ boxShadow: '0 0 6px rgba(52,211,153,.8)' }}
-          />
-          <span className={`font-mono text-[10px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
-            {TAGS[tagIdx]}
+        {depart && arrive ? (
+          /* ───── Aperçu du trajet ───── */
+          <span className="flex items-center gap-3 w-full px-4 py-3">
+            {/* A→B indicator */}
+            <span className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
+              <span className="w-2 h-2 rounded-full"
+                style={{ background: '#ff4103', boxShadow: '0 0 8px rgba(255,65,3,.8)' }} />
+              <span className="w-px my-[3px]"
+                style={{ height: 14, background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
+              <span className="w-2 h-2 rounded-full border-2"
+                style={{ borderColor: 'rgba(255,65,3,.7)', background: '#F5F1E8' }} />
+            </span>
+            {/* Names */}
+            <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
+              <span className="text-[13px] font-semibold truncate" style={{ color: '#F5F1E8' }}>
+                {departQuery || depart?.name?.split(',')[0] || 'Départ'}
+              </span>
+              <span className="text-[13px] font-semibold truncate" style={{ color: 'rgba(245,241,232,.62)' }}>
+                {arriveQuery || arrive?.name?.split(',')[0] || 'Destination'}
+              </span>
+            </span>
+            {/* Price + chevron */}
+            <span className="flex items-center gap-2.5 flex-shrink-0 pl-1">
+              {price && (
+                <span className="font-brand font-bold text-[15px] whitespace-nowrap" style={{ color: '#ff4103' }}>
+                  {price.final} €
+                </span>
+              )}
+              <span className="flex items-center justify-center w-7 h-7 rounded-full"
+                style={{ background: 'rgba(255,255,255,.06)' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.6)"
+                  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 15l-6-6-6 6"/>
+                </svg>
+              </span>
+            </span>
           </span>
-        </span>
+        ) : (
+          /* ───── Invite ───── */
+          <>
+            <span className="flex items-center gap-2 px-5 py-[14px]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4103" strokeWidth="2.2" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <span className="text-ink-primary text-sm font-medium">Où allons-nous ?</span>
+            </span>
+            <div className="w-px self-stretch bg-[var(--rule-strong)]" aria-hidden="true" />
+            <span className="flex items-center gap-1.5 px-4 py-[14px]">
+              <span
+                className={`w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
+                style={{ boxShadow: '0 0 6px rgba(52,211,153,.8)' }}
+              />
+              <span className={`font-mono text-[10px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
+                {TAGS[tagIdx]}
+              </span>
+            </span>
+          </>
+        )}
       </button>
 
       {/* ──────────── BACKDROP ──────────── */}
