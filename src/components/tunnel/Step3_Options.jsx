@@ -38,13 +38,13 @@ function MusiqueIcon({ active }) {
 function RadioIcon({ active }) {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="2" fill={active ? '#ff4103' : 'rgba(245,241,232,.5)'}/>
+      <circle cx="12" cy="12" r="2" fill={active ? '#ff4103' : 'rgba(245,241,232,.68)'}/>
       <motion.g
         animate={active ? { opacity: [0.4, 1, 0.4] } : { opacity: 0.35 }}
         transition={{ duration: 0.85, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}
       >
-        <path d="M8.5 8.5a5 5 0 0 0 0 7"  stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.35)'} strokeWidth="1.8"/>
-        <path d="M15.5 8.5a5 5 0 0 1 0 7" stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.35)'} strokeWidth="1.8"/>
+        <path d="M8.5 8.5a5 5 0 0 0 0 7"  stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.55)'} strokeWidth="1.8"/>
+        <path d="M15.5 8.5a5 5 0 0 1 0 7" stroke={active ? 'rgba(255,65,3,.85)' : 'rgba(245,241,232,.55)'} strokeWidth="1.8"/>
       </motion.g>
       <motion.g
         animate={active ? { opacity: [0.1, 0.65, 0.1] } : { opacity: 0.18 }}
@@ -58,7 +58,7 @@ function RadioIcon({ active }) {
 }
 
 function SilenceIcon({ active }) {
-  const c = active ? '#ff4103' : 'rgba(245,241,232,.45)'
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.65)'
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={c} fill={active ? 'rgba(255,65,3,.12)' : 'none'}/>
@@ -96,7 +96,7 @@ function VolumeIcon({ level }) {
 // ─── Payment icons ────────────────────────────────────────────────────────────
 
 function CardIcon({ active }) {
-  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.65)'
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
@@ -106,7 +106,7 @@ function CardIcon({ active }) {
 }
 
 function CashIcon({ active }) {
-  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.65)'
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -117,7 +117,7 @@ function CashIcon({ active }) {
 }
 
 function TransferIcon({ active }) {
-  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.45)'
+  const s = active ? '#F5F1E8' : 'rgba(245,241,232,.65)'
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="17 1 21 5 17 9"/>
@@ -152,7 +152,7 @@ function ThermometerIcon({ clim }) {
 // ─── Prestation icons ─────────────────────────────────────────────────────────
 
 function WifiIcon({ active }) {
-  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.68)'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
@@ -164,7 +164,7 @@ function WifiIcon({ active }) {
 }
 
 function WaterIcon({ active }) {
-  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.68)'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2C6 8 4 12.5 4 15a8 8 0 0 0 16 0c0-2.5-2-7-8-13z"/>
@@ -173,7 +173,7 @@ function WaterIcon({ active }) {
 }
 
 function ChargerIcon({ active }) {
-  const c = active ? '#ff4103' : 'rgba(245,241,232,.5)'
+  const c = active ? '#ff4103' : 'rgba(245,241,232,.68)'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="6" y="2" width="12" height="20" rx="2"/>
@@ -247,7 +247,7 @@ function PillButton({ active, onClick, icon: Icon, children }) {
           : hovered
           ? '1px solid rgba(255,65,3,.22)'
           : '1px solid rgba(255,255,255,.06)',
-        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.65)' : 'rgba(245,241,232,.4)',
+        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.82)' : 'rgba(245,241,232,.62)',
         transition: 'background .18s, border .18s, box-shadow .18s, color .18s',
       }}
     >
@@ -292,7 +292,7 @@ function PrestationCard({ active, onClick, Icon, label }) {
       <Icon active={active} />
       <span
         className="text-[11px] font-semibold text-center leading-tight"
-        style={{ color: active ? '#F5F1E8' : 'rgba(245,241,232,.45)' }}
+        style={{ color: active ? '#F5F1E8' : 'rgba(245,241,232,.65)' }}
       >
         {label}
       </span>
@@ -390,7 +390,7 @@ export default function Step3Options({ onBack }) {
                 aria-label="Volume"
               />
             </div>
-            <span className="font-mono text-xs w-8 text-right" style={{ color: 'rgba(245,241,232,.5)' }}>
+            <span className="font-mono text-xs w-8 text-right" style={{ color: 'rgba(245,241,232,.68)' }}>
               {volume}%
             </span>
           </div>
@@ -416,7 +416,7 @@ export default function Step3Options({ onBack }) {
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.35)' }}>16°</span>
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.55)' }}>16°</span>
             <input
               type="range" min={16} max={28} step={1} value={clim}
               onChange={(e) => setClim(Number(e.target.value))}
@@ -424,7 +424,7 @@ export default function Step3Options({ onBack }) {
               style={{ accentColor: '#ff4103', height: 4 }}
               aria-label="Température climatisation"
             />
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.35)' }}>28°</span>
+            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.55)' }}>28°</span>
           </div>
         </div>
       </section>
@@ -495,7 +495,7 @@ export default function Step3Options({ onBack }) {
         <button
           onClick={onBack}
           className="text-sm text-center cursor-pointer py-2 active:opacity-60 transition-opacity"
-          style={{ color: 'rgba(245,241,232,.35)' }}
+          style={{ color: 'rgba(245,241,232,.55)' }}
         >
           ← Modifier le tarif
         </button>

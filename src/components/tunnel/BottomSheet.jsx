@@ -28,10 +28,10 @@ function StepDot({ index, current }) {
       }}
       transition={SPRING}
       style={{
-        border: state === 'future' ? '1px solid rgba(255,255,255,.08)' : 'none',
+        border: state === 'future' ? '1px solid rgba(255,255,255,.12)' : 'none',
         fontSize: 12,
         fontWeight: 700,
-        color: state === 'future' ? 'rgba(245,241,232,.3)' : '#F5F1E8',
+        color: state === 'future' ? 'rgba(245,241,232,.55)' : '#F5F1E8',
       }}
     >
       {state === 'done' ? (
@@ -145,7 +145,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                       animate={{
                         color: i + 1 === step ? '#F5F1E8'
                           : i + 1 < step ? 'rgba(255,65,3,.75)'
-                          : 'rgba(245,241,232,.28)',
+                          : 'rgba(245,241,232,.52)',
                       }}
                       transition={{ duration: 0.25 }}
                     >

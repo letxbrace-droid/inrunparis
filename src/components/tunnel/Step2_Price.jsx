@@ -54,16 +54,16 @@ export default function Step2Price({ onNext, onBack }) {
         </span>
 
         <div className="flex items-center gap-2.5 mt-3">
-          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.45)' }}>
+          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.70)' }}>
             {price.km} km
           </span>
-          <span style={{ color: 'rgba(245,241,232,.2)' }}>·</span>
-          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.45)' }}>
+          <span style={{ color: 'rgba(245,241,232,.40)' }}>·</span>
+          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.70)' }}>
             ≈ {price.mins} min
           </span>
           {price.savings > 0 && (
             <>
-              <span style={{ color: 'rgba(245,241,232,.2)' }}>·</span>
+              <span style={{ color: 'rgba(245,241,232,.40)' }}>·</span>
               <span className="text-xs font-semibold" style={{ color: '#34d399' }}>
                 −{price.savings}€ vs apps
               </span>
@@ -109,7 +109,7 @@ export default function Step2Price({ onNext, onBack }) {
           style={{
             background: 'rgba(245,241,232,.06)',
             border: '1px solid rgba(245,241,232,.12)',
-            color: 'rgba(245,241,232,.6)',
+            color: 'rgba(245,241,232,.75)',
           }}
         >
           ← Retour
