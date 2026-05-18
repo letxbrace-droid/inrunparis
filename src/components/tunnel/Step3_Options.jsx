@@ -26,6 +26,7 @@ export default function Step3Options({ onBack }) {
       const num = generateBonNumber()
       useBookingStore.setState({ bonNumber: num })
     }
+    useBookingStore.getState().addToHistory()
     sendWhatsApp(useBookingStore.getState())
   }
 

@@ -1,6 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+const PROMO_CODES = {
+  'BIENVENUE': { discount: 10, label: '10% de réduction' },
+  'VIP15':     { discount: 15, label: '15% de réduction' },
+  'PARIS25':   { discount: 25, label: '25% sur votre 1ère course' },
+}
+
+export { PROMO_CODES }
+
 const useBookingStore = create(
   persist(
     (set, get) => ({
@@ -17,7 +25,7 @@ const useBookingStore = create(
       ambiance:    'musique',  // 'musique' | 'radio' | 'silence'
       volume:      50,
       clim:        21,
-      isDark:      true,       // carte sombre/claire
+      isDark:      true,
       options: {
         wifi:        false,
         eau:         true,
@@ -25,15 +33,18 @@ const useBookingStore = create(
         confiseries: false,
         siege:       false,
       },
-      payment:     'Carte',   // 'Carte' | 'Espèces' | 'Virement'
+      payment:     'Carte',
       note:        '',
-      promo:       null,      // { code, discount }
-      vehicleType: 'berline', // 'berline' | 'van'
+      promo:       null,      // { code, discount, label }
+      vehicleType: 'berline',
 
       // Computed
       price:         null,  // { final, km, mins, isNight, isAirport, savings }
-      routeGeometry: null,  // GeoJSON LineString — not persisted
+      routeGeometry: null,
       bonNumber:     null,
+
+      // History (persisted)
+      bookingHistory: [], // [{ bonNumber, depart, arrive, price, date }]
 
       // Actions — route
       setDepart:  (depart)  => set({ depart }),
@@ -67,7 +78,23 @@ const useBookingStore = create(
         return num
       },
 
-      // Reset booking (keep prefs)
+      // Actions — history
+      addToHistory: () => {
+        const s = get()
+        if (!s.depart || !s.arrive || !s.price) return
+        const entry = {
+          bonNumber: s.bonNumber,
+          depart:    { name: s.depart.name },
+          arrive:    { name: s.arrive.name },
+          price:     s.price,
+          date:      new Date().toISOString(),
+        }
+        set((prev) => ({
+          bookingHistory: [entry, ...prev.bookingHistory].slice(0, 20),
+        }))
+      },
+
+      // Reset booking (keep prefs + history)
       resetBooking: () => set({
         depart: null, arrive: null, pickup: null,
         clientName: '', clientEmail: '',
@@ -77,14 +104,15 @@ const useBookingStore = create(
     {
       name: 'inrun-booking',
       partialize: (s) => ({
-        promo: s.promo,
-        ambiance: s.ambiance,
-        volume: s.volume,
-        clim: s.clim,
-        isDark: s.isDark,
-        options: s.options,
-        payment: s.payment,
-        vehicleType: s.vehicleType,
+        promo:          s.promo,
+        ambiance:       s.ambiance,
+        volume:         s.volume,
+        clim:           s.clim,
+        isDark:         s.isDark,
+        options:        s.options,
+        payment:        s.payment,
+        vehicleType:    s.vehicleType,
+        bookingHistory: s.bookingHistory,
       }),
     }
   )

@@ -127,10 +127,10 @@ const NAV_ITEMS = [
 ]
 
 const SECONDARY = [
-  { label: 'Mes courses',      view: null },
-  { label: 'Code promo',       view: null },
-  { label: 'Aide & FAQ',       view: null },
-  { label: 'Mentions légales', view: 'legal' },
+  { label: 'Mes courses',      view: 'courses' },
+  { label: 'Code promo',       view: 'promo'   },
+  { label: 'Aide & FAQ',       view: 'faq'     },
+  { label: 'Mentions légales', view: 'legal'   },
 ]
 
 export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
