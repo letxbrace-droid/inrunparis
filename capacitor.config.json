@@ -1,7 +1,7 @@
 {
   "appId": "fr.inrun.planning",
   "appName": "Planning Chauffeur",
-  "webDir": "www",
+  "webDir": "dist",
   "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https"
