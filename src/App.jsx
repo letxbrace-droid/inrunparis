@@ -4,6 +4,7 @@ import TopBar       from './components/layout/TopBar'
 import SideDrawer   from './components/layout/SideDrawer'
 import BottomSheet  from './components/tunnel/BottomSheet'
 import TarifsView   from './components/views/TarifsView'
+import HomePill     from './components/home/HomePill'
 import useBookingStore from './store/useBookingStore'
 
 export default function App() {
@@ -56,29 +57,11 @@ export default function App() {
         burgerOpen={drawerOpen}
       />
 
-      {/* Home — floating reserve CTA */}
-      {activeView === 'home' && !sheetOpen && (
-        <div
-          className="absolute bottom-0 left-0 right-0 z-[10] flex justify-center px-5"
-          style={{ paddingBottom: 'calc(var(--safe-bot) + 24px)' }}
-        >
-          <button
-            onClick={() => handleNavigate('reserve')}
-            className="
-              w-full max-w-[420px] py-5 rounded-[22px]
-              font-bold text-white text-base tracking-wide uppercase
-              cursor-pointer select-none
-              active:scale-[.97] transition-transform duration-150
-            "
-            style={{
-              background: '#ff4103',
-              boxShadow:  '0 0 32px rgba(255,65,3,0.45), 0 6px 24px rgba(0,0,0,.5)',
-            }}
-            aria-label="Réserver un chauffeur"
-          >
-            Réserver
-          </button>
-        </div>
+      {/* Home pill — collapsed/expanded booking entry point */}
+      {activeView === 'home' && (
+        <HomePill
+          onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
+        />
       )}
 
       {/* Tarifs view — slides in from right */}
