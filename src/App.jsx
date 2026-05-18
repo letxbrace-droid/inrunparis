@@ -11,6 +11,7 @@ import AideFaqView         from './components/views/AideFaqView'
 import LegalView           from './components/views/LegalView'
 import HomePill            from './components/home/HomePill'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
+import InstallPrompt      from './components/ui/InstallPrompt'
 import useBookingStore     from './store/useBookingStore'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'faq', 'legal']
@@ -137,6 +138,9 @@ export default function App() {
         onStepChange={setSheetStep}
         onClose={() => setSheetOpen(false)}
       />
+
+      {/* PWA install pill — only in browser, not in standalone */}
+      <InstallPrompt />
 
       {/* Booking-sent confirmation toast */}
       <BookingConfirmToast

@@ -304,7 +304,6 @@ export default function HomePill({ onOpenSheet }) {
             <div className="px-5 pb-5 flex flex-col gap-4">
               {/* HUD */}
               <div className="flex items-center gap-2.5 pt-1">
-                <span className="font-brand font-bold text-ink-primary text-xs tracking-[.18em] uppercase">INR</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,.8)' }} />
                 <span className="font-mono text-[10px] text-ink-muted tracking-wider truncate">
                   Réservation à l'avance · Aéroports & longue distance
