@@ -1,8 +1,6 @@
-/* I&N RUN — Service Worker v41 */
-const CACHE = 'inrun-v41';
+/* I&N RUN — Service Worker v42 */
+const CACHE = 'inrun-v42';
 const STATIC = [
-  '/inrunparis/',
-  '/inrunparis/index.html',
   '/inrunparis/icon-180.png',
   '/inrunparis/icon-192.png',
   '/inrunparis/icon-512.png',
@@ -30,7 +28,16 @@ self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
   if (PASSTHROUGH.some(p => url.pathname.startsWith(p))) { e.respondWith(fetch(request)); return; }
-  if (request.mode === 'navigate') { e.respondWith(caches.match('/inrunparis/index.html').then(r => r || fetch(request))); return; }
+  // Navigation: toujours réseau d'abord → cache en fallback offline uniquement
+  if (request.mode === 'navigate') {
+    e.respondWith(
+      fetch(request).then(res => {
+        if (res.ok) caches.open(CACHE).then(c => c.put(request, res.clone()));
+        return res;
+      }).catch(() => caches.match(request).then(r => r || caches.match('/inrunparis/index.html')))
+    );
+    return;
+  }
   if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
     e.respondWith(fetch(request).catch(() => new Response('', { status: 503 }))); return;
   }
