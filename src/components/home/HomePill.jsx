@@ -185,23 +185,14 @@ export default function HomePill({ onOpenSheet }) {
           maxWidth:      560,
           marginInline:  'auto',
           borderRadius:  depart && arrive ? 22 : 999,
-          background:    isDark ? 'rgba(4,22,36,0.92)' : 'rgba(0,18,28,0.82)',
+          background:    '#0B0B0B',
           border:        isDark
-            ? '1px solid rgba(255,65,3,.38)'
-            : '1px solid rgba(255,255,255,.1)',
-          backdropFilter: 'blur(24px) saturate(1.5)',
-          WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
-          boxShadow: isDark ? [
-            '0 0 0 1px rgba(255,65,3,.12)',
-            '0 0 28px rgba(255,65,3,.14)',
-            '0 12px 40px -8px rgba(0,0,0,.8)',
-            'inset 0 1px 0.5px rgba(255,255,255,.1)',
-          ].join(', ') : [
-            '0 24px 50px -12px rgba(0,0,0,.72)',
-            '0 12px 26px -6px rgba(0,0,0,.5)',
-            '0 3px 8px rgba(0,0,0,.42)',
-            'inset 0 1px 0.5px rgba(255,255,255,.26)',
-            'inset 0 -1px 2px rgba(0,0,0,.35)',
+            ? '1px solid rgba(255,90,31,.28)'
+            : '1px solid rgba(255,255,255,.08)',
+          boxShadow: [
+            '0 8px 28px rgba(0,0,0,.80)',
+            '0 2px 8px rgba(0,0,0,.60)',
+            'inset 0 1px 0 rgba(255,255,255,.05)',
           ].join(', '),
           opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
@@ -298,10 +289,10 @@ export default function HomePill({ onOpenSheet }) {
           <div
             className="rounded-t-[22px]"
             style={{
-              background: 'linear-gradient(to bottom, #001A28, #001621)',
-              border:     '1px solid rgba(255,65,3,.2)',
+              background: '#0B0B0B',
+              border:     '1px solid rgba(255,255,255,.07)',
               borderBottom: 'none',
-              boxShadow:  '0 -12px 60px rgba(0,0,0,.7), 0 -1px 0 rgba(255,65,3,.1)',
+              boxShadow:  '0 -8px 32px rgba(0,0,0,.8)',
             }}
           >
             {/* Handle */}
@@ -319,7 +310,7 @@ export default function HomePill({ onOpenSheet }) {
               </div>
 
               {/* Fields card */}
-              <div className="relative bg-[#001621] rounded-2xl border border-[var(--rule-strong)]">
+              <div className="relative bg-[#111111] rounded-2xl border border-[var(--rule)]">
                 {/* Departure row */}
                 <div className="flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
@@ -407,8 +398,8 @@ export default function HomePill({ onOpenSheet }) {
                       className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
                       style={{
                         top:        'calc(100% + 8px)',
-                        background: '#0c1e2e',
-                        boxShadow:  '0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(255,65,3,.08)',
+                        background: '#111111',
+                        boxShadow:  '0 8px 24px rgba(0,0,0,.7)',
                       }}
                     >
                       {suggestions.map((s, i) => (

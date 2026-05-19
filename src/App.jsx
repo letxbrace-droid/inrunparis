@@ -97,8 +97,8 @@ export default function App() {
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background: isDark
-            ? 'linear-gradient(to bottom, rgba(0,22,33,.55) 0%, transparent 28%, transparent 58%, rgba(0,22,33,.9) 100%)'
-            : 'linear-gradient(to bottom, rgba(240,240,240,.45) 0%, transparent 28%, transparent 58%, rgba(240,240,240,.85) 100%)',
+            ? 'linear-gradient(to bottom, rgba(5,5,5,.60) 0%, transparent 25%, transparent 55%, rgba(5,5,5,.94) 100%)'
+            : 'linear-gradient(to bottom, rgba(10,10,10,.42) 0%, transparent 25%, transparent 55%, rgba(10,10,10,.88) 100%)',
         }}
       />
 

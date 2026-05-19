@@ -211,14 +211,11 @@ function SectionLabel({ children }) {
     <div className="flex items-center gap-2 mb-3">
       <span
         className="text-[10px] font-bold uppercase tracking-[.14em]"
-        style={{
-          color: '#ff4103',
-          textShadow: '0 0 12px rgba(255,65,3,.5)',
-        }}
+        style={{ color: 'rgba(255,90,31,.85)' }}
       >
         {children}
       </span>
-      <div className="flex-1 h-px" style={{ background: 'rgba(255,65,3,.2)' }} />
+      <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,.06)' }} />
     </div>
   )
 }
@@ -232,23 +229,14 @@ function PillButton({ active, onClick, icon: Icon, children }) {
       onMouseLeave={() => setHovered(false)}
       className="flex-1 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95 transition-transform duration-150 select-none"
       style={{
-        background: active
-          ? 'linear-gradient(135deg, rgba(255,90,31,.22), rgba(255,65,3,.14))'
-          : hovered
-          ? 'rgba(255,65,3,.08)'
-          : 'rgba(0,10,18,.45)',
-        boxShadow: active
-          ? '0 0 16px rgba(255,65,3,.2), inset 0 1px 0 rgba(255,255,255,.08)'
-          : hovered
-          ? '0 0 10px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.04)'
-          : 'inset 0 1px 2px rgba(0,0,0,.3)',
+        background: active ? 'rgba(255,90,31,.14)' : hovered ? '#1A1A1A' : '#141414',
         border: active
-          ? '1px solid rgba(255,65,3,.45)'
+          ? '1px solid rgba(255,90,31,.40)'
           : hovered
-          ? '1px solid rgba(255,65,3,.22)'
-          : '1px solid rgba(255,255,255,.06)',
-        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.82)' : 'rgba(245,241,232,.62)',
-        transition: 'background .18s, border .18s, box-shadow .18s, color .18s',
+          ? '1px solid rgba(255,255,255,.12)'
+          : '1px solid rgba(255,255,255,.07)',
+        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.80)' : 'rgba(245,241,232,.60)',
+        transition: 'background .15s, border .15s, color .15s',
       }}
     >
       <span className="flex items-center justify-center gap-1.5">
@@ -268,19 +256,8 @@ function PrestationCard({ active, onClick, Icon, label }) {
       onMouseLeave={() => setHovered(false)}
       whileTap={{ scale: 0.94 }}
       animate={{
-        background: active
-          ? 'linear-gradient(145deg, rgba(255,90,31,.18), rgba(255,65,3,.10))'
-          : hovered
-          ? 'rgba(255,65,3,.06)'
-          : 'rgba(0,10,18,.45)',
-        borderColor: active
-          ? 'rgba(255,65,3,.5)'
-          : hovered
-          ? 'rgba(255,65,3,.2)'
-          : 'rgba(255,255,255,.06)',
-        boxShadow: active
-          ? '0 0 20px rgba(255,65,3,.22), inset 0 1px 0 rgba(255,255,255,.08)'
-          : 'none',
+        background: active ? 'rgba(255,90,31,.12)' : hovered ? '#1A1A1A' : '#141414',
+        borderColor: active ? 'rgba(255,90,31,.38)' : hovered ? 'rgba(255,255,255,.12)' : 'rgba(255,255,255,.07)',
       }}
       transition={{ duration: 0.18 }}
       className="flex flex-col items-center justify-center gap-2 py-4 rounded-2xl cursor-pointer select-none flex-1"
@@ -300,7 +277,7 @@ function PrestationCard({ active, onClick, Icon, label }) {
         animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
         transition={{ type: 'spring', stiffness: 400, damping: 28 }}
         className="w-1.5 h-1.5 rounded-full"
-        style={{ background: '#ff4103', boxShadow: '0 0 6px rgba(255,65,3,.8)' }}
+        style={{ background: '#FF5A1F' }}
       />
     </motion.button>
   )
@@ -402,7 +379,7 @@ export default function Step3Options({ onBack }) {
         <SectionLabel>Climatisation</SectionLabel>
         <div
           className="px-4 py-4 rounded-2xl flex flex-col gap-3"
-          style={{ background: 'rgba(0,10,18,.45)', border: '1px solid rgba(255,255,255,.06)' }}
+          style={{ background: '#161616', border: '1px solid rgba(255,255,255,.07)' }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -472,12 +449,12 @@ export default function Step3Options({ onBack }) {
           rows={2}
           className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none"
           style={{
-            background: 'rgba(0,10,18,.55)',
+            background: '#161616',
             border:     '1px solid rgba(255,255,255,.07)',
             color:      '#F5F1E8',
             transition: 'border-color .2s',
           }}
-          onFocus={e  => e.target.style.borderColor = 'rgba(255,65,3,.35)'}
+          onFocus={e  => e.target.style.borderColor = 'rgba(255,90,31,.40)'}
           onBlur={e   => e.target.style.borderColor = 'rgba(255,255,255,.07)'}
           aria-label="Note complémentaire"
         />

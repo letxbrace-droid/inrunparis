@@ -104,24 +104,22 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             height:       '93dvh',
             borderRadius: '22px 22px 0 0',
             overflow:     'hidden',
-            background:   'linear-gradient(180deg, #001f30 0%, #001621 60%)',
+            background:   '#0B0B0B',
             borderTop:    '1px solid rgba(255,255,255,.08)',
-            borderLeft:   '1px solid rgba(255,255,255,.05)',
-            borderRight:  '1px solid rgba(255,255,255,.05)',
-            boxShadow:    '0 -24px 80px rgba(0,0,0,.8), 0 -1px 0 rgba(255,65,3,.15)',
+            borderLeft:   '1px solid rgba(255,255,255,.06)',
+            borderRight:  '1px solid rgba(255,255,255,.06)',
+            boxShadow:    '0 -16px 48px rgba(0,0,0,.9)',
             transform:    open ? 'translateY(0)' : 'translateY(100%)',
             opacity:      open ? 1 : 0,
             transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease',
           }}
         >
-          {/* Glass top strip */}
+          {/* Header strip */}
           <div
             className="flex-shrink-0"
             style={{
-              background:     'rgba(0,26,40,.5)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderBottom:   '1px solid rgba(255,255,255,.06)',
+              background:   '#0D0D0D',
+              borderBottom: '1px solid rgba(255,255,255,.07)',
             }}
           >
             {/* Handle */}

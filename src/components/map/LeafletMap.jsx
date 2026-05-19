@@ -94,11 +94,10 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     routeRef.current = []
     if (!route?.geometry) return
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
-    const glow1 = L.polyline(coords, { color: '#ff4103', weight: 20, opacity: 0.06 })
-    const glow2 = L.polyline(coords, { color: '#ff4103', weight: 8,  opacity: 0.20 })
-    const core  = L.polyline(coords, { color: '#ff4103', weight: 3,  opacity: 0.92 })
-    glow1.addTo(map); glow2.addTo(map); core.addTo(map)
-    routeRef.current = [glow1, glow2, core]
+    const glow1 = L.polyline(coords, { color: '#FF5A1F', weight: 8,  opacity: 0.18 })
+    const core  = L.polyline(coords, { color: '#FF5A1F', weight: 2.5, opacity: 1 })
+    glow1.addTo(map); core.addTo(map)
+    routeRef.current = [glow1, core]
     if (coords.length) {
       const bounds = L.latLngBounds(coords)
       if (depart) {
@@ -134,7 +133,11 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       ref={containerRef}
       className="absolute inset-0 z-0"
       aria-label="Carte de Paris"
-      style={{ pointerEvents: frozen ? 'none' : 'auto', willChange: 'transform' }}
+      style={{
+        pointerEvents: frozen ? 'none' : 'auto',
+        willChange: 'transform',
+        filter: isDark ? 'brightness(0.60) saturate(0.65)' : 'brightness(0.82) saturate(0.80)',
+      }}
     />
   )
 }

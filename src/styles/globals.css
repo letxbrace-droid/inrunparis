@@ -3,67 +3,67 @@
 @tailwind utilities;
 
 /* ════════════════════════════════════════════════════════════════
-   I&N RUN — iOS-native design system
-   One accent · flat grouped surfaces · hairline separators
+   I&N RUN — AMOLED Premium Design System
+   True black · single accent · hairline borders · no diffuse glow
    ════════════════════════════════════════════════════════════════ */
 
 @layer base {
   :root {
-    /* ── Accent — single brand accent ───────────────────────────── */
-    --accent:        #ff4103;
-    --accent-2:      #ff5a1f;
-    --accent-press:  #e83800;
-    --accent-dim:    rgba(255,65,3,0.12);
-    --accent-glow:   rgba(255,65,3,0.50);
+    /* ── Accent ─────────────────────────────────────────────────── */
+    --accent:        #FF5A1F;
+    --accent-2:      #ff4103;
+    --accent-press:  #e84000;
+    --accent-dim:    rgba(255,90,31,0.12);
+    --accent-glow:   rgba(255,90,31,0.35);
 
-    /* ── Background hierarchy (iOS dark · teal-black) ───────────── */
-    --bg-grouped:    #00101a;            /* deepest — screen behind groups */
-    --bg-base:       #001621;            /* main app background           */
-    --bg-secondary:  #0c1e2e;            /* grouped card / cell fill      */
-    --bg-tertiary:   #13283a;            /* nested / lighter cell         */
-    --bg-elevated:   #16293a;            /* sheets · modals · popovers    */
-    --bg-glass:      rgba(0,18,28,0.72); /* nav bars · floating chrome    */
+    /* ── AMOLED background hierarchy ────────────────────────────── */
+    --bg-grouped:    #030303;   /* deepest — true AMOLED      */
+    --bg-base:       #050505;   /* main app background         */
+    --bg-secondary:  #0B0B0B;   /* card level 1                */
+    --bg-tertiary:   #111111;   /* card level 2 / elevated     */
+    --bg-elevated:   #161616;   /* inputs / innermost          */
+    --bg-glass:      rgba(10,10,10,0.94);  /* nav chrome — near-solid  */
 
-    /* ── Labels (iOS 4-level hierarchy) ─────────────────────────── */
+    /* ── Labels ─────────────────────────────────────────────────── */
     --label:            #F5F1E8;
-    --label-secondary:  rgba(245,241,232,0.56);
-    --label-tertiary:   rgba(245,241,232,0.34);
-    --label-quaternary: rgba(245,241,232,0.20);
+    --label-secondary:  rgba(245,241,232,0.68);
+    --label-tertiary:   rgba(245,241,232,0.42);
+    --label-quaternary: rgba(245,241,232,0.22);
 
-    /* ── Separators · fills ─────────────────────────────────────── */
+    /* ── Borders — razor thin, never blurred ────────────────────── */
     --separator:        rgba(255,255,255,0.07);
-    --separator-strong: rgba(255,255,255,0.11);
-    --fill:             rgba(130,150,170,0.16);
-    --fill-secondary:   rgba(130,150,170,0.10);
+    --separator-strong: rgba(255,255,255,0.10);
+    --fill:             rgba(255,255,255,0.05);
+    --fill-secondary:   rgba(255,255,255,0.04);
 
     /* ── Geometry ───────────────────────────────────────────────── */
-    --r-card:    14px;
+    --r-card:    16px;
     --r-cell:    12px;
     --r-control: 10px;
 
-    /* ── Elevation — flat content, real lift only for floating ──── */
-    --elev-1:     0 1px 3px rgba(0,0,0,0.35);
-    --elev-2:     0 8px 28px rgba(0,0,0,0.5);
+    /* ── Elevation — flat cards, real shadow only for floating ──── */
+    --elev-1:     0 1px 4px rgba(0,0,0,0.6);
+    --elev-2:     0 6px 20px rgba(0,0,0,0.7);
     --elev-float:
-      0 24px 50px -12px rgba(0,0,0,0.72),
-      0 12px 26px -6px  rgba(0,0,0,0.50),
-      0 3px 8px         rgba(0,0,0,0.45);
+      0 20px 50px -10px rgba(0,0,0,0.85),
+      0 8px  20px -4px  rgba(0,0,0,0.65),
+      0 2px  6px        rgba(0,0,0,0.55);
 
-    /* ── Brand · system ─────────────────────────────────────────── */
+    /* ── Brand ──────────────────────────────────────────────────── */
     --wa:       #25d366;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bot: env(safe-area-inset-bottom, 0px);
 
-    /* ── Back-compat aliases (legacy var names still referenced) ── */
+    /* ── Back-compat aliases ────────────────────────────────────── */
     --bg-card:       var(--bg-secondary);
-    --bg-inset:      rgba(0,10,18,0.55);
+    --bg-inset:      var(--bg-elevated);
     --ink-primary:   var(--label);
     --ink-secondary: var(--label-secondary);
     --ink-muted:     var(--label-tertiary);
     --rule:          var(--separator);
     --rule-strong:   var(--separator-strong);
     --shadow-card:   var(--elev-1);
-    --shadow-inset:  inset 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-inset:  inset 0 1px 0 rgba(255,255,255,0.04);
 
     color-scheme: dark;
   }
@@ -81,10 +81,9 @@
   body {
     background: var(--bg-base);
     color: var(--label);
-    /* iOS-native type — SF Pro on Apple devices, Inter elsewhere */
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
                  Roboto, system-ui, sans-serif;
-    font-weight: 400;
+    font-weight: 450;
     line-height: 1.47;
     letter-spacing: -0.01em;
     overflow: hidden;
@@ -101,15 +100,13 @@
     overflow: hidden;
   }
 
-  /* Numeric / tabular text — keeps prices & timers from jittering */
   .tnum { font-variant-numeric: tabular-nums; }
 }
 
 @layer components {
 
-  /* ── iOS grouped surfaces ───────────────────────────────────── */
+  /* ── Flat grouped surfaces ──────────────────────────────────── */
 
-  /* Inset grouped list / card — flat fill, hairline border */
   .ios-group {
     background: var(--bg-secondary);
     border: 1px solid var(--separator);
@@ -117,7 +114,6 @@
     overflow: hidden;
   }
 
-  /* A single row inside a group — 44pt min touch target */
   .ios-cell {
     display: flex;
     align-items: center;
@@ -125,10 +121,8 @@
     min-height: 48px;
     padding: 13px 16px;
   }
-  /* Hairline between consecutive cells, inset from the leading edge */
   .ios-cell + .ios-cell { border-top: 1px solid var(--separator); }
 
-  /* Section header above a group */
   .ios-section {
     font-size: 12px;
     font-weight: 600;
@@ -139,14 +133,14 @@
     margin-bottom: 8px;
   }
 
-  /* Translucent nav bar / footer chrome */
+  /* Nav chrome — minimal blur, near-solid */
   .ios-chrome {
     background: var(--bg-glass);
-    backdrop-filter: blur(20px) saturate(1.6);
-    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--separator);
   }
 
-  /* Circular icon button (back, close, …) */
   .ios-icon-btn {
     display: flex;
     align-items: center;
@@ -154,81 +148,70 @@
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    background: var(--fill-secondary);
+    background: var(--bg-tertiary);
     border: 1px solid var(--separator);
     cursor: pointer;
     transition: transform 0.12s ease, background 0.15s ease;
   }
   .ios-icon-btn:active { transform: scale(0.9); }
 
-  /* Plain flat card (no list rows) */
   .ios-card {
     background: var(--bg-secondary);
     border: 1px solid var(--separator);
     border-radius: var(--r-card);
   }
 
-  /* ── Legacy classes — re-pointed to flat iOS surfaces ───────── */
+  /* ── Legacy — re-pointed to AMOLED surfaces ─────────────────── */
 
   .glass {
     background: var(--bg-glass);
-    backdrop-filter: blur(24px) saturate(1.6);
-    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--separator);
   }
 
-  /* Was neumorphic raised — now a flat grouped card */
   .card-neu {
     background: var(--bg-secondary);
     border: 1px solid var(--separator);
     border-radius: var(--r-card);
   }
 
-  /* Was neumorphic pressed — now a flat inset field surface */
   .inset-neu {
-    background: var(--bg-inset);
+    background: var(--bg-elevated);
     border: 1px solid var(--separator);
     border-radius: var(--r-control);
   }
 
-  /* ── Primary CTA — the one element that truly floats ────────── */
+  /* ── Primary CTA ────────────────────────────────────────────── */
+  /* Clean: flat gradient + directional shadow, no diffuse glow   */
   .cta-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #ff5a1f 0%, #ff4103 45%, #e83800 100%);
+    background: linear-gradient(160deg, #FF6A30 0%, #FF5A1F 40%, #e84000 100%);
     box-shadow:
-      /* orange halo */
-      0 0 0 1px rgba(255,65,3,.35),
-      0 0 28px rgba(255,65,3,.55),
-      0 0 70px rgba(255,65,3,.18),
-      /* 3D floating drop shadow — wide & diffuse */
-      0 24px 50px -12px rgba(0,0,0,.72),
-      0 12px 26px -6px rgba(0,0,0,.5),
-      0 3px 8px rgba(0,0,0,.45),
-      /* luminous top edge — light on the glass */
-      inset 0 1px 0.5px rgba(255,255,255,.34),
-      /* inner bottom depth */
-      inset 0 -2px 5px rgba(120,22,0,.45);
-    animation: cta-breathe 3.5s ease-in-out infinite;
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      inset 0 -1px 0 rgba(0,0,0,0.30),
+      0 4px 16px rgba(0,0,0,0.6),
+      0 1px 4px  rgba(0,0,0,0.5);
   }
 
-  /* Diagonal shine sweep — starts bottom-left, sweeps to top-right on hover */
+  /* Diagonal shine sweep on hover */
   .cta-glow::before {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
       135deg,
-      rgba(255,255,255,.26)   0%,
-      rgba(255,200,120,.16)  40%,
-      transparent            65%
+      rgba(255,255,255,0.20) 0%,
+      rgba(255,200,120,0.10) 40%,
+      transparent 65%
     );
     transform: translate(-100%, 100%);
-    transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
   }
-
-  .cta-glow:not(:disabled):hover::before {
+  .cta-glow:not(:disabled):hover::before,
+  .cta-glow:not(:disabled):active::before {
     transform: translate(0, 0);
   }
 
@@ -236,51 +219,26 @@
   .pt-safe { padding-top: var(--safe-top); }
   .pb-safe { padding-bottom: var(--safe-bot); }
 
-  /* Hairline divider */
   .divider { width: 100%; height: 1px; background: var(--separator); }
 
-  /* Scrollbar — barely-there */
   .scrollbar-thin::-webkit-scrollbar { width: 0; height: 0; }
   .scrollbar-thin { scrollbar-width: none; }
 
-  /* Leaflet overrides */
-  .leaflet-container { background: #001621 !important; }
+  /* Leaflet */
+  .leaflet-container { background: #050505 !important; }
   .leaflet-control-attribution { display: none !important; }
   .leaflet-control-container { display: none !important; }
 
   /* GPS pulse */
-  .gps-user-dot { animation: gps-pulse 2s ease-out infinite; }
+  .gps-user-dot { animation: gps-pulse 2.4s ease-out infinite; }
 }
 
-@keyframes cta-breathe {
-  0%, 100% {
-    box-shadow:
-      0 0 0 1px rgba(255,65,3,.35),
-      0 0 28px rgba(255,65,3,.55),
-      0 0 70px rgba(255,65,3,.18),
-      0 24px 50px -12px rgba(0,0,0,.72),
-      0 12px 26px -6px rgba(0,0,0,.5),
-      0 3px 8px rgba(0,0,0,.45),
-      inset 0 1px 0.5px rgba(255,255,255,.34),
-      inset 0 -2px 5px rgba(120,22,0,.45);
-  }
-  50% {
-    box-shadow:
-      0 0 0 1px rgba(255,65,3,.45),
-      0 0 42px rgba(255,65,3,.75),
-      0 0 110px rgba(255,65,3,.28),
-      0 24px 50px -12px rgba(0,0,0,.72),
-      0 12px 26px -6px rgba(0,0,0,.5),
-      0 3px 8px rgba(0,0,0,.45),
-      inset 0 1px 0.5px rgba(255,255,255,.34),
-      inset 0 -2px 5px rgba(120,22,0,.45);
-  }
-}
+/* ── Keyframes ─────────────────────────────────────────────────── */
 
 @keyframes gps-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(59,130,246,.6), 0 0 12px rgba(59,130,246,.8); }
-  70%  { box-shadow: 0 0 0 10px rgba(59,130,246,0), 0 0 12px rgba(59,130,246,.8); }
-  100% { box-shadow: 0 0 0 0 rgba(59,130,246,0), 0 0 12px rgba(59,130,246,.8); }
+  0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+  70%  { box-shadow: 0 0 0 9px rgba(59,130,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
 }
 
 @keyframes phone-ring {
@@ -298,7 +256,7 @@
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -308,15 +266,12 @@
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(.94); }
+  from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* Accessibility — respect the user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;

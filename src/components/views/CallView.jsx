@@ -40,7 +40,7 @@ export default function CallView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    'linear-gradient(180deg, #001621 0%, #000f1c 100%)',
+        background: '#050505',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -63,8 +63,8 @@ export default function CallView({ open, onClose }) {
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
           background: 'rgba(0,15,28,.65)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          
+          
           borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
@@ -72,7 +72,7 @@ export default function CallView({ open, onClose }) {
           onClick={onClose}
           aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}
+          style={{ background: '#111111', border: '1px solid rgba(255,255,255,.07)' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -95,7 +95,7 @@ export default function CallView({ open, onClose }) {
         {/* Driver card — fond uniforme, aucune bordure */}
         <div
           className="rounded-3xl px-5 pt-5 pb-4 mb-5 mt-4"
-          style={{ background: '#0c1e2e' }}
+          style={{ background: '#111111' }}
         >
           <div className="flex items-center gap-4">
             {/* Avatar — carré sombre, "N" crème, point vert coin bas-droit */}
@@ -114,7 +114,7 @@ export default function CallView({ open, onClose }) {
                 className="absolute bottom-[-3px] right-[-3px] w-3 h-3 rounded-full"
                 style={{
                   background: '#34d399',
-                  border: '2px solid #0c1e2e',
+                  border: '2px solid #111111',
                   boxShadow: '0 0 8px rgba(52,211,153,.7)',
                 }}
               />
@@ -204,7 +204,7 @@ export default function CallView({ open, onClose }) {
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl mb-8 select-none active:scale-[.97] transition-transform"
           style={{
-            background: '#0c1e2e',
+            background: '#111111',
             border: '1px solid rgba(255,255,255,.08)',
             textDecoration: 'none',
           }}

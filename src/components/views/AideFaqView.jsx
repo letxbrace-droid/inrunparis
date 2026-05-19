@@ -54,7 +54,7 @@ export default function AideFaqView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    'linear-gradient(180deg, #001f30 0%, #001621 55%)',
+        background: '#050505',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -72,15 +72,15 @@ export default function AideFaqView({ open, onClose }) {
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,22,33,.7)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: '#0D0D0D',
+          
+          
           borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
         <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}>
+          style={{ background: '#111111', border: '1px solid rgba(255,255,255,.07)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
@@ -106,7 +106,7 @@ export default function AideFaqView({ open, onClose }) {
               animate={open ? 'visible' : 'hidden'}
               className="overflow-hidden"
               style={{
-                background: '#0c1e2e',
+                background: '#111111',
                 borderRadius: 16,
                 border: `1px solid ${expanded === i ? 'rgba(255,65,3,.25)' : 'rgba(255,255,255,.05)'}`,
                 transition: 'border-color .2s',
@@ -161,7 +161,7 @@ export default function AideFaqView({ open, onClose }) {
           transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: FAQ.length * 0.045 }}
           className="mt-5 mb-2 px-4 py-5 flex flex-col gap-3"
           style={{
-            background: '#0c1e2e',
+            background: '#111111',
             borderRadius: 16,
             border: '1px solid rgba(255,255,255,.05)',
           }}

@@ -56,11 +56,9 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
       <div
         className="flex items-center rounded-2xl transition-all duration-200"
         style={{
-          background: 'rgba(0,10,18,0.55)',
-          boxShadow: focused
-            ? 'inset 0 1px 2px rgba(0,0,0,.4), 0 0 0 1.5px rgba(255,65,3,.55)'
-            : 'inset 0 1px 2px rgba(0,0,0,.4)',
-          border: '1px solid rgba(255,255,255,.05)',
+          background: '#161616',
+          border: `1px solid ${focused ? 'rgba(255,90,31,.45)' : 'rgba(255,255,255,.07)'}`,
+          boxShadow: focused ? '0 0 0 3px rgba(255,90,31,.08)' : 'none',
         }}
       >
         <span className="pl-4 flex-shrink-0" style={{ color: focused ? '#ff4103' : 'rgba(255,65,3,.5)' }}>
@@ -91,8 +89,8 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
           role="listbox"
           className="absolute top-full left-0 right-0 mt-1.5 z-20 rounded-2xl overflow-hidden"
           style={{
-            background: '#0c1e2e',
-            boxShadow: '0 8px 24px rgba(0,0,0,.55)',
+            background: '#111111',
+            boxShadow: '0 8px 24px rgba(0,0,0,.7)',
             border: '1px solid rgba(255,255,255,.07)',
             maxHeight: 200,
             overflowY: 'auto',
@@ -176,14 +174,11 @@ export default function Step1Route({ onNext }) {
           className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer active:scale-95 transition-all duration-200"
           style={{
             background: geoStatus === 'success'
-              ? 'rgba(255,65,3,.15)'
-              : '#0c1e2e',
-            boxShadow: geoStatus === 'success'
-              ? '0 0 12px rgba(255,65,3,.25)'
-              : undefined,
+              ? 'rgba(255,90,31,.12)'
+              : '#161616',
             border: geoStatus === 'success'
-              ? '1px solid rgba(255,65,3,.35)'
-              : '1px solid rgba(255,255,255,.06)',
+              ? '1px solid rgba(255,90,31,.35)'
+              : '1px solid rgba(255,255,255,.07)',
           }}
         >
           {geoStatus === 'loading' ? (
@@ -237,12 +232,12 @@ export default function Step1Route({ onNext }) {
         <div
           className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
           style={{
-            background: 'rgba(0,10,18,0.45)',
+            background: '#161616',
             border: depart && arrive && !pickup
-              ? '1px solid rgba(255,65,3,.55)'
-              : '1px solid rgba(255,255,255,.05)',
+              ? '1px solid rgba(255,90,31,.45)'
+              : '1px solid rgba(255,255,255,.07)',
             boxShadow: depart && arrive && !pickup
-              ? '0 0 0 3px rgba(255,65,3,.12)'
+              ? '0 0 0 3px rgba(255,90,31,.08)'
               : undefined,
           }}
         >

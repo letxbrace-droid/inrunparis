@@ -32,19 +32,13 @@ export default function Step2Price({ onNext, onBack }) {
 
       {/* Price card */}
       <div
-        className="relative flex flex-col items-center justify-center py-9 rounded-3xl overflow-hidden"
+        className="flex flex-col items-center justify-center py-9 rounded-3xl"
         style={{
-          background: 'linear-gradient(160deg, rgba(255,65,3,.09) 0%, rgba(255,65,3,.03) 100%)',
-          border: '1px solid rgba(255,65,3,.25)',
-          borderTop: '3px solid #ff4103',
+          background: '#111111',
+          border: '1px solid rgba(255,255,255,.07)',
+          borderTop: '2px solid rgba(255,90,31,.6)',
         }}
       >
-        {/* Ambient glow */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,65,3,.12), transparent 70%)' }}
-        />
 
         <span
           className="font-mono font-bold leading-none tracking-tight"

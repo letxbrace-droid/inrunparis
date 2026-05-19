@@ -135,7 +135,7 @@ function ThemeSwitcher({ theme, onChange }) {
         width:        SLOT_W * 3,
         height:       44,
         borderRadius: 999,
-        background:   '#091520',
+        background:   '#0D0D0D',
         border:       '1px solid rgba(255,255,255,.08)',
         flexShrink:   0,
       }}
@@ -292,20 +292,18 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden"
         style={{
           width:        'min(78vw, 320px)',
-          background:   'rgba(0,17,28,0.88)',
-          backdropFilter: 'blur(28px) saturate(1.5)',
-          WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+          background:   '#090909',
           borderRight:  '1px solid rgba(255,255,255,.07)',
           pointerEvents: open ? 'auto' : 'none',
-          boxShadow:    open ? '8px 0 60px rgba(0,0,0,.7), 2px 0 0 rgba(255,65,3,.04)' : 'none',
+          boxShadow:    open ? '16px 0 48px rgba(0,0,0,.9)' : 'none',
           willChange:   'transform',
         }}
       >
-        {/* Ambient top halo */}
+        {/* Accent top edge */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 120% 50% at 0% 0%, rgba(255,65,3,.14), transparent 65%)' }}
+          className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, rgba(255,90,31,.4), transparent 70%)' }}
         />
 
         <div

@@ -17,7 +17,7 @@ function BackBtn({ onClose }) {
       aria-label="Retour"
       className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform flex-shrink-0"
       style={{
-        background: '#0c1e2e',
+        background: '#111111',
         border: '1px solid rgba(255,255,255,.07)',
       }}
     >
@@ -39,7 +39,7 @@ export default function MesCoursesView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    'linear-gradient(180deg, #001f30 0%, #001621 55%)',
+        background: '#050505',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -57,9 +57,9 @@ export default function MesCoursesView({ open, onClose }) {
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,22,33,.7)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: '#0D0D0D',
+          
+          
           borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
@@ -82,7 +82,7 @@ export default function MesCoursesView({ open, onClose }) {
             <div
               className="w-20 h-20 rounded-full flex items-center justify-center"
               style={{
-                background: '#0c1e2e',
+                background: '#111111',
                 border: '1px solid rgba(255,255,255,.05)',
               }}
             >
@@ -105,7 +105,7 @@ export default function MesCoursesView({ open, onClose }) {
                 transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 }}
                 className="overflow-hidden"
                 style={{
-                  background: '#0c1e2e',
+                  background: '#111111',
                   border: '1px solid rgba(255,255,255,.05)',
                   borderRadius: 16,
                 }}

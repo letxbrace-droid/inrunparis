@@ -27,7 +27,7 @@ export default function CodePromoView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    '#001621',
+        background:    '#050505',
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -36,24 +36,21 @@ export default function CodePromoView({ open, onClose }) {
           : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
       }}
     >
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,65,3,.07), transparent 65%)' }} />
-
       {/* Header */}
       <div
         className="flex items-center gap-4 px-5 flex-shrink-0 relative z-10"
         style={{
           paddingTop: 'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: 'rgba(0,22,33,.7)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: '#0D0D0D',
+          
+          
           borderBottom: '1px solid rgba(255,255,255,.06)',
         }}
       >
         <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: '#0c1e2e', border: '1px solid rgba(255,255,255,.07)' }}>
+          style={{ background: '#111111', border: '1px solid rgba(255,255,255,.07)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
@@ -75,7 +72,7 @@ export default function CodePromoView({ open, onClose }) {
           <div
             className="flex items-center justify-between rounded-2xl px-4 py-4 mb-6"
             style={{
-              background: '#0c1e2e',
+              background: '#111111',
               borderRadius: 16,
               border: '1px solid rgba(52,211,153,.3)',
               animation: 'scale-in .3s ease both',
@@ -102,7 +99,7 @@ export default function CodePromoView({ open, onClose }) {
             maxLength={20}
             className="flex-1 px-4 py-4 rounded-2xl text-sm font-mono font-bold tracking-widest outline-none transition-all duration-200"
             style={{
-              background: 'rgba(0,10,18,.55)',
+              background: '#161616',
               border: `1px solid ${status === 'error' ? 'rgba(248,113,113,.5)' : status === 'ok' ? 'rgba(52,211,153,.4)' : 'rgba(255,255,255,.05)'}`,
               color: '#F5F1E8',
             }}
@@ -133,7 +130,7 @@ export default function CodePromoView({ open, onClose }) {
         <div
           className="rounded-2xl px-4 py-4 mt-6"
           style={{
-            background: '#0c1e2e',
+            background: '#111111',
             borderRadius: 16,
             border: '1px solid rgba(255,255,255,.05)',
             animation: 'fade-up .38s ease both 80ms',
