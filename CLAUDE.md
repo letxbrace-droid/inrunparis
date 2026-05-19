@@ -1,3 +1,7 @@
+## Deployment Rules
+
+**ALWAYS commit and push to `main`** — the GitHub Pages deploy workflow only triggers on `main`. Never push features directly to a `claude/` branch without also landing them on `main`. When session instructions assign a feature branch, develop there but merge/push the final result to `main` to deploy.
+
 <!-- code-review-graph MCP tools -->
 ## MCP Tools: code-review-graph
 
