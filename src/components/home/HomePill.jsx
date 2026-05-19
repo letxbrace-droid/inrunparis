@@ -187,16 +187,13 @@ export default function HomePill({ onOpenSheet }) {
           maxWidth:      560,
           marginInline:  'auto',
           borderRadius:  depart && arrive ? 22 : 999,
-          background:    th.bgPanel,
+          background:    th.isDark ? th.bgPanel : th.bgCard,
           border:        th.isDark
             ? '1px solid rgba(255,90,31,.38)'
-            : '1px solid rgba(255,90,31,.25)',
-          boxShadow: [
-            '0 14px 40px rgba(0,0,0,.88)',
-            '0 4px 14px rgba(0,0,0,.72)',
-            '0 1px 0 rgba(255,90,31,.10)',
-            'inset 0 1px 0 rgba(255,255,255,.08)',
-          ].join(', '),
+            : '1px solid rgba(255,90,31,.30)',
+          boxShadow: th.isDark
+            ? '0 14px 40px rgba(0,0,0,.88), 0 4px 14px rgba(0,0,0,.72), 0 1px 0 rgba(255,90,31,.10), inset 0 1px 0 rgba(255,255,255,.08)'
+            : '0 6px 24px rgba(0,0,0,.13), 0 2px 8px rgba(0,0,0,.08), 0 1px 0 rgba(255,90,31,.08)',
           opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
           transition:    'opacity .22s ease, border-radius .25s ease',
@@ -212,7 +209,7 @@ export default function HomePill({ onOpenSheet }) {
               <span className="w-px my-[3px]"
                 style={{ height: 14, background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
               <span className="w-2 h-2 rounded-full border-2"
-                style={{ borderColor: 'rgba(255,65,3,.7)', background: th.bgBase }} />
+                style={{ borderColor: 'rgba(255,65,3,.7)', background: th.isDark ? th.bgBase : th.bgCard }} />
             </span>
             {/* Names */}
             <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
@@ -291,10 +288,10 @@ export default function HomePill({ onOpenSheet }) {
           <div
             className="rounded-t-[22px]"
             style={{
-              background:   th.bgPanel,
+              background:   th.isDark ? th.bgPanel : th.bgCard,
               border:       `1px solid ${th.border}`,
               borderBottom: 'none',
-              boxShadow:    '0 -8px 32px rgba(0,0,0,.8)',
+              boxShadow:    th.isDark ? '0 -8px 32px rgba(0,0,0,.8)' : '0 -4px 20px rgba(0,0,0,.10)',
             }}
           >
             {/* Handle */}
