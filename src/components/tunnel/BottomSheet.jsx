@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
+import Step4Recap   from './Step4_Recap'
 import useAppTheme  from '../../hooks/useAppTheme'
 
 const STEPS = ['Trajet', 'Tarif', 'Options']
@@ -76,15 +77,16 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay — lighter for recap step so map stays readable */}
       <div
-        onClick={onClose}
+        onClick={step === 4 ? undefined : onClose}
         aria-hidden="true"
-        className="fixed inset-0 z-[90] transition-opacity duration-300"
+        className="fixed inset-0 z-[90] transition-all duration-500"
         style={{
-          background: th.overlay,
+          background: step === 4 ? 'rgba(0,0,0,.22)' : th.overlay,
           opacity: open ? 1 : 0,
           pointerEvents: open ? 'auto' : 'none',
+          backdropFilter: step === 4 ? 'none' : 'none',
         }}
       />
 
@@ -100,7 +102,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           className="w-full max-w-[560px] flex flex-col"
           style={{
             willChange:   'transform, opacity',
-            height:       '93dvh',
+            height:       step === 4 ? 'auto' : '93dvh',
+            maxHeight:    step === 4 ? '72dvh' : '93dvh',
             borderRadius: '22px 22px 0 0',
             overflow:     'hidden',
             background:   th.bgPanel,
@@ -110,7 +113,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             boxShadow:    `0 -16px 48px ${th.scrim}`,
             transform:    open ? 'translateY(0)' : 'translateY(100%)',
             opacity:      open ? 1 : 0,
-            transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease',
+            transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease, height .4s cubic-bezier(.32,1,.55,1), max-height .4s cubic-bezier(.32,1,.55,1)',
           }}
         >
           {/* Header strip */}
@@ -126,33 +129,41 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               <div className="w-10 h-[3px] rounded-full" style={{ background: th.handle }} />
             </div>
 
-            {/* Step indicator */}
-            <div className="flex items-center justify-center py-3 px-6">
-              {STEPS.map((label, i) => (
-                <div key={label} className="flex items-center">
-                  <button
-                    onClick={() => i + 1 < step && onStepChange(i + 1)}
-                    disabled={i + 1 > step}
-                    aria-label={`Étape ${i + 1} : ${label}`}
-                    className="flex items-center gap-2 cursor-pointer disabled:cursor-default"
-                  >
-                    <StepDot index={i} current={step} th={th} />
-                    <motion.span
-                      className="text-[12px] font-semibold"
-                      animate={{
-                        color: i + 1 === step ? th.inkFull
-                          : i + 1 < step ? 'rgba(255,65,3,.75)'
-                          : th.inkMuted,
-                      }}
-                      transition={{ duration: 0.25 }}
+            {/* Step indicator (hidden on recap step) */}
+            {step === 4 ? (
+              <div className="flex items-center justify-center py-3 px-6">
+                <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: '#ff4103' }}>
+                  Récapitulatif
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-3 px-6">
+                {STEPS.map((label, i) => (
+                  <div key={label} className="flex items-center">
+                    <button
+                      onClick={() => i + 1 < step && onStepChange(i + 1)}
+                      disabled={i + 1 > step}
+                      aria-label={`Étape ${i + 1} : ${label}`}
+                      className="flex items-center gap-2 cursor-pointer disabled:cursor-default"
                     >
-                      {label}
-                    </motion.span>
-                  </button>
-                  {i < STEPS.length - 1 && <StepConnector index={i} current={step} th={th} />}
-                </div>
-              ))}
-            </div>
+                      <StepDot index={i} current={step} th={th} />
+                      <motion.span
+                        className="text-[12px] font-semibold"
+                        animate={{
+                          color: i + 1 === step ? th.inkFull
+                            : i + 1 < step ? 'rgba(255,65,3,.75)'
+                            : th.inkMuted,
+                        }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        {label}
+                      </motion.span>
+                    </button>
+                    {i < STEPS.length - 1 && <StepConnector index={i} current={step} th={th} />}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Content — slides between steps */}
@@ -168,7 +179,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               >
                 {step === 1 && <Step1Route   onNext={() => onStepChange(2)} />}
                 {step === 2 && <Step2Price   onNext={() => onStepChange(3)} onBack={() => onStepChange(1)} />}
-                {step === 3 && <Step3Options onBack={() => onStepChange(2)} />}
+                {step === 3 && <Step3Options onNext={() => onStepChange(4)} onBack={() => onStepChange(2)} />}
+                {step === 4 && <Step4Recap   onBack={() => onStepChange(3)} />}
               </motion.div>
             </AnimatePresence>
           </div>

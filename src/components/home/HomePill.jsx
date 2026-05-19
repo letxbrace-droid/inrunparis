@@ -7,23 +7,23 @@ import { computePriceForBooking } from '../../utils/priceEngine'
 import useAppTheme from '../../hooks/useAppTheme'
 
 const PRESETS = [
-  { name: 'Charles de Gaulle (CDG)', lat: 49.0097, lng: 2.5479,  type: 'airport'  },
-  { name: 'CDG · Terminal 1',        lat: 49.0097, lng: 2.5479,  type: 'terminal' },
-  { name: 'CDG · Terminal 2E',       lat: 49.0056, lng: 2.5693,  type: 'terminal' },
-  { name: 'CDG · Terminal 2F',       lat: 49.0064, lng: 2.5683,  type: 'terminal' },
-  { name: 'Orly (ORY)',              lat: 48.7233, lng: 2.3795,  type: 'airport'  },
-  { name: 'Orly · Terminal 1-2',     lat: 48.7260, lng: 2.3653,  type: 'terminal' },
-  { name: 'Orly · Terminal 3-4',     lat: 48.7281, lng: 2.3594,  type: 'terminal' },
-  { name: 'Beauvais (BVA)',          lat: 49.4544, lng: 2.1128,  type: 'airport'  },
-  { name: 'Gare du Nord',            lat: 48.8809, lng: 2.3553,  type: 'gare'     },
-  { name: 'Gare de Lyon',            lat: 48.8443, lng: 2.3738,  type: 'gare'     },
-  { name: 'Gare Montparnasse',       lat: 48.8410, lng: 2.3216,  type: 'gare'     },
-  { name: 'Gare Saint-Lazare',       lat: 48.8754, lng: 2.3255,  type: 'gare'     },
-  { name: "Gare de l'Est",           lat: 48.8767, lng: 2.3589,  type: 'gare'     },
-  { name: 'La Défense · CNIT',       lat: 48.8897, lng: 2.2378,  type: 'poi'      },
-  { name: 'Disneyland Paris',        lat: 48.8722, lng: 2.7758,  type: 'poi'      },
-  { name: 'Versailles',              lat: 48.8049, lng: 2.1204,  type: 'city'     },
-  { name: 'Ris-Orangis (91)',        lat: 48.6468, lng: 2.4185,  type: 'city'     },
+  { name: 'Charles de Gaulle (CDG)', city: 'Roissy-en-France',  lat: 49.0097, lng: 2.5479,  type: 'airport'  },
+  { name: 'CDG · Terminal 1',        city: 'Roissy-en-France',  lat: 49.0097, lng: 2.5479,  type: 'terminal' },
+  { name: 'CDG · Terminal 2E',       city: 'Roissy-en-France',  lat: 49.0056, lng: 2.5693,  type: 'terminal' },
+  { name: 'CDG · Terminal 2F',       city: 'Roissy-en-France',  lat: 49.0064, lng: 2.5683,  type: 'terminal' },
+  { name: 'Orly (ORY)',              city: 'Orly',              lat: 48.7233, lng: 2.3795,  type: 'airport'  },
+  { name: 'Orly · Terminal 1-2',    city: 'Orly',              lat: 48.7260, lng: 2.3653,  type: 'terminal' },
+  { name: 'Orly · Terminal 3-4',    city: 'Orly',              lat: 48.7281, lng: 2.3594,  type: 'terminal' },
+  { name: 'Beauvais (BVA)',          city: 'Beauvais',          lat: 49.4544, lng: 2.1128,  type: 'airport'  },
+  { name: 'Gare du Nord',           city: 'Paris 10e',         lat: 48.8809, lng: 2.3553,  type: 'gare'     },
+  { name: 'Gare de Lyon',           city: 'Paris 12e',         lat: 48.8443, lng: 2.3738,  type: 'gare'     },
+  { name: 'Gare Montparnasse',      city: 'Paris 14e',         lat: 48.8410, lng: 2.3216,  type: 'gare'     },
+  { name: 'Gare Saint-Lazare',      city: 'Paris 8e',          lat: 48.8754, lng: 2.3255,  type: 'gare'     },
+  { name: "Gare de l'Est",          city: 'Paris 10e',         lat: 48.8767, lng: 2.3589,  type: 'gare'     },
+  { name: 'La Défense · CNIT',      city: 'La Défense',        lat: 48.8897, lng: 2.2378,  type: 'poi'      },
+  { name: 'Disneyland Paris',       city: 'Marne-la-Vallée',   lat: 48.8722, lng: 2.7758,  type: 'poi'      },
+  { name: 'Versailles',             city: 'Versailles',        lat: 48.8049, lng: 2.1204,  type: 'city'     },
+  { name: 'Ris-Orangis (91)',       city: 'Ris-Orangis',       lat: 48.6468, lng: 2.4185,  type: 'city'     },
 ]
 
 const TAGS = [
@@ -33,9 +33,17 @@ const TAGS = [
   "Réservation à l'avance",
 ]
 
-const ICON = { airport: '✈', terminal: '✈', gare: '🚄', poi: '📍', city: '🏙', nominatim: '📌' }
-
 const WA_URL = `https://wa.me/33767742220?text=${encodeURIComponent('Bonjour, je souhaite réserver une course.')}`
+
+function PinIcon({ color = 'currentColor' }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill={color} stroke="none" aria-hidden="true">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  )
+}
+
+const TYPE_COLOR = { airport: '#3b82f6', terminal: '#3b82f6', gare: '#8b5cf6', poi: '#f59e0b', city: '#10b981', nominatim: '#ff4103' }
 
 function norm(s) {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -50,10 +58,12 @@ async function searchPlaces(q) {
     const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
     const data = await r.json()
     const nom  = data.map(d => {
-      const parts = d.display_name.split(',').map(p => p.trim())
-      const skip  = /^\d+$/.test(parts[0]) ? 1 : 0
-      const name  = parts.slice(skip, skip + 2).join(', ')
-      return { name, lat: parseFloat(d.lat), lng: parseFloat(d.lon), type: 'nominatim' }
+      const parts  = d.display_name.split(',').map(p => p.trim())
+      const hasNum = /^\d+$/.test(parts[0])
+      // Keep house number in the name: "68 Allée Jean Giono"
+      const name = hasNum ? `${parts[0]} ${parts[1]}` : parts[0]
+      const city = hasNum ? parts[2] : parts[1]
+      return { name, city: city || '', lat: parseFloat(d.lat), lng: parseFloat(d.lon), type: 'nominatim' }
     })
     const seen = new Set(matched.map(p => norm(p.name)))
     return [...matched, ...nom.filter(n => !seen.has(norm(n.name)))].slice(0, 6)
@@ -414,10 +424,22 @@ export default function HomePill({ onOpenSheet }) {
                         >
                           <button
                             onClick={() => pickSuggestion(s, acField)}
-                            className="w-full text-left flex items-center gap-3 px-4 py-3 border-b border-[var(--rule)] last:border-0 hover:bg-accent/10 active:bg-accent/15 transition-colors cursor-pointer"
+                            className="w-full text-left flex items-center gap-3 px-4 py-3 border-b last:border-0 active:opacity-70 transition-opacity cursor-pointer"
+                            style={{ borderColor: th.borderFaint }}
                           >
-                            <span className="text-sm flex-shrink-0">{ICON[s.type] ?? '📌'}</span>
-                            <span className="text-sm truncate" style={{ color: th.inkHigh }}>{s.name}</span>
+                            <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? '#ff4103' }}>
+                              <PinIcon color={TYPE_COLOR[s.type] ?? '#ff4103'} />
+                            </span>
+                            <div className="flex flex-col min-w-0 flex-1">
+                              <span className="text-sm font-semibold truncate" style={{ color: th.inkFull }}>
+                                {s.name}
+                              </span>
+                              {s.city && (
+                                <span className="text-xs truncate mt-px" style={{ color: th.inkMuted }}>
+                                  {s.city}
+                                </span>
+                              )}
+                            </div>
                           </button>
                         </motion.li>
                       ))}
@@ -505,9 +527,9 @@ export default function HomePill({ onOpenSheet }) {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 py-3 rounded-[18px] text-xs font-semibold cursor-pointer active:scale-[.98] transition-transform duration-150 select-none"
                 style={{
-                  background: 'rgba(37,211,102,.07)',
-                  border:     '1px solid rgba(37,211,102,.22)',
-                  color:      '#25d366',
+                  background: th.isDark ? 'rgba(37,211,102,.07)' : 'rgba(37,211,102,.13)',
+                  border:     th.isDark ? '1px solid rgba(37,211,102,.22)' : '1px solid rgba(37,211,102,.42)',
+                  color:      th.isDark ? '#25d366' : '#1a9940',
                 }}
               >
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
