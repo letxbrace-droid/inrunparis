@@ -81,9 +81,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         aria-hidden="true"
         className="fixed inset-0 z-[90] transition-opacity duration-300"
         style={{
-          background: 'rgba(0,8,14,.65)',
-          backdropFilter: open ? 'blur(4px)' : 'none',
-          WebkitBackdropFilter: open ? 'blur(4px)' : 'none',
+          background: 'rgba(0,0,0,.72)',
           opacity: open ? 1 : 0,
           pointerEvents: open ? 'auto' : 'none',
         }}
