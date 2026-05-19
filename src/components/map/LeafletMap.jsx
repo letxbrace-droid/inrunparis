@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 delete L.Icon.Default.prototype._getIconUrl
 
 const PARIS       = [48.8566, 2.3522]
-const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
@@ -135,7 +135,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       style={{
         pointerEvents: frozen ? 'none' : 'auto',
         willChange: 'transform',
-        filter: isDark ? 'brightness(1.6) contrast(0.88)' : 'brightness(0.82) saturate(0.80)',
+        filter: isDark ? 'invert(1) hue-rotate(180deg) brightness(0.88) saturate(0.45)' : 'brightness(0.82) saturate(0.80)',
       }}
     />
   )
