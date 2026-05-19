@@ -187,12 +187,13 @@ export default function HomePill({ onOpenSheet }) {
           borderRadius:  depart && arrive ? 22 : 999,
           background:    '#0B0B0B',
           border:        isDark
-            ? '1px solid rgba(255,90,31,.28)'
+            ? '1px solid rgba(255,90,31,.38)'
             : '1px solid rgba(255,255,255,.08)',
           boxShadow: [
-            '0 8px 28px rgba(0,0,0,.80)',
-            '0 2px 8px rgba(0,0,0,.60)',
-            'inset 0 1px 0 rgba(255,255,255,.05)',
+            '0 14px 40px rgba(0,0,0,.88)',
+            '0 4px 14px rgba(0,0,0,.72)',
+            '0 1px 0 rgba(255,90,31,.10)',
+            'inset 0 1px 0 rgba(255,255,255,.08)',
           ].join(', '),
           opacity:       open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',

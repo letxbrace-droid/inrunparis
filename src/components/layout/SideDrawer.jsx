@@ -357,20 +357,20 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                         ? 'linear-gradient(135deg, rgba(255,90,31,.16) 0%, rgba(255,65,3,.09) 100%)'
                         : 'transparent',
                       border:    highlight ? '1px solid rgba(255,65,3,.3)' : '1px solid transparent',
-                      boxShadow: highlight ? '0 0 18px rgba(255,65,3,.1), inset 0 1px 0 rgba(255,255,255,.05)' : 'none',
+                      boxShadow: highlight ? 'inset 0 1px 0 rgba(255,255,255,.05)' : 'none',
                     }}
                   >
                     <span style={{
                       color:      highlight ? '#ff6120' : 'rgba(245,241,232,.38)',
                       flexShrink: 0,
-                      filter:     highlight ? 'drop-shadow(0 0 5px rgba(255,80,10,.9))' : 'none',
+                      filter:     highlight ? 'drop-shadow(0 0 2px rgba(255,80,10,.4))' : 'none',
                       transition: 'filter .2s, color .2s',
                     }}>
                       <item.Icon />
                     </span>
                     <span
                       className="text-[15px] font-semibold leading-none"
-                      style={{ color: highlight ? '#F5F1E8' : 'rgba(245,241,232,.62)' }}
+                      style={{ color: highlight ? '#F5F1E8' : 'rgba(245,241,232,.78)' }}
                     >
                       {item.label}
                     </span>
@@ -406,7 +406,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     e.currentTarget.style.border = '1px solid transparent'
                   }}
                 >
-                  <span style={{ color: 'rgba(255,80,20,.65)', flexShrink: 0 }}>
+                  <span style={{ color: 'rgba(255,80,20,.85)', flexShrink: 0 }}>
                     <item.Icon />
                   </span>
                   <span
