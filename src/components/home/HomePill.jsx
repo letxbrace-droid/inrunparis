@@ -4,6 +4,7 @@ import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
 import { computePriceForBooking } from '../../utils/priceEngine'
+import useAppTheme from '../../hooks/useAppTheme'
 
 const PRESETS = [
   { name: 'Charles de Gaulle (CDG)', lat: 49.0097, lng: 2.5479,  type: 'airport'  },
@@ -62,6 +63,7 @@ async function searchPlaces(q) {
 }
 
 export default function HomePill({ onOpenSheet }) {
+  const th = useAppTheme()
   const [open,       setOpen]       = useState(false)
   const [tagIdx,     setTagIdx]     = useState(0)
   const [tagVisible, setTagVisible] = useState(true)
@@ -185,10 +187,10 @@ export default function HomePill({ onOpenSheet }) {
           maxWidth:      560,
           marginInline:  'auto',
           borderRadius:  depart && arrive ? 22 : 999,
-          background:    '#0B0B0B',
-          border:        isDark
+          background:    th.bgPanel,
+          border:        th.isDark
             ? '1px solid rgba(255,90,31,.38)'
-            : '1px solid rgba(255,255,255,.08)',
+            : '1px solid rgba(255,90,31,.25)',
           boxShadow: [
             '0 14px 40px rgba(0,0,0,.88)',
             '0 4px 14px rgba(0,0,0,.72)',
@@ -210,14 +212,14 @@ export default function HomePill({ onOpenSheet }) {
               <span className="w-px my-[3px]"
                 style={{ height: 14, background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
               <span className="w-2 h-2 rounded-full border-2"
-                style={{ borderColor: 'rgba(255,65,3,.7)', background: '#F5F1E8' }} />
+                style={{ borderColor: 'rgba(255,65,3,.7)', background: th.bgBase }} />
             </span>
             {/* Names */}
             <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
-              <span className="text-[13px] font-semibold truncate" style={{ color: '#F5F1E8' }}>
+              <span className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
                 {departQuery || depart?.name?.split(',')[0] || 'Départ'}
               </span>
-              <span className="text-[13px] font-semibold truncate" style={{ color: 'rgba(245,241,232,.62)' }}>
+              <span className="text-[13px] font-semibold truncate" style={{ color: th.inkMid }}>
                 {arriveQuery || arrive?.name?.split(',')[0] || 'Destination'}
               </span>
             </span>
@@ -229,8 +231,8 @@ export default function HomePill({ onOpenSheet }) {
                 </span>
               )}
               <span className="flex items-center justify-center w-7 h-7 rounded-full"
-                style={{ background: 'rgba(255,255,255,.06)' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.6)"
+                style={{ background: th.borderFaint }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={th.inkMid}
                   strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 15l-6-6-6 6"/>
                 </svg>
@@ -289,10 +291,10 @@ export default function HomePill({ onOpenSheet }) {
           <div
             className="rounded-t-[22px]"
             style={{
-              background: '#0B0B0B',
-              border:     '1px solid rgba(255,255,255,.07)',
+              background:   th.bgPanel,
+              border:       `1px solid ${th.border}`,
               borderBottom: 'none',
-              boxShadow:  '0 -8px 32px rgba(0,0,0,.8)',
+              boxShadow:    '0 -8px 32px rgba(0,0,0,.8)',
             }}
           >
             {/* Handle */}
@@ -304,19 +306,19 @@ export default function HomePill({ onOpenSheet }) {
               {/* HUD */}
               <div className="flex items-center gap-2.5 pt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
-                <span className="font-mono text-[11px] tracking-wider truncate" style={{ color: 'rgba(245,241,232,0.72)' }}>
+                <span className="font-mono text-[11px] tracking-wider truncate" style={{ color: th.inkMid }}>
                   Réservation à l'avance · Aéroports & longue distance
                 </span>
               </div>
 
               {/* Fields card */}
-              <div className="relative bg-[#111111] rounded-2xl border border-[var(--rule)]">
+              <div className="relative rounded-2xl border border-[var(--rule)]" style={{ background: th.bgCard }}>
                 {/* Departure row */}
                 <div className="flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: '#ff4103' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'rgba(245,241,232,0.72)' }}>Votre position</div>
+                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: th.inkMid }}>Votre position</div>
                     <input
                       type="text"
                       value={departQuery}
@@ -327,7 +329,7 @@ export default function HomePill({ onOpenSheet }) {
                       aria-label="Adresse de départ"
                       aria-autocomplete="list"
                       className="w-full bg-transparent text-[15px] outline-none"
-                      style={{ color: '#F5F1E8' }}
+                      style={{ color: th.inkFull }}
                     />
                   </div>
                   {/* GPS button */}
@@ -370,9 +372,9 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Arrival row */}
                 <div className="flex items-center gap-3 px-4 pt-3 pb-3.5">
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
-                    style={{ borderColor: 'rgba(255,65,3,.75)', background: '#F5F1E8' }} />
+                    style={{ borderColor: 'rgba(255,65,3,.75)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'rgba(245,241,232,0.72)' }}>Destination</div>
+                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: th.inkMid }}>Destination</div>
                     <input
                       type="text"
                       value={arriveQuery}
@@ -383,7 +385,7 @@ export default function HomePill({ onOpenSheet }) {
                       aria-label="Adresse d'arrivée"
                       aria-autocomplete="list"
                       className="w-full bg-transparent text-[15px] outline-none"
-                      style={{ color: '#F5F1E8' }}
+                      style={{ color: th.inkFull }}
                     />
                   </div>
                 </div>
@@ -400,8 +402,8 @@ export default function HomePill({ onOpenSheet }) {
                       className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
                       style={{
                         top:        'calc(100% + 8px)',
-                        background: '#111111',
-                        boxShadow:  '0 8px 24px rgba(0,0,0,.7)',
+                        background: th.bgCard,
+                        boxShadow:  '0 8px 24px rgba(0,0,0,.55)',
                       }}
                     >
                       {suggestions.map((s, i) => (
@@ -453,10 +455,10 @@ export default function HomePill({ onOpenSheet }) {
                 <div
                   className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
                   style={{
-                    background: '#161616',
+                    background: th.bgInput,
                     border: depart && arrive && !pickup
                       ? '1px solid rgba(255,90,31,.4)'
-                      : '1px solid rgba(255,255,255,.08)',
+                      : `1px solid ${th.border}`,
                   }}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -472,7 +474,7 @@ export default function HomePill({ onOpenSheet }) {
                     min={new Date().toISOString().slice(0, 16)}
                     onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
                     className="flex-1 bg-transparent text-sm outline-none"
-                    style={{ color: pickup ? 'rgba(245,241,232,.85)' : 'rgba(245,241,232,.45)', colorScheme: 'dark' }}
+                    style={{ color: pickup ? th.inkHigh : th.inkMuted, colorScheme: th.inputScheme }}
                     aria-label="Date et heure de prise en charge"
                     aria-required="true"
                   />
