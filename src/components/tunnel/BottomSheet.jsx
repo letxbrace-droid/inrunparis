@@ -104,7 +104,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-7 left-0 right-0 z-[96] flex justify-center pointer-events-none"
+            className="fixed z-[96] flex justify-center pointer-events-none"
+            style={{ bottom: 'calc(var(--safe-bot, 0px) + 108px)', left: 0, right: 0 }}
           >
             <button
               onClick={() => setCollapsed(false)}
