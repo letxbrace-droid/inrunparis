@@ -49,12 +49,6 @@ export default function CallView({ open, onClose }) {
           : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
       }}
     >
-      {/* Ambient top glow — très subtil */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 35% at 50% 0%, rgba(255,65,3,.05), transparent 60%)' }}
-      />
 
       {/* Header */}
       <div
@@ -115,7 +109,6 @@ export default function CallView({ open, onClose }) {
                 style={{
                   background: '#34d399',
                   border: '2px solid #111111',
-                  boxShadow: '0 0 8px rgba(52,211,153,.7)',
                 }}
               />
             </div>
@@ -174,7 +167,7 @@ export default function CallView({ open, onClose }) {
           className="relative flex items-center justify-center gap-3 w-full py-5 rounded-2xl mb-3 select-none active:scale-[.97] transition-transform overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, #ff5a1f 0%, #ff4103 45%, #e83800 100%)',
-            boxShadow: '0 0 0 1px rgba(255,65,3,.35), 0 0 36px rgba(255,65,3,.55), 0 0 80px rgba(255,65,3,.18), 0 8px 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.18)',
+            boxShadow: '0 4px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.18)',
             animation: 'cta-breathe 3.5s ease-in-out infinite',
             textDecoration: 'none',
           }}

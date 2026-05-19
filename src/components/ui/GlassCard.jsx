@@ -9,16 +9,9 @@ export default function GlassCard({ children, className = '', onClick, accent = 
       `}
       style={accent ? {
         borderTop: '2px solid #ff4103',
-        boxShadow: '0 8px 24px rgba(0,0,0,.45), 0 0 32px rgba(255,65,3,.07)',
+        boxShadow: '0 4px 16px rgba(0,0,0,.6)',
       } : undefined}
     >
-      {accent && (
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-16 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 80% 100% at 50% 0%, rgba(255,65,3,.07), transparent)' }}
-        />
-      )}
       {children}
     </div>
   )

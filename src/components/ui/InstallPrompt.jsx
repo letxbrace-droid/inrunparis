@@ -55,10 +55,8 @@ export default function InstallPrompt() {
             gap:            12,
             padding:        '11px 12px 11px 14px',
             borderRadius:   20,
-            background:     'rgba(0,16,26,0.90)',
+            background:     '#0F0F0F',
             border:         '1px solid rgba(255,65,3,.28)',
-            backdropFilter: 'blur(24px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
             boxShadow:      '0 12px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07)',
           }}>
             {/* App icon */}

@@ -63,8 +63,6 @@ export default function AideFaqView({ open, onClose }) {
           : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
       }}
     >
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,65,3,.07), transparent 65%)' }} />
 
       {/* Header */}
       <div

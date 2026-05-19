@@ -21,10 +21,8 @@ export default function iOSToggle({ checked, onChange, label, id }) {
           style={{
             background: checked
               ? 'linear-gradient(135deg, #ff5a1f, #ff4103)'
-              : 'rgba(0,10,18,0.6)',
-            boxShadow: checked
-              ? '0 0 14px rgba(255,65,3,.45), inset 0 1px 0 rgba(255,255,255,.15)'
-              : 'inset 2px 2px 6px rgba(0,0,0,.5), inset -1px -1px 3px rgba(255,255,255,.03)',
+              : '#1A1A1A',
+            boxShadow: 'none',
             border: checked ? 'none' : '1px solid rgba(255,255,255,.08)',
           }}
         />
@@ -33,7 +31,7 @@ export default function iOSToggle({ checked, onChange, label, id }) {
           className="absolute top-[2px] w-5 h-5 rounded-full transition-transform duration-250"
           style={{
             transform: checked ? 'translateX(22px)' : 'translateX(2px)',
-            background: 'radial-gradient(circle at 35% 30%, #ffffff 0%, #e8e8e8 45%, #c8c8c8 100%)',
+            background: '#ffffff',
             boxShadow: '0 2px 6px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35), inset 0 1px 1px rgba(255,255,255,.9)',
           }}
         />

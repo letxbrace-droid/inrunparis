@@ -9,18 +9,18 @@ const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.p
 const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
-  html: `<div class="gps-user-dot" style="width:14px;height:14px;border-radius:50%;background:#3b82f6;border:2.5px solid white;box-shadow:0 0 12px rgba(59,130,246,.8)"></div>`,
-  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
+  html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:#3b82f6;border:2px solid #fff"></div>`,
+  iconSize: [12, 12], iconAnchor: [6, 6], className: '',
 })
 
 const departIcon = L.divIcon({
-  html: `<div style="width:12px;height:12px;border-radius:50%;background:#ff4103;box-shadow:0 0 18px rgba(255,65,3,.95),0 0 6px rgba(255,65,3,.6);border:2px solid rgba(255,255,255,.9)"></div>`,
-  iconSize: [12, 12], iconAnchor: [6, 6], className: '',
+  html: `<div style="width:10px;height:10px;border-radius:50%;background:#FF5A1F;border:2px solid #fff"></div>`,
+  iconSize: [10, 10], iconAnchor: [5, 5], className: '',
 })
 
 const arriveIcon = L.divIcon({
-  html: `<div style="width:12px;height:12px;border-radius:50%;background:#F5F1E8;box-shadow:0 0 14px rgba(245,241,232,.8);border:2.5px solid rgba(255,65,3,.85)"></div>`,
-  iconSize: [12, 12], iconAnchor: [6, 6], className: '',
+  html: `<div style="width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid #FF5A1F"></div>`,
+  iconSize: [10, 10], iconAnchor: [5, 5], className: '',
 })
 
 export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true, frozen = false }) {
@@ -94,10 +94,9 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     routeRef.current = []
     if (!route?.geometry) return
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
-    const glow1 = L.polyline(coords, { color: '#FF5A1F', weight: 8,  opacity: 0.18 })
-    const core  = L.polyline(coords, { color: '#FF5A1F', weight: 2.5, opacity: 1 })
-    glow1.addTo(map); core.addTo(map)
-    routeRef.current = [glow1, core]
+    const core = L.polyline(coords, { color: '#FF5A1F', weight: 2.5, opacity: 1 })
+    core.addTo(map)
+    routeRef.current = [core]
     if (coords.length) {
       const bounds = L.latLngBounds(coords)
       if (depart) {

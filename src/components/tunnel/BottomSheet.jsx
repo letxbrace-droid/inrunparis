@@ -21,10 +21,10 @@ function StepDot({ index, current }) {
         scale:     state === 'active' ? 1.12 : 1,
         boxShadow:
           state === 'active'
-            ? '0 0 22px rgba(255,65,3,.7), 0 0 8px rgba(255,65,3,.45), inset 0 1px 0 rgba(255,255,255,.22)'
+            ? 'inset 0 1px 0 rgba(255,255,255,.15)'
             : state === 'done'
-            ? '0 0 10px rgba(255,65,3,.22)'
-            : 'inset 2px 2px 5px rgba(0,0,0,.5)',
+            ? 'none'
+            : 'none',
       }}
       transition={SPRING}
       style={{

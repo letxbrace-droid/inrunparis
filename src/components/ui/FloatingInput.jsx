@@ -23,11 +23,9 @@ export default function FloatingInput({
         required={required}
         className="w-full pt-6 pb-2 px-4 rounded-2xl text-base outline-none transition-all duration-200"
         style={{
-          background: 'rgba(0,10,18,0.55)',
-          boxShadow: focused
-            ? 'inset 3px 3px 10px rgba(0,0,0,.55), inset -1px -1px 4px rgba(255,255,255,.03), 0 0 0 1.5px rgba(255,65,3,.55)'
-            : 'inset 3px 3px 10px rgba(0,0,0,.5), inset -1px -1px 4px rgba(255,255,255,.03)',
-          border: '1px solid rgba(255,255,255,.05)',
+          background: '#161616',
+          boxShadow: 'none',
+          border: focused ? '1px solid rgba(255,90,31,.4)' : '1px solid rgba(255,255,255,.08)',
           color: '#F5F1E8',
           transition: 'box-shadow .2s',
         }}

@@ -18,11 +18,9 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             maxWidth:   520,
             marginLeft: 'auto',
             marginRight:'auto',
-            background: 'linear-gradient(145deg, #06302450 0%, #04221b 100%)',
+            background: '#0F0F0F',
             border:     '1px solid rgba(52,211,153,.32)',
-            boxShadow:  '0 14px 44px rgba(0,0,0,.62), 0 0 30px rgba(52,211,153,.16), inset 0 1px 0 rgba(255,255,255,.05)',
-            backdropFilter: 'blur(22px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(22px) saturate(1.5)',
+            boxShadow:  '0 8px 24px rgba(0,0,0,.7)',
           }}
         >
           {/* Specular top line */}
@@ -36,8 +34,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             transition={{ type: 'spring', damping: 14, stiffness: 320, delay: 0.12 }}
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
             style={{
-              background: 'radial-gradient(circle at 38% 32%, #34d399 0%, #10b981 70%)',
-              boxShadow:  '0 0 16px rgba(52,211,153,.55), inset 0 1px 2px rgba(255,255,255,.4)',
+              background: '#10b981',
             }}
           >
             <motion.svg

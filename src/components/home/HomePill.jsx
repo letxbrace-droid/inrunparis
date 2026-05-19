@@ -205,7 +205,7 @@ export default function HomePill({ onOpenSheet }) {
             {/* A→B indicator */}
             <span className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
               <span className="w-2 h-2 rounded-full"
-                style={{ background: '#ff4103', boxShadow: '0 0 8px rgba(255,65,3,.8)' }} />
+                style={{ background: '#ff4103' }} />
               <span className="w-px my-[3px]"
                 style={{ height: 14, background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
               <span className="w-2 h-2 rounded-full border-2"
@@ -249,8 +249,7 @@ export default function HomePill({ onOpenSheet }) {
             <span className="flex items-center gap-1.5 px-4 py-[14px]">
               <span
                 className={`w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
-                style={{ boxShadow: '0 0 6px rgba(52,211,153,.8)' }}
-              />
+                />
               <span className={`font-mono text-[10px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
                 {TAGS[tagIdx]}
               </span>
@@ -303,7 +302,7 @@ export default function HomePill({ onOpenSheet }) {
             <div className="px-5 pb-5 flex flex-col gap-4">
               {/* HUD */}
               <div className="flex items-center gap-2.5 pt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,.8)' }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
                 <span className="font-mono text-[10px] text-ink-muted tracking-wider truncate">
                   Réservation à l'avance · Aéroports & longue distance
                 </span>
@@ -314,7 +313,7 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Departure row */}
                 <div className="flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                    style={{ background: '#ff4103', boxShadow: '0 0 12px rgba(255,65,3,.8)' }} />
+                    style={{ background: '#ff4103' }} />
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-[9px] text-ink-muted tracking-widest uppercase mb-1">Votre position</div>
                     <input
@@ -369,7 +368,7 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Arrival row */}
                 <div className="flex items-center gap-3 px-4 pt-3 pb-3.5">
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
-                    style={{ borderColor: 'rgba(255,65,3,.75)', background: '#F5F1E8', boxShadow: '0 0 8px rgba(245,241,232,.4)' }} />
+                    style={{ borderColor: 'rgba(255,65,3,.75)', background: '#F5F1E8' }} />
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-[9px] text-ink-muted tracking-widest uppercase mb-1">Destination</div>
                     <input
@@ -451,13 +450,10 @@ export default function HomePill({ onOpenSheet }) {
                 <div
                   className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
                   style={{
-                    background: 'rgba(0,10,18,0.45)',
+                    background: '#161616',
                     border: depart && arrive && !pickup
-                      ? '1px solid rgba(255,65,3,.55)'
-                      : '1px solid rgba(255,255,255,.05)',
-                    boxShadow: depart && arrive && !pickup
-                      ? '0 0 0 3px rgba(255,65,3,.12)'
-                      : undefined,
+                      ? '1px solid rgba(255,90,31,.4)'
+                      : '1px solid rgba(255,255,255,.08)',
                   }}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none"

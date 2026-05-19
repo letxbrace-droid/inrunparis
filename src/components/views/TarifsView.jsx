@@ -248,9 +248,8 @@ export default function TarifsView({ open, onClose, onReserve }) {
         style={{
           paddingBottom:  'calc(var(--safe-bot) + 12px)',
           borderTop:      '1px solid rgba(255,255,255,.06)',
-          background:     'rgba(0,18,28,.92)',
-          
-          
+          background:     '#0A0A0A',
+
         }}
       >
         <button
