@@ -26,8 +26,8 @@
 
     /* ── Labels ─────────────────────────────────────────────────── */
     --label:            #F5F1E8;
-    --label-secondary:  rgba(245,241,232,0.68);
-    --label-tertiary:   rgba(245,241,232,0.42);
+    --label-secondary:  rgba(245,241,232,0.80);
+    --label-tertiary:   rgba(245,241,232,0.58);
     --label-quaternary: rgba(245,241,232,0.22);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */

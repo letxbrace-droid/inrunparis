@@ -97,7 +97,7 @@ export default function App() {
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background: isDark
-            ? 'linear-gradient(to bottom, rgba(5,5,5,.60) 0%, transparent 25%, transparent 55%, rgba(5,5,5,.94) 100%)'
+            ? 'linear-gradient(to bottom, rgba(5,5,5,.65) 0%, transparent 22%, transparent 50%, rgba(5,5,5,.98) 100%)'
             : 'linear-gradient(to bottom, rgba(10,10,10,.42) 0%, transparent 25%, transparent 55%, rgba(10,10,10,.88) 100%)',
         }}
       />
