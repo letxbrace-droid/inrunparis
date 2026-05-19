@@ -304,7 +304,7 @@ export default function HomePill({ onOpenSheet }) {
               {/* HUD */}
               <div className="flex items-center gap-2.5 pt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
-                <span className="font-mono text-[10px] text-ink-muted tracking-wider truncate">
+                <span className="font-mono text-[11px] tracking-wider truncate" style={{ color: 'rgba(245,241,232,0.72)' }}>
                   Réservation à l'avance · Aéroports & longue distance
                 </span>
               </div>
@@ -316,7 +316,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: '#ff4103' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[9px] text-ink-muted tracking-widest uppercase mb-1">Votre position</div>
+                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'rgba(245,241,232,0.72)' }}>Votre position</div>
                     <input
                       type="text"
                       value={departQuery}
@@ -326,7 +326,8 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse de départ"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-ink-primary text-sm outline-none placeholder-ink-muted"
+                      className="w-full bg-transparent text-[15px] outline-none"
+                      style={{ color: '#F5F1E8' }}
                     />
                   </div>
                   {/* GPS button */}
@@ -371,7 +372,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
                     style={{ borderColor: 'rgba(255,65,3,.75)', background: '#F5F1E8' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[9px] text-ink-muted tracking-widest uppercase mb-1">Destination</div>
+                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'rgba(245,241,232,0.72)' }}>Destination</div>
                     <input
                       type="text"
                       value={arriveQuery}
@@ -381,7 +382,8 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse d'arrivée"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-ink-primary text-sm outline-none placeholder-ink-muted"
+                      className="w-full bg-transparent text-[15px] outline-none"
+                      style={{ color: '#F5F1E8' }}
                     />
                   </div>
                 </div>
@@ -488,7 +490,7 @@ export default function HomePill({ onOpenSheet }) {
                 disabled={!depart || !arrive || !pickup || routeLoading}
                 className="cta-glow w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
                   cursor-pointer select-none active:scale-[.97] transition-transform duration-150
-                  disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden"
+                  disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
               >
                 <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
                   style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />

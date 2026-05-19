@@ -136,7 +136,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
         pointerEvents: frozen ? 'none' : 'auto',
         willChange: 'transform',
         filter: isDark
-          ? 'invert(1) hue-rotate(180deg) brightness(1.3) saturate(0.6)'
+          ? 'invert(1) hue-rotate(180deg) brightness(1.5) saturate(0.6)'
           : 'brightness(0.88) saturate(1.0) contrast(1.18)',
       }}
     />
