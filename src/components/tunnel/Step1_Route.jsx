@@ -3,7 +3,8 @@ import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
 import { computePriceForBooking } from '../../utils/priceEngine'
-import GlowingCTA from '../ui/GlowingCTA'
+import GlowingCTA  from '../ui/GlowingCTA'
+import useAppTheme from '../../hooks/useAppTheme'
 
 async function geocodeNominatim(query) {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&countrycodes=fr&accept-language=fr`
@@ -16,7 +17,7 @@ async function geocodeNominatim(query) {
   }))
 }
 
-function LocationInput({ label, value, onSelect, placeholder, icon }) {
+function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   const [query,       setQuery]   = useState(value?.name ?? '')
   const [suggestions, setSuggest] = useState([])
   const [loading,     setLoading] = useState(false)
@@ -56,8 +57,8 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
       <div
         className="flex items-center rounded-2xl transition-all duration-200"
         style={{
-          background: '#161616',
-          border: `1px solid ${focused ? 'rgba(255,90,31,.45)' : 'rgba(255,255,255,.07)'}`,
+          background: th.bgInput,
+          border: `1px solid ${focused ? 'rgba(255,90,31,.45)' : th.border}`,
           boxShadow: focused ? '0 0 0 3px rgba(255,90,31,.08)' : 'none',
         }}
       >
@@ -72,7 +73,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
           onBlur={() => setTimeout(() => setFocused(false), 200)}
           placeholder={placeholder}
           className="flex-1 py-4 pl-3 pr-4 text-sm outline-none bg-transparent"
-          style={{ color: '#F5F1E8' }}
+          style={{ color: th.inkFull }}
           aria-label={label}
           autoComplete="off"
         />
@@ -89,9 +90,9 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
           role="listbox"
           className="absolute top-full left-0 right-0 mt-1.5 z-20 rounded-2xl overflow-hidden"
           style={{
-            background: '#111111',
-            boxShadow: '0 8px 24px rgba(0,0,0,.7)',
-            border: '1px solid rgba(255,255,255,.07)',
+            background: th.bgCard,
+            boxShadow: '0 8px 24px rgba(0,0,0,.55)',
+            border: `1px solid ${th.border}`,
             maxHeight: 200,
             overflowY: 'auto',
           }}
@@ -102,8 +103,8 @@ function LocationInput({ label, value, onSelect, placeholder, icon }) {
                 onClick={() => pick(s)}
                 className="w-full text-left px-4 py-3 text-sm transition-colors cursor-pointer"
                 style={{
-                  color: 'rgba(245,241,232,.75)',
-                  borderBottom: i < suggestions.length - 1 ? '1px solid rgba(255,255,255,.05)' : 'none',
+                  color: th.inkMid,
+                  borderBottom: i < suggestions.length - 1 ? `1px solid ${th.borderFaint}` : 'none',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,65,3,.08)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
@@ -131,6 +132,7 @@ const IconArrive = (
 )
 
 export default function Step1Route({ onNext }) {
+  const th = useAppTheme()
   const { depart, arrive, pickup, vehicleType, setDepart, setArrive, setPrice, setRouteGeometry } = useBookingStore()
   const { route, loading, error, fetchRoute } = useOSRM()
   const { status: geoStatus, error: geoError, detect } = useGeolocation()
@@ -165,6 +167,7 @@ export default function Step1Route({ onNext }) {
           onSelect={(item) => { setDepart(item); setRouteGeometry(null) }}
           placeholder="Adresse de départ"
           icon={IconDepart}
+          th={th}
         />
         {/* GPS button */}
         <button
@@ -175,10 +178,10 @@ export default function Step1Route({ onNext }) {
           style={{
             background: geoStatus === 'success'
               ? 'rgba(255,90,31,.12)'
-              : '#161616',
+              : th.bgInput,
             border: geoStatus === 'success'
               ? '1px solid rgba(255,90,31,.35)'
-              : '1px solid rgba(255,255,255,.07)',
+              : `1px solid ${th.border}`,
           }}
         >
           {geoStatus === 'loading' ? (
@@ -225,6 +228,7 @@ export default function Step1Route({ onNext }) {
         onSelect={(item) => { setArrive(item); setRouteGeometry(null) }}
         placeholder="Adresse d'arrivée"
         icon={IconArrive}
+        th={th}
       />
 
       {/* Date/time */}
@@ -232,10 +236,10 @@ export default function Step1Route({ onNext }) {
         <div
           className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
           style={{
-            background: '#161616',
+            background: th.bgInput,
             border: depart && arrive && !pickup
               ? '1px solid rgba(255,90,31,.45)'
-              : '1px solid rgba(255,255,255,.07)',
+              : `1px solid ${th.border}`,
             boxShadow: depart && arrive && !pickup
               ? '0 0 0 3px rgba(255,90,31,.08)'
               : undefined,
@@ -252,7 +256,7 @@ export default function Step1Route({ onNext }) {
             min={new Date().toISOString().slice(0, 16)}
             onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
             className="flex-1 bg-transparent text-sm outline-none"
-            style={{ color: 'rgba(245,241,232,.8)', colorScheme: 'dark' }}
+            style={{ color: th.inkHigh, colorScheme: th.inputScheme }}
             aria-label="Date et heure de prise en charge"
             aria-required="true"
           />

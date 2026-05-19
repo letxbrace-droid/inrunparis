@@ -1,30 +1,35 @@
+import useAppTheme from '../../hooks/useAppTheme'
+
 const WA_MAD = `https://wa.me/33767742220?text=${encodeURIComponent('*DEMANDE DE DEVIS — MISE À DISPOSITION*\n\nBonjour Nourdine,\n\nJe souhaite réserver votre service de mise à disposition :\n\n📅 Date : \n🕒 Horaires : \n⏱️ Durée estimée : \n📍 Point de départ : \n🎯 Type de prestation : (Business / Mariage / Tourisme / Autre)\n👥 Nombre de passagers : \n\nMerci de me confirmer votre disponibilité et le tarif final.')}`
 
-const ICON_STROKE = 'rgba(245,241,232,.5)'
+const ICON_STROKE_DARK  = 'rgba(245,241,232,.5)'
+const ICON_STROKE_LIGHT = 'rgba(17,17,17,.45)'
 
-const TRAJETS = [
-  {
-    title:    'Aéroports & gares',
-    subtitle: 'CDG · Orly · Beauvais · Gares TGV',
-    price:    'dès 45 €',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={ICON_STROKE} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-      </svg>
-    ),
-  },
-  {
-    title:    'Longue distance',
-    subtitle: 'Province · Côte d\'Azur · Genève',
-    price:    'Sur devis',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={ICON_STROKE} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-    ),
-  },
-]
+function makeTrajets(iconStroke) {
+  return [
+    {
+      title:    'Aéroports & gares',
+      subtitle: 'CDG · Orly · Beauvais · Gares TGV',
+      price:    'dès 45 €',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={iconStroke} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      ),
+    },
+    {
+      title:    'Longue distance',
+      subtitle: 'Province · Côte d\'Azur · Genève',
+      price:    'Sur devis',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={iconStroke} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      ),
+    },
+  ]
+}
 
 const MAD_ROWS = [
   { duration: '2 heures', note: 'Forfait court',   price: '80 €'      },
@@ -45,18 +50,11 @@ const COMPARE = [
   'Chauffeur unique & connu',
 ]
 
-const HAIRLINE = '1px solid rgba(255,255,255,.06)'
-const CARD = {
-  background:   '#111111',
-  borderRadius: 16,
-  border:       '1px solid rgba(255,255,255,.05)',
-}
-
-function SectionLabel({ children }) {
+function SectionLabel({ children, th }) {
   return (
     <p
       className="text-[11px] font-semibold uppercase tracking-[.08em] mb-2.5 px-1"
-      style={{ color: 'rgba(245,241,232,.4)' }}
+      style={{ color: th.inkMuted }}
     >
       {children}
     </p>
@@ -72,6 +70,11 @@ function CheckIcon() {
 }
 
 export default function TarifsView({ open, onClose, onReserve }) {
+  const th = useAppTheme()
+  const HAIRLINE = `1px solid ${th.divider}`
+  const CARD = { background: th.bgCard, borderRadius: 16, border: `1px solid ${th.borderFaint}` }
+  const TRAJETS = makeTrajets(th.isDark ? ICON_STROKE_DARK : ICON_STROKE_LIGHT)
+
   return (
     <div
       role="dialog"
@@ -80,7 +83,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background:    '#050505',
+        background:    th.bgBase,
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -95,25 +98,23 @@ export default function TarifsView({ open, onClose, onReserve }) {
         style={{
           paddingTop:    'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: '#0D0D0D',
-          
-          
-          borderBottom:  '1px solid rgba(255,255,255,.06)',
+          background:    th.bgHeader,
+          borderBottom:  `1px solid ${th.divider}`,
         }}
       >
         <button
           onClick={onClose}
           aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform flex-shrink-0"
-          style={{ background: '#111111', border: '1px solid rgba(255,255,255,.07)' }}
+          style={{ background: th.bgCard, border: `1px solid ${th.border}` }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={th.inkHigh} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: '#F5F1E8' }}>Tarifs & services</h1>
-          <p className="text-xs" style={{ color: 'rgba(245,241,232,.38)' }}>Transparents · Sans surprise</p>
+          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Tarifs & services</h1>
+          <p className="text-xs" style={{ color: th.inkMuted }}>Transparents · Sans surprise</p>
         </div>
       </div>
 
@@ -126,17 +127,17 @@ export default function TarifsView({ open, onClose, onReserve }) {
         {/* Hero */}
         <section className="px-5 pt-6" style={{ animation: 'fade-up .38s ease both 0ms' }}>
           <div className="rounded-2xl p-5" style={CARD}>
-            <h2 className="font-brand font-bold leading-snug mb-1.5" style={{ fontSize: 'clamp(1.15rem,4.8vw,1.4rem)', color: '#F5F1E8' }}>
+            <h2 className="font-brand font-bold leading-snug mb-1.5" style={{ fontSize: 'clamp(1.15rem,4.8vw,1.4rem)', color: th.inkFull }}>
               Estimation connue avant chaque course
             </h2>
-            <p style={{ fontSize: 13, color: 'rgba(245,241,232,.48)', lineHeight: 1.5 }}>
+            <p style={{ fontSize: 13, color: th.inkMuted, lineHeight: 1.5 }}>
               Aéroports, longue distance et mise à disposition.
             </p>
             <div className="grid grid-cols-3 gap-2 mt-4 pt-4" style={{ borderTop: HAIRLINE }}>
               {[{ val: '5/5', lab: 'Excellence' }, { val: '2 min', lab: 'Réponse' }, { val: 'EVTC', lab: 'Certifié' }].map(s => (
                 <div key={s.lab} className="flex flex-col gap-1">
-                  <span className="font-brand font-bold text-[15px]" style={{ color: '#F5F1E8' }}>{s.val}</span>
-                  <span className="text-[10px] uppercase tracking-wider" style={{ color: 'rgba(245,241,232,.34)' }}>{s.lab}</span>
+                  <span className="font-brand font-bold text-[15px]" style={{ color: th.inkFull }}>{s.val}</span>
+                  <span className="text-[10px] uppercase tracking-wider" style={{ color: th.inkDim }}>{s.lab}</span>
                 </div>
               ))}
             </div>
@@ -145,7 +146,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* Trajets fixes */}
         <section className="px-5 pt-7" style={{ animation: 'fade-up .38s ease both 60ms' }}>
-          <SectionLabel>Trajets fixes</SectionLabel>
+          <SectionLabel th={th}>Trajets fixes</SectionLabel>
           <div className="overflow-hidden" style={CARD}>
             {TRAJETS.map((t, i) => (
               <div
@@ -155,8 +156,8 @@ export default function TarifsView({ open, onClose, onReserve }) {
               >
                 <span className="flex-shrink-0">{t.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm leading-tight" style={{ color: '#F5F1E8' }}>{t.title}</div>
-                  <div className="text-xs mt-0.5 truncate" style={{ color: 'rgba(245,241,232,.4)' }}>{t.subtitle}</div>
+                  <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>
+                  <div className="text-xs mt-0.5 truncate" style={{ color: th.inkMuted }}>{t.subtitle}</div>
                 </div>
                 <span className="font-brand font-bold text-[15px] whitespace-nowrap" style={{ color: '#ff4103' }}>{t.price}</span>
               </div>
@@ -166,7 +167,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* Mise à disposition */}
         <section className="px-5 pt-7" style={{ animation: 'fade-up .38s ease both 120ms' }}>
-          <SectionLabel>Mise à disposition</SectionLabel>
+          <SectionLabel th={th}>Mise à disposition</SectionLabel>
           <div className="overflow-hidden" style={CARD}>
             {MAD_ROWS.map((row, i) => (
               <div
@@ -175,21 +176,21 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 style={{ borderBottom: i < MAD_ROWS.length - 1 ? HAIRLINE : 'none' }}
               >
                 <div className="flex flex-col gap-0.5">
-                  <span className="font-semibold text-sm" style={{ color: '#F5F1E8' }}>{row.duration}</span>
-                  <span className="text-[11px]" style={{ color: 'rgba(245,241,232,.4)' }}>{row.note}</span>
+                  <span className="font-semibold text-sm" style={{ color: th.inkFull }}>{row.duration}</span>
+                  <span className="text-[11px]" style={{ color: th.inkMuted }}>{row.note}</span>
                 </div>
                 <span className="font-brand font-bold text-[15px]" style={{ color: '#ff4103' }}>{row.price}</span>
               </div>
             ))}
           </div>
-          <p className="text-center mt-2.5 px-1" style={{ fontSize: 11, color: 'rgba(245,241,232,.28)' }}>
+          <p className="text-center mt-2.5 px-1" style={{ fontSize: 11, color: th.inkDim }}>
             Tarifs TTC · Sans frais cachés · Attentes incluses
           </p>
         </section>
 
         {/* Pourquoi I&N RUN */}
         <section className="px-5 pt-7" style={{ animation: 'fade-up .38s ease both 180ms' }}>
-          <SectionLabel>Pourquoi I&N RUN</SectionLabel>
+          <SectionLabel th={th}>Pourquoi I&N RUN</SectionLabel>
           <div className="overflow-hidden" style={CARD}>
             {COMPARE.map((adv, i) => (
               <div
@@ -198,7 +199,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 style={{ borderBottom: i < COMPARE.length - 1 ? HAIRLINE : 'none' }}
               >
                 <span className="flex-shrink-0"><CheckIcon /></span>
-                <span className="text-sm" style={{ color: 'rgba(245,241,232,.82)' }}>{adv}</span>
+                <span className="text-sm" style={{ color: th.inkHigh }}>{adv}</span>
               </div>
             ))}
           </div>
@@ -207,7 +208,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
         {/* Avis clients */}
         <section className="pt-7" style={{ animation: 'fade-up .38s ease both 240ms' }}>
           <div className="px-5">
-            <SectionLabel>Avis clients</SectionLabel>
+            <SectionLabel th={th}>Avis clients</SectionLabel>
           </div>
           <div className="flex gap-3 overflow-x-auto px-5 pb-2" style={{ scrollbarWidth: 'none' }}>
             {REVIEWS.map((r) => (
@@ -218,22 +219,22 @@ export default function TarifsView({ open, onClose, onReserve }) {
               >
                 <div className="flex gap-0.5">
                   {[1,2,3,4,5].map(s => (
-                    <svg key={s} width="11" height="11" viewBox="0 0 24 24" fill="rgba(245,241,232,.55)">
+                    <svg key={s} width="11" height="11" viewBox="0 0 24 24" fill={th.inkLow}>
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                     </svg>
                   ))}
                 </div>
-                <p style={{ fontSize: 12, color: 'rgba(245,241,232,.55)', lineHeight: 1.55 }}>{r.text}</p>
+                <p style={{ fontSize: 12, color: th.inkLow, lineHeight: 1.55 }}>{r.text}</p>
                 <div className="flex items-center gap-2.5">
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: '#0a1828' }}
+                    style={{ background: th.bgAvatar }}
                   >
-                    <span className="text-[10px] font-bold" style={{ color: 'rgba(245,241,232,.6)' }}>{r.init}</span>
+                    <span className="text-[10px] font-bold" style={{ color: th.inkMid }}>{r.init}</span>
                   </div>
                   <div>
-                    <div className="text-xs font-semibold" style={{ color: '#F5F1E8' }}>{r.name}</div>
-                    <div style={{ fontSize: 10, color: 'rgba(245,241,232,.35)' }}>{r.route}</div>
+                    <div className="text-xs font-semibold" style={{ color: th.inkFull }}>{r.name}</div>
+                    <div style={{ fontSize: 10, color: th.inkDim }}>{r.route}</div>
                   </div>
                 </div>
               </div>
@@ -247,9 +248,8 @@ export default function TarifsView({ open, onClose, onReserve }) {
         className="flex-shrink-0 px-5 pt-3 flex flex-col gap-2 relative z-10"
         style={{
           paddingBottom:  'calc(var(--safe-bot) + 12px)',
-          borderTop:      '1px solid rgba(255,255,255,.06)',
-          background:     '#0A0A0A',
-
+          borderTop:      `1px solid ${th.divider}`,
+          background:     th.bgGrouped,
         }}
       >
         <button
@@ -266,9 +266,9 @@ export default function TarifsView({ open, onClose, onReserve }) {
           rel="noopener noreferrer"
           className="w-full py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2.5 cursor-pointer active:scale-[.98] transition-transform select-none"
           style={{
-            background: '#111111',
-            border: '1px solid rgba(255,255,255,.08)',
-            color: 'rgba(245,241,232,.82)',
+            background:     th.bgCard,
+            border:         `1px solid ${th.border}`,
+            color:          th.inkHigh,
             textDecoration: 'none',
           }}
         >

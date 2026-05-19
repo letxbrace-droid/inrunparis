@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import useAppTheme from '../../hooks/useAppTheme'
 
 const FAQ = [
   {
@@ -44,6 +45,7 @@ const itemVariants = {
 }
 
 export default function AideFaqView({ open, onClose }) {
+  const th = useAppTheme()
   const [expanded, setExpanded] = useState(null)
 
   return (
@@ -54,7 +56,7 @@ export default function AideFaqView({ open, onClose }) {
       aria-hidden={!open}
       className="fixed inset-0 z-[80] flex flex-col will-change-transform"
       style={{
-        background: '#050505',
+        background: th.bgBase,
         transform:     open ? 'translateX(0)' : 'translateX(100%)',
         visibility:    open ? 'visible' : 'hidden',
         pointerEvents: open ? 'auto' : 'none',
@@ -68,24 +70,22 @@ export default function AideFaqView({ open, onClose }) {
       <div
         className="flex items-center gap-4 px-5 flex-shrink-0 relative z-10"
         style={{
-          paddingTop: 'calc(var(--safe-top) + 16px)',
+          paddingTop:    'calc(var(--safe-top) + 16px)',
           paddingBottom: 14,
-          background: '#0D0D0D',
-          
-          
-          borderBottom: '1px solid rgba(255,255,255,.06)',
+          background:    th.bgHeader,
+          borderBottom:  `1px solid ${th.divider}`,
         }}
       >
         <button onClick={onClose} aria-label="Retour"
           className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
-          style={{ background: '#111111', border: '1px solid rgba(255,255,255,.07)' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,241,232,.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          style={{ background: th.bgCard, border: `1px solid ${th.border}` }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={th.inkHigh} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: '#F5F1E8' }}>Aide & FAQ</h1>
-          <p className="text-xs" style={{ color: 'rgba(245,241,232,.38)' }}>Questions fréquentes</p>
+          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Aide & FAQ</h1>
+          <p className="text-xs" style={{ color: th.inkMuted }}>Questions fréquentes</p>
         </div>
       </div>
 
@@ -104,10 +104,10 @@ export default function AideFaqView({ open, onClose }) {
               animate={open ? 'visible' : 'hidden'}
               className="overflow-hidden"
               style={{
-                background: '#111111',
+                background:   th.bgCard,
                 borderRadius: 16,
-                border: `1px solid ${expanded === i ? 'rgba(255,65,3,.25)' : 'rgba(255,255,255,.05)'}`,
-                transition: 'border-color .2s',
+                border:       `1px solid ${expanded === i ? 'rgba(255,65,3,.25)' : th.borderFaint}`,
+                transition:   'border-color .2s',
               }}
             >
               <button
@@ -117,7 +117,7 @@ export default function AideFaqView({ open, onClose }) {
               >
                 <span
                   className="text-sm font-semibold pr-4 leading-snug"
-                  style={{ color: expanded === i ? '#F5F1E8' : 'rgba(245,241,232,.72)' }}
+                  style={{ color: expanded === i ? th.inkFull : th.inkMid }}
                 >
                   {item.q}
                 </span>
@@ -142,7 +142,7 @@ export default function AideFaqView({ open, onClose }) {
                     transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                     style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,65,3,.12)' }}
                   >
-                    <p className="text-sm px-4 py-4 leading-relaxed" style={{ color: 'rgba(245,241,232,.52)' }}>
+                    <p className="text-sm px-4 py-4 leading-relaxed" style={{ color: th.inkLow }}>
                       {item.a}
                     </p>
                   </motion.div>
@@ -158,13 +158,9 @@ export default function AideFaqView({ open, onClose }) {
           animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
           transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: FAQ.length * 0.045 }}
           className="mt-5 mb-2 px-4 py-5 flex flex-col gap-3"
-          style={{
-            background: '#111111',
-            borderRadius: 16,
-            border: '1px solid rgba(255,255,255,.05)',
-          }}
+          style={{ background: th.bgCard, borderRadius: 16, border: `1px solid ${th.borderFaint}` }}
         >
-          <p className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.7)' }}>
+          <p className="text-sm font-semibold" style={{ color: th.inkMid }}>
             Vous ne trouvez pas votre réponse ?
           </p>
           <a

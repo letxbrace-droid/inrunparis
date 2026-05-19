@@ -1,7 +1,9 @@
 import useBookingStore from '../../store/useBookingStore'
-import GlowingCTA from '../ui/GlowingCTA'
+import GlowingCTA  from '../ui/GlowingCTA'
+import useAppTheme from '../../hooks/useAppTheme'
 
 export default function Step2Price({ onNext, onBack }) {
+  const th = useAppTheme()
   const { depart, arrive, price } = useBookingStore()
 
   if (!price) return (
@@ -34,25 +36,25 @@ export default function Step2Price({ onNext, onBack }) {
       <div
         className="flex flex-col items-center justify-center py-9 rounded-3xl"
         style={{
-          background: '#111111',
-          border: '1px solid rgba(255,255,255,.07)',
+          background: th.bgCard,
+          border: `1px solid ${th.border}`,
           borderTop: '2px solid rgba(255,90,31,.6)',
         }}
       >
 
         <span
           className="font-mono font-bold leading-none tracking-tight"
-          style={{ fontSize: '4rem', color: '#F5F1E8' }}
+          style={{ fontSize: '4rem', color: th.inkFull }}
         >
           {price.final}<span style={{ fontSize: '2rem', color: '#ff4103', marginLeft: 4 }}>€</span>
         </span>
 
         <div className="flex items-center gap-2.5 mt-3">
-          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.70)' }}>
+          <span className="font-mono text-xs" style={{ color: th.inkMid }}>
             {price.km} km
           </span>
-          <span style={{ color: 'rgba(245,241,232,.40)' }}>·</span>
-          <span className="font-mono text-xs" style={{ color: 'rgba(245,241,232,.70)' }}>
+          <span style={{ color: th.inkMuted }}>·</span>
+          <span className="font-mono text-xs" style={{ color: th.inkMid }}>
             ≈ {price.mins} min
           </span>
           {price.savings > 0 && (
@@ -100,11 +102,7 @@ export default function Step2Price({ onNext, onBack }) {
         <button
           onClick={onBack}
           className="flex-none px-5 py-4 rounded-2xl text-sm font-medium cursor-pointer active:scale-95 transition-transform"
-          style={{
-            background: 'rgba(245,241,232,.06)',
-            border: '1px solid rgba(245,241,232,.12)',
-            color: 'rgba(245,241,232,.75)',
-          }}
+          style={th.backBtn}
         >
           ← Retour
         </button>

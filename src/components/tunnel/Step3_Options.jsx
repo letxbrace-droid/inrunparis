@@ -4,6 +4,7 @@ import useBookingStore from '../../store/useBookingStore'
 import { sendWhatsApp, generateBonNumber } from '../../utils/whatsappEncoder'
 import GlowingCTA    from '../ui/GlowingCTA'
 import FloatingInput from '../ui/FloatingInput'
+import useAppTheme   from '../../hooks/useAppTheme'
 
 // ─── Animated ambiance icons ─────────────────────────────────────────────────
 
@@ -206,7 +207,7 @@ const PRESTATIONS = [
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function SectionLabel({ children }) {
+function SectionLabel({ children, th }) {
   return (
     <div className="flex items-center gap-2 mb-3">
       <span
@@ -215,12 +216,12 @@ function SectionLabel({ children }) {
       >
         {children}
       </span>
-      <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,.06)' }} />
+      <div className="flex-1 h-px" style={{ background: th.divider }} />
     </div>
   )
 }
 
-function PillButton({ active, onClick, icon: Icon, children }) {
+function PillButton({ active, onClick, icon: Icon, children, th }) {
   const [hovered, setHovered] = useState(false)
   return (
     <button
@@ -229,13 +230,13 @@ function PillButton({ active, onClick, icon: Icon, children }) {
       onMouseLeave={() => setHovered(false)}
       className="flex-1 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95 transition-transform duration-150 select-none"
       style={{
-        background: active ? 'rgba(255,90,31,.14)' : hovered ? '#1A1A1A' : '#141414',
+        background: active ? 'rgba(255,90,31,.14)' : hovered ? th.bgHover : th.bgInset,
         border: active
           ? '1px solid rgba(255,90,31,.40)'
           : hovered
-          ? '1px solid rgba(255,255,255,.12)'
-          : '1px solid rgba(255,255,255,.07)',
-        color: active ? '#F5F1E8' : hovered ? 'rgba(245,241,232,.80)' : 'rgba(245,241,232,.60)',
+          ? `1px solid ${th.borderStrong}`
+          : `1px solid ${th.border}`,
+        color: active ? th.inkFull : hovered ? th.inkHigh : th.inkLow,
         transition: 'background .15s, border .15s, color .15s',
       }}
     >
@@ -247,7 +248,7 @@ function PillButton({ active, onClick, icon: Icon, children }) {
   )
 }
 
-function PrestationCard({ active, onClick, Icon, label }) {
+function PrestationCard({ active, onClick, Icon, label, th }) {
   const [hovered, setHovered] = useState(false)
   return (
     <motion.button
@@ -256,20 +257,20 @@ function PrestationCard({ active, onClick, Icon, label }) {
       onMouseLeave={() => setHovered(false)}
       whileTap={{ scale: 0.94 }}
       animate={{
-        background: active ? 'rgba(255,90,31,.12)' : hovered ? '#1A1A1A' : '#141414',
-        borderColor: active ? 'rgba(255,90,31,.38)' : hovered ? 'rgba(255,255,255,.12)' : 'rgba(255,255,255,.07)',
+        background: active ? 'rgba(255,90,31,.12)' : hovered ? th.bgHover : th.bgInset,
+        borderColor: active ? 'rgba(255,90,31,.38)' : hovered ? th.borderStrong : th.border,
       }}
       transition={{ duration: 0.18 }}
       className="flex flex-col items-center justify-center gap-2 py-4 rounded-2xl cursor-pointer select-none flex-1"
       style={{
-        border: '1px solid rgba(255,255,255,.06)',
+        border: `1px solid ${th.borderFaint}`,
         minHeight: 90,
       }}
     >
       <Icon active={active} />
       <span
         className="text-[11px] font-semibold text-center leading-tight"
-        style={{ color: active ? '#F5F1E8' : 'rgba(245,241,232,.65)' }}
+        style={{ color: active ? th.inkFull : th.inkLow }}
       >
         {label}
       </span>
@@ -286,6 +287,7 @@ function PrestationCard({ active, onClick, Icon, label }) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function Step3Options({ onBack }) {
+  const th             = useAppTheme()
   const ambiance       = useBookingStore((s) => s.ambiance)
   const setAmbiance    = useBookingStore((s) => s.setAmbiance)
   const volume         = useBookingStore((s) => s.volume)
@@ -319,7 +321,7 @@ export default function Step3Options({ onBack }) {
 
       {/* Identité */}
       <section>
-        <SectionLabel>Votre identité</SectionLabel>
+        <SectionLabel th={th}>Votre identité</SectionLabel>
         <div className="flex flex-col gap-3">
           <FloatingInput
             label="Prénom"
@@ -340,7 +342,7 @@ export default function Step3Options({ onBack }) {
 
       {/* Ambiance */}
       <section>
-        <SectionLabel>Ambiance sonore</SectionLabel>
+        <SectionLabel th={th}>Ambiance sonore</SectionLabel>
         <div className="flex gap-2">
           {AMBIANCE_OPTS.map((opt) => (
             <PillButton
@@ -348,6 +350,7 @@ export default function Step3Options({ onBack }) {
               active={ambiance === opt.value}
               onClick={() => setAmbiance(opt.value)}
               icon={opt.Icon}
+              th={th}
             >
               {opt.label}
             </PillButton>
@@ -376,24 +379,24 @@ export default function Step3Options({ onBack }) {
 
       {/* Climatisation */}
       <section>
-        <SectionLabel>Climatisation</SectionLabel>
+        <SectionLabel th={th}>Climatisation</SectionLabel>
         <div
           className="px-4 py-4 rounded-2xl flex flex-col gap-3"
-          style={{ background: '#161616', border: '1px solid rgba(255,255,255,.07)' }}
+          style={{ background: th.bgInput, border: `1px solid ${th.border}` }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ThermometerIcon clim={clim} />
-              <span className="text-sm font-semibold" style={{ color: 'rgba(245,241,232,.85)' }}>
+              <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>
                 Température
               </span>
             </div>
-            <span className="font-mono font-bold text-[15px]" style={{ color: '#F5F1E8', minWidth: 44, textAlign: 'right' }}>
+            <span className="font-mono font-bold text-[15px]" style={{ color: th.inkFull, minWidth: 44, textAlign: 'right' }}>
               {clim}°C
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.55)' }}>16°</span>
+            <span className="font-mono text-[10px]" style={{ color: th.inkLow }}>16°</span>
             <input
               type="range" min={16} max={28} step={1} value={clim}
               onChange={(e) => setClim(Number(e.target.value))}
@@ -401,14 +404,14 @@ export default function Step3Options({ onBack }) {
               style={{ accentColor: '#ff4103', height: 4 }}
               aria-label="Température climatisation"
             />
-            <span className="font-mono text-[10px]" style={{ color: 'rgba(245,241,232,.55)' }}>28°</span>
+            <span className="font-mono text-[10px]" style={{ color: th.inkLow }}>28°</span>
           </div>
         </div>
       </section>
 
       {/* Prestations à bord */}
       <section>
-        <SectionLabel>Prestations à bord</SectionLabel>
+        <SectionLabel th={th}>Prestations à bord</SectionLabel>
         <div className="flex gap-3">
           {PRESTATIONS.map(({ key, label, Icon }) => (
             <PrestationCard
@@ -417,6 +420,7 @@ export default function Step3Options({ onBack }) {
               onClick={() => toggleOption(key)}
               Icon={Icon}
               label={label}
+              th={th}
             />
           ))}
         </div>
@@ -424,7 +428,7 @@ export default function Step3Options({ onBack }) {
 
       {/* Règlement */}
       <section>
-        <SectionLabel>Mode de règlement</SectionLabel>
+        <SectionLabel th={th}>Mode de règlement</SectionLabel>
         <div className="flex gap-2">
           {PAYMENT_OPTS.map((p) => (
             <PillButton
@@ -432,6 +436,7 @@ export default function Step3Options({ onBack }) {
               active={payment === p.value}
               onClick={() => setPayment(p.value)}
               icon={p.Icon}
+              th={th}
             >
               {p.label}
             </PillButton>
@@ -441,7 +446,7 @@ export default function Step3Options({ onBack }) {
 
       {/* Note */}
       <section>
-        <SectionLabel>Note (facultatif)</SectionLabel>
+        <SectionLabel th={th}>Note (facultatif)</SectionLabel>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -449,13 +454,13 @@ export default function Step3Options({ onBack }) {
           rows={2}
           className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none"
           style={{
-            background: '#161616',
-            border:     '1px solid rgba(255,255,255,.07)',
-            color:      '#F5F1E8',
+            background: th.bgInput,
+            border:     `1px solid ${th.border}`,
+            color:      th.inkFull,
             transition: 'border-color .2s',
           }}
           onFocus={e  => e.target.style.borderColor = 'rgba(255,90,31,.40)'}
-          onBlur={e   => e.target.style.borderColor = 'rgba(255,255,255,.07)'}
+          onBlur={e   => { e.target.style.borderColor = th.border }}
           aria-label="Note complémentaire"
         />
       </section>
@@ -472,7 +477,7 @@ export default function Step3Options({ onBack }) {
         <button
           onClick={onBack}
           className="text-sm text-center cursor-pointer py-2 active:opacity-60 transition-opacity"
-          style={{ color: 'rgba(245,241,232,.55)' }}
+          style={{ color: th.backLink }}
         >
           ← Modifier le tarif
         </button>

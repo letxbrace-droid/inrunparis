@@ -2,12 +2,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
+import useAppTheme  from '../../hooks/useAppTheme'
 
 const STEPS = ['Trajet', 'Tarif', 'Options']
 
 const SPRING = { type: 'spring', stiffness: 380, damping: 32 }
 
-function StepDot({ index, current }) {
+function StepDot({ index, current, th }) {
   const state = index + 1 < current ? 'done' : index + 1 === current ? 'active' : 'future'
 
   return (
@@ -17,21 +18,19 @@ function StepDot({ index, current }) {
         background:
           state === 'active' ? '#ff4103'
           : state === 'done'  ? 'rgba(255,65,3,.22)'
-          : 'rgba(0,10,18,.6)',
+          : th.isDark ? 'rgba(0,10,18,.6)' : 'rgba(0,0,0,.08)',
         scale:     state === 'active' ? 1.12 : 1,
         boxShadow:
           state === 'active'
             ? 'inset 0 1px 0 rgba(255,255,255,.15)'
-            : state === 'done'
-            ? 'none'
             : 'none',
       }}
       transition={SPRING}
       style={{
-        border: state === 'future' ? '1px solid rgba(255,255,255,.12)' : 'none',
+        border: state === 'future' ? `1px solid ${th.borderStrong}` : 'none',
         fontSize: 12,
         fontWeight: 700,
-        color: state === 'future' ? 'rgba(245,241,232,.55)' : '#F5F1E8',
+        color: state === 'future' ? th.inkLow : '#F5F1E8',
       }}
     >
       {state === 'done' ? (
@@ -58,10 +57,10 @@ function StepDot({ index, current }) {
   )
 }
 
-function StepConnector({ index, current }) {
+function StepConnector({ index, current, th }) {
   const filled = index + 1 < current
   return (
-    <div className="relative mx-3 h-px overflow-hidden" style={{ width: 28, background: 'rgba(255,255,255,.07)' }}>
+    <div className="relative mx-3 h-px overflow-hidden" style={{ width: 28, background: th.border }}>
       <motion.div
         className="absolute inset-y-0 left-0 h-full"
         animate={{ scaleX: filled ? 1 : 0 }}
@@ -73,6 +72,8 @@ function StepConnector({ index, current }) {
 }
 
 export default function BottomSheet({ open, step, onStepChange, onClose }) {
+  const th = useAppTheme()
+
   return (
     <>
       {/* Overlay */}
@@ -81,7 +82,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         aria-hidden="true"
         className="fixed inset-0 z-[90] transition-opacity duration-300"
         style={{
-          background: 'rgba(0,0,0,.72)',
+          background: th.overlay,
           opacity: open ? 1 : 0,
           pointerEvents: open ? 'auto' : 'none',
         }}
@@ -102,11 +103,11 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             height:       '93dvh',
             borderRadius: '22px 22px 0 0',
             overflow:     'hidden',
-            background:   '#0B0B0B',
-            borderTop:    '1px solid rgba(255,255,255,.08)',
-            borderLeft:   '1px solid rgba(255,255,255,.06)',
-            borderRight:  '1px solid rgba(255,255,255,.06)',
-            boxShadow:    '0 -16px 48px rgba(0,0,0,.9)',
+            background:   th.bgPanel,
+            borderTop:    `1px solid ${th.borderStrong}`,
+            borderLeft:   `1px solid ${th.border}`,
+            borderRight:  `1px solid ${th.border}`,
+            boxShadow:    `0 -16px 48px ${th.scrim}`,
             transform:    open ? 'translateY(0)' : 'translateY(100%)',
             opacity:      open ? 1 : 0,
             transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease',
@@ -116,13 +117,13 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           <div
             className="flex-shrink-0"
             style={{
-              background:   '#0D0D0D',
-              borderBottom: '1px solid rgba(255,255,255,.07)',
+              background:   th.bgHeader,
+              borderBottom: `1px solid ${th.border}`,
             }}
           >
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,.18)' }} />
+              <div className="w-10 h-[3px] rounded-full" style={{ background: th.handle }} />
             </div>
 
             {/* Step indicator */}
@@ -135,20 +136,20 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                     aria-label={`Étape ${i + 1} : ${label}`}
                     className="flex items-center gap-2 cursor-pointer disabled:cursor-default"
                   >
-                    <StepDot index={i} current={step} />
+                    <StepDot index={i} current={step} th={th} />
                     <motion.span
                       className="text-[12px] font-semibold"
                       animate={{
-                        color: i + 1 === step ? '#F5F1E8'
+                        color: i + 1 === step ? th.inkFull
                           : i + 1 < step ? 'rgba(255,65,3,.75)'
-                          : 'rgba(245,241,232,.52)',
+                          : th.inkMuted,
                       }}
                       transition={{ duration: 0.25 }}
                     >
                       {label}
                     </motion.span>
                   </button>
-                  {i < STEPS.length - 1 && <StepConnector index={i} current={step} />}
+                  {i < STEPS.length - 1 && <StepConnector index={i} current={step} th={th} />}
                 </div>
               ))}
             </div>
