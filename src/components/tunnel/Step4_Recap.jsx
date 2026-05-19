@@ -5,7 +5,7 @@ import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
 
 const AMBIANCE_LABEL  = { musique: 'Musique', radio: 'Radio', silence: 'Silence' }
-const PAYMENT_LABEL   = { especes: 'Espèces', carte: 'Carte',  virement: 'Virement' }
+const PAYMENT_LABEL   = { Espèces: 'Espèces', Carte: 'Carte',  Virement: 'Virement' }
 
 function fmtPickup(pickup) {
   if (!pickup) return '—'
