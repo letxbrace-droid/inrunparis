@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import LeafletMap          from './components/map/LeafletMap'
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
@@ -10,8 +11,9 @@ import CodePromoView       from './components/views/CodePromoView'
 import AideFaqView         from './components/views/AideFaqView'
 import LegalView           from './components/views/LegalView'
 import HomePill            from './components/home/HomePill'
+import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
-import InstallPrompt      from './components/ui/InstallPrompt'
+import InstallPrompt       from './components/ui/InstallPrompt'
 import useBookingStore     from './store/useBookingStore'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'faq', 'legal']
@@ -137,12 +139,22 @@ export default function App() {
         isDark={isDark}
       />
 
-      {/* Home pill — hidden while overlay is active */}
-      {!OVERLAY_VIEWS.includes(activeView) && (
+      {/* Home pill — hidden while overlay is active or a booking is pending confirmation */}
+      {!OVERLAY_VIEWS.includes(activeView) && !confirmBon && (
         <HomePill
           onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
         />
       )}
+
+      {/* Awaiting-confirmation card — shown after toast dismisses, replaces HomePill */}
+      <AnimatePresence>
+        {confirmBon && !confirmOpen && !OVERLAY_VIEWS.includes(activeView) && (
+          <AwaitingCard
+            bonNumber={confirmBon}
+            onDismiss={() => setConfirmBon(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Slide-in views */}
       <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
