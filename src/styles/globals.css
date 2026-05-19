@@ -76,24 +76,33 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ── Light mode token overrides ────────────────────────────── */
+  /* ── Light mode — editorial UHD, zero diffuse shadow ──────── */
   [data-theme="light"] {
     --bg-grouped:    #F2F0EC;
     --bg-base:       #F7F5F0;
     --bg-secondary:  #FFFFFF;
-    --bg-tertiary:   #F0EDE8;
-    --bg-elevated:   #E8E5E0;
-    --bg-glass:      rgba(247,245,240,0.96);
-    --label:            #111111;
-    --label-secondary:  rgba(17,17,17,0.78);
-    --label-tertiary:   rgba(17,17,17,0.52);
-    --label-quaternary: rgba(17,17,17,0.28);
-    --separator:        rgba(0,0,0,0.09);
-    --separator-strong: rgba(0,0,0,0.14);
+    --bg-tertiary:   #EDEAE4;
+    --bg-elevated:   #E4E1DB;
+    --bg-glass:      rgba(247,245,240,0.97);
+
+    /* High-contrast editorial ink — readable, not washed out */
+    --label:            #0D0D0D;
+    --label-secondary:  rgba(13,13,13,0.82);
+    --label-tertiary:   rgba(13,13,13,0.60);
+    --label-quaternary: rgba(13,13,13,0.38);
+
+    /* Crisp 1-px hairlines instead of diffuse blur */
+    --separator:        rgba(0,0,0,0.10);
+    --separator-strong: rgba(0,0,0,0.16);
     --fill:             rgba(0,0,0,0.05);
     --fill-secondary:   rgba(0,0,0,0.03);
-    --shadow-card:      0 1px 4px rgba(0,0,0,0.12);
-    --shadow-inset:     inset 0 1px 0 rgba(255,255,255,0.8);
+
+    /* Flat editorial elevations — 0 blur, sharp outline */
+    --elev-1:     0 0 0 1px rgba(0,0,0,0.08);
+    --elev-2:     0 0 0 1px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05);
+    --elev-float: 0 0 0 1px rgba(0,0,0,0.12), 0 4px 20px rgba(0,0,0,0.07);
+    --shadow-card:  0 0 0 1px rgba(0,0,0,0.08);
+    --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.90);
     color-scheme: light;
   }
 

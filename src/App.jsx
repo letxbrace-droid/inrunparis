@@ -28,11 +28,34 @@ export default function App() {
   const arrive        = useBookingStore((s) => s.arrive)
   const routeGeometry = useBookingStore((s) => s.routeGeometry)
   const isDark        = useBookingStore((s) => s.isDark)
+  const theme         = useBookingStore((s) => s.theme)
+  const setIsDark     = useBookingStore((s) => s.setIsDark)
 
   // Sync theme to <html data-theme> so CSS variables switch globally
   useEffect(() => {
     document.documentElement.dataset.theme = isDark ? 'dark' : 'light'
   }, [isDark])
+
+  // Auto mode: Paris sunrise/sunset by month [rise_h, set_h] local time
+  useEffect(() => {
+    if (theme !== 'system') return
+    const PARIS_SUN = [
+      [8,17],[8,18],[7,19],[7,21],[6,22],[6,22],
+      [6,22],[7,21],[7,20],[8,19],[8,17],[8,17],
+    ]
+    const check = () => {
+      const h = parseInt(
+        new Intl.DateTimeFormat('fr-FR', {
+          timeZone: 'Europe/Paris', hour: 'numeric', hour12: false,
+        }).format(new Date()), 10
+      )
+      const [rise, set] = PARIS_SUN[new Date().getMonth()]
+      setIsDark(h < rise || h >= set)
+    }
+    check()
+    const id = setInterval(check, 60_000)
+    return () => clearInterval(id)
+  }, [theme, setIsDark])
 
   const route      = routeGeometry ? { geometry: routeGeometry } : null
   const mapFrozen  = drawerOpen || sheetOpen || OVERLAY_VIEWS.includes(activeView)

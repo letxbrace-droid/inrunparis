@@ -48,12 +48,12 @@ export default function useAppTheme() {
     bgHover:     '#E5E3DE',
     bgAvatar:    '#E0DDD6',
 
-    inkFull:     '#111111',
-    inkHigh:     'rgba(17,17,17,.88)',
-    inkMid:      'rgba(17,17,17,.72)',
-    inkLow:      'rgba(17,17,17,.58)',
-    inkMuted:    'rgba(17,17,17,.45)',
-    inkDim:      'rgba(17,17,17,.30)',
+    inkFull:     '#0D0D0D',
+    inkHigh:     'rgba(13,13,13,.90)',
+    inkMid:      'rgba(13,13,13,.78)',
+    inkLow:      'rgba(13,13,13,.65)',
+    inkMuted:    'rgba(13,13,13,.52)',
+    inkDim:      'rgba(13,13,13,.38)',
 
     border:      'rgba(0,0,0,.09)',
     borderStrong:'rgba(0,0,0,.14)',

@@ -243,14 +243,14 @@ export default function HomePill({ onOpenSheet }) {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4103" strokeWidth="2.2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
               </svg>
-              <span className="text-ink-primary text-sm font-medium">Où allons-nous ?</span>
+              <span className="text-ink-primary text-sm font-semibold">Où allons-nous ?</span>
             </span>
-            <div className="w-px self-stretch bg-[var(--rule-strong)]" aria-hidden="true" />
+            <div className="w-px self-stretch" style={{ background: 'var(--separator-strong)' }} aria-hidden="true" />
             <span className="flex items-center gap-1.5 px-4 py-[14px]">
               <span
                 className={`w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
-              <span className={`font-mono text-[10px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
+              <span className={`text-[11px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
                 {TAGS[tagIdx]}
               </span>
             </span>
@@ -303,7 +303,7 @@ export default function HomePill({ onOpenSheet }) {
               {/* HUD */}
               <div className="flex items-center gap-2.5 pt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
-                <span className="font-mono text-[11px] tracking-wider truncate" style={{ color: th.inkMid }}>
+                <span className="text-[11px] tracking-wide font-medium truncate" style={{ color: th.inkMid }}>
                   Réservation à l'avance · Aéroports & longue distance
                 </span>
               </div>

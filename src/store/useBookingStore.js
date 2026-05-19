@@ -84,12 +84,12 @@ const useBookingStore = create(
       setAmbiance:     (v) => set({ ambiance: v }),
       setVolume:       (v) => set({ volume: v }),
       setClim:         (v) => set({ clim: v }),
-      setIsDark:       (v) => set({ isDark: v }),
+      setIsDark: (v) => set({ isDark: v }),
       setTheme: (v) => {
-        const isDark = v === 'system'
-          ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-          : v === 'dark'
-        set({ theme: v, isDark })
+        if (v === 'dark')  { set({ theme: v, isDark: true  }); return }
+        if (v === 'light') { set({ theme: v, isDark: false }); return }
+        // 'system' — isDark resolved by App.jsx Paris sunrise/sunset effect
+        set({ theme: v })
       },
       toggleOption:    (key) => set((s) => ({ options: { ...s.options, [key]: !s.options[key] } })),
       setPayment:      (v) => set({ payment: v }),
