@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
@@ -74,21 +75,57 @@ function StepConnector({ index, current, th }) {
 
 export default function BottomSheet({ open, step, onStepChange, onClose }) {
   const th = useAppTheme()
+  const [collapsed, setCollapsed] = useState(false)
+
+  useEffect(() => { setCollapsed(false) }, [step])
+
+  const isRecap  = step === 4
+  const sheetOut = !open || (isRecap && collapsed)
 
   return (
     <>
-      {/* Overlay — lighter for recap step so map stays readable */}
+      {/* Overlay — none when recap collapsed, lighter when recap open */}
       <div
-        onClick={step === 4 ? undefined : onClose}
+        onClick={!isRecap ? onClose : undefined}
         aria-hidden="true"
         className="fixed inset-0 z-[90] transition-all duration-500"
         style={{
-          background: step === 4 ? 'rgba(0,0,0,.22)' : th.overlay,
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? 'auto' : 'none',
-          backdropFilter: step === 4 ? 'none' : 'none',
+          background: isRecap ? 'rgba(0,0,0,.22)' : th.overlay,
+          opacity: open && !collapsed ? 1 : 0,
+          pointerEvents: open && !collapsed && !isRecap ? 'auto' : 'none',
         }}
       />
+
+      {/* Floating restore chip — step 4 collapsed */}
+      <AnimatePresence>
+        {open && isRecap && collapsed && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed bottom-7 left-0 right-0 z-[96] flex justify-center pointer-events-none"
+          >
+            <button
+              onClick={() => setCollapsed(false)}
+              className="pointer-events-auto flex items-center gap-2 px-5 py-3 rounded-full select-none cursor-pointer"
+              style={{
+                background: '#ff4103',
+                color: '#fff',
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.01em',
+                boxShadow: '0 4px 20px rgba(255,65,3,.50), 0 2px 8px rgba(0,0,0,.30)',
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              Récapitulatif
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Sheet panel */}
       <div
@@ -111,7 +148,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             borderLeft:   `1px solid ${th.border}`,
             borderRight:  `1px solid ${th.border}`,
             boxShadow:    `0 -16px 48px ${th.scrim}`,
-            transform:    open ? 'translateY(0)' : 'translateY(100%)',
+            transform:    sheetOut ? 'translateY(100%)' : 'translateY(0)',
             opacity:      open ? 1 : 0,
             transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease, height .4s cubic-bezier(.32,1,.55,1), max-height .4s cubic-bezier(.32,1,.55,1)',
           }}
@@ -124,9 +161,24 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               borderBottom: `1px solid ${th.border}`,
             }}
           >
-            {/* Handle */}
-            <div className="flex justify-center pt-3 pb-1">
+            {/* Handle — tappable on step 4 to collapse */}
+            <div
+              onClick={isRecap ? () => setCollapsed(true) : undefined}
+              className={`flex flex-col items-center pt-3 pb-1 ${isRecap ? 'cursor-pointer active:opacity-60 transition-opacity' : ''}`}
+              aria-label={isRecap ? 'Réduire pour voir la carte' : undefined}
+              role={isRecap ? 'button' : undefined}
+            >
               <div className="w-10 h-[3px] rounded-full" style={{ background: th.handle }} />
+              {isRecap && (
+                <div className="flex items-center gap-1 mt-1.5">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: th.inkDim }}>
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                  <span className="text-[9px] font-semibold uppercase tracking-[.10em]" style={{ color: th.inkDim }}>
+                    Voir la carte
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Step indicator (hidden on recap step) */}

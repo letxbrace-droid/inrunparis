@@ -251,19 +251,28 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
           transition: 'width .04s linear',
         }}
       />
-      {/* Thumb */}
-      <motion.div
-        className="absolute rounded-full pointer-events-none"
-        animate={{ scale: active ? 1.18 : 1 }}
-        transition={{ type: 'spring', stiffness: 600, damping: 28 }}
+      {/* Thumb — wrapper handles position, motion.div handles scale only */}
+      <div
+        className="absolute pointer-events-none"
         style={{
           left: `calc(${pct / 100} * (100% - ${THUMB}px))`,
-          top: '50%', transform: 'translateY(-50%)',
-          width: THUMB, height: THUMB,
-          background: thumbBg,
-          boxShadow: thumbShadow,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: THUMB,
+          height: THUMB,
         }}
-      />
+      >
+        <motion.div
+          animate={{ scale: active ? 1.18 : 1 }}
+          transition={{ type: 'spring', stiffness: 600, damping: 28 }}
+          style={{
+            width: '100%', height: '100%',
+            borderRadius: '50%',
+            background: thumbBg,
+            boxShadow: thumbShadow,
+          }}
+        />
+      </div>
       {/* Native range — invisible, handles all events */}
       <input
         type="range"
@@ -503,7 +512,8 @@ export default function Step3Options({ onNext, onBack }) {
   const note           = useBookingStore((s) => s.note)
   const setNote        = useBookingStore((s) => s.setNote)
 
-  const handleSend = () => onNext?.()
+  const canSend = clientName.trim().length > 0
+  const handleSend = () => { if (canSend) onNext?.() }
 
   // Temp gradient: cool → warm → hot based on position
   const tempRatio   = (clim - 16) / 12
@@ -704,9 +714,14 @@ export default function Step3Options({ onNext, onBack }) {
 
       {/* ── CTA ─────────────────────────────────────────────────── */}
       <motion.div variants={sectionV} className="flex flex-col gap-3 pt-1">
-        <GlowingCTA onClick={handleSend}>
+        <GlowingCTA onClick={handleSend} disabled={!canSend}>
           Voir le récapitulatif →
         </GlowingCTA>
+        {!canSend && (
+          <p className="text-center text-[11px] font-semibold -mt-1" style={{ color: 'rgba(255,65,3,.72)' }}>
+            Renseignez votre prénom pour continuer
+          </p>
+        )}
         <button
           onClick={onBack}
           className="text-sm text-center cursor-pointer py-2 active:opacity-60 transition-opacity"
