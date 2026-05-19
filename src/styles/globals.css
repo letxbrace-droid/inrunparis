@@ -76,6 +76,32 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* ── Light mode token overrides ────────────────────────────── */
+  [data-theme="light"] {
+    --bg-grouped:    #F2F0EC;
+    --bg-base:       #F7F5F0;
+    --bg-secondary:  #FFFFFF;
+    --bg-tertiary:   #F0EDE8;
+    --bg-elevated:   #E8E5E0;
+    --bg-glass:      rgba(247,245,240,0.96);
+    --label:            #111111;
+    --label-secondary:  rgba(17,17,17,0.78);
+    --label-tertiary:   rgba(17,17,17,0.52);
+    --label-quaternary: rgba(17,17,17,0.28);
+    --separator:        rgba(0,0,0,0.09);
+    --separator-strong: rgba(0,0,0,0.14);
+    --fill:             rgba(0,0,0,0.05);
+    --fill-secondary:   rgba(0,0,0,0.03);
+    --shadow-card:      0 1px 4px rgba(0,0,0,0.12);
+    --shadow-inset:     inset 0 1px 0 rgba(255,255,255,0.8);
+    color-scheme: light;
+  }
+
+  [data-theme="light"] input::placeholder,
+  [data-theme="light"] textarea::placeholder {
+    color: rgba(17,17,17,0.38);
+  }
+
   input::placeholder, textarea::placeholder {
     color: rgba(245,241,232,0.48);
   }

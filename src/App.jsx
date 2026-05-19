@@ -29,6 +29,11 @@ export default function App() {
   const routeGeometry = useBookingStore((s) => s.routeGeometry)
   const isDark        = useBookingStore((s) => s.isDark)
 
+  // Sync theme to <html data-theme> so CSS variables switch globally
+  useEffect(() => {
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light'
+  }, [isDark])
+
   const route      = routeGeometry ? { geometry: routeGeometry } : null
   const mapFrozen  = drawerOpen || sheetOpen || OVERLAY_VIEWS.includes(activeView)
 
@@ -98,7 +103,7 @@ export default function App() {
         style={{
           background: isDark
             ? 'linear-gradient(to bottom, rgba(5,5,5,.55) 0%, transparent 18%, transparent 60%, rgba(5,5,5,.92) 100%)'
-            : 'linear-gradient(to bottom, rgba(10,10,10,.42) 0%, transparent 25%, transparent 55%, rgba(10,10,10,.88) 100%)',
+            : 'linear-gradient(to bottom, rgba(240,238,232,.70) 0%, transparent 22%, transparent 58%, rgba(240,238,232,.92) 100%)',
         }}
       />
 

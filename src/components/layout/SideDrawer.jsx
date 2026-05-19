@@ -2,94 +2,22 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 
-function IconHome() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-      <polyline points="9 22 9 12 15 12 15 22"/>
-    </svg>
-  )
-}
-
-function IconCar() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4" width="18" height="17" rx="2"/>
-      <line x1="16" y1="2" x2="16" y2="6"/>
-      <line x1="8"  y1="2" x2="8"  y2="6"/>
-      <line x1="3"  y1="10" x2="21" y2="10"/>
-      <path d="M9 16l2 2 4-4"/>
-    </svg>
-  )
-}
-
-function IconTag() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-      <line x1="7" y1="7" x2="7.01" y2="7"/>
-    </svg>
-  )
-}
-
-function IconPhone() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.66 3.55a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.91 6.91l.82-.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/>
-    </svg>
-  )
-}
-
-function IconHistory() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
-    </svg>
-  )
-}
-
-function IconPromo() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-      <line x1="7" y1="7" x2="7.01" y2="7"/>
-    </svg>
-  )
-}
-
-function IconHelp() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-    </svg>
-  )
-}
-
-function IconShield() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-    </svg>
-  )
-}
+// ── Icons ─────────────────────────────────────────────────────────────────────
 
 function IconSun() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="5"/>
-      <line x1="12" y1="1"  x2="12" y2="3"/>
-      <line x1="12" y1="21" x2="12" y2="23"/>
-      <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
       <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-      <line x1="1"  y1="12" x2="3"  y2="12"/>
-      <line x1="21" y1="12" x2="23" y2="12"/>
-      <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
-      <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
     </svg>
   )
 }
-
 function IconMoon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -97,7 +25,6 @@ function IconMoon() {
     </svg>
   )
 }
-
 function IconAuto() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -105,8 +32,7 @@ function IconAuto() {
       <path d="M17 18a5 5 0 0 0-10 0"/>
       <line x1="12" y1="9" x2="12" y2="2"/>
       <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
-      <line x1="1" y1="18" x2="3" y2="18"/>
-      <line x1="21" y1="18" x2="23" y2="18"/>
+      <line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/>
       <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
       <line x1="23" y1="22" x2="1" y2="22"/>
       <polyline points="16 5 12 1 8 5"/>
@@ -115,27 +41,27 @@ function IconAuto() {
 }
 
 const THEME_OPTIONS = [
-  { value: 'light',  Icon: IconSun,  label: 'Mode clair'  },
-  { value: 'dark',   Icon: IconMoon, label: 'Mode sombre' },
-  { value: 'system', Icon: IconAuto, label: 'Automatique' },
+  { value: 'light',  Icon: IconSun,  label: 'Clair'   },
+  { value: 'dark',   Icon: IconMoon, label: 'Sombre'  },
+  { value: 'system', Icon: IconAuto, label: 'Auto'    },
 ]
 
 const SLOT_W = 46
 
-function ThemeSwitcher({ theme, onChange }) {
+function ThemeSwitcher({ theme, onChange, isDark }) {
   const idx = Math.max(0, THEME_OPTIONS.findIndex(t => t.value === theme))
   return (
     <div
       role="radiogroup"
-      aria-label="Thème de l'interface"
+      aria-label="Thème"
       style={{
         position:     'relative',
         display:      'flex',
         width:        SLOT_W * 3,
         height:       44,
         borderRadius: 999,
-        background:   '#0D0D0D',
-        border:       '1px solid rgba(255,255,255,.08)',
+        background:   isDark ? '#111111' : '#E8E5E0',
+        border:       `1px solid ${isDark ? 'rgba(255,255,255,.10)' : 'rgba(0,0,0,.10)'}`,
         flexShrink:   0,
       }}
     >
@@ -146,14 +72,16 @@ function ThemeSwitcher({ theme, onChange }) {
         transition={{ type: 'spring', damping: 28, stiffness: 320, restDelta: 0.5 }}
         style={{
           position:     'absolute',
-          top:          3,
-          left:         0,
-          width:        38,
-          height:       38,
+          top:          3, left: 0,
+          width:        38, height: 38,
           borderRadius: '50%',
-          background:   'linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.07))',
-          border:       '1px solid rgba(255,255,255,.18)',
-          boxShadow:    '0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.18)',
+          background:   isDark
+            ? 'linear-gradient(145deg, rgba(255,255,255,.20), rgba(255,255,255,.08))'
+            : 'linear-gradient(145deg, #FFFFFF, #F0EDE8)',
+          border:       `1px solid ${isDark ? 'rgba(255,255,255,.20)' : 'rgba(0,0,0,.12)'}`,
+          boxShadow:    isDark
+            ? '0 2px 8px rgba(0,0,0,.5)'
+            : '0 2px 8px rgba(0,0,0,.15)',
           pointerEvents:'none',
         }}
       />
@@ -167,19 +95,14 @@ function ThemeSwitcher({ theme, onChange }) {
             aria-label={t.label}
             onClick={() => onChange(t.value)}
             style={{
-              position:       'relative',
-              zIndex:         1,
-              width:          SLOT_W,
-              height:         44,
-              display:        'flex',
-              alignItems:     'center',
-              justifyContent: 'center',
-              cursor:         'pointer',
-              background:     'none',
-              border:         'none',
-              padding:        0,
-              color:          active ? '#F5F1E8' : 'rgba(245,241,232,.32)',
-              transition:     'color .25s',
+              position: 'relative', zIndex: 1,
+              width: SLOT_W, height: 44,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', background: 'none', border: 'none', padding: 0,
+              color: active
+                ? (isDark ? '#F5F1E8' : '#111111')
+                : (isDark ? 'rgba(245,241,232,.30)' : 'rgba(17,17,17,.30)'),
+              transition: 'color .25s',
             }}
           >
             <t.Icon />
@@ -190,19 +113,23 @@ function ThemeSwitcher({ theme, onChange }) {
   )
 }
 
+// ── Nav config ────────────────────────────────────────────────────────────────
+
 const NAV_ITEMS = [
-  { view: 'home',    label: 'Accueil',          Icon: IconHome  },
-  { view: 'reserve', label: 'Réserver',          Icon: IconCar   },
-  { view: 'tarifs',  label: 'Tarifs & services', Icon: IconTag   },
-  { view: 'call',    label: 'Appeler',           Icon: IconPhone },
+  { view: 'home',    label: 'Accueil'          },
+  { view: 'reserve', label: 'Réserver'          },
+  { view: 'tarifs',  label: 'Tarifs'            },
+  { view: 'call',    label: 'Appeler'           },
 ]
 
 const SECONDARY = [
-  { label: 'Mes courses',      view: 'courses', Icon: IconHistory },
-  { label: 'Code promo',       view: 'promo',   Icon: IconPromo   },
-  { label: 'Aide & FAQ',       view: 'faq',     Icon: IconHelp    },
-  { label: 'Mentions légales', view: 'legal',   Icon: IconShield  },
+  { label: 'Mes courses',      view: 'courses' },
+  { label: 'Code promo',       view: 'promo'   },
+  { label: 'Aide & FAQ',       view: 'faq'     },
+  { label: 'Mentions légales', view: 'legal'   },
 ]
+
+// ── Animations ────────────────────────────────────────────────────────────────
 
 const EXPO = [0.22, 1, 0.36, 1]
 
@@ -216,34 +143,39 @@ const arm2Var = {
 }
 
 const navListVar = {
-  closed: { transition: { staggerChildren: 0.025, staggerDirection: -1 } },
-  open:   { transition: { staggerChildren: 0.07,  delayChildren: 0.14 } },
+  closed: { transition: { staggerChildren: 0.02,  staggerDirection: -1 } },
+  open:   { transition: { staggerChildren: 0.08,  delayChildren: 0.10 } },
 }
-
 const secListVar = {
-  closed: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
-  open:   { transition: { staggerChildren: 0.05, delayChildren: 0.40 } },
+  closed: { transition: { staggerChildren: 0.015, staggerDirection: -1 } },
+  open:   { transition: { staggerChildren: 0.045, delayChildren: 0.44 } },
 }
-
 const rowVar = {
-  closed: { opacity: 0, y: 18, transition: { duration: 0.14 } },
-  open:   { opacity: 1, y: 0,  transition: { duration: 0.52, ease: EXPO } },
+  closed: { opacity: 0, y: 22, transition: { duration: 0.14 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.54, ease: EXPO } },
 }
-
 const footerVar = {
   closed: { opacity: 0, y: 10, transition: { duration: 0.12 } },
-  open:   { opacity: 1, y: 0,  transition: { duration: 0.42, ease: EXPO, delay: 0.58 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.42, ease: EXPO, delay: 0.60 } },
 }
+
+// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const theme    = useBookingStore(s => s.theme)
   const setTheme = useBookingStore(s => s.setTheme)
+  const isDark   = useBookingStore(s => s.isDark)
+
+  const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
+  const inkFull = isDark ? '#F5F1E8' : '#111111'
+  const inkDim  = isDark ? 'rgba(245,241,232,.38)' : 'rgba(17,17,17,.35)'
+  const border  = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.08)'
 
   useEffect(() => {
     if (!open) return
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('keydown', handler)
-    return () => document.removeEventListener('keydown', handler)
+    const h = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', h)
+    return () => document.removeEventListener('keydown', h)
   }, [open, onClose])
 
   useEffect(() => {
@@ -255,17 +187,20 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
   return (
     <>
-      {/* Dark overlay */}
+      {/* Scrim */}
       <div
         onClick={onClose}
         aria-hidden="true"
-        className="fixed inset-0 z-[99998] bg-black/60 transition-opacity duration-300"
-        style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none' }}
+        className="fixed inset-0 z-[99998] transition-opacity duration-300"
+        style={{
+          background:    isDark ? 'rgba(0,0,0,.65)' : 'rgba(0,0,0,.35)',
+          opacity:       open ? 1 : 0,
+          pointerEvents: open ? 'auto' : 'none',
+        }}
       />
 
-      {/* Drawer panel */}
+      {/* Panel */}
       <motion.nav
-        id="side-drawer"
         role="dialog"
         aria-modal="true"
         aria-label="Menu principal"
@@ -281,54 +216,56 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         }}
         className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden"
         style={{
-          width:        'min(80vw, 300px)',
-          background:   '#090909',
-          borderRight:  '1px solid rgba(255,255,255,.07)',
+          width:         'min(82vw, 310px)',
+          background:    bg,
+          borderRight:   `1px solid ${border}`,
           pointerEvents: open ? 'auto' : 'none',
-          boxShadow:    open ? '16px 0 48px rgba(0,0,0,.9)' : 'none',
-          willChange:   'transform',
+          boxShadow:     open
+            ? (isDark ? '20px 0 60px rgba(0,0,0,.95)' : '20px 0 60px rgba(0,0,0,.18)')
+            : 'none',
+          willChange:    'transform',
         }}
       >
-        {/* Accent top edge */}
+        {/* Accent top line */}
         <div
           aria-hidden="true"
-          className="absolute top-0 left-0 right-0 h-px pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, rgba(255,90,31,.35), transparent 60%)' }}
+          className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, #FF5A1F 0%, transparent 55%)' }}
         />
 
         <div
           className="relative z-10 flex flex-col h-full"
-          style={{ paddingTop: 'calc(var(--safe-top) + 16px)' }}
+          style={{ paddingTop: 'calc(var(--safe-top) + 14px)' }}
         >
-          {/* Header */}
-          <div className="flex items-center justify-end px-4 pb-8">
+          {/* Close */}
+          <div className="flex justify-end px-5 pb-6">
             <button
               onClick={onClose}
               aria-label="Fermer le menu"
-              className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform select-none"
+              className="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform select-none"
               style={{
-                background: 'rgba(255,255,255,.05)',
-                border: '1px solid rgba(255,255,255,.10)',
+                background: isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)',
+                border:     `1px solid ${border}`,
               }}
             >
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" strokeWidth="2" strokeLinecap="round" overflow="visible">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" strokeWidth="2.2" strokeLinecap="round" overflow="visible">
                 <motion.g initial="closed" animate={ani} variants={arm1Var}>
-                  <path d="M1 1l12 12" stroke="rgba(245,241,232,.85)" />
+                  <path d="M1 1l12 12" stroke={inkFull} />
                 </motion.g>
                 <motion.g initial="closed" animate={ani} variants={arm2Var}>
-                  <path d="M13 1L1 13" stroke="rgba(245,241,232,.85)" />
+                  <path d="M13 1L1 13" stroke={inkFull} />
                 </motion.g>
               </svg>
             </button>
           </div>
 
-          {/* Primary nav */}
+          {/* ── PRIMARY NAV — Heetch-style editorial ── */}
           <motion.ul
             initial="closed"
             animate={ani}
             variants={navListVar}
-            className="flex flex-col px-3 list-none"
-            style={{ gap: 2 }}
+            className="flex flex-col list-none px-6"
+            style={{ gap: 0 }}
           >
             {NAV_ITEMS.map((item) => {
               const isActive = activeView === item.view
@@ -336,31 +273,36 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 <motion.li key={item.view} variants={rowVar}>
                   <button
                     onClick={() => { onNavigate(item.view); onClose() }}
-                    className="flex items-center gap-4 w-full rounded-2xl px-4 py-4 cursor-pointer select-none transition-all duration-150 active:scale-[.97]"
-                    style={{
-                      background: isActive ? 'rgba(255,255,255,.06)' : 'transparent',
-                      borderLeft: isActive ? '2px solid rgba(255,255,255,.30)' : '2px solid transparent',
-                    }}
+                    className="w-full text-left cursor-pointer select-none active:scale-[.97] transition-transform duration-100 py-3"
+                    style={{ background: 'none', border: 'none', padding: '14px 0' }}
                   >
-                    <span style={{
-                      color:      isActive ? '#F5F1E8' : 'rgba(245,241,232,.55)',
-                      flexShrink: 0,
-                      transition: 'color .2s',
-                    }}>
-                      <item.Icon />
-                    </span>
                     <span
                       style={{
-                        fontSize:   17,
-                        fontWeight: isActive ? 700 : 500,
-                        lineHeight: 1,
-                        letterSpacing: '-0.01em',
-                        color: isActive ? '#F5F1E8' : 'rgba(245,241,232,.82)',
-                        transition: 'color .2s',
+                        display:       'block',
+                        fontSize:      26,
+                        fontWeight:    800,
+                        letterSpacing: '-0.02em',
+                        lineHeight:    1.1,
+                        textTransform: 'uppercase',
+                        color:         isActive ? inkFull : inkDim,
+                        transition:    'color .2s',
                       }}
                     >
                       {item.label}
                     </span>
+                    {/* Active indicator — thin orange line under text */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeBar"
+                        style={{
+                          height:     2,
+                          width:      32,
+                          marginTop:  5,
+                          background: '#FF5A1F',
+                          borderRadius: 999,
+                        }}
+                      />
+                    )}
                   </button>
                 </motion.li>
               )
@@ -368,33 +310,34 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           </motion.ul>
 
           {/* Separator */}
-          <div className="mx-4 mt-5 mb-4" style={{ height: 1, background: 'rgba(255,255,255,.07)' }} />
+          <div className="mx-6 my-4" style={{ height: 1, background: border }} />
 
-          {/* Secondary links */}
+          {/* ── SECONDARY NAV ── */}
           <motion.ul
             initial="closed"
             animate={ani}
             variants={secListVar}
-            className="flex flex-col px-3 list-none"
-            style={{ gap: 1 }}
+            className="flex flex-col px-6 list-none"
+            style={{ gap: 0 }}
           >
             {SECONDARY.map((item) => (
               <motion.li key={item.label} variants={rowVar}>
                 <button
                   onClick={() => { if (item.view) onNavigate(item.view); onClose() }}
-                  className="flex items-center gap-3.5 w-full rounded-xl px-4 py-3.5 cursor-pointer active:scale-[.97] transition-all duration-150 select-none"
-                  style={{ background: 'transparent' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.04)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                  className="flex items-center justify-between w-full cursor-pointer select-none active:scale-[.98] transition-transform duration-100"
+                  style={{ background: 'none', border: 'none', padding: '10px 0' }}
                 >
-                  <span style={{ color: 'rgba(255,90,31,.90)', flexShrink: 0 }}>
-                    <item.Icon />
-                  </span>
-                  <span style={{ fontSize: 15, fontWeight: 500, color: 'rgba(245,241,232,.78)', lineHeight: 1 }}>
+                  <span style={{
+                    fontSize:      15,
+                    fontWeight:    500,
+                    letterSpacing: '-0.01em',
+                    color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                  }}>
                     {item.label}
                   </span>
-                  <svg className="ml-auto" width="11" height="11" viewBox="0 0 24 24" fill="none"
-                    stroke="rgba(245,241,232,.30)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                    stroke={isDark ? 'rgba(245,241,232,.28)' : 'rgba(17,17,17,.25)'}
+                    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
                 </button>
@@ -402,14 +345,14 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             ))}
           </motion.ul>
 
-          {/* Footer — theme switcher */}
+          {/* ── FOOTER — theme switcher ── */}
           <motion.div
             initial="closed"
             animate={ani}
             variants={footerVar}
-            className="flex items-center justify-between px-5 mt-auto"
+            className="flex items-center justify-between px-6 mt-auto"
             style={{
-              borderTop:     '1px solid rgba(255,255,255,.07)',
+              borderTop:     `1px solid ${border}`,
               paddingTop:    16,
               paddingBottom: 'calc(var(--safe-bot) + 16px)',
             }}
@@ -417,16 +360,21 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             <AnimatePresence mode="wait">
               <motion.span
                 key={theme}
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
-                style={{ fontSize: 13, fontWeight: 500, color: 'rgba(245,241,232,.50)', userSelect: 'none' }}
+                style={{
+                  fontSize:   13,
+                  fontWeight: 500,
+                  color:      isDark ? 'rgba(245,241,232,.45)' : 'rgba(17,17,17,.42)',
+                  userSelect: 'none',
+                }}
               >
-                {THEME_OPTIONS.find(t => t.value === theme)?.label ?? 'Mode sombre'}
+                {THEME_OPTIONS.find(t => t.value === theme)?.label ?? 'Sombre'}
               </motion.span>
             </AnimatePresence>
-            <ThemeSwitcher theme={theme} onChange={setTheme} />
+            <ThemeSwitcher theme={theme} onChange={setTheme} isDark={isDark} />
           </motion.div>
         </div>
       </motion.nav>
