@@ -49,12 +49,12 @@ async function searchPlaces(q) {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&countrycodes=fr&accept-language=fr`
     const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
     const data = await r.json()
-    const nom  = data.map(d => ({
-      name: d.display_name.split(',').slice(0, 2).join(',').trim(),
-      lat:  parseFloat(d.lat),
-      lng:  parseFloat(d.lon),
-      type: 'nominatim',
-    }))
+    const nom  = data.map(d => {
+      const parts = d.display_name.split(',').map(p => p.trim())
+      const skip  = /^\d+$/.test(parts[0]) ? 1 : 0
+      const name  = parts.slice(skip, skip + 2).join(', ')
+      return { name, lat: parseFloat(d.lat), lng: parseFloat(d.lon), type: 'nominatim' }
+    })
     const seen = new Set(matched.map(p => norm(p.name)))
     return [...matched, ...nom.filter(n => !seen.has(norm(n.name)))].slice(0, 6)
   } catch {
@@ -400,7 +400,9 @@ export default function HomePill({ onOpenSheet }) {
                       style={{
                         top:        'calc(100% + 8px)',
                         background: th.bgCard,
-                        boxShadow:  '0 8px 24px rgba(0,0,0,.55)',
+                        boxShadow:  th.isDark
+                          ? '0 8px 24px rgba(0,0,0,.55)'
+                          : '0 4px 16px rgba(0,0,0,.12)',
                       }}
                     >
                       {suggestions.map((s, i) => (
@@ -415,7 +417,7 @@ export default function HomePill({ onOpenSheet }) {
                             className="w-full text-left flex items-center gap-3 px-4 py-3 border-b border-[var(--rule)] last:border-0 hover:bg-accent/10 active:bg-accent/15 transition-colors cursor-pointer"
                           >
                             <span className="text-sm flex-shrink-0">{ICON[s.type] ?? '📌'}</span>
-                            <span className="text-sm text-ink-secondary truncate">{s.name.split(',')[0]}</span>
+                            <span className="text-sm truncate" style={{ color: th.inkHigh }}>{s.name}</span>
                           </button>
                         </motion.li>
                       ))}
