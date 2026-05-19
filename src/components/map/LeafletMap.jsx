@@ -135,7 +135,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       style={{
         pointerEvents: frozen ? 'none' : 'auto',
         willChange: 'transform',
-        filter: isDark ? 'none' : 'brightness(0.82) saturate(0.80)',
+        filter: isDark ? 'brightness(1.6) contrast(0.88)' : 'brightness(0.82) saturate(0.80)',
       }}
     />
   )
