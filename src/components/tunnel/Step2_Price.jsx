@@ -9,7 +9,7 @@ function Div({ th }) {
 }
 
 // ── Line item ─────────────────────────────────────────────────────────────────
-function LineItem({ icon, label, value, valueColor, th }) {
+function LineItem({ icon, label, value, valueColor, badge, th }) {
   return (
     <div className="flex items-center gap-3 px-5 py-3">
       <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-lg"
@@ -19,9 +19,22 @@ function LineItem({ icon, label, value, valueColor, th }) {
       <span className="flex-1 text-[13px] font-semibold" style={{ color: th.inkMid }}>
         {label}
       </span>
-      <span className="text-[13px] font-bold" style={{ color: valueColor || th.inkFull }}>
-        {value}
-      </span>
+      {badge ? (
+        <span
+          className="text-[12px] font-bold px-2.5 py-1 rounded-full"
+          style={{
+            background: th.isDark ? 'rgba(16,185,129,.16)' : 'rgba(5,150,105,.11)',
+            color:      th.isDark ? '#34d399'              : '#047857',
+            border:     `1px solid ${th.isDark ? 'rgba(52,211,153,.28)' : 'rgba(5,150,105,.28)'}`,
+          }}
+        >
+          {value}
+        </span>
+      ) : (
+        <span className="text-[13px] font-bold" style={{ color: valueColor || th.inkFull }}>
+          {value}
+        </span>
+      )}
     </div>
   )
 }
@@ -179,7 +192,7 @@ export default function Step2Price({ onNext, onBack }) {
               }
               label="Économie vs apps"
               value={`−${price.savings} €`}
-              valueColor="#34d399"
+              badge
             />
             <Div th={th} />
           </>
@@ -218,17 +231,17 @@ export default function Step2Price({ onNext, onBack }) {
       </motion.div>
 
       {/* ── Nav ──────────────────────────────────────────────────── */}
-      <motion.div variants={itemV} className="flex gap-3">
+      <motion.div variants={itemV} className="flex flex-col gap-3">
+        <GlowingCTA onClick={onNext}>
+          Continuer →
+        </GlowingCTA>
         <button
           onClick={onBack}
-          className="flex-none px-5 py-4 rounded-2xl text-sm font-semibold cursor-pointer active:scale-95 transition-transform"
-          style={th.backBtn}
+          className="text-sm text-center cursor-pointer py-1 active:opacity-60 transition-opacity"
+          style={{ color: th.backLink }}
         >
           ← Retour
         </button>
-        <GlowingCTA onClick={onNext} className="flex-1">
-          Continuer →
-        </GlowingCTA>
       </motion.div>
 
     </motion.div>
