@@ -26,20 +26,17 @@ export default function Step4Recap({ onBack }) {
   const [sent, setSent] = useState(false)
   const { depart, arrive, pickup, price, ambiance, clim, options, clientName, payment } = useBookingStore()
 
-  const optionChips = [
+  const allChips = [
     clientName,
+    AMBIANCE_LABEL[ambiance],
+    clim && `${clim}°C`,
+    PAYMENT_LABEL[payment],
     options.wifi        && 'Wi-Fi',
     options.eau         && 'Eau',
     options.usb         && 'USB',
     options.confiseries && 'Confiseries',
     options.siege       && 'Siège enfant',
   ].filter(Boolean)
-
-  const detailLine = [
-    AMBIANCE_LABEL[ambiance],
-    clim && `${clim}°C`,
-    PAYMENT_LABEL[payment],
-  ].filter(Boolean).join(' · ')
 
   const handleSend = () => {
     if (sent) return
@@ -126,38 +123,32 @@ export default function Step4Recap({ onBack }) {
 
         <Div th={th} />
 
-        {/* DATE + DÉTAILS — single dense row */}
+        {/* DATE */}
         <div className="flex items-center gap-2.5 px-4 py-2.5">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
             stroke="rgba(255,65,3,.65)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
             <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
           </svg>
-          <span className="text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
+          <span className="text-[12px] font-semibold" style={{ color: th.inkMid }}>
             {fmtPickup(pickup)}
           </span>
-          {detailLine && (
-            <>
-              <span style={{ color: th.inkDim, flexShrink: 0 }}>·</span>
-              <span className="text-[12px] font-medium truncate" style={{ color: th.inkMuted }}>{detailLine}</span>
-            </>
-          )}
         </div>
 
-        {/* OPTIONS CHIPS — inside card, tight */}
-        {optionChips.length > 0 && (
+        {/* TOUS LES CHIPS — nom + ambiance + clim + paiement + options */}
+        {allChips.length > 0 && (
           <>
             <Div th={th} />
             <div className="flex flex-wrap gap-1.5 px-4 py-2.5">
-              {optionChips.map((chip, i) => (
+              {allChips.map((chip) => (
                 <span
                   key={chip}
                   className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
                   style={{
-                    background: i === 0 && clientName === chip
+                    background: chip === clientName
                       ? 'rgba(255,65,3,.10)'
                       : th.bgInput,
-                    color: i === 0 && clientName === chip ? '#ff4103' : th.inkMid,
-                    border: `1px solid ${i === 0 && clientName === chip ? 'rgba(255,65,3,.22)' : th.borderFaint}`,
+                    color: chip === clientName ? '#ff4103' : th.inkMid,
+                    border: `1px solid ${chip === clientName ? 'rgba(255,65,3,.22)' : th.borderFaint}`,
                   }}
                 >
                   {chip}
