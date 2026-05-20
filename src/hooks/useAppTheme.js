@@ -19,8 +19,8 @@ export default function useAppTheme() {
     inkHigh:     'rgba(245,241,232,.88)',
     inkMid:      'rgba(245,241,232,.72)',
     inkLow:      'rgba(245,241,232,.55)',
-    inkMuted:    'rgba(245,241,232,.40)',
-    inkDim:      'rgba(245,241,232,.28)',
+    inkMuted:    'rgba(245,241,232,.62)',
+    inkDim:      'rgba(245,241,232,.44)',
 
     border:      'rgba(255,255,255,.07)',
     borderStrong:'rgba(255,255,255,.12)',
@@ -33,7 +33,7 @@ export default function useAppTheme() {
     scrim:       'rgba(0,0,0,.9)',
 
     backBtn:     { background: 'rgba(245,241,232,.06)', border: '1px solid rgba(245,241,232,.12)', color: 'rgba(245,241,232,.75)' },
-    backLink:    'rgba(245,241,232,.55)',
+    backLink:    'rgba(245,241,232,.68)',
     colorScheme: 'dark',
     inputScheme: 'dark',
   } : {

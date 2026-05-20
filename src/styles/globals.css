@@ -28,7 +28,7 @@
     --label:            #F5F1E8;
     --label-secondary:  rgba(245,241,232,0.88);
     --label-tertiary:   rgba(245,241,232,0.65);
-    --label-quaternary: rgba(245,241,232,0.30);
+    --label-quaternary: rgba(245,241,232,0.44);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
     --separator:        rgba(255,255,255,0.07);
