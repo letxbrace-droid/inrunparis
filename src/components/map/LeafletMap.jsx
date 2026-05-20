@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 delete L.Icon.Default.prototype._getIconUrl
 
 const PARIS       = [48.8566, 2.3522]
-const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
@@ -32,7 +32,8 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   const userMarkerRef = useRef(null)
   const didFlyRef     = useRef(false)
 
-  // Initialize map without tile layer (tile effect creates it)
+  // Initialize map — call invalidateSize after mount and on every resize
+  // so the map always fills its container (fixes partial-render on Android Chrome)
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return
     const map = L.map(containerRef.current, {
@@ -40,7 +41,21 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     })
     mapRef.current = map
     onMapReady?.(map)
-    return () => { map.remove(); mapRef.current = null }
+
+    // Let the browser finish layout, then fix tile grid
+    setTimeout(() => map.invalidateSize({ animate: false }), 0)
+
+    // Keep map sized correctly if the container ever resizes
+    const observer = new ResizeObserver(() => {
+      mapRef.current?.invalidateSize({ animate: false })
+    })
+    observer.observe(containerRef.current)
+
+    return () => {
+      observer.disconnect()
+      map.remove()
+      mapRef.current = null
+    }
   }, []) // eslint-disable-line
 
   // Switch tile layer on isDark change (also runs on first mount)
@@ -170,10 +185,6 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       aria-label="Carte de Paris"
       style={{
         pointerEvents: frozen ? 'none' : 'auto',
-        willChange: 'transform',
-        filter: isDark
-          ? 'invert(1) hue-rotate(180deg) brightness(1.5) saturate(0.6)'
-          : 'brightness(0.88) saturate(1.0) contrast(1.18)',
       }}
     />
   )
