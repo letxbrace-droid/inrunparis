@@ -54,17 +54,17 @@ async function searchPlaces(q) {
   if (matched.length >= 5 || q.length < 3) return matched
 
   try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&countrycodes=fr&accept-language=fr`
+    const url  = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=6&lang=fr&bbox=-5.14,41.33,9.56,51.09`
     const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
     const data = await r.json()
-    const nom  = data.map(d => {
-      const parts  = d.display_name.split(',').map(p => p.trim())
-      const hasNum = /^\d+$/.test(parts[0])
-      // Keep house number in the name: "68 Allée Jean Giono"
-      const name = hasNum ? `${parts[0]} ${parts[1]}` : parts[0]
-      const city = hasNum ? parts[2] : parts[1]
-      return { name, city: city || '', lat: parseFloat(d.lat), lng: parseFloat(d.lon), type: 'nominatim' }
-    })
+    const nom  = (data.features || []).map(f => {
+      const p    = f.properties
+      const num  = p.housenumber || ''
+      const road = p.street || (p.type === 'house' ? '' : p.name) || ''
+      const name = num && road ? `${num} ${road}` : road || p.name || ''
+      const city = p.city || p.town || p.village || p.municipality || p.county || ''
+      return { name, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], type: 'nominatim' }
+    }).filter(n => n.name)
     const seen = new Set(matched.map(p => norm(p.name)))
     return [...matched, ...nom.filter(n => !seen.has(norm(n.name)))].slice(0, 6)
   } catch {
@@ -377,9 +377,17 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
 
                 {/* Connector */}
-                <div className="flex items-center px-4 -my-1.5">
-                  <div className="ml-[4px] w-px h-5 bg-gradient-to-b from-accent/35 to-accent/10 flex-shrink-0" />
-                  <div className="flex-1 border-t border-[var(--rule)] ml-3" />
+                <div className="flex items-start px-4 -my-1">
+                  <div className="relative flex-shrink-0 overflow-hidden" style={{ width: 2, height: 28, marginLeft: 4 }}>
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.18))' }} />
+                    <motion.div
+                      className="absolute left-0 right-0"
+                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, rgba(255,65,3,1), transparent)', borderRadius: 4 }}
+                      animate={{ y: [-12, 30] }}
+                      transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
+                    />
+                  </div>
+                  <div className="flex-1 border-t ml-3" style={{ borderColor: th.borderFaint, marginTop: 13 }} />
                 </div>
 
                 {/* Arrival row */}

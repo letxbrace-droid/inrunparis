@@ -7,14 +7,17 @@ import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
 async function geocodeNominatim(query) {
-  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&countrycodes=fr&accept-language=fr`
-  const r = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
+  const url  = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=fr&bbox=-5.14,41.33,9.56,51.09`
+  const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
   const data = await r.json()
-  return data.map((item) => ({
-    name: item.display_name,
-    lat:  parseFloat(item.lat),
-    lng:  parseFloat(item.lon),
-  }))
+  return (data.features || []).map(f => {
+    const p    = f.properties
+    const num  = p.housenumber || ''
+    const road = p.street || (p.type === 'house' ? '' : p.name) || ''
+    const name = num && road ? `${num} ${road}` : road || p.name || ''
+    const city = p.city || p.town || p.village || p.municipality || p.county || ''
+    return { name: name || query, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }
+  }).filter(r => r.name)
 }
 
 function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
