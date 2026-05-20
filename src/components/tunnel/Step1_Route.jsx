@@ -7,17 +7,23 @@ import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
 async function geocodeNominatim(query) {
+  const qNum = query.match(/^(\d+)\s/)?.[1] || ''
   const url  = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=fr&bbox=-5.14,41.33,9.56,51.09`
   const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
   const data = await r.json()
-  return (data.features || []).map(f => {
+  const seen = new Set()
+  return (data.features || []).flatMap(f => {
     const p    = f.properties
-    const num  = p.housenumber || ''
+    const num  = p.housenumber || qNum
     const road = p.street || (p.type === 'house' ? '' : p.name) || ''
     const name = num && road ? `${num} ${road}` : road || p.name || ''
     const city = p.city || p.town || p.village || p.municipality || p.county || ''
-    return { name: name || query, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }
-  }).filter(r => r.name)
+    if (!name) return []
+    const key = name.toLowerCase() + '|' + city.toLowerCase()
+    if (seen.has(key)) return []
+    seen.add(key)
+    return [{ name, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }]
+  })
 }
 
 function LocationInput({ label, value, onSelect, placeholder, icon, th }) {

@@ -53,20 +53,30 @@ async function searchPlaces(q) {
   const matched = PRESETS.filter(p => norm(p.name).includes(norm(q))).slice(0, 5)
   if (matched.length >= 5 || q.length < 3) return matched
 
+  // Extract a leading house number from the query ("32 rue…" → "32")
+  const qNum = q.match(/^(\d+)\s/)?.[1] || ''
+
   try {
     const url  = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=6&lang=fr&bbox=-5.14,41.33,9.56,51.09`
     const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
     const data = await r.json()
-    const nom  = (data.features || []).map(f => {
+    const seen = new Set(matched.map(p => norm(p.name)))
+    const seenNom = new Set()
+    const nom = (data.features || []).flatMap(f => {
       const p    = f.properties
-      const num  = p.housenumber || ''
+      // Prefer Photon's housenumber; fall back to the number the user typed
+      const num  = p.housenumber || qNum
       const road = p.street || (p.type === 'house' ? '' : p.name) || ''
       const name = num && road ? `${num} ${road}` : road || p.name || ''
       const city = p.city || p.town || p.village || p.municipality || p.county || ''
-      return { name, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], type: 'nominatim' }
-    }).filter(n => n.name)
-    const seen = new Set(matched.map(p => norm(p.name)))
-    return [...matched, ...nom.filter(n => !seen.has(norm(n.name)))].slice(0, 6)
+      if (!name) return []
+      // Deduplicate within Photon results (same name+city = same street)
+      const key = norm(name) + '|' + norm(city)
+      if (seenNom.has(key) || seen.has(norm(name))) return []
+      seenNom.add(key)
+      return [{ name, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], type: 'nominatim' }]
+    })
+    return [...matched, ...nom].slice(0, 6)
   } catch {
     return matched
   }
@@ -157,7 +167,7 @@ export default function HomePill({ onOpenSheet }) {
 
   const handleGPS = useCallback(() => {
     detect(result => {
-      setDepartQuery(result.name.split(',')[0])
+      setDepartQuery(result.name)
       setDepart(result)
       setRouteGeometry(null)
     })

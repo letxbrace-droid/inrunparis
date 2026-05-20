@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v73 */
-const CACHE = 'inrun-v73';
+/* I&N RUN — Service Worker v74 */
+const CACHE = 'inrun-v74';
 const STATIC = [
   '/inrunparis/manifest.json',
   '/inrunparis/favicon.ico',

@@ -5,16 +5,14 @@ async function reverseGeocode(lat, lng) {
   const r = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
   const d = await r.json()
 
-  // Use structured address fields so "35, Rue..." becomes "35 Rue..." (no comma mid-street)
-  const addr   = d.address || {}
-  const num    = addr.house_number || ''
-  const road   = addr.road || addr.pedestrian || addr.path || addr.neighbourhood || ''
-  const city   = addr.city || addr.town || addr.village || addr.municipality || addr.suburb || ''
+  const addr = d.address || {}
+  const num  = addr.house_number || ''
+  const road = addr.road || addr.pedestrian || addr.path || addr.neighbourhood || ''
+  const city = addr.city || addr.town || addr.village || addr.municipality || addr.suburb || ''
 
+  // name = street only (city kept separate to avoid duplication in the pill)
   const street = num && road ? `${num} ${road}` : road || num
-  const name   = street
-    ? (city ? `${street}, ${city}` : street)
-    : (d.display_name || '').split(',').slice(0, 2).join(', ').trim() || `GPS ${lat.toFixed(4)}`
+  const name   = street || (d.display_name || '').split(',')[0].trim() || `GPS ${lat.toFixed(4)}`
 
   return { name, city, lat, lng }
 }
