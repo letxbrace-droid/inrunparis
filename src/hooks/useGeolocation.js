@@ -1,15 +1,22 @@
 import { useState, useCallback } from 'react'
 
 async function reverseGeocode(lat, lng) {
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fr`
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1&accept-language=fr`
   const r = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
   const d = await r.json()
-  const parts = (d.display_name || '').split(',')
-  return {
-    name: [parts[0], parts[1]].filter(Boolean).map(s => s.trim()).join(', '),
-    lat,
-    lng,
-  }
+
+  // Use structured address fields so "35, Rue..." becomes "35 Rue..." (no comma mid-street)
+  const addr   = d.address || {}
+  const num    = addr.house_number || ''
+  const road   = addr.road || addr.pedestrian || addr.path || addr.neighbourhood || ''
+  const city   = addr.city || addr.town || addr.village || addr.municipality || addr.suburb || ''
+
+  const street = num && road ? `${num} ${road}` : road || num
+  const name   = street
+    ? (city ? `${street}, ${city}` : street)
+    : (d.display_name || '').split(',').slice(0, 2).join(', ').trim() || `GPS ${lat.toFixed(4)}`
+
+  return { name, city, lat, lng }
 }
 
 export default function useGeolocation() {
@@ -35,7 +42,7 @@ export default function useGeolocation() {
     })
 
     try {
-      const pos = await getPos()
+      const pos    = await getPos()
       const result = await reverseGeocode(pos.coords.latitude, pos.coords.longitude)
       setStatus('success')
       onResult(result)
