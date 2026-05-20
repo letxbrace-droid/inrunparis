@@ -235,7 +235,7 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
           left: THUMB / 2, right: THUMB / 2,
           top: '50%', transform: 'translateY(-50%)',
           height: 5,
-          background: th.isDark ? 'rgba(255,255,255,.09)' : 'rgba(0,0,0,.11)',
+          background: th.isDark ? 'rgba(255,255,255,.18)' : 'rgba(0,0,0,.20)',
           overflow: 'visible',
         }}
       />
@@ -602,14 +602,20 @@ export default function Step3Options({ onNext, onBack }) {
                     {volume}%
                   </span>
                 </div>
-                <PremiumSlider
-                  min={0} max={100} step={1}
-                  value={volume}
-                  onChange={setVolume}
-                  gradient={volGradient}
-                  label="Volume"
-                  th={th}
-                />
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>0</span>
+                  <div className="flex-1">
+                    <PremiumSlider
+                      min={0} max={100} step={1}
+                      value={volume}
+                      onChange={setVolume}
+                      gradient={volGradient}
+                      label="Volume"
+                      th={th}
+                    />
+                  </div>
+                  <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>100</span>
+                </div>
               </div>
             </motion.div>
           )}
@@ -642,7 +648,16 @@ export default function Step3Options({ onNext, onBack }) {
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold tabular-nums" style={{ color: th.inkDim }}>16°</span>
+            {/* Froid */}
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(130,200,255,.85)" strokeWidth="2.2" strokeLinecap="round">
+                <line x1="12" y1="2"  x2="12" y2="22"/>
+                <line x1="2"  y1="12" x2="22" y2="12"/>
+                <line x1="6"  y1="6"  x2="18" y2="18"/>
+                <line x1="18" y1="6"  x2="6"  y2="18"/>
+              </svg>
+              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(130,200,255,.85)' }}>16°</span>
+            </span>
             <div className="flex-1">
               <PremiumSlider
                 min={16} max={28} step={1}
@@ -653,7 +668,13 @@ export default function Step3Options({ onNext, onBack }) {
                 th={th}
               />
             </div>
-            <span className="text-[10px] font-bold tabular-nums" style={{ color: th.inkDim }}>28°</span>
+            {/* Chaud */}
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(255,100,30,.85)' }}>28°</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,100,30,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2c0 0-5 6-5 10a5 5 0 0 0 10 0c0-3-2-5-2-5s-1 3-3 3c-1.1 0-2-.9-2-2 0-2 2-6 2-6z"/>
+              </svg>
+            </span>
           </div>
         </div>
       </motion.section>
