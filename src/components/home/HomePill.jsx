@@ -359,7 +359,7 @@ export default function HomePill({ onOpenSheet }) {
                       value={departQuery}
                       onChange={e => { setDepartQuery(e.target.value); triggerAC(e.target.value, 'depart') }}
                       onFocus={() => { setAcField('depart'); if (departQuery.length >= 2) triggerAC(departQuery, 'depart') }}
-                      placeholder="Départ détecté…"
+                      placeholder={geoStatus === 'loading' ? 'Localisation en cours…' : 'Adresse de départ'}
                       autoComplete="off"
                       aria-label="Adresse de départ"
                       aria-autocomplete="list"
