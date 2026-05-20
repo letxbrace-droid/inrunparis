@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { sendWhatsApp, generateBonNumber } from '../../utils/whatsappEncoder'
+import { applyPromoDiscount } from '../../utils/priceEngine'
 import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
 
@@ -24,13 +25,15 @@ function Div({ th }) {
 export default function Step4Recap({ onBack }) {
   const th = useAppTheme()
   const [sent, setSent] = useState(false)
-  const { depart, arrive, pickup, price, ambiance, clim, options, clientName, payment } = useBookingStore()
+  const { depart, arrive, pickup, price, promo, ambiance, clim, options, clientName, payment } = useBookingStore()
+  const displayPrice = applyPromoDiscount(price?.final, promo)
 
   const allChips = [
     clientName,
     AMBIANCE_LABEL[ambiance],
     clim && `${clim}°C`,
     PAYMENT_LABEL[payment],
+    promo && `🎟 ${promo.code}`,
     options.wifi        && 'Wi-Fi',
     options.eau         && 'Eau',
     options.usb         && 'USB',
@@ -63,11 +66,16 @@ export default function Step4Recap({ onBack }) {
 
         {/* PRIX — compact inline, not a hero */}
         <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-baseline gap-1">
-            <span style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
-              {price?.final ?? '—'}
+          <div className="flex items-baseline gap-1.5">
+            {promo && displayPrice !== price?.final && (
+              <span style={{ fontSize: '1.1rem', fontWeight: 700, color: th.inkDim, textDecoration: 'line-through', letterSpacing: '-0.02em' }}>
+                {price.final}€
+              </span>
+            )}
+            <span style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? '#34d399' : th.inkFull }}>
+              {displayPrice ?? '—'}
             </span>
-            <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ff4103', letterSpacing: '-0.02em' }}>€</span>
+            <span style={{ fontSize: '1.3rem', fontWeight: 800, color: promo && displayPrice !== price?.final ? '#34d399' : '#ff4103', letterSpacing: '-0.02em' }}>€</span>
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1.5">

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
+import { applyPromoDiscount } from '../../utils/priceEngine'
 import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
@@ -45,7 +46,8 @@ const itemV      = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, tr
 
 export default function Step2Price({ onNext, onBack }) {
   const th = useAppTheme()
-  const { depart, arrive, price } = useBookingStore()
+  const { depart, arrive, price, promo } = useBookingStore()
+  const displayPrice = applyPromoDiscount(price?.final, promo)
 
   if (!price) return (
     <div className="flex flex-col items-center justify-center gap-4 px-5 py-16">
@@ -97,16 +99,27 @@ export default function Step2Price({ onNext, onBack }) {
         {/* Price hero row */}
         <div className="flex items-center justify-between px-5 py-5">
           <div className="flex items-baseline gap-1">
+            {promo && displayPrice !== price.final && (
+              <span style={{
+                fontSize: '1.5rem', fontWeight: 700,
+                letterSpacing: '-0.02em', lineHeight: 1,
+                color: th.inkDim, textDecoration: 'line-through',
+                marginRight: 4,
+              }}>
+                {price.final}€
+              </span>
+            )}
             <span style={{
               fontSize: '3.6rem', fontWeight: 900,
               letterSpacing: '-0.04em', lineHeight: 1,
-              color: th.inkFull,
+              color: promo && displayPrice !== price.final ? '#34d399' : th.inkFull,
             }}>
-              {price.final}
+              {displayPrice}
             </span>
             <span style={{
               fontSize: '1.6rem', fontWeight: 800,
-              color: '#ff4103', letterSpacing: '-0.02em',
+              color: promo && displayPrice !== price.final ? '#34d399' : '#ff4103',
+              letterSpacing: '-0.02em',
             }}>
               €
             </span>
@@ -192,6 +205,26 @@ export default function Step2Price({ onNext, onBack }) {
               }
               label="Économie vs apps"
               value={`−${price.savings} €`}
+              badge
+            />
+            <Div th={th} />
+          </>
+        )}
+
+        {promo && (
+          <>
+            <LineItem
+              th={th}
+              icon={
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/>
+                  <path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                </svg>
+              }
+              label={`Code ${promo.code}`}
+              value={promo.discount ? `−${promo.discount}%` : `−${promo.fixed}€`}
               badge
             />
             <Div th={th} />

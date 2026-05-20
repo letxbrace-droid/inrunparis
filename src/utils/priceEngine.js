@@ -28,6 +28,14 @@ export function isAirportAddr(name = '') {
   return AIRPORTS.some((a) => lower.includes(a))
 }
 
+// Apply a stored promo object { discount (%), fixed (€) } to a base price
+export function applyPromoDiscount(basePrice, promo) {
+  if (!promo || !basePrice) return basePrice
+  if (promo.discount) return Math.max(0, Math.round(basePrice * (1 - promo.discount / 100)))
+  if (promo.fixed)    return Math.max(0, basePrice - promo.fixed)
+  return basePrice
+}
+
 export function computePrice(km, mins, pickupTime, vehicleType = 'berline') {
   let price = PRICE.base + km * PRICE.perKm + mins * PRICE.perMin
   const night   = isNightTime(pickupTime)
@@ -73,3 +81,4 @@ export function computePriceForBooking(km, mins, { pickup, depart, arrive, vehic
     savings,
   }
 }
+

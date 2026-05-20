@@ -1,3 +1,5 @@
+import { applyPromoDiscount } from './priceEngine'
+
 const WA_NUMBER = '33767742220'
 
 // Unicode escapes — immune to file encoding / build tool issues
@@ -62,10 +64,11 @@ export function buildWhatsAppMessage(booking) {
   )
 
   if (price) {
-    lines.push(`${E.money} Tarif : ${price.final}€ (${price.km} km · ${price.mins} min)`)
+    const finalPrice = applyPromoDiscount(price.final, promo)
+    lines.push(`${E.money} Tarif : ${finalPrice}€ (${price.km} km · ${price.mins} min)`)
+    if (promo)           lines.push(`${E.gift} Code promo : ${sanitize(promo.code)} — ${sanitize(promo.label)}`)
     if (price.isNight)   lines.push(`${E.moon} Tarif nuit appliqué`)
     if (price.isAirport) lines.push(`${E.plane} Supplément aéroport inclus`)
-    if (promo)           lines.push(`${E.gift} Code : ${sanitize(promo.code)}`)
     lines.push('')
   }
 
