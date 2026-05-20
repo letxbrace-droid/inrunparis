@@ -49,6 +49,11 @@ function norm(s) {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 }
 
+// Full display label: "Street, City" or just "Street" if no city
+function displayAddr(item) {
+  return item?.city ? `${item.name}, ${item.city}` : (item?.name || '')
+}
+
 async function searchPlaces(q) {
   const matched = PRESETS.filter(p => norm(p.name).includes(norm(q))).slice(0, 5)
   if (matched.length >= 5 || q.length < 3) return matched
@@ -114,8 +119,8 @@ export default function HomePill({ onOpenSheet }) {
 
   // Hydrate input display from persisted store on mount
   useEffect(() => {
-    if (depart?.name) setDepartQuery(depart.name.split(',')[0])
-    if (arrive?.name) setArriveQuery(arrive.name.split(',')[0])
+    if (depart?.name) setDepartQuery(displayAddr(depart))
+    if (arrive?.name) setArriveQuery(displayAddr(arrive))
   }, []) // eslint-disable-line
 
   // Rotating pill tag
@@ -151,13 +156,13 @@ export default function HomePill({ onOpenSheet }) {
   }, [])
 
   const pickSuggestion = useCallback((item, field) => {
-    const short = item.name.split(',')[0]
+    const label = displayAddr(item)
     if (field === 'depart') {
-      setDepartQuery(short)
+      setDepartQuery(label)
       setDepart(item)
       setRouteGeometry(null)
     } else {
-      setArriveQuery(short)
+      setArriveQuery(label)
       setArrive(item)
       setRouteGeometry(null)
     }
@@ -167,7 +172,7 @@ export default function HomePill({ onOpenSheet }) {
 
   const handleGPS = useCallback(() => {
     detect(result => {
-      setDepartQuery(result.name)
+      setDepartQuery(displayAddr(result))
       setDepart(result)
       setRouteGeometry(null)
     })

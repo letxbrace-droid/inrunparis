@@ -35,7 +35,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
 
   // Sync field when value is set externally (GPS detection, store hydration)
   useEffect(() => {
-    if (value?.name) setQuery(value.name.split(',')[0])
+    if (value?.name) setQuery(value.city ? `${value.name}, ${value.city}` : value.name)
   }, [value])
 
   const handleChange = (e) => {
@@ -55,7 +55,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   }
 
   const pick = (item) => {
-    setQuery(item.name.split(',')[0])
+    setQuery(item.city ? `${item.name}, ${item.city}` : item.name)
     setSuggest([])
     setFocused(false)
     onSelect(item)
