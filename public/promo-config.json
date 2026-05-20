@@ -13,5 +13,10 @@
     "discount": 25,
     "fixed": null,
     "label": "25% sur votre 1ère course"
+  },
+  "BRAHA": {
+    "discount": 100,
+    "fixed": null,
+    "label": "100% de réduction"
   }
 }
