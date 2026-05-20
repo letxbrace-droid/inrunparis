@@ -151,7 +151,11 @@ export default function App() {
         {confirmBon && !confirmOpen && !OVERLAY_VIEWS.includes(activeView) && (
           <AwaitingCard
             bonNumber={confirmBon}
-            onDismiss={() => setConfirmBon(null)}
+            onDismiss={() => {
+              setConfirmBon(null)
+              // Wipe persisted trigger so visibilitychange never re-fires this card
+              useBookingStore.setState({ awaitingReturn: false, bonNumber: null })
+            }}
           />
         )}
       </AnimatePresence>
