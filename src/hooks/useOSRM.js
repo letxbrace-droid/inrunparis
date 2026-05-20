@@ -30,7 +30,8 @@ function fallbackEstimate(from, to) {
     km:       Math.round(routeKm * 10) / 10,
     mins:     Math.round(mins),
     rawMins:  Math.round((routeKm / 28) * 60),
-    geometry: null,   // no polyline on fallback — map won't draw route
+    // Straight-line GeoJSON so the map always draws something even without OSRM
+    geometry: { type: 'LineString', coordinates: [[from.lng, from.lat], [to.lng, to.lat]] },
     source:   'fallback',
   }
 }

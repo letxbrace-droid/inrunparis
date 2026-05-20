@@ -136,14 +136,16 @@ describe('fetchRoute — OSRM fallback (both attempts fail)', () => {
     expect(result.current.route.km).toBeGreaterThan(24)
   })
 
-  it('fallback has null geometry (no polyline)', async () => {
+  it('fallback geometry is a straight-line LineString (map always draws something)', async () => {
     const { result } = renderHook(() => useOSRM())
     await act(async () => {
       const p = result.current.fetchRoute(PARIS, CDG)
       await vi.runAllTimersAsync()
       await p
     })
-    expect(result.current.route.geometry).toBeNull()
+    expect(result.current.route.geometry).not.toBeNull()
+    expect(result.current.route.geometry.type).toBe('LineString')
+    expect(result.current.route.geometry.coordinates).toHaveLength(2)
   })
 
   it('still returns a result object from fetchRoute on fallback', async () => {

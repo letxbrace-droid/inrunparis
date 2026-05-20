@@ -86,7 +86,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }
   }, [])
 
-  // Draw triple-layer luminous route
+  // Draw triple-layer animated route
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
@@ -94,9 +94,45 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     routeRef.current = []
     if (!route?.geometry) return
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
-    const core = L.polyline(coords, { color: '#FF5A1F', weight: 2.5, opacity: 1 })
-    core.addTo(map)
-    routeRef.current = [core]
+
+    // Soft halo underneath
+    const glow = L.polyline(coords, {
+      color: 'rgba(255,65,3,0.22)', weight: 14, opacity: 1,
+      lineCap: 'round', lineJoin: 'round',
+    }).addTo(map)
+
+    // Core branded line
+    const core = L.polyline(coords, {
+      color: '#FF5A1F', weight: 5, opacity: 0.95,
+      lineCap: 'round', lineJoin: 'round',
+    }).addTo(map)
+
+    // Traveling dashes (light cream passes filter in both themes)
+    const dash = L.polyline(coords, {
+      color: 'rgba(255,228,196,0.80)', weight: 2,
+      dashArray: '8 18', lineCap: 'round',
+    }).addTo(map)
+
+    // Draw-in animation on core (skip if reduced motion)
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const coreEl = core.getElement()
+    if (!reduced && coreEl) {
+      const len = coreEl.getTotalLength?.() ?? 5000
+      coreEl.style.strokeDasharray = len
+      coreEl.style.strokeDashoffset = len
+      coreEl.style.transition = 'stroke-dashoffset 1.8s ease-out'
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        coreEl.style.strokeDashoffset = '0'
+      }))
+    }
+
+    // Traveling dash CSS animation
+    const dashEl = dash.getElement()
+    if (!reduced && dashEl) {
+      dashEl.style.animation = 'route-dash 1.4s linear infinite'
+    }
+
+    routeRef.current = [glow, core, dash]
     if (coords.length) {
       const bounds = L.latLngBounds(coords)
       if (depart) {
