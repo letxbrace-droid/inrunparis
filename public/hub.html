@@ -396,6 +396,22 @@ textarea{resize:vertical}
       </div>
 
       <div class="section">
+        <div class="section-title">Déploiement GitHub</div>
+        <div class="card">
+          <div id="gh-token-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
+          <div class="field">
+            <label>Personal Access Token</label>
+            <input id="s-ghtoken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" inputmode="text">
+          </div>
+          <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.6">
+            Créer sur <strong style="color:var(--text)">github.com → Settings → Developer settings → Personal access tokens → Fine-grained</strong>.<br>
+            Sélectionner le dépôt <code style="font-size:11px;color:var(--accent)">inrunparis</code>, permission <code style="font-size:11px;color:var(--accent)">Contents → Read and write</code>.
+          </div>
+          <button class="btn btn-primary btn-full" onclick="saveGhToken()">Enregistrer le token</button>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title">Données</div>
         <div class="card" style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-secondary" style="flex:1" onclick="exportData()">Exporter JSON</button>
@@ -610,13 +626,32 @@ function saveEdit(code, isSystem) {
   showToast('Code mis à jour ✓')
 }
 
-// Exports active merged promo codes as JSON for promo-config.json deployment
-function copyDeployJson() {
+// ── GitHub token helpers ──
+function getGhToken() { return localStorage.getItem('hub-gh-token') || '' }
+function saveGhToken() {
+  const t = document.getElementById('s-ghtoken').value.trim()
+  if (!t) return showToast('Entrez un token', 'error')
+  localStorage.setItem('hub-gh-token', t)
+  document.getElementById('s-ghtoken').value = ''
+  showGhTokenStatus()
+  showToast('Token enregistré ✓')
+}
+function showGhTokenStatus() {
+  const el = document.getElementById('gh-token-status')
+  if (!el) return
+  const has = !!getGhToken()
+  el.style.display = 'block'
+  el.style.background = has ? 'rgba(52,211,153,.08)' : 'rgba(248,113,113,.08)'
+  el.style.border = has ? '1px solid rgba(52,211,153,.2)' : '1px solid rgba(248,113,113,.2)'
+  el.style.color = has ? 'var(--success)' : 'var(--error)'
+  el.textContent = has ? '✓ Token configuré — déploiement automatique actif' : 'Aucun token — le bouton Déployer copiera le JSON à la place'
+}
+
+// ── Build merged promo config (source of truth for deployment) ──
+function buildPromoConfig() {
   const ov = getSysOverrides()
   const stored = getStoredPromos()
   const config = {}
-
-  // System codes (with overrides applied, skipping deleted)
   Object.entries(HARDCODED).forEach(([code, defaults]) => {
     const o = ov[code]
     if (o && o.deleted) return
@@ -630,8 +665,6 @@ function copyDeployJson() {
       config[code] = { discount: defaults.discount, fixed: null, label: defaults.label }
     }
   })
-
-  // Active custom codes
   Object.entries(stored).forEach(([code, p]) => {
     if (!p.active) return
     if (p.expiry && new Date(p.expiry) < new Date()) return
@@ -641,19 +674,61 @@ function copyDeployJson() {
       label:    p.label,
     }
   })
+  return config
+}
 
-  const json = JSON.stringify(config, null, 2)
-  const copy = () => {
-    const ta = document.createElement('textarea')
-    ta.value = json; document.body.appendChild(ta); ta.select()
-    document.execCommand('copy'); document.body.removeChild(ta)
+// ── One-click deploy via GitHub Contents API ──
+async function deployPromos() {
+  const token = getGhToken()
+  const json  = JSON.stringify(buildPromoConfig(), null, 2)
+
+  // Fallback: copy to clipboard if no token configured
+  if (!token) {
+    const copy = () => { const ta = document.createElement('textarea'); ta.value = json; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta) }
+    navigator.clipboard ? navigator.clipboard.writeText(json).catch(copy) : copy()
+    showToast('Aucun token GitHub — JSON copié (voir Paramètres)', 'error')
+    return
   }
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(json).catch(copy)
-  } else {
-    copy()
+
+  const btn = document.getElementById('deploy-btn')
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span style="opacity:.7">Déploiement…</span>' }
+
+  const REPO   = 'letxbrace-droid/inrunparis'
+  const FILE   = 'public/promo-config.json'
+  const BRANCH = 'main'
+  const API    = `https://api.github.com/repos/${REPO}/contents/${FILE}`
+  const HEADERS = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' }
+
+  try {
+    // 1. Get current file SHA (required by GitHub API to update a file)
+    const getRes = await fetch(API, { headers: HEADERS })
+    if (!getRes.ok) throw new Error(`GitHub ${getRes.status} — vérifiez le token`)
+    const { sha } = await getRes.json()
+
+    // 2. Encode content as base64 (TextEncoder → Uint8Array → btoa)
+    const bytes   = new TextEncoder().encode(json)
+    const b64     = btoa(String.fromCharCode(...bytes))
+
+    // 3. Push updated file
+    const putRes = await fetch(API, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify({ message: 'chore: update promo codes [hub]', content: b64, sha, branch: BRANCH }),
+    })
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({}))
+      throw new Error(err.message || `GitHub ${putRes.status}`)
+    }
+
+    showToast('✓ Codes déployés — actifs sur tous les appareils dans ~2 min')
+  } catch (e) {
+    showToast('Erreur : ' + e.message, 'error')
+  } finally {
+    if (btn) {
+      btn.disabled = false
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Déployer`
+    }
   }
-  showToast('JSON copié — coller dans promo-config.json et déployer')
 }
 
 function renderPromos() {
@@ -663,14 +738,18 @@ function renderPromos() {
   let html = ''
 
   // ── Deploy info + button ──
+  const hasToken = !!getGhToken()
   html += `
   <div class="deploy-info">
-    <strong style="color:var(--success)">Codes sur tous les appareils</strong> — Les codes personnalisés n'existent que sur cet appareil.<br>
-    Cliquez <strong>Déployer</strong> pour exporter le JSON à committer dans <code style="font-size:11px">promo-config.json</code>.
+    <strong style="color:var(--success)">Déploiement sur tous les appareils</strong><br>
+    ${hasToken
+      ? 'Token configuré — cliquez <strong>Déployer</strong> pour publier les codes en un clic.'
+      : 'Configurez un token dans <strong>Paramètres → Déploiement GitHub</strong> pour activer le déploiement automatique.'
+    }
     <div style="margin-top:8px">
-      <button class="btn btn-success btn-sm" onclick="copyDeployJson()">
+      <button id="deploy-btn" class="btn btn-success btn-sm" onclick="deployPromos()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Déployer (copier JSON)
+        ${hasToken ? 'Déployer' : 'Copier JSON (fallback)'}
       </button>
     </div>
   </div>`
@@ -1064,6 +1143,7 @@ function loadSettings() {
   document.getElementById('s-email').value   = c.email
   document.getElementById('s-tvarate').value = c.tvarate
   document.getElementById('s-footer').value  = c.footer
+  showGhTokenStatus()
 }
 
 function saveSettings() {
