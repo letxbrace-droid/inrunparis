@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v72 */
-const CACHE = 'inrun-v72';
+/* I&N RUN — Service Worker v73 */
+const CACHE = 'inrun-v73';
 const STATIC = [
   '/inrunparis/manifest.json',
   '/inrunparis/favicon.ico',
@@ -47,7 +47,7 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-  if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
+  if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('openstreetmap.de') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
     e.respondWith(fetch(request).catch(() => new Response('', { status: 503 }))); return;
   }
   e.respondWith(caches.match(request).then(r => r || fetch(request).then(res => {

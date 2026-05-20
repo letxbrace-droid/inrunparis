@@ -11,7 +11,6 @@ function haversineKm(a, b) {
 }
 
 // ─── Time-aware traffic buffer ────────────────────────────────────────────────
-// Returns a multiplier applied to OSRM's free-flow duration.
 function trafficFactor() {
   const h = new Date().getHours()
   if ((h >= 7 && h <= 9) || (h >= 17 && h <= 20)) return 1.35  // AM/PM peak Paris
@@ -20,29 +19,27 @@ function trafficFactor() {
 }
 
 // ─── Fallback straight-line estimate ─────────────────────────────────────────
-// Used when OSRM is unreachable after retry.
+// Used only when all OSRM endpoints are unreachable.
 function fallbackEstimate(from, to) {
   const straight = haversineKm(from, to)
-  const routeKm  = straight * 1.40          // Paris urban routing factor ≈ +40%
+  const routeKm  = straight * 1.40
   const tf       = trafficFactor()
-  const mins     = (routeKm / 28) * 60 * tf // avg 28 km/h with traffic
+  const mins     = (routeKm / 28) * 60 * tf
   return {
     km:       Math.round(routeKm * 10) / 10,
     mins:     Math.round(mins),
     rawMins:  Math.round((routeKm / 28) * 60),
-    // Straight-line GeoJSON so the map always draws something even without OSRM
     geometry: { type: 'LineString', coordinates: [[from.lng, from.lat], [to.lng, to.lat]] },
     source:   'fallback',
   }
 }
 
-// ─── OSRM request with one retry ─────────────────────────────────────────────
-async function osrmRoute(from, to, attempt = 0) {
+// ─── Try one OSRM endpoint ────────────────────────────────────────────────────
+async function tryEndpoint(base, from, to) {
   const coords = `${from.lng},${from.lat};${to.lng},${to.lat}`
-  const url    = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson&exclude=ferry&steps=false`
+  const url    = `${base}/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=false`
   const ctrl   = new AbortController()
   const tid    = setTimeout(() => ctrl.abort(), 9000)
-
   try {
     const r    = await fetch(url, { signal: ctrl.signal })
     clearTimeout(tid)
@@ -60,12 +57,28 @@ async function osrmRoute(from, to, attempt = 0) {
     }
   } catch {
     clearTimeout(tid)
-    if (attempt === 0) {
-      await new Promise(res => setTimeout(res, 700))
-      return osrmRoute(from, to, 1)
-    }
-    return null  // signal caller to use fallback
+    return null
   }
+}
+
+// ─── OSRM with multi-endpoint fallback ───────────────────────────────────────
+// Tries two independent public OSRM servers before giving up.
+const OSRM_SERVERS = [
+  'https://router.project-osrm.org',
+  'https://routing.openstreetmap.de/routed-car',
+]
+
+async function osrmRoute(from, to, attempt = 0) {
+  for (const base of OSRM_SERVERS) {
+    const result = await tryEndpoint(base, from, to)
+    if (result) return result
+  }
+  // Both servers failed — retry once after a short pause
+  if (attempt === 0) {
+    await new Promise(res => setTimeout(res, 700))
+    return osrmRoute(from, to, 1)
+  }
+  return null
 }
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
@@ -81,10 +94,8 @@ export default function useOSRM() {
 
     let result = await osrmRoute(from, to)
     if (!result) {
-      // OSRM down — give price estimate via haversine so the user isn't blocked
       result = fallbackEstimate(from, to)
       setError('Estimation (OSRM indisponible)')
-      // Auto-clear the warning after 4s
       setTimeout(() => setError(null), 4000)
     }
 
