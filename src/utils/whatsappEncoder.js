@@ -56,8 +56,8 @@ export function buildWhatsAppMessage(booking) {
   lines.push(
     '',
     `${E.clock} Prise en charge : ${formatDate(pickup)}`,
-    `${E.pin} Départ : ${depart?.name || '—'}`,
-    `${E.flag} Arrivée : ${arrive?.name || '—'}`,
+    `${E.pin} Départ : ${depart?.name || '—'}${depart?.city ? ', ' + depart.city : ''}`,
+    `${E.flag} Arrivée : ${arrive?.name || '—'}${arrive?.city ? ', ' + arrive.city : ''}`,
     '',
   )
 

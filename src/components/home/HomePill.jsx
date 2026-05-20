@@ -214,20 +214,27 @@ export default function HomePill({ onOpenSheet }) {
           <span className="flex items-center gap-3 w-full px-4 py-3">
             {/* A→B indicator */}
             <span className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-              <span className="w-2 h-2 rounded-full"
+              <span className="w-2 h-2 rounded-full flex-shrink-0"
                 style={{ background: '#ff4103' }} />
-              <span className="w-px my-[3px]"
-                style={{ height: 14, background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
-              <span className="w-2 h-2 rounded-full border-2"
+              <span className="relative overflow-hidden my-[3px] flex-shrink-0" style={{ width: 1, height: 16 }}>
+                <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(255,65,3,.55), rgba(255,65,3,.15))' }} />
+                <motion.span
+                  className="absolute left-0 right-0"
+                  style={{ height: 7, background: 'linear-gradient(to bottom, transparent, rgba(255,65,3,1), transparent)' }}
+                  animate={{ y: [-7, 18] }}
+                  transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.7 }}
+                />
+              </span>
+              <span className="w-2 h-2 rounded-full border-2 flex-shrink-0"
                 style={{ borderColor: 'rgba(255,65,3,.7)', background: th.isDark ? th.bgBase : th.bgCard }} />
             </span>
-            {/* Names */}
+            {/* Names — full address including city */}
             <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
               <span className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
-                {departQuery || depart?.name?.split(',')[0] || 'Départ'}
+                {depart ? `${depart.name}${depart.city ? ', ' + depart.city : ''}` : 'Départ'}
               </span>
               <span className="text-[13px] font-semibold truncate" style={{ color: th.inkMid }}>
-                {arriveQuery || arrive?.name?.split(',')[0] || 'Destination'}
+                {arrive ? `${arrive.name}${arrive.city ? ', ' + arrive.city : ''}` : 'Destination'}
               </span>
             </span>
             {/* Price + chevron */}
