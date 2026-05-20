@@ -108,7 +108,7 @@
 
   [data-theme="light"] input::placeholder,
   [data-theme="light"] textarea::placeholder {
-    color: rgba(17,17,17,0.38);
+    color: rgba(13,13,13,0.42);
   }
 
   input::placeholder, textarea::placeholder {
@@ -226,12 +226,30 @@
   .cta-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(160deg, #FF6A30 0%, #FF5A1F 40%, #e84000 100%);
+    background: linear-gradient(160deg, #FF6232 0%, #FF5A1F 45%, #E84000 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.22),
-      inset 0 -1px 0 rgba(0,0,0,0.30),
-      0 4px 16px rgba(0,0,0,0.6),
-      0 1px 4px  rgba(0,0,0,0.5);
+      inset 0 -1px 0 rgba(0,0,0,0.28),
+      0 4px 16px rgba(0,0,0,0.55),
+      0 1px 4px  rgba(0,0,0,0.45);
+  }
+
+  /* Light mode CTA — sharper, editorial shadow, no heavy glow */
+  [data-theme="light"] .cta-glow {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.30),
+      inset 0 -1px 0 rgba(0,0,0,0.14),
+      0 3px 12px rgba(255,65,3,0.22),
+      0 1px 4px  rgba(0,0,0,0.16);
+  }
+
+  /* Light mode disabled — muted orange instead of transparent salmon */
+  [data-theme="light"] .cta-glow:disabled,
+  [data-theme="light"] .cta-pill:disabled {
+    opacity: 1;
+    background: linear-gradient(160deg, #FFAC84 0%, #FF9A6A 45%, #FF8040 100%);
+    box-shadow: none;
+    cursor: not-allowed;
   }
 
   /* Diagonal shine sweep on hover */
@@ -241,8 +259,8 @@
     inset: 0;
     background: linear-gradient(
       135deg,
-      rgba(255,255,255,0.20) 0%,
-      rgba(255,200,120,0.10) 40%,
+      rgba(255,255,255,0.18) 0%,
+      rgba(255,200,120,0.08) 40%,
       transparent 65%
     );
     transform: translate(-100%, 100%);

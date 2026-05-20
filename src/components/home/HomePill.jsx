@@ -319,13 +319,19 @@ export default function HomePill({ onOpenSheet }) {
               </div>
 
               {/* Fields card */}
-              <div className="relative rounded-2xl border border-[var(--rule)]" style={{ background: th.bgCard }}>
+              <div className="relative rounded-2xl" style={{
+                background: th.bgCard,
+                border: `1px solid ${th.borderStrong}`,
+                boxShadow: th.isDark
+                  ? 'inset 0 1px 0 rgba(255,255,255,.06)'
+                  : 'inset 0 1px 0 rgba(255,255,255,.95), 0 0 0 1px rgba(0,0,0,.04)',
+              }}>
                 {/* Departure row */}
                 <div className="flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: '#ff4103' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: th.inkMid }}>Votre position</div>
+                    <div className="font-mono text-[11px] font-semibold tracking-[.08em] uppercase mb-1.5" style={{ color: th.inkMid }}>Votre position</div>
                     <input
                       type="text"
                       value={departQuery}
@@ -335,7 +341,7 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse de départ"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-[15px] outline-none"
+                      className="w-full bg-transparent text-[15px] font-semibold outline-none"
                       style={{ color: th.inkFull }}
                     />
                   </div>
@@ -381,7 +387,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
                     style={{ borderColor: 'rgba(255,65,3,.75)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: th.inkMid }}>Destination</div>
+                    <div className="font-mono text-[11px] font-semibold tracking-[.08em] uppercase mb-1.5" style={{ color: th.inkMid }}>Destination</div>
                     <input
                       type="text"
                       value={arriveQuery}
@@ -391,7 +397,7 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse d'arrivée"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-[15px] outline-none"
+                      className="w-full bg-transparent text-[15px] font-semibold outline-none"
                       style={{ color: th.inkFull }}
                     />
                   </div>
@@ -513,10 +519,10 @@ export default function HomePill({ onOpenSheet }) {
                 disabled={!depart || !arrive || !pickup || routeLoading}
                 className="cta-glow w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
                   cursor-pointer select-none active:scale-[.97] transition-transform duration-150
-                  disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
+                  disabled:cursor-not-allowed relative overflow-hidden cta-pill"
               >
                 <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent)' }} />
                 {ctaLabel}
               </button>
 
@@ -525,11 +531,11 @@ export default function HomePill({ onOpenSheet }) {
                 href={WA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 rounded-[18px] text-xs font-semibold cursor-pointer active:scale-[.98] transition-transform duration-150 select-none"
+                className="flex items-center justify-center gap-2 py-3 rounded-[18px] text-xs font-bold cursor-pointer active:scale-[.98] transition-transform duration-150 select-none"
                 style={{
-                  background: th.isDark ? 'rgba(37,211,102,.07)' : 'rgba(37,211,102,.13)',
-                  border:     th.isDark ? '1px solid rgba(37,211,102,.22)' : '1px solid rgba(37,211,102,.42)',
-                  color:      th.isDark ? '#25d366' : '#1a9940',
+                  background: th.isDark ? 'rgba(37,211,102,.08)' : 'rgba(37,211,102,.16)',
+                  border:     th.isDark ? '1px solid rgba(37,211,102,.24)' : '1px solid rgba(37,211,102,.55)',
+                  color:      th.isDark ? '#25d366' : '#15803d',
                 }}
               >
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">

@@ -167,8 +167,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const isDark   = useBookingStore(s => s.isDark)
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
-  const inkFull = isDark ? '#F5F1E8' : '#111111'
-  const inkDim  = isDark ? 'rgba(245,241,232,.38)' : 'rgba(17,17,17,.35)'
+  const inkFull = isDark ? '#F5F1E8' : '#0D0D0D'
+  const inkDim  = isDark ? 'rgba(245,241,232,.42)' : 'rgba(13,13,13,.62)'
   const border  = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.08)'
 
   useEffect(() => {
@@ -279,13 +279,13 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     <span
                       style={{
                         display:       'block',
-                        fontSize:      26,
-                        fontWeight:    800,
-                        letterSpacing: '-0.02em',
-                        lineHeight:    1.1,
+                        fontSize:      isActive ? 28 : 26,
+                        fontWeight:    isActive ? 900 : 800,
+                        letterSpacing: isActive ? '-0.03em' : '-0.02em',
+                        lineHeight:    1.08,
                         textTransform: 'uppercase',
                         color:         isActive ? inkFull : inkDim,
-                        transition:    'color .2s',
+                        transition:    'color .22s, font-size .22s',
                       }}
                     >
                       {item.label}
@@ -296,8 +296,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                         layoutId="activeBar"
                         style={{
                           height:     2,
-                          width:      32,
-                          marginTop:  5,
+                          width:      28,
+                          marginTop:  6,
                           background: '#FF5A1F',
                           borderRadius: 999,
                         }}
