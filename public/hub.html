@@ -102,12 +102,21 @@ textarea{resize:vertical}
 .badge-gray{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border)}
 
 /* Promo list item */
-.promo-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:8px}
+.promo-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:0}
 .promo-item-info{flex:1;min-width:0}
 .promo-code{font-size:14px;font-weight:700;font-family:monospace;letter-spacing:.1em;color:var(--text)}
 .promo-label{font-size:12px;color:var(--muted);margin-top:1px}
 .promo-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.promo-hardcoded{opacity:.55}
+.promo-wrap{border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
+.promo-wrap .promo-item{border:none;border-radius:0;margin-bottom:0}
+.promo-edit-form{padding:12px 14px;background:rgba(255,65,3,.04);border-top:1px solid rgba(255,65,3,.18);display:none}
+.promo-edit-form .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.promo-edit-form .field{margin-bottom:0}
+.promo-edit-form .field label{display:block;font-size:11px;font-weight:600;color:var(--subtle);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.promo-edit-form .field input,.promo-edit-form .field select{display:block;width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;background:rgba(0,10,18,.5);color:var(--text);font-size:13px}
+.promo-edit-form .field input:focus,.promo-edit-form .field select:focus{border-color:rgba(255,65,3,.4);outline:none}
+.promo-edit-form .field select option{background:#001621}
+.deploy-info{font-size:12px;color:var(--subtle);background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:10px 13px;margin-bottom:14px;line-height:1.5}
 
 /* Parsed field */
 .parsed-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2)}
@@ -502,9 +511,14 @@ function initApp() {
 function getStoredPromos() {
   try { return JSON.parse(localStorage.getItem('inr-promo-codes') || '{}') } catch { return {} }
 }
-
 function saveStoredPromos(obj) {
   localStorage.setItem('inr-promo-codes', JSON.stringify(obj))
+}
+function getSysOverrides() {
+  try { return JSON.parse(localStorage.getItem('inr-promo-system') || '{}') } catch { return {} }
+}
+function saveSysOverrides(obj) {
+  localStorage.setItem('inr-promo-system', JSON.stringify(obj))
 }
 
 function createPromo() {
@@ -515,9 +529,8 @@ function createPromo() {
   const expiry = document.getElementById('p-expiry').value
   const label  = document.getElementById('p-label').value.trim()
 
-  if (!code)         return showToast('Entrez un code', 'error')
+  if (!code)               return showToast('Entrez un code', 'error')
   if (!amount || amount <= 0) return showToast('Montant invalide', 'error')
-  if (HARDCODED[code]) return showToast('Ce code est réservé', 'error')
 
   const promos = getStoredPromos()
   promos[code] = {
@@ -526,12 +539,9 @@ function createPromo() {
     createdAt: new Date().toISOString(),
   }
   saveStoredPromos(promos)
-
-  // reset form
   ;['p-code','p-amount','p-label','p-expiry'].forEach(id => document.getElementById(id).value = '')
   document.getElementById('p-uses').value = '0'
   document.getElementById('p-type').value = 'percent'
-
   renderPromos()
   showToast('Code créé ✓')
 }
@@ -553,29 +563,175 @@ function deletePromo(code) {
   showToast('Code supprimé')
 }
 
+function deleteSystemPromo(code) {
+  if (!confirm(`Masquer le code système ${code} ?`)) return
+  const ov = getSysOverrides()
+  ov[code] = { ...ov[code], deleted: true }
+  saveSysOverrides(ov)
+  renderPromos()
+  showToast('Code masqué')
+}
+
+function restoreSystemPromo(code) {
+  const ov = getSysOverrides()
+  delete ov[code]
+  saveSysOverrides(ov)
+  renderPromos()
+  showToast('Code restauré ✓')
+}
+
+function editPromo(id) {
+  // Close any open form first
+  document.querySelectorAll('.promo-edit-form').forEach(f => {
+    if (f.id !== 'edit-' + id) f.style.display = 'none'
+  })
+  const form = document.getElementById('edit-' + id)
+  if (!form) return
+  form.style.display = form.style.display === 'none' ? 'block' : 'none'
+}
+
+function saveEdit(code, isSystem) {
+  const amount = parseFloat(document.getElementById('ea-' + code).value)
+  const type   = document.getElementById('et-' + code).value
+  const label  = document.getElementById('el-' + code).value.trim()
+  if (!amount || amount <= 0) return showToast('Montant invalide', 'error')
+
+  if (isSystem) {
+    const ov = getSysOverrides()
+    ov[code] = { amount, type, label: label || ov[code]?.label || HARDCODED[code]?.label, deleted: false }
+    saveSysOverrides(ov)
+  } else {
+    const promos = getStoredPromos()
+    if (!promos[code]) return
+    promos[code] = { ...promos[code], amount, type, label: label || promos[code].label }
+    saveStoredPromos(promos)
+  }
+  renderPromos()
+  showToast('Code mis à jour ✓')
+}
+
+// Exports active merged promo codes as JSON for promo-config.json deployment
+function copyDeployJson() {
+  const ov = getSysOverrides()
+  const stored = getStoredPromos()
+  const config = {}
+
+  // System codes (with overrides applied, skipping deleted)
+  Object.entries(HARDCODED).forEach(([code, defaults]) => {
+    const o = ov[code]
+    if (o && o.deleted) return
+    if (o && o.amount) {
+      config[code] = {
+        discount: o.type === 'fixed' ? null : o.amount,
+        fixed:    o.type === 'fixed' ? o.amount : null,
+        label:    o.label || defaults.label,
+      }
+    } else {
+      config[code] = { discount: defaults.discount, fixed: null, label: defaults.label }
+    }
+  })
+
+  // Active custom codes
+  Object.entries(stored).forEach(([code, p]) => {
+    if (!p.active) return
+    if (p.expiry && new Date(p.expiry) < new Date()) return
+    config[code] = {
+      discount: p.type === 'percent' ? p.amount : null,
+      fixed:    p.type === 'fixed'   ? p.amount : null,
+      label:    p.label,
+    }
+  })
+
+  const json = JSON.stringify(config, null, 2)
+  const copy = () => {
+    const ta = document.createElement('textarea')
+    ta.value = json; document.body.appendChild(ta); ta.select()
+    document.execCommand('copy'); document.body.removeChild(ta)
+  }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(json).catch(copy)
+  } else {
+    copy()
+  }
+  showToast('JSON copié — coller dans promo-config.json et déployer')
+}
+
 function renderPromos() {
   const list = document.getElementById('promo-list')
   const stored = getStoredPromos()
+  const sysOv = getSysOverrides()
   let html = ''
 
-  // Hardcoded first
-  Object.entries(HARDCODED).forEach(([code, p]) => {
+  // ── Deploy info + button ──
+  html += `
+  <div class="deploy-info">
+    <strong style="color:var(--success)">Codes sur tous les appareils</strong> — Les codes personnalisés n'existent que sur cet appareil.<br>
+    Cliquez <strong>Déployer</strong> pour exporter le JSON à committer dans <code style="font-size:11px">promo-config.json</code>.
+    <div style="margin-top:8px">
+      <button class="btn btn-success btn-sm" onclick="copyDeployJson()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Déployer (copier JSON)
+      </button>
+    </div>
+  </div>`
+
+  // ── System codes ──
+  Object.entries(HARDCODED).forEach(([code, defaults]) => {
+    const o = sysOv[code]
+    if (o && o.deleted) {
+      html += `
+      <div class="promo-wrap">
+        <div class="promo-item" style="opacity:.45">
+          <div class="promo-item-info">
+            <div class="promo-code" style="text-decoration:line-through">${code}</div>
+            <div class="promo-label">Code masqué</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="restoreSystemPromo('${code}')">Restaurer</button>
+        </div>
+      </div>`
+      return
+    }
+    const p = (o && o.amount) ? { discount: o.type === 'fixed' ? null : o.amount, label: o.label || defaults.label } : defaults
+    const valStr = (o && o.type === 'fixed') ? `${o.amount}€` : `${p.discount}%`
+    const editAmt = (o && o.amount) ? o.amount : defaults.discount
+    const editType = (o && o.type) ? o.type : 'percent'
+    const editLabel = p.label
     html += `
-    <div class="promo-item promo-hardcoded">
-      <div class="promo-item-info">
-        <div class="promo-code">${code}</div>
-        <div class="promo-label">${p.label}</div>
+    <div class="promo-wrap">
+      <div class="promo-item">
+        <div class="promo-item-info">
+          <div class="promo-code">${code} <span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--muted)">${valStr}</span></div>
+          <div class="promo-label">${p.label}</div>
+        </div>
+        <div class="promo-actions">
+          <span class="badge badge-gray">Système</span>
+          <button class="btn btn-secondary btn-sm" onclick="editPromo('sys-${code}')">Éditer</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteSystemPromo('${code}')">✕</button>
+        </div>
       </div>
-      <span class="badge badge-gray">Système</span>
+      <div class="promo-edit-form" id="edit-sys-${code}">
+        <div class="field-row">
+          <div class="field"><label>Montant</label><input id="ea-${code}" type="number" min="1" value="${editAmt}"></div>
+          <div class="field"><label>Type</label>
+            <select id="et-${code}">
+              <option value="percent" ${editType==='percent'?'selected':''}>%</option>
+              <option value="fixed"   ${editType==='fixed'  ?'selected':''}>€ fixe</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:10px"><label>Libellé</label><input id="el-${code}" type="text" value="${editLabel}"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary btn-sm" onclick="saveEdit('${code}', true)">Enregistrer</button>
+          <button class="btn btn-secondary btn-sm" onclick="editPromo('sys-${code}')">Annuler</button>
+        </div>
+      </div>
     </div>`
   })
 
-  // Custom promos
+  // ── Custom codes ──
   const custom = Object.entries(stored)
-  if (custom.length === 0 && html) {
-    // OK, just hardcoded
-  } else if (custom.length === 0) {
-    list.innerHTML = '<div class="empty">Aucun code personnalisé</div>'
+  if (custom.length === 0) {
+    list.innerHTML = html
     return
   }
 
@@ -584,18 +740,37 @@ function renderPromos() {
     const expiryStr = p.expiry ? `Exp. ${new Date(p.expiry).toLocaleDateString('fr-FR')}` : 'Sans expiration'
     const valStr = p.type === 'percent' ? `${p.amount}%` : `${p.amount}€`
     html += `
-    <div class="promo-item">
-      <div class="promo-item-info">
-        <div class="promo-code">${code} <span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--muted)">${valStr}</span></div>
-        <div class="promo-label">${p.label} · ${expiryStr}${p.maxUses ? ` · ${p.uses||0}/${p.maxUses} usages` : ''}</div>
+    <div class="promo-wrap">
+      <div class="promo-item">
+        <div class="promo-item-info">
+          <div class="promo-code">${code} <span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--muted)">${valStr}</span></div>
+          <div class="promo-label">${p.label} · ${expiryStr}${p.maxUses ? ` · ${p.uses||0}/${p.maxUses} usages` : ''}</div>
+        </div>
+        <div class="promo-actions">
+          <span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Actif' : 'Inactif'}</span>
+          <label class="toggle" title="${isActive ? 'Désactiver' : 'Activer'}">
+            <input type="checkbox" ${p.active ? 'checked' : ''} onchange="togglePromo('${code}')">
+            <span class="toggle-slider"></span>
+          </label>
+          <button class="btn btn-secondary btn-sm" onclick="editPromo('cus-${code}')">Éditer</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePromo('${code}')">✕</button>
+        </div>
       </div>
-      <div class="promo-actions">
-        <span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Actif' : 'Inactif'}</span>
-        <label class="toggle" title="${isActive ? 'Désactiver' : 'Activer'}">
-          <input type="checkbox" ${p.active ? 'checked' : ''} onchange="togglePromo('${code}')">
-          <span class="toggle-slider"></span>
-        </label>
-        <button class="btn btn-danger btn-sm" onclick="deletePromo('${code}')">✕</button>
+      <div class="promo-edit-form" id="edit-cus-${code}">
+        <div class="field-row">
+          <div class="field"><label>Montant</label><input id="ea-${code}" type="number" min="1" value="${p.amount}"></div>
+          <div class="field"><label>Type</label>
+            <select id="et-${code}">
+              <option value="percent" ${p.type==='percent'?'selected':''}>%</option>
+              <option value="fixed"   ${p.type==='fixed'  ?'selected':''}>€ fixe</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:10px"><label>Libellé</label><input id="el-${code}" type="text" value="${p.label}"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary btn-sm" onclick="saveEdit('${code}', false)">Enregistrer</button>
+          <button class="btn btn-secondary btn-sm" onclick="editPromo('cus-${code}')">Annuler</button>
+        </div>
       </div>
     </div>`
   })

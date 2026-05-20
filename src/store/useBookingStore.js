@@ -7,6 +7,17 @@ const PROMO_CODES_BASE = {
   'PARIS25':   { discount: 25, label: '25% sur votre 1ère course' },
 }
 
+// Populated by initRemotePromoCodes() before React renders
+let _remotePromos = {}
+
+// Fetch promo-config.json deployed to GitHub Pages so codes work on every device
+export async function initRemotePromoCodes() {
+  try {
+    const r = await fetch('/inrunparis/promo-config.json', { cache: 'no-cache' })
+    if (r.ok) _remotePromos = await r.json()
+  } catch {}
+}
+
 export function getPromoCodes() {
   try {
     const stored = JSON.parse(localStorage.getItem('inr-promo-codes') || '{}')
@@ -20,9 +31,10 @@ export function getPromoCodes() {
         label:    p.label,
       }
     })
-    return { ...PROMO_CODES_BASE, ...active }
+    // Priority: device-local custom codes > remote deployed codes > hardcoded base
+    return { ...PROMO_CODES_BASE, ..._remotePromos, ...active }
   } catch {
-    return PROMO_CODES_BASE
+    return { ...PROMO_CODES_BASE, ..._remotePromos }
   }
 }
 
