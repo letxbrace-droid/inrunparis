@@ -197,7 +197,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                       onClick={() => i + 1 < step && onStepChange(i + 1)}
                       disabled={i + 1 > step}
                       aria-label={`Étape ${i + 1} : ${label}`}
-                      className="flex items-center gap-2 cursor-pointer disabled:cursor-default"
+                      className="flex items-center gap-2 cursor-pointer disabled:cursor-default min-h-[44px] px-1"
                     >
                       <StepDot index={i} current={step} th={th} />
                       <motion.span

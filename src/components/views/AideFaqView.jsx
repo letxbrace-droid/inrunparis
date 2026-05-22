@@ -77,7 +77,7 @@ export default function AideFaqView({ open, onClose }) {
         }}
       >
         <button onClick={onClose} aria-label="Retour"
-          className="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
+          className="w-11 h-11 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform"
           style={{ background: th.bgCard, border: `1px solid ${th.border}` }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={th.inkHigh} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
