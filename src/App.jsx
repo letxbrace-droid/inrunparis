@@ -153,8 +153,10 @@ export default function App() {
             bonNumber={confirmBon}
             onDismiss={() => {
               setConfirmBon(null)
-              // Wipe persisted trigger so visibilitychange never re-fires this card
-              useBookingStore.setState({ awaitingReturn: false, bonNumber: null })
+              // Reset full booking so the previous route/price don't linger on the map
+              const st = useBookingStore.getState()
+              st.resetBooking()
+              st.setAwaitingReturn(false)
             }}
           />
         )}
