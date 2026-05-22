@@ -71,8 +71,11 @@ export default function Step2Price({ onNext, onBack }) {
       animate="show"
     >
 
-      {/* ── Trajet compact ───────────────────────────────────────── */}
-      <motion.div variants={itemV} className="flex items-center gap-2 px-1">
+      {/* ── Trajet compact — layoutId shared with Step1 route badge ── */}
+      <motion.div
+        layoutId="route-strip"
+        className="flex items-center gap-2 px-1"
+      >
         <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ff4103' }} />
           <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, rgba(255,65,3,.5), rgba(255,65,3,.12))' }} />

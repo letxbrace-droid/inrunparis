@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
@@ -281,23 +282,32 @@ export default function Step1Route({ onNext }) {
         <p className="text-sm text-center px-1" style={{ color: 'rgba(248,113,113,.8)' }}>{error}</p>
       )}
 
-      {/* Route result badge */}
+      {/* Route result badge — layoutId shared with Step2 route strip */}
       {route && (
-        <div
-          className="flex items-center justify-center gap-4 py-2.5 rounded-xl"
+        <motion.div
+          layoutId="route-strip"
+          className="flex items-center gap-2 px-3 py-2.5 rounded-xl"
           style={{
             background: 'rgba(255,65,3,.06)',
             border: '1px solid rgba(255,65,3,.18)',
           }}
         >
-          <span className="font-mono text-xs font-semibold" style={{ color: '#ff4103' }}>
-            {route.km.toFixed(1)} km
+          <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ff4103' }} />
+            <span className="w-px my-1" style={{ height: 8, background: 'linear-gradient(to bottom, rgba(255,65,3,.5), rgba(255,65,3,.12))' }} />
+            <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'rgba(255,65,3,.6)', background: 'transparent' }} />
+          </div>
+          <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: '#ff4103' }}>
+            {depart?.name?.split(',')[0] ?? '—'}
+          </p>
+          <span className="font-mono text-[11px] font-semibold flex-shrink-0 px-2 py-0.5 rounded-full"
+            style={{ background: 'rgba(255,65,3,.10)', color: '#ff4103' }}>
+            {route.km.toFixed(1)} km · {Math.round(route.mins)} min
           </span>
-          <span style={{ color: 'rgba(255,65,3,.35)' }}>·</span>
-          <span className="font-mono text-xs font-semibold" style={{ color: '#ff4103' }}>
-            ≈ {Math.round(route.mins)} min
-          </span>
-        </div>
+          <p className="flex-1 text-[12px] font-semibold truncate text-right" style={{ color: '#ff4103' }}>
+            {arrive?.name?.split(',')[0] ?? '—'}
+          </p>
+        </motion.div>
       )}
 
       <GlowingCTA

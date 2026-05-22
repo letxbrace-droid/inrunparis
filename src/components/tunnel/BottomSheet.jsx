@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
@@ -221,21 +221,23 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
 
           {/* Content — slides between steps */}
           <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.26, ease: [0.32, 1, 0.55, 1] }}
-                className="pt-4"
-              >
-                {step === 1 && <Step1Route   onNext={() => onStepChange(2)} />}
-                {step === 2 && <Step2Price   onNext={() => onStepChange(3)} onBack={() => onStepChange(1)} />}
-                {step === 3 && <Step3Options onNext={() => onStepChange(4)} onBack={() => onStepChange(2)} />}
-                {step === 4 && <Step4Recap   onBack={() => onStepChange(3)} />}
-              </motion.div>
-            </AnimatePresence>
+            <LayoutGroup>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.26, ease: [0.32, 1, 0.55, 1] }}
+                  className="pt-4"
+                >
+                  {step === 1 && <Step1Route   onNext={() => onStepChange(2)} />}
+                  {step === 2 && <Step2Price   onNext={() => onStepChange(3)} onBack={() => onStepChange(1)} />}
+                  {step === 3 && <Step3Options onNext={() => onStepChange(4)} onBack={() => onStepChange(2)} />}
+                  {step === 4 && <Step4Recap   onBack={() => onStepChange(3)} />}
+                </motion.div>
+              </AnimatePresence>
+            </LayoutGroup>
           </div>
         </div>
       </div>
