@@ -33,7 +33,7 @@ jobs:
           req = urllib.request.Request(
               'https://api.onesignal.com/notifications',
               data=json.dumps(payload).encode(),
-              headers={'Authorization': f'Key {key}', 'Content-Type': 'application/json'}
+              headers={'Authorization': f'Basic {key}', 'Content-Type': 'application/json'}
           )
           try:
               with urllib.request.urlopen(req) as resp:
