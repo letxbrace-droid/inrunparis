@@ -346,6 +346,26 @@ textarea{resize:vertical}
       </div>
 
       <div class="section">
+        <div class="section-title">Abonnés</div>
+        <div class="card">
+          <div id="sub-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+          <div class="field" style="margin-bottom:8px">
+            <label>Nom du client</label>
+            <input id="sub-name" type="text" placeholder="Jean-Pierre" maxlength="40">
+          </div>
+          <div class="field">
+            <label>Message WhatsApp reçu (NOTIF:…)</label>
+            <textarea id="sub-input" rows="2" maxlength="4096" placeholder="NOTIF:eyJl..."
+              style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:12px;width:100%;color:var(--text);resize:none;font-family:monospace"></textarea>
+          </div>
+          <button class="btn btn-secondary btn-full" onclick="addSubscriber()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter cet abonné
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title">Modèles rapides</div>
         <div class="card" style="display:flex;flex-direction:column;gap:8px">
           <button id="tpl-btn-promo" class="btn btn-secondary btn-full" onclick="sendTemplate('promo')" style="justify-content:flex-start;gap:12px">
@@ -388,22 +408,6 @@ textarea{resize:vertical}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             Envoyer à tous les abonnés
           </button>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title">Ajouter un abonné</div>
-        <div class="card">
-          <div style="font-size:12px;color:var(--subtle);margin-bottom:10px;line-height:1.6">
-            Colle ici le message <code style="color:var(--accent)">NOTIF:xxx…</code> reçu via WhatsApp depuis un client.
-          </div>
-          <div class="field">
-            <label>Message WhatsApp du client</label>
-            <textarea id="sub-input" rows="3" maxlength="4096" placeholder="NOTIF:eyJl..."
-              style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:13px;width:100%;color:var(--text);resize:vertical;font-family:monospace"></textarea>
-          </div>
-          <button class="btn btn-secondary btn-full" onclick="addSubscriber()">Ajouter cet abonné</button>
-          <div id="sub-count" style="font-size:12px;color:var(--subtle);margin-top:8px;text-align:center"></div>
         </div>
       </div>
 
@@ -620,7 +624,7 @@ function initApp() {
   loadSettings()
   renderPushStatus()
   renderPushHistory()
-  renderSubCount()
+  renderSubList()
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1246,7 +1250,7 @@ function loadSettings() {
   document.getElementById('s-tvarate').value = c.tvarate
   document.getElementById('s-footer').value  = c.footer
   showGhTokenStatus()
-  showOSKeyStatus()
+  showVapidCfgStatus()
 }
 
 function saveSettings() {
@@ -1332,49 +1336,58 @@ function showVapidCfgStatus() {
   el.textContent = has ? '✓ Gist configuré — abonnements actifs' : 'Gist non configuré — entrez Gist ID et Token'
 }
 
-async function saveGistConfig() {
-  const gistId    = document.getElementById('s-gist-id').value.trim()
-  const gistToken = document.getElementById('s-gist-token').value.trim()
-  if (!gistId || !gistToken) return showToast('Entrez le Gist ID et le Token', 'error')
-  localStorage.setItem('hub-gist-id', gistId)
-  localStorage.setItem('hub-gist-token', gistToken)
-  document.getElementById('s-gist-id').value    = ''
-  document.getElementById('s-gist-token').value = ''
-  showVapidCfgStatus()
-  renderPushStatus()
-
-  const token = getGhToken()
-  if (!token) {
-    showToast('Gist enregistré localement — ajoutez le token GitHub pour déployer la config', 'error')
-    return
-  }
-  await deployPushConfig(gistId, gistToken)
-}
-
 // Subscriptions stored locally in hub localStorage
 function getLocalSubs() {
   try { return JSON.parse(localStorage.getItem('hub-vapid-subs') || '[]') } catch { return [] }
 }
 function saveLocalSubs(subs) {
   localStorage.setItem('hub-vapid-subs', JSON.stringify(subs))
-  renderSubCount()
+  renderSubList()
 }
-function renderSubCount() {
-  const el = document.getElementById('sub-count')
+
+function renderSubList() {
+  const el = document.getElementById('sub-list')
   if (!el) return
-  const n = getLocalSubs().length
-  el.textContent = n ? `${n} abonné(s) enregistré(s)` : 'Aucun abonné pour l\'instant'
+  const subs = getLocalSubs()
+  if (!subs.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--subtle);padding:4px 0">Aucun abonné pour l\'instant</div>'
+    return
+  }
+  el.innerHTML = subs.map((s, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card2);border:1px solid var(--border2);border-radius:8px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${escHtml(s.name || 'Abonné #' + (i + 1))}</div>
+        <div style="font-size:10px;color:var(--subtle);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px">…${escHtml((s.endpoint || '').slice(-36))}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteSubscriber(${i})">✕</button>
+    </div>`).join('')
+}
+
+function deleteSubscriber(idx) {
+  const subs = getLocalSubs()
+  const name = subs[idx]?.name || `Abonné #${idx + 1}`
+  if (!confirm(`Supprimer ${name} ?`)) return
+  subs.splice(idx, 1)
+  saveLocalSubs(subs)
+  showToast('Abonné supprimé')
 }
 
 async function addSubscriber() {
-  const raw = (document.getElementById('sub-input')?.value || '').trim()
+  const raw  = (document.getElementById('sub-input')?.value || '').trim()
+  const name = (document.getElementById('sub-name')?.value  || '').trim()
   const match = raw.match(/NOTIF:([A-Za-z0-9+/=]+)/)
   if (!match) return showToast('Format invalide — doit commencer par NOTIF:xxx', 'error')
   let sub
   try { sub = JSON.parse(atob(match[1])) } catch { return showToast('Impossible de décoder l\'abonnement', 'error') }
   if (!sub?.endpoint) return showToast('Abonnement invalide', 'error')
 
-  // Save to Gist if configured
+  // Save locally with name as primary store
+  const local = getLocalSubs()
+  if (local.some(s => s.endpoint === sub.endpoint)) return showToast('Cet abonné est déjà enregistré', 'error')
+  local.push({ name: name || null, endpoint: sub.endpoint, keys: sub.keys, expirationTime: sub.expirationTime ?? null })
+  saveLocalSubs(local)
+
+  // Backup to Gist if configured
   const gistId = getGistId(), gistToken = getGistToken()
   if (gistId && gistToken) {
     try {
@@ -1382,29 +1395,22 @@ async function addSubscriber() {
       const r = await fetch(`https://api.github.com/gists/${gistId}`, { headers })
       if (r.ok) {
         const gist = await r.json()
-        const content = gist.files?.['subscriptions.json']?.content || '[]'
-        let subs = []
-        try { subs = JSON.parse(content) } catch {}
-        if (!subs.some(s => s.endpoint === sub.endpoint)) {
-          subs.push(sub)
+        let gistSubs = []
+        try { gistSubs = JSON.parse(gist.files?.['subscriptions.json']?.content || '[]') } catch {}
+        if (!gistSubs.some(s => s.endpoint === sub.endpoint)) {
+          gistSubs.push({ endpoint: sub.endpoint, keys: sub.keys, expirationTime: sub.expirationTime ?? null })
           await fetch(`https://api.github.com/gists/${gistId}`, {
             method: 'PATCH', headers,
-            body: JSON.stringify({ files: { 'subscriptions.json': { content: JSON.stringify(subs) } } }),
+            body: JSON.stringify({ files: { 'subscriptions.json': { content: JSON.stringify(gistSubs) } } }),
           })
         }
       }
     } catch {}
   }
 
-  // Also save locally
-  const local = getLocalSubs()
-  if (!local.some(s => s.endpoint === sub.endpoint)) {
-    local.push(sub)
-    saveLocalSubs(local)
-  }
   if (document.getElementById('sub-input')) document.getElementById('sub-input').value = ''
-  showToast('✓ Abonné ajouté')
-  renderSubCount()
+  if (document.getElementById('sub-name'))  document.getElementById('sub-name').value  = ''
+  showToast('✓ ' + (name || 'Abonné') + ' ajouté')
 }
 
 // push-config.json only contains the public key — no token ever committed
@@ -1445,10 +1451,14 @@ async function saveGistConfig() {
   showToast('✓ Gist configuré')
 }
 
-// Sending is done server-side via GitHub Actions (no CORS issue, API key stays secret)
+// Sending is done server-side via GitHub Actions (no CORS issue, VAPID keys stay secret)
 async function sendPushNotification(title, body) {
   const token = getGhToken()
   if (!token) return { ok: false, error: 'Token GitHub requis — configurez-le dans Paramètres' }
+  const subs = getLocalSubs()
+  if (!subs.length) return { ok: false, error: 'Aucun abonné enregistré — demandez à vos clients de s\'abonner via WhatsApp' }
+  // Send subscriptions directly in payload so GitHub Actions doesn't need Gist access to send
+  const subscriptions = subs.map(s => ({ endpoint: s.endpoint, keys: s.keys, expirationTime: s.expirationTime ?? null }))
   try {
     const res = await fetch('https://api.github.com/repos/letxbrace-droid/inrunparis/dispatches', {
       method: 'POST',
@@ -1457,7 +1467,7 @@ async function sendPushNotification(title, body) {
         'Accept': 'application/vnd.github+json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ event_type: 'send-push', client_payload: { title, body } }),
+      body: JSON.stringify({ event_type: 'send-push', client_payload: { title, body, subscriptions } }),
     })
     if (res.status === 204) return { ok: true }
     const data = await res.json().catch(() => ({}))

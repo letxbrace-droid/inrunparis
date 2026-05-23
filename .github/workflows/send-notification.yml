@@ -16,20 +16,17 @@ jobs:
           GIST_ID: ${{ secrets.GIST_ID }}
           N_TITLE: ${{ github.event.client_payload.title }}
           N_BODY: ${{ github.event.client_payload.body }}
+          N_SUBS: ${{ toJson(github.event.client_payload.subscriptions) }}
         run: |
           npm install web-push --save-dev --silent
           node <<'EOF'
           const webpush = require('web-push')
           const https   = require('https')
 
-          const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, GIST_TOKEN, GIST_ID, N_TITLE, N_BODY } = process.env
+          const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, GIST_TOKEN, GIST_ID, N_TITLE, N_BODY, N_SUBS } = process.env
 
           if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
             console.error('Secrets manquants : VAPID_PUBLIC_KEY et VAPID_PRIVATE_KEY requis')
-            process.exit(1)
-          }
-          if (!GIST_TOKEN || !GIST_ID) {
-            console.error('Secrets manquants : GIST_TOKEN et GIST_ID requis')
             process.exit(1)
           }
 
@@ -52,16 +49,34 @@ jobs:
           }
 
           async function main() {
-            const gist = await httpsGet(
-              `/gists/${GIST_ID}`,
-              { Authorization: `Bearer ${GIST_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'inrunparis-push' }
-            )
-            const content = gist.files?.['subscriptions.json']?.content || '[]'
             let subs = []
-            try { subs = JSON.parse(content) } catch {}
+
+            // Primary: subscriptions sent directly from hub in client_payload
+            try {
+              const parsed = JSON.parse(N_SUBS || 'null')
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                subs = parsed
+                console.log(`Abonnés reçus depuis le hub : ${subs.length}`)
+              }
+            } catch {}
+
+            // Fallback: read from Gist if payload subscriptions empty
+            if (!subs.length && GIST_TOKEN && GIST_ID) {
+              try {
+                const gist = await httpsGet(
+                  `/gists/${GIST_ID}`,
+                  { Authorization: `Bearer ${GIST_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'inrunparis-push' }
+                )
+                const content = gist.files?.['subscriptions.json']?.content || '[]'
+                try { subs = JSON.parse(content) } catch {}
+                console.log(`Abonnés lus depuis Gist : ${subs.length}`)
+              } catch (e) {
+                console.warn('Impossible de lire le Gist :', e.message)
+              }
+            }
 
             if (!subs.length) {
-              console.log('Aucun abonné enregistré.')
+              console.log('Aucun abonné enregistré — rien à envoyer.')
               return
             }
 
@@ -74,7 +89,7 @@ jobs:
                 await webpush.sendNotification(sub, payload)
                 sent++
               } catch (e) {
-                console.error(`Échec (${sub.endpoint?.slice(-20)}): ${e.statusCode || e.message}`)
+                console.error(`Échec (${(sub.endpoint || '').slice(-20)}): ${e.statusCode || e.message}`)
                 failed++
               }
             }
