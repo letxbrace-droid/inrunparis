@@ -1379,12 +1379,13 @@ async function sendPushNotification(title, body) {
     return { ok: false, error: 'Non configuré' }
   }
   try {
-    const res = await fetch('https://onesignal.com/api/v1/notifications', {
+    const res = await fetch('https://api.onesignal.com/notifications', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${apiKey}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
       body: JSON.stringify({
         app_id: appId,
-        included_segments: ['All'],
+        target_channel: 'push',
+        included_segments: ['Total Subscriptions'],
         headings: { en: title, fr: title },
         contents: { en: body, fr: body },
         url: 'https://letxbrace-droid.github.io/inrunparis/',
@@ -1393,7 +1394,7 @@ async function sendPushNotification(title, body) {
       }),
     })
     const data = await res.json()
-    if (data.errors && data.errors.length) throw new Error(data.errors.join(', '))
+    if (!res.ok) throw new Error(data.errors?.join(', ') || `HTTP ${res.status}`)
     return { ok: true, recipients: data.recipients || 0 }
   } catch (e) {
     return { ok: false, error: e.message }
