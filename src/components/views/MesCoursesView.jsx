@@ -80,11 +80,57 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
             className="flex flex-col items-center justify-center gap-5 pt-24 px-6"
           >
             <div
-              className="w-20 h-20 rounded-full flex items-center justify-center"
-              style={{ background: th.bgCard, border: `1px solid ${th.borderFaint}` }}
+              className="flex items-center justify-center rounded-2xl"
+              style={{
+                width: 136,
+                height: 72,
+                background: th.bgCard,
+                border: `1px solid ${th.borderFaint}`,
+                boxShadow: th.isDark
+                  ? 'inset 0 1px 0 rgba(255,255,255,.04)'
+                  : 'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 4px rgba(0,0,0,.06)',
+              }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 17H3a2 2 0 0 1-2-2V9l3-6h12l3 6v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="16.5" cy="17" r="2.5"/>
+              {/* Luxury sedan side profile */}
+              <svg width="100" height="50" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Road dashes */}
+                <line x1="2" y1="44" x2="98" y2="44" stroke="rgba(255,65,3,.12)" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="6 5"/>
+
+                {/* Car body */}
+                <path d="M8 38 L8 28 Q8 26 10 26 L90 26 Q92 26 92 28 L92 38 Z"
+                  fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.45)" strokeWidth="1.3" strokeLinejoin="round"/>
+
+                {/* Cabin / roofline — elegant fastback */}
+                <path d="M26 26 L30 13 Q32 10 36 10 L62 10 Q66 10 68 13 L74 26 Z"
+                  fill="rgba(255,65,3,.05)" stroke="rgba(255,65,3,.45)" strokeWidth="1.3" strokeLinejoin="round"/>
+
+                {/* B-pillar */}
+                <line x1="50" y1="10.5" x2="50" y2="26" stroke="rgba(255,65,3,.22)" strokeWidth="1"/>
+
+                {/* Front bumper + headlight */}
+                <path d="M92 30 L95 31 L95 36 L92 37" stroke="rgba(255,65,3,.35)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                <line x1="94" y1="32" x2="97" y2="32" stroke="rgba(255,65,3,.65)" strokeWidth="1.6" strokeLinecap="round"/>
+
+                {/* Tail light */}
+                <rect x="6.5" y="28" width="2" height="7" rx="1" fill="rgba(255,65,3,.38)"/>
+
+                {/* Rear wheel */}
+                <circle cx="25" cy="40" r="6.5" fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.5)" strokeWidth="1.3"/>
+                <circle cx="25" cy="40" r="3.2" fill="rgba(255,65,3,.12)" stroke="rgba(255,65,3,.35)" strokeWidth="1"/>
+                <line x1="25" y1="37.2" x2="25" y2="42.8" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+                <line x1="22.2" y1="40" x2="27.8" y2="40" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+
+                {/* Front wheel */}
+                <circle cx="75" cy="40" r="6.5" fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.5)" strokeWidth="1.3"/>
+                <circle cx="75" cy="40" r="3.2" fill="rgba(255,65,3,.12)" stroke="rgba(255,65,3,.35)" strokeWidth="1"/>
+                <line x1="75" y1="37.2" x2="75" y2="42.8" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+                <line x1="72.2" y1="40" x2="77.8" y2="40" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+
+                {/* Door line */}
+                <line x1="50" y1="26" x2="50" y2="38" stroke="rgba(255,65,3,.18)" strokeWidth="0.9" strokeDasharray="2 1.5"/>
+
+                {/* Mirror */}
+                <path d="M74 22 L77 22 L77 25 L74 25" stroke="rgba(255,65,3,.35)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
 
