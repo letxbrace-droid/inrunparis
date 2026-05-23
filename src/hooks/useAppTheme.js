@@ -15,12 +15,12 @@ export default function useAppTheme() {
     bgHover:     '#1A1A1A',
     bgAvatar:    '#0a1828',
 
-    inkFull:     '#F5F1E8',
-    inkHigh:     'rgba(245,241,232,.88)',
-    inkMid:      'rgba(245,241,232,.72)',
-    inkLow:      'rgba(245,241,232,.55)',
-    inkMuted:    'rgba(245,241,232,.62)',
-    inkDim:      'rgba(245,241,232,.44)',
+    inkFull:     '#FFFFFF',
+    inkHigh:     'rgba(255,255,255,.90)',
+    inkMid:      'rgba(255,255,255,.72)',
+    inkLow:      'rgba(255,255,255,.55)',
+    inkMuted:    'rgba(255,255,255,.62)',
+    inkDim:      'rgba(255,255,255,.44)',
 
     border:      'rgba(255,255,255,.07)',
     borderStrong:'rgba(255,255,255,.12)',
@@ -32,8 +32,8 @@ export default function useAppTheme() {
     overlay:     'rgba(0,0,0,.72)',
     scrim:       'rgba(0,0,0,.9)',
 
-    backBtn:     { background: 'rgba(245,241,232,.06)', border: '1px solid rgba(245,241,232,.12)', color: 'rgba(245,241,232,.75)' },
-    backLink:    'rgba(245,241,232,.68)',
+    backBtn:     { background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.12)', color: 'rgba(255,255,255,.75)' },
+    backLink:    'rgba(255,255,255,.68)',
     colorScheme: 'dark',
     inputScheme: 'dark',
   } : {
@@ -48,12 +48,12 @@ export default function useAppTheme() {
     bgHover:     '#E5E3DE',
     bgAvatar:    '#E0DDD6',
 
-    inkFull:     '#0D0D0D',
-    inkHigh:     'rgba(13,13,13,.90)',
-    inkMid:      'rgba(13,13,13,.78)',
-    inkLow:      'rgba(13,13,13,.65)',
-    inkMuted:    'rgba(13,13,13,.52)',
-    inkDim:      'rgba(13,13,13,.38)',
+    inkFull:     '#000000',
+    inkHigh:     'rgba(0,0,0,.90)',
+    inkMid:      'rgba(0,0,0,.78)',
+    inkLow:      'rgba(0,0,0,.65)',
+    inkMuted:    'rgba(0,0,0,.52)',
+    inkDim:      'rgba(0,0,0,.38)',
 
     border:      'rgba(0,0,0,.09)',
     borderStrong:'rgba(0,0,0,.14)',
@@ -65,8 +65,8 @@ export default function useAppTheme() {
     overlay:     'rgba(0,0,0,.35)',
     scrim:       'rgba(0,0,0,.5)',
 
-    backBtn:     { background: 'rgba(17,17,17,.06)', border: '1px solid rgba(17,17,17,.14)', color: 'rgba(17,17,17,.65)' },
-    backLink:    'rgba(17,17,17,.50)',
+    backBtn:     { background: 'rgba(0,0,0,.06)', border: '1px solid rgba(0,0,0,.14)', color: 'rgba(0,0,0,.65)' },
+    backLink:    'rgba(0,0,0,.50)',
     colorScheme: 'light',
     inputScheme: 'light',
   }
