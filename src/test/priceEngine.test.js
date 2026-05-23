@@ -3,9 +3,16 @@ import {
   PRICE,
   isNightTime,
   isAirportAddr,
-  computePrice,
   computePriceForBooking,
 } from '../utils/priceEngine'
+
+// Helper: non-airport booking context for pure-price tests
+const ctx = (pickup, vehicleType = 'berline') => ({
+  pickup,
+  depart:      { name: 'Paris' },
+  arrive:      { name: 'Lyon' },
+  vehicleType,
+})
 
 // ─── isNightTime ──────────────────────────────────────────────────────────────
 
@@ -93,55 +100,47 @@ describe('isAirportAddr', () => {
   })
 })
 
-// ─── computePrice ─────────────────────────────────────────────────────────────
+// ─── computePriceForBooking — core pricing ────────────────────────────────────
 
-describe('computePrice', () => {
-  beforeEach(() => {
-    // Lock time to a daytime hour so night surcharge is predictable
-    vi.setSystemTime(new Date('2024-06-15T10:00:00'))
-  })
-  afterEach(() => vi.useRealTimers())
-
+describe('computePriceForBooking — core pricing', () => {
   it('applies base fare for long trip above minimum', () => {
-    const result = computePrice(30, 40, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(30, 40, ctx('2024-06-15T10:00:00'))
     // base + 30*0.82 + 40*0.16 = 13 + 24.6 + 6.4 = 44 → 44 (above min 32)
     expect(result.final).toBe(44)
   })
 
   it('enforces minimum fare', () => {
     // 1km, 3min, day → 13 + 0.82 + 0.48 = 14.3 → rounds to 14, below min 32
-    const result = computePrice(1, 3, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(1, 3, ctx('2024-06-15T10:00:00'))
     expect(result.final).toBe(PRICE.min)
   })
 
   it('applies night surcharge (+15%)', () => {
-    // Use a trip long enough that both day and night are above the minimum,
-    // so the 15% night premium is visible in the final rounded price.
-    const day   = computePrice(30, 40, '2024-06-15T10:00:00')
-    const night = computePrice(30, 40, '2024-06-15T23:00:00')
+    const day   = computePriceForBooking(30, 40, ctx('2024-06-15T10:00:00'))
+    const night = computePriceForBooking(30, 40, ctx('2024-06-15T23:00:00'))
     expect(night.final).toBeGreaterThan(day.final)
     expect(night.isNight).toBe(true)
     expect(day.isNight).toBe(false)
   })
 
   it('applies van surcharge (+25%)', () => {
-    const berline = computePrice(20, 30, '2024-06-15T10:00:00', 'berline')
-    const van     = computePrice(20, 30, '2024-06-15T10:00:00', 'van')
+    const berline = computePriceForBooking(20, 30, ctx('2024-06-15T10:00:00', 'berline'))
+    const van     = computePriceForBooking(20, 30, ctx('2024-06-15T10:00:00', 'van'))
     expect(van.final).toBeGreaterThan(berline.final)
   })
 
   it('rounds km to 1 decimal', () => {
-    const result = computePrice(12.678, 25, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(12.678, 25, ctx('2024-06-15T10:00:00'))
     expect(result.km).toBe(12.7)
   })
 
   it('rounds mins to integer', () => {
-    const result = computePrice(10, 22.7, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(10, 22.7, ctx('2024-06-15T10:00:00'))
     expect(result.mins).toBe(23)
   })
 
   it('computes positive savings vs reference tariff on long trips', () => {
-    const result = computePrice(30, 40, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(30, 40, ctx('2024-06-15T10:00:00'))
     // price    = 13 + 30*0.82 + 40*0.16 = 13 + 24.6 + 6.4 = 44
     // refPrice = 14.5 + 30*0.92 + 40*0.18 = 14.5 + 27.6 + 7.2 = 49.3 → 49
     // savings  = 49 - 44 = 5
@@ -149,8 +148,7 @@ describe('computePrice', () => {
   })
 
   it('savings is never negative', () => {
-    // Very short trip that hits minimum: savings could theoretically be negative
-    const result = computePrice(0.5, 2, '2024-06-15T10:00:00')
+    const result = computePriceForBooking(0.5, 2, ctx('2024-06-15T10:00:00'))
     expect(result.savings).toBeGreaterThanOrEqual(0)
   })
 })

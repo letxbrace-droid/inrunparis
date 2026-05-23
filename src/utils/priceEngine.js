@@ -36,28 +36,6 @@ export function applyPromoDiscount(basePrice, promo) {
   return basePrice
 }
 
-export function computePrice(km, mins, pickupTime, vehicleType = 'berline') {
-  let price = PRICE.base + km * PRICE.perKm + mins * PRICE.perMin
-  const night   = isNightTime(pickupTime)
-  const airport = isAirportAddr('')  // called with actual address strings at component level
-
-  if (night)   price *= 1 + PRICE.nightPct
-  if (airport) price += PRICE.airportFlat
-  if (vehicleType === 'van') price *= 1 + PRICE.vanPct
-  if (price < PRICE.min) price = PRICE.min
-
-  const refPrice = PRICE.ref.base + km * PRICE.ref.perKm + mins * PRICE.ref.perMin
-  const savings  = Math.max(0, Math.round(refPrice - price))
-
-  return {
-    final:    Math.round(price),
-    km:       Math.round(km * 10) / 10,
-    mins:     Math.round(mins),
-    isNight:  night,
-    isAirport: airport,
-    savings,
-  }
-}
 
 export function computePriceForBooking(km, mins, { pickup, depart, arrive, vehicleType }) {
   let price = PRICE.base + km * PRICE.perKm + mins * PRICE.perMin
