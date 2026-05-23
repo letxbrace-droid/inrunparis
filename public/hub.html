@@ -391,6 +391,22 @@ textarea{resize:vertical}
         </div>
       </div>
 
+      <div class="section">
+        <div class="section-title">Ajouter un abonné</div>
+        <div class="card">
+          <div style="font-size:12px;color:var(--subtle);margin-bottom:10px;line-height:1.6">
+            Colle ici le message <code style="color:var(--accent)">NOTIF:xxx…</code> reçu via WhatsApp depuis un client.
+          </div>
+          <div class="field">
+            <label>Message WhatsApp du client</label>
+            <textarea id="sub-input" rows="3" maxlength="4096" placeholder="NOTIF:eyJl..."
+              style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:13px;width:100%;color:var(--text);resize:vertical;font-family:monospace"></textarea>
+          </div>
+          <button class="btn btn-secondary btn-full" onclick="addSubscriber()">Ajouter cet abonné</button>
+          <div id="sub-count" style="font-size:12px;color:var(--subtle);margin-top:8px;text-align:center"></div>
+        </div>
+      </div>
+
       <div class="section" id="push-hist-section" style="display:none">
         <div class="section-title">Historique des envois</div>
         <div id="push-history"></div>
@@ -604,6 +620,7 @@ function initApp() {
   loadSettings()
   renderPushStatus()
   renderPushHistory()
+  renderSubCount()
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1334,13 +1351,68 @@ async function saveGistConfig() {
   await deployPushConfig(gistId, gistToken)
 }
 
-async function deployPushConfig(gistId, gistToken) {
+// Subscriptions stored locally in hub localStorage
+function getLocalSubs() {
+  try { return JSON.parse(localStorage.getItem('hub-vapid-subs') || '[]') } catch { return [] }
+}
+function saveLocalSubs(subs) {
+  localStorage.setItem('hub-vapid-subs', JSON.stringify(subs))
+  renderSubCount()
+}
+function renderSubCount() {
+  const el = document.getElementById('sub-count')
+  if (!el) return
+  const n = getLocalSubs().length
+  el.textContent = n ? `${n} abonné(s) enregistré(s)` : 'Aucun abonné pour l\'instant'
+}
+
+async function addSubscriber() {
+  const raw = (document.getElementById('sub-input')?.value || '').trim()
+  const match = raw.match(/NOTIF:([A-Za-z0-9+/=]+)/)
+  if (!match) return showToast('Format invalide — doit commencer par NOTIF:xxx', 'error')
+  let sub
+  try { sub = JSON.parse(atob(match[1])) } catch { return showToast('Impossible de décoder l\'abonnement', 'error') }
+  if (!sub?.endpoint) return showToast('Abonnement invalide', 'error')
+
+  // Save to Gist if configured
+  const gistId = getGistId(), gistToken = getGistToken()
+  if (gistId && gistToken) {
+    try {
+      const headers = { Authorization: `Bearer ${gistToken}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' }
+      const r = await fetch(`https://api.github.com/gists/${gistId}`, { headers })
+      if (r.ok) {
+        const gist = await r.json()
+        const content = gist.files?.['subscriptions.json']?.content || '[]'
+        let subs = []
+        try { subs = JSON.parse(content) } catch {}
+        if (!subs.some(s => s.endpoint === sub.endpoint)) {
+          subs.push(sub)
+          await fetch(`https://api.github.com/gists/${gistId}`, {
+            method: 'PATCH', headers,
+            body: JSON.stringify({ files: { 'subscriptions.json': { content: JSON.stringify(subs) } } }),
+          })
+        }
+      }
+    } catch {}
+  }
+
+  // Also save locally
+  const local = getLocalSubs()
+  if (!local.some(s => s.endpoint === sub.endpoint)) {
+    local.push(sub)
+    saveLocalSubs(local)
+  }
+  if (document.getElementById('sub-input')) document.getElementById('sub-input').value = ''
+  showToast('✓ Abonné ajouté')
+  renderSubCount()
+}
+
+// push-config.json only contains the public key — no token ever committed
+async function deployPushConfig() {
   const token = getGhToken()
   if (!token) return showToast('Token GitHub manquant dans Paramètres', 'error')
 
-  const VAPID_PUBLIC_KEY = 'BGJhJA3Te5Ac-0AfRjcVU820d7fV8wZ6jlkb0AZCPxrOF-Rl-Qrz76BltbhTjdMIuC9u1m_eioU-eh5YE3CbMDQ'
-  const json = JSON.stringify({ vapidPublicKey: VAPID_PUBLIC_KEY, gistId: gistId || getGistId(), gistToken: gistToken || getGistToken() }, null, 2)
-
+  const json = JSON.stringify({ vapidPublicKey: 'BGJhJA3Te5Ac-0AfRjcVU820d7fV8wZ6jlkb0AZCPxrOF-Rl-Qrz76BltbhTjdMIuC9u1m_eioU-eh5YE3CbMDQ' }, null, 2)
   const REPO    = 'letxbrace-droid/inrunparis'
   const FILE    = 'public/push-config.json'
   const API     = `https://api.github.com/repos/${REPO}/contents/${FILE}`
@@ -1352,18 +1424,25 @@ async function deployPushConfig(gistId, gistToken) {
     const { sha } = await getRes.json()
     const b64 = btoa(unescape(encodeURIComponent(json)))
     const putRes = await fetch(API, {
-      method: 'PUT',
-      headers: HEADERS,
-      body: JSON.stringify({ message: 'chore: update push-config (VAPID) [hub]', content: b64, sha, branch: 'main' }),
+      method: 'PUT', headers: HEADERS,
+      body: JSON.stringify({ message: 'chore: update push-config (VAPID key only) [hub]', content: b64, sha, branch: 'main' }),
     })
-    if (!putRes.ok) {
-      const err = await putRes.json().catch(() => ({}))
-      throw new Error(err.message || `GitHub ${putRes.status}`)
-    }
+    if (!putRes.ok) { const err = await putRes.json().catch(() => ({})); throw new Error(err.message || `GitHub ${putRes.status}`) }
     showToast('✓ Config déployée — active dans ~2 min')
-  } catch (e) {
-    showToast('Erreur déploiement : ' + e.message, 'error')
-  }
+  } catch (e) { showToast('Erreur déploiement : ' + e.message, 'error') }
+}
+
+async function saveGistConfig() {
+  const gistId    = document.getElementById('s-gist-id').value.trim()
+  const gistToken = document.getElementById('s-gist-token').value.trim()
+  if (!gistId || !gistToken) return showToast('Entrez le Gist ID et le Token', 'error')
+  localStorage.setItem('hub-gist-id', gistId)
+  localStorage.setItem('hub-gist-token', gistToken)
+  document.getElementById('s-gist-id').value    = ''
+  document.getElementById('s-gist-token').value = ''
+  showVapidCfgStatus()
+  renderPushStatus()
+  showToast('✓ Gist configuré')
 }
 
 // Sending is done server-side via GitHub Actions (no CORS issue, API key stays secret)

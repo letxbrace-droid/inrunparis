@@ -1,4 +1,4 @@
-let cfg = { vapidPublicKey: '', gistId: '', gistToken: '' }
+let cfg = { vapidPublicKey: '' }
 
 export async function initPushConfig() {
   try {
@@ -11,17 +11,13 @@ export function isPushSupported() {
   return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
 }
 
-// Called on app start — re-registers existing subscription with Gist if permission is already granted
+// Called on app start — recreates subscription if permission already granted
 export async function autoResubscribe() {
   if (!isPushSupported() || Notification.permission !== 'granted' || !cfg.vapidPublicKey) return
   try {
     const reg = await navigator.serviceWorker.ready
     const sub = await reg.pushManager.getSubscription()
-    if (sub) {
-      saveSubscriptionToGist(sub.toJSON()).catch(() => {})
-    } else {
-      await subscribeToVapid()
-    }
+    if (!sub) await subscribeToVapid()
   } catch {}
 }
 
@@ -29,38 +25,27 @@ export async function subscribeToVapid() {
   if (!isPushSupported() || !cfg.vapidPublicKey) return null
   try {
     const reg = await navigator.serviceWorker.ready
-    const sub = await reg.pushManager.subscribe({
+    const existing = await reg.pushManager.getSubscription()
+    if (existing) return existing
+    return await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey),
     })
-    saveSubscriptionToGist(sub.toJSON()).catch(() => {})
-    return sub
   } catch (e) {
     console.warn('[VAPID] subscribe error', e)
     return null
   }
 }
 
-async function saveSubscriptionToGist(subJSON) {
-  if (!cfg.gistId || !cfg.gistToken) return
-  const headers = {
-    'Authorization': `Bearer ${cfg.gistToken}`,
-    'Accept': 'application/vnd.github+json',
-    'Content-Type': 'application/json',
-  }
-  const readRes = await fetch(`https://api.github.com/gists/${cfg.gistId}`, { headers })
-  if (!readRes.ok) return
-  const gist = await readRes.json()
-  const content = gist.files?.['subscriptions.json']?.content || '[]'
-  let subs = []
-  try { subs = JSON.parse(content) } catch {}
-  if (subs.some(s => s.endpoint === subJSON.endpoint)) return
-  subs.push(subJSON)
-  await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
-    method: 'PATCH',
-    headers,
-    body: JSON.stringify({ files: { 'subscriptions.json': { content: JSON.stringify(subs) } } }),
-  })
+// Encode subscription as base64 for sharing via WhatsApp
+export function encodeSubscription(sub) {
+  return btoa(JSON.stringify(sub.toJSON ? sub.toJSON() : sub))
+}
+
+export function getWhatsAppShareUrl(sub, driverPhone) {
+  const encoded = encodeSubscription(sub)
+  const msg = encodeURIComponent(`NOTIF:${encoded}`)
+  return `https://wa.me/${driverPhone}?text=${msg}`
 }
 
 function urlBase64ToUint8Array(base64String) {
