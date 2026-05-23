@@ -3,29 +3,11 @@ import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
+import { searchPlaces, displayAddr } from '../../utils/geocoder'
 import { computePriceForBooking } from '../../utils/priceEngine'
 import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
-async function geocodeNominatim(query) {
-  const qNum = query.match(/^(\d+)\s/)?.[1] || ''
-  const url  = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=fr&bbox=-5.14,41.33,9.56,51.09`
-  const r    = await fetch(url, { headers: { 'Accept-Language': 'fr' } })
-  const data = await r.json()
-  const seen = new Set()
-  return (data.features || []).flatMap(f => {
-    const p    = f.properties
-    const num  = p.housenumber || qNum
-    const road = p.street || (p.type === 'house' ? '' : p.name) || ''
-    const name = num && road ? `${num} ${road}` : road || p.name || ''
-    const city = p.city || p.town || p.village || p.municipality || p.county || ''
-    if (!name) return []
-    const key = name.toLowerCase() + '|' + city.toLowerCase()
-    if (seen.has(key)) return []
-    seen.add(key)
-    return [{ name, city, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }]
-  })
-}
 
 function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   const [query,       setQuery]   = useState(value?.name ?? '')
@@ -36,7 +18,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
 
   // Sync field when value is set externally (GPS detection, store hydration)
   useEffect(() => {
-    if (value?.name) setQuery(value.city ? `${value.name}, ${value.city}` : value.name)
+    if (value?.name) setQuery(displayAddr(value))
   }, [value])
 
   const handleChange = (e) => {
@@ -47,7 +29,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
     timerRef.current = setTimeout(async () => {
       setLoading(true)
       try {
-        const results = await geocodeNominatim(q)
+        const results = await searchPlaces(q)
         setSuggest(results)
       } finally {
         setLoading(false)
@@ -56,7 +38,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   }
 
   const pick = (item) => {
-    setQuery(item.city ? `${item.name}, ${item.city}` : item.name)
+    setQuery(displayAddr(item))
     setSuggest([])
     setFocused(false)
     onSelect(item)
