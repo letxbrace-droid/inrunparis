@@ -1,5 +1,6 @@
-/* I&N RUN — Service Worker v75 */
-const CACHE = 'inrun-v75';
+/* I&N RUN — Service Worker v76 */
+try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js') } catch {}
+const CACHE = 'inrun-v76';
 const STATIC = [
   '/inrunparis/manifest.json',
   '/inrunparis/favicon.ico',

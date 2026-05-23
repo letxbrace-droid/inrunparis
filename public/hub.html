@@ -188,6 +188,7 @@ textarea{resize:vertical}
   <nav class="hub-tabs">
     <button class="hub-tab active" onclick="setTab('promos')">Codes Promo</button>
     <button class="hub-tab" onclick="setTab('bons')">Bons &amp; Factures</button>
+    <button class="hub-tab" onclick="setTab('notifs')">Notifications</button>
     <button class="hub-tab" onclick="setTab('settings')">Paramètres</button>
   </nav>
 
@@ -336,6 +337,67 @@ textarea{resize:vertical}
 
     </div>
 
+    <!-- ── TAB: NOTIFICATIONS ── -->
+    <div class="tab-pane" id="tab-notifs">
+
+      <div class="section">
+        <div class="section-title">État du service</div>
+        <div class="card" id="push-status"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Modèles rapides</div>
+        <div class="card" style="display:flex;flex-direction:column;gap:8px">
+          <button id="tpl-btn-promo" class="btn btn-secondary btn-full" onclick="sendTemplate('promo')" style="justify-content:flex-start;gap:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <div style="text-align:left">
+              <div style="font-size:13px;font-weight:700">Promotion du jour</div>
+              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Code promo + invitation à réserver</div>
+            </div>
+          </button>
+          <button id="tpl-btn-dispo" class="btn btn-secondary btn-full" onclick="sendTemplate('dispo')" style="justify-content:flex-start;gap:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div style="text-align:left">
+              <div style="font-size:13px;font-weight:700">Disponible maintenant</div>
+              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Alerte disponibilité immédiate</div>
+            </div>
+          </button>
+          <button id="tpl-btn-info" class="btn btn-secondary btn-full" onclick="sendTemplate('info')" style="justify-content:flex-start;gap:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div style="text-align:left">
+              <div style="font-size:13px;font-weight:700">Info service</div>
+              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Mise à jour tarifs ou actualité</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Notification personnalisée</div>
+        <div class="card">
+          <div class="field">
+            <label>Titre</label>
+            <input id="n-title" type="text" placeholder="I&amp;N RUN" maxlength="64">
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea id="n-body" rows="3" maxlength="255" placeholder="Votre message…"
+              style="border:1px solid var(--border);border-radius:10px;background:rgba(0,10,18,.5);padding:10px 13px;font-size:14px;width:100%;color:var(--text);resize:vertical"></textarea>
+          </div>
+          <button id="push-send-btn" class="btn btn-primary btn-full" onclick="sendCustomPush()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Envoyer à tous les abonnés
+          </button>
+        </div>
+      </div>
+
+      <div class="section" id="push-hist-section" style="display:none">
+        <div class="section-title">Historique des envois</div>
+        <div id="push-history"></div>
+      </div>
+
+    </div>
+
     <!-- ── TAB: PARAMÈTRES ── -->
     <div class="tab-pane" id="tab-settings">
 
@@ -392,6 +454,25 @@ textarea{resize:vertical}
             <input id="s-pin2" type="password" maxlength="4" inputmode="numeric" placeholder="····">
           </div>
           <button class="btn btn-secondary btn-full" onclick="changePin()">Changer le PIN</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Notifications Push (OneSignal)</div>
+        <div class="card">
+          <div id="os-key-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
+          <div class="field">
+            <label>App ID</label>
+            <input id="s-os-appid" type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>REST API Key</label>
+            <input id="s-os-apikey" type="password" placeholder="Clé REST OneSignal" autocomplete="off">
+          </div>
+          <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.6">
+            Créez un compte sur <strong style="color:var(--text)">onesignal.com</strong>, créez une Web Push app, puis copiez l'<strong style="color:var(--text)">App ID</strong> et la <strong style="color:var(--text)">REST API Key</strong> depuis <em>Settings → Keys &amp; IDs</em>.
+          </div>
+          <button class="btn btn-primary btn-full" onclick="saveOSKeys()">Enregistrer les clés</button>
         </div>
       </div>
 
@@ -505,7 +586,7 @@ document.addEventListener('keydown', e => {
 // ────────────────────────────────────────────────────────────
 function setTab(name) {
   document.querySelectorAll('.hub-tab').forEach((t,i) => {
-    const tabs = ['promos','bons','settings']
+    const tabs = ['promos','bons','notifs','settings']
     t.className = 'hub-tab' + (tabs[i] === name ? ' active' : '')
   })
   document.querySelectorAll('.tab-pane').forEach(p => p.className = 'tab-pane')
@@ -519,6 +600,8 @@ function initApp() {
   renderPromos()
   renderDocHistory()
   loadSettings()
+  renderPushStatus()
+  renderPushHistory()
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1144,6 +1227,7 @@ function loadSettings() {
   document.getElementById('s-tvarate').value = c.tvarate
   document.getElementById('s-footer').value  = c.footer
   showGhTokenStatus()
+  showOSKeyStatus()
 }
 
 function saveSettings() {
@@ -1187,12 +1271,227 @@ function exportData() {
 }
 
 function resetHub() {
-  if (!confirm('Réinitialiser toutes les données du Hub ? (Codes promo, paramètres, historique)')) return
-  ['inr-promo-codes','hub-company','hub-doc-history','hub-seq-BDR','hub-seq-FAC'].forEach(k => localStorage.removeItem(k))
+  if (!confirm('Réinitialiser toutes les données du Hub ? (Codes promo, paramètres, historique, notifications)')) return
+  ['inr-promo-codes','hub-company','hub-doc-history','hub-seq-BDR','hub-seq-FAC','hub-push-history'].forEach(k => localStorage.removeItem(k))
   loadSettings()
   renderPromos()
   renderDocHistory()
+  renderPushStatus()
+  renderPushHistory()
   showToast('Données réinitialisées')
+}
+
+// ────────────────────────────────────────────────────────────
+// PUSH NOTIFICATIONS (OneSignal)
+// ────────────────────────────────────────────────────────────
+const PUSH_TEMPLATES = {
+  promo: {
+    title: 'I&N RUN — Offre exclusive',
+    body: 'Bénéficiez de 10% sur votre prochaine course avec le code BIENVENUE. Réservez maintenant !',
+  },
+  dispo: {
+    title: 'I&N RUN — Disponible maintenant',
+    body: 'Votre chauffeur privé est prêt à Paris. Réservez votre trajet en 2 minutes depuis l\'application.',
+  },
+  info: {
+    title: 'I&N RUN — Information service',
+    body: 'Nos tarifs ont été mis à jour. Découvrez nos nouvelles offres exclusives sur l\'application.',
+  },
+}
+
+function getOSAppId() { return localStorage.getItem('hub-os-appid') || '' }
+function getOSApiKey() { return localStorage.getItem('hub-os-apikey') || '' }
+
+function showOSKeyStatus() {
+  const el = document.getElementById('os-key-status')
+  if (!el) return
+  const has = !!(getOSAppId() && getOSApiKey())
+  el.style.display = 'block'
+  el.style.background = has ? 'rgba(52,211,153,.08)' : 'rgba(248,113,113,.08)'
+  el.style.border = has ? '1px solid rgba(52,211,153,.2)' : '1px solid rgba(248,113,113,.2)'
+  el.style.color = has ? 'var(--success)' : 'var(--error)'
+  el.textContent = has ? '✓ Clés configurées — service push actif' : 'Clés manquantes — entrez App ID et REST API Key'
+}
+
+function saveOSKeys() {
+  const appId  = document.getElementById('s-os-appid').value.trim()
+  const apiKey = document.getElementById('s-os-apikey').value.trim()
+  if (!appId && !apiKey) return showToast('Entrez au moins l\'App ID', 'error')
+  if (appId)  localStorage.setItem('hub-os-appid', appId)
+  if (apiKey) localStorage.setItem('hub-os-apikey', apiKey)
+  document.getElementById('s-os-appid').value  = ''
+  document.getElementById('s-os-apikey').value = ''
+  showOSKeyStatus()
+  renderPushStatus()
+  showToast('Clés OneSignal enregistrées ✓')
+}
+
+async function deployPushConfig() {
+  const appId = getOSAppId()
+  if (!appId) return showToast('Entrez un App ID dans Paramètres d\'abord', 'error')
+
+  const token = getGhToken()
+  const json  = JSON.stringify({ appId }, null, 2)
+
+  if (!token) {
+    const copy = () => { const ta = document.createElement('textarea'); ta.value = json; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta) }
+    navigator.clipboard ? navigator.clipboard.writeText(json).catch(copy) : copy()
+    showToast('Aucun token GitHub — JSON copié (voir Paramètres)', 'error')
+    return
+  }
+
+  const btn = document.getElementById('push-deploy-btn')
+  if (btn) { btn.disabled = true; btn.textContent = 'Déploiement…' }
+
+  const REPO    = 'letxbrace-droid/inrunparis'
+  const FILE    = 'public/push-config.json'
+  const API     = `https://api.github.com/repos/${REPO}/contents/${FILE}`
+  const HEADERS = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' }
+
+  try {
+    const getRes = await fetch(API, { headers: HEADERS })
+    if (!getRes.ok) throw new Error(`GitHub ${getRes.status} — vérifiez le token`)
+    const { sha } = await getRes.json()
+    const bytes   = new TextEncoder().encode(json)
+    const b64     = btoa(String.fromCharCode(...bytes))
+    const putRes  = await fetch(API, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify({ message: 'chore: update push config [hub]', content: b64, sha, branch: 'main' }),
+    })
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({}))
+      throw new Error(err.message || `GitHub ${putRes.status}`)
+    }
+    showToast('✓ Config push déployée — active sur tous les appareils dans ~2 min')
+  } catch (e) {
+    showToast('Erreur : ' + e.message, 'error')
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Déployer App ID' }
+  }
+}
+
+async function sendPushNotification(title, body) {
+  const appId  = getOSAppId()
+  const apiKey = getOSApiKey()
+  if (!appId || !apiKey) {
+    showToast('Configurez OneSignal dans Paramètres', 'error')
+    return { ok: false, error: 'Non configuré' }
+  }
+  try {
+    const res = await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${apiKey}` },
+      body: JSON.stringify({
+        app_id: appId,
+        included_segments: ['All'],
+        headings: { en: title, fr: title },
+        contents: { en: body, fr: body },
+        url: 'https://letxbrace-droid.github.io/inrunparis/',
+        chrome_web_icon: 'https://letxbrace-droid.github.io/inrunparis/icons/icon-192.png',
+        chrome_web_badge: 'https://letxbrace-droid.github.io/inrunparis/icons/icon-72.png',
+      }),
+    })
+    const data = await res.json()
+    if (data.errors && data.errors.length) throw new Error(data.errors.join(', '))
+    return { ok: true, recipients: data.recipients || 0 }
+  } catch (e) {
+    return { ok: false, error: e.message }
+  }
+}
+
+async function sendTemplate(type) {
+  const tpl = PUSH_TEMPLATES[type]
+  if (!tpl) return
+  const btn = document.getElementById(`tpl-btn-${type}`)
+  if (btn) { btn.disabled = true; btn.style.opacity = '.6' }
+  const result = await sendPushNotification(tpl.title, tpl.body)
+  if (btn) { btn.disabled = false; btn.style.opacity = '' }
+  if (result.ok) {
+    savePushToHistory({ title: tpl.title, body: tpl.body, ok: true, recipients: result.recipients })
+    showToast(`✓ Notification envoyée — ${result.recipients} abonné${result.recipients !== 1 ? 's' : ''}`)
+  } else {
+    showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
+  }
+}
+
+async function sendCustomPush() {
+  const title = document.getElementById('n-title').value.trim() || 'I&N RUN'
+  const body  = document.getElementById('n-body').value.trim()
+  if (!body) return showToast('Entrez un message', 'error')
+  const btn = document.getElementById('push-send-btn')
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span style="opacity:.7">Envoi…</span>' }
+  const result = await sendPushNotification(title, body)
+  if (btn) {
+    btn.disabled = false
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer à tous les abonnés`
+  }
+  if (result.ok) {
+    document.getElementById('n-title').value = ''
+    document.getElementById('n-body').value  = ''
+    savePushToHistory({ title, body, ok: true, recipients: result.recipients })
+    showToast(`✓ Notification envoyée — ${result.recipients} abonné${result.recipients !== 1 ? 's' : ''}`)
+  } else {
+    savePushToHistory({ title, body, ok: false })
+    showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
+  }
+}
+
+function getPushHistory() {
+  try { return JSON.parse(localStorage.getItem('hub-push-history') || '[]') } catch { return [] }
+}
+function savePushToHistory(entry) {
+  const hist = getPushHistory()
+  hist.unshift({ ...entry, date: new Date().toISOString() })
+  localStorage.setItem('hub-push-history', JSON.stringify(hist.slice(0, 30)))
+  renderPushHistory()
+}
+
+function renderPushStatus() {
+  const el = document.getElementById('push-status')
+  if (!el) return
+  const appId      = getOSAppId()
+  const apiKey     = getOSApiKey()
+  const configured = !!(appId && apiKey)
+  el.innerHTML = configured
+    ? `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 8px rgba(52,211,153,.5)"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--success)">Service configuré</div>
+          <div style="font-size:12px;color:var(--subtle);margin-top:2px;font-family:monospace">${escHtml(appId.slice(0,8))}…</div>
+        </div>
+        <button id="push-deploy-btn" class="btn btn-success btn-sm" onclick="deployPushConfig()">Déployer App ID</button>
+      </div>`
+    : `<div style="display:flex;align-items:center;gap:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0"></div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted)">Non configuré</div>
+          <div style="font-size:12px;color:var(--subtle);margin-top:2px">Ajoutez vos clés OneSignal dans <strong style="color:var(--text)">Paramètres → Notifications Push</strong></div>
+        </div>
+      </div>`
+}
+
+function renderPushHistory() {
+  const hist = getPushHistory()
+  const el   = document.getElementById('push-history')
+  const sec  = document.getElementById('push-hist-section')
+  if (!el || !sec) return
+  if (!hist.length) { sec.style.display = 'none'; return }
+  sec.style.display = 'block'
+  el.innerHTML = hist.slice(0, 15).map(h => `
+    <div class="card2">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(h.title)}</div>
+        <span class="badge ${h.ok ? 'badge-green' : 'badge-red'}">${h.ok ? (h.recipients != null ? `${h.recipients} envoi${h.recipients !== 1 ? 's' : ''}` : 'Envoyé') : 'Échec'}</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">${escHtml(h.body)}</div>
+      <div style="font-size:11px;color:var(--subtle);margin-top:6px">${new Date(h.date).toLocaleString('fr-FR')}</div>
+    </div>
+  `).join('')
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 }
 
 // ────────────────────────────────────────────────────────────

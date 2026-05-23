@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 
@@ -165,6 +165,22 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const theme    = useBookingStore(s => s.theme)
   const setTheme = useBookingStore(s => s.setTheme)
   const isDark   = useBookingStore(s => s.isDark)
+
+  const [notifPerm, setNotifPerm] = useState(
+    'Notification' in window ? Notification.permission : 'unsupported'
+  )
+
+  const handleNotifToggle = async () => {
+    if (notifPerm === 'granted') return
+    try {
+      if (window.OneSignal?.Notifications) {
+        await window.OneSignal.Notifications.requestPermission()
+      } else {
+        await Notification.requestPermission()
+      }
+      if ('Notification' in window) setNotifPerm(Notification.permission)
+    } catch {}
+  }
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
   const inkFull = isDark ? '#F5F1E8' : '#0D0D0D'
@@ -343,6 +359,37 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 </button>
               </motion.li>
             ))}
+
+            {/* Push notifications opt-in — hidden when unsupported or denied */}
+            {'Notification' in window && notifPerm !== 'denied' && notifPerm !== 'unsupported' && (
+              <motion.li variants={rowVar}>
+                <button
+                  onClick={handleNotifToggle}
+                  disabled={notifPerm === 'granted'}
+                  className="flex items-center justify-between w-full cursor-pointer select-none active:scale-[.98] transition-transform duration-100 disabled:cursor-default"
+                  style={{ background: 'none', border: 'none', padding: '10px 0' }}
+                  aria-label={notifPerm === 'granted' ? 'Notifications activées' : 'Activer les notifications'}
+                >
+                  <span style={{
+                    fontSize:      15,
+                    fontWeight:    500,
+                    letterSpacing: '-0.01em',
+                    color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                  }}>
+                    Notifications
+                  </span>
+                  <span style={{
+                    fontSize:   11,
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    textTransform: 'uppercase',
+                    color: notifPerm === 'granted' ? '#34d399' : '#FF5A1F',
+                  }}>
+                    {notifPerm === 'granted' ? 'Activées' : 'Activer'}
+                  </span>
+                </button>
+              </motion.li>
+            )}
           </motion.ul>
 
           {/* ── FOOTER — theme switcher ── */}
