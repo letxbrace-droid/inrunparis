@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, MotionConfig } from 'framer-motion'
 import LeafletMap          from './components/map/LeafletMap'
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
@@ -111,6 +111,7 @@ export default function App() {
   }
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
       {/* Map — frozen (pointer-events-none) when any overlay is open */}
       <LeafletMap
@@ -196,5 +197,6 @@ export default function App() {
         onClose={() => setConfirmOpen(false)}
       />
     </div>
+    </MotionConfig>
   )
 }
