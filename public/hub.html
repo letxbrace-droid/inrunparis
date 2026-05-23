@@ -366,30 +366,30 @@ textarea{resize:vertical}
       </div>
 
       <div class="section">
-        <div class="section-title">Modèles rapides</div>
-        <div class="card" style="display:flex;flex-direction:column;gap:8px">
-          <button id="tpl-btn-promo" class="btn btn-secondary btn-full" onclick="sendTemplate('promo')" style="justify-content:flex-start;gap:12px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            <div style="text-align:left">
-              <div style="font-size:13px;font-weight:700">Promotion du jour</div>
-              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Code promo + invitation à réserver</div>
-            </div>
-          </button>
-          <button id="tpl-btn-dispo" class="btn btn-secondary btn-full" onclick="sendTemplate('dispo')" style="justify-content:flex-start;gap:12px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <div style="text-align:left">
-              <div style="font-size:13px;font-weight:700">Disponible maintenant</div>
-              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Alerte disponibilité immédiate</div>
-            </div>
-          </button>
-          <button id="tpl-btn-info" class="btn btn-secondary btn-full" onclick="sendTemplate('info')" style="justify-content:flex-start;gap:12px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <div style="text-align:left">
-              <div style="font-size:13px;font-weight:700">Info service</div>
-              <div style="font-size:11px;color:var(--subtle);font-weight:400;margin-top:1px">Mise à jour tarifs ou actualité</div>
-            </div>
-          </button>
+        <div class="section-title">Destinataires</div>
+        <div class="card" style="padding:12px">
+          <div style="display:flex;gap:8px;margin-bottom:0" id="send-mode-toggle">
+            <button onclick="setSendMode('all')" id="mode-btn-all"
+              class="btn btn-primary btn-sm" style="flex:1;transition:all .15s">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Tous les abonnés
+            </button>
+            <button onclick="setSendMode('select')" id="mode-btn-select"
+              class="btn btn-secondary btn-sm" style="flex:1;transition:all .15s">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Sélectionner
+            </button>
+          </div>
+          <div id="sub-select-list" style="display:none;flex-direction:column;gap:6px;margin-top:10px"></div>
+          <div id="send-target-label" style="font-size:12px;color:var(--subtle);margin-top:10px;text-align:center">
+            Envoi à tous les abonnés
+          </div>
         </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Modèles rapides</div>
+        <div id="tpl-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
       </div>
 
       <div class="section">
@@ -406,7 +406,7 @@ textarea{resize:vertical}
           </div>
           <button id="push-send-btn" class="btn btn-primary btn-full" onclick="sendCustomPush()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Envoyer à tous les abonnés
+            <span id="push-send-label">Envoyer à tous les abonnés</span>
           </button>
         </div>
       </div>
@@ -625,6 +625,9 @@ function initApp() {
   renderPushStatus()
   renderPushHistory()
   renderSubList()
+  renderTemplateGrid()
+  updateSendTargetLabel()
+  updateSendButtons()
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1307,23 +1310,201 @@ function resetHub() {
 // ────────────────────────────────────────────────────────────
 // PUSH NOTIFICATIONS (VAPID natif)
 // ────────────────────────────────────────────────────────────
-const PUSH_TEMPLATES = {
-  promo: {
-    title: 'I&N RUN — Offre exclusive',
-    body: 'Bénéficiez de 10% sur votre prochaine course avec le code BIENVENUE. Réservez maintenant !',
+const PUSH_TEMPLATES = [
+  {
+    id: 'route',
+    emoji: '🚗',
+    label: 'En route',
+    sub: 'J\'arrive dans quelques minutes',
+    title: 'I&N RUN — Votre chauffeur est en route 🚗',
+    body: 'Je suis en route pour vous chercher. Préparez-vous, j\'arrive dans quelques minutes !',
   },
-  dispo: {
-    title: 'I&N RUN — Disponible maintenant',
-    body: 'Votre chauffeur privé est prêt à Paris. Réservez votre trajet en 2 minutes depuis l\'application.',
+  {
+    id: 'arrivee',
+    emoji: '📍',
+    label: 'Je suis arrivé',
+    sub: 'Le chauffeur attend à l\'adresse',
+    title: 'I&N RUN — Votre chauffeur est arrivé 📍',
+    body: 'Je suis arrivé à votre adresse. Je vous attends, prenez votre temps.',
   },
-  info: {
-    title: 'I&N RUN — Information service',
+  {
+    id: 'rappel',
+    emoji: '⏰',
+    label: 'Rappel course',
+    sub: 'N\'oubliez pas votre course demain',
+    title: 'I&N RUN — Rappel de votre course ⏰',
+    body: 'N\'oubliez pas votre course demain. Je serai à l\'heure au point de rendez-vous. N\'hésitez pas à me contacter.',
+  },
+  {
+    id: 'retard',
+    emoji: '🚦',
+    label: 'Léger retard',
+    sub: 'Trafic — j\'arrive bientôt',
+    title: 'I&N RUN — Léger retard 🚦',
+    body: 'Léger retard dû au trafic parisien. J\'arrive dans quelques minutes, toutes mes excuses.',
+  },
+  {
+    id: 'aeroport',
+    emoji: '✈️',
+    label: 'Aéroport',
+    sub: 'Rappel vol + consignes',
+    title: 'I&N RUN — Rappel aéroport ✈️',
+    body: 'Rappel : votre transfert aéroport est prévu demain. N\'oubliez pas vos documents de voyage. Je serai là !',
+  },
+  {
+    id: 'dispo',
+    emoji: '☀️',
+    label: 'Disponible maintenant',
+    sub: 'Alerte dispo immédiate',
+    title: 'I&N RUN — Disponible maintenant ☀️',
+    body: 'Bonjour ! Votre chauffeur privé est disponible maintenant. Réservez votre trajet en 2 minutes.',
+  },
+  {
+    id: 'soir',
+    emoji: '🌙',
+    label: 'Dispo ce soir',
+    sub: 'Disponible pour la soirée',
+    title: 'I&N RUN — Disponible ce soir 🌙',
+    body: 'Besoin d\'un chauffeur ce soir ? Je suis disponible pour vos déplacements nocturnes. Réservez maintenant !',
+  },
+  {
+    id: 'promo',
+    emoji: '🎁',
+    label: 'Code promo',
+    sub: '10% avec BIENVENUE',
+    title: 'I&N RUN — Offre exclusive 🎁',
+    body: 'Bénéficiez de 10% sur votre prochaine course avec le code BIENVENUE. Offre limitée !',
+  },
+  {
+    id: 'merci',
+    emoji: '⭐',
+    label: 'Merci & fidélité',
+    sub: 'Remerciement client',
+    title: 'I&N RUN — Merci pour votre confiance ⭐',
+    body: 'Merci pour votre fidélité ! En signe de remerciement, bénéficiez d\'une réduction sur votre prochain trajet.',
+  },
+  {
+    id: 'info',
+    emoji: '📢',
+    label: 'Info service',
+    sub: 'Actualité ou mise à jour tarifs',
+    title: 'I&N RUN — Information service 📢',
     body: 'Nos tarifs ont été mis à jour. Découvrez nos nouvelles offres exclusives sur l\'application.',
   },
-}
+  {
+    id: 'noel',
+    emoji: '🎄',
+    label: 'Bonnes fêtes',
+    sub: 'Message saisonnier',
+    title: 'I&N RUN — Bonnes fêtes ! 🎄',
+    body: 'Toute l\'équipe I&N RUN vous souhaite de belles fêtes. Je reste à votre disposition pour vos déplacements.',
+  },
+  {
+    id: 'anniv',
+    emoji: '🎂',
+    label: 'Anniversaire',
+    sub: 'Cadeau client anniversaire',
+    title: 'I&N RUN — Joyeux anniversaire 🎂',
+    body: 'Joyeux anniversaire ! En cadeau, profitez de 15% de réduction sur votre prochain trajet avec le code ANNIV15.',
+  },
+]
 
 function getGistId()    { return localStorage.getItem('hub-gist-id')    || '' }
 function getGistToken() { return localStorage.getItem('hub-gist-token') || '' }
+
+// ── Destinataires ──
+let sendMode = 'all'
+let selectedSubs = new Set()
+
+function setSendMode(mode) {
+  sendMode = mode
+  const all    = document.getElementById('mode-btn-all')
+  const select = document.getElementById('mode-btn-select')
+  const selList = document.getElementById('sub-select-list')
+  if (mode === 'all') {
+    all?.classList.replace('btn-secondary', 'btn-primary')
+    select?.classList.replace('btn-primary', 'btn-secondary')
+    if (selList) selList.style.display = 'none'
+    selectedSubs.clear()
+  } else {
+    select?.classList.replace('btn-secondary', 'btn-primary')
+    all?.classList.replace('btn-primary', 'btn-secondary')
+    if (selList) selList.style.display = 'flex'
+    // Select all by default
+    const subs = getLocalSubs()
+    selectedSubs = new Set(subs.map((_, i) => i))
+    renderSelectList()
+  }
+  updateSendTargetLabel()
+  updateSendButtons()
+}
+
+function renderSelectList() {
+  const el = document.getElementById('sub-select-list')
+  if (!el) return
+  const subs = getLocalSubs()
+  if (!subs.length) { el.innerHTML = '<div style="font-size:12px;color:var(--subtle)">Aucun abonné</div>'; return }
+  el.innerHTML = subs.map((s, i) => `
+    <label style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--card2);border:1px solid ${selectedSubs.has(i) ? 'rgba(255,65,3,.4)' : 'var(--border2)'};border-radius:8px;cursor:pointer;transition:border-color .15s" onclick="toggleSubSel(${i})">
+      <div style="width:18px;height:18px;border-radius:5px;border:2px solid ${selectedSubs.has(i) ? 'var(--accent)' : 'var(--border)'};background:${selectedSubs.has(i) ? 'var(--accent)' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s">
+        ${selectedSubs.has(i) ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${escHtml(s.name || 'Abonné #' + (i + 1))}</div>
+      </div>
+    </label>`).join('')
+}
+
+function toggleSubSel(idx) {
+  if (selectedSubs.has(idx)) selectedSubs.delete(idx)
+  else selectedSubs.add(idx)
+  renderSelectList()
+  updateSendTargetLabel()
+  updateSendButtons()
+}
+
+function updateSendTargetLabel() {
+  const el = document.getElementById('send-target-label')
+  if (!el) return
+  if (sendMode === 'all') {
+    const n = getLocalSubs().length
+    el.textContent = n ? `Envoi à tous les abonnés (${n})` : 'Aucun abonné enregistré'
+  } else {
+    const n = selectedSubs.size
+    el.textContent = n ? `${n} abonné${n > 1 ? 's' : ''} sélectionné${n > 1 ? 's' : ''}` : 'Aucun abonné sélectionné'
+  }
+}
+
+function updateSendButtons() {
+  const label = document.getElementById('push-send-label')
+  if (!label) return
+  if (sendMode === 'all') {
+    const n = getLocalSubs().length
+    label.textContent = `Envoyer à tous les abonnés${n ? ' (' + n + ')' : ''}`
+  } else {
+    const n = selectedSubs.size
+    label.textContent = n ? `Envoyer à ${n} abonné${n > 1 ? 's' : ''} sélectionné${n > 1 ? 's' : ''}` : 'Aucun destinataire sélectionné'
+  }
+}
+
+function getTargetSubs() {
+  const all = getLocalSubs()
+  if (sendMode === 'all') return all
+  return [...selectedSubs].map(i => all[i]).filter(Boolean)
+}
+
+function renderTemplateGrid() {
+  const el = document.getElementById('tpl-grid')
+  if (!el) return
+  el.innerHTML = PUSH_TEMPLATES.map(t => `
+    <button id="tpl-btn-${t.id}" onclick="sendTemplate('${t.id}')"
+      style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);cursor:pointer;text-align:left;transition:all .15s;-webkit-tap-highlight-color:transparent"
+      onmouseenter="this.style.borderColor='rgba(255,65,3,.35)'" onmouseleave="this.style.borderColor='var(--border)'">
+      <div style="font-size:22px;line-height:1;margin-bottom:2px">${t.emoji}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3">${t.label}</div>
+      <div style="font-size:11px;color:var(--subtle);line-height:1.4">${t.sub}</div>
+    </button>`).join('')
+}
 
 function showVapidCfgStatus() {
   const el = document.getElementById('vapid-cfg-status')
@@ -1351,16 +1532,23 @@ function renderSubList() {
   const subs = getLocalSubs()
   if (!subs.length) {
     el.innerHTML = '<div style="font-size:12px;color:var(--subtle);padding:4px 0">Aucun abonné pour l\'instant</div>'
-    return
+  } else {
+    el.innerHTML = subs.map((s, i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card2);border:1px solid var(--border2);border-radius:8px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${escHtml(s.name || 'Abonné #' + (i + 1))}</div>
+          <div style="font-size:10px;color:var(--subtle);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px">…${escHtml((s.endpoint || '').slice(-36))}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteSubscriber(${i})">✕</button>
+      </div>`).join('')
   }
-  el.innerHTML = subs.map((s, i) => `
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card2);border:1px solid var(--border2);border-radius:8px">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:600;color:var(--text)">${escHtml(s.name || 'Abonné #' + (i + 1))}</div>
-        <div style="font-size:10px;color:var(--subtle);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px">…${escHtml((s.endpoint || '').slice(-36))}</div>
-      </div>
-      <button class="btn btn-danger btn-sm" onclick="deleteSubscriber(${i})">✕</button>
-    </div>`).join('')
+  // Refresh select list & labels if in select mode
+  if (sendMode === 'select') {
+    selectedSubs = new Set(subs.map((_, i) => i))
+    renderSelectList()
+  }
+  updateSendTargetLabel()
+  updateSendButtons()
 }
 
 function deleteSubscriber(idx) {
@@ -1452,10 +1640,10 @@ async function saveGistConfig() {
 }
 
 // Sending is done server-side via GitHub Actions (no CORS issue, VAPID keys stay secret)
-async function sendPushNotification(title, body) {
+async function sendPushNotification(title, body, targetSubs) {
   const token = getGhToken()
   if (!token) return { ok: false, error: 'Token GitHub requis — configurez-le dans Paramètres' }
-  const subs = getLocalSubs()
+  const subs = targetSubs || getLocalSubs()
   if (!subs.length) return { ok: false, error: 'Aucun abonné enregistré — demandez à vos clients de s\'abonner via WhatsApp' }
   // Send subscriptions directly in payload so GitHub Actions doesn't need Gist access to send
   const subscriptions = subs.map(s => ({ endpoint: s.endpoint, keys: s.keys, expirationTime: s.expirationTime ?? null }))
@@ -1477,37 +1665,42 @@ async function sendPushNotification(title, body) {
   }
 }
 
-async function sendTemplate(type) {
-  const tpl = PUSH_TEMPLATES[type]
+async function sendTemplate(id) {
+  const tpl = PUSH_TEMPLATES.find(t => t.id === id)
   if (!tpl) return
-  const btn = document.getElementById(`tpl-btn-${type}`)
-  if (btn) { btn.disabled = true; btn.style.opacity = '.6' }
-  const result = await sendPushNotification(tpl.title, tpl.body)
-  if (btn) { btn.disabled = false; btn.style.opacity = '' }
+  const targets = getTargetSubs()
+  if (!targets.length) return showToast('Aucun destinataire sélectionné', 'error')
+  const btn = document.getElementById(`tpl-btn-${id}`)
+  if (btn) { btn.disabled = true; btn.style.opacity = '.5'; btn.style.transform = 'scale(.97)' }
+  const result = await sendPushNotification(tpl.title, tpl.body, targets)
+  if (btn) { btn.disabled = false; btn.style.opacity = ''; btn.style.transform = '' }
   if (result.ok) {
-    savePushToHistory({ title: tpl.title, body: tpl.body, ok: true })
-    showToast('✓ Notification déclenchée — arrivée dans ~15s')
+    savePushToHistory({ title: tpl.emoji + ' ' + tpl.title, body: tpl.body, ok: true, recipients: targets.length })
+    showToast(`✓ Envoyé à ${targets.length} abonné${targets.length > 1 ? 's' : ''} — arrivée dans ~15s`)
   } else {
     showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
   }
 }
 
 async function sendCustomPush() {
-  const title = document.getElementById('n-title').value.trim() || 'I&N RUN'
-  const body  = document.getElementById('n-body').value.trim()
+  const title   = document.getElementById('n-title').value.trim() || 'I&N RUN'
+  const body    = document.getElementById('n-body').value.trim()
   if (!body) return showToast('Entrez un message', 'error')
+  const targets = getTargetSubs()
+  if (!targets.length) return showToast('Aucun destinataire sélectionné', 'error')
   const btn = document.getElementById('push-send-btn')
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span style="opacity:.7">Envoi…</span>' }
-  const result = await sendPushNotification(title, body)
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span style="opacity:.7">Envoi en cours…</span>' }
+  const result = await sendPushNotification(title, body, targets)
   if (btn) {
     btn.disabled = false
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer à tous les abonnés`
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> <span id="push-send-label">Envoyer à tous les abonnés</span>`
+    updateSendButtons()
   }
   if (result.ok) {
     document.getElementById('n-title').value = ''
     document.getElementById('n-body').value  = ''
-    savePushToHistory({ title, body, ok: true })
-    showToast('✓ Notification déclenchée — arrivée dans ~15s')
+    savePushToHistory({ title, body, ok: true, recipients: targets.length })
+    showToast(`✓ Envoyé à ${targets.length} abonné${targets.length > 1 ? 's' : ''} — arrivée dans ~15s`)
   } else {
     savePushToHistory({ title, body, ok: false })
     showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
