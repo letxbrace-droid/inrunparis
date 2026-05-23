@@ -1,0 +1,46 @@
+name: Send Push Notification
+
+on:
+  repository_dispatch:
+    types: [send-push]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send via OneSignal REST API
+        env:
+          OS_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+          N_TITLE: ${{ github.event.client_payload.title }}
+          N_BODY: ${{ github.event.client_payload.body }}
+        run: |
+          python3 - <<'PYEOF'
+          import os, json, urllib.request, urllib.error, sys
+          key = os.environ.get('OS_KEY', '')
+          if not key:
+              print('Erreur : secret ONESIGNAL_API_KEY manquant.')
+              print('Ajoutez-le dans GitHub → Settings → Secrets and variables → Actions')
+              sys.exit(1)
+          payload = {
+              'app_id': 'a4f2f826-19b2-45c4-8dae-8351090aced7',
+              'target_channel': 'push',
+              'included_segments': ['Total Subscriptions'],
+              'headings': {'en': os.environ.get('N_TITLE', 'I&N RUN'), 'fr': os.environ.get('N_TITLE', 'I&N RUN')},
+              'contents': {'en': os.environ.get('N_BODY', ''), 'fr': os.environ.get('N_BODY', '')},
+              'url': 'https://letxbrace-droid.github.io/inrunparis/',
+              'chrome_web_icon': 'https://letxbrace-droid.github.io/inrunparis/icons/icon-192.png',
+          }
+          req = urllib.request.Request(
+              'https://api.onesignal.com/notifications',
+              data=json.dumps(payload).encode(),
+              headers={'Authorization': f'Key {key}', 'Content-Type': 'application/json'}
+          )
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  data = json.loads(resp.read())
+                  print(f"OK — {data.get('recipients', '?')} abonné(s) notifié(s)")
+          except urllib.error.HTTPError as e:
+              body = e.read().decode()
+              print(f"Erreur OneSignal {e.code}: {body}", file=sys.stderr)
+              sys.exit(1)
+          PYEOF

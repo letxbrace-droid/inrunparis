@@ -176,21 +176,20 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
   const handleNotifToggle = async () => {
     if (notifPerm === 'granted' || notifPending) return
-    // iOS in browser (non-standalone): push not available — direct to install
     if (isIOSBrowser) {
       alert('Pour activer les notifications sur iPhone, installez d\'abord l\'app : Safari → Partager → Sur l\'écran d\'accueil, puis ouvrez-la depuis l\'icône.')
       return
     }
     setNotifPending(true)
     try {
-      if (window.OneSignal?.Notifications) {
-        await window.OneSignal.Notifications.requestPermission()
-      } else {
-        await Notification.requestPermission()
-      }
-      setNotifPerm(Notification.permission)
-    } catch {}
-    setNotifPending(false)
+      // Use native browser API directly — avoids OneSignal soft-prompt that can hang
+      const result = await Notification.requestPermission()
+      setNotifPerm(result)
+    } catch {
+      setNotifPerm('Notification' in window ? Notification.permission : 'default')
+    } finally {
+      setNotifPending(false)
+    }
   }
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'

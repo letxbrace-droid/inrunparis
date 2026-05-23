@@ -1371,31 +1371,23 @@ async function deployPushConfig() {
   }
 }
 
+// Sending is done server-side via GitHub Actions (no CORS issue, API key stays secret)
 async function sendPushNotification(title, body) {
-  const appId  = getOSAppId()
-  const apiKey = getOSApiKey()
-  if (!appId || !apiKey) {
-    showToast('Configurez OneSignal dans Paramètres', 'error')
-    return { ok: false, error: 'Non configuré' }
-  }
+  const token = getGhToken()
+  if (!token) return { ok: false, error: 'Token GitHub requis — configurez-le dans Paramètres' }
   try {
-    const res = await fetch('https://api.onesignal.com/notifications', {
+    const res = await fetch('https://api.github.com/repos/letxbrace-droid/inrunparis/dispatches', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Key ${apiKey}` },
-      body: JSON.stringify({
-        app_id: appId,
-        target_channel: 'push',
-        included_segments: ['Total Subscriptions'],
-        headings: { en: title, fr: title },
-        contents: { en: body, fr: body },
-        url: 'https://letxbrace-droid.github.io/inrunparis/',
-        chrome_web_icon: 'https://letxbrace-droid.github.io/inrunparis/icons/icon-192.png',
-        chrome_web_badge: 'https://letxbrace-droid.github.io/inrunparis/icons/icon-72.png',
-      }),
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ event_type: 'send-push', client_payload: { title, body } }),
     })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data.errors?.join(', ') || `HTTP ${res.status}`)
-    return { ok: true, recipients: data.recipients || 0 }
+    if (res.status === 204) return { ok: true }
+    const data = await res.json().catch(() => ({}))
+    throw new Error(data.message || `GitHub ${res.status}`)
   } catch (e) {
     return { ok: false, error: e.message }
   }
@@ -1409,8 +1401,8 @@ async function sendTemplate(type) {
   const result = await sendPushNotification(tpl.title, tpl.body)
   if (btn) { btn.disabled = false; btn.style.opacity = '' }
   if (result.ok) {
-    savePushToHistory({ title: tpl.title, body: tpl.body, ok: true, recipients: result.recipients })
-    showToast(`✓ Notification envoyée — ${result.recipients} abonné${result.recipients !== 1 ? 's' : ''}`)
+    savePushToHistory({ title: tpl.title, body: tpl.body, ok: true })
+    showToast('✓ Notification déclenchée — arrivée dans ~15s')
   } else {
     showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
   }
@@ -1430,8 +1422,8 @@ async function sendCustomPush() {
   if (result.ok) {
     document.getElementById('n-title').value = ''
     document.getElementById('n-body').value  = ''
-    savePushToHistory({ title, body, ok: true, recipients: result.recipients })
-    showToast(`✓ Notification envoyée — ${result.recipients} abonné${result.recipients !== 1 ? 's' : ''}`)
+    savePushToHistory({ title, body, ok: true })
+    showToast('✓ Notification déclenchée — arrivée dans ~15s')
   } else {
     savePushToHistory({ title, body, ok: false })
     showToast('Erreur : ' + (result.error || 'Inconnue'), 'error')
@@ -1451,23 +1443,27 @@ function savePushToHistory(entry) {
 function renderPushStatus() {
   const el = document.getElementById('push-status')
   if (!el) return
-  const appId      = getOSAppId()
-  const apiKey     = getOSApiKey()
-  const configured = !!(appId && apiKey)
-  el.innerHTML = configured
+  const appId = getOSAppId()
+  const token = getGhToken()
+  const ready = !!(appId && token)
+  el.innerHTML = ready
     ? `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <div style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 8px rgba(52,211,153,.5)"></div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:600;color:var(--success)">Service configuré</div>
-          <div style="font-size:12px;color:var(--subtle);margin-top:2px;font-family:monospace">${escHtml(appId.slice(0,8))}…</div>
+          <div style="font-size:14px;font-weight:600;color:var(--success)">Service prêt</div>
+          <div style="font-size:12px;color:var(--subtle);margin-top:2px">Envoi via GitHub Actions · App <span style="font-family:monospace">${escHtml(appId.slice(0,8))}…</span></div>
         </div>
         <button id="push-deploy-btn" class="btn btn-success btn-sm" onclick="deployPushConfig()">Déployer App ID</button>
       </div>`
-    : `<div style="display:flex;align-items:center;gap:12px">
-        <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0"></div>
-        <div>
-          <div style="font-size:14px;font-weight:600;color:var(--muted)">Non configuré</div>
-          <div style="font-size:12px;color:var(--subtle);margin-top:2px">Ajoutez vos clés OneSignal dans <strong style="color:var(--text)">Paramètres → Notifications Push</strong></div>
+    : `<div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0"></div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted)">Configuration incomplète</div>
+        </div>
+        <div style="font-size:12px;color:var(--subtle);line-height:1.7">
+          ${!appId ? `<div>① Ajoutez l'<strong style="color:var(--text)">App ID OneSignal</strong> dans <strong style="color:var(--text)">Paramètres</strong></div>` : `<div style="color:var(--success)">✓ App ID configuré</div>`}
+          ${!token ? `<div>② Configurez le <strong style="color:var(--text)">token GitHub</strong> dans <strong style="color:var(--text)">Paramètres → Déploiement</strong></div>` : `<div style="color:var(--success)">✓ Token GitHub configuré</div>`}
+          <div>③ Ajoutez le secret <code style="color:var(--accent);font-size:11px">ONESIGNAL_API_KEY</code> dans <strong style="color:var(--text)">GitHub → Settings → Secrets → Actions</strong></div>
         </div>
       </div>`
 }
