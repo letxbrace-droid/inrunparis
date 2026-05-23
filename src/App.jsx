@@ -166,7 +166,7 @@ export default function App() {
       {/* Slide-in views */}
       <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
       <CallView       open={activeView === 'call'}    onClose={handleClose} />
-      <MesCoursesView open={activeView === 'courses'} onClose={handleClose} />
+      <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
       <CodePromoView  open={activeView === 'promo'}   onClose={handleClose} />
       <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
       <LegalView      open={activeView === 'legal'}   onClose={handleClose} />

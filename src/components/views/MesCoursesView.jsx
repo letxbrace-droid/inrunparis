@@ -26,7 +26,7 @@ function BackBtn({ onClose, th }) {
   )
 }
 
-export default function MesCoursesView({ open, onClose }) {
+export default function MesCoursesView({ open, onClose, onReserve }) {
   const th = useAppTheme()
   const bookingHistory = useBookingStore((s) => s.bookingHistory)
 
@@ -73,20 +73,48 @@ export default function MesCoursesView({ open, onClose }) {
         style={{ paddingBottom: 'calc(var(--safe-bot) + 32px)' }}
       >
         {bookingHistory.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-4 pt-28" style={{ animation: 'fade-up .4s ease both' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center justify-center gap-5 pt-24 px-6"
+          >
             <div
               className="w-20 h-20 rounded-full flex items-center justify-center"
               style={{ background: th.bgCard, border: `1px solid ${th.borderFaint}` }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 17H3a2 2 0 0 1-2-2V9l3-6h12l3 6v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="16.5" cy="17" r="2.5"/>
               </svg>
             </div>
-            <p className="text-sm font-semibold" style={{ color: th.inkLow }}>Aucune course pour le moment</p>
-            <p className="text-xs text-center" style={{ color: th.inkDim, maxWidth: 220, lineHeight: 1.6 }}>
-              Vos réservations envoyées sur WhatsApp apparaîtront ici.
-            </p>
-          </div>
+
+            <div className="flex flex-col items-center gap-2 text-center">
+              <p className="text-[15px] font-bold" style={{ color: th.inkFull }}>Aucune course pour le moment</p>
+              <p className="text-[13px] leading-relaxed" style={{ color: th.inkMuted, maxWidth: 240 }}>
+                Vos réservations envoyées sur WhatsApp apparaîtront ici automatiquement.
+              </p>
+            </div>
+
+            {onReserve && (
+              <button
+                onClick={onReserve}
+                className="flex items-center gap-2 px-6 py-3.5 rounded-2xl cursor-pointer active:scale-[.97] transition-transform duration-150 select-none"
+                style={{
+                  background: '#ff4103',
+                  color: '#fff',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  letterSpacing: '0.01em',
+                  boxShadow: '0 4px 16px rgba(255,65,3,.35)',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Réserver une course
+              </button>
+            )}
+          </motion.div>
         ) : (
           <div className="flex flex-col gap-3 pt-4">
             {bookingHistory.map((booking, i) => (
