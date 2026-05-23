@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /inrunparis/
+Allow: /inrunparis/mentions-legales.html
+
+Disallow: /inrunparis/hub.html
+Disallow: /inrunparis/bdr-admin.html
+Disallow: /inrunparis/bdradmin.html
+Disallow: /inrunparis/qr.html
+Disallow: /inrunparis/urgence.html
+Disallow: /inrunparis/ops/
+
+Sitemap: https://letxbrace-droid.github.io/inrunparis/sitemap.xml

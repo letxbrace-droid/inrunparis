@@ -4,18 +4,125 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'; object-src 'none'; connect-src 'self' https://photon.komoot.io https://nominatim.openstreetmap.org https://api.open-meteo.com https://router.project-osrm.org https://routing.openstreetmap.de https://fonts.googleapis.com https://fonts.gstatic.com https://basemaps.cartocdn.com https://api.github.com; upgrade-insecure-requests;">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+  <!-- ── Primaire ── -->
+  <title>I&amp;N RUN — Chauffeur Privé VTC Paris &amp; Île-de-France</title>
+  <meta name="description" content="Réservez votre chauffeur privé VTC à Paris. Tarif fixe garanti, disponible 24h/7j pour Paris, CDG, Orly, Disneyland. Confirmation en 2 min via WhatsApp.">
+  <meta name="keywords" content="chauffeur privé Paris, VTC Paris, chauffeur privé Île-de-France, taxi privé Paris, transport VTC aéroport, chauffeur CDG, chauffeur Orly, VTC luxe Paris, réservation chauffeur WhatsApp">
+  <meta name="author" content="I&amp;N RUN">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://letxbrace-droid.github.io/inrunparis/">
+
+  <!-- ── Open Graph (Facebook, WhatsApp, LinkedIn) ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://letxbrace-droid.github.io/inrunparis/">
+  <meta property="og:site_name" content="I&amp;N RUN">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="I&amp;N RUN — Chauffeur Privé VTC Paris">
+  <meta property="og:description" content="Réservez votre chauffeur privé VTC à Paris. Tarif fixe, disponible 24h/7j, Paris · CDG · Orly. Confirmation en 2 min via WhatsApp.">
+  <meta property="og:image" content="https://letxbrace-droid.github.io/inrunparis/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="I&amp;N RUN — Chauffeur privé VTC à Paris et Île-de-France">
+
+  <!-- ── Twitter / X Card ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="I&amp;N RUN — Chauffeur Privé VTC Paris">
+  <meta name="twitter:description" content="Chauffeur privé VTC à Paris. Tarif fixe, 24h/7j, Paris · CDG · Orly. Réservation WhatsApp en 2 min.">
+  <meta name="twitter:image" content="https://letxbrace-droid.github.io/inrunparis/og-image.svg">
+  <meta name="twitter:image:alt" content="I&amp;N RUN — Chauffeur privé Paris">
+
+  <!-- ── PWA & Mobile ── -->
   <meta name="theme-color" content="#001621">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="I&amp;N RUN">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="Chauffeur privé VTC à Paris & Île-de-France. Tarif fixe garanti, confirmation en 2 min. Réservation WhatsApp instantanée.">
-  <title>I&amp;N RUN — Chauffeur privé Paris</title>
+  <meta name="application-name" content="I&amp;N RUN">
+
+  <!-- ── Schema.org Structured Data ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TaxiService", "LocalBusiness"],
+        "@id": "https://letxbrace-droid.github.io/inrunparis/#business",
+        "name": "I&N RUN",
+        "legalName": "I&N RUN",
+        "description": "Service de chauffeur privé VTC à Paris et Île-de-France. Tarif fixe garanti, disponible 24h/7j. Réservation instantanée via WhatsApp, confirmation en 2 minutes.",
+        "url": "https://letxbrace-droid.github.io/inrunparis/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://letxbrace-droid.github.io/inrunparis/icons/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://letxbrace-droid.github.io/inrunparis/og-image.svg",
+        "telephone": "+33767742220",
+        "email": "contact@inrunparis.fr",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Paris",
+          "addressLocality": "Paris",
+          "postalCode": "75000",
+          "addressRegion": "Île-de-France",
+          "addressCountry": "FR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 48.8566,
+          "longitude": 2.3522
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Paris" },
+          { "@type": "State", "name": "Île-de-France" },
+          { "@type": "Place", "name": "Aéroport Paris-Charles de Gaulle CDG" },
+          { "@type": "Place", "name": "Aéroport Paris-Orly ORY" },
+          { "@type": "Place", "name": "Disneyland Paris" },
+          { "@type": "Place", "name": "Versailles" }
+        ],
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
+        },
+        "priceRange": "$$",
+        "currenciesAccepted": "EUR",
+        "paymentAccepted": "Cash, Carte bancaire, Virement",
+        "availableLanguage": [
+          { "@type": "Language", "name": "French" },
+          { "@type": "Language", "name": "English" }
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+33767742220",
+          "contactType": "reservations",
+          "contactOption": "TollFree",
+          "availableLanguage": ["French", "English"]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://letxbrace-droid.github.io/inrunparis/#website",
+        "url": "https://letxbrace-droid.github.io/inrunparis/",
+        "name": "I&N RUN — Chauffeur Privé VTC Paris",
+        "description": "Réservation de chauffeur privé VTC à Paris et Île-de-France",
+        "inLanguage": "fr-FR",
+        "publisher": { "@id": "https://letxbrace-droid.github.io/inrunparis/#business" }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── Ressources ── -->
   <link rel="manifest" href="/inrunparis/manifest.json">
   <link rel="apple-touch-icon" href="/inrunparis/icon-180.png">
   <link rel="icon" type="image/x-icon" href="/inrunparis/favicon.ico">
   <link rel="icon" type="image/png" sizes="192x192" href="/inrunparis/icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512"  href="/inrunparis/icons/icon-512.png">
+  <link rel="sitemap" type="application/xml" href="/inrunparis/sitemap.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
