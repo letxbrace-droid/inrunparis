@@ -527,7 +527,7 @@ export default function HomePill({ onOpenSheet }) {
                   </svg>
                   <input
                     type="datetime-local"
-                    defaultValue={pickup ?? ''}
+                    value={pickup ?? ''}
                     min={new Date().toISOString().slice(0, 16)}
                     onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
                     className="flex-1 bg-transparent text-sm outline-none"
