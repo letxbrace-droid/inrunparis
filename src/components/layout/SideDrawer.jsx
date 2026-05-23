@@ -181,15 +181,23 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
       return
     }
     setNotifPending(true)
-    try {
-      // Use native browser API directly — avoids OneSignal soft-prompt that can hang
-      const result = await Notification.requestPermission()
-      setNotifPerm(result)
-    } catch {
+    // Auto-reset after 12s so button never stays stuck
+    const safetyTimer = setTimeout(() => {
       setNotifPerm('Notification' in window ? Notification.permission : 'default')
-    } finally {
       setNotifPending(false)
-    }
+    }, 12000)
+    try {
+      // Use OneSignal's method so the subscription is registered server-side.
+      // Fall back to native API only if SDK isn't ready.
+      if (window.OneSignal?.Notifications?.requestPermission) {
+        await window.OneSignal.Notifications.requestPermission()
+      } else {
+        await Notification.requestPermission()
+      }
+    } catch {}
+    clearTimeout(safetyTimer)
+    setNotifPerm('Notification' in window ? Notification.permission : 'default')
+    setNotifPending(false)
   }
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
