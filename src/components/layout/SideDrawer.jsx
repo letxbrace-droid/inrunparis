@@ -166,20 +166,31 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const setTheme = useBookingStore(s => s.setTheme)
   const isDark   = useBookingStore(s => s.isDark)
 
-  const [notifPerm, setNotifPerm] = useState(
-    'Notification' in window ? Notification.permission : 'unsupported'
-  )
+  const pushSupported = 'Notification' in window && 'PushManager' in window
+  const isIOSBrowser  = /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+                        !window.matchMedia('(display-mode: standalone)').matches &&
+                        !window.navigator.standalone
+
+  const [notifPerm,    setNotifPerm]    = useState(() => pushSupported ? Notification.permission : 'unsupported')
+  const [notifPending, setNotifPending] = useState(false)
 
   const handleNotifToggle = async () => {
-    if (notifPerm === 'granted') return
+    if (notifPerm === 'granted' || notifPending) return
+    // iOS in browser (non-standalone): push not available — direct to install
+    if (isIOSBrowser) {
+      alert('Pour activer les notifications sur iPhone, installez d\'abord l\'app : Safari → Partager → Sur l\'écran d\'accueil, puis ouvrez-la depuis l\'icône.')
+      return
+    }
+    setNotifPending(true)
     try {
       if (window.OneSignal?.Notifications) {
         await window.OneSignal.Notifications.requestPermission()
       } else {
         await Notification.requestPermission()
       }
-      if ('Notification' in window) setNotifPerm(Notification.permission)
+      setNotifPerm(Notification.permission)
     } catch {}
+    setNotifPending(false)
   }
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
@@ -360,8 +371,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               </motion.li>
             ))}
 
-            {/* Push notifications opt-in — hidden when unsupported or denied */}
-            {'Notification' in window && notifPerm !== 'denied' && notifPerm !== 'unsupported' && (
+            {/* Push notifications opt-in */}
+            {(pushSupported || isIOSBrowser) && notifPerm !== 'denied' && (
               <motion.li variants={rowVar}>
                 <button
                   onClick={handleNotifToggle}
@@ -379,13 +390,15 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     Notifications
                   </span>
                   <span style={{
-                    fontSize:   11,
-                    fontWeight: 600,
+                    fontSize:      11,
+                    fontWeight:    600,
                     letterSpacing: '0.03em',
                     textTransform: 'uppercase',
                     color: notifPerm === 'granted' ? '#34d399' : '#FF5A1F',
+                    opacity: notifPending ? 0.5 : 1,
+                    transition: 'opacity .2s',
                   }}>
-                    {notifPerm === 'granted' ? 'Activées' : 'Activer'}
+                    {notifPerm === 'granted' ? 'Activées' : notifPending ? 'En cours…' : isIOSBrowser ? 'Installer' : 'Activer'}
                   </span>
                 </button>
               </motion.li>
