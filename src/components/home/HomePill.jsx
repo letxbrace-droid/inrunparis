@@ -373,7 +373,7 @@ export default function HomePill({ onOpenSheet }) {
                     disabled={geoStatus === 'loading'}
                     aria-label="Détecter ma position GPS"
                     className={`
-                      w-8 h-8 flex-shrink-0 rounded-xl flex items-center justify-center
+                      w-11 h-11 flex-shrink-0 rounded-xl flex items-center justify-center
                       border cursor-pointer active:scale-95 transition-colors
                       ${geoStatus === 'loading' ? 'border-accent/30 bg-accent/10' :
                         geoStatus === 'success' ? 'border-green-400/30 bg-green-400/10' :
