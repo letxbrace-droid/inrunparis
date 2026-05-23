@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v78 */
-const CACHE = 'inrun-v78';
+/* I&N RUN — Service Worker v79 */
+const CACHE = 'inrun-v79';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -11,7 +11,6 @@ self.addEventListener('push', event => {
       body: data.body,
       icon:  `${BASE}/icons/icon-192.png`,
       badge: `${BASE}/icons/icon-192.png`,
-      image: `${BASE}/icons/icon-512.png`,
       vibrate: [200, 100, 200],
       data: { url: `${BASE}/` },
     })
