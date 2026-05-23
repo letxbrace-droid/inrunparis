@@ -1,5 +1,7 @@
-/* I&N RUN — Service Worker v77 */
-const CACHE = 'inrun-v77';
+/* I&N RUN — Service Worker v78 */
+const CACHE = 'inrun-v78';
+
+const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
 self.addEventListener('push', event => {
   let data = { title: 'I&N RUN', body: '' }
@@ -7,10 +9,11 @@ self.addEventListener('push', event => {
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: '/inrunparis/icons/icon-192.png',
-      badge: '/inrunparis/icons/icon-192.png',
+      icon:  `${BASE}/icons/icon-192.png`,
+      badge: `${BASE}/icons/icon-192.png`,
+      image: `${BASE}/icons/icon-512.png`,
       vibrate: [200, 100, 200],
-      data: { url: 'https://letxbrace-droid.github.io/inrunparis/' },
+      data: { url: `${BASE}/` },
     })
   )
 })
