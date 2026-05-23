@@ -6,7 +6,7 @@ delete L.Icon.Default.prototype._getIconUrl
 
 const PARIS       = [48.8566, 2.3522]
 const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/positron/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
   html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:#3b82f6;border:2px solid #fff"></div>`,
@@ -185,6 +185,9 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       aria-label="Carte de Paris"
       style={{
         pointerEvents: frozen ? 'none' : 'auto',
+        filter: isDark
+          ? 'brightness(0.88) contrast(1.08)'
+          : 'saturate(0.62) brightness(1.03)',
       }}
     />
   )
