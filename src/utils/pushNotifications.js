@@ -15,24 +15,16 @@ export async function initOneSignal() {
   const appId = getPushAppId()
   if (!appId) return
 
+  // SDK is loaded via <script defer> in index.html — just queue the init
   window.OneSignalDeferred = window.OneSignalDeferred || []
-
-  await new Promise(resolve => {
-    const s = document.createElement('script')
-    s.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'
-    s.async = true
-    s.onload = resolve
-    s.onerror = resolve
-    document.head.appendChild(s)
-  })
-
   window.OneSignalDeferred.push(async (OneSignal) => {
     try {
       await OneSignal.init({
         appId,
+        safari_web_id: 'web.onesignal.auto.0534d2b4-18a9-4e11-8788-4e680cd265b6',
         serviceWorkerPath: '/inrunparis/sw.js',
         serviceWorkerParam: { scope: '/inrunparis/' },
-        notifyButton: { enable: false },
+        notifyButton: { enable: true },
         allowLocalhostAsSecureOrigin: true,
       })
     } catch {}
