@@ -1,4 +1,4 @@
-let cfg = { appId: '' }
+let cfg = { vapidPublicKey: '', gistId: '', gistToken: '' }
 
 export async function initPushConfig() {
   try {
@@ -7,57 +7,65 @@ export async function initPushConfig() {
   } catch {}
 }
 
-export function getPushAppId() {
-  return cfg?.appId || ''
+export function isPushSupported() {
+  return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
 }
 
-export async function initOneSignal() {
-  const appId = getPushAppId()
-  if (!appId) return
-
-  // SDK is loaded via <script defer> in index.html — just queue the init
-  window.OneSignalDeferred = window.OneSignalDeferred || []
-  window.OneSignalDeferred.push(async (OneSignal) => {
-    try {
-      await OneSignal.init({
-        appId,
-        safari_web_id: 'web.onesignal.auto.0534d2b4-18a9-4e11-8788-4e680cd265b6',
-        serviceWorkerPath: '/inrunparis/sw.js',
-        serviceWorkerParam: { scope: '/inrunparis/' },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true,
-      })
-      // If user already granted permission (e.g. from a previous session),
-      // ensure the push subscription is registered with OneSignal.
-      if (
-        'Notification' in window &&
-        Notification.permission === 'granted' &&
-        OneSignal.User?.PushSubscription?.optIn
-      ) {
-        await OneSignal.User.PushSubscription.optIn()
-      }
-    } catch (e) {
-      console.warn('[OneSignal] init error', e)
+// Called on app start — re-registers existing subscription with Gist if permission is already granted
+export async function autoResubscribe() {
+  if (!isPushSupported() || Notification.permission !== 'granted' || !cfg.vapidPublicKey) return
+  try {
+    const reg = await navigator.serviceWorker.ready
+    const sub = await reg.pushManager.getSubscription()
+    if (sub) {
+      saveSubscriptionToGist(sub.toJSON()).catch(() => {})
+    } else {
+      await subscribeToVapid()
     }
+  } catch {}
+}
+
+export async function subscribeToVapid() {
+  if (!isPushSupported() || !cfg.vapidPublicKey) return null
+  try {
+    const reg = await navigator.serviceWorker.ready
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey),
+    })
+    saveSubscriptionToGist(sub.toJSON()).catch(() => {})
+    return sub
+  } catch (e) {
+    console.warn('[VAPID] subscribe error', e)
+    return null
+  }
+}
+
+async function saveSubscriptionToGist(subJSON) {
+  if (!cfg.gistId || !cfg.gistToken) return
+  const headers = {
+    'Authorization': `Bearer ${cfg.gistToken}`,
+    'Accept': 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+  }
+  const readRes = await fetch(`https://api.github.com/gists/${cfg.gistId}`, { headers })
+  if (!readRes.ok) return
+  const gist = await readRes.json()
+  const content = gist.files?.['subscriptions.json']?.content || '[]'
+  let subs = []
+  try { subs = JSON.parse(content) } catch {}
+  if (subs.some(s => s.endpoint === subJSON.endpoint)) return
+  subs.push(subJSON)
+  await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
+    method: 'PATCH',
+    headers,
+    body: JSON.stringify({ files: { 'subscriptions.json': { content: JSON.stringify(subs) } } }),
   })
 }
 
-export async function requestPushPermission() {
-  try {
-    if (window.OneSignal?.Notifications) {
-      await window.OneSignal.Notifications.requestPermission()
-      return window.OneSignal.Notifications.permission === true
-    }
-    if ('Notification' in window) {
-      const perm = await Notification.requestPermission()
-      return perm === 'granted'
-    }
-  } catch {}
-  return false
-}
-
-export function isPushPermissionGranted() {
-  if (window.OneSignal?.Notifications?.permission) return true
-  if ('Notification' in window) return Notification.permission === 'granted'
-  return false
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4)
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+  const rawData = atob(base64)
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)))
 }

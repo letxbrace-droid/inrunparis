@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './styles/globals.css'
 import App from './App'
 import { initRemotePromoCodes } from './store/useBookingStore'
-import { initPushConfig, initOneSignal } from './utils/pushNotifications'
+import { initPushConfig, autoResubscribe } from './utils/pushNotifications'
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -13,7 +13,7 @@ if ('serviceWorker' in navigator) {
 
 Promise.all([
   initRemotePromoCodes(),
-  initPushConfig().then(initOneSignal),
+  initPushConfig().then(autoResubscribe),
 ]).finally(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>

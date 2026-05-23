@@ -458,21 +458,23 @@ textarea{resize:vertical}
       </div>
 
       <div class="section">
-        <div class="section-title">Notifications Push (OneSignal)</div>
+        <div class="section-title">Notifications Push (VAPID)</div>
         <div class="card">
-          <div id="os-key-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
+          <div id="vapid-cfg-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
           <div class="field">
-            <label>App ID</label>
-            <input id="s-os-appid" type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off">
+            <label>Gist ID</label>
+            <input id="s-gist-id" type="text" placeholder="abc123def456..." autocomplete="off">
           </div>
           <div class="field">
-            <label>REST API Key</label>
-            <input id="s-os-apikey" type="password" placeholder="Clé REST OneSignal" autocomplete="off">
+            <label>Gist Token (scope: gist uniquement)</label>
+            <input id="s-gist-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
           </div>
-          <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.6">
-            Créez un compte sur <strong style="color:var(--text)">onesignal.com</strong>, créez une Web Push app, puis copiez l'<strong style="color:var(--text)">App ID</strong> et la <strong style="color:var(--text)">REST API Key</strong> depuis <em>Settings → Keys &amp; IDs</em>.
+          <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.7">
+            <strong style="color:var(--text)">① Gist</strong> — GitHub → <em>Gists → New gist</em>, fichier <code style="color:var(--accent)">subscriptions.json</code>, contenu <code style="color:var(--accent)">[]</code>, visibilité <em>Secret</em>.<br>
+            <strong style="color:var(--text)">② Token</strong> — GitHub → Settings → Developer settings → Fine-grained PAT, scope <code style="color:var(--accent)">Gist: Read and write</code>.<br>
+            <strong style="color:var(--text)">③ Secrets GitHub Actions</strong> — <code style="color:var(--accent)">VAPID_PUBLIC_KEY</code>, <code style="color:var(--accent)">VAPID_PRIVATE_KEY</code>, <code style="color:var(--accent)">GIST_TOKEN</code>, <code style="color:var(--accent)">GIST_ID</code>.
           </div>
-          <button class="btn btn-primary btn-full" onclick="saveOSKeys()">Enregistrer les clés</button>
+          <button class="btn btn-primary btn-full" onclick="saveGistConfig()">Enregistrer et déployer</button>
         </div>
       </div>
 
@@ -1282,7 +1284,7 @@ function resetHub() {
 }
 
 // ────────────────────────────────────────────────────────────
-// PUSH NOTIFICATIONS (OneSignal)
+// PUSH NOTIFICATIONS (VAPID natif)
 // ────────────────────────────────────────────────────────────
 const PUSH_TEMPLATES = {
   promo: {
@@ -1299,49 +1301,45 @@ const PUSH_TEMPLATES = {
   },
 }
 
-function getOSAppId() { return localStorage.getItem('hub-os-appid') || '' }
-function getOSApiKey() { return localStorage.getItem('hub-os-apikey') || '' }
+function getGistId()    { return localStorage.getItem('hub-gist-id')    || '' }
+function getGistToken() { return localStorage.getItem('hub-gist-token') || '' }
 
-function showOSKeyStatus() {
-  const el = document.getElementById('os-key-status')
+function showVapidCfgStatus() {
+  const el = document.getElementById('vapid-cfg-status')
   if (!el) return
-  const has = !!(getOSAppId() && getOSApiKey())
+  const has = !!(getGistId() && getGistToken())
   el.style.display = 'block'
   el.style.background = has ? 'rgba(52,211,153,.08)' : 'rgba(248,113,113,.08)'
   el.style.border = has ? '1px solid rgba(52,211,153,.2)' : '1px solid rgba(248,113,113,.2)'
   el.style.color = has ? 'var(--success)' : 'var(--error)'
-  el.textContent = has ? '✓ Clés configurées — service push actif' : 'Clés manquantes — entrez App ID et REST API Key'
+  el.textContent = has ? '✓ Gist configuré — abonnements actifs' : 'Gist non configuré — entrez Gist ID et Token'
 }
 
-function saveOSKeys() {
-  const appId  = document.getElementById('s-os-appid').value.trim()
-  const apiKey = document.getElementById('s-os-apikey').value.trim()
-  if (!appId && !apiKey) return showToast('Entrez au moins l\'App ID', 'error')
-  if (appId)  localStorage.setItem('hub-os-appid', appId)
-  if (apiKey) localStorage.setItem('hub-os-apikey', apiKey)
-  document.getElementById('s-os-appid').value  = ''
-  document.getElementById('s-os-apikey').value = ''
-  showOSKeyStatus()
+async function saveGistConfig() {
+  const gistId    = document.getElementById('s-gist-id').value.trim()
+  const gistToken = document.getElementById('s-gist-token').value.trim()
+  if (!gistId || !gistToken) return showToast('Entrez le Gist ID et le Token', 'error')
+  localStorage.setItem('hub-gist-id', gistId)
+  localStorage.setItem('hub-gist-token', gistToken)
+  document.getElementById('s-gist-id').value    = ''
+  document.getElementById('s-gist-token').value = ''
+  showVapidCfgStatus()
   renderPushStatus()
-  showToast('Clés OneSignal enregistrées ✓')
-}
-
-async function deployPushConfig() {
-  const appId = getOSAppId()
-  if (!appId) return showToast('Entrez un App ID dans Paramètres d\'abord', 'error')
 
   const token = getGhToken()
-  const json  = JSON.stringify({ appId }, null, 2)
-
   if (!token) {
-    const copy = () => { const ta = document.createElement('textarea'); ta.value = json; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta) }
-    navigator.clipboard ? navigator.clipboard.writeText(json).catch(copy) : copy()
-    showToast('Aucun token GitHub — JSON copié (voir Paramètres)', 'error')
+    showToast('Gist enregistré localement — ajoutez le token GitHub pour déployer la config', 'error')
     return
   }
+  await deployPushConfig(gistId, gistToken)
+}
 
-  const btn = document.getElementById('push-deploy-btn')
-  if (btn) { btn.disabled = true; btn.textContent = 'Déploiement…' }
+async function deployPushConfig(gistId, gistToken) {
+  const token = getGhToken()
+  if (!token) return showToast('Token GitHub manquant dans Paramètres', 'error')
+
+  const VAPID_PUBLIC_KEY = 'BGJhJA3Te5Ac-0AfRjcVU820d7fV8wZ6jlkb0AZCPxrOF-Rl-Qrz76BltbhTjdMIuC9u1m_eioU-eh5YE3CbMDQ'
+  const json = JSON.stringify({ vapidPublicKey: VAPID_PUBLIC_KEY, gistId: gistId || getGistId(), gistToken: gistToken || getGistToken() }, null, 2)
 
   const REPO    = 'letxbrace-droid/inrunparis'
   const FILE    = 'public/push-config.json'
@@ -1350,24 +1348,21 @@ async function deployPushConfig() {
 
   try {
     const getRes = await fetch(API, { headers: HEADERS })
-    if (!getRes.ok) throw new Error(`GitHub ${getRes.status} — vérifiez le token`)
+    if (!getRes.ok) throw new Error(`GitHub ${getRes.status}`)
     const { sha } = await getRes.json()
-    const bytes   = new TextEncoder().encode(json)
-    const b64     = btoa(String.fromCharCode(...bytes))
-    const putRes  = await fetch(API, {
+    const b64 = btoa(unescape(encodeURIComponent(json)))
+    const putRes = await fetch(API, {
       method: 'PUT',
       headers: HEADERS,
-      body: JSON.stringify({ message: 'chore: update push config [hub]', content: b64, sha, branch: 'main' }),
+      body: JSON.stringify({ message: 'chore: update push-config (VAPID) [hub]', content: b64, sha, branch: 'main' }),
     })
     if (!putRes.ok) {
       const err = await putRes.json().catch(() => ({}))
       throw new Error(err.message || `GitHub ${putRes.status}`)
     }
-    showToast('✓ Config push déployée — active sur tous les appareils dans ~2 min')
+    showToast('✓ Config déployée — active dans ~2 min')
   } catch (e) {
-    showToast('Erreur : ' + e.message, 'error')
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Déployer App ID' }
+    showToast('Erreur déploiement : ' + e.message, 'error')
   }
 }
 
@@ -1443,17 +1438,16 @@ function savePushToHistory(entry) {
 function renderPushStatus() {
   const el = document.getElementById('push-status')
   if (!el) return
-  const appId = getOSAppId()
-  const token = getGhToken()
-  const ready = !!(appId && token)
+  const token   = getGhToken()
+  const gistOk  = !!(getGistId() && getGistToken())
+  const ready   = !!token
   el.innerHTML = ready
     ? `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <div style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 8px rgba(52,211,153,.5)"></div>
         <div style="flex:1;min-width:0">
           <div style="font-size:14px;font-weight:600;color:var(--success)">Service prêt</div>
-          <div style="font-size:12px;color:var(--subtle);margin-top:2px">Envoi via GitHub Actions · App <span style="font-family:monospace">${escHtml(appId.slice(0,8))}…</span></div>
+          <div style="font-size:12px;color:var(--subtle);margin-top:2px">VAPID push via GitHub Actions${gistOk ? ' · Gist configuré ✓' : ' · <span style="color:var(--error)">Gist non configuré</span>'}</div>
         </div>
-        <button id="push-deploy-btn" class="btn btn-success btn-sm" onclick="deployPushConfig()">Déployer App ID</button>
       </div>`
     : `<div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1461,9 +1455,9 @@ function renderPushStatus() {
           <div style="font-size:14px;font-weight:600;color:var(--muted)">Configuration incomplète</div>
         </div>
         <div style="font-size:12px;color:var(--subtle);line-height:1.7">
-          ${!appId ? `<div>① Ajoutez l'<strong style="color:var(--text)">App ID OneSignal</strong> dans <strong style="color:var(--text)">Paramètres</strong></div>` : `<div style="color:var(--success)">✓ App ID configuré</div>`}
-          ${!token ? `<div>② Configurez le <strong style="color:var(--text)">token GitHub</strong> dans <strong style="color:var(--text)">Paramètres → Déploiement</strong></div>` : `<div style="color:var(--success)">✓ Token GitHub configuré</div>`}
-          <div>③ Ajoutez le secret <code style="color:var(--accent);font-size:11px">ONESIGNAL_API_KEY</code> dans <strong style="color:var(--text)">GitHub → Settings → Secrets → Actions</strong></div>
+          ${!token ? `<div>① Configurez le <strong style="color:var(--text)">token GitHub</strong> dans <strong style="color:var(--text)">Paramètres → Déploiement GitHub</strong></div>` : `<div style="color:var(--success)">✓ Token GitHub configuré</div>`}
+          ${!gistOk ? `<div>② Configurez le <strong style="color:var(--text)">Gist</strong> dans <strong style="color:var(--text)">Paramètres → Notifications Push</strong></div>` : `<div style="color:var(--success)">✓ Gist configuré</div>`}
+          <div>③ Ajoutez les secrets GitHub Actions : <code style="color:var(--accent);font-size:11px">VAPID_PUBLIC_KEY</code>, <code style="color:var(--accent);font-size:11px">VAPID_PRIVATE_KEY</code>, <code style="color:var(--accent);font-size:11px">GIST_TOKEN</code>, <code style="color:var(--accent);font-size:11px">GIST_ID</code></div>
         </div>
       </div>`
 }

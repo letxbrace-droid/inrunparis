@@ -1,6 +1,30 @@
-/* I&N RUN — Service Worker v76 */
-try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js') } catch {}
-const CACHE = 'inrun-v76';
+/* I&N RUN — Service Worker v77 */
+const CACHE = 'inrun-v77';
+
+self.addEventListener('push', event => {
+  let data = { title: 'I&N RUN', body: '' }
+  try { data = event.data?.json() || data } catch {}
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/inrunparis/icons/icon-192.png',
+      badge: '/inrunparis/icons/icon-192.png',
+      vibrate: [200, 100, 200],
+      data: { url: 'https://letxbrace-droid.github.io/inrunparis/' },
+    })
+  )
+})
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close()
+  const target = event.notification.data?.url || 'https://letxbrace-droid.github.io/inrunparis/'
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cls => {
+      const existing = cls.find(c => c.url === target)
+      return existing ? existing.focus() : clients.openWindow(target)
+    })
+  )
+})
 const STATIC = [
   '/inrunparis/manifest.json',
   '/inrunparis/favicon.ico',

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
+import { subscribeToVapid, isPushSupported } from '../../utils/pushNotifications'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -166,7 +167,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
   const setTheme = useBookingStore(s => s.setTheme)
   const isDark   = useBookingStore(s => s.isDark)
 
-  const pushSupported = 'Notification' in window && 'PushManager' in window
+  const pushSupported = isPushSupported()
   const isIOSBrowser  = /iPad|iPhone|iPod/.test(navigator.userAgent) &&
                         !window.matchMedia('(display-mode: standalone)').matches &&
                         !window.navigator.standalone
@@ -181,23 +182,17 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
       return
     }
     setNotifPending(true)
-    // Auto-reset after 12s so button never stays stuck
-    const safetyTimer = setTimeout(() => {
-      setNotifPerm('Notification' in window ? Notification.permission : 'default')
-      setNotifPending(false)
-    }, 12000)
     try {
-      // Use OneSignal's method so the subscription is registered server-side.
-      // Fall back to native API only if SDK isn't ready.
-      if (window.OneSignal?.Notifications?.requestPermission) {
-        await window.OneSignal.Notifications.requestPermission()
-      } else {
-        await Notification.requestPermission()
+      const perm = await Notification.requestPermission()
+      setNotifPerm(perm)
+      if (perm === 'granted') {
+        subscribeToVapid().catch(() => {})
       }
-    } catch {}
-    clearTimeout(safetyTimer)
-    setNotifPerm('Notification' in window ? Notification.permission : 'default')
-    setNotifPending(false)
+    } catch {
+      setNotifPerm('Notification' in window ? Notification.permission : 'default')
+    } finally {
+      setNotifPending(false)
+    }
   }
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
