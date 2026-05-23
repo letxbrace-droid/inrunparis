@@ -24,10 +24,21 @@ export async function initOneSignal() {
         safari_web_id: 'web.onesignal.auto.0534d2b4-18a9-4e11-8788-4e680cd265b6',
         serviceWorkerPath: '/inrunparis/sw.js',
         serviceWorkerParam: { scope: '/inrunparis/' },
-        notifyButton: { enable: true },
+        notifyButton: { enable: false },
         allowLocalhostAsSecureOrigin: true,
       })
-    } catch {}
+      // If user already granted permission (e.g. from a previous session),
+      // ensure the push subscription is registered with OneSignal.
+      if (
+        'Notification' in window &&
+        Notification.permission === 'granted' &&
+        OneSignal.User?.PushSubscription?.optIn
+      ) {
+        await OneSignal.User.PushSubscription.optIn()
+      }
+    } catch (e) {
+      console.warn('[OneSignal] init error', e)
+    }
   })
 }
 
