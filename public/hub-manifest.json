@@ -3,7 +3,7 @@
   "short_name": "Hub INR",
   "description": "Hub de gestion interne I&N RUN. Codes promo, bons de réservation, notifications, paramètres.",
   "start_url": "/inrunparis/hub.html",
-  "scope": "/inrunparis/",
+  "scope": "/inrunparis/hub.html",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait",
