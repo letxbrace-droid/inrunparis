@@ -1,0 +1,101 @@
+name: Send Push Notification
+
+on:
+  repository_dispatch:
+    types: [send-push]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send VAPID push notifications
+        env:
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          N_TITLE: ${{ github.event.client_payload.title }}
+          N_BODY: ${{ github.event.client_payload.body }}
+          N_SUBS: ${{ toJson(github.event.client_payload.subscriptions) }}
+        run: |
+          npm install web-push --save-dev --silent
+          node <<'EOF'
+          const webpush = require('web-push')
+          const https   = require('https')
+
+          const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, GIST_TOKEN, GIST_ID, N_TITLE, N_BODY, N_SUBS } = process.env
+
+          if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+            console.error('Secrets manquants : VAPID_PUBLIC_KEY et VAPID_PRIVATE_KEY requis')
+            process.exit(1)
+          }
+
+          webpush.setVapidDetails(
+            'mailto:letxbrace@gmail.com',
+            VAPID_PUBLIC_KEY,
+            VAPID_PRIVATE_KEY
+          )
+
+          function httpsGet(path, headers) {
+            return new Promise((resolve, reject) => {
+              https.get({ hostname: 'api.github.com', path, headers }, res => {
+                let data = ''
+                res.on('data', d => data += d)
+                res.on('end', () => {
+                  try { resolve(JSON.parse(data)) } catch (e) { reject(e) }
+                })
+              }).on('error', reject)
+            })
+          }
+
+          async function main() {
+            let subs = []
+
+            // Primary: subscriptions sent directly from hub in client_payload
+            try {
+              const parsed = JSON.parse(N_SUBS || 'null')
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                subs = parsed
+                console.log(`Abonnés reçus depuis le hub : ${subs.length}`)
+              }
+            } catch {}
+
+            // Fallback: read from Gist if payload subscriptions empty
+            if (!subs.length && GIST_TOKEN && GIST_ID) {
+              try {
+                const gist = await httpsGet(
+                  `/gists/${GIST_ID}`,
+                  { Authorization: `Bearer ${GIST_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'inrunparis-push' }
+                )
+                const content = gist.files?.['subscriptions.json']?.content || '[]'
+                try { subs = JSON.parse(content) } catch {}
+                console.log(`Abonnés lus depuis Gist : ${subs.length}`)
+              } catch (e) {
+                console.warn('Impossible de lire le Gist :', e.message)
+              }
+            }
+
+            if (!subs.length) {
+              console.log('Aucun abonné enregistré — rien à envoyer.')
+              return
+            }
+
+            console.log(`Envoi à ${subs.length} abonné(s)…`)
+            const payload = JSON.stringify({ title: N_TITLE || 'I&N RUN', body: N_BODY || '' })
+            let sent = 0, failed = 0
+
+            for (const sub of subs) {
+              try {
+                await webpush.sendNotification(sub, payload)
+                sent++
+              } catch (e) {
+                console.error(`Échec (${(sub.endpoint || '').slice(-20)}): ${e.statusCode || e.message}`)
+                failed++
+              }
+            }
+
+            console.log(`✓ ${sent} envoi(s) — ${failed} échec(s)`)
+          }
+
+          main().catch(e => { console.error(e); process.exit(1) })
+          EOF
