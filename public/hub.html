@@ -727,7 +727,7 @@ document.addEventListener('DOMContentLoaded', () => updateThemeIcon(document.doc
 // ─── SERVICE WORKER ───
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/inrunparis/sw.js', { scope: '/inrunparis/' }).catch(() => {})
+    navigator.serviceWorker.register('/inrunparis/hub-sw.js', { scope: '/inrunparis/hub.html' }).catch(() => {})
   })
 }
 
