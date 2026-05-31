@@ -1,7 +1,35 @@
-/* I&N RUN — Service Worker v75 */
-const CACHE = 'inrun-v75';
+/* I&N RUN — Service Worker v80 */
+const CACHE = 'inrun-v80';
+
+const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
+
+self.addEventListener('push', event => {
+  let data = { title: 'I&N RUN', body: '' }
+  try { data = event.data?.json() || data } catch {}
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon:  `${BASE}/icons/icon-192.png`,
+      badge: `${BASE}/icons/icon-192.png`,
+      vibrate: [200, 100, 200],
+      data: { url: `${BASE}/` },
+    })
+  )
+})
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close()
+  const target = event.notification.data?.url || 'https://letxbrace-droid.github.io/inrunparis/'
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cls => {
+      const existing = cls.find(c => c.url === target)
+      return existing ? existing.focus() : clients.openWindow(target)
+    })
+  )
+})
 const STATIC = [
   '/inrunparis/manifest.json',
+  '/inrunparis/hub-manifest.json',
   '/inrunparis/favicon.ico',
   '/inrunparis/icon-180.png',
   '/inrunparis/icon-192.png',

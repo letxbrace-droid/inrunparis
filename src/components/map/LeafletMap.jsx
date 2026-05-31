@@ -185,6 +185,9 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       aria-label="Carte de Paris"
       style={{
         pointerEvents: frozen ? 'none' : 'auto',
+        filter: isDark
+          ? 'brightness(1.72) contrast(0.88) saturate(0.75)'
+          : 'saturate(0.92) brightness(0.97)',
       }}
     />
   )

@@ -129,7 +129,7 @@ export default function App() {
         style={{
           background: isDark
             ? 'linear-gradient(to bottom, rgba(5,5,5,.55) 0%, transparent 18%, transparent 60%, rgba(5,5,5,.92) 100%)'
-            : 'linear-gradient(to bottom, rgba(240,238,232,.70) 0%, transparent 22%, transparent 58%, rgba(240,238,232,.92) 100%)',
+            : 'linear-gradient(to bottom, rgba(240,238,232,.50) 0%, transparent 22%, transparent 58%, rgba(240,238,232,.88) 100%)',
         }}
       />
 
