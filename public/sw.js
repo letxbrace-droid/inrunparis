@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v79 */
-const CACHE = 'inrun-v79';
+/* I&N RUN — Service Worker v80 */
+const CACHE = 'inrun-v80';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -29,6 +29,7 @@ self.addEventListener('notificationclick', event => {
 })
 const STATIC = [
   '/inrunparis/manifest.json',
+  '/inrunparis/hub-manifest.json',
   '/inrunparis/favicon.ico',
   '/inrunparis/icon-180.png',
   '/inrunparis/icon-192.png',
