@@ -24,7 +24,7 @@ export const TYPE_COLOR = {
   gare:      '#8b5cf6',
   poi:       '#f59e0b',
   city:      '#10b981',
-  nominatim: '#ff4103',
+  nominatim: '#FF5A1F',
 }
 
 function norm(s) {

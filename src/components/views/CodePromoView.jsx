@@ -79,7 +79,7 @@ export default function CodePromoView({ open, onClose }) {
             }}
           >
             <div>
-              <p className="text-sm font-bold" style={{ color: '#34d399' }}>{promo.code}</p>
+              <p className="text-sm font-bold" style={{ color: 'var(--positive)' }}>{promo.code}</p>
               <p className="text-xs mt-0.5" style={{ color: 'rgba(52,211,153,.65)' }}>{promo.label}</p>
             </div>
             <button onClick={handleRemove} className="text-xs underline cursor-pointer" style={{ color: 'rgba(52,211,153,.55)' }}>

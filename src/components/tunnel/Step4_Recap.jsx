@@ -72,10 +72,10 @@ export default function Step4Recap({ onBack }) {
                 {price.final}€
               </span>
             )}
-            <span style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? '#34d399' : th.inkFull }}>
+            <span className="tnum" style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? 'var(--positive)' : th.inkFull }}>
               {displayPrice ?? '—'}
             </span>
-            <span style={{ fontSize: '1.3rem', fontWeight: 800, color: promo && displayPrice !== price?.final ? '#34d399' : '#ff4103', letterSpacing: '-0.02em' }}>€</span>
+            <span style={{ fontSize: '1.3rem', fontWeight: 800, color: promo && displayPrice !== price?.final ? 'var(--positive)' : 'var(--accent)', letterSpacing: '-0.02em' }}>€</span>
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1.5">
@@ -87,11 +87,11 @@ export default function Step4Recap({ onBack }) {
               <div className="flex gap-1">
                 {price.isNight && (
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,65,3,.12)', color: '#ff4103' }}>Nuit</span>
+                    style={{ background: 'rgba(255,90,31,.12)', color: '#FF5A1F' }}>Nuit</span>
                 )}
                 {price.isAirport && (
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,65,3,.12)', color: '#ff4103' }}>✈</span>
+                    style={{ background: 'rgba(255,90,31,.12)', color: '#FF5A1F' }}>✈</span>
                 )}
               </div>
             )}
@@ -104,9 +104,9 @@ export default function Step4Recap({ onBack }) {
         <div className="flex items-stretch gap-3 px-4 py-3">
           {/* Timeline */}
           <div className="flex flex-col items-center flex-shrink-0 mt-1">
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#ff4103' }} />
-            <div className="w-px flex-1 my-1" style={{ minHeight: 20, background: 'linear-gradient(to bottom, rgba(255,65,3,.45), rgba(255,65,3,.10))' }} />
-            <div className="w-2 h-2 rounded-full flex-shrink-0 border-2" style={{ borderColor: 'rgba(255,65,3,.65)', background: th.bgCard }} />
+            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#FF5A1F' }} />
+            <div className="w-px flex-1 my-1" style={{ minHeight: 20, background: 'linear-gradient(to bottom, rgba(255,90,31,.45), rgba(255,90,31,.10))' }} />
+            <div className="w-2 h-2 rounded-full flex-shrink-0 border-2" style={{ borderColor: 'rgba(255,90,31,.65)', background: th.bgCard }} />
           </div>
           {/* Addresses */}
           <div className="flex flex-col flex-1 min-w-0" style={{ gap: 10 }}>
@@ -134,7 +134,7 @@ export default function Step4Recap({ onBack }) {
         {/* DATE */}
         <div className="flex items-center gap-2.5 px-4 py-2.5">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-            stroke="rgba(255,65,3,.65)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            stroke="rgba(255,90,31,.65)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
             <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
           </svg>
           <span className="text-[12px] font-semibold" style={{ color: th.inkMid }}>
@@ -153,10 +153,10 @@ export default function Step4Recap({ onBack }) {
                   className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
                   style={{
                     background: chip === clientName
-                      ? 'rgba(255,65,3,.10)'
+                      ? 'rgba(255,90,31,.10)'
                       : th.bgInput,
-                    color: chip === clientName ? '#ff4103' : th.inkMid,
-                    border: `1px solid ${chip === clientName ? 'rgba(255,65,3,.22)' : th.borderFaint}`,
+                    color: chip === clientName ? '#FF5A1F' : th.inkMid,
+                    border: `1px solid ${chip === clientName ? 'rgba(255,90,31,.22)' : th.borderFaint}`,
                   }}
                 >
                   {chip}

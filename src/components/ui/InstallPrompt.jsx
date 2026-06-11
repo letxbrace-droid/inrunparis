@@ -56,7 +56,7 @@ export default function InstallPrompt() {
             padding:        '11px 12px 11px 14px',
             borderRadius:   20,
             background:     '#0F0F0F',
-            border:         '1px solid rgba(255,65,3,.28)',
+            border:         '1px solid rgba(255,90,31,.28)',
             boxShadow:      '0 12px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07)',
           }}>
             {/* App icon */}
@@ -84,14 +84,14 @@ export default function InstallPrompt() {
                 flexShrink:   0,
                 padding:      '8px 15px',
                 borderRadius: 11,
-                background:   '#ff4103',
+                background:   '#FF5A1F',
                 border:       'none',
                 color:        '#fff',
                 fontSize:     12,
                 fontWeight:   700,
                 cursor:       'pointer',
                 letterSpacing: '.02em',
-                boxShadow:    '0 2px 10px rgba(255,65,3,.45)',
+                boxShadow:    '0 2px 10px rgba(255,90,31,.45)',
               }}
             >
               Installer

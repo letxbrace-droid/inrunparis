@@ -8,7 +8,7 @@ export default function GlassCard({ children, className = '', onClick, accent = 
         ${className}
       `}
       style={accent ? {
-        borderTop: '2px solid #ff4103',
+        borderTop: '2px solid #FF5A1F',
         boxShadow: '0 4px 16px rgba(0,0,0,.6)',
       } : undefined}
     >

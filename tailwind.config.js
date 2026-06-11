@@ -24,7 +24,9 @@ export default {
           DEFAULT: 'var(--separator)',
           strong:  'var(--separator-strong)',
         },
-        wa: '#25d366',
+        wa:       'var(--wa)',
+        positive: 'var(--positive)',
+        info:     'var(--info)',
       },
       fontFamily: {
         body:  ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],

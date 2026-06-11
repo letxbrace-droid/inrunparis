@@ -159,7 +159,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>
                   <div className="text-xs mt-0.5 truncate" style={{ color: th.inkMuted }}>{t.subtitle}</div>
                 </div>
-                <span className="font-brand font-bold text-[15px] whitespace-nowrap" style={{ color: '#ff4103' }}>{t.price}</span>
+                <span className="font-brand font-bold text-[15px] whitespace-nowrap" style={{ color: '#FF5A1F' }}>{t.price}</span>
               </div>
             ))}
           </div>
@@ -179,7 +179,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   <span className="font-semibold text-sm" style={{ color: th.inkFull }}>{row.duration}</span>
                   <span className="text-[11px]" style={{ color: th.inkMuted }}>{row.note}</span>
                 </div>
-                <span className="font-brand font-bold text-[15px]" style={{ color: '#ff4103' }}>{row.price}</span>
+                <span className="font-brand font-bold text-[15px]" style={{ color: '#FF5A1F' }}>{row.price}</span>
               </div>
             ))}
           </div>

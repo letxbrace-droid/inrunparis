@@ -11,7 +11,7 @@
   :root {
     /* ── Accent ─────────────────────────────────────────────────── */
     --accent:        #FF5A1F;
-    --accent-2:      #ff4103;
+    --accent-2:      #FF5A1F;
     --accent-press:  #e84000;
     --accent-dim:    rgba(255,90,31,0.12);
     --accent-glow:   rgba(255,90,31,0.35);
@@ -24,17 +24,35 @@
     --bg-elevated:   #161616;   /* inputs / innermost          */
     --bg-glass:      rgba(10,10,10,0.94);  /* nav chrome — near-solid  */
 
-    /* ── Labels ─────────────────────────────────────────────────── */
+    /* Named surfaces — single source for useAppTheme + components */
+    --bg-panel:   #0B0B0B;
+    --bg-header:  #0D0D0D;
+    --bg-card:    #111111;
+    --bg-input:   #161616;
+    --bg-inset:   #141414;
+    --bg-hover:   #1A1A1A;
+    --bg-avatar:  #0A1828;
+
+    /* ── Labels — 4 levels only (Uber-style discipline) ─────────── */
     --label:            #F5F1E8;
-    --label-secondary:  rgba(245,241,232,0.88);
-    --label-tertiary:   rgba(245,241,232,0.65);
+    --label-secondary:  rgba(245,241,232,0.82);
+    --label-tertiary:   rgba(245,241,232,0.62);
     --label-quaternary: rgba(245,241,232,0.44);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
     --separator:        rgba(255,255,255,0.07);
-    --separator-strong: rgba(255,255,255,0.10);
+    --separator-strong: rgba(255,255,255,0.11);
+    --separator-faint:  rgba(255,255,255,0.05);
     --fill:             rgba(255,255,255,0.05);
     --fill-secondary:   rgba(255,255,255,0.04);
+    --handle:           rgba(255,255,255,0.18);
+    --overlay:          rgba(0,0,0,0.72);
+    --scrim:            rgba(0,0,0,0.90);
+
+    /* ── Semantic status ────────────────────────────────────────── */
+    --positive:     #34d399;
+    --positive-dim: rgba(52,211,153,0.25);
+    --info:         #3b82f6;
 
     /* ── Geometry ───────────────────────────────────────────────── */
     --r-card:    16px;
@@ -55,8 +73,6 @@
     --safe-bot: env(safe-area-inset-bottom, 0px);
 
     /* ── Back-compat aliases ────────────────────────────────────── */
-    --bg-card:       var(--bg-secondary);
-    --bg-inset:      var(--bg-elevated);
     --ink-primary:   var(--label);
     --ink-secondary: var(--label-secondary);
     --ink-muted:     var(--label-tertiary);
@@ -105,17 +121,33 @@
     --bg-elevated:   #E4E1DB;
     --bg-glass:      rgba(247,245,240,0.97);
 
+    --bg-panel:   #F0EDE8;
+    --bg-header:  #EFEDE8;
+    --bg-card:    #FFFFFF;
+    --bg-input:   #E8E5E0;
+    --bg-inset:   #EDEBE6;
+    --bg-hover:   #E5E3DE;
+    --bg-avatar:  #E0DDD6;
+
     /* High-contrast editorial ink — readable, not washed out */
     --label:            #0D0D0D;
-    --label-secondary:  rgba(13,13,13,0.82);
-    --label-tertiary:   rgba(13,13,13,0.60);
+    --label-secondary:  rgba(13,13,13,0.80);
+    --label-tertiary:   rgba(13,13,13,0.58);
     --label-quaternary: rgba(13,13,13,0.38);
 
     /* Crisp 1-px hairlines instead of diffuse blur */
     --separator:        rgba(0,0,0,0.10);
-    --separator-strong: rgba(0,0,0,0.16);
+    --separator-strong: rgba(0,0,0,0.15);
+    --separator-faint:  rgba(0,0,0,0.06);
     --fill:             rgba(0,0,0,0.05);
     --fill-secondary:   rgba(0,0,0,0.03);
+    --handle:           rgba(0,0,0,0.15);
+    --overlay:          rgba(0,0,0,0.35);
+    --scrim:            rgba(0,0,0,0.50);
+
+    --positive:     #047857;
+    --positive-dim: rgba(5,150,105,0.25);
+    --info:         #2563eb;
 
     /* Flat editorial elevations — 0 blur, sharp outline */
     --elev-1:     0 0 0 1px rgba(0,0,0,0.08);
@@ -267,7 +299,7 @@
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.30),
       inset 0 -1px 0 rgba(0,0,0,0.14),
-      0 3px 12px rgba(255,65,3,0.22),
+      0 3px 12px rgba(255,90,31,0.22),
       0 1px 4px  rgba(0,0,0,0.16);
   }
 

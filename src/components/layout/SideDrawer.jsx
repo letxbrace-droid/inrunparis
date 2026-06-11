@@ -398,7 +398,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     fontWeight:    600,
                     letterSpacing: '0.03em',
                     textTransform: 'uppercase',
-                    color: notifPerm === 'granted' ? '#34d399' : '#FF5A1F',
+                    color: notifPerm === 'granted' ? 'var(--positive)' : 'var(--accent)',
                     opacity: notifPending ? 0.5 : 1,
                     transition: 'opacity .2s',
                   }}>

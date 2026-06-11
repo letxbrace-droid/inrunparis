@@ -38,7 +38,7 @@ export default function FloatingInput({
           top:           raised ? '8px' : '50%',
           transform:     raised ? 'none' : 'translateY(-50%)',
           fontSize:      raised ? '11px' : '14px',
-          color:         raised ? '#ff4103' : th.inkMuted,
+          color:         raised ? '#FF5A1F' : th.inkMuted,
           fontWeight:    raised ? 600 : 400,
           letterSpacing: raised ? '.04em' : 'normal',
         }}
