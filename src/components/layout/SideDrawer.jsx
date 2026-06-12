@@ -124,10 +124,11 @@ const NAV_ITEMS = [
 ]
 
 const SECONDARY = [
-  { label: 'Mes courses',      view: 'courses' },
-  { label: 'Code promo',       view: 'promo'   },
-  { label: 'Aide & FAQ',       view: 'faq'     },
-  { label: 'Mentions légales', view: 'legal'   },
+  { label: 'Mes courses',          view: 'courses' },
+  { label: 'Code promo',           view: 'promo'   },
+  { label: 'Coupe du Monde 2026',  view: 'coupe26', badge: '−10%' },
+  { label: 'Aide & FAQ',           view: 'faq'     },
+  { label: 'Mentions légales',     view: 'legal'   },
 ]
 
 // ── Animations ────────────────────────────────────────────────────────────────
@@ -358,13 +359,28 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                   className="flex items-center justify-between w-full cursor-pointer select-none active:scale-[.98] transition-transform duration-100"
                   style={{ background: 'none', border: 'none', padding: '10px 0' }}
                 >
-                  <span style={{
-                    fontSize:      15,
-                    fontWeight:    500,
-                    letterSpacing: '-0.01em',
-                    color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
-                  }}>
-                    {item.label}
+                  <span className="flex items-center gap-2">
+                    <span style={{
+                      fontSize:      15,
+                      fontWeight:    500,
+                      letterSpacing: '-0.01em',
+                      color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                    }}>
+                      {item.label}
+                    </span>
+                    {item.badge && (
+                      <span style={{
+                        fontSize:      10,
+                        fontWeight:    700,
+                        letterSpacing: '.04em',
+                        color:         '#E8B84B',
+                        border:        '1px solid rgba(232,184,75,.4)',
+                        borderRadius:  999,
+                        padding:       '2px 7px',
+                      }}>
+                        {item.badge}
+                      </span>
+                    )}
                   </span>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
                     stroke={isDark ? 'rgba(245,241,232,.28)' : 'rgba(17,17,17,.25)'}

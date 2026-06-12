@@ -5,6 +5,7 @@ const PROMO_CODES_BASE = {
   'BIENVENUE': { discount: 10, label: '10% de réduction' },
   'VIP15':     { discount: 15, label: '15% de réduction' },
   'PARIS25':   { discount: 25, label: '25% sur votre 1ère course' },
+  'COUPE26':   { discount: 10, label: 'Coupe du Monde 2026 — −10%' },
 }
 
 // Populated by initRemotePromoCodes() before React renders
