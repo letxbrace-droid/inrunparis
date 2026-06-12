@@ -16,11 +16,15 @@ import CampaignBanner      from './components/home/CampaignBanner'
 import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
 import InstallPrompt       from './components/ui/InstallPrompt'
+import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'coupe26', 'faq', 'legal']
 
+const SPLASH_KEY = 'inr-splash'
+
 export default function App() {
+  const [splash,      setSplash]      = useState(() => !sessionStorage.getItem(SPLASH_KEY))
   const [drawerOpen,  setDrawerOpen]  = useState(false)
   const [sheetOpen,   setSheetOpen]   = useState(false)
   const [sheetStep,   setSheetStep]   = useState(1)
@@ -125,6 +129,13 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
+      {/* Splash screen — plays once per browser session */}
+      {splash && (
+        <SplashScreen onDone={() => {
+          sessionStorage.setItem(SPLASH_KEY, '1')
+          setSplash(false)
+        }} />
+      )}
       {/* Map — frozen (pointer-events-none) when any overlay is open */}
       <LeafletMap
         depart={depart}
