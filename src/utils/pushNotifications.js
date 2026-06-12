@@ -18,8 +18,13 @@ export async function autoResubscribe() {
   if (!isPushSupported() || Notification.permission !== 'granted' || !cfg.vapidPublicKey) return
   try {
     const reg = await navigator.serviceWorker.ready
-    const sub = await reg.pushManager.getSubscription()
-    if (!sub) await subscribeToVapid()
+    let sub = await reg.pushManager.getSubscription()
+    if (!sub) sub = await subscribeToVapid()
+    // Register with the hub Worker once — covers clients who granted
+    // permission before auto-registration existed.
+    if (sub && !localStorage.getItem('inr-push-registered')) {
+      await registerWithWorker(sub)
+    }
   } catch {}
 }
 
@@ -49,6 +54,7 @@ export async function registerWithWorker(sub, name = null) {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ name, sub: sub.toJSON ? sub.toJSON() : sub }),
     })
+    if (res.ok) localStorage.setItem('inr-push-registered', '1')
     return res.ok
   } catch {
     return false
