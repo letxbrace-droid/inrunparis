@@ -1,0 +1,9 @@
+name              = "inrun-hub"
+main              = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Optional — create with: wrangler kv namespace create STATS_KV
+# then replace the id below
+# [[kv_namespaces]]
+# binding = "STATS_KV"
+# id      = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"

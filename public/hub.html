@@ -587,29 +587,16 @@ textarea{resize:vertical}
         </div>
       </div>
       <div class="section">
-        <div class="section-title">Notifications Push (VAPID)</div>
+        <div class="section-title">Worker Cloudflare</div>
         <div class="card">
-          <div id="vapid-cfg-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
-          <div class="field"><label>Gist ID</label><input id="s-gist-id" type="text" placeholder="abc123def456..." autocomplete="off"></div>
-          <div class="field"><label>Gist Token (scope : gist uniquement)</label><input id="s-gist-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"></div>
+          <div id="worker-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
+          <div class="field"><label>URL du Worker</label><input id="s-worker-url" type="url" placeholder="https://inrun-hub.your-account.workers.dev" autocomplete="off"></div>
+          <div class="field"><label>Secret (mot de passe du Worker)</label><input id="s-hub-secret" type="password" placeholder="••••••••" autocomplete="off"></div>
           <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.7">
-            <strong style="color:var(--text)">① Gist</strong> — GitHub → <em>Gists → New gist</em>, fichier <code style="color:var(--accent)">subscriptions.json</code>, contenu <code style="color:var(--accent)">[]</code>, visibilité <em>Secret</em>.<br>
-            <strong style="color:var(--text)">② Token</strong> — Fine-grained PAT, scope <code style="color:var(--accent)">Gist: Read and write</code>.<br>
-            <strong style="color:var(--text)">③ Secrets Actions</strong> — <code style="color:var(--accent);font-size:11px">VAPID_PUBLIC_KEY</code>, <code style="color:var(--accent);font-size:11px">VAPID_PRIVATE_KEY</code>, <code style="color:var(--accent);font-size:11px">GIST_TOKEN</code>, <code style="color:var(--accent);font-size:11px">GIST_ID</code>.
+            Le Worker détient vos tokens GitHub côté serveur — aucun secret ne transite plus par le navigateur.<br>
+            Déployez avec <code style="color:var(--accent)">wrangler deploy</code> depuis <code style="color:var(--accent)">workers/hub-proxy/</code>.
           </div>
-          <button class="btn btn-primary btn-full" onclick="saveGistConfig()">Enregistrer et déployer</button>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-title">Déploiement GitHub</div>
-        <div class="card">
-          <div id="gh-token-status" style="font-size:12px;margin-bottom:12px;padding:8px 12px;border-radius:8px;display:none"></div>
-          <div class="field"><label>Personal Access Token</label><input id="s-ghtoken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"></div>
-          <div style="font-size:12px;color:var(--subtle);margin-bottom:12px;line-height:1.6">
-            GitHub → Settings → Developer settings → Personal access tokens → Fine-grained.<br>
-            Dépôt <code style="font-size:11px;color:var(--accent)">inrunparis</code>, permission <code style="font-size:11px;color:var(--accent)">Contents → Read and write</code>.
-          </div>
-          <button class="btn btn-primary btn-full" onclick="saveGhToken()">Enregistrer le token</button>
+          <button class="btn btn-primary btn-full" onclick="saveWorkerConfig()">Enregistrer</button>
         </div>
       </div>
       <div class="section">
@@ -893,19 +880,33 @@ function saveEdit(code,isSystem) {
   }
   renderPromos(); showToast('Code mis à jour ✓')
 }
-function getGhToken() { return localStorage.getItem('hub-gh-token')||'' }
-function saveGhToken() {
-  const t=document.getElementById('s-ghtoken').value.trim(); if(!t)return showToast('Entrez un token','error')
-  localStorage.setItem('hub-gh-token',t); document.getElementById('s-ghtoken').value=''; showGhTokenStatus(); showToast('Token enregistré ✓')
+// ─── WORKER CONFIG ───
+function getWorkerUrl() { return localStorage.getItem('hub-worker-url')||'' }
+function getHubSecret() { return localStorage.getItem('hub-secret')||'' }
+function hasWorker()    { return !!(getWorkerUrl()&&getHubSecret()) }
+function workerHeaders(){ return {Authorization:`Bearer ${getHubSecret()}`,'Content-Type':'application/json'} }
+async function workerFetch(path,opts={}){
+  const url=getWorkerUrl(); if(!url)throw new Error('Worker non configuré — voir Réglages')
+  const res=await fetch(url+path,{...opts,headers:{...workerHeaders(),...(opts.headers||{})}})
+  if(!res.ok){const d=await res.json().catch(()=>({}));throw new Error(d.error||`Erreur ${res.status}`)}
+  return res.json()
 }
-function showGhTokenStatus() {
-  const el=document.getElementById('gh-token-status'); if(!el)return
-  const has=!!getGhToken()
+function saveWorkerConfig() {
+  const url=document.getElementById('s-worker-url').value.trim()
+  const sec=document.getElementById('s-hub-secret').value.trim()
+  if(!url||!sec)return showToast('URL et secret requis','error')
+  localStorage.setItem('hub-worker-url',url); localStorage.setItem('hub-secret',sec)
+  document.getElementById('s-worker-url').value=''; document.getElementById('s-hub-secret').value=''
+  showWorkerStatus(); showVapidCfgStatus(); renderPushStatus(); showToast('Worker configuré ✓')
+}
+function showWorkerStatus() {
+  const el=document.getElementById('worker-status'); if(!el)return
+  const has=hasWorker()
   el.style.display='block'
   el.style.background=has?'rgba(52,211,153,.08)':'rgba(248,113,113,.08)'
   el.style.border=has?'1px solid rgba(52,211,153,.2)':'1px solid rgba(248,113,113,.2)'
   el.style.color=has?'var(--success)':'var(--error)'
-  el.textContent=has?'✓ Token configuré — déploiement automatique actif':'Aucun token — le bouton Déployer copiera le JSON à la place'
+  el.textContent=has?'✓ Worker connecté — tokens GitHub sécurisés côté serveur':'Worker non configuré — entrez l\'URL et le secret ci-dessous'
 }
 function buildPromoConfig() {
   const ov=getSysOverrides(),stored=getStoredPromos(),config={}
@@ -921,31 +922,26 @@ function buildPromoConfig() {
   return config
 }
 async function deployPromos() {
-  const token=getGhToken(),json=JSON.stringify(buildPromoConfig(),null,2)
-  if(!token){
-    const copy=()=>{const ta=document.createElement('textarea');ta.value=json;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}
-    navigator.clipboard?navigator.clipboard.writeText(json).catch(copy):copy()
-    showToast('Aucun token — JSON copié (voir Réglages)','error'); return
+  const content=buildPromoConfig()
+  if(!hasWorker()){
+    const j=JSON.stringify(content,null,2)
+    const copy=()=>{const ta=document.createElement('textarea');ta.value=j;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}
+    navigator.clipboard?navigator.clipboard.writeText(j).catch(copy):copy()
+    showToast('Worker non configuré — JSON copié (voir Réglages)','error'); return
   }
   const btn=document.getElementById('deploy-btn')
   if(btn){btn.disabled=true;btn.innerHTML='<span style="opacity:.6">Déploiement…</span>'}
-  const REPO='letxbrace-droid/inrunparis',FILE='public/promo-config.json',BRANCH='main'
-  const API=`https://api.github.com/repos/${REPO}/contents/${FILE}`
-  const H={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'}
   try {
-    const getRes=await fetch(API,{headers:H}); if(!getRes.ok)throw new Error(`GitHub ${getRes.status}`)
-    const{sha}=await getRes.json()
-    const b64=btoa(String.fromCharCode(...new TextEncoder().encode(json)))
-    const putRes=await fetch(API,{method:'PUT',headers:H,body:JSON.stringify({message:'chore: update promo codes [hub]',content:b64,sha,branch:BRANCH})})
-    if(!putRes.ok){const err=await putRes.json().catch(()=>({}));throw new Error(err.message||`GitHub ${putRes.status}`)}
+    const {sha}=await workerFetch('/promos')
+    await workerFetch('/promos',{method:'PUT',body:JSON.stringify({content,sha})})
     showToast('✓ Codes déployés — actifs dans ~2 min')
   } catch(e){showToast('Erreur : '+e.message,'error')}
   finally{if(btn){btn.disabled=false;btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Déployer`}}
 }
 function renderPromos() {
   const list=document.getElementById('promo-list'),stored=getStoredPromos(),sysOv=getSysOverrides()
-  const hasToken=!!getGhToken()
-  let html=`<div class="deploy-info"><strong style="color:var(--success)">Déploiement sur tous les appareils</strong><br>${hasToken?'Token configuré — cliquez <strong>Déployer</strong> pour publier.':'Configurez un token dans <strong>Réglages → Déploiement GitHub</strong>.'}<div style="margin-top:8px"><button id="deploy-btn" class="btn btn-success btn-sm" onclick="deployPromos()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${hasToken?'Déployer':'Copier JSON'}</button></div></div>`
+  const hasToken=hasWorker()
+  let html=`<div class="deploy-info"><strong style="color:var(--success)">Déploiement sur tous les appareils</strong><br>${hasToken?'Worker configuré — cliquez <strong>Déployer</strong> pour publier.':'Configurez le Worker dans <strong>Réglages → Worker Cloudflare</strong>.'}<div style="margin-top:8px"><button id="deploy-btn" class="btn btn-success btn-sm" onclick="deployPromos()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${hasToken?'Déployer':'Copier JSON'}</button></div></div>`
   Object.entries(HARDCODED).forEach(([code,defaults])=>{
     const o=sysOv[code]
     if(o&&o.deleted){html+=`<div class="promo-wrap"><div class="promo-item" style="opacity:.4"><div class="promo-item-info"><div class="promo-code" style="text-decoration:line-through">${code}</div><div class="promo-label">Code masqué</div></div><button class="btn btn-secondary btn-sm" onclick="restoreSystemPromo('${code}')">Restaurer</button></div></div>`;return}
@@ -1014,7 +1010,7 @@ function loadSettings(){
   document.getElementById('s-tva').value=c.tva; document.getElementById('s-address').value=c.address
   document.getElementById('s-phone').value=c.phone; document.getElementById('s-email').value=c.email
   document.getElementById('s-tvarate').value=c.tvarate; document.getElementById('s-footer').value=c.footer
-  showGhTokenStatus(); showVapidCfgStatus()
+  showWorkerStatus(); showVapidCfgStatus()
 }
 function saveSettings(){
   const c={name:document.getElementById('s-name').value.trim(),siret:document.getElementById('s-siret').value.trim(),tva:document.getElementById('s-tva').value.trim(),address:document.getElementById('s-address').value.trim(),phone:document.getElementById('s-phone').value.trim(),email:document.getElementById('s-email').value.trim(),tvarate:document.getElementById('s-tvarate').value.trim()||'10',footer:document.getElementById('s-footer').value.trim()}
@@ -1053,8 +1049,6 @@ const PUSH_TEMPLATES=[
   {id:'noel',   emoji:'🎄',label:'Bonnes fêtes',      sub:'Message saisonnier',              title:'I&N RUN — Bonnes fêtes ! 🎄',                    body:'Toute l\'équipe I&N RUN vous souhaite de belles fêtes. Je reste à votre disposition.'},
   {id:'anniv',  emoji:'🎂',label:'Anniversaire',      sub:'Cadeau client anniversaire',      title:'I&N RUN — Joyeux anniversaire 🎂',               body:'Joyeux anniversaire ! En cadeau, profitez de 15% de réduction avec le code ANNIV15.'},
 ]
-function getGistId(){return localStorage.getItem('hub-gist-id')||''}
-function getGistToken(){return localStorage.getItem('hub-gist-token')||''}
 let sendMode='all',selectedSubs=new Set()
 function setSendMode(mode){
   sendMode=mode
@@ -1087,11 +1081,11 @@ function renderTemplateGrid(){
 }
 function showVapidCfgStatus(){
   const el=document.getElementById('vapid-cfg-status'); if(!el)return
-  const has=!!(getGistId()&&getGistToken())
+  const has=hasWorker()
   el.style.display='block';el.style.background=has?'rgba(52,211,153,.08)':'rgba(248,113,113,.08)'
   el.style.border=has?'1px solid rgba(52,211,153,.2)':'1px solid rgba(248,113,113,.2)'
   el.style.color=has?'var(--success)':'var(--error)'
-  el.textContent=has?'✓ Gist configuré — abonnements actifs':'Gist non configuré — entrez Gist ID et Token'
+  el.textContent=has?'✓ Worker configuré — push actifs':'Worker non configuré — voir Réglages → Worker Cloudflare'
 }
 function getLocalSubs(){try{return JSON.parse(localStorage.getItem('hub-vapid-subs')||'[]')}catch{return[]}}
 function saveLocalSubs(subs){
@@ -1120,13 +1114,13 @@ async function addSubscriber(){
   if(!sub?.endpoint)return showToast('Abonnement invalide','error')
   const local=getLocalSubs(); if(local.some(s=>s.endpoint===sub.endpoint))return showToast('Cet abonné est déjà enregistré','error')
   local.push({name:name||null,endpoint:sub.endpoint,keys:sub.keys,expirationTime:sub.expirationTime??null}); saveLocalSubs(local)
-  const gistId=getGistId(),gistToken=getGistToken()
-  if(gistId&&gistToken){
+  if(hasWorker()){
     try{
-      const headers={Authorization:`Bearer ${gistToken}`,Accept:'application/vnd.github+json','Content-Type':'application/json'}
-      const r=await fetch(`https://api.github.com/gists/${gistId}`,{headers})
-      if(r.ok){const gist=await r.json();let gistSubs=[];try{gistSubs=JSON.parse(gist.files?.['subscriptions.json']?.content||'[]')}catch{}
-        if(!gistSubs.some(s=>s.endpoint===sub.endpoint)){gistSubs.push({endpoint:sub.endpoint,keys:sub.keys,expirationTime:sub.expirationTime??null});await fetch(`https://api.github.com/gists/${gistId}`,{method:'PATCH',headers,body:JSON.stringify({files:{'subscriptions.json':{content:JSON.stringify(gistSubs)}}})})}}
+      const remoteSubs=await workerFetch('/subs')
+      if(!remoteSubs.some(s=>s.endpoint===sub.endpoint)){
+        remoteSubs.push({endpoint:sub.endpoint,keys:sub.keys,expirationTime:sub.expirationTime??null})
+        await workerFetch('/subs',{method:'PUT',body:JSON.stringify(remoteSubs)})
+      }
     }catch{}
   }
   if(document.getElementById('sub-input'))document.getElementById('sub-input').value=''
@@ -1134,13 +1128,12 @@ async function addSubscriber(){
   showToast('✓ '+(name||'Abonné')+' ajouté')
 }
 async function sendPushNotification(title,body,targetSubs){
-  const token=getGhToken(); if(!token)return{ok:false,error:'Token GitHub requis — configurez-le dans Réglages'}
+  if(!hasWorker())return{ok:false,error:'Worker non configuré — voir Réglages'}
   const subs=targetSubs||getLocalSubs(); if(!subs.length)return{ok:false,error:'Aucun abonné enregistré'}
   const subscriptions=subs.map(s=>({endpoint:s.endpoint,keys:s.keys,expirationTime:s.expirationTime??null}))
   try{
-    const res=await fetch('https://api.github.com/repos/letxbrace-droid/inrunparis/dispatches',{method:'POST',headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({event_type:'send-push',client_payload:{title,body,subscriptions}})})
-    if(res.status===204)return{ok:true}
-    const data=await res.json().catch(()=>({})); throw new Error(data.message||`GitHub ${res.status}`)
+    await workerFetch('/dispatch',{method:'POST',body:JSON.stringify({event_type:'send-push',client_payload:{title,body,subscriptions}})})
+    return{ok:true}
   }catch(e){return{ok:false,error:e.message}}
 }
 async function sendTemplate(id){
@@ -1169,23 +1162,16 @@ function getPushHistory(){try{return JSON.parse(localStorage.getItem('hub-push-h
 function savePushToHistory(entry){const hist=getPushHistory();hist.unshift({...entry,date:new Date().toISOString()});localStorage.setItem('hub-push-history',JSON.stringify(hist.slice(0,30)));renderPushHistory()}
 function renderPushStatus(){
   const el=document.getElementById('push-status'); if(!el)return
-  const token=getGhToken(),gistOk=!!(getGistId()&&getGistToken())
-  el.innerHTML=token
-    ?`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 8px rgba(52,211,153,.5)"></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--success)">Service prêt</div><div style="font-size:12px;color:var(--subtle);margin-top:2px">VAPID push via GitHub Actions${gistOk?' · Gist configuré ✓':' · <span style="color:var(--error)">Gist non configuré</span>'}</div></div></div>`
-    :`<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0"></div><div style="font-size:14px;font-weight:600;color:var(--muted)">Configuration incomplète</div></div><div style="font-size:12px;color:var(--subtle);line-height:1.7">${!token?`<div>① <strong style="color:var(--text)">Token GitHub</strong> dans <strong style="color:var(--text)">Réglages → Déploiement GitHub</strong></div>`:`<div style="color:var(--success)">✓ Token GitHub configuré</div>`}${!gistOk?`<div>② <strong style="color:var(--text)">Gist</strong> dans <strong style="color:var(--text)">Réglages → Notifications Push</strong></div>`:`<div style="color:var(--success)">✓ Gist configuré</div>`}<div>③ Secrets Actions : <code style="color:var(--accent);font-size:11px">VAPID_PUBLIC_KEY</code> <code style="color:var(--accent);font-size:11px">VAPID_PRIVATE_KEY</code> <code style="color:var(--accent);font-size:11px">GIST_TOKEN</code> <code style="color:var(--accent);font-size:11px">GIST_ID</code></div></div></div>`
+  const ok=hasWorker()
+  el.innerHTML=ok
+    ?`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 8px rgba(52,211,153,.5)"></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--success)">Service prêt</div><div style="font-size:12px;color:var(--subtle);margin-top:2px">VAPID push via Worker Cloudflare · tokens sécurisés côté serveur</div></div></div>`
+    :`<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0"></div><div style="font-size:14px;font-weight:600;color:var(--muted)">Configuration incomplète</div></div><div style="font-size:12px;color:var(--subtle);line-height:1.7"><div>① Configurez le <strong style="color:var(--text)">Worker Cloudflare</strong> dans <strong style="color:var(--text)">Réglages</strong></div><div>② Secrets Actions : <code style="color:var(--accent);font-size:11px">VAPID_PUBLIC_KEY</code> <code style="color:var(--accent);font-size:11px">VAPID_PRIVATE_KEY</code> <code style="color:var(--accent);font-size:11px">GIST_TOKEN</code> <code style="color:var(--accent);font-size:11px">GIST_ID</code></div></div></div>`
 }
 function renderPushHistory(){
   const hist=getPushHistory(),el=document.getElementById('push-history'),sec=document.getElementById('push-hist-section')
   if(!el||!sec)return; if(!hist.length){sec.style.display='none';return}
   sec.style.display='block'
   el.innerHTML=hist.slice(0,15).map(h=>`<div class="card2"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px"><div style="font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(h.title)}</div><span class="badge ${h.ok?'badge-green':'badge-red'}">${h.ok?(h.recipients!=null?`${h.recipients} envoi${h.recipients!==1?'s':''}`:'Envoyé'):'Échec'}</span></div><div style="font-size:12px;color:var(--muted);line-height:1.5">${escHtml(h.body)}</div><div style="font-size:11px;color:var(--subtle);margin-top:6px">${new Date(h.date).toLocaleString('fr-FR')}</div></div>`).join('')
-}
-async function saveGistConfig(){
-  const gistId=document.getElementById('s-gist-id').value.trim(),gistToken=document.getElementById('s-gist-token').value.trim()
-  if(!gistId||!gistToken)return showToast('Entrez le Gist ID et le Token','error')
-  localStorage.setItem('hub-gist-id',gistId); localStorage.setItem('hub-gist-token',gistToken)
-  document.getElementById('s-gist-id').value=''; document.getElementById('s-gist-token').value=''
-  showVapidCfgStatus(); renderPushStatus(); showToast('✓ Gist configuré')
 }
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
