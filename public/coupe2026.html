@@ -3,234 +3,424 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000a08">
-<title>I&amp;N RUN · Coupe du Monde 2026</title>
-<meta name="description" content="Voyagez en classe pendant la Coupe du Monde. -10% sur tous vos trajets avec le code COUPE26, jusqu'au 19 juillet 2026.">
-<meta property="og:title" content="I&N RUN — Offre Coupe du Monde 2026 ⚽">
-<meta property="og:description" content="-10% sur vos trajets VTC à Paris avec le code COUPE26">
-<meta property="og:image" content="https://letxbrace-droid.github.io/inrunparis/og-image.svg">
+<meta name="theme-color" content="#000a06">
+<title>I&amp;N RUN — Coupe du Monde 2026</title>
+<meta name="description" content="Votre chauffeur privé VTC pendant la Coupe du Monde 2026. -10% avec le code COUPE26 jusqu'au 19 juillet.">
+<meta property="og:title" content="I&N RUN × Coupe du Monde 2026 ⚽">
+<meta property="og:description" content="-10% sur tous vos trajets VTC à Paris avec le code COUPE26">
+<meta property="og:image" content="https://letxbrace-droid.github.io/inrunparis/icons/icon-512.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 :root{
-  --bg:#000a08;
-  --surface:#020f07;
-  --card:rgba(255,255,255,.03);
-  --border:rgba(255,255,255,.07);
+  --bg:#000a06;
+  --card:rgba(255,255,255,.035);
+  --border:rgba(255,255,255,.08);
   --accent:#ff4103;
-  --gold:#c8a84b;
-  --gold-dim:rgba(200,168,75,.15);
-  --gold-glow:rgba(200,168,75,.25);
-  --green:#00c851;
+  --gold:#c9a84c;
+  --gold-light:#e8c96a;
+  --gold-dim:rgba(201,168,76,.14);
+  --gold-border:rgba(201,168,76,.3);
+  --green:#00d45a;
+  --green-dim:rgba(0,212,90,.1);
   --text:#F5F1E8;
-  --muted:rgba(245,241,232,.55);
-  --subtle:rgba(245,241,232,.35);
+  --muted:rgba(245,241,232,.58);
+  --subtle:rgba(245,241,232,.36);
   --ease:cubic-bezier(0.23,1,0.32,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
 }
-html,body{min-height:100%;background:var(--bg);color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;
-  font-size:16px;line-height:1.5;overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  font-size:16px;line-height:1.5;overflow-x:hidden;min-height:100dvh}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{display:block}
 
-/* ── BACKGROUND AMBIANCE ── */
-.bg-orb{
-  position:fixed;pointer-events:none;border-radius:50%;filter:blur(80px);opacity:.18;z-index:0}
-.bg-orb-1{width:500px;height:500px;background:var(--green);top:-120px;left:-100px}
-.bg-orb-2{width:400px;height:400px;background:var(--gold);bottom:-80px;right:-100px}
-.bg-orb-3{width:300px;height:300px;background:var(--accent);top:40%;left:50%;transform:translate(-50%,-50%)}
+/* ── AMBIENT BACKGROUND ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:0}
+.orb-1{width:600px;height:600px;top:-150px;left:-150px;background:radial-gradient(circle,rgba(0,180,70,.18) 0%,transparent 70%)}
+.orb-2{width:500px;height:500px;bottom:-100px;right:-120px;background:radial-gradient(circle,rgba(201,168,76,.14) 0%,transparent 70%)}
+.orb-3{width:350px;height:350px;top:45%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,65,3,.09) 0%,transparent 70%)}
 
-/* ── LAYOUT ── */
-.page{position:relative;z-index:1;max-width:480px;margin:0 auto;
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100dvh}
-
-/* ── TOPBAR ── */
-.topbar{
+/* ── FLOATING NAV ── */
+.nav{
+  position:fixed;top:env(safe-area-inset-top);left:0;right:0;z-index:100;
+  padding:12px 20px;display:flex;justify-content:center}
+.nav-pill{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px 16px;
-  background:rgba(0,10,8,.8);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:.5px solid var(--border);
-  position:sticky;top:0;z-index:10}
-.brand{font-size:17px;font-weight:900;letter-spacing:-.05em}
-.brand em{color:var(--accent);font-style:normal}
-.brand-sub{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gold);background:var(--gold-dim);border:1px solid rgba(200,168,75,.3);
-  border-radius:20px;padding:2px 9px}
+  width:100%;max-width:480px;
+  background:rgba(0,10,6,.82);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:100px;padding:8px 8px 8px 16px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:32px;height:32px;border-radius:8px;flex-shrink:0}
+.nav-name{font-size:14px;font-weight:900;letter-spacing:-.04em}
+.nav-name em{color:var(--accent);font-style:normal}
+.nav-cta{
+  display:flex;align-items:center;gap:7px;
+  background:var(--green);color:#fff;
+  padding:8px 16px;border-radius:100px;
+  font-size:12px;font-weight:700;letter-spacing:.02em;
+  box-shadow:0 4px 16px rgba(0,212,90,.3);
+  transition:transform 120ms var(--ease),box-shadow 120ms var(--ease)}
+.nav-cta:active{transform:scale(.95);box-shadow:0 2px 8px rgba(0,212,90,.2)}
+
+/* ── PAGE ── */
+.page{position:relative;z-index:1;max-width:480px;margin:0 auto}
 
 /* ── HERO ── */
-.hero{padding:48px 24px 36px;text-align:center}
+.hero{
+  min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(80px + env(safe-area-inset-top)) 24px 60px;
+  text-align:center;position:relative}
+.hero-logo-wrap{
+  position:relative;margin-bottom:32px}
+.hero-logo-ring{
+  position:absolute;inset:-12px;border-radius:calc(22px + 12px);
+  background:conic-gradient(from 0deg, var(--gold), var(--green), var(--accent), var(--gold));
+  opacity:.6;filter:blur(2px);
+  animation:ring-spin 8s linear infinite}
+@keyframes ring-spin{to{transform:rotate(360deg)}}
+.hero-logo-ring2{
+  position:absolute;inset:-6px;border-radius:calc(22px + 6px);
+  background:var(--bg);}
+.hero-logo{
+  width:96px;height:96px;border-radius:22px;
+  position:relative;z-index:1;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 20px 60px rgba(255,65,3,.4)}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:6px;
-  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gold);background:var(--gold-dim);border:1px solid rgba(200,168,75,.3);
-  border-radius:20px;padding:4px 12px;margin-bottom:28px}
-.hero-ball{font-size:14px;line-height:1}
-.hero-title{
-  font-size:clamp(38px,10vw,52px);font-weight:900;letter-spacing:-.04em;
-  line-height:1.05;margin-bottom:8px}
-.hero-title .year{color:var(--gold)}
-.hero-title .brand{color:var(--accent);display:block;font-size:clamp(22px,6vw,30px);letter-spacing:-.03em;margin-top:4px}
-.hero-sub{font-size:15px;color:var(--muted);margin-bottom:40px;line-height:1.6}
+  font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-light);background:var(--gold-dim);
+  border:1px solid var(--gold-border);border-radius:100px;
+  padding:5px 14px;margin-bottom:20px}
+.hero-h1{
+  font-size:clamp(36px,11vw,56px);font-weight:900;letter-spacing:-.04em;
+  line-height:1;margin-bottom:6px}
+.hero-h1 .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-tagline{
+  font-size:clamp(20px,5.5vw,26px);font-weight:900;letter-spacing:-.04em;
+  color:var(--accent);margin-bottom:24px}
+.hero-sub{font-size:15px;color:var(--muted);margin-bottom:44px;line-height:1.65;max-width:320px}
+.scroll-hint{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px}
+.scroll-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--subtle);
+  animation:scroll-bounce 1.6s var(--ease) infinite}
+.scroll-dot:nth-child(2){animation-delay:.15s}
+.scroll-dot:nth-child(3){animation-delay:.3s}
+@keyframes scroll-bounce{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:.7;transform:translateY(4px)}}
 
-/* ── PROMO CODE CARD (outer shell + inner core) ── */
-.promo-shell{
-  background:var(--gold-dim);
-  border:1px solid rgba(200,168,75,.35);
-  border-radius:24px;padding:2px;
-  margin:0 auto 36px;max-width:320px;
-  box-shadow:0 0 60px rgba(200,168,75,.12),inset 0 1px 0 rgba(200,168,75,.2)}
-.promo-core{
-  background:#050d09;border-radius:22px;
-  padding:28px 24px;text-align:center;
-  box-shadow:inset 0 1px 1px rgba(200,168,75,.08)}
-.promo-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:12px}
-.promo-code{
-  font-size:36px;font-weight:900;letter-spacing:.12em;
-  font-family:ui-monospace,'SF Mono','Fira Code',monospace;
+/* ── MARQUEE STRIP ── */
+.marquee-strip{
+  background:var(--accent);padding:11px 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1)}
+.marquee-track{
+  display:flex;gap:0;width:max-content;
+  animation:marquee 22s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:#fff;padding:0 24px}
+.marquee-sep{color:rgba(255,255,255,.4);padding:0 4px}
+
+/* ── SECTIONS ── */
+.section{padding:52px 24px}
+.section-eyebrow{
+  font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--subtle);margin-bottom:28px;
+  display:flex;align-items:center;gap:10px}
+.section-eyebrow::before{
+  content:'';display:block;width:18px;height:1.5px;
+  background:var(--gold);border-radius:1px;flex-shrink:0}
+
+/* ── PROMO TICKET ── */
+.ticket-wrap{padding:0 24px 52px}
+.ticket{
+  position:relative;
+  background:linear-gradient(135deg,#0a1a0e 0%,#050f09 100%);
+  border:1px solid var(--gold-border);border-radius:24px;overflow:hidden;
+  box-shadow:0 0 80px rgba(201,168,76,.12),inset 0 1px 0 rgba(201,168,76,.2)}
+/* Perf holes */
+.ticket::before,.ticket::after{
+  content:'';position:absolute;top:50%;width:22px;height:22px;
+  border-radius:50%;background:var(--bg);
+  border:1px solid rgba(201,168,76,.2);
+  transform:translateY(-50%);z-index:2}
+.ticket::before{left:-11px}
+.ticket::after{right:-11px}
+/* Gold shimmer */
+.ticket-shimmer{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(201,168,76,.07) 50%,transparent 65%);
+  animation:shimmer 4s ease infinite}
+@keyframes shimmer{0%,100%{opacity:0;transform:translateX(-100%)}40%,60%{opacity:1}50%{transform:translateX(100%)}}
+
+.ticket-top{padding:28px 28px 20px;border-bottom:1px dashed rgba(201,168,76,.25)}
+.ticket-event{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.ticket-code{
+  font-size:40px;font-weight:900;letter-spacing:.14em;
+  font-family:ui-monospace,'SF Mono',monospace;
   color:var(--text);margin-bottom:4px;
-  text-shadow:0 0 30px rgba(200,168,75,.3)}
-.promo-discount{
-  font-size:13px;font-weight:600;color:var(--gold);margin-bottom:16px}
-.promo-validity{font-size:11px;color:var(--subtle)}
-.promo-copy-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  margin-top:18px;padding:9px 20px;
-  background:var(--gold-dim);border:1px solid rgba(200,168,75,.35);
-  border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.06em;
-  color:var(--gold);cursor:pointer;
+  text-shadow:0 0 40px rgba(201,168,76,.35)}
+.ticket-discount{
+  font-size:14px;font-weight:600;color:var(--gold-light)}
+.ticket-bottom{
+  padding:18px 28px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ticket-info{}
+.ticket-validity{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:3px}
+.ticket-date{font-size:13px;font-weight:700;color:var(--text)}
+.ticket-barcode{
+  display:flex;gap:2px;align-items:flex-end;height:36px;flex-shrink:0}
+.barcode-bar{
+  background:rgba(201,168,76,.5);border-radius:1px;
+  width:3px}
+.ticket-copy{
+  display:flex;align-items:center;gap:8px;
+  width:100%;margin-top:16px;padding:12px 20px;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-radius:14px;font-size:13px;font-weight:700;
+  color:var(--gold-light);justify-content:center;
   transition:background 180ms var(--ease),transform 120ms var(--ease)}
-.promo-copy-btn:active{background:rgba(200,168,75,.25);transform:scale(.96)}
+.ticket-copy:active{background:rgba(201,168,76,.22);transform:scale(.97)}
+.ticket-copy-wrap{padding:0 28px 24px}
 
-/* ── CTA SECTION ── */
-.cta-section{padding:0 24px 40px;display:flex;flex-direction:column;gap:12px}
+/* ── CTA BUTTONS ── */
+.cta-section{padding:0 24px 52px;display:flex;flex-direction:column;gap:12px}
 .btn-wa{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:16px 24px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:18px 28px;border-radius:18px;
   background:var(--green);color:#fff;
-  font-size:15px;font-weight:700;letter-spacing:-.01em;
-  text-decoration:none;border:none;cursor:pointer;
-  box-shadow:0 8px 28px rgba(0,200,81,.3);
+  font-size:16px;font-weight:800;letter-spacing:-.02em;
+  box-shadow:0 12px 36px rgba(0,212,90,.28);
   transition:transform 120ms var(--ease),box-shadow 120ms var(--ease)}
-.btn-wa:active{transform:scale(.97);box-shadow:0 4px 14px rgba(0,200,81,.25)}
+.btn-wa:active{transform:scale(.97);box-shadow:0 6px 18px rgba(0,212,90,.2)}
+.btn-wa-sub{font-size:11px;font-weight:600;opacity:.8;letter-spacing:.02em;margin-top:1px}
+.btn-wa-inner{display:flex;flex-direction:column;align-items:center}
 .btn-app{
   display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:14px 24px;border-radius:16px;
-  background:rgba(255,65,3,.1);border:1px solid rgba(255,65,3,.3);
-  color:var(--accent);font-size:14px;font-weight:700;letter-spacing:-.01em;
-  text-decoration:none;cursor:pointer;
+  padding:16px 24px;border-radius:16px;
+  background:rgba(255,65,3,.1);border:1px solid rgba(255,65,3,.28);
+  color:var(--accent);font-size:14px;font-weight:700;
   transition:background 180ms var(--ease),transform 120ms var(--ease)}
 .btn-app:active{background:rgba(255,65,3,.18);transform:scale(.97)}
 
 /* ── COUNTDOWN ── */
-.countdown-wrap{padding:0 24px 40px}
+.countdown-section{padding:0 24px 52px}
 .countdown-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  padding:24px;text-align:center;
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+  padding:32px 24px;text-align:center;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-.countdown-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--subtle);margin-bottom:20px}
-.countdown-grid{display:flex;justify-content:center;gap:12px}
-.countdown-unit{display:flex;flex-direction:column;align-items:center;gap:6px}
-.countdown-num{
-  font-size:32px;font-weight:900;letter-spacing:-.04em;
-  color:var(--text);font-variant-numeric:tabular-nums;
-  background:rgba(255,255,255,.05);border:1px solid var(--border);
-  border-radius:12px;width:64px;height:58px;
-  display:flex;align-items:center;justify-content:center}
-.countdown-sep{font-size:28px;font-weight:900;color:var(--accent);margin-top:-14px;align-self:center}
-.countdown-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle)}
-.countdown-finale{font-size:12px;color:var(--subtle);margin-top:16px}
-.countdown-finale strong{color:var(--gold)}
+.countdown-headline{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px}
+.countdown-event{font-size:15px;font-weight:700;color:var(--gold);margin-bottom:28px}
+.cd-grid{display:flex;justify-content:center;align-items:flex-start;gap:8px}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:8px}
+.cd-num{
+  font-size:34px;font-weight:900;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:14px;width:72px;height:66px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.cd-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle)}
+.cd-sep{font-size:28px;font-weight:900;color:var(--accent);margin-top:-4px;padding-top:16px}
+.countdown-sub{font-size:11px;color:var(--subtle);margin-top:20px;line-height:1.7}
+.countdown-sub strong{color:var(--text)}
 
-/* ── MATCHES SECTION ── */
-.section{padding:0 24px 40px}
-.section-head{
-  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--subtle);margin-bottom:16px;
-  display:flex;align-items:center;gap:8px}
-.section-head::before{content:'';display:block;width:14px;height:1.5px;
-  background:var(--accent);border-radius:1px;opacity:.7}
-.match-card{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:14px 16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:14px;
+/* ── FEATURES BENTO ── */
+.features-section{padding:0 24px 52px}
+.bento{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:10px}
+.feat{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:20px 18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
   transition:border-color 200ms var(--ease)}
-.match-card.today{border-color:rgba(0,200,81,.35);background:rgba(0,200,81,.04)}
-.match-card.past{opacity:.45}
-.match-date{font-size:11px;font-weight:700;color:var(--gold);white-space:nowrap;min-width:52px}
-.match-info{flex:1}
-.match-name{font-size:13px;font-weight:700;color:var(--text)}
-.match-detail{font-size:11px;color:var(--subtle);margin-top:1px}
-.match-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:3px 8px;border-radius:20px}
-.badge-live{background:rgba(0,200,81,.15);color:var(--green);border:1px solid rgba(0,200,81,.3)}
-.badge-final{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,168,75,.3)}
-.badge-soon{background:rgba(255,65,3,.1);color:var(--accent);border:1px solid rgba(255,65,3,.25)}
+.feat.wide{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:18px 20px}
+.feat-icon{font-size:28px;margin-bottom:12px;display:block}
+.feat.wide .feat-icon{font-size:24px;margin-bottom:0;flex-shrink:0}
+.feat-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.feat.wide .feat-body{}
 
-/* ── FEATURES ── */
-.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 24px 40px}
-.feature{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  padding:18px 16px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
-.feature-icon{font-size:24px;margin-bottom:10px}
-.feature-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
-.feature-desc{font-size:11px;color:var(--muted);line-height:1.5}
+/* ── SCHEDULE TIMELINE ── */
+.schedule-section{padding:0 24px 52px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{
+  content:'';position:absolute;left:5px;top:10px;bottom:10px;width:1px;
+  background:linear-gradient(to bottom,transparent,var(--border) 10%,var(--border) 90%,transparent)}
+.tl-item{position:relative;margin-bottom:8px}
+.tl-dot{
+  position:absolute;left:-24px;top:14px;
+  width:11px;height:11px;border-radius:50%;
+  border:1.5px solid var(--border);background:var(--bg)}
+.tl-item.active .tl-dot{background:var(--green);border-color:var(--green);box-shadow:0 0 10px rgba(0,212,90,.5)}
+.tl-item.highlight .tl-dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.5)}
+.tl-item.past .tl-dot{opacity:.4}
+.tl-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:13px 16px;display:flex;align-items:center;gap:12px}
+.tl-item.active .tl-card{border-color:rgba(0,212,90,.3);background:rgba(0,212,90,.05)}
+.tl-item.highlight .tl-card{border-color:rgba(201,168,76,.3);background:var(--gold-dim)}
+.tl-item.past .tl-card{opacity:.4}
+.tl-date{font-size:10px;font-weight:700;color:var(--gold);white-space:nowrap;min-width:48px}
+.tl-info{flex:1}
+.tl-name{font-size:13px;font-weight:700;color:var(--text)}
+.tl-detail{font-size:11px;color:var(--subtle);margin-top:1px}
+.tl-badge{
+  font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:100px;flex-shrink:0}
+.badge-live{background:rgba(0,212,90,.15);color:var(--green);border:1px solid rgba(0,212,90,.3)}
+.badge-final{background:var(--gold-dim);color:var(--gold-light);border:1px solid var(--gold-border)}
+
+/* ── STICKY BOTTOM ── */
+.sticky-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:99;
+  padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(0,10,6,.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.07);
+  transform:translateY(100%);
+  transition:transform 400ms var(--ease);}
+.sticky-bar.visible{transform:translateY(0)}
+.sticky-inner{
+  display:flex;gap:10px;max-width:480px;margin:0 auto;align-items:center}
+.sticky-code{
+  flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-radius:12px;padding:8px 14px;
+  font-size:14px;font-weight:900;letter-spacing:.1em;
+  font-family:ui-monospace,'SF Mono',monospace;color:var(--gold-light);
+  cursor:pointer;transition:background 150ms var(--ease)}
+.sticky-code:active{background:rgba(201,168,76,.25)}
+.sticky-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:14px;
+  background:var(--green);color:#fff;
+  font-size:14px;font-weight:800;
+  box-shadow:0 6px 20px rgba(0,212,90,.25);
+  transition:transform 120ms var(--ease)}
+.sticky-btn:active{transform:scale(.97)}
 
 /* ── FOOTER ── */
-.footer{padding:28px 24px calc(28px + env(safe-area-inset-bottom));
+footer{
+  padding:32px 24px calc(32px + env(safe-area-inset-bottom));
   text-align:center;border-top:.5px solid var(--border)}
-.footer-brand{font-size:15px;font-weight:900;letter-spacing:-.05em;margin-bottom:6px}
-.footer-brand em{color:var(--accent);font-style:normal}
-.footer-detail{font-size:11px;color:var(--subtle);line-height:1.7}
+.footer-logo{width:48px;height:48px;border-radius:12px;margin:0 auto 14px}
+.footer-name{font-size:16px;font-weight:900;letter-spacing:-.05em;margin-bottom:6px}
+.footer-name em{color:var(--accent);font-style:normal}
+.footer-detail{font-size:12px;color:var(--subtle);line-height:1.9}
+.footer-promo{color:var(--gold);font-weight:700}
 
-/* ── REVEAL ANIMATION ── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
-.reveal.in{opacity:1;transform:translateY(0)}
+/* ── REVEAL ── */
+.r{opacity:0;transform:translateY(28px);
+  transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
+.r.in{opacity:1;transform:none}
+.r[data-delay="1"]{transition-delay:80ms}
+.r[data-delay="2"]{transition-delay:160ms}
+.r[data-delay="3"]{transition-delay:240ms}
 </style>
 </head>
 <body>
 
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-<div class="bg-orb bg-orb-3"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-pill">
+    <div class="nav-brand">
+      <img class="nav-logo" src="/inrunparis/icons/icon-192.png" alt="I&N RUN">
+      <span class="nav-name">I<em>&amp;</em>N RUN</span>
+    </div>
+    <a class="nav-cta" href="https://wa.me/33767742220?text=Bonjour%20!%20Code%20promo%20COUPE26" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      Réserver
+    </a>
+  </div>
+</nav>
 
 <div class="page">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="brand">I<em>&amp;</em>N RUN</div>
-    <div class="brand-sub">⚽ Coupe du Monde</div>
-  </div>
-
   <!-- HERO -->
-  <div class="hero reveal">
-    <div class="hero-eyebrow"><span class="hero-ball">⚽</span> Offre exclusive 2026</div>
-    <h1 class="hero-title">
-      COUPE DU<br>MONDE <span class="year">2026</span>
-      <span class="brand">I<em style="color:var(--accent);font-style:normal">&amp;</em>N RUN</span>
+  <section class="hero">
+    <div class="hero-logo-wrap r">
+      <div class="hero-logo-ring"></div>
+      <div class="hero-logo-ring2"></div>
+      <img class="hero-logo" src="/inrunparis/icons/icon-512.png" alt="I&N RUN logo">
+    </div>
+    <div class="hero-eyebrow r" data-delay="1">⚽ Offre exclusive · Été 2026</div>
+    <h1 class="hero-h1 r" data-delay="2">
+      COUPE DU<br><span class="line2">MONDE 2026</span>
     </h1>
-    <p class="hero-sub">Votre chauffeur privé à Paris pendant tout le tournoi.<br>Tarif fixe garanti, confirmation en 2 min.</p>
+    <p class="hero-tagline r" data-delay="2">I<span style="color:var(--text)">&amp;</span>N RUN</p>
+    <p class="hero-sub r" data-delay="3">
+      Votre chauffeur privé à Paris pendant tout le tournoi.<br>
+      Tarif fixe garanti — confirmation en 2 min.
+    </p>
+    <div class="scroll-hint">
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
 
-    <!-- PROMO CODE -->
-    <div class="promo-shell">
-      <div class="promo-core">
-        <div class="promo-label">Code promo exclusif</div>
-        <div class="promo-code" id="promo-code">COUPE26</div>
-        <div class="promo-discount">−10 % sur tous vos trajets</div>
-        <div class="promo-validity">Valable jusqu'au 19 juillet 2026</div>
-        <button class="promo-copy-btn" onclick="copyCode()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span id="copy-label">Copier le code</span>
-        </button>
-      </div>
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <!-- Repeated twice for seamless loop -->
+      <span class="marquee-item">CODE <strong>COUPE26</strong></span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">−10% sur tous vos trajets</span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">Valable jusqu'au 19 juillet 2026</span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">Chauffeur privé VTC Paris</span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">CODE <strong>COUPE26</strong></span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">−10% sur tous vos trajets</span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">Valable jusqu'au 19 juillet 2026</span><span class="marquee-item marquee-sep">·</span>
+      <span class="marquee-item">Chauffeur privé VTC Paris</span><span class="marquee-item marquee-sep">·</span>
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="cta-section reveal">
-    <a class="btn-wa" href="https://wa.me/33767742220?text=Bonjour%20!%20Je%20voudrais%20réserver%20un%20trajet.%20Code%20promo%20%3A%20COUPE26" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-      Réserver sur WhatsApp
+  <!-- PROMO TICKET -->
+  <div class="ticket-wrap r" style="padding-top:52px">
+    <div class="section-eyebrow" style="margin-bottom:20px">Code promo exclusif</div>
+    <div class="ticket">
+      <div class="ticket-shimmer"></div>
+      <div class="ticket-top">
+        <div class="ticket-event">⚽ I&amp;N RUN × Coupe du Monde 2026</div>
+        <div class="ticket-code" id="ticket-code">COUPE26</div>
+        <div class="ticket-discount">−10 % sur tous vos trajets VTC</div>
+      </div>
+      <div class="ticket-bottom">
+        <div class="ticket-info">
+          <div class="ticket-validity">Valable jusqu'au</div>
+          <div class="ticket-date">19 juillet 2026</div>
+        </div>
+        <div class="ticket-barcode" id="barcode-gen"></div>
+      </div>
+    </div>
+    <div class="ticket-copy-wrap">
+      <button class="ticket-copy" onclick="copyCode(this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span>Copier le code</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CTA BUTTONS -->
+  <div class="cta-section r">
+    <a class="btn-wa" href="https://wa.me/33767742220?text=Bonjour%20!%20Je%20souhaite%20réserver%20un%20trajet.%20Mon%20code%20promo%20%3A%20COUPE26%20(-10%25)" target="_blank" rel="noopener">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      <div class="btn-wa-inner">
+        <span>Réserver sur WhatsApp</span>
+        <span class="btn-wa-sub">+33 7 67 74 22 20 · Réponse en 2 min</span>
+      </div>
     </a>
     <a class="btn-app" href="/inrunparis/">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 16 12 12 16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -239,184 +429,253 @@ html,body{min-height:100%;background:var(--bg);color:var(--text);
   </div>
 
   <!-- COUNTDOWN -->
-  <div class="countdown-wrap reveal">
+  <div class="countdown-section r">
+    <div class="section-eyebrow">Compte à rebours</div>
     <div class="countdown-card">
-      <div class="countdown-label">Compte à rebours — Finale</div>
-      <div class="countdown-grid">
-        <div class="countdown-unit">
-          <div class="countdown-num" id="cd-j">--</div>
-          <div class="countdown-lbl">Jours</div>
+      <div class="countdown-headline">La grande finale</div>
+      <div class="countdown-event">🏆 MetLife Stadium · New York</div>
+      <div class="cd-grid">
+        <div class="cd-unit">
+          <div class="cd-num" id="cd-j">--</div>
+          <div class="cd-label">Jours</div>
         </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <div class="countdown-num" id="cd-h">--</div>
-          <div class="countdown-lbl">Heures</div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cd-h">--</div>
+          <div class="cd-label">Heures</div>
         </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <div class="countdown-num" id="cd-m">--</div>
-          <div class="countdown-lbl">Min</div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cd-m">--</div>
+          <div class="cd-label">Min</div>
         </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <div class="countdown-num" id="cd-s">--</div>
-          <div class="countdown-lbl">Sec</div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cd-s">--</div>
+          <div class="cd-label">Sec</div>
         </div>
       </div>
-      <div class="countdown-finale">Finale — <strong>19 juillet 2026 · MetLife Stadium, New York</strong></div>
-    </div>
-  </div>
-
-  <!-- CALENDRIER FRANCE -->
-  <div class="section reveal">
-    <div class="section-head">Calendrier — France</div>
-
-    <div class="match-card past">
-      <div class="match-date">11 juin</div>
-      <div class="match-info">
-        <div class="match-name">Cérémonie d'ouverture</div>
-        <div class="match-detail">Los Angeles · SoFi Stadium</div>
-      </div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">17 juin</div>
-      <div class="match-info">
-        <div class="match-name">France — Phase de groupes J1</div>
-        <div class="match-detail">Groupe A · USA</div>
-      </div>
-      <div class="match-badge badge-soon">J1</div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">21 juin</div>
-      <div class="match-info">
-        <div class="match-name">France — Phase de groupes J2</div>
-        <div class="match-detail">Groupe A · USA</div>
-      </div>
-      <div class="match-badge badge-soon">J2</div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">25 juin</div>
-      <div class="match-info">
-        <div class="match-name">France — Phase de groupes J3</div>
-        <div class="match-detail">Groupe A · USA</div>
-      </div>
-      <div class="match-badge badge-soon">J3</div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">1–2 juil.</div>
-      <div class="match-info">
-        <div class="match-name">Huitièmes de finale</div>
-        <div class="match-detail">Si qualifiée</div>
-      </div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">4–5 juil.</div>
-      <div class="match-info">
-        <div class="match-name">Quarts de finale</div>
-        <div class="match-detail">Si qualifiée</div>
-      </div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">8–9 juil.</div>
-      <div class="match-info">
-        <div class="match-name">Demi-finales</div>
-        <div class="match-detail">Si qualifiée</div>
-      </div>
-    </div>
-    <div class="match-card">
-      <div class="match-date">19 juil.</div>
-      <div class="match-info">
-        <div class="match-name">⭐ FINALE</div>
-        <div class="match-detail">MetLife Stadium · New York</div>
-      </div>
-      <div class="match-badge badge-final">Finale</div>
+      <div class="countdown-sub">Finale le <strong>19 juillet 2026 à 21h UTC</strong><br>Offre valable tout le tournoi</div>
     </div>
   </div>
 
   <!-- FEATURES -->
-  <div class="features-grid reveal">
-    <div class="feature">
-      <div class="feature-icon">🚗</div>
-      <div class="feature-title">Tarif fixe</div>
-      <div class="feature-desc">Prix garanti à la réservation, aucune surprise</div>
+  <div class="features-section r">
+    <div class="section-eyebrow">Pourquoi I&amp;N RUN</div>
+    <div class="bento">
+      <div class="feat">
+        <span class="feat-icon">🚗</span>
+        <div class="feat-title">Tarif fixe</div>
+        <div class="feat-desc">Prix confirmé à la réservation, aucune surprise</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">⚡</span>
+        <div class="feat-title">Confirmation 2 min</div>
+        <div class="feat-desc">Réponse immédiate sur WhatsApp</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">🛜</span>
+        <div class="feat-title">Wi-Fi & eau</div>
+        <div class="feat-desc">À bord à chaque trajet</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">🎯</span>
+        <div class="feat-title">Ponctualité</div>
+        <div class="feat-desc">À l'heure, sans exception</div>
+      </div>
+      <div class="feat wide">
+        <span class="feat-icon">⚽</span>
+        <div class="feat-body">
+          <div class="feat-title">Offre Coupe du Monde</div>
+          <div class="feat-desc">Code <strong style="color:var(--gold-light);font-family:ui-monospace,monospace">COUPE26</strong> — −10% valable du 11 juin au 19 juillet 2026 sur tous vos trajets VTC Paris & Île-de-France.</div>
+        </div>
+      </div>
     </div>
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <div class="feature-title">Confirmation 2 min</div>
-      <div class="feature-desc">Réponse immédiate sur WhatsApp</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🛜</div>
-      <div class="feature-title">Wi-Fi & eau</div>
-      <div class="feature-desc">Connexion et rafraîchissement à bord</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🎯</div>
-      <div class="feature-title">Ponctualité</div>
-      <div class="feature-desc">Votre chauffeur à l'heure, à chaque trajet</div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="schedule-section r">
+    <div class="section-eyebrow">Calendrier · France</div>
+    <div class="timeline">
+
+      <div class="tl-item past">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">11 juin</div>
+          <div class="tl-info">
+            <div class="tl-name">Cérémonie d'ouverture</div>
+            <div class="tl-detail">Los Angeles · SoFi Stadium</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item active">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">17 juin</div>
+          <div class="tl-info">
+            <div class="tl-name">France — Phase de groupes J1</div>
+            <div class="tl-detail">Groupe A</div>
+          </div>
+          <div class="tl-badge badge-live">J1</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">21 juin</div>
+          <div class="tl-info">
+            <div class="tl-name">France — Phase de groupes J2</div>
+            <div class="tl-detail">Groupe A</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">25 juin</div>
+          <div class="tl-info">
+            <div class="tl-name">France — Phase de groupes J3</div>
+            <div class="tl-detail">Groupe A</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">1–2 juil.</div>
+          <div class="tl-info">
+            <div class="tl-name">Huitièmes de finale</div>
+            <div class="tl-detail">Si qualifiée</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">4–5 juil.</div>
+          <div class="tl-info">
+            <div class="tl-name">Quarts de finale</div>
+            <div class="tl-detail">Si qualifiée</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">8–9 juil.</div>
+          <div class="tl-info">
+            <div class="tl-name">Demi-finales</div>
+            <div class="tl-detail">Si qualifiée</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item highlight">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">19 juil.</div>
+          <div class="tl-info">
+            <div class="tl-name">🏆 FINALE</div>
+            <div class="tl-detail">MetLife Stadium · New York</div>
+          </div>
+          <div class="tl-badge badge-final">Finale</div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-brand">I<em>&amp;</em>N RUN</div>
+  <footer>
+    <img class="footer-logo" src="/inrunparis/icons/icon-192.png" alt="I&N RUN">
+    <div class="footer-name">I<em>&amp;</em>N RUN</div>
     <div class="footer-detail">
       Chauffeur privé VTC · Paris & Île-de-France<br>
-      +33 7 67 74 22 20 · contact@inrunparis.fr<br>
-      <span style="color:var(--gold)">Code COUPE26 · −10% · jusqu'au 19/07/2026</span>
+      +33 7 67 74 22 20<br>
+      <span class="footer-promo">COUPE26 · −10% · jusqu'au 19/07/2026</span>
     </div>
-  </div>
+  </footer>
 
 </div>
 
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sticky-inner">
+    <button class="sticky-code" onclick="copyCode(this)" id="sticky-code-btn">COUPE26</button>
+    <a class="sticky-btn" href="https://wa.me/33767742220?text=Bonjour%20!%20Code%20promo%20COUPE26" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      Réserver maintenant
+    </a>
+  </div>
+</div>
+
 <script>
-// ── COUNTDOWN FINALE ──
-const FINALE = new Date('2026-07-19T21:00:00Z') // 19 juillet 21h UTC (17h NY = 23h Paris)
-function updateCountdown() {
-  const now = new Date(), diff = FINALE - now
+// ── BARCODE DECORATIVE ──
+;(function(){
+  const el = document.getElementById('barcode-gen')
+  if (!el) return
+  const heights = [28,18,34,22,28,16,32,20,26,18,30,24,28,16,34,22,28,18,26,20]
+  el.innerHTML = heights.map(h =>
+    `<div class="barcode-bar" style="height:${h}px"></div>`
+  ).join('')
+})()
+
+// ── COUNTDOWN ──
+const FINALE = new Date('2026-07-19T21:00:00Z')
+function tick() {
+  const diff = FINALE - Date.now()
   if (diff <= 0) {
-    document.getElementById('cd-j').textContent = '🏆'
-    document.getElementById('cd-h').textContent = '🏆'
-    document.getElementById('cd-m').textContent = '🏆'
-    document.getElementById('cd-s').textContent = '🏆'
+    ;['cd-j','cd-h','cd-m','cd-s'].forEach(id => document.getElementById(id).textContent = '🏆')
     return
   }
-  const j = Math.floor(diff / 864e5)
-  const h = Math.floor((diff % 864e5) / 36e5)
-  const m = Math.floor((diff % 36e5) / 6e4)
-  const s = Math.floor((diff % 6e4) / 1000)
   const pad = n => String(n).padStart(2,'0')
-  document.getElementById('cd-j').textContent = String(j)
-  document.getElementById('cd-h').textContent = pad(h)
-  document.getElementById('cd-m').textContent = pad(m)
-  document.getElementById('cd-s').textContent = pad(s)
+  document.getElementById('cd-j').textContent = Math.floor(diff / 864e5)
+  document.getElementById('cd-h').textContent = pad(Math.floor(diff % 864e5 / 36e5))
+  document.getElementById('cd-m').textContent = pad(Math.floor(diff % 36e5 / 6e4))
+  document.getElementById('cd-s').textContent = pad(Math.floor(diff % 6e4 / 1000))
 }
-updateCountdown()
-setInterval(updateCountdown, 1000)
+tick(); setInterval(tick, 1000)
 
 // ── COPY CODE ──
-function copyCode() {
+function copyCode(btn) {
   const code = 'COUPE26'
-  const label = document.getElementById('copy-label')
+  const span = btn.querySelector('span') || btn
   navigator.clipboard?.writeText(code).catch(() => {
-    const ta = document.createElement('textarea'); ta.value = code
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove()
+    const t = document.createElement('textarea'); t.value = code
+    document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove()
   })
-  label.textContent = '✓ Copié !'
-  setTimeout(() => label.textContent = 'Copier le code', 2000)
+  const original = span.textContent
+  span.textContent = '✓ Copié !'
+  setTimeout(() => span.textContent = original, 2000)
 }
 
-// ── REVEAL ON SCROLL ──
-const reveals = document.querySelectorAll('.reveal')
-const io = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('in'), i * 80)
-      io.unobserve(e.target)
-    }
+// ── STICKY BAR on scroll ──
+const stickyBar = document.getElementById('sticky-bar')
+const heroEl = document.querySelector('.hero')
+const io2 = new IntersectionObserver(([e]) => {
+  stickyBar.classList.toggle('visible', !e.isIntersecting)
+}, { threshold: 0.1 })
+if (heroEl) io2.observe(heroEl)
+
+// ── SCROLL REVEALS ──
+const reveals = document.querySelectorAll('.r')
+const io3 = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io3.unobserve(e.target) }
   })
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
-reveals.forEach(el => io.observe(el))
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' })
+reveals.forEach(el => io3.observe(el))
+
+// Trigger hero reveals immediately
+document.querySelectorAll('.hero .r').forEach(el => {
+  setTimeout(() => el.classList.add('in'), 100)
+})
 </script>
 </body>
 </html>
