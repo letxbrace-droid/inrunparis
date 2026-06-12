@@ -19,13 +19,13 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             marginLeft: 'auto',
             marginRight:'auto',
             background: '#0F0F0F',
-            border:     '1px solid rgba(52,211,153,.32)',
+            border:     '1px solid color-mix(in srgb, var(--positive) 32%, transparent)',
             boxShadow:  '0 8px 24px rgba(0,0,0,.7)',
           }}
         >
           {/* Specular top line */}
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(52,211,153,.45), transparent)' }} />
+            style={{ background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--positive) 45%, transparent), transparent)' }} />
 
           {/* Animated check badge */}
           <motion.div

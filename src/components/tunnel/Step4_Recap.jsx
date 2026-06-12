@@ -87,11 +87,11 @@ export default function Step4Recap({ onBack }) {
               <div className="flex gap-1">
                 {price.isNight && (
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,90,31,.12)', color: '#FF5A1F' }}>Nuit</span>
+                    style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: '#FF5A1F' }}>Nuit</span>
                 )}
                 {price.isAirport && (
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,90,31,.12)', color: '#FF5A1F' }}>✈</span>
+                    style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: '#FF5A1F' }}>✈</span>
                 )}
               </div>
             )}
@@ -105,8 +105,8 @@ export default function Step4Recap({ onBack }) {
           {/* Timeline */}
           <div className="flex flex-col items-center flex-shrink-0 mt-1">
             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#FF5A1F' }} />
-            <div className="w-px flex-1 my-1" style={{ minHeight: 20, background: 'linear-gradient(to bottom, rgba(255,90,31,.45), rgba(255,90,31,.10))' }} />
-            <div className="w-2 h-2 rounded-full flex-shrink-0 border-2" style={{ borderColor: 'rgba(255,90,31,.65)', background: th.bgCard }} />
+            <div className="w-px flex-1 my-1" style={{ minHeight: 20, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 45%, transparent), color-mix(in srgb, var(--accent) 10%, transparent))' }} />
+            <div className="w-2 h-2 rounded-full flex-shrink-0 border-2" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)', background: th.bgCard }} />
           </div>
           {/* Addresses */}
           <div className="flex flex-col flex-1 min-w-0" style={{ gap: 10 }}>
@@ -153,10 +153,10 @@ export default function Step4Recap({ onBack }) {
                   className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
                   style={{
                     background: chip === clientName
-                      ? 'rgba(255,90,31,.10)'
+                      ? 'color-mix(in srgb, var(--accent) 10%, transparent)'
                       : th.bgInput,
                     color: chip === clientName ? '#FF5A1F' : th.inkMid,
-                    border: `1px solid ${chip === clientName ? 'rgba(255,90,31,.22)' : th.borderFaint}`,
+                    border: `1px solid ${chip === clientName ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : th.borderFaint}`,
                   }}
                 >
                   {chip}

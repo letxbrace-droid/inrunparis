@@ -78,8 +78,8 @@ export default function Step2Price({ onNext, onBack }) {
       >
         <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FF5A1F' }} />
-          <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, rgba(255,90,31,.5), rgba(255,90,31,.12))' }} />
-          <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'rgba(255,90,31,.6)', background: th.bgCard }} />
+          <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
+          <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'color-mix(in srgb, var(--accent) 60%, transparent)', background: th.bgCard }} />
         </div>
         <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
           {depart?.name?.split(',')[0] ?? '—'}
@@ -168,7 +168,7 @@ export default function Step2Price({ onNext, onBack }) {
               }
               label="Supplément aéroport"
               value="Inclus"
-              valueColor="rgba(255,90,31,.75)"
+              valueColor="color-mix(in srgb, var(--accent) 75%, transparent)"
             />
             <Div th={th} />
           </>
@@ -186,7 +186,7 @@ export default function Step2Price({ onNext, onBack }) {
               }
               label="Tarif nuit"
               value="Inclus"
-              valueColor="rgba(255,90,31,.75)"
+              valueColor="color-mix(in srgb, var(--accent) 75%, transparent)"
             />
             <Div th={th} />
           </>
@@ -245,7 +245,7 @@ export default function Step2Price({ onNext, onBack }) {
           }
           label="Tarif fixe garanti"
           value="✓"
-          valueColor="rgba(255,90,31,.80)"
+          valueColor="color-mix(in srgb, var(--accent) 80%, transparent)"
         />
 
       </motion.div>

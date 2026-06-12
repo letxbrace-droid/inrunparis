@@ -112,7 +112,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
 
     // Soft halo underneath
     const glow = L.polyline(coords, {
-      color: 'rgba(255,90,31,0.22)', weight: 14, opacity: 1,
+      color: 'color-mix(in srgb, var(--accent) 22%, transparent)', weight: 14, opacity: 1,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 

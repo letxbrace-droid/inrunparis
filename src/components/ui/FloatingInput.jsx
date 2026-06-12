@@ -27,7 +27,7 @@ export default function FloatingInput({
         style={{
           background: th.bgInput,
           boxShadow: 'none',
-          border: focused ? '1px solid rgba(255,90,31,.4)' : `1px solid ${th.border}`,
+          border: focused ? '1px solid color-mix(in srgb, var(--accent) 40%, transparent)' : `1px solid ${th.border}`,
           color: th.inkFull,
           transition: 'box-shadow .2s',
         }}

@@ -137,7 +137,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
               {[{ val: '5/5', lab: 'Excellence' }, { val: '2 min', lab: 'Réponse' }, { val: 'EVTC', lab: 'Certifié' }].map(s => (
                 <div key={s.lab} className="flex flex-col gap-1">
                   <span className="font-brand font-bold text-[15px]" style={{ color: th.inkFull }}>{s.val}</span>
-                  <span className="text-[10px] uppercase tracking-wider" style={{ color: th.inkDim }}>{s.lab}</span>
+                  <span className="text-[11px] uppercase tracking-wider" style={{ color: th.inkDim }}>{s.lab}</span>
                 </div>
               ))}
             </div>
@@ -230,7 +230,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                     className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                     style={{ background: th.bgAvatar }}
                   >
-                    <span className="text-[10px] font-bold" style={{ color: th.inkMid }}>{r.init}</span>
+                    <span className="text-[11px] font-bold" style={{ color: th.inkMid }}>{r.init}</span>
                   </div>
                   <div>
                     <div className="text-xs font-semibold" style={{ color: th.inkFull }}>{r.name}</div>

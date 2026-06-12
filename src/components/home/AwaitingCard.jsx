@@ -42,7 +42,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
         style={{
           background: th.bgCard,
           border:     done
-            ? '1px solid rgba(52,211,153,.38)'
+            ? '1px solid color-mix(in srgb, var(--positive) 38%, transparent)'
             : `1px solid ${th.border}`,
           boxShadow: done
             ? '0 -4px 32px rgba(16,185,129,.12), 0 8px 32px rgba(0,0,0,.22)'
@@ -56,8 +56,8 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
           className="block h-px transition-all duration-500"
           style={{
             background: done
-              ? 'linear-gradient(90deg, transparent, rgba(52,211,153,.65), transparent)'
-              : 'linear-gradient(90deg, transparent, rgba(255,90,31,.55), transparent)',
+              ? 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--positive) 65%, transparent), transparent)'
+              : 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent), transparent)',
           }}
         />
 
@@ -94,7 +94,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 </motion.div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-bold leading-tight" style={{ color: '#10b981' }}>
+                  <p className="text-[15px] font-bold leading-tight" style={{ color: '#10b981' }}>
                     Course confirmée !
                   </p>
                   <p className="text-[11px] leading-snug mt-0.5" style={{ color: th.inkMuted }}>
@@ -123,8 +123,8 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 {/* Timeline A→B */}
                 <div className="flex flex-col items-center flex-shrink-0">
                   <div className="w-2 h-2 rounded-full" style={{ background: '#FF5A1F' }} />
-                  <div className="w-px my-1" style={{ height: 16, background: 'linear-gradient(to bottom, rgba(255,90,31,.5), rgba(255,90,31,.12))' }} />
-                  <div className="w-2 h-2 rounded-full border-2" style={{ borderColor: 'rgba(255,90,31,.65)', background: th.bgCard }} />
+                  <div className="w-px my-1" style={{ height: 16, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
+                  <div className="w-2 h-2 rounded-full border-2" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)', background: th.bgCard }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] font-bold truncate" style={{ color: th.inkFull }}>
@@ -144,7 +144,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                     </div>
                   )}
                   {pickup && (
-                    <span className="text-[10px] font-semibold" style={{ color: th.inkMuted }}>
+                    <span className="text-[11px] font-semibold" style={{ color: th.inkMuted }}>
                       {fmtPickup(pickup)}
                     </span>
                   )}
@@ -182,7 +182,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                   <div className="absolute inset-0 rounded-full" style={{ background: '#FF5A1F' }} />
                   <motion.div
                     className="absolute inset-0 rounded-full"
-                    style={{ background: 'rgba(255,90,31,.5)' }}
+                    style={{ background: 'color-mix(in srgb, var(--accent) 50%, transparent)' }}
                     animate={{ scale: [1, 2.6, 1], opacity: [0.7, 0, 0.7] }}
                     transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
                   />

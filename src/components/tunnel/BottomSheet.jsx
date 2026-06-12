@@ -19,7 +19,7 @@ function StepDot({ index, current, th }) {
       animate={{
         background:
           state === 'active' ? '#FF5A1F'
-          : state === 'done'  ? 'rgba(255,90,31,.22)'
+          : state === 'done'  ? 'color-mix(in srgb, var(--accent) 22%, transparent)'
           : th.isDark ? 'rgba(0,10,18,.6)' : 'rgba(0,0,0,.08)',
         scale:     state === 'active' ? 1.12 : 1,
         boxShadow:
@@ -66,7 +66,7 @@ function StepConnector({ index, current, th }) {
       <motion.div
         className="absolute inset-y-0 left-0 h-full"
         animate={{ scaleX: filled ? 1 : 0 }}
-        style={{ originX: 0, background: 'linear-gradient(90deg, rgba(255,90,31,.8), rgba(255,90,31,.3))' }}
+        style={{ originX: 0, background: 'linear-gradient(90deg, color-mix(in srgb, var(--accent) 80%, transparent), color-mix(in srgb, var(--accent) 30%, transparent))' }}
         transition={{ duration: 0.38, ease: [0.32, 1, 0.55, 1] }}
       />
     </div>
@@ -116,7 +116,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                 fontSize: 13,
                 fontWeight: 700,
                 letterSpacing: '0.01em',
-                boxShadow: '0 4px 20px rgba(255,90,31,.50), 0 2px 8px rgba(0,0,0,.30)',
+                boxShadow: '0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent), 0 2px 8px rgba(0,0,0,.30)',
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
@@ -204,7 +204,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                         className="text-[12px] font-semibold"
                         animate={{
                           color: i + 1 === step ? th.inkFull
-                            : i + 1 < step ? 'rgba(255,90,31,.75)'
+                            : i + 1 < step ? 'color-mix(in srgb, var(--accent) 75%, transparent)'
                             : th.inkMuted,
                         }}
                         transition={{ duration: 0.25 }}

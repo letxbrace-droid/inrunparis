@@ -151,7 +151,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                   fontSize: 14,
                   fontWeight: 700,
                   letterSpacing: '0.01em',
-                  boxShadow: '0 4px 16px rgba(255,90,31,.35)',
+                  boxShadow: '0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent)',
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -189,9 +189,9 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>
                   </div>
-                  <div className="ml-[3px] w-px h-3" style={{ background: 'linear-gradient(to bottom, rgba(255,90,31,.4), transparent)' }} />
+                  <div className="ml-[3px] w-px h-3" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 40%, transparent), transparent)' }} />
                   <div className="flex items-start gap-2">
-                    <div className="mt-1 w-2 h-2 rounded-full border flex-shrink-0" style={{ borderColor: 'rgba(255,90,31,.65)' }} />
+                    <div className="mt-1 w-2 h-2 rounded-full border flex-shrink-0" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)' }} />
                     <p className="text-xs leading-snug" style={{ color: th.inkMid }}>
                       {ShortName(booking.arrive?.name ?? '—')}
                     </p>
@@ -212,7 +212,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                     {booking.price?.mins ?? '—'} min
                   </span>
                   {booking.price?.isAirport && (
-                    <span className="ml-auto text-xs" style={{ color: 'rgba(255,90,31,.65)' }}>✈</span>
+                    <span className="ml-auto text-xs" style={{ color: 'color-mix(in srgb, var(--accent) 65%, transparent)' }}>✈</span>
                   )}
                 </div>
               </motion.div>

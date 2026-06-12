@@ -167,16 +167,16 @@ export default function HomePill({ onOpenSheet }) {
               <span className="w-2 h-2 rounded-full flex-shrink-0"
                 style={{ background: '#FF5A1F' }} />
               <span className="relative overflow-hidden my-[3px] flex-shrink-0" style={{ width: 1, height: 16 }}>
-                <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(255,90,31,.55), rgba(255,90,31,.15))' }} />
+                <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 15%, transparent))' }} />
                 <motion.span
                   className="absolute left-0 right-0"
-                  style={{ height: 7, background: 'linear-gradient(to bottom, transparent, rgba(255,90,31,1), transparent)' }}
+                  style={{ height: 7, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)' }}
                   animate={{ y: [-7, 18] }}
                   transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.7 }}
                 />
               </span>
               <span className="w-2 h-2 rounded-full border-2 flex-shrink-0"
-                style={{ borderColor: 'rgba(255,90,31,.7)', background: th.isDark ? th.bgBase : th.bgCard }} />
+                style={{ borderColor: 'color-mix(in srgb, var(--accent) 70%, transparent)', background: th.isDark ? th.bgBase : th.bgCard }} />
             </span>
             {/* Names — full address including city */}
             <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
@@ -311,7 +311,7 @@ export default function HomePill({ onOpenSheet }) {
                       w-11 h-11 flex-shrink-0 rounded-xl flex items-center justify-center
                       border cursor-pointer active:scale-95 transition-colors
                       ${geoStatus === 'loading' ? 'border-accent/30 bg-accent/10' :
-                        geoStatus === 'success' ? 'border-[var(--positive-dim)] bg-[rgba(52,211,153,.10)]' :
+                        geoStatus === 'success' ? 'border-[color:var(--positive-dim)] bg-[color-mix(in_srgb,var(--positive)_10%,transparent)]' :
                                                   'border-[var(--rule-strong)]'}
                     `}
                   >
@@ -336,10 +336,10 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Connector */}
                 <div className="flex items-start px-4 -my-1">
                   <div className="relative flex-shrink-0 overflow-hidden" style={{ width: 2, height: 28, marginLeft: 4 }}>
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(255,90,31,.55), rgba(255,90,31,.18))' }} />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 18%, transparent))' }} />
                     <motion.div
                       className="absolute left-0 right-0"
-                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, rgba(255,90,31,1), transparent)', borderRadius: 4 }}
+                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', borderRadius: 4 }}
                       animate={{ y: [-12, 30] }}
                       transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
                     />
@@ -350,7 +350,7 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Arrival row */}
                 <div className="flex items-center gap-3 px-4 pt-3 pb-3.5">
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
-                    style={{ borderColor: 'rgba(255,90,31,.75)', background: th.bgBase }} />
+                    style={{ borderColor: 'color-mix(in srgb, var(--accent) 75%, transparent)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-[11px] font-semibold tracking-[.08em] uppercase mb-1.5" style={{ color: th.inkMid }}>Destination</div>
                     <input
@@ -449,12 +449,12 @@ export default function HomePill({ onOpenSheet }) {
                   style={{
                     background: th.bgInput,
                     border: depart && arrive && !pickup
-                      ? '1px solid rgba(255,90,31,.4)'
+                      ? '1px solid color-mix(in srgb, var(--accent) 40%, transparent)'
                       : `1px solid ${th.border}`,
                   }}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                    stroke={depart && arrive && !pickup ? '#FF5A1F' : 'rgba(255,90,31,.55)'}
+                    stroke={depart && arrive && !pickup ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                     style={{ flexShrink: 0 }}
                   >
@@ -472,7 +472,7 @@ export default function HomePill({ onOpenSheet }) {
                   />
                 </div>
                 {depart && arrive && !pickup && (
-                  <p className="text-xs px-1 mt-1.5" style={{ color: 'rgba(255,90,31,.8)' }}>
+                  <p className="text-xs px-1 mt-1.5" style={{ color: 'color-mix(in srgb, var(--accent) 80%, transparent)' }}>
                     Sélectionnez une date et heure pour continuer
                   </p>
                 )}

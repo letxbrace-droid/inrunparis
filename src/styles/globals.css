@@ -13,8 +13,8 @@
     --accent:        #FF5A1F;
     --accent-2:      #FF5A1F;
     --accent-press:  #e84000;
-    --accent-dim:    rgba(255,90,31,0.12);
-    --accent-glow:   rgba(255,90,31,0.35);
+    --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
 
     /* ── AMOLED background hierarchy ────────────────────────────── */
     --bg-grouped:    #030303;   /* deepest — true AMOLED      */
@@ -51,8 +51,9 @@
 
     /* ── Semantic status ────────────────────────────────────────── */
     --positive:     #34d399;
-    --positive-dim: rgba(52,211,153,0.25);
+    --positive-dim: color-mix(in srgb, var(--positive) 25%, transparent);
     --info:         #3b82f6;
+    --danger:       #f87171;
 
     /* ── Geometry ───────────────────────────────────────────────── */
     --r-card:    16px;
@@ -148,6 +149,7 @@
     --positive:     #047857;
     --positive-dim: rgba(5,150,105,0.25);
     --info:         #2563eb;
+    --danger:       #dc2626;
 
     /* Flat editorial elevations — 0 blur, sharp outline */
     --elev-1:     0 0 0 1px rgba(0,0,0,0.08);
@@ -174,7 +176,7 @@
     color: var(--label);
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI',
                  Roboto, system-ui, sans-serif;
-    font-weight: 450;
+    font-weight: 400;
     line-height: 1.47;
     letter-spacing: -0.011em;
     text-rendering: optimizeLegibility;
@@ -299,7 +301,7 @@
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.30),
       inset 0 -1px 0 rgba(0,0,0,0.14),
-      0 3px 12px rgba(255,90,31,0.22),
+      0 3px 12px color-mix(in srgb, var(--accent) 22%, transparent),
       0 1px 4px  rgba(0,0,0,0.16);
   }
 
