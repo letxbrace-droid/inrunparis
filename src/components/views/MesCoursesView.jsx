@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 
+const vibe = () => navigator.vibrate?.(10)
+
 function formatDate(iso) {
   if (!iso) return ''
   return new Date(iso).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
@@ -29,6 +31,7 @@ function BackBtn({ onClose, th }) {
 export default function MesCoursesView({ open, onClose, onReserve }) {
   const th = useAppTheme()
   const bookingHistory = useBookingStore((s) => s.bookingHistory)
+  const redoBooking    = useBookingStore((s) => s.redoBooking)
 
   return (
     <div
@@ -256,7 +259,27 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                     {booking.price?.mins ?? '—'} min
                   </span>
                   {booking.price?.isAirport && (
-                    <span className="ml-auto text-xs" style={{ color: 'color-mix(in srgb, var(--accent) 65%, transparent)' }}>✈</span>
+                    <span className="text-xs" style={{ color: 'color-mix(in srgb, var(--accent) 65%, transparent)' }}>✈</span>
+                  )}
+                  {booking.promoCode && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--positive) 12%, transparent)', color: 'var(--positive)' }}>
+                      {booking.promoCode}
+                    </span>
+                  )}
+                  {/* Refaire ce trajet — only if lat/lng were stored */}
+                  {booking.depart?.lat && (
+                    <button
+                      onClick={() => {
+                        vibe()
+                        const ok = redoBooking(booking)
+                        if (ok) { onClose(); onReserve?.() }
+                      }}
+                      className="ml-auto text-[11px] font-bold cursor-pointer active:scale-95 transition-transform px-2.5 py-1 rounded-full"
+                      style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: '#FF5A1F', border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)' }}
+                      aria-label="Refaire ce trajet"
+                    >
+                      ↺ Refaire
+                    </button>
                   )}
                 </div>
               </motion.div>

@@ -15,7 +15,7 @@ export default function CodePromoView({ open, onClose }) {
     if (!code) return
     const codes = getPromoCodes()
     const found = codes[code]
-    if (found) { setPromo({ code, ...found }); setStatus('ok') }
+    if (found) { navigator.vibrate?.(10); setPromo({ code, ...found }); setStatus('ok') }
     else        { setStatus('error') }
   }
 

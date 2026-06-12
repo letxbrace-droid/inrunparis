@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 
+const LANDING_URL = 'https://letxbrace-droid.github.io/inrunparis/coupe2026.html'
+const vibe = () => navigator.vibrate?.(10)
+
 const FINALE = new Date('2026-07-19T21:00:00Z')
 const GOLD   = '#E8B84B'
 
@@ -37,11 +40,25 @@ export default function Coupe2026View({ open, onClose, onReserve }) {
   const setPromo = useBookingStore((s) => s.setPromo)
   const cd       = useCountdown(open)
 
+  const [shared, setShared] = useState(false)
   const applied = promo?.code === 'COUPE26'
 
   const handleApply = () => {
     if (applied) return
+    vibe()
     setPromo({ code: 'COUPE26', discount: 10, label: 'Coupe du Monde 2026 — −10%' })
+  }
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'I&N RUN · Coupe du Monde 2026', text: '−10% sur tous vos trajets avec le code COUPE26', url: LANDING_URL })
+      } else {
+        await navigator.clipboard.writeText(LANDING_URL)
+        setShared(true)
+        setTimeout(() => setShared(false), 2000)
+      }
+    } catch {}
   }
 
   return (
@@ -204,13 +221,30 @@ export default function Coupe2026View({ open, onClose, onReserve }) {
 
         {/* Reserve CTA */}
         <button
-          onClick={() => { handleApply(); onReserve?.() }}
+          onClick={() => { vibe(); handleApply(); onReserve?.() }}
           className="cta-glow w-full py-4 rounded-2xl text-[15px] font-bold text-white cursor-pointer active:scale-[.98] transition-transform relative overflow-hidden"
           style={{ animation: 'fade-up .38s ease both 180ms' }}
         >
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
           Réserver avec −10% →
         </button>
+
+        {/* Share CTA */}
+        <button
+          onClick={handleShare}
+          className="w-full py-3 rounded-2xl text-[13px] font-semibold cursor-pointer active:scale-[.98] transition-transform flex items-center justify-center gap-2 mt-2"
+          style={{
+            background: th.bgCard, border: `1px solid ${th.borderFaint}`, color: th.inkMid,
+            animation: 'fade-up .38s ease both 220ms',
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          {shared ? 'Lien copié ✓' : 'Partager l\'offre'}
+        </button>
+
         <p className="text-[11px] text-center mt-3" style={{ color: th.inkDim }}>
           Offre valable jusqu'au 19 juillet 2026 · non cumulable
         </p>

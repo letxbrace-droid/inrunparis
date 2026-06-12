@@ -1,8 +1,11 @@
+const vibe = () => navigator.vibrate?.(10)
+
 export default function GlowingCTA({ children, onClick, disabled, type = 'button', className = '', variant = 'accent' }) {
+  const handleClick = () => { vibe(); onClick?.() }
   return (
     <button
       type={type}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={`
         ${variant === 'wa' ? 'cta-wa' : 'cta-glow'}

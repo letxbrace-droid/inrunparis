@@ -213,6 +213,34 @@ img{display:block}
   transition:background 180ms var(--ease),transform 120ms var(--ease)}
 .btn-app:active{background:rgba(255,65,3,.18);transform:scale(.97)}
 
+/* ── CALCULATEUR ── */
+.calc-section{padding:0 24px 52px}
+.calc-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:20px}
+.calc-row{display:flex;flex-direction:column;gap:6px}
+.calc-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.calc-select{
+  width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:14px;font-weight:500;
+  appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;
+}
+.calc-arrow{text-align:center;font-size:20px;color:var(--muted);padding:6px 0}
+.calc-result{margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
+.calc-price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.calc-price-orig{font-size:20px;font-weight:700;color:var(--muted);text-decoration:line-through}
+.calc-price-promo{font-size:28px;font-weight:900;letter-spacing:-.03em;color:#D4AF37}
+.calc-discount-badge{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#D4AF37;border:1px solid rgba(212,175,55,.35);border-radius:999px;padding:4px 10px;
+  white-space:nowrap;text-align:center
+}
+.calc-savings{font-size:12px;color:rgba(74,222,128,.8);margin-top:8px;text-align:center}
+.calc-cta{
+  display:block;width:100%;padding:14px;border-radius:14px;margin-top:14px;
+  background:#FF4103;color:#fff;font-weight:700;font-size:14px;
+  text-align:center;text-decoration:none;
+}
+.calc-same{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+
 /* ── COUNTDOWN ── */
 .countdown-section{padding:0 24px 52px}
 .countdown-card{
@@ -428,6 +456,58 @@ footer{
     </a>
   </div>
 
+  <!-- CALCULATEUR DE PRIX -->
+  <div class="calc-section r">
+    <div class="section-eyebrow">Estimez votre trajet</div>
+    <h2 class="section-title">Combien ça coûte ?</h2>
+    <p class="section-sub">Sélectionnez votre itinéraire — prix avec le code <strong>COUPE26</strong> appliqué.</p>
+    <div class="calc-card">
+      <div class="calc-row">
+        <label class="calc-label">Départ</label>
+        <select id="calc-from" class="calc-select" onchange="calcPrice()">
+          <option value="">— Choisir —</option>
+          <option value="cdg">✈ CDG (Charles de Gaulle)</option>
+          <option value="orly">✈ Orly</option>
+          <option value="beauvais">✈ Beauvais</option>
+          <option value="paris">🏙 Paris Centre</option>
+          <option value="sdf">🏟 Stade de France</option>
+          <option value="versailles">🌿 Versailles</option>
+          <option value="gare_nord">🚄 Gare du Nord</option>
+        </select>
+      </div>
+      <div class="calc-arrow">↓</div>
+      <div class="calc-row">
+        <label class="calc-label">Arrivée</label>
+        <select id="calc-to" class="calc-select" onchange="calcPrice()">
+          <option value="">— Choisir —</option>
+          <option value="cdg">✈ CDG (Charles de Gaulle)</option>
+          <option value="orly">✈ Orly</option>
+          <option value="beauvais">✈ Beauvais</option>
+          <option value="paris">🏙 Paris Centre</option>
+          <option value="sdf">🏟 Stade de France</option>
+          <option value="versailles">🌿 Versailles</option>
+          <option value="gare_nord">🚄 Gare du Nord</option>
+        </select>
+      </div>
+      <div id="calc-result" class="calc-result" style="display:none">
+        <div class="calc-price-row">
+          <div>
+            <div class="calc-label">Prix normal</div>
+            <div class="calc-price-orig" id="calc-orig">—</div>
+          </div>
+          <div class="calc-discount-badge">COUPE26 −10%</div>
+          <div>
+            <div class="calc-label">Avec le code</div>
+            <div class="calc-price-promo" id="calc-promo">—</div>
+          </div>
+        </div>
+        <div class="calc-savings" id="calc-savings"></div>
+        <a class="calc-cta" href="/inrunparis/?promo=COUPE26">Réserver à ce prix →</a>
+      </div>
+      <div id="calc-same" class="calc-same" style="display:none">Départ et arrivée identiques</div>
+    </div>
+  </div>
+
   <!-- COUNTDOWN -->
   <div class="countdown-section r">
     <div class="section-eyebrow">Compte à rebours</div>
@@ -641,6 +721,34 @@ function tick() {
   document.getElementById('cd-s').textContent = pad(Math.floor(diff % 6e4 / 1000))
 }
 tick(); setInterval(tick, 1000)
+
+// ── CALCULATEUR DE PRIX ──
+const PRICES = {
+  cdg:       { orly:95, paris:68, beauvais:null, sdf:75, versailles:90, gare_nord:65 },
+  orly:      { cdg:95, paris:45, beauvais:null, sdf:55, versailles:65, gare_nord:52 },
+  beauvais:  { cdg:null, orly:null, paris:95, sdf:105, versailles:110, gare_nord:88 },
+  paris:     { cdg:68, orly:45, beauvais:95, sdf:30, versailles:55, gare_nord:22 },
+  sdf:       { cdg:75, orly:55, beauvais:105, paris:30, versailles:68, gare_nord:28 },
+  versailles:{ cdg:90, orly:65, beauvais:110, paris:55, sdf:68, gare_nord:72 },
+  gare_nord: { cdg:65, orly:52, beauvais:88, paris:22, sdf:28, versailles:72 },
+}
+
+function calcPrice() {
+  const from = document.getElementById('calc-from').value
+  const to   = document.getElementById('calc-to').value
+  const res  = document.getElementById('calc-result')
+  const same = document.getElementById('calc-same')
+  if (!from || !to) { res.style.display='none'; same.style.display='none'; return }
+  if (from === to)  { res.style.display='none'; same.style.display='block'; return }
+  const base = PRICES[from]?.[to]
+  if (!base) { res.style.display='none'; same.style.display='block'; return }
+  const promo  = Math.round(base * 0.90)
+  const saving = base - promo
+  document.getElementById('calc-orig').textContent   = base + ' €'
+  document.getElementById('calc-promo').textContent  = promo + ' €'
+  document.getElementById('calc-savings').textContent = 'Vous économisez ' + saving + ' € avec COUPE26'
+  same.style.display='none'; res.style.display='block'
+}
 
 // ── COPY CODE ──
 function copyCode(btn) {

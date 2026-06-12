@@ -78,15 +78,26 @@ export default function App() {
 
   const handleClose = () => setActiveView('home')
 
-  // Deep link from the campaign landing page: /?promo=COUPE26 opens the
-  // World Cup offer view directly (code applied from there by the user).
+  // Deep link /?promo=COUPE26 → open offer view + auto-apply code
   useEffect(() => {
-    const promo = new URLSearchParams(window.location.search).get('promo')
-    if (promo?.toUpperCase() === 'COUPE26') {
+    const param = new URLSearchParams(window.location.search).get('promo')
+    if (param?.toUpperCase() === 'COUPE26') {
       setActiveView('coupe26')
+      const st = useBookingStore.getState()
+      if (!st.promo) st.setPromo({ code: 'COUPE26', discount: 10, label: 'Coupe du Monde 2026 — −10%' })
       window.history.replaceState(null, '', window.location.pathname)
     }
   }, [])
+
+  // App badge — show when a booking is awaiting WhatsApp return
+  const awaitingReturn = useBookingStore((s) => s.awaitingReturn)
+  useEffect(() => {
+    if (awaitingReturn) {
+      navigator.setAppBadge?.(1).catch?.(() => {})
+    } else {
+      navigator.clearAppBadge?.().catch?.(() => {})
+    }
+  }, [awaitingReturn])
 
   // Detect return from WhatsApp → confirm booking + back to home.
   // Requires a real hidden→visible round-trip so a blocked window.open

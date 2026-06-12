@@ -127,14 +127,28 @@ const useBookingStore = create(
         if (!s.depart || !s.arrive || !s.price) return
         const entry = {
           bonNumber: s.bonNumber,
-          depart:    { name: s.depart.name },
-          arrive:    { name: s.arrive.name },
+          depart:    { name: s.depart.name, lat: s.depart.lat, lng: s.depart.lng, city: s.depart.city },
+          arrive:    { name: s.arrive.name, lat: s.arrive.lat, lng: s.arrive.lng, city: s.arrive.city },
           price:     s.price,
+          promoCode: s.promo?.code ?? null,
           date:      new Date().toISOString(),
         }
         set((prev) => ({
           bookingHistory: [entry, ...prev.bookingHistory].slice(0, 20),
         }))
+      },
+
+      // Redo a previous trip — only works if lat/lng were stored
+      redoBooking: (entry) => {
+        if (!entry?.depart?.lat || !entry?.arrive?.lat) return false
+        set({
+          depart:        { name: entry.depart.name, lat: entry.depart.lat, lng: entry.depart.lng, city: entry.depart.city },
+          arrive:        { name: entry.arrive.name, lat: entry.arrive.lat, lng: entry.arrive.lng, city: entry.arrive.city },
+          price:         null,
+          routeGeometry: null,
+          pickup:        null,
+        })
+        return true
       },
 
       // Reset booking (keep prefs + history)

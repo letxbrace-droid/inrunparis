@@ -5,6 +5,14 @@ import useAppTheme from '../../hooks/useAppTheme'
 const DISMISS_KEY = 'inr-coupe26-banner'
 const GOLD = '#E8B84B'
 
+const MATCH_DAYS = ['2026-06-11','2026-06-13','2026-06-28','2026-07-14','2026-07-19']
+const todayISO = () => new Date().toLocaleDateString('en-CA') // YYYY-MM-DD local
+
+function getBannerText() {
+  if (MATCH_DAYS.includes(todayISO())) return 'Match ce soir — réservez votre retour'
+  return 'Coupe du Monde 2026'
+}
+
 // Floating campaign teaser shown above the HomePill until dismissed
 // or until the offer expires.
 export default function CampaignBanner({ onOpen }) {
@@ -48,8 +56,8 @@ export default function CampaignBanner({ onOpen }) {
             }}
           >
             <span aria-hidden="true" className="text-[13px]">⚽</span>
-            <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: th.inkFull }}>
-              Coupe du Monde 2026
+            <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: MATCH_DAYS.includes(todayISO()) ? GOLD : th.inkFull }}>
+              {getBannerText()}
             </span>
             <span
               className="font-mono font-bold text-[11px] tracking-wider px-2 py-0.5 rounded-full"

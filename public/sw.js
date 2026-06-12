@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v80 */
-const CACHE = 'inrun-v80';
+/* I&N RUN — Service Worker v81 */
+const CACHE = 'inrun-v81';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -27,7 +27,10 @@ self.addEventListener('notificationclick', event => {
     })
   )
 })
+const OFFLINE = '/inrunparis/offline.html'
+
 const STATIC = [
+  OFFLINE,
   '/inrunparis/manifest.json',
   '/inrunparis/hub-manifest.json',
   '/inrunparis/favicon.ico',
@@ -71,7 +74,7 @@ self.addEventListener('fetch', e => {
       fetch(request).then(res => {
         if (res.ok) caches.open(CACHE).then(c => c.put(request, res.clone()));
         return res;
-      }).catch(() => caches.match(request).then(r => r || caches.match('/inrunparis/index.html')))
+      }).catch(() => caches.match(request).then(r => r || caches.match(OFFLINE)))
     );
     return;
   }
