@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent:     '#ff4103',
-        'accent-2': '#ff5a1f',
+        accent:     '#FF5A1F',
+        'accent-2': '#FF5A1F',
         // CSS-variable backed — respond to data-theme switches at runtime
         bg: {
           grouped:   'var(--bg-grouped)',
@@ -27,6 +27,7 @@ export default {
         wa:       'var(--wa)',
         positive: 'var(--positive)',
         info:     'var(--info)',
+        danger:   'var(--danger)',
       },
       fontFamily: {
         body:  ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],

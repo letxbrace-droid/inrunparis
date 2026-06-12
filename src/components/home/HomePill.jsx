@@ -6,6 +6,7 @@ import useGeolocation  from '../../hooks/useGeolocation'
 import { computePriceForBooking } from '../../utils/priceEngine'
 import { searchPlaces, displayAddr, TYPE_COLOR } from '../../utils/geocoder'
 import useAppTheme from '../../hooks/useAppTheme'
+import GlowingCTA from '../ui/GlowingCTA'
 
 const TAGS = [
   'CDG · Orly · Beauvais',
@@ -288,7 +289,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: '#FF5A1F' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[11px] font-semibold tracking-[.08em] uppercase mb-1.5" style={{ color: th.inkMid }}>Votre position</div>
+                    <div className="text-[10px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Départ</div>
                     <input
                       type="text"
                       value={departQuery}
@@ -307,23 +308,31 @@ export default function HomePill({ onOpenSheet }) {
                     onClick={handleGPS}
                     disabled={geoStatus === 'loading'}
                     aria-label="Détecter ma position GPS"
-                    className={`
-                      w-11 h-11 flex-shrink-0 rounded-xl flex items-center justify-center
-                      border cursor-pointer active:scale-95 transition-colors
-                      ${geoStatus === 'loading' ? 'border-accent/30 bg-accent/10' :
-                        geoStatus === 'success' ? 'border-[color:var(--positive-dim)] bg-[color-mix(in_srgb,var(--positive)_10%,transparent)]' :
-                                                  'border-[var(--rule-strong)]'}
-                    `}
+                    className="w-11 h-11 flex-shrink-0 rounded-xl flex items-center justify-center border cursor-pointer active:scale-95 transition-all duration-200"
+                    style={{
+                      borderColor: geoStatus === 'success'
+                        ? 'var(--positive-dim)'
+                        : geoStatus === 'loading'
+                        ? 'color-mix(in srgb, var(--accent) 30%, transparent)'
+                        : 'var(--separator-strong)',
+                      background: geoStatus === 'success'
+                        ? 'color-mix(in srgb, var(--positive) 10%, transparent)'
+                        : geoStatus === 'loading'
+                        ? 'color-mix(in srgb, var(--accent) 8%, transparent)'
+                        : 'transparent',
+                    }}
                   >
                     {geoStatus === 'loading' ? (
-                      <span className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+                      <span className="w-3 h-3 border-2 rounded-full animate-spin flex-shrink-0"
+                        style={{ borderColor: 'color-mix(in srgb, var(--accent) 28%, transparent)', borderTopColor: 'var(--accent)' }} />
                     ) : (
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke={geoStatus === 'success' ? '#34d399' : '#FF5A1F'}
                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        style={{ stroke: geoStatus === 'success' ? 'var(--positive)' : 'var(--accent)' }}
                       >
                         <circle cx="12" cy="12" r="7"/>
-                        <circle cx="12" cy="12" r="2.5" fill={geoStatus === 'success' ? '#34d399' : '#FF5A1F'} stroke="none"/>
+                        <circle cx="12" cy="12" r="2.5"
+                          style={{ fill: geoStatus === 'success' ? 'var(--positive)' : 'var(--accent)' }} stroke="none"/>
                         <line x1="12" y1="1"  x2="12" y2="5"/>
                         <line x1="12" y1="19" x2="12" y2="23"/>
                         <line x1="1"  y1="12" x2="5"  y2="12"/>
@@ -352,7 +361,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
                     style={{ borderColor: 'color-mix(in srgb, var(--accent) 75%, transparent)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[11px] font-semibold tracking-[.08em] uppercase mb-1.5" style={{ color: th.inkMid }}>Destination</div>
+                    <div className="text-[10px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Arrivée</div>
                     <input
                       type="text"
                       value={arriveQuery}
@@ -398,8 +407,8 @@ export default function HomePill({ onOpenSheet }) {
                             className="w-full text-left flex items-center gap-3 px-4 py-3 border-b last:border-0 active:opacity-70 transition-opacity cursor-pointer"
                             style={{ borderColor: th.borderFaint }}
                           >
-                            <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? '#FF5A1F' }}>
-                              <PinIcon color={TYPE_COLOR[s.type] ?? '#FF5A1F'} />
+                            <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? 'var(--accent)' }}>
+                              <PinIcon color={TYPE_COLOR[s.type] ?? 'var(--accent)'} />
                             </span>
                             <div className="flex flex-col min-w-0 flex-1">
                               <span className="text-sm font-semibold truncate" style={{ color: th.inkFull }}>
@@ -416,7 +425,8 @@ export default function HomePill({ onOpenSheet }) {
                       ))}
                       {acLoading && (
                         <li className="flex justify-center py-2">
-                          <span className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+                          <span className="w-3 h-3 border-2 rounded-full animate-spin"
+                            style={{ borderColor: 'color-mix(in srgb, var(--accent) 28%, transparent)', borderTopColor: 'var(--accent)' }} />
                         </li>
                       )}
                     </motion.ul>
@@ -427,8 +437,9 @@ export default function HomePill({ onOpenSheet }) {
               {/* Route info */}
               {routeLoading && (
                 <div className="flex items-center justify-center gap-2">
-                  <span className="w-3.5 h-3.5 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
-                  <span className="font-mono text-xs text-ink-muted">Calcul du trajet…</span>
+                  <span className="w-3.5 h-3.5 border-2 rounded-full animate-spin flex-shrink-0"
+                    style={{ borderColor: 'color-mix(in srgb, var(--accent) 28%, transparent)', borderTopColor: 'var(--accent)' }} />
+                  <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>Calcul du trajet…</span>
                 </div>
               )}
 
@@ -479,17 +490,12 @@ export default function HomePill({ onOpenSheet }) {
               </div>
 
               {/* Reserve CTA */}
-              <button
+              <GlowingCTA
                 onClick={handleReserve}
                 disabled={!depart || !arrive || !pickup || routeLoading}
-                className="cta-glow w-full py-4 rounded-[18px] font-bold text-white text-sm tracking-wide uppercase
-                  cursor-pointer select-none active:scale-[.97] transition-transform duration-150
-                  disabled:cursor-not-allowed relative overflow-hidden cta-pill"
               >
-                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent)' }} />
                 {ctaLabel}
-              </button>
+              </GlowingCTA>
 
             </div>
           </div>
