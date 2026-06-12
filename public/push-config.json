@@ -1,3 +1,4 @@
 {
-  "vapidPublicKey": "BGJhJA3Te5Ac-0AfRjcVU820d7fV8wZ6jlkb0AZCPxrOF-Rl-Qrz76BltbhTjdMIuC9u1m_eioU-eh5YE3CbMDQ"
+  "vapidPublicKey": "BGJhJA3Te5Ac-0AfRjcVU820d7fV8wZ6jlkb0AZCPxrOF-Rl-Qrz76BltbhTjdMIuC9u1m_eioU-eh5YE3CbMDQ",
+  "workerUrl": "https://inrun-hub.letxbrace.workers.dev"
 }

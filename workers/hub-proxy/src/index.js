@@ -78,6 +78,44 @@ export default {
       return json({ ok: true, ts: Date.now() })
     }
 
+    // ── POST /subscribe — public, called by the PWA after the client
+    //    grants notification permission. Writes straight into the Gist
+    //    so the hub never needs a manual NOTIF: paste.
+    if (path === '/subscribe' && req.method === 'POST') {
+      try {
+        const { name, sub } = await req.json()
+        if (!sub?.endpoint?.startsWith('https://') || !sub?.keys?.p256dh || !sub?.keys?.auth) {
+          return err('Invalid subscription')
+        }
+        const r = await fetch(`https://api.github.com/gists/${env.GIST_ID}`, { headers: ghHeaders(env) })
+        if (!r.ok) return err(`Gist ${r.status}`, 502)
+        const gist = await r.json()
+        let subs = []
+        try { subs = JSON.parse(gist.files?.['subscribers.json']?.content || '[]') } catch {}
+        if (!Array.isArray(subs)) subs = []
+        if (subs.length >= 500) return err('Subscriber list full', 429)
+        if (!subs.some(s => s.endpoint === sub.endpoint)) {
+          subs.push({
+            name:           typeof name === 'string' ? name.slice(0, 40) : null,
+            endpoint:       sub.endpoint,
+            keys:           { p256dh: sub.keys.p256dh, auth: sub.keys.auth },
+            expirationTime: sub.expirationTime ?? null,
+            addedAt:        new Date().toISOString(),
+          })
+          await fetch(`https://api.github.com/gists/${env.GIST_ID}`, {
+            method:  'PATCH',
+            headers: ghHeaders(env),
+            body:    JSON.stringify({
+              files: { 'subscribers.json': { content: JSON.stringify(subs, null, 2) } },
+            }),
+          })
+        }
+        return json({ ok: true })
+      } catch {
+        return err('Bad request')
+      }
+    }
+
     // All other endpoints require auth
     if (!checkAuth(req, env)) {
       return err('Unauthorized', 401)

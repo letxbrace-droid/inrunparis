@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
-import { subscribeToVapid, isPushSupported, encodeSubscription } from '../../utils/pushNotifications'
+import { subscribeToVapid, isPushSupported, encodeSubscription, registerWithWorker } from '../../utils/pushNotifications'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -189,7 +189,12 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
       setNotifPerm(perm)
       if (perm === 'granted') {
         const sub = await subscribeToVapid()
-        if (sub) setSubEncoded(encodeSubscription(sub))
+        if (sub) {
+          // Auto-register with the hub Worker; only fall back to the
+          // manual WhatsApp share if the Worker is unreachable.
+          const registered = await registerWithWorker(sub)
+          if (!registered) setSubEncoded(encodeSubscription(sub))
+        }
       }
     } catch {
       setNotifPerm('Notification' in window ? Notification.permission : 'default')

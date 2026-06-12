@@ -496,20 +496,28 @@ textarea{resize:vertical}
       <div class="section">
         <div class="section-title">Abonnés</div>
         <div class="card">
-          <div id="sub-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
-          <div class="field" style="margin-bottom:8px">
-            <label>Nom du client</label>
-            <input id="sub-name" type="text" placeholder="Jean-Pierre" maxlength="40">
-          </div>
-          <div class="field">
-            <label>Message WhatsApp reçu (NOTIF:…)</label>
-            <textarea id="sub-input" rows="2" maxlength="4096" placeholder="NOTIF:eyJl..."
-              style="border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);padding:10px 13px;font-size:12px;width:100%;color:var(--text);resize:none;font-family:ui-monospace,'SF Mono',monospace"></textarea>
-          </div>
-          <button class="btn btn-secondary btn-full" onclick="addSubscriber()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Ajouter cet abonné
+          <div style="font-size:12px;color:var(--subtle);margin-bottom:10px;line-height:1.6">Les clients qui activent les notifications dans l'app sont ajoutés automatiquement.</div>
+          <button class="btn btn-secondary btn-full" style="margin-bottom:12px" onclick="syncSubsFromWorker(true)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Synchroniser les abonnés
           </button>
+          <div id="sub-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+          <details style="margin-top:4px">
+            <summary style="font-size:12px;color:var(--subtle);cursor:pointer;padding:4px 0">Ajout manuel (code NOTIF: reçu par WhatsApp)</summary>
+            <div class="field" style="margin-top:10px;margin-bottom:8px">
+              <label>Nom du client</label>
+              <input id="sub-name" type="text" placeholder="Jean-Pierre" maxlength="40">
+            </div>
+            <div class="field">
+              <label>Message WhatsApp reçu (NOTIF:…)</label>
+              <textarea id="sub-input" rows="2" maxlength="4096" placeholder="NOTIF:eyJl..."
+                style="border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);padding:10px 13px;font-size:12px;width:100%;color:var(--text);resize:none;font-family:ui-monospace,'SF Mono',monospace"></textarea>
+            </div>
+            <button class="btn btn-secondary btn-full" onclick="addSubscriber()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Ajouter cet abonné
+            </button>
+          </details>
         </div>
       </div>
       <div class="section">
@@ -827,7 +835,7 @@ function initApp() {
   renderPromos(); renderDocHistory(); loadSettings()
   renderPushStatus(); renderPushHistory(); renderSubList()
   renderTemplateGrid(); updateSendTargetLabel(); updateSendButtons()
-  initInstallHints()
+  initInstallHints(); syncSubsFromWorker(false)
   const dot = document.getElementById('nav-dot-notifs')
   if (dot && getLocalSubs().length > 0) dot.classList.add('show')
 }
@@ -1105,7 +1113,30 @@ function renderSubList(){
 function deleteSubscriber(idx){
   const subs=getLocalSubs(),name=subs[idx]?.name||`Abonné #${idx+1}`
   if(!confirm(`Supprimer ${name} ?`))return
-  subs.splice(idx,1); saveLocalSubs(subs); showToast('Abonné supprimé')
+  const removed=subs.splice(idx,1)[0]; saveLocalSubs(subs); showToast('Abonné supprimé')
+  // mirror deletion to the Gist so the client doesn't get re-synced
+  if(hasWorker()&&removed?.endpoint){
+    workerFetch('/subs').then(remote=>{
+      const next=remote.filter(s=>s.endpoint!==removed.endpoint)
+      if(next.length!==remote.length)return workerFetch('/subs',{method:'PUT',body:JSON.stringify(next)})
+    }).catch(()=>{})
+  }
+}
+async function syncSubsFromWorker(manual){
+  if(!hasWorker()){if(manual)showToast('Worker non configuré — voir Réglages','error');return}
+  try{
+    const remote=await workerFetch('/subs')
+    if(!Array.isArray(remote))return
+    const local=getLocalSubs()
+    let added=0
+    remote.forEach(s=>{
+      if(s?.endpoint&&!local.some(l=>l.endpoint===s.endpoint)){
+        local.push({name:s.name||null,endpoint:s.endpoint,keys:s.keys,expirationTime:s.expirationTime??null}); added++
+      }
+    })
+    if(added)saveLocalSubs(local)
+    if(manual)showToast(added?`✓ ${added} nouvel${added>1?'s':''} abonné${added>1?'s':''}`:'Liste à jour — aucun nouvel abonné')
+  }catch(e){if(manual)showToast('Erreur : '+e.message,'error')}
 }
 async function addSubscriber(){
   const raw=(document.getElementById('sub-input')?.value||'').trim()
