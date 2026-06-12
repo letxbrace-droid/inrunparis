@@ -23,13 +23,15 @@ export default function FloatingInput({
         autoComplete={autoComplete}
         inputMode={inputMode}
         required={required}
-        className="w-full pt-6 pb-2 px-4 rounded-2xl text-base outline-none transition-all duration-200"
+        className="w-full pt-6 pb-2 px-4 rounded-2xl text-base outline-none"
         style={{
           background: th.bgInput,
-          boxShadow: 'none',
           border: focused ? '1px solid color-mix(in srgb, var(--accent) 40%, transparent)' : `1px solid ${th.border}`,
+          boxShadow: focused
+            ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)'
+            : 'none',
           color: th.inkFull,
-          transition: 'box-shadow .2s',
+          transition: 'border-color .2s, box-shadow .2s',
         }}
       />
       <label

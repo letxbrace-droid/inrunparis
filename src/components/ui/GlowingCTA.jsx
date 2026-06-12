@@ -1,11 +1,11 @@
-export default function GlowingCTA({ children, onClick, disabled, type = 'button', className = '' }) {
+export default function GlowingCTA({ children, onClick, disabled, type = 'button', className = '', variant = 'accent' }) {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={`
-        cta-glow
+        ${variant === 'wa' ? 'cta-wa' : 'cta-glow'}
         relative flex items-center justify-center gap-2.5
         w-full py-4 px-6 rounded-2xl
         text-white font-bold text-[15px] tracking-wide

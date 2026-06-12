@@ -220,7 +220,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           </div>
 
           {/* Content — slides between steps */}
-          <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin">
+          <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin" style={{ overscrollBehavior: 'contain' }}>
             <LayoutGroup>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div

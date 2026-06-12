@@ -34,12 +34,12 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             transition={{ type: 'spring', damping: 14, stiffness: 320, delay: 0.12 }}
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
             style={{
-              background: '#10b981',
+              background: 'var(--positive)',
             }}
           >
             <motion.svg
               width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#04221b" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"
+              stroke="#fff" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.4, delay: 0.26, ease: 'easeOut' }}
