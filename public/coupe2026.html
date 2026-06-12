@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000a08">
+<title>I&amp;N RUN · Coupe du Monde 2026</title>
+<meta name="description" content="Voyagez en classe pendant la Coupe du Monde. -10% sur tous vos trajets avec le code COUPE26, jusqu'au 19 juillet 2026.">
+<meta property="og:title" content="I&N RUN — Offre Coupe du Monde 2026 ⚽">
+<meta property="og:description" content="-10% sur vos trajets VTC à Paris avec le code COUPE26">
+<meta property="og:image" content="https://letxbrace-droid.github.io/inrunparis/og-image.svg">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#000a08;
+  --surface:#020f07;
+  --card:rgba(255,255,255,.03);
+  --border:rgba(255,255,255,.07);
+  --accent:#ff4103;
+  --gold:#c8a84b;
+  --gold-dim:rgba(200,168,75,.15);
+  --gold-glow:rgba(200,168,75,.25);
+  --green:#00c851;
+  --text:#F5F1E8;
+  --muted:rgba(245,241,232,.55);
+  --subtle:rgba(245,241,232,.35);
+  --ease:cubic-bezier(0.23,1,0.32,1);
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;
+  font-size:16px;line-height:1.5;overflow-x:hidden}
+
+/* ── BACKGROUND AMBIANCE ── */
+.bg-orb{
+  position:fixed;pointer-events:none;border-radius:50%;filter:blur(80px);opacity:.18;z-index:0}
+.bg-orb-1{width:500px;height:500px;background:var(--green);top:-120px;left:-100px}
+.bg-orb-2{width:400px;height:400px;background:var(--gold);bottom:-80px;right:-100px}
+.bg-orb-3{width:300px;height:300px;background:var(--accent);top:40%;left:50%;transform:translate(-50%,-50%)}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;max-width:480px;margin:0 auto;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100dvh}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px 16px;
+  background:rgba(0,10,8,.8);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:.5px solid var(--border);
+  position:sticky;top:0;z-index:10}
+.brand{font-size:17px;font-weight:900;letter-spacing:-.05em}
+.brand em{color:var(--accent);font-style:normal}
+.brand-sub{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);border:1px solid rgba(200,168,75,.3);
+  border-radius:20px;padding:2px 9px}
+
+/* ── HERO ── */
+.hero{padding:48px 24px 36px;text-align:center}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);border:1px solid rgba(200,168,75,.3);
+  border-radius:20px;padding:4px 12px;margin-bottom:28px}
+.hero-ball{font-size:14px;line-height:1}
+.hero-title{
+  font-size:clamp(38px,10vw,52px);font-weight:900;letter-spacing:-.04em;
+  line-height:1.05;margin-bottom:8px}
+.hero-title .year{color:var(--gold)}
+.hero-title .brand{color:var(--accent);display:block;font-size:clamp(22px,6vw,30px);letter-spacing:-.03em;margin-top:4px}
+.hero-sub{font-size:15px;color:var(--muted);margin-bottom:40px;line-height:1.6}
+
+/* ── PROMO CODE CARD (outer shell + inner core) ── */
+.promo-shell{
+  background:var(--gold-dim);
+  border:1px solid rgba(200,168,75,.35);
+  border-radius:24px;padding:2px;
+  margin:0 auto 36px;max-width:320px;
+  box-shadow:0 0 60px rgba(200,168,75,.12),inset 0 1px 0 rgba(200,168,75,.2)}
+.promo-core{
+  background:#050d09;border-radius:22px;
+  padding:28px 24px;text-align:center;
+  box-shadow:inset 0 1px 1px rgba(200,168,75,.08)}
+.promo-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px}
+.promo-code{
+  font-size:36px;font-weight:900;letter-spacing:.12em;
+  font-family:ui-monospace,'SF Mono','Fira Code',monospace;
+  color:var(--text);margin-bottom:4px;
+  text-shadow:0 0 30px rgba(200,168,75,.3)}
+.promo-discount{
+  font-size:13px;font-weight:600;color:var(--gold);margin-bottom:16px}
+.promo-validity{font-size:11px;color:var(--subtle)}
+.promo-copy-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  margin-top:18px;padding:9px 20px;
+  background:var(--gold-dim);border:1px solid rgba(200,168,75,.35);
+  border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.06em;
+  color:var(--gold);cursor:pointer;
+  transition:background 180ms var(--ease),transform 120ms var(--ease)}
+.promo-copy-btn:active{background:rgba(200,168,75,.25);transform:scale(.96)}
+
+/* ── CTA SECTION ── */
+.cta-section{padding:0 24px 40px;display:flex;flex-direction:column;gap:12px}
+.btn-wa{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 24px;border-radius:16px;
+  background:var(--green);color:#fff;
+  font-size:15px;font-weight:700;letter-spacing:-.01em;
+  text-decoration:none;border:none;cursor:pointer;
+  box-shadow:0 8px 28px rgba(0,200,81,.3);
+  transition:transform 120ms var(--ease),box-shadow 120ms var(--ease)}
+.btn-wa:active{transform:scale(.97);box-shadow:0 4px 14px rgba(0,200,81,.25)}
+.btn-app{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 24px;border-radius:16px;
+  background:rgba(255,65,3,.1);border:1px solid rgba(255,65,3,.3);
+  color:var(--accent);font-size:14px;font-weight:700;letter-spacing:-.01em;
+  text-decoration:none;cursor:pointer;
+  transition:background 180ms var(--ease),transform 120ms var(--ease)}
+.btn-app:active{background:rgba(255,65,3,.18);transform:scale(.97)}
+
+/* ── COUNTDOWN ── */
+.countdown-wrap{padding:0 24px 40px}
+.countdown-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:24px;text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.countdown-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--subtle);margin-bottom:20px}
+.countdown-grid{display:flex;justify-content:center;gap:12px}
+.countdown-unit{display:flex;flex-direction:column;align-items:center;gap:6px}
+.countdown-num{
+  font-size:32px;font-weight:900;letter-spacing:-.04em;
+  color:var(--text);font-variant-numeric:tabular-nums;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:12px;width:64px;height:58px;
+  display:flex;align-items:center;justify-content:center}
+.countdown-sep{font-size:28px;font-weight:900;color:var(--accent);margin-top:-14px;align-self:center}
+.countdown-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle)}
+.countdown-finale{font-size:12px;color:var(--subtle);margin-top:16px}
+.countdown-finale strong{color:var(--gold)}
+
+/* ── MATCHES SECTION ── */
+.section{padding:0 24px 40px}
+.section-head{
+  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--subtle);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px}
+.section-head::before{content:'';display:block;width:14px;height:1.5px;
+  background:var(--accent);border-radius:1px;opacity:.7}
+.match-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:14px;
+  transition:border-color 200ms var(--ease)}
+.match-card.today{border-color:rgba(0,200,81,.35);background:rgba(0,200,81,.04)}
+.match-card.past{opacity:.45}
+.match-date{font-size:11px;font-weight:700;color:var(--gold);white-space:nowrap;min-width:52px}
+.match-info{flex:1}
+.match-name{font-size:13px;font-weight:700;color:var(--text)}
+.match-detail{font-size:11px;color:var(--subtle);margin-top:1px}
+.match-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:20px}
+.badge-live{background:rgba(0,200,81,.15);color:var(--green);border:1px solid rgba(0,200,81,.3)}
+.badge-final{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,168,75,.3)}
+.badge-soon{background:rgba(255,65,3,.1);color:var(--accent);border:1px solid rgba(255,65,3,.25)}
+
+/* ── FEATURES ── */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 24px 40px}
+.feature{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:18px 16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.feature-icon{font-size:24px;margin-bottom:10px}
+.feature-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.feature-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── FOOTER ── */
+.footer{padding:28px 24px calc(28px + env(safe-area-inset-bottom));
+  text-align:center;border-top:.5px solid var(--border)}
+.footer-brand{font-size:15px;font-weight:900;letter-spacing:-.05em;margin-bottom:6px}
+.footer-brand em{color:var(--accent);font-style:normal}
+.footer-detail{font-size:11px;color:var(--subtle);line-height:1.7}
+
+/* ── REVEAL ANIMATION ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<div class="page">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">I<em>&amp;</em>N RUN</div>
+    <div class="brand-sub">⚽ Coupe du Monde</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero reveal">
+    <div class="hero-eyebrow"><span class="hero-ball">⚽</span> Offre exclusive 2026</div>
+    <h1 class="hero-title">
+      COUPE DU<br>MONDE <span class="year">2026</span>
+      <span class="brand">I<em style="color:var(--accent);font-style:normal">&amp;</em>N RUN</span>
+    </h1>
+    <p class="hero-sub">Votre chauffeur privé à Paris pendant tout le tournoi.<br>Tarif fixe garanti, confirmation en 2 min.</p>
+
+    <!-- PROMO CODE -->
+    <div class="promo-shell">
+      <div class="promo-core">
+        <div class="promo-label">Code promo exclusif</div>
+        <div class="promo-code" id="promo-code">COUPE26</div>
+        <div class="promo-discount">−10 % sur tous vos trajets</div>
+        <div class="promo-validity">Valable jusqu'au 19 juillet 2026</div>
+        <button class="promo-copy-btn" onclick="copyCode()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copy-label">Copier le code</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <a class="btn-wa" href="https://wa.me/33767742220?text=Bonjour%20!%20Je%20voudrais%20réserver%20un%20trajet.%20Code%20promo%20%3A%20COUPE26" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      Réserver sur WhatsApp
+    </a>
+    <a class="btn-app" href="/inrunparis/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 16 12 12 16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Réserver en ligne
+    </a>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-wrap reveal">
+    <div class="countdown-card">
+      <div class="countdown-label">Compte à rebours — Finale</div>
+      <div class="countdown-grid">
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-j">--</div>
+          <div class="countdown-lbl">Jours</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-h">--</div>
+          <div class="countdown-lbl">Heures</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-m">--</div>
+          <div class="countdown-lbl">Min</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-s">--</div>
+          <div class="countdown-lbl">Sec</div>
+        </div>
+      </div>
+      <div class="countdown-finale">Finale — <strong>19 juillet 2026 · MetLife Stadium, New York</strong></div>
+    </div>
+  </div>
+
+  <!-- CALENDRIER FRANCE -->
+  <div class="section reveal">
+    <div class="section-head">Calendrier — France</div>
+
+    <div class="match-card past">
+      <div class="match-date">11 juin</div>
+      <div class="match-info">
+        <div class="match-name">Cérémonie d'ouverture</div>
+        <div class="match-detail">Los Angeles · SoFi Stadium</div>
+      </div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">17 juin</div>
+      <div class="match-info">
+        <div class="match-name">France — Phase de groupes J1</div>
+        <div class="match-detail">Groupe A · USA</div>
+      </div>
+      <div class="match-badge badge-soon">J1</div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">21 juin</div>
+      <div class="match-info">
+        <div class="match-name">France — Phase de groupes J2</div>
+        <div class="match-detail">Groupe A · USA</div>
+      </div>
+      <div class="match-badge badge-soon">J2</div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">25 juin</div>
+      <div class="match-info">
+        <div class="match-name">France — Phase de groupes J3</div>
+        <div class="match-detail">Groupe A · USA</div>
+      </div>
+      <div class="match-badge badge-soon">J3</div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">1–2 juil.</div>
+      <div class="match-info">
+        <div class="match-name">Huitièmes de finale</div>
+        <div class="match-detail">Si qualifiée</div>
+      </div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">4–5 juil.</div>
+      <div class="match-info">
+        <div class="match-name">Quarts de finale</div>
+        <div class="match-detail">Si qualifiée</div>
+      </div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">8–9 juil.</div>
+      <div class="match-info">
+        <div class="match-name">Demi-finales</div>
+        <div class="match-detail">Si qualifiée</div>
+      </div>
+    </div>
+    <div class="match-card">
+      <div class="match-date">19 juil.</div>
+      <div class="match-info">
+        <div class="match-name">⭐ FINALE</div>
+        <div class="match-detail">MetLife Stadium · New York</div>
+      </div>
+      <div class="match-badge badge-final">Finale</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-icon">🚗</div>
+      <div class="feature-title">Tarif fixe</div>
+      <div class="feature-desc">Prix garanti à la réservation, aucune surprise</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Confirmation 2 min</div>
+      <div class="feature-desc">Réponse immédiate sur WhatsApp</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🛜</div>
+      <div class="feature-title">Wi-Fi & eau</div>
+      <div class="feature-desc">Connexion et rafraîchissement à bord</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-title">Ponctualité</div>
+      <div class="feature-desc">Votre chauffeur à l'heure, à chaque trajet</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">I<em>&amp;</em>N RUN</div>
+    <div class="footer-detail">
+      Chauffeur privé VTC · Paris & Île-de-France<br>
+      +33 7 67 74 22 20 · contact@inrunparis.fr<br>
+      <span style="color:var(--gold)">Code COUPE26 · −10% · jusqu'au 19/07/2026</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── COUNTDOWN FINALE ──
+const FINALE = new Date('2026-07-19T21:00:00Z') // 19 juillet 21h UTC (17h NY = 23h Paris)
+function updateCountdown() {
+  const now = new Date(), diff = FINALE - now
+  if (diff <= 0) {
+    document.getElementById('cd-j').textContent = '🏆'
+    document.getElementById('cd-h').textContent = '🏆'
+    document.getElementById('cd-m').textContent = '🏆'
+    document.getElementById('cd-s').textContent = '🏆'
+    return
+  }
+  const j = Math.floor(diff / 864e5)
+  const h = Math.floor((diff % 864e5) / 36e5)
+  const m = Math.floor((diff % 36e5) / 6e4)
+  const s = Math.floor((diff % 6e4) / 1000)
+  const pad = n => String(n).padStart(2,'0')
+  document.getElementById('cd-j').textContent = String(j)
+  document.getElementById('cd-h').textContent = pad(h)
+  document.getElementById('cd-m').textContent = pad(m)
+  document.getElementById('cd-s').textContent = pad(s)
+}
+updateCountdown()
+setInterval(updateCountdown, 1000)
+
+// ── COPY CODE ──
+function copyCode() {
+  const code = 'COUPE26'
+  const label = document.getElementById('copy-label')
+  navigator.clipboard?.writeText(code).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = code
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove()
+  })
+  label.textContent = '✓ Copié !'
+  setTimeout(() => label.textContent = 'Copier le code', 2000)
+}
+
+// ── REVEAL ON SCROLL ──
+const reveals = document.querySelectorAll('.reveal')
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 80)
+      io.unobserve(e.target)
+    }
+  })
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+reveals.forEach(el => io.observe(el))
+</script>
+</body>
+</html>
