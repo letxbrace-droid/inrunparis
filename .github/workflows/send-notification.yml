@@ -67,7 +67,11 @@ jobs:
                   `/gists/${GIST_ID}`,
                   { Authorization: `Bearer ${GIST_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'inrunparis-push' }
                 )
-                const content = gist.files?.['subscribers.json']?.content || gist.files?.['subscriptions.json']?.content || '[]'
+                const files = gist.files || {}
+                const content = files['subscribers.json']?.content
+                  || files['abonnements.json']?.content
+                  || files['subscriptions.json']?.content
+                  || '[]'
                 try { subs = JSON.parse(content) } catch {}
                 console.log(`Abonnés lus depuis Gist : ${subs.length}`)
               } catch (e) {

@@ -61,6 +61,38 @@ function checkAuth(req, env) {
   return secret === env.HUB_SECRET
 }
 
+// Read the subscriber list from the Gist regardless of the file's name.
+// Older gists used 'abonnements.json' / 'subscriptions.json'; new writes use
+// 'subscribers.json'. Returns { subs, filename } so callers write back to the
+// SAME file and never split the data across two files.
+const CANON_FILE = 'subscribers.json'
+async function readGistSubs(env) {
+  const r = await fetch(`https://api.github.com/gists/${env.GIST_ID}`, { headers: ghHeaders(env) })
+  if (!r.ok) return { ok: false, status: r.status, subs: [], filename: CANON_FILE }
+  const gist  = await r.json()
+  const files = gist.files || {}
+  const order = [CANON_FILE, 'abonnements.json', 'subscriptions.json', ...Object.keys(files)]
+  for (const name of order) {
+    const raw = files[name]?.content
+    if (raw == null) continue
+    try {
+      const parsed = JSON.parse(raw)
+      if (Array.isArray(parsed)) return { ok: true, subs: parsed, filename: name }
+    } catch {}
+  }
+  return { ok: true, subs: [], filename: CANON_FILE }
+}
+
+function writeGistSubs(env, filename, subs) {
+  return fetch(`https://api.github.com/gists/${env.GIST_ID}`, {
+    method:  'PATCH',
+    headers: ghHeaders(env),
+    body:    JSON.stringify({
+      files: { [filename]: { content: JSON.stringify(subs, null, 2) } },
+    }),
+  })
+}
+
 // ── main handler ─────────────────────────────────────────────────────────────
 
 export default {
@@ -87,12 +119,8 @@ export default {
         if (!sub?.endpoint?.startsWith('https://') || !sub?.keys?.p256dh || !sub?.keys?.auth) {
           return err('Invalid subscription')
         }
-        const r = await fetch(`https://api.github.com/gists/${env.GIST_ID}`, { headers: ghHeaders(env) })
-        if (!r.ok) return err(`Gist ${r.status}`, 502)
-        const gist = await r.json()
-        let subs = []
-        try { subs = JSON.parse(gist.files?.['subscribers.json']?.content || '[]') } catch {}
-        if (!Array.isArray(subs)) subs = []
+        const { ok, status, subs, filename } = await readGistSubs(env)
+        if (!ok) return err(`Gist ${status}`, 502)
         if (subs.length >= 500) return err('Subscriber list full', 429)
         if (!subs.some(s => s.endpoint === sub.endpoint)) {
           subs.push({
@@ -102,13 +130,8 @@ export default {
             expirationTime: sub.expirationTime ?? null,
             addedAt:        new Date().toISOString(),
           })
-          await fetch(`https://api.github.com/gists/${env.GIST_ID}`, {
-            method:  'PATCH',
-            headers: ghHeaders(env),
-            body:    JSON.stringify({
-              files: { 'subscribers.json': { content: JSON.stringify(subs, null, 2) } },
-            }),
-          })
+          const w = await writeGistSubs(env, filename, subs)
+          if (!w.ok) return err(`Gist write ${w.status}`, 502)
         }
         return json({ ok: true })
       } catch {
@@ -163,33 +186,16 @@ export default {
 
       // ── GET /subs ─────────────────────────────────────────────────────────
       if (path === '/subs' && req.method === 'GET') {
-        const r = await fetch(
-          `https://api.github.com/gists/${env.GIST_ID}`,
-          { headers: ghHeaders(env) }
-        )
-        if (!r.ok) return err(`Gist ${r.status}`, 502)
-        const data = await r.json()
-        const raw  = data.files?.['subscribers.json']?.content || '[]'
-        return json(JSON.parse(raw))
+        const { ok, status, subs } = await readGistSubs(env)
+        if (!ok) return err(`Gist ${status}`, 502)
+        return json(subs)
       }
 
       // ── PUT /subs ─────────────────────────────────────────────────────────
       if (path === '/subs' && req.method === 'PUT') {
         const subs = await req.json()
-        const r = await fetch(
-          `https://api.github.com/gists/${env.GIST_ID}`,
-          {
-            method:  'PATCH',
-            headers: ghHeaders(env),
-            body:    JSON.stringify({
-              files: {
-                'subscribers.json': {
-                  content: JSON.stringify(subs, null, 2),
-                },
-              },
-            }),
-          }
-        )
+        const { filename } = await readGistSubs(env)
+        const r = await writeGistSubs(env, filename, Array.isArray(subs) ? subs : [])
         return json({ ok: r.ok })
       }
 
