@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v83 */
-const CACHE = 'inrun-v83';
+/* I&N RUN — Service Worker v84 */
+const CACHE = 'inrun-v84';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -50,14 +50,13 @@ const STATIC = [
   '/inrunparis/icons/icon-maskable-512.png',
 ];
 const PASSTHROUGH = [
-  '/inrunparis/bdr-admin.html',
-  '/inrunparis/bdradmin.html',
   '/inrunparis/hub.html',
   '/inrunparis/ops/',
   '/inrunparis/ops/index.html',
   '/inrunparis/mentions-legales.html',
   '/inrunparis/qr.html',
   '/inrunparis/urgence.html',
+  '/inrunparis/coupe2026.html',
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)).then(() => self.skipWaiting()));

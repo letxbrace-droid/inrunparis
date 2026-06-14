@@ -142,18 +142,27 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             willChange:   'transform, opacity',
             height:       step === 4 ? 'auto' : '93dvh',
             maxHeight:    step === 4 ? '72dvh' : '93dvh',
-            borderRadius: '22px 22px 0 0',
+            borderRadius: '24px 24px 0 0',
             overflow:     'hidden',
             background:   th.bgPanel,
-            borderTop:    `1px solid ${th.borderStrong}`,
-            borderLeft:   `1px solid ${th.border}`,
-            borderRight:  `1px solid ${th.border}`,
-            boxShadow:    `0 -16px 48px ${th.scrim}`,
+            borderTop:    th.isDark ? '1px solid rgba(255,255,255,0.10)' : `1px solid ${th.borderStrong}`,
+            borderLeft:   th.isDark ? '1px solid rgba(255,255,255,0.06)' : `1px solid ${th.border}`,
+            borderRight:  th.isDark ? '1px solid rgba(255,255,255,0.06)' : `1px solid ${th.border}`,
+            boxShadow: th.isDark
+              ? '0 -24px 56px rgba(0,0,0,0.90), 0 -6px 40px -8px rgba(255,90,31,0.18), 0 -2px 12px -2px rgba(255,90,31,0.10)'
+              : `0 -8px 32px ${th.scrim}`,
             transform:    sheetOut ? 'translateY(100%)' : 'translateY(0)',
             opacity:      open ? 1 : 0,
             transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease, height .4s cubic-bezier(.32,1,.55,1), max-height .4s cubic-bezier(.32,1,.55,1)',
           }}
         >
+          {/* Specular top edge — accent halo on dark, white on light */}
+          {th.isDark && (
+            <span aria-hidden="true" style={{
+              display: 'block', height: 1, flexShrink: 0,
+              background: 'linear-gradient(90deg, transparent 0%, rgba(255,90,31,0.55) 35%, rgba(255,140,60,0.70) 50%, rgba(255,90,31,0.55) 65%, transparent 100%)',
+            }} />
+          )}
           {/* Header strip */}
           <div
             className="flex-shrink-0"

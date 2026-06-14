@@ -80,9 +80,13 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
       <div
         className="flex items-center rounded-2xl transition-all duration-200"
         style={{
-          background: th.bgInput,
-          border: `1px solid ${focused ? 'color-mix(in srgb, var(--accent) 45%, transparent)' : th.border}`,
-          boxShadow: focused ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)' : 'none',
+          background: focused
+            ? 'color-mix(in srgb, var(--accent) 4%, var(--bg-input))'
+            : th.bgInput,
+          border: `1px solid ${focused ? 'color-mix(in srgb, var(--accent) 52%, transparent)' : th.border}`,
+          boxShadow: focused
+            ? '0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent), 0 4px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05)'
+            : 'inset 0 1px 0 rgba(255,255,255,.03)',
         }}
       >
         <span className="pl-4 flex-shrink-0" style={{ color: focused ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 50%, transparent)' }}>
