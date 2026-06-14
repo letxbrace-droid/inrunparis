@@ -18,8 +18,8 @@ function StepDot({ index, current, th }) {
       className="flex items-center justify-center w-7 h-7 rounded-full select-none"
       animate={{
         background:
-          state === 'active' ? '#ff4103'
-          : state === 'done'  ? 'rgba(255,65,3,.22)'
+          state === 'active' ? '#FF5A1F'
+          : state === 'done'  ? 'color-mix(in srgb, var(--accent) 22%, transparent)'
           : th.isDark ? 'rgba(0,10,18,.6)' : 'rgba(0,0,0,.08)',
         scale:     state === 'active' ? 1.12 : 1,
         boxShadow:
@@ -41,7 +41,7 @@ function StepDot({ index, current, th }) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ ...SPRING, delay: 0.05 }}
           width="11" height="11" viewBox="0 0 14 14"
-          fill="none" stroke="#ff4103" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          fill="none" stroke="#FF5A1F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
         >
           <path d="M2 7l4 4 6-6"/>
         </motion.svg>
@@ -66,7 +66,7 @@ function StepConnector({ index, current, th }) {
       <motion.div
         className="absolute inset-y-0 left-0 h-full"
         animate={{ scaleX: filled ? 1 : 0 }}
-        style={{ originX: 0, background: 'linear-gradient(90deg, rgba(255,65,3,.8), rgba(255,65,3,.3))' }}
+        style={{ originX: 0, background: 'linear-gradient(90deg, color-mix(in srgb, var(--accent) 80%, transparent), color-mix(in srgb, var(--accent) 30%, transparent))' }}
         transition={{ duration: 0.38, ease: [0.32, 1, 0.55, 1] }}
       />
     </div>
@@ -111,12 +111,12 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               onClick={() => setCollapsed(false)}
               className="pointer-events-auto flex items-center gap-2 px-5 py-3 rounded-full select-none cursor-pointer"
               style={{
-                background: '#ff4103',
+                background: '#FF5A1F',
                 color: '#fff',
                 fontSize: 13,
                 fontWeight: 700,
                 letterSpacing: '0.01em',
-                boxShadow: '0 4px 20px rgba(255,65,3,.50), 0 2px 8px rgba(0,0,0,.30)',
+                boxShadow: '0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent), 0 2px 8px rgba(0,0,0,.30)',
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
@@ -185,7 +185,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             {/* Step indicator (hidden on recap step) */}
             {step === 4 ? (
               <div className="flex items-center justify-center py-3 px-6">
-                <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: '#ff4103' }}>
+                <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: '#FF5A1F' }}>
                   Récapitulatif
                 </span>
               </div>
@@ -204,7 +204,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                         className="text-[12px] font-semibold"
                         animate={{
                           color: i + 1 === step ? th.inkFull
-                            : i + 1 < step ? 'rgba(255,65,3,.75)'
+                            : i + 1 < step ? 'color-mix(in srgb, var(--accent) 75%, transparent)'
                             : th.inkMuted,
                         }}
                         transition={{ duration: 0.25 }}
@@ -220,7 +220,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           </div>
 
           {/* Content — slides between steps */}
-          <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin">
+          <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin" style={{ overscrollBehavior: 'contain' }}>
             <LayoutGroup>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div

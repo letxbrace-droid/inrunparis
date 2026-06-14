@@ -23,13 +23,15 @@ export default function FloatingInput({
         autoComplete={autoComplete}
         inputMode={inputMode}
         required={required}
-        className="w-full pt-6 pb-2 px-4 rounded-2xl text-base outline-none transition-all duration-200"
+        className="w-full pt-6 pb-2 px-4 rounded-2xl text-base outline-none"
         style={{
           background: th.bgInput,
-          boxShadow: 'none',
-          border: focused ? '1px solid rgba(255,90,31,.4)' : `1px solid ${th.border}`,
+          border: focused ? '1px solid color-mix(in srgb, var(--accent) 40%, transparent)' : `1px solid ${th.border}`,
+          boxShadow: focused
+            ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)'
+            : 'none',
           color: th.inkFull,
-          transition: 'box-shadow .2s',
+          transition: 'border-color .2s, box-shadow .2s',
         }}
       />
       <label
@@ -38,7 +40,7 @@ export default function FloatingInput({
           top:           raised ? '8px' : '50%',
           transform:     raised ? 'none' : 'translateY(-50%)',
           fontSize:      raised ? '11px' : '14px',
-          color:         raised ? '#ff4103' : th.inkMuted,
+          color:         raised ? '#FF5A1F' : th.inkMuted,
           fontWeight:    raised ? 600 : 400,
           letterSpacing: raised ? '.04em' : 'normal',
         }}

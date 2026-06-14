@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
-import { subscribeToVapid, isPushSupported, encodeSubscription } from '../../utils/pushNotifications'
+import { subscribeToVapid, isPushSupported, encodeSubscription, registerWithWorker } from '../../utils/pushNotifications'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -124,10 +124,11 @@ const NAV_ITEMS = [
 ]
 
 const SECONDARY = [
-  { label: 'Mes courses',      view: 'courses' },
-  { label: 'Code promo',       view: 'promo'   },
-  { label: 'Aide & FAQ',       view: 'faq'     },
-  { label: 'Mentions légales', view: 'legal'   },
+  { label: 'Mes courses',          view: 'courses' },
+  { label: 'Code promo',           view: 'promo'   },
+  { label: 'Coupe du Monde 2026',  view: 'coupe26', badge: '−10%' },
+  { label: 'Aide & FAQ',           view: 'faq'     },
+  { label: 'Mentions légales',     view: 'legal'   },
 ]
 
 // ── Animations ────────────────────────────────────────────────────────────────
@@ -188,7 +189,12 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
       setNotifPerm(perm)
       if (perm === 'granted') {
         const sub = await subscribeToVapid()
-        if (sub) setSubEncoded(encodeSubscription(sub))
+        if (sub) {
+          // Auto-register with the hub Worker; only fall back to the
+          // manual WhatsApp share if the Worker is unreachable.
+          const registered = await registerWithWorker(sub)
+          if (!registered) setSubEncoded(encodeSubscription(sub))
+        }
       }
     } catch {
       setNotifPerm('Notification' in window ? Notification.permission : 'default')
@@ -358,13 +364,28 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                   className="flex items-center justify-between w-full cursor-pointer select-none active:scale-[.98] transition-transform duration-100"
                   style={{ background: 'none', border: 'none', padding: '10px 0' }}
                 >
-                  <span style={{
-                    fontSize:      15,
-                    fontWeight:    500,
-                    letterSpacing: '-0.01em',
-                    color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
-                  }}>
-                    {item.label}
+                  <span className="flex items-center gap-2">
+                    <span style={{
+                      fontSize:      15,
+                      fontWeight:    500,
+                      letterSpacing: '-0.01em',
+                      color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                    }}>
+                      {item.label}
+                    </span>
+                    {item.badge && (
+                      <span style={{
+                        fontSize:      10,
+                        fontWeight:    700,
+                        letterSpacing: '.04em',
+                        color:         '#E8B84B',
+                        border:        '1px solid rgba(232,184,75,.4)',
+                        borderRadius:  999,
+                        padding:       '2px 7px',
+                      }}>
+                        {item.badge}
+                      </span>
+                    )}
                   </span>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
                     stroke={isDark ? 'rgba(245,241,232,.28)' : 'rgba(17,17,17,.25)'}
@@ -398,7 +419,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     fontWeight:    600,
                     letterSpacing: '0.03em',
                     textTransform: 'uppercase',
-                    color: notifPerm === 'granted' ? '#34d399' : '#FF5A1F',
+                    color: notifPerm === 'granted' ? 'var(--positive)' : 'var(--accent)',
                     opacity: notifPending ? 0.5 : 1,
                     transition: 'opacity .2s',
                   }}>

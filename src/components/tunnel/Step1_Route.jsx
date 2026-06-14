@@ -81,11 +81,11 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
         className="flex items-center rounded-2xl transition-all duration-200"
         style={{
           background: th.bgInput,
-          border: `1px solid ${focused ? 'rgba(255,90,31,.45)' : th.border}`,
-          boxShadow: focused ? '0 0 0 3px rgba(255,90,31,.08)' : 'none',
+          border: `1px solid ${focused ? 'color-mix(in srgb, var(--accent) 45%, transparent)' : th.border}`,
+          boxShadow: focused ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)' : 'none',
         }}
       >
-        <span className="pl-4 flex-shrink-0" style={{ color: focused ? '#ff4103' : 'rgba(255,65,3,.5)' }}>
+        <span className="pl-4 flex-shrink-0" style={{ color: focused ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 50%, transparent)' }}>
           {icon}
         </span>
         <input
@@ -103,7 +103,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
         {loading && (
           <span className="pr-3 flex-shrink-0">
             <span className="block w-4 h-4 border-2 rounded-full animate-spin"
-              style={{ borderColor: 'rgba(255,65,3,.3)', borderTopColor: '#ff4103' }} />
+              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: '#FF5A1F' }} />
           </span>
         )}
       </div>
@@ -131,7 +131,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
                   color: th.inkMid,
                   borderBottom: i < suggestions.length - 1 ? `1px solid ${th.borderFaint}` : 'none',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,65,3,.08)'}
+                onMouseEnter={e => e.currentTarget.style.background = 'color-mix(in srgb, var(--accent) 8%, transparent)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 {s.name.split(',').slice(0, 2).join(',')}
@@ -202,22 +202,22 @@ export default function Step1Route({ onNext }) {
           className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer active:scale-95 transition-all duration-200"
           style={{
             background: geoStatus === 'success'
-              ? 'rgba(255,90,31,.12)'
+              ? 'color-mix(in srgb, var(--accent) 12%, transparent)'
               : th.bgInput,
             border: geoStatus === 'success'
-              ? '1px solid rgba(255,90,31,.35)'
+              ? '1px solid color-mix(in srgb, var(--accent) 35%, transparent)'
               : `1px solid ${th.border}`,
           }}
         >
           {geoStatus === 'loading' ? (
             <span className="block w-4 h-4 border-2 rounded-full animate-spin"
-              style={{ borderColor: 'rgba(255,65,3,.3)', borderTopColor: '#ff4103' }} />
+              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: '#FF5A1F' }} />
           ) : (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#ff4103" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              stroke="#FF5A1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="7"/>
-              <circle cx="12" cy="12" r="2.5" fill="#ff4103" stroke="none"/>
+              <circle cx="12" cy="12" r="2.5" fill="#FF5A1F" stroke="none"/>
               <line x1="12" y1="1"  x2="12" y2="5"/>
               <line x1="12" y1="19" x2="12" y2="23"/>
               <line x1="1"  y1="12" x2="5"  y2="12"/>
@@ -229,10 +229,10 @@ export default function Step1Route({ onNext }) {
 
       {/* Geo hint */}
       {geoStatus === 'error' && geoError && (
-        <p className="text-xs px-1" style={{ color: 'rgba(248,113,113,.8)' }}>{geoError}</p>
+        <p className="text-xs px-1" style={{ color: 'color-mix(in srgb, var(--danger) 80%, transparent)' }}>{geoError}</p>
       )}
       {geoStatus === 'success' && (
-        <p className="text-xs px-1" style={{ color: 'rgba(255,65,3,.8)' }}>Position détectée</p>
+        <p className="text-xs px-1" style={{ color: 'color-mix(in srgb, var(--accent) 80%, transparent)' }}>Position détectée</p>
       )}
 
       {/* Connector */}
@@ -241,7 +241,7 @@ export default function Step1Route({ onNext }) {
           className="w-px"
           style={{
             height: 20,
-            background: 'linear-gradient(to bottom, rgba(255,65,3,.5), rgba(255,65,3,.1))',
+            background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 10%, transparent))',
           }}
         />
       </div>
@@ -263,15 +263,15 @@ export default function Step1Route({ onNext }) {
           style={{
             background: th.bgInput,
             border: depart && arrive && !pickup
-              ? '1px solid rgba(255,90,31,.45)'
+              ? '1px solid color-mix(in srgb, var(--accent) 45%, transparent)'
               : `1px solid ${th.border}`,
             boxShadow: depart && arrive && !pickup
-              ? '0 0 0 3px rgba(255,90,31,.08)'
+              ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)'
               : undefined,
           }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke={depart && arrive && !pickup ? '#ff4103' : 'rgba(255,65,3,.55)'}
+            stroke={depart && arrive && !pickup ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
           </svg>
@@ -287,14 +287,14 @@ export default function Step1Route({ onNext }) {
           />
         </div>
         {depart && arrive && !pickup && (
-          <p className="text-xs px-1 mt-1.5" style={{ color: 'rgba(255,65,3,.8)' }}>
+          <p className="text-xs px-1 mt-1.5" style={{ color: 'color-mix(in srgb, var(--accent) 80%, transparent)' }}>
             Sélectionnez une date et heure pour calculer le tarif
           </p>
         )}
       </div>
 
       {error && (
-        <p className="text-sm text-center px-1" style={{ color: 'rgba(248,113,113,.8)' }}>{error}</p>
+        <p className="text-sm text-center px-1" style={{ color: 'color-mix(in srgb, var(--danger) 80%, transparent)' }}>{error}</p>
       )}
 
       {/* Route result badge — layoutId shared with Step2 route strip */}
@@ -303,23 +303,23 @@ export default function Step1Route({ onNext }) {
           layoutId="route-strip"
           className="flex items-center gap-2 px-3 py-2.5 rounded-xl"
           style={{
-            background: 'rgba(255,65,3,.06)',
-            border: '1px solid rgba(255,65,3,.18)',
+            background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
           }}
         >
           <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ff4103' }} />
-            <span className="w-px my-1" style={{ height: 8, background: 'linear-gradient(to bottom, rgba(255,65,3,.5), rgba(255,65,3,.12))' }} />
-            <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'rgba(255,65,3,.6)', background: 'transparent' }} />
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FF5A1F' }} />
+            <span className="w-px my-1" style={{ height: 8, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
+            <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'color-mix(in srgb, var(--accent) 60%, transparent)', background: 'transparent' }} />
           </div>
-          <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: '#ff4103' }}>
+          <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: '#FF5A1F' }}>
             {depart?.name?.split(',')[0] ?? '—'}
           </p>
           <span className="font-mono text-[11px] font-semibold flex-shrink-0 px-2 py-0.5 rounded-full"
-            style={{ background: 'rgba(255,65,3,.10)', color: '#ff4103' }}>
+            style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: '#FF5A1F' }}>
             {route.km.toFixed(1)} km · {Math.round(route.mins)} min
           </span>
-          <p className="flex-1 text-[12px] font-semibold truncate text-right" style={{ color: '#ff4103' }}>
+          <p className="flex-1 text-[12px] font-semibold truncate text-right" style={{ color: '#FF5A1F' }}>
             {arrive?.name?.split(',')[0] ?? '—'}
           </p>
         </motion.div>

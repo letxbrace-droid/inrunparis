@@ -23,7 +23,7 @@ const BAR_KF = [
 ]
 
 function MusiqueIcon({ active, th }) {
-  const dim = active ? '#ff4103' : (th?.inkMuted || 'rgba(245,241,232,.4)')
+  const dim = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.4)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       {BAR_KF.map(({ heights, ys }, i) => (
@@ -46,9 +46,9 @@ function MusiqueIcon({ active, th }) {
 }
 
 function RadioIcon({ active, th }) {
-  const dot  = active ? '#ff4103' : (th?.inkMuted || 'rgba(245,241,232,.68)')
-  const wav1 = active ? 'rgba(255,65,3,.85)'  : (th?.inkMuted || 'rgba(245,241,232,.55)')
-  const wav2 = active ? 'rgba(255,65,3,.55)'  : (th?.inkDim   || 'rgba(245,241,232,.22)')
+  const dot  = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.68)')
+  const wav1 = active ? 'color-mix(in srgb, var(--accent) 85%, transparent)'  : (th?.inkMuted || 'rgba(245,241,232,.55)')
+  const wav2 = active ? 'color-mix(in srgb, var(--accent) 55%, transparent)'  : (th?.inkDim   || 'rgba(245,241,232,.22)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="2" fill={dot}/>
@@ -71,10 +71,10 @@ function RadioIcon({ active, th }) {
 }
 
 function SilenceIcon({ active, th }) {
-  const c = active ? '#ff4103' : (th?.inkMuted || 'rgba(245,241,232,.65)')
+  const c = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.65)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={c} fill={active ? 'rgba(255,65,3,.12)' : 'none'}/>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={c} fill={active ? 'color-mix(in srgb, var(--accent) 12%, transparent)' : 'none'}/>
       <line x1="23" y1="9"  x2="17" y2="15" stroke={c}/>
       <line x1="17" y1="9"  x2="23" y2="15" stroke={c}/>
     </svg>
@@ -83,7 +83,7 @@ function SilenceIcon({ active, th }) {
 
 // ── Volume icon ───────────────────────────────────────────────────────────────
 function VolumeIcon({ level, th }) {
-  const c = th?.isDark ? 'rgba(255,65,3,.75)' : 'rgba(255,65,3,.85)'
+  const c = th?.isDark ? 'color-mix(in srgb, var(--accent) 75%, transparent)' : 'color-mix(in srgb, var(--accent) 85%, transparent)'
   if (level === 0) return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -107,7 +107,7 @@ function VolumeIcon({ level, th }) {
 
 // ── Payment icons (theme-aware) ───────────────────────────────────────────────
 function CardIcon({ active, th }) {
-  const s = active ? '#ff4103' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="1" y="4" width="22" height="16" rx="2"/>
@@ -117,7 +117,7 @@ function CardIcon({ active, th }) {
 }
 
 function CashIcon({ active, th }) {
-  const s = active ? '#ff4103' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -128,7 +128,7 @@ function CashIcon({ active, th }) {
 }
 
 function TransferIcon({ active, th }) {
-  const s = active ? '#ff4103' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="17 1 21 5 17 9"/>
@@ -142,8 +142,8 @@ function TransferIcon({ active, th }) {
 // ── Thermometer ───────────────────────────────────────────────────────────────
 function ThermometerIcon({ clim }) {
   const ratio      = (clim - 16) / 12
-  const fillColor  = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'rgba(255,65,3,.95)'
-  const shellColor = ratio < 0.3 ? 'rgba(130,200,255,.55)'  : ratio < 0.65 ? 'rgba(255,175,70,.50)' : 'rgba(255,65,3,.55)'
+  const fillColor  = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'color-mix(in srgb, var(--accent) 95%, transparent)'
+  const shellColor = ratio < 0.3 ? 'rgba(130,200,255,.55)'  : ratio < 0.65 ? 'rgba(255,175,70,.50)' : 'color-mix(in srgb, var(--accent) 55%, transparent)'
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" stroke={shellColor} strokeWidth="1.8"/>
@@ -222,7 +222,7 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
     ? 'radial-gradient(circle at 38% 32%, #2A2A2A, #111111)'
     : 'radial-gradient(circle at 38% 32%, #FFFFFF, #EAE7E1)'
 
-  const thumbShadow = `0 0 0 2.5px #ff4103, 0 2px 10px rgba(0,0,0,.28), inset 0 1px 0 ${
+  const thumbShadow = `0 0 0 2.5px #FF5A1F, 0 2px 10px rgba(0,0,0,.28), inset 0 1px 0 ${
     th.isDark ? 'rgba(255,255,255,.14)' : 'rgba(255,255,255,.90)'
   }`
 
@@ -293,7 +293,7 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
 function SectionLabel({ children, th }) {
   return (
     <div className="flex items-center gap-2 mb-3">
-      <span className="text-[10px] font-bold uppercase tracking-[.14em]" style={{ color: 'rgba(255,90,31,.85)' }}>
+      <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: 'color-mix(in srgb, var(--accent) 85%, transparent)' }}>
         {children}
       </span>
       <div className="flex-1 h-px" style={{ background: th.divider }} />
@@ -307,19 +307,19 @@ function AmbiancePill({ active, onClick, Icon, label, th }) {
   const [pressed, setPressed] = useState(false)
 
   const bg = active
-    ? `linear-gradient(180deg, rgba(255,90,31,.20) 0%, rgba(255,65,3,.11) 100%)`
+    ? `linear-gradient(180deg, color-mix(in srgb, var(--accent) 20%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 100%)`
     : hovered
     ? th.bgHover
     : th.bgInput
 
   const border = active
-    ? '1.5px solid rgba(255,90,31,.48)'
+    ? '1.5px solid color-mix(in srgb, var(--accent) 48%, transparent)'
     : hovered
     ? `1px solid ${th.borderStrong}`
     : `1px solid ${th.border}`
 
   const shadow = active
-    ? `inset 0 1px 0 rgba(255,140,60,.28), 0 6px 20px rgba(255,65,3,.18), 0 2px 6px rgba(0,0,0,.14)`
+    ? `inset 0 1px 0 rgba(255,140,60,.28), 0 6px 20px color-mix(in srgb, var(--accent) 18%, transparent), 0 2px 6px rgba(0,0,0,.14)`
     : hovered
     ? `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.10)' : 'rgba(255,255,255,.70)'}, 0 6px 18px rgba(0,0,0,.12), 0 2px 6px rgba(0,0,0,.08)`
     : `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.55)'}, 0 1px 4px rgba(0,0,0,.08)`
@@ -351,7 +351,7 @@ function AmbiancePill({ active, onClick, Icon, label, th }) {
         <Icon active={active} th={th} />
         <span
           className="text-[11px] font-bold tracking-wide"
-          style={{ color: active ? '#ff4103' : hovered ? th.inkHigh : th.inkMid }}
+          style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
         >
           {label}
         </span>
@@ -441,19 +441,19 @@ function PaymentButton({ active, onClick, Icon, label, th }) {
   const [pressed, setPressed] = useState(false)
 
   const bg = active
-    ? `linear-gradient(180deg, rgba(255,90,31,.18) 0%, rgba(255,65,3,.10) 100%)`
+    ? `linear-gradient(180deg, color-mix(in srgb, var(--accent) 18%, transparent) 0%, color-mix(in srgb, var(--accent) 10%, transparent) 100%)`
     : hovered
     ? th.bgHover
     : th.bgInput
 
   const border = active
-    ? '1.5px solid rgba(255,90,31,.50)'
+    ? '1.5px solid color-mix(in srgb, var(--accent) 50%, transparent)'
     : hovered
     ? `1px solid ${th.borderStrong}`
     : `1px solid ${th.border}`
 
   const shadow = active
-    ? `inset 0 1px 0 rgba(255,140,60,.22), 0 4px 16px rgba(255,65,3,.16), 0 1px 4px rgba(0,0,0,.12)`
+    ? `inset 0 1px 0 rgba(255,140,60,.22), 0 4px 16px color-mix(in srgb, var(--accent) 16%, transparent), 0 1px 4px rgba(0,0,0,.12)`
     : hovered
     ? `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.10)' : 'rgba(255,255,255,.72)'}, 0 5px 14px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.07)`
     : `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.52)'}, 0 1px 3px rgba(0,0,0,.07)`
@@ -485,7 +485,7 @@ function PaymentButton({ active, onClick, Icon, label, th }) {
         <Icon active={active} th={th} />
         <span
           className="text-[11px] font-bold tracking-wide"
-          style={{ color: active ? '#ff4103' : hovered ? th.inkHigh : th.inkMid }}
+          style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
         >
           {label}
         </span>
@@ -521,9 +521,9 @@ export default function Step3Options({ onNext, onBack }) {
     ? 'linear-gradient(90deg, rgba(130,200,255,.95) 0%, rgba(255,190,80,.85) 100%)'
     : tempRatio < 0.65
     ? 'linear-gradient(90deg, rgba(255,190,80,.90) 0%, rgba(255,130,40,.95) 100%)'
-    : 'linear-gradient(90deg, rgba(255,130,40,.90) 0%, rgba(255,65,3,.98) 100%)'
+    : 'linear-gradient(90deg, rgba(255,130,40,.90) 0%, color-mix(in srgb, var(--accent) 98%, transparent) 100%)'
 
-  const volGradient = 'linear-gradient(90deg, rgba(255,65,3,.60) 0%, rgba(255,65,3,.95) 100%)'
+  const volGradient = 'linear-gradient(90deg, color-mix(in srgb, var(--accent) 60%, transparent) 0%, color-mix(in srgb, var(--accent) 95%, transparent) 100%)'
 
   return (
     <motion.div
@@ -603,7 +603,7 @@ export default function Step3Options({ onNext, onBack }) {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>0</span>
+                  <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>0</span>
                   <div className="flex-1">
                     <PremiumSlider
                       min={0} max={100} step={1}
@@ -614,7 +614,7 @@ export default function Step3Options({ onNext, onBack }) {
                       th={th}
                     />
                   </div>
-                  <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>100</span>
+                  <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>100</span>
                 </div>
               </div>
             </motion.div>
@@ -656,7 +656,7 @@ export default function Step3Options({ onNext, onBack }) {
                 <line x1="6"  y1="6"  x2="18" y2="18"/>
                 <line x1="18" y1="6"  x2="6"  y2="18"/>
               </svg>
-              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(130,200,255,.85)' }}>16°</span>
+              <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(130,200,255,.85)' }}>16°</span>
             </span>
             <div className="flex-1">
               <PremiumSlider
@@ -670,7 +670,7 @@ export default function Step3Options({ onNext, onBack }) {
             </div>
             {/* Chaud */}
             <span className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(255,100,30,.85)' }}>28°</span>
+              <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(255,100,30,.85)' }}>28°</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,100,30,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2c0 0-5 6-5 10a5 5 0 0 0 10 0c0-3-2-5-2-5s-1 3-3 3c-1.1 0-2-.9-2-2 0-2 2-6 2-6z"/>
               </svg>
@@ -727,7 +727,7 @@ export default function Step3Options({ onNext, onBack }) {
             boxShadow:   `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.55)'}`,
             transition:  'border-color .2s',
           }}
-          onFocus={e => e.target.style.borderColor = 'rgba(255,90,31,.42)'}
+          onFocus={e => e.target.style.borderColor = 'color-mix(in srgb, var(--accent) 42%, transparent)'}
           onBlur={e  => { e.target.style.borderColor = th.border }}
           aria-label="Note complémentaire"
         />
@@ -739,7 +739,7 @@ export default function Step3Options({ onNext, onBack }) {
           Voir le récapitulatif →
         </GlowingCTA>
         {!canSend && (
-          <p className="text-center text-[11px] font-semibold -mt-1" style={{ color: 'rgba(255,65,3,.72)' }}>
+          <p className="text-center text-[11px] font-semibold -mt-1" style={{ color: 'color-mix(in srgb, var(--accent) 72%, transparent)' }}>
             Renseignez votre prénom pour continuer
           </p>
         )}

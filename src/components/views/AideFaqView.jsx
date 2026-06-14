@@ -106,7 +106,7 @@ export default function AideFaqView({ open, onClose }) {
               style={{
                 background:   th.bgCard,
                 borderRadius: 16,
-                border:       `1px solid ${expanded === i ? 'rgba(255,65,3,.25)' : th.borderFaint}`,
+                border:       `1px solid ${expanded === i ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : th.borderFaint}`,
                 transition:   'border-color .2s',
               }}
             >
@@ -123,7 +123,7 @@ export default function AideFaqView({ open, onClose }) {
                 </span>
                 <motion.svg
                   width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="rgba(255,65,3,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  stroke="rgba(255,90,31,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   animate={{ rotate: expanded === i ? 180 : 0 }}
                   transition={{ duration: 0.25, ease: 'easeInOut' }}
                   style={{ flexShrink: 0 }}
@@ -140,7 +140,7 @@ export default function AideFaqView({ open, onClose }) {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,65,3,.12)' }}
+                    style={{ overflow: 'hidden', borderTop: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)' }}
                   >
                     <p className="text-sm px-4 py-4 leading-relaxed" style={{ color: th.inkLow }}>
                       {item.a}

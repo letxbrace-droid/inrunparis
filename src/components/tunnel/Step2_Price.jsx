@@ -25,8 +25,8 @@ function LineItem({ icon, label, value, valueColor, badge, th }) {
           className="text-[12px] font-bold px-2.5 py-1 rounded-full"
           style={{
             background: th.isDark ? 'rgba(16,185,129,.16)' : 'rgba(5,150,105,.11)',
-            color:      th.isDark ? '#34d399'              : '#047857',
-            border:     `1px solid ${th.isDark ? 'rgba(52,211,153,.28)' : 'rgba(5,150,105,.28)'}`,
+            color:      'var(--positive)',
+            border:     '1px solid var(--positive-dim)',
           }}
         >
           {value}
@@ -51,13 +51,13 @@ export default function Step2Price({ onNext, onBack }) {
 
   if (!price) return (
     <div className="flex flex-col items-center justify-center gap-4 px-5 py-16">
-      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,90,31,.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
       </svg>
       <p className="text-sm text-center" style={{ color: th.inkMuted }}>
         Revenez à l'étape 1 pour calculer le trajet
       </p>
-      <button onClick={onBack} className="text-sm underline cursor-pointer" style={{ color: '#ff4103' }}>
+      <button onClick={onBack} className="text-sm underline cursor-pointer" style={{ color: '#FF5A1F' }}>
         ← Retour
       </button>
     </div>
@@ -77,14 +77,14 @@ export default function Step2Price({ onNext, onBack }) {
         className="flex items-center gap-2 px-1"
       >
         <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ff4103' }} />
-          <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, rgba(255,65,3,.5), rgba(255,65,3,.12))' }} />
-          <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'rgba(255,65,3,.6)', background: th.bgCard }} />
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FF5A1F' }} />
+          <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
+          <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'color-mix(in srgb, var(--accent) 60%, transparent)', background: th.bgCard }} />
         </div>
         <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
           {depart?.name?.split(',')[0] ?? '—'}
         </p>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,65,3,.55)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,90,31,.55)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
         <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
@@ -112,16 +112,16 @@ export default function Step2Price({ onNext, onBack }) {
                 {price.final}€
               </span>
             )}
-            <span style={{
+            <span className="tnum" style={{
               fontSize: '3.6rem', fontWeight: 900,
               letterSpacing: '-0.04em', lineHeight: 1,
-              color: promo && displayPrice !== price.final ? '#34d399' : th.inkFull,
+              color: promo && displayPrice !== price.final ? 'var(--positive)' : th.inkFull,
             }}>
               {displayPrice}
             </span>
             <span style={{
               fontSize: '1.6rem', fontWeight: 800,
-              color: promo && displayPrice !== price.final ? '#34d399' : '#ff4103',
+              color: promo && displayPrice !== price.final ? 'var(--positive)' : 'var(--accent)',
               letterSpacing: '-0.02em',
             }}>
               €
@@ -162,13 +162,13 @@ export default function Step2Price({ onNext, onBack }) {
               th={th}
               icon={
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                  stroke="#ff4103" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  stroke="#FF5A1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5c-1.5-1.5-3.5-1.5-5 0L11 6 2.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 6.2 7.3c.4.4.9.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
                 </svg>
               }
               label="Supplément aéroport"
               value="Inclus"
-              valueColor="rgba(255,65,3,.75)"
+              valueColor="color-mix(in srgb, var(--accent) 75%, transparent)"
             />
             <Div th={th} />
           </>
@@ -186,7 +186,7 @@ export default function Step2Price({ onNext, onBack }) {
               }
               label="Tarif nuit"
               value="Inclus"
-              valueColor="rgba(255,65,3,.75)"
+              valueColor="color-mix(in srgb, var(--accent) 75%, transparent)"
             />
             <Div th={th} />
           </>
@@ -245,7 +245,7 @@ export default function Step2Price({ onNext, onBack }) {
           }
           label="Tarif fixe garanti"
           value="✓"
-          valueColor="rgba(255,65,3,.80)"
+          valueColor="color-mix(in srgb, var(--accent) 80%, transparent)"
         />
 
       </motion.div>

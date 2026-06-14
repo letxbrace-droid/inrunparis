@@ -15,7 +15,7 @@ export default function CodePromoView({ open, onClose }) {
     if (!code) return
     const codes = getPromoCodes()
     const found = codes[code]
-    if (found) { setPromo({ code, ...found }); setStatus('ok') }
+    if (found) { navigator.vibrate?.(10); setPromo({ code, ...found }); setStatus('ok') }
     else        { setStatus('error') }
   }
 
@@ -74,15 +74,15 @@ export default function CodePromoView({ open, onClose }) {
             style={{
               background:   th.bgCard,
               borderRadius: 16,
-              border:       '1px solid rgba(52,211,153,.3)',
+              border:       '1px solid color-mix(in srgb, var(--positive) 30%, transparent)',
               animation: 'scale-in .3s ease both',
             }}
           >
             <div>
-              <p className="text-sm font-bold" style={{ color: '#34d399' }}>{promo.code}</p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(52,211,153,.65)' }}>{promo.label}</p>
+              <p className="text-sm font-bold" style={{ color: 'var(--positive)' }}>{promo.code}</p>
+              <p className="text-xs mt-0.5" style={{ color: 'color-mix(in srgb, var(--positive) 65%, transparent)' }}>{promo.label}</p>
             </div>
-            <button onClick={handleRemove} className="text-xs underline cursor-pointer" style={{ color: 'rgba(52,211,153,.55)' }}>
+            <button onClick={handleRemove} className="text-xs underline cursor-pointer" style={{ color: 'color-mix(in srgb, var(--positive) 55%, transparent)' }}>
               Retirer
             </button>
           </div>
@@ -100,7 +100,7 @@ export default function CodePromoView({ open, onClose }) {
             className="flex-1 px-4 py-4 rounded-2xl text-sm font-mono font-bold tracking-widest outline-none transition-all duration-200"
             style={{
               background: th.bgInput,
-              border: `1px solid ${status === 'error' ? 'rgba(248,113,113,.5)' : status === 'ok' ? 'rgba(52,211,153,.4)' : th.borderFaint}`,
+              border: `1px solid ${status === 'error' ? 'color-mix(in srgb, var(--danger) 50%, transparent)' : status === 'ok' ? 'color-mix(in srgb, var(--positive) 40%, transparent)' : th.borderFaint}`,
               color: th.inkFull,
             }}
             aria-label="Code promotionnel"
@@ -116,12 +116,12 @@ export default function CodePromoView({ open, onClose }) {
         </div>
 
         {status === 'error' && (
-          <p className="text-xs px-1 mb-2" style={{ color: 'rgba(248,113,113,.8)', animation: 'fade-in .2s ease' }}>
+          <p className="text-xs px-1 mb-2" style={{ color: 'color-mix(in srgb, var(--danger) 80%, transparent)', animation: 'fade-in .2s ease' }}>
             Code invalide. Vérifiez l'orthographe ou contactez-nous.
           </p>
         )}
         {status === 'ok' && (
-          <p className="text-xs px-1 mb-2" style={{ color: 'rgba(52,211,153,.8)', animation: 'fade-in .2s ease' }}>
+          <p className="text-xs px-1 mb-2" style={{ color: 'color-mix(in srgb, var(--positive) 80%, transparent)', animation: 'fade-in .2s ease' }}>
             Code appliqué — la réduction sera visible à l'étape Tarif.
           </p>
         )}

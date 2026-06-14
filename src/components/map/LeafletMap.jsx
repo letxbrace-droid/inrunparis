@@ -9,7 +9,7 @@ const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.p
 const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 
 const userPosIcon = L.divIcon({
-  html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:#3b82f6;border:2px solid #fff"></div>`,
+  html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:var(--info);border:2px solid #fff"></div>`,
   iconSize: [12, 12], iconAnchor: [6, 6], className: '',
 })
 
@@ -112,7 +112,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
 
     // Soft halo underneath
     const glow = L.polyline(coords, {
-      color: 'rgba(255,65,3,0.22)', weight: 14, opacity: 1,
+      color: 'color-mix(in srgb, var(--accent) 22%, transparent)', weight: 14, opacity: 1,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 

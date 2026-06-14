@@ -11,10 +11,10 @@
   :root {
     /* ── Accent ─────────────────────────────────────────────────── */
     --accent:        #FF5A1F;
-    --accent-2:      #ff4103;
+    --accent-2:      #FF5A1F;
     --accent-press:  #e84000;
-    --accent-dim:    rgba(255,90,31,0.12);
-    --accent-glow:   rgba(255,90,31,0.35);
+    --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
 
     /* ── AMOLED background hierarchy ────────────────────────────── */
     --bg-grouped:    #030303;   /* deepest — true AMOLED      */
@@ -24,17 +24,36 @@
     --bg-elevated:   #161616;   /* inputs / innermost          */
     --bg-glass:      rgba(10,10,10,0.94);  /* nav chrome — near-solid  */
 
-    /* ── Labels ─────────────────────────────────────────────────── */
+    /* Named surfaces — single source for useAppTheme + components */
+    --bg-panel:   #0B0B0B;
+    --bg-header:  #0D0D0D;
+    --bg-card:    #111111;
+    --bg-input:   #161616;
+    --bg-inset:   #141414;
+    --bg-hover:   #1A1A1A;
+    --bg-avatar:  #0A1828;
+
+    /* ── Labels — 4 levels only (Uber-style discipline) ─────────── */
     --label:            #F5F1E8;
-    --label-secondary:  rgba(245,241,232,0.88);
-    --label-tertiary:   rgba(245,241,232,0.65);
+    --label-secondary:  rgba(245,241,232,0.82);
+    --label-tertiary:   rgba(245,241,232,0.62);
     --label-quaternary: rgba(245,241,232,0.44);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
     --separator:        rgba(255,255,255,0.07);
-    --separator-strong: rgba(255,255,255,0.10);
+    --separator-strong: rgba(255,255,255,0.11);
+    --separator-faint:  rgba(255,255,255,0.05);
     --fill:             rgba(255,255,255,0.05);
     --fill-secondary:   rgba(255,255,255,0.04);
+    --handle:           rgba(255,255,255,0.18);
+    --overlay:          rgba(0,0,0,0.72);
+    --scrim:            rgba(0,0,0,0.90);
+
+    /* ── Semantic status ────────────────────────────────────────── */
+    --positive:     #34d399;
+    --positive-dim: color-mix(in srgb, var(--positive) 25%, transparent);
+    --info:         #3b82f6;
+    --danger:       #f87171;
 
     /* ── Geometry ───────────────────────────────────────────────── */
     --r-card:    16px;
@@ -55,8 +74,6 @@
     --safe-bot: env(safe-area-inset-bottom, 0px);
 
     /* ── Back-compat aliases ────────────────────────────────────── */
-    --bg-card:       var(--bg-secondary);
-    --bg-inset:      var(--bg-elevated);
     --ink-primary:   var(--label);
     --ink-secondary: var(--label-secondary);
     --ink-muted:     var(--label-tertiary);
@@ -68,12 +85,32 @@
     color-scheme: dark;
   }
 
+  /* ── Wide-gamut accent — true UHD orange on P3/OLED displays ── */
+  @supports (color: color(display-p3 1 1 1)) {
+    :root {
+      --accent:       color(display-p3 1 0.40 0.16);
+      --accent-2:     color(display-p3 1 0.31 0.08);
+      --accent-press: color(display-p3 0.92 0.28 0.04);
+    }
+  }
+
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent-dim);
+    color: var(--label);
+  }
+
+  /* Visible keyboard focus — never on text fields (design handles those) */
+  :focus-visible:not(input):not(textarea):not(select) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   /* ── Light mode — editorial UHD, zero diffuse shadow ──────── */
@@ -85,17 +122,34 @@
     --bg-elevated:   #E4E1DB;
     --bg-glass:      rgba(247,245,240,0.97);
 
+    --bg-panel:   #F0EDE8;
+    --bg-header:  #EFEDE8;
+    --bg-card:    #FFFFFF;
+    --bg-input:   #E8E5E0;
+    --bg-inset:   #EDEBE6;
+    --bg-hover:   #E5E3DE;
+    --bg-avatar:  #E0DDD6;
+
     /* High-contrast editorial ink — readable, not washed out */
     --label:            #0D0D0D;
-    --label-secondary:  rgba(13,13,13,0.82);
-    --label-tertiary:   rgba(13,13,13,0.60);
+    --label-secondary:  rgba(13,13,13,0.80);
+    --label-tertiary:   rgba(13,13,13,0.58);
     --label-quaternary: rgba(13,13,13,0.38);
 
     /* Crisp 1-px hairlines instead of diffuse blur */
     --separator:        rgba(0,0,0,0.10);
-    --separator-strong: rgba(0,0,0,0.16);
+    --separator-strong: rgba(0,0,0,0.15);
+    --separator-faint:  rgba(0,0,0,0.06);
     --fill:             rgba(0,0,0,0.05);
     --fill-secondary:   rgba(0,0,0,0.03);
+    --handle:           rgba(0,0,0,0.15);
+    --overlay:          rgba(0,0,0,0.35);
+    --scrim:            rgba(0,0,0,0.50);
+
+    --positive:     #047857;
+    --positive-dim: rgba(5,150,105,0.25);
+    --info:         #2563eb;
+    --danger:       #dc2626;
 
     /* Flat editorial elevations — 0 blur, sharp outline */
     --elev-1:     0 0 0 1px rgba(0,0,0,0.08);
@@ -120,11 +174,13 @@
   body {
     background: var(--bg-base);
     color: var(--label);
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI',
                  Roboto, system-ui, sans-serif;
-    font-weight: 450;
+    font-weight: 400;
     line-height: 1.47;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.011em;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -172,12 +228,16 @@
     margin-bottom: 8px;
   }
 
-  /* Nav chrome — minimal blur, near-solid */
+  /* Nav chrome — frosted glass with edge refraction */
   .ios-chrome {
     background: var(--bg-glass);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
     border-bottom: 1px solid var(--separator);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  [data-theme="light"] .ios-chrome {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
   }
 
   .ios-icon-btn {
@@ -204,9 +264,10 @@
 
   .glass {
     background: var(--bg-glass);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
     border: 1px solid var(--separator);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
   }
 
   .card-neu {
@@ -226,7 +287,8 @@
   .cta-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(160deg, #FF6232 0%, #FF5A1F 45%, #E84000 100%);
+    /* Variables resolve to display-p3 on wide-gamut screens */
+    background: linear-gradient(160deg, #FF6232 0%, var(--accent) 45%, var(--accent-press) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.22),
       inset 0 -1px 0 rgba(0,0,0,0.28),
@@ -239,7 +301,7 @@
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.30),
       inset 0 -1px 0 rgba(0,0,0,0.14),
-      0 3px 12px rgba(255,65,3,0.22),
+      0 3px 12px color-mix(in srgb, var(--accent) 22%, transparent),
       0 1px 4px  rgba(0,0,0,0.16);
   }
 
@@ -250,6 +312,43 @@
     background: linear-gradient(160deg, #FFAC84 0%, #FF9A6A 45%, #FF8040 100%);
     box-shadow: none;
     cursor: not-allowed;
+  }
+
+  /* WhatsApp green primary CTA */
+  .cta-wa {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #34eb74 0%, var(--wa) 50%, #1aad52 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.20),
+      inset 0 -1px 0 rgba(0,0,0,0.24),
+      0 4px 16px rgba(0,0,0,0.50),
+      0 1px 4px  rgba(0,0,0,0.40);
+  }
+  [data-theme="light"] .cta-wa {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.28),
+      inset 0 -1px 0 rgba(0,0,0,0.10),
+      0 3px 12px color-mix(in srgb, var(--wa) 24%, transparent),
+      0 1px 4px  rgba(0,0,0,0.12);
+  }
+  .cta-wa::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.16) 0%,
+      rgba(200,255,220,0.07) 40%,
+      transparent 65%
+    );
+    transform: translate(-100%, 100%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .cta-wa:not(:disabled):hover::before,
+  .cta-wa:not(:disabled):active::before {
+    transform: translate(0, 0);
   }
 
   /* Diagonal shine sweep on hover */
@@ -280,6 +379,25 @@
 
   .scrollbar-thin::-webkit-scrollbar { width: 0; height: 0; }
   .scrollbar-thin { scrollbar-width: none; }
+
+  /* Skeleton shimmer — layout-matching loading surfaces */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--fill);
+    border-radius: var(--r-control);
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    animation: shimmer-sweep 1.8s ease-in-out infinite;
+  }
+  [data-theme="light"] .shimmer::after {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
+  }
 
   /* Leaflet */
   .leaflet-container { background: #050505 !important; }
@@ -329,6 +447,10 @@
 
 @keyframes route-dash {
   to { stroke-dashoffset: -26; }
+}
+
+@keyframes shimmer-sweep {
+  100% { transform: translateX(100%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

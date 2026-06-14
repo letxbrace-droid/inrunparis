@@ -1,22 +1,7 @@
 {
-  "BIENVENUE": {
+  "COUPE26": {
     "discount": 10,
     "fixed": null,
     "label": "10% de réduction"
-  },
-  "VIP15": {
-    "discount": 15,
-    "fixed": null,
-    "label": "15% de réduction"
-  },
-  "PARIS25": {
-    "discount": 25,
-    "fixed": null,
-    "label": "25% sur votre 1ère course"
-  },
-  "BRAHA": {
-    "discount": 100,
-    "fixed": null,
-    "label": "100% de réduction"
   }
 }

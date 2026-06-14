@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent:     '#ff4103',
-        'accent-2': '#ff5a1f',
+        accent:     '#FF5A1F',
+        'accent-2': '#FF5A1F',
         // CSS-variable backed — respond to data-theme switches at runtime
         bg: {
           grouped:   'var(--bg-grouped)',
@@ -24,12 +24,19 @@ export default {
           DEFAULT: 'var(--separator)',
           strong:  'var(--separator-strong)',
         },
-        wa: '#25d366',
+        wa:       'var(--wa)',
+        positive: 'var(--positive)',
+        info:     'var(--info)',
+        danger:   'var(--danger)',
       },
       fontFamily: {
-        body:  ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
-        brand: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'system-ui', 'sans-serif'],
+        body:  ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        brand: ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
         mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      transitionTimingFunction: {
+        spring:     'cubic-bezier(.32,1.2,.55,1)',
+        'out-expo': 'cubic-bezier(.16,1,.3,1)',
       },
       borderRadius: {
         cell:  '12px',
@@ -46,13 +53,17 @@ export default {
         slideUp:   { from: { transform: 'translateY(100%)' }, to: { transform: 'translateY(0)' } },
         slideLeft: { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(0)' } },
         fadeIn:    { from: { opacity: 0 }, to: { opacity: 1 } },
+        fadeUp:    { from: { opacity: 0, transform: 'translateY(14px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
         navIn:     { from: { opacity: 0, transform: 'translateX(-24px)' }, to: { opacity: 1, transform: 'translateX(0)' } },
+        floatY:    { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-4px)' } },
       },
       animation: {
         'slide-up':   'slideUp 0.44s cubic-bezier(.32,1,.55,1) both',
         'slide-left': 'slideLeft 0.34s cubic-bezier(.16,1,.3,1) both',
         'fade-in':    'fadeIn 0.2s ease both',
+        'fade-up':    'fadeUp 0.5s cubic-bezier(.16,1,.3,1) both',
         'nav-in':     'navIn 0.45s cubic-bezier(.16,1,.3,1) both',
+        float:        'floatY 3.2s ease-in-out infinite',
       },
     },
   },

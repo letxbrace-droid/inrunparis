@@ -8,17 +8,23 @@ import TarifsView          from './components/views/TarifsView'
 import CallView            from './components/views/CallView'
 import MesCoursesView      from './components/views/MesCoursesView'
 import CodePromoView       from './components/views/CodePromoView'
+import Coupe2026View       from './components/views/Coupe2026View'
 import AideFaqView         from './components/views/AideFaqView'
 import LegalView           from './components/views/LegalView'
 import HomePill            from './components/home/HomePill'
+import CampaignBanner      from './components/home/CampaignBanner'
 import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
 import InstallPrompt       from './components/ui/InstallPrompt'
+import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
 
-const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'faq', 'legal']
+const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'coupe26', 'faq', 'legal']
+
+const SPLASH_KEY = 'inr-splash'
 
 export default function App() {
+  const [splash,      setSplash]      = useState(() => !sessionStorage.getItem(SPLASH_KEY))
   const [drawerOpen,  setDrawerOpen]  = useState(false)
   const [sheetOpen,   setSheetOpen]   = useState(false)
   const [sheetStep,   setSheetStep]   = useState(1)
@@ -72,6 +78,27 @@ export default function App() {
 
   const handleClose = () => setActiveView('home')
 
+  // Deep link /?promo=COUPE26 → open offer view + auto-apply code
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get('promo')
+    if (param?.toUpperCase() === 'COUPE26') {
+      setActiveView('coupe26')
+      const st = useBookingStore.getState()
+      if (!st.promo) st.setPromo({ code: 'COUPE26', discount: 10, label: 'Coupe du Monde 2026 — −10%' })
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }, [])
+
+  // App badge — show when a booking is awaiting WhatsApp return
+  const awaitingReturn = useBookingStore((s) => s.awaitingReturn)
+  useEffect(() => {
+    if (awaitingReturn) {
+      navigator.setAppBadge?.(1).catch?.(() => {})
+    } else {
+      navigator.clearAppBadge?.().catch?.(() => {})
+    }
+  }, [awaitingReturn])
+
   // Detect return from WhatsApp → confirm booking + back to home.
   // Requires a real hidden→visible round-trip so a blocked window.open
   // never triggers a spurious toast.
@@ -113,6 +140,13 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
+      {/* Splash screen — plays once per browser session */}
+      {splash && (
+        <SplashScreen onDone={() => {
+          sessionStorage.setItem(SPLASH_KEY, '1')
+          setSplash(false)
+        }} />
+      )}
       {/* Map — frozen (pointer-events-none) when any overlay is open */}
       <LeafletMap
         depart={depart}
@@ -142,9 +176,12 @@ export default function App() {
 
       {/* Home pill — hidden while overlay is active or a booking is pending confirmation */}
       {!OVERLAY_VIEWS.includes(activeView) && !confirmBon && (
-        <HomePill
-          onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
-        />
+        <>
+          <HomePill
+            onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
+          />
+          {!sheetOpen && <CampaignBanner onOpen={() => setActiveView('coupe26')} />}
+        </>
       )}
 
       {/* Awaiting-confirmation card — shown after toast dismisses, replaces HomePill */}
@@ -168,6 +205,7 @@ export default function App() {
       <CallView       open={activeView === 'call'}    onClose={handleClose} />
       <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
       <CodePromoView  open={activeView === 'promo'}   onClose={handleClose} />
+      <Coupe2026View  open={activeView === 'coupe26'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
       <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
       <LegalView      open={activeView === 'legal'}   onClose={handleClose} />
 

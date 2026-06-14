@@ -1,11 +1,14 @@
-export default function GlowingCTA({ children, onClick, disabled, type = 'button', className = '' }) {
+const vibe = () => navigator.vibrate?.(10)
+
+export default function GlowingCTA({ children, onClick, disabled, type = 'button', className = '', variant = 'accent' }) {
+  const handleClick = () => { vibe(); onClick?.() }
   return (
     <button
       type={type}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={`
-        cta-glow
+        ${variant === 'wa' ? 'cta-wa' : 'cta-glow'}
         relative flex items-center justify-center gap-2.5
         w-full py-4 px-6 rounded-2xl
         text-white font-bold text-[15px] tracking-wide

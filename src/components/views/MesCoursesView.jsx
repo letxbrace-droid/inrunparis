@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 
+const vibe = () => navigator.vibrate?.(10)
+
 function formatDate(iso) {
   if (!iso) return ''
   return new Date(iso).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
@@ -29,6 +31,7 @@ function BackBtn({ onClose, th }) {
 export default function MesCoursesView({ open, onClose, onReserve }) {
   const th = useAppTheme()
   const bookingHistory = useBookingStore((s) => s.bookingHistory)
+  const redoBooking    = useBookingStore((s) => s.redoBooking)
 
   return (
     <div
@@ -80,10 +83,10 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
             className="flex flex-col items-center justify-center gap-5 pt-24 px-6"
           >
             <div
-              className="flex items-center justify-center rounded-2xl"
+              className="flex items-center justify-center rounded-2xl overflow-hidden"
               style={{
-                width: 136,
-                height: 72,
+                width: 216,
+                height: 96,
                 background: th.bgCard,
                 border: `1px solid ${th.borderFaint}`,
                 boxShadow: th.isDark
@@ -91,46 +94,90 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                   : 'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 4px rgba(0,0,0,.06)',
               }}
             >
-              {/* Luxury sedan side profile */}
-              <svg width="100" height="50" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Road dashes */}
-                <line x1="2" y1="44" x2="98" y2="44" stroke="rgba(255,65,3,.12)" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="6 5"/>
+              {/* Premium sedan — proportional, CSS-variable themed */}
+              <svg width="196" height="84" viewBox="0 0 196 84" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-                {/* Car body */}
-                <path d="M8 38 L8 28 Q8 26 10 26 L90 26 Q92 26 92 28 L92 38 Z"
-                  fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.45)" strokeWidth="1.3" strokeLinejoin="round"/>
+                {/* Ground shadow */}
+                <ellipse cx="98" cy="80" rx="76" ry="2.5"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 6%, transparent)' }} />
 
-                {/* Cabin / roofline — elegant fastback */}
-                <path d="M26 26 L30 13 Q32 10 36 10 L62 10 Q66 10 68 13 L74 26 Z"
-                  fill="rgba(255,65,3,.05)" stroke="rgba(255,65,3,.45)" strokeWidth="1.3" strokeLinejoin="round"/>
-
-                {/* B-pillar */}
-                <line x1="50" y1="10.5" x2="50" y2="26" stroke="rgba(255,65,3,.22)" strokeWidth="1"/>
-
-                {/* Front bumper + headlight */}
-                <path d="M92 30 L95 31 L95 36 L92 37" stroke="rgba(255,65,3,.35)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
-                <line x1="94" y1="32" x2="97" y2="32" stroke="rgba(255,65,3,.65)" strokeWidth="1.6" strokeLinecap="round"/>
-
-                {/* Tail light */}
-                <rect x="6.5" y="28" width="2" height="7" rx="1" fill="rgba(255,65,3,.38)"/>
+                {/* Wheels — drawn before body so body overlaps upper half */}
 
                 {/* Rear wheel */}
-                <circle cx="25" cy="40" r="6.5" fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.5)" strokeWidth="1.3"/>
-                <circle cx="25" cy="40" r="3.2" fill="rgba(255,65,3,.12)" stroke="rgba(255,65,3,.35)" strokeWidth="1"/>
-                <line x1="25" y1="37.2" x2="25" y2="42.8" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
-                <line x1="22.2" y1="40" x2="27.8" y2="40" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+                <circle cx="44" cy="66" r="13" strokeWidth="2"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 7%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
+                <circle cx="44" cy="66" r="5" strokeWidth="1.2"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 14%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 30%, transparent)' }} />
+                {/* 5-spoke rear */}
+                {[0, 72, 144, 216, 288].map((deg) => {
+                  const r1 = 5.8, r2 = 12, a = (deg * Math.PI) / 180
+                  return <line key={deg}
+                    x1={44 + r1 * Math.cos(a)} y1={66 + r1 * Math.sin(a)}
+                    x2={44 + r2 * Math.cos(a)} y2={66 + r2 * Math.sin(a)}
+                    strokeWidth="1.2" strokeLinecap="round"
+                    style={{ stroke: 'color-mix(in srgb, var(--accent) 24%, transparent)' }} />
+                })}
 
                 {/* Front wheel */}
-                <circle cx="75" cy="40" r="6.5" fill="rgba(255,65,3,.07)" stroke="rgba(255,65,3,.5)" strokeWidth="1.3"/>
-                <circle cx="75" cy="40" r="3.2" fill="rgba(255,65,3,.12)" stroke="rgba(255,65,3,.35)" strokeWidth="1"/>
-                <line x1="75" y1="37.2" x2="75" y2="42.8" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
-                <line x1="72.2" y1="40" x2="77.8" y2="40" stroke="rgba(255,65,3,.28)" strokeWidth="0.9"/>
+                <circle cx="152" cy="66" r="13" strokeWidth="2"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 7%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
+                <circle cx="152" cy="66" r="5" strokeWidth="1.2"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 14%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 30%, transparent)' }} />
+                {/* 5-spoke front */}
+                {[0, 72, 144, 216, 288].map((deg) => {
+                  const r1 = 5.8, r2 = 12, a = (deg * Math.PI) / 180
+                  return <line key={deg}
+                    x1={152 + r1 * Math.cos(a)} y1={66 + r1 * Math.sin(a)}
+                    x2={152 + r2 * Math.cos(a)} y2={66 + r2 * Math.sin(a)}
+                    strokeWidth="1.2" strokeLinecap="round"
+                    style={{ stroke: 'color-mix(in srgb, var(--accent) 24%, transparent)' }} />
+                })}
 
-                {/* Door line */}
-                <line x1="50" y1="26" x2="50" y2="38" stroke="rgba(255,65,3,.18)" strokeWidth="0.9" strokeDasharray="2 1.5"/>
+                {/* Road centre dashes */}
+                <line x1="2" y1="79" x2="194" y2="79" strokeWidth="1.2" strokeLinecap="round" strokeDasharray="10 8"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 11%, transparent)' }} />
 
-                {/* Mirror */}
-                <path d="M74 22 L77 22 L77 25 L74 25" stroke="rgba(255,65,3,.35)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                {/* Car body — unified silhouette with wheel arches */}
+                {/* Rear arch: centre x=44, r=14 → from 58 to 30 */}
+                {/* Front arch: centre x=152, r=14 → from 166 to 138 */}
+                <path
+                  d="M 58 46 L 62 24 Q 65 17 72 17 L 126 17 Q 133 17 136 24 L 140 46 L 168 46 Q 180 46 180 56 L 180 66 L 166 66 A 14 14 0 0 0 138 66 L 58 66 A 14 14 0 0 0 30 66 L 14 66 Q 12 66 12 64 L 12 55 Q 12 46 16 46 Z"
+                  strokeWidth="1.6" strokeLinejoin="round"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 8%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 40%, transparent)' }} />
+
+                {/* Cabin glass */}
+                <path
+                  d="M 61 46 L 65 26 Q 68 20 74 20 L 124 20 Q 130 20 133 26 L 137 46 Z"
+                  strokeWidth="1.1" strokeLinejoin="round"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 5%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 26%, transparent)' }} />
+
+                {/* B-pillar */}
+                <line x1="98" y1="20" x2="98" y2="46" strokeWidth="1.2"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 20%, transparent)' }} />
+
+                {/* Tail light — vertical LED strip */}
+                <rect x="10" y="48" width="3" height="14" rx="1.5"
+                  style={{ fill: 'color-mix(in srgb, var(--accent) 62%, transparent)' }} />
+
+                {/* Headlight — upper LED */}
+                <line x1="180" y1="51" x2="187" y2="50" strokeWidth="2.2" strokeLinecap="round"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 76%, transparent)' }} />
+                {/* Headlight — DRL lower */}
+                <line x1="180" y1="56" x2="186" y2="55.5" strokeWidth="1.2" strokeLinecap="round"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
+
+                {/* Door sill trim */}
+                <line x1="58" y1="59" x2="165" y2="59" strokeWidth="0.9"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 14%, transparent)' }} />
+
+                {/* Door split */}
+                <line x1="98" y1="46" x2="98" y2="66" strokeWidth="1" strokeDasharray="3.5 2.5"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 13%, transparent)' }} />
+
+                {/* Side mirror */}
+                <path d="M 137 38 L 145 38 L 145 44 L 137 44" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ stroke: 'color-mix(in srgb, var(--accent) 32%, transparent)' }} />
+
               </svg>
             </div>
 
@@ -146,12 +193,12 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 onClick={onReserve}
                 className="flex items-center gap-2 px-6 py-3.5 rounded-2xl cursor-pointer active:scale-[.97] transition-transform duration-150 select-none"
                 style={{
-                  background: '#ff4103',
+                  background: '#FF5A1F',
                   color: '#fff',
                   fontSize: 14,
                   fontWeight: 700,
                   letterSpacing: '0.01em',
-                  boxShadow: '0 4px 16px rgba(255,65,3,.35)',
+                  boxShadow: '0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent)',
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -174,7 +221,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
               >
                 <div className="flex items-center justify-between px-4 py-2.5"
                   style={{ borderBottom: `1px solid ${th.borderFaint}` }}>
-                  <span className="font-mono text-xs font-bold" style={{ color: '#ff4103' }}>
+                  <span className="font-mono text-xs font-bold" style={{ color: '#FF5A1F' }}>
                     {booking.bonNumber ?? '—'}
                   </span>
                   <span className="text-xs" style={{ color: th.inkDim }}>
@@ -184,14 +231,14 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
 
                 <div className="px-4 py-3 flex flex-col gap-1.5">
                   <div className="flex items-start gap-2">
-                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#ff4103' }} />
+                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#FF5A1F' }} />
                     <p className="text-xs leading-snug" style={{ color: th.inkMid }}>
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>
                   </div>
-                  <div className="ml-[3px] w-px h-3" style={{ background: 'linear-gradient(to bottom, rgba(255,65,3,.4), transparent)' }} />
+                  <div className="ml-[3px] w-px h-3" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 40%, transparent), transparent)' }} />
                   <div className="flex items-start gap-2">
-                    <div className="mt-1 w-2 h-2 rounded-full border flex-shrink-0" style={{ borderColor: 'rgba(255,65,3,.65)' }} />
+                    <div className="mt-1 w-2 h-2 rounded-full border flex-shrink-0" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)' }} />
                     <p className="text-xs leading-snug" style={{ color: th.inkMid }}>
                       {ShortName(booking.arrive?.name ?? '—')}
                     </p>
@@ -212,7 +259,27 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                     {booking.price?.mins ?? '—'} min
                   </span>
                   {booking.price?.isAirport && (
-                    <span className="ml-auto text-xs" style={{ color: 'rgba(255,65,3,.65)' }}>✈</span>
+                    <span className="text-xs" style={{ color: 'color-mix(in srgb, var(--accent) 65%, transparent)' }}>✈</span>
+                  )}
+                  {booking.promoCode && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--positive) 12%, transparent)', color: 'var(--positive)' }}>
+                      {booking.promoCode}
+                    </span>
+                  )}
+                  {/* Refaire ce trajet — only if lat/lng were stored */}
+                  {booking.depart?.lat && (
+                    <button
+                      onClick={() => {
+                        vibe()
+                        const ok = redoBooking(booking)
+                        if (ok) { onClose(); onReserve?.() }
+                      }}
+                      className="ml-auto text-[11px] font-bold cursor-pointer active:scale-95 transition-transform px-2.5 py-1 rounded-full"
+                      style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: '#FF5A1F', border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)' }}
+                      aria-label="Refaire ce trajet"
+                    >
+                      ↺ Refaire
+                    </button>
                   )}
                 </div>
               </motion.div>

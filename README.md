@@ -1,143 +1,58 @@
-# Planning Chauffeur
+# I&N RUN — Chauffeur Privé VTC Paris
 
-App PWA + native (iOS/Android via Capacitor) pour gérer le planning chauffeur bus / VTC : **OCR de screenshots**, **alarmes natives** pour les prises de service, **météo J+1**, **contrôles de cohérence** (repos quotidien, durée max, total semaine), **export iCalendar**.
+PWA de réservation de chauffeur privé VTC à Paris et Île-de-France.
+Tarif fixe calculé en temps réel, réservation envoyée via WhatsApp — aucun backend.
 
----
-
-## 🚀 Build APK sans rien installer (recommandé)
-
-Tu pousses sur GitHub → la CI compile l'APK → tu télécharges depuis ton téléphone.
-
-### 1. Crée un repo GitHub
-
-Depuis ton phone (app GitHub) ou web :
-- Nouveau repo, par ex. `planning-chauffeur`, **Private** ou **Public** au choix
-
-### 2. Pousse le code
-
-Sur Termux ou n'importe quel terminal :
-
-```bash
-cd planning-chauffeur
-git init
-git add .
-git commit -m "init"
-git branch -M main
-git remote add origin git@github.com:TON_USER/planning-chauffeur.git
-git push -u origin main
-```
-
-### 3. Attends ~5–10 min
-
-Va sur **github.com/TON_USER/planning-chauffeur/actions** → tu vois le workflow `Build Android APK` tourner.
-
-### 4. Télécharge l'APK
-
-À la fin, dans la run, section **Artifacts** → `planning-chauffeur-apk` (ZIP). Télécharge depuis ton téléphone, dézippe, installe l'APK (autorise « Sources inconnues » dans les réglages).
-
-### 5. Active les alarmes
-
-Dans l'app : section **4 / Réveils** → **Activer alarmes natives**. Android te demande la permission notifications + permission alarmes exactes (à activer dans Réglages système).
+**Production :** https://letxbrace-droid.github.io/inrunparis/
 
 ---
 
-## 🧪 Test PWA en attendant (sans build)
+## Stack
 
-Tu peux tester immédiatement la version web sur GitHub Pages : il suffit de servir `www/index.html` à la racine. Ou ouvrir le fichier en local sur ton téléphone via Termux + un serveur HTTP simple :
+| Couche | Technologie |
+|---|---|
+| UI | React 18 + Vite 5 |
+| State | Zustand (persisté localStorage) |
+| Carte | Leaflet + OSRM (routing public, fallback haversine) |
+| Animations | Framer Motion |
+| Styles | Tailwind CSS + design system CSS variables (dark/light) |
+| Tests | Vitest + Testing Library |
 
-```bash
-cd planning-chauffeur/www
-python3 -m http.server 8080
-# puis ouvre http://localhost:8080 dans Chrome
-```
-
-⚠️ La version PWA n'a pas les **vraies alarmes natives** — utilise l'export `.ics` vers ton Calendrier en attendant le build APK.
-
----
-
-## 📂 Structure
-
-```
-planning-chauffeur/
-├── www/
-│   └── index.html              ← l'app entière (1 fichier)
-├── .github/workflows/
-│   └── build-android.yml       ← CI qui build l'APK
-├── package.json                ← deps Capacitor
-├── capacitor.config.json       ← config app (id, nom, plugins)
-├── .gitignore
-└── README.md
-```
-
-`android/` et `ios/` ne sont **pas** dans le repo — la CI les régénère à chaque build via `npx cap add android`. Si tu builds en local et veux versionner ces dossiers (recommandé pour personnaliser l'icône, la signature release, etc.), retire-les du `.gitignore`.
-
----
-
-## 🔧 Build local (si tu préfères)
-
-Si tu as un poste de dev sous la main :
+## Démarrer
 
 ```bash
 npm install
-npx cap add android
-npx cap sync
-npx cap open android       # ouvre Android Studio
+npm run dev        # http://localhost:5173/inrunparis/
+npm test           # tests unitaires
+npm run build      # build production → dist/
 ```
 
-Build dans Android Studio → APK dans `android/app/build/outputs/apk/debug/`.
+## Structure
 
----
-
-## 🍎 Build iOS
-
-Le workflow CI ne build **pas iOS** par défaut (les runners macOS GitHub coûtent 10× plus cher en minutes). Pour iOS :
-- Mac requis avec Xcode
-- `npx cap add ios` puis `npx cap open ios`
-- Voir `READMECAPACITOR.md` pour les détails (signing, Info.plist)
-
-Pour 600 chauffeurs, viable seulement avec compte Apple Developer (99 €/an) + TestFlight.
-
----
-
-## 🎛️ Customisation
-
-### Changer l'app id / nom
-Édite `capacitor.config.json` :
-```json
-{
-  "appId": "fr.tondomaine.planning",
-  "appName": "Mon App"
-}
+```
+index.html               ← entrée Vite (SEO, Schema.org, manifest)
+src/
+├── App.jsx              ← orchestration vues + thème auto Paris
+├── components/
+│   ├── map/             ← LeafletMap (jour/nuit)
+│   ├── tunnel/          ← BottomSheet 4 étapes (route → prix → options → récap)
+│   ├── views/           ← Tarifs, Courses, Promo, FAQ, Légal, Appel
+│   ├── layout/          ← TopBar, SideDrawer
+│   ├── home/            ← HomePill, AwaitingCard
+│   └── ui/              ← GlassCard, GlowingCTA, toasts…
+├── hooks/               ← useOSRM, useGeolocation, useTrafficWeather
+├── store/               ← useBookingStore (Zustand)
+└── utils/               ← priceEngine, whatsappEncoder, geocoder, push
+public/                  ← manifest, sw.js, icônes, hub.html (dashboard chauffeur)
+ops/                     ← PWA admin séparée (copiée dans dist/ par la CI)
 ```
 
-### Changer l'icône
-Place `assets/icon.png` (1024×1024) à la racine, puis :
-```bash
-npm install --save-dev @capacitor/assets
-npx capacitor-assets generate
-```
+## Tarification
 
-### Changer la couleur du splash / theme
-`capacitor.config.json` → `plugins.SplashScreen.backgroundColor`
+Base 13 € + 0,82 €/km + 0,16 €/min · minimum 32 € · nuit +15 % (22h–6h) ·
+aéroport +6 € · van +25 % · codes promo (%, fixe) — voir `src/utils/priceEngine.js`.
 
----
+## Déploiement
 
-## 🐛 Debug
-
-| Problème | Solution |
-|---|---|
-| L'APK s'installe pas | Active « Sources inconnues » dans les réglages Android |
-| Les alarmes sonnent pas | Réglages > Apps > Planning Chauffeur > Alarmes et rappels : activer |
-| Permission notifications refusée | Réinstalle ou réglages > notifications > activer |
-| OCR très lent | Premier lancement : télécharge ~10 Mo de modèle FR, c'est normal. Ensuite cache local. |
-| Build CI échoue | Onglet Actions > clique la run en échec > regarde le log. Souvent : Java mémoire (relance), ou conflit Gradle (touche pas, c'est temporaire). |
-
----
-
-## 📋 Roadmap
-
-- [ ] Scan caméra direct (sans passer par la galerie)
-- [ ] Synchronisation entre plusieurs appareils (backend FastAPI)
-- [ ] Mode dépôt avec admin (pour rouler sur 600 chauffeurs)
-- [ ] Intégration directe planning RATP / Transilien (parsing PDF officiel)
-- [ ] Cross-référence avec courses VTC pour optimiser les doubles activités
+Push sur `main` → GitHub Actions build Vite + copie `ops/` → GitHub Pages.
+Workflow : `.github/workflows/deploy-pages.yml`.
