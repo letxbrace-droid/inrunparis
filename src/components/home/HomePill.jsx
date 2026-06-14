@@ -133,6 +133,68 @@ export default function HomePill({ onOpenSheet }) {
     : route && price ? 'Réserver ce trajet →'
     : 'Calculer le trajet…'
 
+  // Autocomplete dropdown — rendered inside the active field row so it drops
+  // directly beneath the input the user is typing in (not below the whole card).
+  const renderAutocomplete = (field) => (
+    <AnimatePresence>
+      {acField === field && suggestions.length > 0 && (
+        <motion.ul
+          role="listbox"
+          initial={{ opacity: 0, y: -8, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.97 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute left-0 right-0 z-30 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
+          style={{
+            top:        'calc(100% + 6px)',
+            maxHeight:  'min(300px, 42vh)',
+            overflowY:  'auto',
+            background: th.bgCard,
+            boxShadow:  th.isDark
+              ? '0 12px 32px rgba(0,0,0,.6)'
+              : '0 8px 24px rgba(0,0,0,.14)',
+          }}
+        >
+          {suggestions.map((s, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <button
+                onClick={() => pickSuggestion(s, field)}
+                className="w-full text-left flex items-center gap-3 px-4 py-3 border-b last:border-0 active:opacity-70 transition-opacity cursor-pointer"
+                style={{ borderColor: th.borderFaint }}
+              >
+                <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? 'var(--accent)' }}>
+                  <PinIcon color={TYPE_COLOR[s.type] ?? 'var(--accent)'} />
+                </span>
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="text-sm font-semibold truncate" style={{ color: th.inkFull }}>
+                    {s.name}
+                  </span>
+                  {s.city && (
+                    <span className="text-xs truncate mt-px" style={{ color: th.inkMuted }}>
+                      {s.city}
+                    </span>
+                  )}
+                </div>
+              </button>
+            </motion.li>
+          ))}
+          {acLoading && (
+            <li className="flex justify-center py-2">
+              <span className="w-3 h-3 border-2 rounded-full animate-spin"
+                style={{ borderColor: 'color-mix(in srgb, var(--accent) 28%, transparent)', borderTopColor: 'var(--accent)' }} />
+            </li>
+          )}
+        </motion.ul>
+      )}
+    </AnimatePresence>
+  )
+
+
   return (
     <>
       {/* ──────────── PILL (collapsed) ──────────── */}
@@ -285,7 +347,7 @@ export default function HomePill({ onOpenSheet }) {
                   : 'inset 0 1px 0 rgba(255,255,255,.95), 0 0 0 1px rgba(0,0,0,.04)',
               }}>
                 {/* Departure row */}
-                <div className="flex items-center gap-3 px-4 pt-3.5 pb-3">
+                <div className="relative flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: '#FF5A1F' }} />
                   <div className="flex-1 min-w-0">
@@ -340,6 +402,8 @@ export default function HomePill({ onOpenSheet }) {
                       </svg>
                     )}
                   </button>
+
+                  {renderAutocomplete('depart')}
                 </div>
 
                 {/* Connector */}
@@ -357,7 +421,7 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
 
                 {/* Arrival row */}
-                <div className="flex items-center gap-3 px-4 pt-3 pb-3.5">
+                <div className="relative flex items-center gap-3 px-4 pt-3 pb-3.5">
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
                     style={{ borderColor: 'color-mix(in srgb, var(--accent) 75%, transparent)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
@@ -375,63 +439,9 @@ export default function HomePill({ onOpenSheet }) {
                       style={{ color: th.inkFull }}
                     />
                   </div>
-                </div>
 
-                {/* Autocomplete dropdown */}
-                <AnimatePresence>
-                  {suggestions.length > 0 && (
-                    <motion.ul
-                      role="listbox"
-                      initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -8, scale: 0.97 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute left-0 right-0 z-10 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
-                      style={{
-                        top:        'calc(100% + 8px)',
-                        background: th.bgCard,
-                        boxShadow:  th.isDark
-                          ? '0 8px 24px rgba(0,0,0,.55)'
-                          : '0 4px 16px rgba(0,0,0,.12)',
-                      }}
-                    >
-                      {suggestions.map((s, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.2, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                          <button
-                            onClick={() => pickSuggestion(s, acField)}
-                            className="w-full text-left flex items-center gap-3 px-4 py-3 border-b last:border-0 active:opacity-70 transition-opacity cursor-pointer"
-                            style={{ borderColor: th.borderFaint }}
-                          >
-                            <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? 'var(--accent)' }}>
-                              <PinIcon color={TYPE_COLOR[s.type] ?? 'var(--accent)'} />
-                            </span>
-                            <div className="flex flex-col min-w-0 flex-1">
-                              <span className="text-sm font-semibold truncate" style={{ color: th.inkFull }}>
-                                {s.name}
-                              </span>
-                              {s.city && (
-                                <span className="text-xs truncate mt-px" style={{ color: th.inkMuted }}>
-                                  {s.city}
-                                </span>
-                              )}
-                            </div>
-                          </button>
-                        </motion.li>
-                      ))}
-                      {acLoading && (
-                        <li className="flex justify-center py-2">
-                          <span className="w-3 h-3 border-2 rounded-full animate-spin"
-                            style={{ borderColor: 'color-mix(in srgb, var(--accent) 28%, transparent)', borderTopColor: 'var(--accent)' }} />
-                        </li>
-                      )}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
+                  {renderAutocomplete('arrive')}
+                </div>
               </div>
 
               {/* Route info */}
