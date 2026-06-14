@@ -9,17 +9,47 @@ import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
 
+const DROPDOWN_MAX_H = 220  // px — keep in sync with maxHeight below
+
 function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   const [query,       setQuery]   = useState(value?.name ?? '')
   const [suggestions, setSuggest] = useState([])
   const [loading,     setLoading] = useState(false)
   const [focused,     setFocused] = useState(false)
+  const [dropUp,      setDropUp]  = useState(false)
   const timerRef = useRef(null)
+  const wrapRef  = useRef(null)
 
   // Sync field when value is set externally (GPS detection, store hydration)
   useEffect(() => {
     if (value?.name) setQuery(displayAddr(value))
   }, [value])
+
+  // Decide whether the suggestions panel opens upward — when the keyboard
+  // (tracked via visualViewport) leaves too little room below the field.
+  const evaluateDropDirection = useCallback(() => {
+    const el = wrapRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const vh = window.visualViewport?.height ?? window.innerHeight
+    const spaceBelow = vh - rect.bottom
+    const spaceAbove = rect.top
+    // Flip up only when there isn't enough room below but there is above.
+    setDropUp(spaceBelow < DROPDOWN_MAX_H && spaceAbove > spaceBelow)
+  }, [])
+
+  // Re-evaluate while suggestions are visible (keyboard show/hide resizes vv)
+  useEffect(() => {
+    if (suggestions.length === 0) return
+    evaluateDropDirection()
+    const vv = window.visualViewport
+    vv?.addEventListener('resize', evaluateDropDirection)
+    vv?.addEventListener('scroll', evaluateDropDirection)
+    return () => {
+      vv?.removeEventListener('resize', evaluateDropDirection)
+      vv?.removeEventListener('scroll', evaluateDropDirection)
+    }
+  }, [suggestions.length, evaluateDropDirection])
 
   const handleChange = (e) => {
     const q = e.target.value
@@ -31,6 +61,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
       try {
         const results = await searchPlaces(q)
         setSuggest(results)
+        evaluateDropDirection()
       } finally {
         setLoading(false)
       }
@@ -45,7 +76,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
   }
 
   return (
-    <div className="relative flex-1">
+    <div className="relative flex-1" ref={wrapRef}>
       <div
         className="flex items-center rounded-2xl transition-all duration-200"
         style={{
@@ -80,12 +111,14 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
       {suggestions.length > 0 && (
         <ul
           role="listbox"
-          className="absolute top-full left-0 right-0 mt-1.5 z-20 rounded-2xl overflow-hidden"
+          className={`absolute left-0 right-0 z-30 rounded-2xl overflow-hidden ${dropUp ? 'bottom-full mb-1.5' : 'top-full mt-1.5'}`}
           style={{
             background: th.bgCard,
-            boxShadow: '0 8px 24px rgba(0,0,0,.55)',
+            boxShadow: dropUp
+              ? '0 -8px 24px rgba(0,0,0,.55)'
+              : '0 8px 24px rgba(0,0,0,.55)',
             border: `1px solid ${th.border}`,
-            maxHeight: 200,
+            maxHeight: DROPDOWN_MAX_H,
             overflowY: 'auto',
           }}
         >
