@@ -55,6 +55,9 @@ export default function HomePill({ onOpenSheet }) {
   // GPS
   const { status: geoStatus, detect } = useGeolocation()
 
+  // Last known GPS position — used as POI search center when depart isn't set yet
+  const gpsCenter = useRef(null)
+
   // Hydrate input display from persisted store on mount
   useEffect(() => {
     if (depart?.name) setDepartQuery(displayAddr(depart))
@@ -80,18 +83,22 @@ export default function HomePill({ onOpenSheet }) {
     })
   }, [depart?.lat, depart?.lng, arrive?.lat, arrive?.lng]) // eslint-disable-line
 
-  // Autocomplete trigger
+  // Autocomplete trigger — passes a nearby center for location-biased / POI searches
   const triggerAC = useCallback((q, field) => {
     clearTimeout(acTimer.current)
     setSuggestions([])
     setAcField(field)
     if (q.length < 2) return
+    // Use depart coords when searching arrive, otherwise last GPS fix
+    const center = (field === 'arrive' && depart?.lat)
+      ? { lat: depart.lat, lng: depart.lng }
+      : gpsCenter.current
     acTimer.current = setTimeout(async () => {
       setAcLoading(true)
-      try   { setSuggestions(await searchPlaces(q)) }
+      try   { setSuggestions(await searchPlaces(q, center)) }
       finally { setAcLoading(false) }
     }, 350)
-  }, [])
+  }, [depart])
 
   const pickSuggestion = useCallback((item, field) => {
     const label = displayAddr(item)
@@ -113,6 +120,7 @@ export default function HomePill({ onOpenSheet }) {
       setDepartQuery(displayAddr(result))
       setDepart(result)
       setRouteGeometry(null)
+      gpsCenter.current = { lat: result.lat, lng: result.lng }
     })
   }, [detect, setDepart, setRouteGeometry])
 
@@ -167,9 +175,20 @@ export default function HomePill({ onOpenSheet }) {
                 className="w-full text-left flex items-center gap-3 px-4 py-3 border-b last:border-0 active:opacity-70 transition-opacity cursor-pointer"
                 style={{ borderColor: th.borderFaint }}
               >
-                <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? 'var(--accent)' }}>
-                  <PinIcon color={TYPE_COLOR[s.type] ?? 'var(--accent)'} />
-                </span>
+                {/* Icon — emoji pill for POIs, pin for addresses */}
+                {s.poiIcon ? (
+                  <span
+                    className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-[15px] leading-none"
+                    style={{ background: (s.poiColor || '#666') + '22' }}
+                    aria-hidden="true"
+                  >
+                    {s.poiIcon}
+                  </span>
+                ) : (
+                  <span className="flex-shrink-0 mt-0.5" style={{ color: TYPE_COLOR[s.type] ?? 'var(--accent)' }}>
+                    <PinIcon color={TYPE_COLOR[s.type] ?? 'var(--accent)'} />
+                  </span>
+                )}
                 <div className="flex flex-col min-w-0 flex-1">
                   <span className="text-sm font-semibold truncate" style={{ color: th.inkFull }}>
                     {s.name}
