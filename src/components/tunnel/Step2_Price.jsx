@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import useBookingStore from '../../store/useBookingStore'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import useBookingStore, { getPromoCodes } from '../../store/useBookingStore'
 import { applyPromoDiscount } from '../../utils/priceEngine'
 import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
@@ -47,7 +48,20 @@ const itemV      = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, tr
 export default function Step2Price({ onNext, onBack }) {
   const th = useAppTheme()
   const { depart, arrive, price, promo } = useBookingStore()
+  const setPromo = useBookingStore(s => s.setPromo)
   const displayPrice = applyPromoDiscount(price?.final, promo)
+
+  const [promoOpen,   setPromoOpen]   = useState(false)
+  const [promoInput,  setPromoInput]  = useState('')
+  const [promoStatus, setPromoStatus] = useState(null) // null | 'error'
+
+  const applyPromo = () => {
+    const code = promoInput.trim().toUpperCase()
+    if (!code) return
+    const found = getPromoCodes()[code]
+    if (found) { navigator.vibrate?.(10); setPromo({ code, ...found }); setPromoOpen(false); setPromoInput(''); setPromoStatus(null) }
+    else setPromoStatus('error')
+  }
 
   if (!price) return (
     <div className="flex flex-col items-center justify-center gap-4 px-5 py-16">
@@ -264,6 +278,91 @@ export default function Step2Price({ onNext, onBack }) {
             <span className="text-[11px] font-medium" style={{ color: th.inkDim }}>{t}</span>
           </span>
         ))}
+      </motion.div>
+
+      {/* ── Code promo inline ────────────────────────────────────── */}
+      <motion.div variants={itemV}>
+        {promo ? (
+          /* Active promo badge */
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            style={{
+              background: 'color-mix(in srgb, var(--positive) 8%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--positive) 28%, transparent)',
+            }}
+          >
+            <span className="text-base flex-shrink-0">🎁</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold" style={{ color: 'var(--positive)' }}>{promo.code}</p>
+              <p className="text-xs truncate" style={{ color: 'color-mix(in srgb, var(--positive) 60%, transparent)' }}>{promo.label}</p>
+            </div>
+            <button
+              onClick={() => { setPromo(null); setPromoInput(''); setPromoStatus(null) }}
+              className="text-xs underline cursor-pointer flex-shrink-0"
+              style={{ color: 'color-mix(in srgb, var(--positive) 55%, transparent)' }}
+            >
+              Retirer
+            </button>
+          </div>
+        ) : (
+          /* Promo input collapsible */
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setPromoOpen(o => !o)}
+              className="flex items-center justify-center gap-1.5 py-1.5 cursor-pointer active:opacity-60 transition-opacity"
+            >
+              <span className="text-[11px]">🎁</span>
+              <span className="text-xs font-semibold underline decoration-dotted" style={{ color: th.inkMuted }}>
+                {promoOpen ? 'Annuler' : "J'ai un code promo"}
+              </span>
+            </button>
+            <AnimatePresence initial={false}>
+              {promoOpen && (
+                <motion.div
+                  key="promo-input"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex gap-2 pt-1">
+                    <input
+                      type="text"
+                      value={promoInput}
+                      onChange={e => { setPromoInput(e.target.value.toUpperCase()); setPromoStatus(null) }}
+                      onKeyDown={e => e.key === 'Enter' && applyPromo()}
+                      placeholder="CODE PROMO"
+                      autoFocus
+                      maxLength={20}
+                      className="flex-1 px-4 py-3 rounded-xl text-sm font-mono font-bold tracking-widest outline-none"
+                      style={{
+                        background: th.bgInput,
+                        border: `1px solid ${promoStatus === 'error' ? 'color-mix(in srgb, var(--danger) 50%, transparent)' : th.borderFaint}`,
+                        color: th.inkFull,
+                        transition: 'border-color .15s',
+                      }}
+                      aria-label="Code promotionnel"
+                    />
+                    <button
+                      onClick={applyPromo}
+                      disabled={!promoInput.trim()}
+                      className="cta-glow px-4 py-3 rounded-xl text-sm font-bold text-white cursor-pointer disabled:opacity-35 active:scale-95 transition-transform overflow-hidden relative"
+                    >
+                      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
+                      OK
+                    </button>
+                  </div>
+                  {promoStatus === 'error' && (
+                    <p className="text-xs px-1 mt-1.5" style={{ color: 'color-mix(in srgb, var(--danger) 78%, transparent)' }}>
+                      Code invalide — vérifiez l'orthographe.
+                    </p>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
       </motion.div>
 
       {/* ── Nav ──────────────────────────────────────────────────── */}

@@ -7,6 +7,7 @@ import { computePriceForBooking } from '../../utils/priceEngine'
 import { searchPlaces, displayAddr, TYPE_COLOR } from '../../utils/geocoder'
 import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
+import { useFavorites } from '../../hooks/useFavorites'
 
 const TAGS = [
   'CDG · Orly · Beauvais',
@@ -57,6 +58,10 @@ export default function HomePill({ onOpenSheet }) {
 
   // Last known GPS position — used as POI search center when depart isn't set yet
   const gpsCenter = useRef(null)
+
+  // Favoris (Maison / Travail)
+  const { favs, saveFav, removeFav } = useFavorites()
+  const [savingFor, setSavingFor] = useState(null) // 'depart' | 'arrive' | null
 
   // Hydrate input display from persisted store on mount
   useEffect(() => {
@@ -113,7 +118,26 @@ export default function HomePill({ onOpenSheet }) {
     }
     setSuggestions([])
     setAcField(null)
+    setSavingFor(null)
   }, [setDepart, setArrive, setRouteGeometry])
+
+  const handleSaveFav = (slot) => {
+    const place = savingFor === 'depart' ? depart : arrive
+    if (place) { saveFav(slot, place); navigator.vibrate?.(10) }
+    setSavingFor(null)
+  }
+
+  const fillFav = (fav) => {
+    // Fill active field, or first empty one
+    const target = acField || (!depart ? 'depart' : 'arrive')
+    if (target === 'depart') {
+      setDepartQuery(displayAddr(fav)); setDepart(fav); setRouteGeometry(null)
+    } else {
+      setArriveQuery(displayAddr(fav)); setArrive(fav); setRouteGeometry(null)
+    }
+    setSuggestions([])
+    setSavingFor(null)
+  }
 
   const handleGPS = useCallback(() => {
     detect(result => {
@@ -130,8 +154,8 @@ export default function HomePill({ onOpenSheet }) {
     onOpenSheet(price ? 2 : 1)
   }, [price, onOpenSheet])
 
-  const openCard  = () => { setOpen(true);  setSuggestions([]) }
-  const closeCard = () => { setOpen(false); setSuggestions([]) }
+  const openCard  = () => { setOpen(true);  setSuggestions([]); setSavingFor(null) }
+  const closeCard = () => { setOpen(false); setSuggestions([]); setSavingFor(null) }
 
   // CTA label
   const ctaLabel = !depart ? 'Entrez votre départ'
@@ -357,6 +381,46 @@ export default function HomePill({ onOpenSheet }) {
                 </span>
               </div>
 
+              {/* ── Favoris rapides (Maison / Travail) ─────────── */}
+              {(favs.home || favs.work) && (
+                <div className="flex gap-2 -mt-1">
+                  {[
+                    { slot: 'home', icon: '🏠', label: 'Domicile' },
+                    { slot: 'work', icon: '💼', label: 'Travail'  },
+                  ].map(({ slot, icon, label }) => {
+                    const fav = favs[slot]
+                    if (!fav) return null
+                    return (
+                      <button
+                        key={slot}
+                        onClick={() => fillFav(fav)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer active:scale-95 transition-transform select-none overflow-hidden"
+                        style={{
+                          maxWidth: 'calc(50% - 4px)',
+                          background: th.isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.05)',
+                          border: `1px solid ${th.border}`,
+                          color: th.inkMid,
+                        }}
+                        aria-label={`Utiliser ${label} : ${fav.name}`}
+                      >
+                        <span aria-hidden="true" className="flex-shrink-0">{icon}</span>
+                        <span className="truncate">{fav.name.split(',')[0]}</span>
+                        <span
+                          role="button"
+                          aria-label={`Supprimer ${label}`}
+                          onClick={e => { e.stopPropagation(); removeFav(slot) }}
+                          className="ml-0.5 flex-shrink-0 opacity-40 hover:opacity-90 active:opacity-100 transition-opacity"
+                        >
+                          <svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                            <path d="M1 1l8 8M9 1l-8 8"/>
+                          </svg>
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
               {/* Fields card */}
               <div className="relative rounded-2xl" style={{
                 background: th.bgCard,
@@ -384,6 +448,26 @@ export default function HomePill({ onOpenSheet }) {
                       style={{ color: th.inkFull }}
                     />
                   </div>
+                  {/* Save as favourite ★ */}
+                  {depart && (
+                    <button
+                      onClick={() => setSavingFor(savingFor === 'depart' ? null : 'depart')}
+                      aria-label="Enregistrer comme favori"
+                      className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg cursor-pointer transition-all"
+                      style={{
+                        background: savingFor === 'depart' ? 'rgba(245,197,24,.15)' : 'transparent',
+                        border: `1px solid ${savingFor === 'depart' ? 'rgba(245,197,24,.4)' : 'transparent'}`,
+                        color: savingFor === 'depart' ? '#b5960c' : th.inkDim,
+                      }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24"
+                        fill={savingFor === 'depart' ? 'currentColor' : 'none'}
+                        stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/>
+                      </svg>
+                    </button>
+                  )}
+
                   {/* GPS button */}
                   <button
                     onClick={handleGPS}
@@ -459,9 +543,77 @@ export default function HomePill({ onOpenSheet }) {
                     />
                   </div>
 
+                  {/* Save as favourite ★ */}
+                  {arrive && (
+                    <button
+                      onClick={() => setSavingFor(savingFor === 'arrive' ? null : 'arrive')}
+                      aria-label="Enregistrer comme favori"
+                      className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg cursor-pointer transition-all"
+                      style={{
+                        background: savingFor === 'arrive' ? 'rgba(245,197,24,.15)' : 'transparent',
+                        border: `1px solid ${savingFor === 'arrive' ? 'rgba(245,197,24,.4)' : 'transparent'}`,
+                        color: savingFor === 'arrive' ? '#b5960c' : th.inkDim,
+                      }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24"
+                        fill={savingFor === 'arrive' ? 'currentColor' : 'none'}
+                        stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/>
+                      </svg>
+                    </button>
+                  )}
+
                   {renderAutocomplete('arrive')}
                 </div>
               </div>
+
+              {/* ── Panneau sauvegarde favori ──────────────────── */}
+              <AnimatePresence>
+                {savingFor && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-2xl"
+                      style={{
+                        background: th.isDark ? 'rgba(245,197,24,.07)' : 'rgba(245,197,24,.09)',
+                        border: '1px solid rgba(245,197,24,.25)',
+                      }}
+                    >
+                      <span className="text-[11px] font-medium flex-shrink-0" style={{ color: th.inkMuted }}>
+                        Enregistrer comme :
+                      </span>
+                      <button
+                        onClick={() => handleSaveFav('home')}
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer active:scale-95 transition-transform"
+                        style={{ background: 'rgba(245,197,24,.18)', color: '#8a6e00', border: '1px solid rgba(245,197,24,.35)' }}
+                      >
+                        🏠 Domicile
+                      </button>
+                      <button
+                        onClick={() => handleSaveFav('work')}
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer active:scale-95 transition-transform"
+                        style={{ background: 'rgba(99,102,241,.12)', color: '#5558e3', border: '1px solid rgba(99,102,241,.3)' }}
+                      >
+                        💼 Travail
+                      </button>
+                      <button
+                        onClick={() => setSavingFor(null)}
+                        className="ml-auto flex-shrink-0 opacity-40 hover:opacity-70 transition-opacity cursor-pointer"
+                        aria-label="Annuler"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                          <path d="M1 1l10 10M11 1l-10 10"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Route info */}
               {routeLoading && (
