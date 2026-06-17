@@ -293,6 +293,21 @@ export default function HomePill({ onOpenSheet }) {
               : 'linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent)',
           }} />
 
+          {/* Reflet glissant — lumière qui balaie la pilule */}
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-y-0 pointer-events-none"
+            style={{
+              width: '38%',
+              background: th.isDark
+                ? 'linear-gradient(100deg, transparent, rgba(255,255,255,.07) 45%, rgba(255,180,120,.10) 55%, transparent)'
+                : 'linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent)',
+            }}
+            initial={{ x: '-130%' }}
+            animate={{ x: '360%' }}
+            transition={{ duration: 1.15, repeat: Infinity, repeatDelay: 4.8, ease: [0.4, 0, 0.2, 1] }}
+          />
+
           {depart && arrive ? (
             /* ───── Aperçu du trajet ───── */
             <span className="flex items-center gap-3 w-full px-4 py-3">
@@ -346,52 +361,61 @@ export default function HomePill({ onOpenSheet }) {
               </span>
             </span>
           ) : (
-            /* ───── Invite — hiérarchie marquée + architecture nichée ───── */
-            <span className="flex items-center gap-3 w-full px-3.5 py-3">
-              {/* Tuile loupe — cœur niché accent */}
-              <span
-                className="flex items-center justify-center flex-shrink-0"
+            /* ───── Invite — signature : typo massive + profondeur + micro-motion ───── */
+            <span className="flex items-center gap-3.5 w-full px-4 py-3.5">
+              {/* Tuile loupe — cœur niché accent, respiration idle */}
+              <motion.span
+                className="flex items-center justify-center flex-shrink-0 relative"
                 style={{
-                  width: 38, height: 38, borderRadius: 13,
-                  background: 'color-mix(in srgb, var(--accent) 14%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)',
-                  boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 22%, transparent)',
+                  width: 42, height: 42, borderRadius: 14,
+                  background: 'linear-gradient(145deg, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent) 9%, transparent))',
+                  border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+                  boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 30%, transparent), 0 4px 14px color-mix(in srgb, var(--accent) 24%, transparent)',
                 }}
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.4" strokeLinecap="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.5" strokeLinecap="round">
                   <circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.35-4.35"/>
                 </svg>
-              </span>
+              </motion.span>
 
-              {/* Prompt dominant + tag micro */}
-              <span className="flex flex-col flex-1 min-w-0 text-left gap-0.5">
-                <span className="text-[16px] font-bold leading-tight" style={{ color: th.inkFull, letterSpacing: '-0.01em' }}>
-                  Où allons-nous ?
+              {/* Prompt dominant — typo massive + tag micro */}
+              <span className="flex flex-col flex-1 min-w-0 text-left gap-1">
+                <span className="leading-none" style={{ color: th.inkFull, fontSize: 19, fontWeight: 800, letterSpacing: '-0.02em' }}>
+                  Où allons-nous&nbsp;?
                 </span>
                 <span className="flex items-center gap-1.5 overflow-hidden">
                   <span
                     className={`w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
                   />
-                  <span className={`text-[11px] tracking-wide truncate transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
+                  <span className={`text-[11.5px] tracking-wide truncate transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
                     style={{ color: th.inkMuted }}>
                     {TAGS[tagIdx]}
                   </span>
                 </span>
               </span>
 
-              {/* Flèche niche — pastille accent */}
-              <span
-                className="flex items-center justify-center flex-shrink-0"
-                style={{
-                  width: 32, height: 32, borderRadius: 999,
-                  background: '#FF5A1F',
-                  boxShadow: '0 3px 12px color-mix(in srgb, var(--accent) 45%, transparent)',
-                }}
+              {/* Flèche niche — pastille accent, nudge + halo pulsant */}
+              <motion.span
+                className="flex items-center justify-center flex-shrink-0 relative"
+                style={{ width: 36, height: 36, borderRadius: 999, background: '#FF5A1F' }}
+                animate={{ boxShadow: [
+                  '0 3px 12px color-mix(in srgb, var(--accent) 40%, transparent)',
+                  '0 4px 20px color-mix(in srgb, var(--accent) 65%, transparent)',
+                  '0 3px 12px color-mix(in srgb, var(--accent) 40%, transparent)',
+                ] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                <span aria-hidden="true" className="absolute inset-0 rounded-full" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35)' }} />
+                <motion.svg
+                  width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"
+                  animate={{ x: [0, 2.5, 0] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                >
                   <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </span>
+                </motion.svg>
+              </motion.span>
             </span>
           )}
         </button>

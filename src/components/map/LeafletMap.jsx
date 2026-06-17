@@ -14,13 +14,22 @@ const userPosIcon = L.divIcon({
 })
 
 const departIcon = L.divIcon({
-  html: `<div style="width:10px;height:10px;border-radius:50%;background:#FF5A1F;border:2px solid #fff"></div>`,
-  iconSize: [10, 10], iconAnchor: [5, 5], className: '',
+  html: `
+    <div style="position:relative;width:14px;height:14px;">
+      <div class="map-ping"  style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;"></div>
+      <div class="map-ping2" style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;"></div>
+      <div style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;border:2px solid #fff;box-shadow:0 0 12px rgba(255,90,31,.95),0 2px 6px rgba(0,0,0,.55);"></div>
+    </div>`,
+  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
 })
 
 const arriveIcon = L.divIcon({
-  html: `<div style="width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid #FF5A1F"></div>`,
-  iconSize: [10, 10], iconAnchor: [5, 5], className: '',
+  html: `
+    <div style="position:relative;width:14px;height:14px;">
+      <div style="position:absolute;inset:0;border-radius:50%;background:#fff;border:2.5px solid #FF5A1F;box-shadow:0 0 10px rgba(255,90,31,.75),0 2px 6px rgba(0,0,0,.5);"></div>
+      <div style="position:absolute;top:50%;left:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#FF5A1F;"></div>
+    </div>`,
+  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
 })
 
 export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true, frozen = false }) {
@@ -110,6 +119,12 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     if (!route?.geometry) return
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
 
+    // Wide diffuse halo — adds cinematic depth beneath the line
+    const outerGlow = L.polyline(coords, {
+      color: 'color-mix(in srgb, var(--accent) 11%, transparent)', weight: 24, opacity: 1,
+      lineCap: 'round', lineJoin: 'round',
+    }).addTo(map)
+
     // Soft halo underneath
     const glow = L.polyline(coords, {
       color: 'color-mix(in srgb, var(--accent) 22%, transparent)', weight: 14, opacity: 1,
@@ -147,7 +162,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       dashEl.style.animation = 'route-dash 1.4s linear infinite'
     }
 
-    routeRef.current = [glow, core, dash]
+    routeRef.current = [outerGlow, glow, core, dash]
     if (coords.length) {
       const bounds = L.latLngBounds(coords)
       if (depart) {
