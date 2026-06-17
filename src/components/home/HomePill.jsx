@@ -241,11 +241,8 @@ export default function HomePill({ onOpenSheet }) {
   return (
     <>
       {/* ──────────── PILL (collapsed) ──────────── */}
-      <button
-        onClick={openCard}
-        aria-label={depart && arrive ? 'Modifier la réservation' : 'Ouvrir la réservation'}
-        aria-expanded={open}
-        className="fixed z-[20] flex items-center cursor-pointer active:scale-[.98] transition-transform duration-150 select-none overflow-hidden"
+      <div
+        className="fixed z-[20] pointer-events-none"
         style={{
           bottom:        'calc(var(--safe-bot) + 20px)',
           left:          0,
@@ -254,82 +251,151 @@ export default function HomePill({ onOpenSheet }) {
           marginRight:   20,
           maxWidth:      560,
           marginInline:  'auto',
-          borderRadius:  depart && arrive ? 22 : 999,
-          background:    th.isDark ? th.bgPanel : th.bgCard,
-          border:        '1px solid var(--separator-strong)',
-          boxShadow: th.isDark
-            ? '0 14px 40px rgba(0,0,0,.88), 0 4px 14px rgba(0,0,0,.72), inset 0 1px 0 rgba(255,255,255,.08)'
-            : '0 6px 24px rgba(0,0,0,.13), 0 2px 8px rgba(0,0,0,.08)',
           opacity:       open ? 0 : 1,
-          pointerEvents: open ? 'none' : 'auto',
-          transition:    'opacity .22s ease, border-radius .25s ease',
+          transition:    'opacity .22s ease',
         }}
       >
-        {depart && arrive ? (
-          /* ───── Aperçu du trajet ───── */
-          <span className="flex items-center gap-3 w-full px-4 py-3">
-            {/* A→B indicator */}
-            <span className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-              <span className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ background: '#FF5A1F' }} />
-              <span className="relative overflow-hidden my-[3px] flex-shrink-0" style={{ width: 1, height: 16 }}>
-                <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 15%, transparent))' }} />
-                <motion.span
-                  className="absolute left-0 right-0"
-                  style={{ height: 7, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)' }}
-                  animate={{ y: [-7, 18] }}
-                  transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.7 }}
-                />
-              </span>
-              <span className="w-2 h-2 rounded-full border-2 flex-shrink-0"
-                style={{ borderColor: 'color-mix(in srgb, var(--accent) 70%, transparent)', background: th.isDark ? th.bgBase : th.bgCard }} />
-            </span>
-            {/* Names — full address including city */}
-            <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
-              <span className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
-                {depart ? `${depart.name}${depart.city ? ', ' + depart.city : ''}` : 'Départ'}
-              </span>
-              <span className="text-[13px] font-semibold truncate" style={{ color: th.inkMid }}>
-                {arrive ? `${arrive.name}${arrive.city ? ', ' + arrive.city : ''}` : 'Destination'}
-              </span>
-            </span>
-            {/* Price + chevron */}
-            <span className="flex items-center gap-2.5 flex-shrink-0 pl-1">
-              {price && (
-                <span className="font-brand font-bold text-[15px] whitespace-nowrap tnum text-accent">
-                  {price.final} €
+        {/* Halo accent — signature lumineuse animée sous la pilule */}
+        <motion.div
+          aria-hidden="true"
+          className="absolute pointer-events-none"
+          style={{
+            inset:        -10,
+            borderRadius: depart && arrive ? 30 : 999,
+            background:   'radial-gradient(60% 80% at 50% 60%, color-mix(in srgb, var(--accent) 32%, transparent), transparent 75%)',
+            filter:       'blur(14px)',
+            opacity:      th.isDark ? 1 : 0.55,
+          }}
+          animate={{ opacity: th.isDark ? [0.55, 0.95, 0.55] : [0.35, 0.6, 0.35], scale: [1, 1.04, 1] }}
+          transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        <button
+          onClick={openCard}
+          aria-label={depart && arrive ? 'Modifier la réservation' : 'Ouvrir la réservation'}
+          aria-expanded={open}
+          className="relative w-full flex items-center cursor-pointer active:scale-[.98] transition-transform duration-150 select-none overflow-hidden"
+          style={{
+            borderRadius:  depart && arrive ? 22 : 999,
+            background:    th.isDark ? th.bgPanel : th.bgCard,
+            border:        '1px solid var(--separator-strong)',
+            boxShadow: th.isDark
+              ? '0 14px 40px rgba(0,0,0,.88), 0 4px 14px rgba(0,0,0,.72), inset 0 1px 0 rgba(255,255,255,.10)'
+              : '0 6px 24px rgba(0,0,0,.13), 0 2px 8px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.9)',
+            pointerEvents: open ? 'none' : 'auto',
+            transition:    'border-radius .25s ease',
+          }}
+        >
+          {/* Liseré spéculaire haut — touche premium */}
+          <span aria-hidden="true" className="absolute inset-x-6 top-0 h-px" style={{
+            background: th.isDark
+              ? 'linear-gradient(90deg, transparent, rgba(255,140,60,.45), transparent)'
+              : 'linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent)',
+          }} />
+
+          {depart && arrive ? (
+            /* ───── Aperçu du trajet ───── */
+            <span className="flex items-center gap-3 w-full px-4 py-3">
+              {/* A→B indicator */}
+              <span className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
+                {/* Pin de départ pulsant */}
+                <span className="relative flex items-center justify-center" style={{ width: 8, height: 8 }}>
+                  <motion.span
+                    className="absolute rounded-full"
+                    style={{ width: 8, height: 8, background: '#FF5A1F' }}
+                    animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+                  />
+                  <span className="relative w-2 h-2 rounded-full" style={{ background: '#FF5A1F' }} />
                 </span>
-              )}
-              <span className="flex items-center justify-center w-7 h-7 rounded-full"
-                style={{ background: th.borderFaint }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={th.inkMid}
-                  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 15l-6-6-6 6"/>
+                <span className="relative overflow-hidden my-[3px] flex-shrink-0" style={{ width: 1, height: 16 }}>
+                  <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 15%, transparent))' }} />
+                  <motion.span
+                    className="absolute left-0 right-0"
+                    style={{ height: 7, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)' }}
+                    animate={{ y: [-7, 18] }}
+                    transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.7 }}
+                  />
+                </span>
+                <span className="w-2 h-2 rounded-full border-2 flex-shrink-0"
+                  style={{ borderColor: 'color-mix(in srgb, var(--accent) 70%, transparent)', background: th.isDark ? th.bgBase : th.bgCard }} />
+              </span>
+              {/* Names — full address including city */}
+              <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
+                <span className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
+                  {depart ? `${depart.name}${depart.city ? ', ' + depart.city : ''}` : 'Départ'}
+                </span>
+                <span className="text-[13px] font-semibold truncate" style={{ color: th.inkMid }}>
+                  {arrive ? `${arrive.name}${arrive.city ? ', ' + arrive.city : ''}` : 'Destination'}
+                </span>
+              </span>
+              {/* Price + chevron */}
+              <span className="flex items-center gap-2.5 flex-shrink-0 pl-1">
+                {price && (
+                  <span className="font-brand font-bold text-[15px] whitespace-nowrap tnum text-accent">
+                    {price.final} €
+                  </span>
+                )}
+                <span className="flex items-center justify-center w-7 h-7 rounded-full"
+                  style={{ background: th.borderFaint }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={th.inkMid}
+                    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 15l-6-6-6 6"/>
+                  </svg>
+                </span>
+              </span>
+            </span>
+          ) : (
+            /* ───── Invite — hiérarchie marquée + architecture nichée ───── */
+            <span className="flex items-center gap-3 w-full px-3.5 py-3">
+              {/* Tuile loupe — cœur niché accent */}
+              <span
+                className="flex items-center justify-center flex-shrink-0"
+                style={{
+                  width: 38, height: 38, borderRadius: 13,
+                  background: 'color-mix(in srgb, var(--accent) 14%, transparent)',
+                  border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)',
+                  boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 22%, transparent)',
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.4" strokeLinecap="round">
+                  <circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.35-4.35"/>
+                </svg>
+              </span>
+
+              {/* Prompt dominant + tag micro */}
+              <span className="flex flex-col flex-1 min-w-0 text-left gap-0.5">
+                <span className="text-[16px] font-bold leading-tight" style={{ color: th.inkFull, letterSpacing: '-0.01em' }}>
+                  Où allons-nous ?
+                </span>
+                <span className="flex items-center gap-1.5 overflow-hidden">
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
+                  />
+                  <span className={`text-[11px] tracking-wide truncate transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
+                    style={{ color: th.inkMuted }}>
+                    {TAGS[tagIdx]}
+                  </span>
+                </span>
+              </span>
+
+              {/* Flèche niche — pastille accent */}
+              <span
+                className="flex items-center justify-center flex-shrink-0"
+                style={{
+                  width: 32, height: 32, borderRadius: 999,
+                  background: '#FF5A1F',
+                  boxShadow: '0 3px 12px color-mix(in srgb, var(--accent) 45%, transparent)',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </span>
             </span>
-          </span>
-        ) : (
-          /* ───── Invite ───── */
-          <>
-            <span className="flex items-center gap-2 px-5 py-[14px]">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.2" strokeLinecap="round">
-                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-              </svg>
-              <span className="text-ink-primary text-sm font-semibold">Où allons-nous ?</span>
-            </span>
-            <div className="w-px self-stretch" style={{ background: 'var(--separator-strong)' }} aria-hidden="true" />
-            <span className="flex items-center gap-1.5 px-4 py-[14px]">
-              <span
-                className={`w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
-                />
-              <span className={`text-[11px] text-ink-muted tracking-wide whitespace-nowrap transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}>
-                {TAGS[tagIdx]}
-              </span>
-            </span>
-          </>
-        )}
-      </button>
+          )}
+        </button>
+      </div>
 
       {/* ──────────── BACKDROP ──────────── */}
       <div
