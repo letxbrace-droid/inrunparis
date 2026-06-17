@@ -472,6 +472,11 @@
   to { stroke-dashoffset: -26; }
 }
 
+@keyframes route-glow {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.38; }
+}
+
 @keyframes shimmer-sweep {
   100% { transform: translateX(100%); }
 }

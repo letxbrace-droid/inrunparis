@@ -15,21 +15,24 @@ const userPosIcon = L.divIcon({
 
 const departIcon = L.divIcon({
   html: `
-    <div style="position:relative;width:14px;height:14px;">
-      <div class="map-ping"  style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;"></div>
-      <div class="map-ping2" style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;"></div>
-      <div style="position:absolute;inset:0;border-radius:50%;background:#FF5A1F;border:2px solid #fff;box-shadow:0 0 12px rgba(255,90,31,.95),0 2px 6px rgba(0,0,0,.55);"></div>
+    <div style="position:relative;width:20px;height:20px;">
+      <div class="map-ping"  style="position:absolute;inset:-2px;border-radius:50%;background:#FF5A1F;"></div>
+      <div class="map-ping2" style="position:absolute;inset:-2px;border-radius:50%;background:#FF5A1F;"></div>
+      <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 36% 32%,#ff8c55 0%,#FF5A1F 48%,#cc3800 100%);border:2px solid rgba(255,255,255,.88);box-shadow:0 0 20px rgba(255,90,31,.9),0 0 8px rgba(255,90,31,.5),0 3px 10px rgba(0,0,0,.7);"></div>
     </div>`,
-  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
+  iconSize: [20, 20], iconAnchor: [10, 10], className: '',
 })
 
 const arriveIcon = L.divIcon({
   html: `
-    <div style="position:relative;width:14px;height:14px;">
-      <div style="position:absolute;inset:0;border-radius:50%;background:#fff;border:2.5px solid #FF5A1F;box-shadow:0 0 10px rgba(255,90,31,.75),0 2px 6px rgba(0,0,0,.5);"></div>
-      <div style="position:absolute;top:50%;left:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#FF5A1F;"></div>
+    <div style="position:relative;width:24px;height:32px;">
+      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;filter:drop-shadow(0 0 8px rgba(255,90,31,.6)) drop-shadow(0 4px 10px rgba(0,0,0,.75))">
+        <path d="M12 1C5.925 1 1 5.925 1 12c0 8.25 11 19.5 11 19.5S23 20.25 23 12C23 5.925 18.075 1 12 1z" fill="#0D0D0D" stroke="rgba(255,255,255,0.16)" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="5.5" fill="#FF5A1F"/>
+        <circle cx="12" cy="12" r="2.5" fill="white" opacity="0.92"/>
+      </svg>
     </div>`,
-  iconSize: [14, 14], iconAnchor: [7, 7], className: '',
+  iconSize: [24, 32], iconAnchor: [12, 32], className: '',
 })
 
 export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true, frozen = false }) {
@@ -143,23 +146,29 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       dashArray: '8 18', lineCap: 'round',
     }).addTo(map)
 
-    // Draw-in animation on core (skip if reduced motion)
+    // Staggered draw-in on all route layers + pulse on outerGlow
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const coreEl = core.getElement()
-    if (!reduced && coreEl) {
-      const len = coreEl.getTotalLength?.() ?? 5000
-      coreEl.style.strokeDasharray = len
-      coreEl.style.strokeDashoffset = len
-      coreEl.style.transition = 'stroke-dashoffset 1.8s ease-out'
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        coreEl.style.strokeDashoffset = '0'
-      }))
-    }
+    if (!reduced) {
+      ;[
+        [outerGlow.getElement(),   0],
+        [glow.getElement(),       90],
+        [core.getElement(),      180],
+      ].forEach(([el, delay]) => {
+        if (!el) return
+        const len = el.getTotalLength?.() ?? 5000
+        el.style.strokeDasharray  = len
+        el.style.strokeDashoffset = len
+        el.style.transition = `stroke-dashoffset 1.8s cubic-bezier(0.23,1,0.32,1) ${delay}ms`
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.style.strokeDashoffset = '0'
+        }))
+      })
+      // Breathing glow pulse after draw-in settles
+      const outerEl = outerGlow.getElement()
+      if (outerEl) outerEl.style.animation = 'route-glow 4s ease-in-out 2s infinite'
 
-    // Traveling dash CSS animation
-    const dashEl = dash.getElement()
-    if (!reduced && dashEl) {
-      dashEl.style.animation = 'route-dash 1.4s linear infinite'
+      const dashEl = dash.getElement()
+      if (dashEl) dashEl.style.animation = 'route-dash 1.4s linear infinite'
     }
 
     routeRef.current = [outerGlow, glow, core, dash]
@@ -168,10 +177,14 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       if (depart) {
         map.setView([depart.lat, depart.lng], 15, { animate: false })
         setTimeout(() => {
-          map.flyToBounds(bounds, { padding: [56, 56], animate: true, duration: 1.6, easeLinearity: 0.12 })
+          map.flyToBounds(bounds, {
+            paddingTopLeft: [52, 64],
+            paddingBottomRight: [52, 148],
+            animate: true, duration: 1.6, easeLinearity: 0.12,
+          })
         }, 180)
       } else {
-        map.fitBounds(bounds, { padding: [60, 60] })
+        map.fitBounds(bounds, { paddingTopLeft: [56, 64], paddingBottomRight: [56, 148] })
       }
     }
   }, [route]) // eslint-disable-line
