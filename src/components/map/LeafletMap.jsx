@@ -103,9 +103,12 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     // look without ever hurting street-name / POI legibility.
     const basePaneEl = map.getPane('baseTilesPane')
     if (basePaneEl) {
+      // Lift the terrain so the road network, parks and water are clearly
+      // visible — a pro VTC map shows its streets. Labels live on their own
+      // pane, so brightening here never washes them out.
       basePaneEl.style.filter = isDark
-        ? 'brightness(0.82) contrast(1.28) saturate(0.6)'
-        : 'saturate(0.74) brightness(0.98) contrast(1.06)'
+        ? 'brightness(1.62) contrast(0.94) saturate(0.82)'
+        : 'saturate(0.78) brightness(0.99) contrast(1.04)'
     }
 
     tileBaseRef.current = L.tileLayer(
@@ -255,37 +258,26 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       {/* ── Cinematic compositing — pure presentation, never intercepts touch ── */}
       {isDark && (
         <>
-          {/* Brand warmth — orange glow rising from where the HomePill lives.
-              soft-light keeps it as a grade, not a wash, so the route stays vivid. */}
+          {/* Brand warmth — faint orange lift from where the HomePill lives.
+              soft-light keeps it a grade, never a wash that hides streets. */}
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(120% 78% at 50% 92%, rgba(255,116,40,0.13) 0%, rgba(255,116,40,0.04) 28%, transparent 50%)',
+                'radial-gradient(120% 76% at 50% 94%, rgba(255,122,46,0.10) 0%, rgba(255,122,46,0.03) 26%, transparent 48%)',
               mixBlendMode: 'soft-light',
               zIndex: 500,
             }}
           />
-          {/* Cool counter-grade at the top edge for cinematic colour separation */}
+          {/* Lens vignette — only the extreme corners settle, keeping the road
+              network and every label in the usable area fully visible */}
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(120% 60% at 50% 0%, rgba(60,90,160,0.10) 0%, transparent 46%)',
-              mixBlendMode: 'soft-light',
-              zIndex: 500,
-            }}
-          />
-          {/* Lens vignette — gentle, late falloff so only the extreme corners
-              darken; labels and POIs in the usable area stay fully legible */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(140% 115% at 50% 42%, transparent 62%, rgba(3,3,3,0.18) 84%, rgba(3,3,3,0.40) 100%)',
+                'radial-gradient(150% 120% at 50% 44%, transparent 70%, rgba(4,4,4,0.10) 88%, rgba(4,4,4,0.26) 100%)',
               zIndex: 501,
             }}
           />
