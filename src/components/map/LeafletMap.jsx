@@ -4,9 +4,17 @@ import 'leaflet/dist/leaflet.css'
 
 delete L.Icon.Default.prototype._getIconUrl
 
-const PARIS       = [48.8566, 2.3522]
-const TILES_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-const TILES_LIGHT = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+const PARIS = [48.8566, 2.3522]
+
+// Split tile strategy: terrain filtered for aesthetics, labels unfiltered for legibility
+const TILES = {
+  darkBase:   'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+  darkLabels: 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+  lightBase:   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
+  lightLabels: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+}
+
+const TILE_OPTS = { attribution: '', subdomains: 'abcd', maxZoom: 20 }
 
 const userPosIcon = L.divIcon({
   html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:var(--info);border:2px solid #fff"></div>`,
@@ -38,14 +46,15 @@ const arriveIcon = L.divIcon({
 export default function LeafletMap({ route, depart, arrive, onMapReady, isDark = true, frozen = false }) {
   const containerRef  = useRef(null)
   const mapRef        = useRef(null)
-  const tileRef       = useRef(null)
+  const tileBaseRef   = useRef(null)
+  const tileLabelRef  = useRef(null)
   const routeRef      = useRef([])
   const markersRef    = useRef([])
   const userMarkerRef = useRef(null)
   const didFlyRef     = useRef(false)
 
-  // Initialize map — call invalidateSize after mount and on every resize
-  // so the map always fills its container (fixes partial-render on Android Chrome)
+  // Initialize map — creates custom pane for base tiles so the aesthetic filter
+  // applies only to terrain, leaving label tiles unfiltered and crisp
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return
     const map = L.map(containerRef.current, {
@@ -54,10 +63,20 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     mapRef.current = map
     onMapReady?.(map)
 
-    // Let the browser finish layout, then fix tile grid
+    // baseTilesPane sits under the default tilePane (z-index 200) so labels
+    // rendered at 200 are always above the filtered terrain
+    map.createPane('baseTilesPane')
+    map.getPane('baseTilesPane').style.zIndex = 199
+    map.getPane('baseTilesPane').style.pointerEvents = 'none'
+
+    // labelPane sits above polylines (overlayPane = 400) but below markers (600)
+    // so street names are readable through the route overlay
+    map.createPane('labelPane')
+    map.getPane('labelPane').style.zIndex = 450
+    map.getPane('labelPane').style.pointerEvents = 'none'
+
     setTimeout(() => map.invalidateSize({ animate: false }), 0)
 
-    // Keep map sized correctly if the container ever resizes
     const observer = new ResizeObserver(() => {
       mapRef.current?.invalidateSize({ animate: false })
     })
@@ -70,14 +89,31 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }
   }, []) // eslint-disable-line
 
-  // Switch tile layer on isDark change (also runs on first mount)
+  // Switch tile layers on isDark change — filter applied to baseTilesPane only
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
-    if (tileRef.current) { try { map.removeLayer(tileRef.current) } catch {} }
-    tileRef.current = L.tileLayer(isDark ? TILES_DARK : TILES_LIGHT, {
-      attribution: '', subdomains: 'abcd', maxZoom: 20,
-    }).addTo(map)
+
+    if (tileBaseRef.current)  { try { map.removeLayer(tileBaseRef.current)  } catch {} }
+    if (tileLabelRef.current) { try { map.removeLayer(tileLabelRef.current) } catch {} }
+
+    // Aesthetic filter stays on the terrain pane — labels are never filtered
+    const basePaneEl = map.getPane('baseTilesPane')
+    if (basePaneEl) {
+      basePaneEl.style.filter = isDark
+        ? 'brightness(1.45) contrast(1.05) saturate(0.62)'
+        : 'saturate(0.78) brightness(0.97) contrast(1.02)'
+    }
+
+    tileBaseRef.current = L.tileLayer(
+      isDark ? TILES.darkBase : TILES.lightBase,
+      { ...TILE_OPTS, pane: 'baseTilesPane' },
+    ).addTo(map)
+
+    tileLabelRef.current = L.tileLayer(
+      isDark ? TILES.darkLabels : TILES.lightLabels,
+      { ...TILE_OPTS, pane: 'labelPane' },
+    ).addTo(map)
   }, [isDark])
 
   // Live GPS user position blue dot + animated zoom-in on first fix
@@ -93,7 +129,6 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
         } else {
           userMarkerRef.current = L.marker(pos, { icon: userPosIcon, zIndexOffset: -100 }).addTo(m)
         }
-        // Cinematic fly-in to the user's position once, on app open
         if (!didFlyRef.current && !depart && !route?.geometry) {
           didFlyRef.current = true
           const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -122,31 +157,27 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     if (!route?.geometry) return
     const coords = route.geometry.coordinates.map(([lng, lat]) => [lat, lng])
 
-    // Wide diffuse halo — adds cinematic depth beneath the line
     const outerGlow = L.polyline(coords, {
       color: 'color-mix(in srgb, var(--accent) 11%, transparent)', weight: 24, opacity: 1,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 
-    // Soft halo underneath
     const glow = L.polyline(coords, {
       color: 'color-mix(in srgb, var(--accent) 22%, transparent)', weight: 14, opacity: 1,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 
-    // Core branded line
     const core = L.polyline(coords, {
       color: '#FF5A1F', weight: 5, opacity: 0.95,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 
-    // Traveling dashes (light cream passes filter in both themes)
     const dash = L.polyline(coords, {
       color: 'rgba(255,228,196,0.80)', weight: 2,
       dashArray: '8 18', lineCap: 'round',
     }).addTo(map)
 
-    // Staggered draw-in on all route layers + pulse on outerGlow
+    // Staggered draw-in on all route layers + breathing pulse on outerGlow
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!reduced) {
       ;[
@@ -163,7 +194,6 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
           el.style.strokeDashoffset = '0'
         }))
       })
-      // Breathing glow pulse after draw-in settles
       const outerEl = outerGlow.getElement()
       if (outerEl) outerEl.style.animation = 'route-glow 4s ease-in-out 2s infinite'
 
@@ -211,12 +241,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       ref={containerRef}
       className="absolute inset-0 z-0"
       aria-label="Carte de Paris"
-      style={{
-        pointerEvents: frozen ? 'none' : 'auto',
-        filter: isDark
-          ? 'brightness(1.72) contrast(0.88) saturate(0.75)'
-          : 'saturate(0.92) brightness(0.97)',
-      }}
+      style={{ pointerEvents: frozen ? 'none' : 'auto' }}
     />
   )
 }
