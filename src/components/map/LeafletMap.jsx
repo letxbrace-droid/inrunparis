@@ -113,6 +113,15 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       { ...TILE_OPTS, pane: 'baseTilesPane' },
     ).addTo(map)
 
+    // Crispen the labels independently — whiter, punchier text so street names,
+    // addresses and POIs stay perfectly legible over the moody dark terrain
+    const labelPaneEl = map.getPane('labelPane')
+    if (labelPaneEl) {
+      labelPaneEl.style.filter = isDark
+        ? 'brightness(1.12) contrast(1.08)'
+        : 'contrast(1.04)'
+    }
+
     tileLabelRef.current = L.tileLayer(
       isDark ? TILES.darkLabels : TILES.lightLabels,
       { ...TILE_OPTS, pane: 'labelPane' },
@@ -269,13 +278,14 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
               zIndex: 500,
             }}
           />
-          {/* Lens vignette — edges fall into black, centre pops, tile seams vanish */}
+          {/* Lens vignette — gentle, late falloff so only the extreme corners
+              darken; labels and POIs in the usable area stay fully legible */}
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(135% 108% at 50% 40%, transparent 48%, rgba(3,3,3,0.30) 78%, rgba(3,3,3,0.55) 100%)',
+                'radial-gradient(140% 115% at 50% 42%, transparent 62%, rgba(3,3,3,0.18) 84%, rgba(3,3,3,0.40) 100%)',
               zIndex: 501,
             }}
           />
