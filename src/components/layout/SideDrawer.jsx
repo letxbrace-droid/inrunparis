@@ -269,7 +269,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         <div
           aria-hidden="true"
           className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, #FF5A1F 0%, transparent 55%)' }}
+          style={{ background: 'linear-gradient(90deg, var(--accent) 0%, transparent 55%)' }}
         />
         {/* Ambient mesh gradient */}
         <div
@@ -347,7 +347,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                           height:     2,
                           width:      28,
                           marginTop:  6,
-                          background: '#FF5A1F',
+                          background: 'var(--accent)',
                           borderRadius: 999,
                         }}
                       />

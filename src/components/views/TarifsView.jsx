@@ -62,7 +62,7 @@ function SectionLabel({ children }) {
         fontWeight: 700,
         letterSpacing: '0.10em',
         textTransform: 'uppercase',
-        color: '#FF5A1F',
+        color: 'var(--accent)',
         background: 'rgba(255,90,31,0.12)',
         border: '1px solid rgba(255,90,31,0.22)',
       }}>
@@ -159,7 +159,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
             {/* Accent top line */}
             <span aria-hidden="true" style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-              background: 'linear-gradient(90deg, transparent 5%, #FF5A1F 38%, #FF8C3F 52%, #FF5A1F 66%, transparent 95%)',
+              background: 'linear-gradient(90deg, transparent 5%, var(--accent) 38%, #FF8C3F 52%, var(--accent) 66%, transparent 95%)',
             }} />
             {/* Ambient glow */}
             <span aria-hidden="true" style={{
@@ -189,7 +189,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, ease: EASE, delay: 0.12 + i * 0.08 }}
                 >
-                  <span style={{ display: 'block', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', color: '#FF5A1F' }}>
+                  <span style={{ display: 'block', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--accent)' }}>
                     {s.val}
                   </span>
                   <span style={{ display: 'block', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(245,241,232,0.40)', marginTop: 3 }}>
@@ -226,7 +226,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>
                   <div className="text-xs mt-0.5 truncate" style={{ color: th.inkMuted }}>{t.subtitle}</div>
                 </div>
-                <span style={{ fontSize: 16, fontWeight: 800, color: '#FF5A1F', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
                   {t.price}
                 </span>
               </div>
@@ -258,14 +258,14 @@ export default function TarifsView({ open, onClose, onReserve }) {
                     <span style={{
                       marginLeft: 8, fontSize: 10, fontWeight: 700,
                       padding: '2px 7px', borderRadius: 999,
-                      background: '#FF5A1F', color: '#fff',
+                      background: 'var(--accent)', color: '#fff',
                     }}>
                       Populaire
                     </span>
                   )}
                   <div className="text-[11px] mt-0.5" style={{ color: th.inkMuted }}>{row.note}</div>
                 </div>
-                <span style={{ fontSize: 18, fontWeight: 800, color: '#FF5A1F', letterSpacing: '-0.02em' }}>
+                <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em' }}>
                   {row.price}
                 </span>
               </div>

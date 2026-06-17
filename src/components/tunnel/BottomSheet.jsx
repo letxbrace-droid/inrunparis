@@ -18,7 +18,7 @@ function StepDot({ index, current, th }) {
       className="flex items-center justify-center w-7 h-7 rounded-full select-none"
       animate={{
         background:
-          state === 'active' ? '#FF5A1F'
+          state === 'active' ? 'var(--accent)'
           : state === 'done'  ? 'color-mix(in srgb, var(--accent) 22%, transparent)'
           : th.isDark ? 'rgba(0,10,18,.6)' : 'rgba(0,0,0,.08)',
         scale:     state === 'active' ? 1.12 : 1,
@@ -119,7 +119,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               onClick={() => setCollapsed(false)}
               className="pointer-events-auto flex items-center gap-2 px-5 py-3 rounded-full select-none cursor-pointer"
               style={{
-                background: '#FF5A1F',
+                background: 'var(--accent)',
                 color: '#fff',
                 fontSize: 13,
                 fontWeight: 700,
@@ -202,7 +202,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             {/* Step indicator (hidden on recap step) */}
             {step === 4 ? (
               <div className="flex items-center justify-center py-3 px-6">
-                <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: '#FF5A1F' }}>
+                <span className="text-[11px] font-bold uppercase tracking-[.14em]" style={{ color: 'var(--accent)' }}>
                   Récapitulatif
                 </span>
               </div>

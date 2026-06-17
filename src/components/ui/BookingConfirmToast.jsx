@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BURST = [
-  { a: 0,   d: 92,  c: '#FF5A1F', s: 7 },
+  { a: 0,   d: 92,  c: 'var(--accent)', s: 7 },
   { a: 38,  d: 112, c: '#F5C518', s: 5 },
   { a: 78,  d: 98,  c: '#34d399', s: 6 },
-  { a: 126, d: 106, c: '#FF5A1F', s: 4 },
+  { a: 126, d: 106, c: 'var(--accent)', s: 4 },
   { a: 170, d: 90,  c: '#F5C518', s: 7 },
   { a: 218, d: 108, c: '#34d399', s: 5 },
-  { a: 262, d: 94,  c: '#FF5A1F', s: 6 },
+  { a: 262, d: 94,  c: 'var(--accent)', s: 6 },
   { a: 306, d: 115, c: '#F5C518', s: 4 },
   { a: 348, d: 100, c: '#34d399', s: 5 },
 ]
@@ -119,7 +119,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               marginTop: 36,
               padding: '14px 44px',
               borderRadius: 999,
-              background: '#FF5A1F',
+              background: 'var(--accent)',
               color: '#fff',
               fontSize: 16,
               fontWeight: 700,

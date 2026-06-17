@@ -84,7 +84,7 @@ export default function InstallPrompt() {
                 flexShrink:   0,
                 padding:      '8px 15px',
                 borderRadius: 11,
-                background:   '#FF5A1F',
+                background:   'var(--accent)',
                 border:       'none',
                 color:        '#fff',
                 fontSize:     12,

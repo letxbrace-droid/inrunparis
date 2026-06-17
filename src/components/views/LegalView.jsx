@@ -121,7 +121,7 @@ function LegalSection({ title, children, index, open, variants, th }) {
       animate={open ? 'visible' : 'hidden'}
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[.08em]" style={{ color: '#FF5A1F' }}>
+        <span className="text-[11px] font-semibold uppercase tracking-[.08em]" style={{ color: 'var(--accent)' }}>
           {title}
         </span>
         <div className="flex-1 h-px" style={{ background: th.divider }} />

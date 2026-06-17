@@ -122,7 +122,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
               <div className="flex items-center gap-3 px-4 py-3">
                 {/* Timeline A→B */}
                 <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="w-2 h-2 rounded-full" style={{ background: '#FF5A1F' }} />
+                  <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
                   <div className="w-px my-1" style={{ height: 16, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
                   <div className="w-2 h-2 rounded-full border-2" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)', background: th.bgCard }} />
                 </div>
@@ -140,7 +140,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                       <span style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
                         {price.final}
                       </span>
-                      <span style={{ fontSize: '1rem', fontWeight: 800, color: '#FF5A1F' }}>€</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--accent)' }}>€</span>
                     </div>
                   )}
                   {pickup && (
@@ -179,7 +179,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
               {/* Status header */}
               <div className="flex items-center gap-3 px-4 pt-4 pb-3">
                 <div className="relative flex-shrink-0 w-2.5 h-2.5">
-                  <div className="absolute inset-0 rounded-full" style={{ background: '#FF5A1F' }} />
+                  <div className="absolute inset-0 rounded-full" style={{ background: 'var(--accent)' }} />
                   <motion.div
                     className="absolute inset-0 rounded-full"
                     style={{ background: 'color-mix(in srgb, var(--accent) 50%, transparent)' }}
@@ -228,7 +228,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                     <span style={{ fontSize: '1.9rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
                       {price.final}
                     </span>
-                    <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#FF5A1F' }}>€</span>
+                    <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--accent)' }}>€</span>
                   </div>
                 )}
               </div>

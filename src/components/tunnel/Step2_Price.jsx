@@ -71,7 +71,7 @@ export default function Step2Price({ onNext, onBack }) {
       <p className="text-sm text-center" style={{ color: th.inkMuted }}>
         Revenez à l'étape 1 pour calculer le trajet
       </p>
-      <button onClick={onBack} className="text-sm underline cursor-pointer" style={{ color: '#FF5A1F' }}>
+      <button onClick={onBack} className="text-sm underline cursor-pointer" style={{ color: 'var(--accent)' }}>
         ← Retour
       </button>
     </div>
@@ -91,7 +91,7 @@ export default function Step2Price({ onNext, onBack }) {
         className="flex items-center gap-2 px-1"
       >
         <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FF5A1F' }} />
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
           <span className="w-px my-1" style={{ height: 10, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
           <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'color-mix(in srgb, var(--accent) 60%, transparent)', background: th.bgCard }} />
         </div>

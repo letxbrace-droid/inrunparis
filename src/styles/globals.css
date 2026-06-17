@@ -16,6 +16,15 @@
     --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
     --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
 
+    /* ── Discipline couleur — hiérarchie en castes ──────────────────
+       Action     : --accent / --accent-press  → CTA + état actif SEULEMENT
+       Neutre     : --label-* / --bg-* / --separator-*  → 90% de l'UI
+       Sémantique : --positive / --danger / --info  → fonctionnel pur
+       Campagne   : --gold / --indigo  → QUARANTAINE (coupe26 / favoris)
+       ─────────────────────────────────────────────────────────────── */
+    --gold:   #F5C518;   /* Coupe du Monde 2026 — surfaces campagne   */
+    --indigo: #6366f1;   /* favori « Travail »                        */
+
     /* ── AMOLED background hierarchy ────────────────────────────── */
     --bg-grouped:    #030303;   /* deepest — true AMOLED      */
     --bg-base:       #050505;   /* main app background         */

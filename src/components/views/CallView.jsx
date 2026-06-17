@@ -155,7 +155,7 @@ export default function CallView({ open, onClose }) {
           href={PHONE_HREF}
           className="relative flex items-center justify-center gap-3 w-full py-5 rounded-2xl mb-3 select-none active:scale-[.97] transition-transform overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, #ff5a1f 0%, #FF5A1F 45%, #e83800 100%)',
+            background: 'linear-gradient(135deg, var(--accent-2) 0%, var(--accent) 45%, var(--accent-press) 100%)',
             boxShadow: '0 4px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.18)',
             animation: 'cta-breathe 3.5s ease-in-out infinite',
             textDecoration: 'none',

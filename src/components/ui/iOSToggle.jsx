@@ -20,7 +20,7 @@ export default function iOSToggle({ checked, onChange, label, id }) {
           className="w-11 h-6 rounded-full transition-all duration-250"
           style={{
             background: checked
-              ? 'linear-gradient(135deg, #ff5a1f, #FF5A1F)'
+              ? 'linear-gradient(135deg, var(--accent-2), var(--accent))'
               : '#1A1A1A',
             boxShadow: 'none',
             border: checked ? 'none' : '1px solid rgba(255,255,255,.08)',

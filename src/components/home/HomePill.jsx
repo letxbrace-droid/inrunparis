@@ -317,11 +317,11 @@ export default function HomePill({ onOpenSheet }) {
                 <span className="relative flex items-center justify-center" style={{ width: 8, height: 8 }}>
                   <motion.span
                     className="absolute rounded-full"
-                    style={{ width: 8, height: 8, background: '#FF5A1F' }}
+                    style={{ width: 8, height: 8, background: 'var(--accent)' }}
                     animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
                   />
-                  <span className="relative w-2 h-2 rounded-full" style={{ background: '#FF5A1F' }} />
+                  <span className="relative w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
                 </span>
                 <span className="relative overflow-hidden my-[3px] flex-shrink-0" style={{ width: 1, height: 16 }}>
                   <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 15%, transparent))' }} />
@@ -399,7 +399,7 @@ export default function HomePill({ onOpenSheet }) {
               {/* Flèche niche — pastille accent, nudge + halo pulsant */}
               <motion.span
                 className="flex items-center justify-center flex-shrink-0 relative"
-                style={{ width: 36, height: 36, borderRadius: 999, background: '#FF5A1F' }}
+                style={{ width: 36, height: 36, borderRadius: 999, background: 'var(--accent)' }}
                 animate={{ boxShadow: [
                   '0 3px 12px color-mix(in srgb, var(--accent) 40%, transparent)',
                   '0 4px 20px color-mix(in srgb, var(--accent) 65%, transparent)',
@@ -522,7 +522,7 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Departure row */}
                 <div className="relative flex items-center gap-3 px-4 pt-3.5 pb-3">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                    style={{ background: '#FF5A1F' }} />
+                    style={{ background: 'var(--accent)' }} />
                   <div className="flex-1 min-w-0">
                     <div className="text-[10px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Départ</div>
                     <input

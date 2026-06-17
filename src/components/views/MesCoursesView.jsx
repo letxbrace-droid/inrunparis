@@ -193,7 +193,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 onClick={onReserve}
                 className="flex items-center gap-2 px-6 py-3.5 rounded-2xl cursor-pointer active:scale-[.97] transition-transform duration-150 select-none"
                 style={{
-                  background: '#FF5A1F',
+                  background: 'var(--accent)',
                   color: '#fff',
                   fontSize: 14,
                   fontWeight: 700,
@@ -221,7 +221,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
               >
                 <div className="flex items-center justify-between px-4 py-2.5"
                   style={{ borderBottom: `1px solid ${th.borderFaint}` }}>
-                  <span className="font-mono text-xs font-bold" style={{ color: '#FF5A1F' }}>
+                  <span className="font-mono text-xs font-bold" style={{ color: 'var(--accent)' }}>
                     {booking.bonNumber ?? '—'}
                   </span>
                   <span className="text-xs" style={{ color: th.inkDim }}>
@@ -231,7 +231,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
 
                 <div className="px-4 py-3 flex flex-col gap-1.5">
                   <div className="flex items-start gap-2">
-                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#FF5A1F' }} />
+                    <div className="mt-1 w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }} />
                     <p className="text-xs leading-snug" style={{ color: th.inkMid }}>
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>
@@ -275,7 +275,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                         if (ok) { onClose(); onReserve?.() }
                       }}
                       className="ml-auto text-[11px] font-bold cursor-pointer active:scale-95 transition-transform px-2.5 py-1 rounded-full"
-                      style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: '#FF5A1F', border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)' }}
+                      style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: 'var(--accent)', border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)' }}
                       aria-label="Refaire ce trajet"
                     >
                       ↺ Refaire
