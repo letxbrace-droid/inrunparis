@@ -97,12 +97,15 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     if (tileBaseRef.current)  { try { map.removeLayer(tileBaseRef.current)  } catch {} }
     if (tileLabelRef.current) { try { map.removeLayer(tileLabelRef.current) } catch {} }
 
-    // Aesthetic filter stays on the terrain pane — labels are never filtered
+    // Aesthetic filter stays on the terrain pane — labels are never filtered.
+    // Because labels live on their own unfiltered pane, we can grade the terrain
+    // far more aggressively (deep AMOLED blacks, punchy contrast) for a cinematic
+    // look without ever hurting street-name / POI legibility.
     const basePaneEl = map.getPane('baseTilesPane')
     if (basePaneEl) {
       basePaneEl.style.filter = isDark
-        ? 'brightness(1.45) contrast(1.05) saturate(0.62)'
-        : 'saturate(0.78) brightness(0.97) contrast(1.02)'
+        ? 'brightness(0.82) contrast(1.28) saturate(0.6)'
+        : 'saturate(0.74) brightness(0.98) contrast(1.06)'
     }
 
     tileBaseRef.current = L.tileLayer(
@@ -237,11 +240,47 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   }, [depart, arrive]) // eslint-disable-line
 
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 z-0"
-      aria-label="Carte de Paris"
-      style={{ pointerEvents: frozen ? 'none' : 'auto' }}
-    />
+    <div className="absolute inset-0 z-0" style={{ pointerEvents: frozen ? 'none' : 'auto' }}>
+      <div ref={containerRef} className="absolute inset-0" aria-label="Carte de Paris" />
+
+      {/* ── Cinematic compositing — pure presentation, never intercepts touch ── */}
+      {isDark && (
+        <>
+          {/* Brand warmth — orange glow rising from where the HomePill lives.
+              soft-light keeps it as a grade, not a wash, so the route stays vivid. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(120% 78% at 50% 92%, rgba(255,116,40,0.13) 0%, rgba(255,116,40,0.04) 28%, transparent 50%)',
+              mixBlendMode: 'soft-light',
+              zIndex: 500,
+            }}
+          />
+          {/* Cool counter-grade at the top edge for cinematic colour separation */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(120% 60% at 50% 0%, rgba(60,90,160,0.10) 0%, transparent 46%)',
+              mixBlendMode: 'soft-light',
+              zIndex: 500,
+            }}
+          />
+          {/* Lens vignette — edges fall into black, centre pops, tile seams vanish */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(135% 108% at 50% 40%, transparent 48%, rgba(3,3,3,0.30) 78%, rgba(3,3,3,0.55) 100%)',
+              zIndex: 501,
+            }}
+          />
+        </>
+      )}
+    </div>
   )
 }
