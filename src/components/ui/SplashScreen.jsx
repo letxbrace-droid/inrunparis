@@ -57,6 +57,18 @@ const CSS = `
     0%   { opacity: 0; transform: translateY(-10px) scale(0.8); }
     100% { opacity: 1; transform: translateY(0)     scale(1); }
   }
+  @keyframes sp-sweep {
+    0%   { transform: translateX(-130%) skewX(-12deg); }
+    100% { transform: translateX(260%)  skewX(-12deg); }
+  }
+  @keyframes sp-progress {
+    0%   { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes sp-progress-glow {
+    0%, 100% { opacity: .5; }
+    50%      { opacity: 1;  }
+  }
 `
 
 // ── SVG Trophy (FIFA WC 2026 style) ──────────────────────────────────────
@@ -122,24 +134,36 @@ function WC2026Emblem() {
         <TrophySVG />
       </div>
 
-      {/* Big "26" — split blue / red */}
-      <div style={{ display: 'flex', alignItems: 'baseline', lineHeight: 0.82 }}>
-        <span style={{
-          fontFamily:    "'Outfit', sans-serif",
-          fontSize:      64,
-          fontWeight:    900,
-          letterSpacing: '-5px',
-          color:         WC_BLUE,
-          textShadow:    `0 0 32px ${WC_BLUE}99, 0 0 8px ${WC_BLUE}55`,
-        }}>2</span>
-        <span style={{
-          fontFamily:    "'Outfit', sans-serif",
-          fontSize:      64,
-          fontWeight:    900,
-          letterSpacing: '-5px',
-          color:         WC_RED,
-          textShadow:    `0 0 32px ${WC_RED}88, 0 0 8px ${WC_RED}44`,
-        }}>6</span>
+      {/* Big "26" — split blue / red, with cinematic light-sweep */}
+      <div style={{ position: 'relative', overflow: 'hidden', padding: '0 4px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', lineHeight: 0.82 }}>
+          <span style={{
+            fontFamily:    "'Outfit', sans-serif",
+            fontSize:      64,
+            fontWeight:    900,
+            letterSpacing: '-5px',
+            color:         WC_BLUE,
+            textShadow:    `0 0 32px ${WC_BLUE}99, 0 0 8px ${WC_BLUE}55`,
+          }}>2</span>
+          <span style={{
+            fontFamily:    "'Outfit', sans-serif",
+            fontSize:      64,
+            fontWeight:    900,
+            letterSpacing: '-5px',
+            color:         WC_RED,
+            textShadow:    `0 0 32px ${WC_RED}88, 0 0 8px ${WC_RED}44`,
+          }}>6</span>
+        </div>
+        {/* Reflet lumineux qui traverse le 26 */}
+        <div style={{
+          position:      'absolute',
+          top:           0, bottom: 0,
+          left:          0,
+          width:         '45%',
+          pointerEvents: 'none',
+          background:    'linear-gradient(100deg, transparent, rgba(255,255,255,.65) 50%, transparent)',
+          animation:     'sp-sweep 1.7s cubic-bezier(.23,1,.32,1) 1.15s infinite',
+        }} />
       </div>
 
       {/* Gradient rule */}
@@ -200,9 +224,10 @@ export default function SplashScreen({ onDone }) {
       style={{
         background: BG,
         opacity:    exiting ? 0 : 1,
-        transform:  exiting ? 'scale(1.06)' : 'scale(1)',
-        transition: `opacity ${EXIT_MS}ms cubic-bezier(.23,1,.32,1), transform ${EXIT_MS}ms cubic-bezier(.23,1,.32,1)`,
-        willChange: 'transform, opacity',
+        transform:  exiting ? 'scale(1.14)' : 'scale(1)',
+        filter:     exiting ? 'blur(7px)' : 'blur(0px)',
+        transition: `opacity ${EXIT_MS}ms cubic-bezier(.6,0,.2,1), transform ${EXIT_MS}ms cubic-bezier(.6,0,.2,1), filter ${EXIT_MS}ms cubic-bezier(.6,0,.2,1)`,
+        willChange: 'transform, opacity, filter',
       }}
     >
       <style>{CSS}</style>
@@ -326,6 +351,26 @@ export default function SplashScreen({ onDone }) {
         }}>
           Chauffeur Privé · Paris
         </p>
+
+        {/* ── Barre de progression cinématique ── */}
+        <div style={{
+          marginTop:     22,
+          width:         136,
+          height:        2.5,
+          borderRadius:  999,
+          overflow:      'hidden',
+          background:    'rgba(255,255,255,.08)',
+          animation:     'sp-text .5s ease .8s both',
+        }}>
+          <div style={{
+            height:          '100%',
+            borderRadius:    999,
+            transformOrigin: 'left',
+            background:       `linear-gradient(90deg, ${WC_BLUE}, ${WC_GOLD} 50%, ${WC_RED})`,
+            boxShadow:       `0 0 10px ${WC_GOLD}99`,
+            animation:       `sp-progress ${IN_MS - 600}ms cubic-bezier(.4,0,.2,1) .6s both, sp-progress-glow 1.4s ease-in-out infinite`,
+          }} />
+        </div>
 
       </div>
     </div>
