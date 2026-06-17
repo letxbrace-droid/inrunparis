@@ -253,14 +253,16 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         }}
         className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden"
         style={{
-          width:         'min(82vw, 310px)',
-          background:    bg,
-          borderRight:   `1px solid ${border}`,
-          pointerEvents: open ? 'auto' : 'none',
-          boxShadow:     open
+          width:               'min(82vw, 310px)',
+          background:          isDark ? 'rgba(6,7,14,0.84)' : 'rgba(252,251,248,0.90)',
+          backdropFilter:      'blur(28px) saturate(160%)',
+          WebkitBackdropFilter:'blur(28px) saturate(160%)',
+          borderRight:         `1px solid ${border}`,
+          pointerEvents:       open ? 'auto' : 'none',
+          boxShadow:           open
             ? (isDark ? '20px 0 60px rgba(0,0,0,.95)' : '20px 0 60px rgba(0,0,0,.18)')
             : 'none',
-          willChange:    'transform',
+          willChange:          'transform',
         }}
       >
         {/* Accent top line */}
@@ -268,6 +270,16 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           aria-hidden="true"
           className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
           style={{ background: 'linear-gradient(90deg, #FF5A1F 0%, transparent 55%)' }}
+        />
+        {/* Ambient mesh gradient */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: isDark
+              ? 'radial-gradient(ellipse 200% 140px at 55% 0, rgba(255,90,31,0.11), transparent 55%)'
+              : 'radial-gradient(ellipse 200% 120px at 55% 0, rgba(255,90,31,0.06), transparent 55%)',
+          }}
         />
 
         <div
