@@ -5,6 +5,7 @@ import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
 import Step4Recap   from './Step4_Recap'
 import useAppTheme  from '../../hooks/useAppTheme'
+import { haptic }   from '../../utils/haptics'
 
 const STEPS = ['Trajet', 'Tarif', 'Options']
 
@@ -86,6 +87,13 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
   }
 
   useEffect(() => { setCollapsed(false) }, [step])
+
+  // Haptic tap on every step advance/retreat (skip initial mount)
+  const isFirstStepRef = useRef(true)
+  useEffect(() => {
+    if (isFirstStepRef.current) { isFirstStepRef.current = false; return }
+    haptic.light()
+  }, [step])
 
   const isRecap  = step === 4
   const sheetOut = !open || (isRecap && collapsed)

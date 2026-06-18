@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v96 */
-const CACHE = 'inrun-v96';
+/* I&N RUN — Service Worker v97 */
+const CACHE = 'inrun-v97';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -59,7 +59,26 @@ const PASSTHROUGH = [
   '/inrunparis/coupe2026.html',
 ];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)).then(() => self.skipWaiting()));
+  e.waitUntil((async () => {
+    const c = await caches.open(CACHE)
+    // Known static assets
+    await c.addAll(STATIC)
+    // Warm the app shell: fetch index.html, extract all hashed /assets/ bundles,
+    // and cache them — the app then boots offline even before any in-app navigate
+    try {
+      const shell = await fetch('/inrunparis/')
+      if (shell.ok) {
+        await c.put(new Request('/inrunparis/'), shell.clone())
+        const html = await shell.text()
+        const assetRe = /(?:src|href)="(\/inrunparis\/assets\/[^"]+)"/g
+        const urls = []
+        let m
+        while ((m = assetRe.exec(html)) !== null) urls.push(m[1])
+        await Promise.allSettled(urls.map(u => c.add(u)))
+      }
+    } catch {}
+    await self.skipWaiting()
+  })())
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));

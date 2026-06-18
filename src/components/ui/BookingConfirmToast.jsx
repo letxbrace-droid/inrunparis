@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { haptic } from '../../utils/haptics'
+import { subscribeToVapid, isPushSupported } from '../../utils/pushNotifications'
 
 const BURST = [
   { a: 0,   d: 92,  c: 'var(--accent)', s: 7 },
@@ -13,6 +16,29 @@ const BURST = [
 ]
 
 export default function BookingConfirmToast({ open, bonNumber, onClose }) {
+  const [pushState, setPushState] = useState('idle') // idle | asking | done | skip
+
+  // Haptic celebration + reset push state on each opening
+  useEffect(() => {
+    if (open) {
+      haptic.success()
+      setPushState('idle')
+    }
+  }, [open])
+
+  const showPushOpt = pushState === 'idle'
+    && isPushSupported()
+    && typeof Notification !== 'undefined'
+    && Notification.permission === 'default'
+
+  const handlePushOptIn = async (e) => {
+    e.stopPropagation()
+    setPushState('asking')
+    const sub = await subscribeToVapid()
+    setPushState(sub ? 'done' : 'skip')
+    if (sub) haptic.medium()
+  }
+
   return (
     <AnimatePresence>
       {open && (
@@ -29,7 +55,6 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
         >
           {/* ── Burst ring ── */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 140, height: 140 }}>
-            {/* Radial halo */}
             <motion.div
               initial={{ opacity: 0, scale: 0.3 }}
               animate={{ opacity: [0, 0.55, 0], scale: [0.3, 2.4, 3.0] }}
@@ -40,7 +65,6 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               }}
             />
 
-            {/* Particles */}
             {BURST.map((p, i) => {
               const rad = (p.a * Math.PI) / 180
               return (
@@ -52,8 +76,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                   style={{
                     position: 'absolute',
                     width: p.s, height: p.s,
-                    borderRadius: '50%',
-                    background: p.c,
+                    borderRadius: '50%', background: p.c,
                     top: '50%', left: '50%',
                     marginTop: -p.s / 2, marginLeft: -p.s / 2,
                   }}
@@ -67,9 +90,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', damping: 13, stiffness: 230, delay: 0.05 }}
               style={{
-                position: 'relative',
-                width: 90, height: 90,
-                borderRadius: '50%',
+                position: 'relative', width: 90, height: 90, borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: 'linear-gradient(140deg, #34d399 0%, #059669 100%)',
                 boxShadow: '0 0 52px rgba(52,211,153,0.48), 0 0 0 1px rgba(52,211,153,0.25)',
@@ -108,7 +129,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             </p>
           </motion.div>
 
-          {/* CTA */}
+          {/* Primary CTA */}
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -116,21 +137,56 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             onClick={(e) => { e.stopPropagation(); onClose() }}
             className="active:scale-[.95] transition-transform duration-100"
             style={{
-              marginTop: 36,
-              padding: '14px 44px',
-              borderRadius: 999,
-              background: 'var(--accent)',
-              color: '#fff',
-              fontSize: 16,
-              fontWeight: 700,
-              letterSpacing: '-0.01em',
+              marginTop: 36, padding: '14px 44px', borderRadius: 999,
+              background: 'var(--accent)', color: '#fff',
+              fontSize: 16, fontWeight: 700, letterSpacing: '-0.01em',
               boxShadow: '0 8px 28px rgba(255,90,31,.55), inset 0 1px 0 rgba(255,255,255,.2)',
-              cursor: 'pointer',
-              border: 'none',
+              cursor: 'pointer', border: 'none',
             }}
           >
             Parfait 👍
           </motion.button>
+
+          {/* Push notification opt-in — appears at peak engagement, 1.6s after open */}
+          <AnimatePresence mode="wait">
+            {showPushOpt && (
+              <motion.button
+                key="push-opt"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 1.6, duration: 0.38, ease: [0.23, 1, 0.32, 1] }}
+                onClick={handlePushOptIn}
+                className="active:scale-[.97] transition-transform duration-100"
+                style={{
+                  marginTop: 10, padding: '10px 22px', borderRadius: 999,
+                  background: 'rgba(255,255,255,.06)',
+                  border: '1px solid rgba(255,255,255,.10)',
+                  color: 'rgba(245,241,232,.65)',
+                  fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                }}
+              >
+                🔔 Me notifier à la confirmation
+              </motion.button>
+            )}
+            {pushState === 'asking' && (
+              <motion.p key="push-asking"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                style={{ marginTop: 10, fontSize: 12, color: 'rgba(245,241,232,.38)', fontWeight: 500 }}
+              >
+                Autoriser dans la boîte de dialogue…
+              </motion.p>
+            )}
+            {pushState === 'done' && (
+              <motion.p key="push-done"
+                initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ marginTop: 10, fontSize: 13, color: 'rgba(52,211,153,.85)', fontWeight: 600 }}
+              >
+                ✓ Notifications activées
+              </motion.p>
+            )}
+          </AnimatePresence>
 
           <motion.p
             initial={{ opacity: 0 }}

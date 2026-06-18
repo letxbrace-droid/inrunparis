@@ -8,6 +8,7 @@ import { searchPlaces, displayAddr, TYPE_COLOR } from '../../utils/geocoder'
 import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
 import { useFavorites } from '../../hooks/useFavorites'
+import { haptic } from '../../utils/haptics'
 
 const TAGS = [
   'CDG · Orly · Beauvais',
@@ -106,6 +107,7 @@ export default function HomePill({ onOpenSheet }) {
   }, [depart])
 
   const pickSuggestion = useCallback((item, field) => {
+    haptic.select()
     const label = displayAddr(item)
     if (field === 'depart') {
       setDepartQuery(label)
@@ -149,12 +151,13 @@ export default function HomePill({ onOpenSheet }) {
   }, [detect, setDepart, setRouteGeometry])
 
   const handleReserve = useCallback(() => {
+    haptic.medium()
     setOpen(false)
     setSuggestions([])
     onOpenSheet(price ? 2 : 1)
   }, [price, onOpenSheet])
 
-  const openCard  = () => { setOpen(true);  setSuggestions([]); setSavingFor(null) }
+  const openCard  = () => { haptic.select(); setOpen(true);  setSuggestions([]); setSavingFor(null) }
   const closeCard = () => { setOpen(false); setSuggestions([]); setSavingFor(null) }
 
   // CTA label
