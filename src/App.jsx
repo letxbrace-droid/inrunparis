@@ -79,12 +79,21 @@ export default function App() {
   const handleClose = () => setActiveView('home')
 
   // Deep link /?promo=COUPE26 → open offer view + auto-apply code
+  // Deep link /?view=courses  → open courses view (from home-screen shortcut)
   useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get('promo')
-    if (param?.toUpperCase() === 'COUPE26') {
+    const params = new URLSearchParams(window.location.search)
+
+    const promo = params.get('promo')
+    if (promo?.toUpperCase() === 'COUPE26') {
       setActiveView('coupe26')
       const st = useBookingStore.getState()
       if (!st.promo) st.setPromo({ code: 'COUPE26', discount: 10, label: 'Coupe du Monde 2026 — −10%' })
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+
+    const view = params.get('view')
+    if (view && ['courses', 'tarifs', 'faq', 'legal'].includes(view)) {
+      setActiveView(view)
       window.history.replaceState(null, '', window.location.pathname)
     }
   }, [])
