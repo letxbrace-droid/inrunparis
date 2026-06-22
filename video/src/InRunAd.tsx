@@ -1,3 +1,4 @@
+// InRun PWA Ad — 14.5s · 435fr · 30fps · 1080×1920
 import React from "react";
 import {
   AbsoluteFill,
