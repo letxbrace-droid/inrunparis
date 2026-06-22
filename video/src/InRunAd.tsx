@@ -10,6 +10,7 @@ import {
 } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
+import { noise2D } from "@remotion/noise";
 import { loadFont } from "@remotion/google-fonts/Outfit";
 
 const { fontFamily } = loadFont("normal", {
@@ -72,37 +73,68 @@ function LightFlash({ seed = 0 }: { seed?: number }) {
 function SceneNoir() {
   const f = useCurrentFrame();
 
-  // "Paris." apparaît lentement
-  const op  = lerp(f, 18, 48, 0, 1, SLOW);
-  // Léger zoom-in du texte
-  const scl = lerp(f, 18, 75, 0.92, 1.0, SLOW);
+  // Organic camera drift via Perlin noise
+  const driftX = noise2D("s1-x", 0, f / 90) * 5;
+  const driftY = noise2D("s1-y", 1, f / 90) * 4;
+  const driftR = noise2D("s1-r", 2, f / 120) * 0.25;
+
+  // "Paris." — blur + slide up reveal (luxury brand style)
+  const wordOp   = lerp(f, 10, 30, 0, 1, OUT);
+  const wordY    = lerp(f, 10, 32, 48, 0, OUT);
+  const wordBlur = lerp(f, 10, 36, 16, 0, OUT);
+
+  // Orange separator line draws in
+  const lineW = lerp(f, 32, 50, 0, 200, OUT);
+  const lineOp = lerp(f, 32, 50, 0, 1, SLOW);
+
+  // Tagline glides in
+  const tagOp = lerp(f, 44, 62, 0, 1, SLOW);
+  const tagY  = lerp(f, 44, 62, 16, 0, SLOW);
+
+  // Scale lente
+  const scl = lerp(f, 0, 75, 0.97, 1.03, SLOW);
 
   return (
     <AbsoluteFill style={{ background: BG }}>
-      {/* Halo orange subtil */}
+      {/* Halo orange central */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
-        background: `radial-gradient(ellipse 60% 40% at 50% 50%, ${ORANGE}12 0%, transparent 70%)`,
+        background: `radial-gradient(ellipse 65% 45% at 50% 50%, ${ORANGE}14 0%, transparent 68%)`,
       }} />
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <div style={{
-          opacity: op, transform: `scale(${scl})`,
           textAlign: "center",
+          transform: `translate(${driftX}px, ${driftY}px) scale(${scl}) rotate(${driftR}deg)`,
         }}>
+          {/* Hero word */}
           <div style={{
-            fontFamily, fontSize: 110, fontWeight: 900,
-            color: WHITE, letterSpacing: "-6px", lineHeight: 1,
+            fontFamily, fontSize: 116, fontWeight: 900,
+            color: WHITE, letterSpacing: "-7px", lineHeight: 1,
+            opacity: wordOp,
+            transform: `translateY(${wordY}px)`,
+            filter: `blur(${wordBlur}px)`,
           }}>
             Paris.
           </div>
+
+          {/* Ligne orange */}
           <div style={{
-            fontFamily, fontSize: 20, fontWeight: 300,
-            color: "rgba(255,255,255,0.35)",
-            letterSpacing: "0.4em", textTransform: "uppercase",
-            marginTop: 18,
+            width: lineW, height: 1.5, margin: "18px auto 0",
+            background: `linear-gradient(90deg, transparent, ${ORANGE}, transparent)`,
+            opacity: lineOp,
+          }} />
+
+          {/* Tagline — valeur directe */}
+          <div style={{
+            fontFamily, fontSize: 18, fontWeight: 300,
+            color: "rgba(255,255,255,0.5)",
+            letterSpacing: "0.32em", textTransform: "uppercase",
+            marginTop: 14,
+            opacity: tagOp,
+            transform: `translateY(${tagY}px)`,
           }}>
-            Île-de-France
+            Votre chauffeur vous attend.
           </div>
         </div>
       </AbsoluteFill>
@@ -379,6 +411,10 @@ function SceneApp() {
 function SceneCar() {
   const f = useCurrentFrame();
 
+  // Organic noise — micro camera drift
+  const camX = noise2D("car-x", 0, f / 100) * 6;
+  const camY = noise2D("car-y", 1, f / 100) * 4;
+
   // Car glisse depuis la droite
   const carX  = lerp(f, 0, 55, 280, 0, OUT);
   const carOp = lerp(f, 0, 40, 0, 1);
@@ -398,7 +434,7 @@ function SceneCar() {
   const badgeS  = lerp(f, 100, 120, 0.7, 1, POP);
 
   return (
-    <AbsoluteFill style={{ background: BG }}>
+    <AbsoluteFill style={{ background: BG, transform: `translate(${camX}px, ${camY}px)` }}>
 
       {/* Sol / ligne lumineuse sous la voiture */}
       <div style={{
