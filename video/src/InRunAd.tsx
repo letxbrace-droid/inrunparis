@@ -30,8 +30,8 @@ const WHITE  = "#FFFFFF";
 
 // ── Easing ────────────────────────────────────────────────────────────────
 const SLOW = Easing.bezier(0.45, 0, 0.55, 1);
-const OUT  = Easing.bezier(0.16, 1, 0.3, 1);   // snappy deceleration
-const POP  = Easing.bezier(0.34, 1.56, 0.64, 1); // overshoot
+const OUT  = Easing.bezier(0.16, 1, 0.3, 1);
+const POP  = Easing.bezier(0.34, 1.56, 0.64, 1);
 
 function lerp(f: number, i0: number, i1: number, o0: number, o1: number, ease = OUT) {
   return interpolate(f, [i0, i1], [o0, o1], {
@@ -44,7 +44,7 @@ function typed(f: number, start: number, end: number, text: string) {
   return text.slice(0, n);
 }
 
-// ── CSS light-flash overlay (no WebGL) ───────────────────────────────────
+// ── CSS light-flash overlay (no WebGL) ────────────────────────────────────
 function LightFlash({ seed = 0 }: { seed?: number }) {
   const f = useCurrentFrame();
   const op = lerp(f, 0, 11, 0, 1, SLOW) - lerp(f, 11, 22, 0, 1, SLOW);
@@ -71,7 +71,7 @@ function LightFlash({ seed = 0 }: { seed?: number }) {
   );
 }
 
-// ── Barrier reveal: text rises from below overflow boundary ───────────────
+// ── Barrier reveal: text rises from below a hidden overflow boundary ───────
 function Barrier({ children, f, start, end, fromY = 56 }: {
   children: React.ReactNode;
   f: number; start: number; end: number; fromY?: number;
@@ -86,6 +86,171 @@ function Barrier({ children, f, start, end, fromY = 56 }: {
   );
 }
 
+// ── SVG: Tour Eiffel filaire ──────────────────────────────────────────────
+// viewBox 0 0 80 200 — centered at x=40, base at y=200
+function EiffelTower({ opacity }: { opacity: number }) {
+  const sw = 0.85;
+  return (
+    <svg
+      viewBox="0 0 80 200"
+      style={{ display: "block", width: 230, opacity }}
+    >
+      <g fill="none" stroke={ORANGE} strokeWidth={sw} strokeLinecap="round">
+        {/* Antenna needle */}
+        <line x1="40" y1="0" x2="40" y2="18" strokeWidth="1.3" />
+        {/* Upper tip triangle */}
+        <polyline points="37,18 40,0 43,18" />
+        {/* Top observation deck */}
+        <line x1="36" y1="22" x2="44" y2="22" />
+        <line x1="36" y1="25" x2="44" y2="25" />
+        {/* Taper from deck to 2nd floor */}
+        <line x1="36" y1="25" x2="33" y2="50" />
+        <line x1="44" y1="25" x2="47" y2="50" />
+        {/* 2nd floor platform */}
+        <line x1="29" y1="50" x2="51" y2="50" />
+        <line x1="29" y1="53" x2="51" y2="53" />
+        {/* Four columns (2nd → 1st floor) */}
+        <line x1="32" y1="53" x2="30" y2="80" />
+        <line x1="36" y1="53" x2="35" y2="80" />
+        <line x1="44" y1="53" x2="45" y2="80" />
+        <line x1="48" y1="53" x2="50" y2="80" />
+        {/* X-bracing between columns */}
+        <line x1="32" y1="60" x2="36" y2="73" />
+        <line x1="36" y1="60" x2="32" y2="73" />
+        <line x1="44" y1="60" x2="48" y2="73" />
+        <line x1="48" y1="60" x2="44" y2="73" />
+        {/* 1st floor platform */}
+        <line x1="20" y1="80" x2="60" y2="80" />
+        <line x1="20" y1="83" x2="60" y2="83" />
+        {/* Arch below 1st floor */}
+        <path d="M 26,83 Q 40,98 54,83" />
+        {/* Base legs — splay outward */}
+        <line x1="20" y1="83" x2="4"  y2="200" />   {/* left outer */}
+        <line x1="26" y1="83" x2="24" y2="148" />   {/* left inner upper */}
+        <line x1="24" y1="148" x2="15" y2="200" />  {/* left inner lower */}
+        <line x1="60" y1="83" x2="76" y2="200" />   {/* right outer */}
+        <line x1="54" y1="83" x2="56" y2="148" />   {/* right inner upper */}
+        <line x1="56" y1="148" x2="65" y2="200" />  {/* right inner lower */}
+        {/* Horizontal bars on legs */}
+        <line x1="6"  y1="130" x2="24" y2="130" />
+        <line x1="74" y1="130" x2="56" y2="130" />
+        <line x1="9"  y1="168" x2="17" y2="168" />
+        <line x1="71" y1="168" x2="63" y2="168" />
+        {/* X-bracing on base legs */}
+        <line x1="6"  y1="100" x2="20" y2="130" />
+        <line x1="20" y1="100" x2="6"  y2="130" />
+        <line x1="60" y1="100" x2="74" y2="130" />
+        <line x1="74" y1="100" x2="60" y2="130" />
+        {/* Ground line */}
+        <line x1="4" y1="198" x2="76" y2="198" />
+      </g>
+    </svg>
+  );
+}
+
+// ── SVG: Location crosshair marker ────────────────────────────────────────
+function LocationMarker({ opacity, scale }: { opacity: number; scale: number }) {
+  const R = 11;
+  const CIRC = 2 * Math.PI * R;
+  return (
+    <svg
+      width="44" height="44" viewBox="0 0 44 44"
+      style={{ opacity, transform: `scale(${scale})` }}
+    >
+      <circle cx="22" cy="22" r={R} fill="none" stroke={ORANGE} strokeWidth="1.2"
+        strokeDasharray={`${CIRC * 0.72} ${CIRC * 0.28}`}
+        strokeDashoffset={CIRC * 0.18}
+      />
+      <circle cx="22" cy="22" r="3" fill={ORANGE} />
+      <line x1="22" y1="6"  x2="22" y2="10" stroke={ORANGE} strokeWidth="1.2" />
+      <line x1="22" y1="34" x2="22" y2="38" stroke={ORANGE} strokeWidth="1.2" />
+      <line x1="6"  y1="22" x2="10" y2="22" stroke={ORANGE} strokeWidth="1.2" />
+      <line x1="34" y1="22" x2="38" y2="22" stroke={ORANGE} strokeWidth="1.2" />
+    </svg>
+  );
+}
+
+// ── SVG: Speed lines (car entry moment) ───────────────────────────────────
+const SPEED_LINE_DATA = [
+  { y: 148, x2: 980, len: 340, delay: 0,  op: 0.38 },
+  { y: 248, x2: 840, len: 520, delay: 3,  op: 0.22 },
+  { y: 330, x2: 920, len: 270, delay: 6,  op: 0.34 },
+  { y: 415, x2: 1010,len: 430, delay: 1,  op: 0.20 },
+  { y: 500, x2: 870, len: 390, delay: 5,  op: 0.28 },
+  { y: 582, x2: 950, len: 260, delay: 8,  op: 0.18 },
+  { y: 660, x2: 790, len: 580, delay: 2,  op: 0.16 },
+  { y: 738, x2: 1030,len: 230, delay: 7,  op: 0.26 },
+];
+
+function SpeedLines({ f }: { f: number }) {
+  return (
+    <svg
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+      viewBox="0 0 1080 1920"
+      preserveAspectRatio="none"
+    >
+      {SPEED_LINE_DATA.map((sl, i) => {
+        const lf   = Math.max(0, f - sl.delay);
+        const grow = lerp(lf, 0, 12, 0, 1, OUT);
+        const fade = lerp(lf, 18, 38, 1, 0, SLOW);
+        const op   = grow * fade * sl.op;
+        const x1   = sl.x2 - sl.len * grow;
+        return (
+          <line
+            key={i}
+            x1={x1} y1={sl.y} x2={sl.x2} y2={sl.y}
+            stroke={ORANGE}
+            strokeWidth="2"
+            opacity={op}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+// ── SVG: Orbit ring around logo ────────────────────────────────────────────
+function OrbitRing({ f, start, end }: { f: number; start: number; end: number }) {
+  const R    = 64;
+  const CIRC = 2 * Math.PI * R;
+  const draw = lerp(f, start, end, 0, 1, OUT);
+  const rot  = lerp(f, start, start + 60, -90, 180, SLOW); // slowly rotates
+  const op   = lerp(f, start, start + 12, 0, 0.55);
+  return (
+    <svg
+      width="160" height="160" viewBox="0 0 160 160"
+      style={{
+        position: "absolute", top: "50%", left: "50%",
+        transform: "translate(-50%, -50%)",
+        pointerEvents: "none",
+      }}
+    >
+      {/* Dashed orbit track */}
+      <circle cx="80" cy="80" r={R}
+        fill="none" stroke={ORANGE} strokeWidth="0.8"
+        strokeDasharray="4 6"
+        opacity={op * 0.35}
+      />
+      {/* Drawing arc */}
+      <circle cx="80" cy="80" r={R}
+        fill="none" stroke={ORANGE} strokeWidth="1.5"
+        strokeDasharray={`${CIRC * draw} ${CIRC * (1 - draw)}`}
+        strokeDashoffset={0}
+        opacity={op}
+        style={{ transform: `rotate(${rot}deg)`, transformOrigin: "80px 80px" }}
+      />
+      {/* Dot at arc end */}
+      {draw > 0.02 && (
+        <circle
+          cx={80 + R * Math.cos((rot + draw * 360 - 90) * Math.PI / 180)}
+          cy={80 + R * Math.sin((rot + draw * 360 - 90) * Math.PI / 180)}
+          r="4" fill={ORANGE} opacity={op}
+        />
+      )}
+    </svg>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // SCENE 1 — NOIR · PARIS  (0-75fr / 2.5s)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -95,10 +260,18 @@ function SceneNoir() {
   const driftX = noise2D("s1-x", 0, f / 90) * 5;
   const driftY = noise2D("s1-y", 1, f / 90) * 4;
 
+  // Tour Eiffel rise-in from bottom
+  const towerOp = lerp(f, 10, 44, 0, 0.13, SLOW);
+  const towerY  = lerp(f, 10, 44, 40, 0, OUT);
+
+  // Location marker above the text
+  const markerOp  = lerp(f, 4, 18, 0, 1);
+  const markerScl = lerp(f, 4, 18, 0.5, 1, POP);
+
   // "PARIS." — slams up from below + scale snap
-  const wordOp  = lerp(f, 6, 20, 0, 1);
-  const wordY   = lerp(f, 6, 30, 110, 0, OUT);
-  const wordScl = lerp(f, 6, 30, 0.84, 1, POP);
+  const wordOp  = lerp(f, 8, 22, 0, 1);
+  const wordY   = lerp(f, 8, 30, 110, 0, OUT);
+  const wordScl = lerp(f, 8, 30, 0.84, 1, POP);
 
   // Orange line draws from center outward
   const lineW  = lerp(f, 34, 54, 0, 280, OUT);
@@ -112,16 +285,31 @@ function SceneNoir() {
 
   return (
     <AbsoluteFill style={{ background: BG, overflow: "hidden" }}>
+      {/* Central halo */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
         background: `radial-gradient(ellipse 65% 45% at 50% 50%, ${ORANGE}16 0%, transparent 68%)`,
       }} />
+
+      {/* Tour Eiffel wireframe — bottom center */}
+      <div style={{
+        position: "absolute", bottom: 0, left: "50%",
+        transform: `translateX(-50%) translateY(${towerY}px)`,
+        pointerEvents: "none",
+      }}>
+        <EiffelTower opacity={towerOp} />
+      </div>
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <div style={{
           textAlign: "center",
           transform: `translate(${driftX}px, ${driftY}px) scale(${scl})`,
         }}>
+
+          {/* Location crosshair */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+            <LocationMarker opacity={markerOp} scale={markerScl} />
+          </div>
 
           {/* Hero word — MASSIVE slam-in */}
           <div style={{ overflow: "hidden", lineHeight: 0.88 }}>
@@ -149,7 +337,7 @@ function SceneNoir() {
             opacity: lineOp,
           }} />
 
-          {/* Tagline */}
+          {/* Tagline — barrier reveal */}
           <div style={{ marginTop: 20, opacity: tagOp }}>
             <Barrier f={f} start={46} end={62} fromY={44}>
               <div style={{
@@ -171,7 +359,7 @@ function SceneNoir() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SCENE 2 — L'APP  (75-230fr / 5.2s)
+// SCENE 2 — L'APP  (155fr / 5.2s)
 // ═══════════════════════════════════════════════════════════════════════════
 function AppScreen({ localFrame }: { localFrame: number }) {
   const f = localFrame;
@@ -244,10 +432,17 @@ function AppScreen({ localFrame }: { localFrame: number }) {
           <line x1="255" y1="0" x2="255" y2="240" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
           <line x1="0" y1="130" x2="310" y2="130" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
           <line x1="148" y1="205" x2="158" y2="38" stroke={ORANGE} strokeWidth="5" strokeLinecap="round" strokeDasharray="12,8" />
+          {/* Origin — map pin SVG */}
           <circle cx="148" cy="205" r="9" fill="#16a34a" />
           <circle cx="148" cy="205" r="16" fill="#16a34a" fillOpacity="0.18" />
+          {/* Destination — map pin SVG */}
           <circle cx="158" cy="38" r="9" fill={ORANGE} />
           <circle cx="158" cy="38" r="16" fill={ORANGE} fillOpacity="0.18" />
+          {/* Crosshair on destination */}
+          <line x1="158" y1="24" x2="158" y2="30" stroke={ORANGE} strokeWidth="1.5" />
+          <line x1="158" y1="46" x2="158" y2="52" stroke={ORANGE} strokeWidth="1.5" />
+          <line x1="144" y1="38" x2="150" y2="38" stroke={ORANGE} strokeWidth="1.5" />
+          <line x1="166" y1="38" x2="172" y2="38" stroke={ORANGE} strokeWidth="1.5" />
         </svg>
         <div style={{
           position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
@@ -416,12 +611,12 @@ function SceneCar() {
   const t1X  = lerp(f, 50, 74, 360, 0, OUT);
   const t1Op = lerp(f, 50, 66, 0, 1);
 
-  // "CHAUFFEUR." slams from LEFT (6fr stagger)
+  // "CHAUFFEUR." slams from LEFT
   const t2X  = lerp(f, 58, 82, -360, 0, OUT);
   const t2Op = lerp(f, 58, 72, 0, 1);
 
-  // Orange accent line
-  const lineW = lerp(f, 90, 110, 0, 200, OUT);
+  // Accent line draws in
+  const lineW  = lerp(f, 90, 110, 0, 200, OUT);
   const lineOp = lerp(f, 88, 106, 0, 1);
 
   // Attribute words — staggered barrier reveals
@@ -437,6 +632,9 @@ function SceneCar() {
 
   return (
     <AbsoluteFill style={{ background: BG, transform: `translate(${camX}px, ${camY}px)` }}>
+
+      {/* Speed lines SVG — appear when car enters */}
+      <SpeedLines f={f} />
 
       {/* Sol lumineux */}
       <div style={{
@@ -500,12 +698,14 @@ function SceneCar() {
           CHAUFFEUR.
         </div>
 
-        {/* Orange accent line */}
-        <div style={{
-          width: lineW, height: 2.5, borderRadius: 999,
-          background: `linear-gradient(90deg, ${ORANGE}, ${ORANGE}44)`,
-          opacity: lineOp, marginBottom: 24,
-        }} />
+        {/* SVG accent: line + dot */}
+        <svg
+          width={lineW} height="12"
+          style={{ display: "block", opacity: lineOp, marginBottom: 18 }}
+        >
+          <line x1="0" y1="2" x2={lineW - 14} y2="2" stroke={ORANGE} strokeWidth="2" />
+          <circle cx={lineW - 6} cy="2" r="4" fill={ORANGE} />
+        </svg>
 
         {/* Attribute words — staggered */}
         {attrs.map(({ text, start }) => {
@@ -583,9 +783,15 @@ function SceneBrand() {
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
 
-        {/* Logo — drops in */}
-        <div style={{ opacity: logoOp, transform: `translateY(${logoY}px)`, marginBottom: 22 }}>
+        {/* Logo + orbit ring */}
+        <div style={{
+          position: "relative",
+          opacity: logoOp, transform: `translateY(${logoY}px)`,
+          marginBottom: 22,
+          width: 96, height: 96,
+        }}>
           <Img src={staticFile("inrun-icon.png")} style={{ width: 96, height: 96, borderRadius: 22 }} />
+          <OrbitRing f={f} start={16} end={48} />
         </div>
 
         {/* I&N RUN — explodes in */}
@@ -602,12 +808,15 @@ function SceneBrand() {
           </span>
         </div>
 
-        {/* Line */}
-        <div style={{
-          width: lineW, height: 2, borderRadius: 999,
-          background: `linear-gradient(90deg, transparent, ${ORANGE}, transparent)`,
-          margin: "18px 0", opacity: tagOp,
-        }} />
+        {/* SVG line with dots */}
+        <svg
+          width={lineW} height="14"
+          style={{ margin: "18px 0", opacity: tagOp }}
+        >
+          <circle cx="0" cy="7" r="3" fill={ORANGE} opacity="0.6" />
+          <line x1="8" y1="7" x2={lineW - 8} y2="7" stroke={ORANGE} strokeWidth="1" opacity="0.5" />
+          <circle cx={lineW} cy="7" r="3" fill={ORANGE} opacity="0.6" />
+        </svg>
 
         {/* Tagline */}
         <div style={{ opacity: tagOp }}>
