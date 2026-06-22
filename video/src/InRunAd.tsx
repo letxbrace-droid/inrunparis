@@ -1,13 +1,15 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Sequence,
   useCurrentFrame,
   interpolate,
   Easing,
   Img,
   staticFile,
 } from "remotion";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+import { LightLeak } from "@remotion/light-leaks";
 import { loadFont } from "@remotion/google-fonts/Outfit";
 
 const { fontFamily } = loadFont("normal", {
@@ -47,11 +49,9 @@ function SceneNoir() {
   const op  = lerp(f, 18, 48, 0, 1, SLOW);
   // Léger zoom-in du texte
   const scl = lerp(f, 18, 75, 0.92, 1.0, SLOW);
-  // Exit
-  const exitOp = lerp(f, 58, 75, 1, 0, SLOW);
 
   return (
-    <AbsoluteFill style={{ background: BG, opacity: exitOp }}>
+    <AbsoluteFill style={{ background: BG }}>
       {/* Halo orange subtil */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
@@ -288,11 +288,8 @@ function SceneApp() {
   const phoneY  = lerp(f, 14, 50, 180, 0);
   const phoneOp = lerp(f, 14, 42, 0, 1);
 
-  // Exit
-  const exitOp = lerp(f, 136, 155, 1, 0, SLOW);
-
   return (
-    <AbsoluteFill style={{ background: BG, opacity: exitOp }}>
+    <AbsoluteFill style={{ background: BG }}>
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
         background: `radial-gradient(ellipse 70% 50% at 70% 20%, ${ORANGE}10 0%, transparent 65%)`,
@@ -373,11 +370,8 @@ function SceneCar() {
   const badgeOp = lerp(f, 100, 120, 0, 1);
   const badgeS  = lerp(f, 100, 120, 0.7, 1, POP);
 
-  // Exit
-  const exitOp = lerp(f, 144, 160, 1, 0, SLOW);
-
   return (
-    <AbsoluteFill style={{ background: BG, opacity: exitOp }}>
+    <AbsoluteFill style={{ background: BG }}>
 
       {/* Sol / ligne lumineuse sous la voiture */}
       <div style={{
@@ -592,40 +586,49 @@ function SceneBrand() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ROOT  — 15s · 450fr · 30fps · 1080×1920
+// ROOT  — 14.5s · 435fr · 30fps · 1080×1920
+// Scene durations: 75 + 155 + 160 + 60 − 15 (fade) = 435
 // ═══════════════════════════════════════════════════════════════════════════
 export const InRunAd: React.FC = () => (
   <AbsoluteFill style={{ background: BG }}>
+    <TransitionSeries>
 
-    {/* Scène 1 — Noir · Paris  (0-75fr) */}
-    <Sequence from={0} durationInFrames={75}>
-      <SceneNoir />
-    </Sequence>
+      {/* Scène 1 — Noir · Paris  (75fr) */}
+      <TransitionSeries.Sequence durationInFrames={75}>
+        <SceneNoir />
+      </TransitionSeries.Sequence>
 
-    {/* Scène 2 — L'App  (75-230fr) */}
-    <Sequence from={75} durationInFrames={155}>
-      <SceneApp />
-    </Sequence>
+      {/* Light leak 1→2 — warm orange flare */}
+      <TransitionSeries.Overlay durationInFrames={22}>
+        <LightLeak seed={2} hueShift={12} />
+      </TransitionSeries.Overlay>
 
-    {/* Flash cut 2→3 */}
-    <Sequence from={226} durationInFrames={10}>
-      <AbsoluteFill style={{ background: "#000", zIndex: 99 }} />
-    </Sequence>
+      {/* Scène 2 — L'App  (155fr) */}
+      <TransitionSeries.Sequence durationInFrames={155}>
+        <SceneApp />
+      </TransitionSeries.Sequence>
 
-    {/* Scène 3 — La Voiture  (230-390fr) */}
-    <Sequence from={230} durationInFrames={160}>
-      <SceneCar />
-    </Sequence>
+      {/* Light leak 2→3 — slightly different pattern */}
+      <TransitionSeries.Overlay durationInFrames={22}>
+        <LightLeak seed={5} hueShift={8} />
+      </TransitionSeries.Overlay>
 
-    {/* Flash cut 3→4 */}
-    <Sequence from={386} durationInFrames={10}>
-      <AbsoluteFill style={{ background: WHITE, opacity: 0.5, zIndex: 99 }} />
-    </Sequence>
+      {/* Scène 3 — La Voiture  (160fr) */}
+      <TransitionSeries.Sequence durationInFrames={160}>
+        <SceneCar />
+      </TransitionSeries.Sequence>
 
-    {/* Scène 4 — Brand reveal  (390-450fr) */}
-    <Sequence from={390} durationInFrames={60}>
-      <SceneBrand />
-    </Sequence>
+      {/* Cinematic fade to brand */}
+      <TransitionSeries.Transition
+        presentation={fade()}
+        timing={linearTiming({ durationInFrames: 15 })}
+      />
 
+      {/* Scène 4 — Brand reveal  (60fr) */}
+      <TransitionSeries.Sequence durationInFrames={60}>
+        <SceneBrand />
+      </TransitionSeries.Sequence>
+
+    </TransitionSeries>
   </AbsoluteFill>
 );

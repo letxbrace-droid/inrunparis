@@ -17,7 +17,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="InRunAd"
         component={InRunAd}
-        durationInFrames={450}
+        durationInFrames={435}
         fps={30}
         width={1080}
         height={1920}
