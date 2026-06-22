@@ -30,7 +30,7 @@ jobs:
 
       - name: Render InRunAd
         working-directory: video
-        run: npx remotion render InRunAd out/inrun-ad.mp4 --gl=angle
+        run: npx remotion render InRunAd out/inrun-ad.mp4 --gl=swiftshader
 
       - name: Upload MP4
         uses: actions/upload-artifact@v4

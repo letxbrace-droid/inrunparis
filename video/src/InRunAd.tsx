@@ -10,7 +10,6 @@ import {
 } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { LightLeak } from "@remotion/light-leaks";
 import { loadFont } from "@remotion/google-fonts/Outfit";
 
 const { fontFamily } = loadFont("normal", {
@@ -38,6 +37,33 @@ function lerp(f: number, i0: number, i1: number, o0: number, o1: number, ease = 
 function typed(f: number, start: number, end: number, text: string) {
   const n = Math.round(lerp(f, start, end, 0, text.length, SLOW));
   return text.slice(0, n);
+}
+
+// ── CSS light-flash overlay (replaces WebGL LightLeak) ───────────────────
+function LightFlash({ seed = 0 }: { seed?: number }) {
+  const f = useCurrentFrame();
+  const op = lerp(f, 0, 11, 0, 1, SLOW) - lerp(f, 11, 22, 0, 1, SLOW);
+  const angle = 30 + seed * 40;
+  const cx    = 42 + seed * 18;
+  return (
+    <AbsoluteFill style={{ opacity: op * 0.75, pointerEvents: "none" }}>
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `radial-gradient(ellipse 80% 55% at ${cx}% 50%, ${ORANGE}CC 0%, ${ORANGE}33 50%, transparent 72%)`,
+        filter: "blur(28px)",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `linear-gradient(${angle}deg, transparent 15%, ${ORANGE}55 50%, transparent 85%)`,
+        filter: "blur(45px)",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `radial-gradient(ellipse 30% 90% at ${cx + 10}% 48%, rgba(255,255,220,0.35) 0%, transparent 60%)`,
+        filter: "blur(10px)",
+      }} />
+    </AbsoluteFill>
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -599,9 +625,9 @@ export const InRunAd: React.FC = () => (
         <SceneNoir />
       </TransitionSeries.Sequence>
 
-      {/* Light leak 1→2 — warm orange flare */}
+      {/* Light flash 1→2 — warm orange flare (CSS, no WebGL) */}
       <TransitionSeries.Overlay durationInFrames={22}>
-        <LightLeak seed={2} hueShift={12} />
+        <LightFlash seed={2} />
       </TransitionSeries.Overlay>
 
       {/* Scène 2 — L'App  (155fr) */}
@@ -609,9 +635,9 @@ export const InRunAd: React.FC = () => (
         <SceneApp />
       </TransitionSeries.Sequence>
 
-      {/* Light leak 2→3 — slightly different pattern */}
+      {/* Light flash 2→3 — slightly different pattern (CSS, no WebGL) */}
       <TransitionSeries.Overlay durationInFrames={22}>
-        <LightLeak seed={5} hueShift={8} />
+        <LightFlash seed={5} />
       </TransitionSeries.Overlay>
 
       {/* Scène 3 — La Voiture  (160fr) */}
