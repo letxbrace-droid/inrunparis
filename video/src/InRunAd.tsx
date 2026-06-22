@@ -251,6 +251,92 @@ function OrbitRing({ f, start, end }: { f: number; start: number; end: number })
   );
 }
 
+// ── SVG: Promo badge circular stamp ───────────────────────────────────────
+function PromoBadge({ f, start }: { f: number; start: number }) {
+  const op   = lerp(f, start, start + 8, 0, 1);
+  const scl  = lerp(f, start, start + 14, 0, 1, POP);
+  const rot  = lerp(f, start, start + 14, -22, 5, POP);
+  const pulse = f > start + 28
+    ? interpolate((f - start) % 52, [0, 26, 52], [1, 1.06, 1], { extrapolateRight: "clamp" })
+    : 1;
+
+  return (
+    <div style={{
+      opacity: op,
+      transform: `scale(${scl * pulse}) rotate(${rot}deg)`,
+      position: "relative", width: 108, height: 108,
+    }}>
+      <svg width="108" height="108" viewBox="0 0 108 108" style={{ position: "absolute", inset: 0 }}>
+        <circle cx="54" cy="54" r="52" fill={ORANGE} />
+        <circle cx="54" cy="54" r="46" fill="none"
+          stroke="rgba(255,255,255,0.22)" strokeWidth="1.2" strokeDasharray="3 4" />
+        {/* Radiating tick marks */}
+        {[0,30,60,90,120,150,180,210,240,270,300,330].map((a) => (
+          <line key={a}
+            x1={54 + 46 * Math.cos(a * Math.PI / 180)}
+            y1={54 + 46 * Math.sin(a * Math.PI / 180)}
+            x2={54 + 52 * Math.cos(a * Math.PI / 180)}
+            y2={54 + 52 * Math.sin(a * Math.PI / 180)}
+            stroke="rgba(255,255,255,0.18)" strokeWidth="1.2"
+          />
+        ))}
+      </svg>
+      <div style={{
+        position: "absolute", inset: 0,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+      }}>
+        <span style={{
+          fontFamily: BODY, fontSize: 10, fontWeight: 700,
+          color: "rgba(255,255,255,0.80)", letterSpacing: "0.14em", textTransform: "uppercase",
+        }}>économisez</span>
+        <span style={{
+          fontFamily: DISPLAY, fontSize: 40, fontWeight: 900,
+          color: WHITE, letterSpacing: "-2px", lineHeight: 1,
+        }}>-10%</span>
+        <span style={{
+          fontFamily: BODY, fontSize: 9, fontWeight: 700,
+          color: "rgba(255,255,255,0.72)", letterSpacing: "0.10em", marginTop: 2,
+        }}>1er TRAJET</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Promo code chip ────────────────────────────────────────────────────────
+function PromoChip({ f, start }: { f: number; start: number }) {
+  const op  = lerp(f, start, start + 12, 0, 1);
+  const x   = lerp(f, start, start + 20, 90, 0, OUT);
+  const scl = lerp(f, start, start + 16, 0.88, 1, POP);
+
+  return (
+    <div style={{
+      opacity: op,
+      transform: `translateX(${x}px) scale(${scl})`,
+      transformOrigin: "left center",
+      display: "inline-flex", alignItems: "center", gap: 10,
+      background: "rgba(255,90,31,0.12)",
+      border: "1px solid rgba(255,90,31,0.35)",
+      borderRadius: 12, padding: "10px 18px",
+      marginBottom: 22,
+    }}>
+      {/* Tag SVG */}
+      <svg width="16" height="16" viewBox="0 0 16 16">
+        <path d="M 1.5,1.5 L 1.5,8.5 L 8,15 L 14.5,8.5 L 8,2 Z"
+          fill="none" stroke={ORANGE} strokeWidth="1.5" strokeLinejoin="round" />
+        <circle cx="5" cy="5" r="1.5" fill={ORANGE} />
+      </svg>
+      <span style={{ fontFamily: BODY, fontSize: 15, fontWeight: 800, color: ORANGE, letterSpacing: "0.06em" }}>
+        CODE : FIRST10
+      </span>
+      <div style={{ width: 1, height: 16, background: `${ORANGE}40` }} />
+      <span style={{ fontFamily: BODY, fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.70)" }}>
+        -10% sur votre 1er trajet
+      </span>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // SCENE 1 — NOIR · PARIS  (0-75fr / 2.5s)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -490,7 +576,19 @@ function AppScreen({ localFrame }: { localFrame: number }) {
         }}>
           <div>
             <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Tarif fixe</div>
-            <div style={{ fontSize: 34, fontWeight: 900, color: INK, letterSpacing: "-2px" }}>49 €</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(0,0,0,0.28)", textDecoration: "line-through" }}>54 €</span>
+              <span style={{ fontSize: 34, fontWeight: 900, color: INK, letterSpacing: "-2px" }}>49 €</span>
+            </div>
+          </div>
+          {/* Promo pill badge */}
+          <div style={{
+            opacity: lerp(f, 112, 122, 0, 1),
+            transform: `scale(${lerp(f, 112, 124, 0, 1, POP)}) rotate(${lerp(f, 112, 124, -18, 3, POP)}deg)`,
+            background: `${ORANGE}18`, border: `1.5px solid ${ORANGE}50`,
+            borderRadius: 8, padding: "3px 8px", flexShrink: 0,
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 900, color: ORANGE }}>-10%</span>
           </div>
           <div style={{
             background: ORANGE, borderRadius: 14, padding: "12px 22px",
@@ -564,10 +662,13 @@ function SceneApp() {
           fontFamily: DISPLAY, fontSize: 104, fontWeight: 900,
           color: ORANGE, letterSpacing: "-3px", lineHeight: 0.9,
           opacity: l2Op, transform: `translateX(${l2X}px)`,
-          marginBottom: 36,
+          marginBottom: 24,
         }}>
           EN 2 MINUTES.
         </div>
+
+        {/* Promo code chip */}
+        <PromoChip f={f} start={42} />
 
         {/* Phone mockup */}
         <div style={{
@@ -742,6 +843,15 @@ function SceneCar() {
           </span>
         </div>
       </div>
+
+      {/* Promo badge stamp — bottom right */}
+      <div style={{
+        position: "absolute",
+        bottom: 330, right: 48,
+        filter: `drop-shadow(0 0 24px ${ORANGE}55)`,
+      }}>
+        <PromoBadge f={f} start={144} />
+      </div>
     </AbsoluteFill>
   );
 }
@@ -854,6 +964,45 @@ function SceneBrand() {
             letxbrace-droid.github.io/inrunparis
           </span>
         </div>
+
+        {/* Limited-offer promo chip */}
+        {(() => {
+          const chipOp  = lerp(f, 54, 66, 0, 1);
+          const chipY   = lerp(f, 54, 66, 18, 0, POP);
+          const chipScl = lerp(f, 54, 66, 0.82, 1, POP);
+          const glowP   = f > 56 ? interpolate((f - 56) % 44, [0, 22, 44], [0, 1, 0], { extrapolateRight: "clamp" }) : 0;
+          return (
+            <div style={{
+              marginTop: 16,
+              opacity: chipOp,
+              transform: `translateY(${chipY}px) scale(${chipScl})`,
+            }}>
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                background: `rgba(255,90,31,0.08)`,
+                border: `1px solid rgba(255,90,31,${0.22 + glowP * 0.32})`,
+                borderRadius: 10, padding: "8px 18px",
+                boxShadow: `0 0 ${8 + glowP * 24}px rgba(255,90,31,${0.10 + glowP * 0.22})`,
+              }}>
+                {/* Star icon */}
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <polygon
+                    points="8,1.5 9.6,6 14.4,6 10.5,9 11.9,13.8 8,11 4.1,13.8 5.5,9 1.6,6 6.4,6"
+                    fill={ORANGE} opacity="0.85"
+                  />
+                </svg>
+                <span style={{ fontFamily: BODY, fontSize: 13, fontWeight: 700, color: ORANGE, letterSpacing: "0.08em" }}>
+                  CODE FIRST10
+                </span>
+                <div style={{ width: 1, height: 14, background: `${ORANGE}35` }} />
+                <span style={{ fontFamily: BODY, fontSize: 13, fontWeight: 400, color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em" }}>
+                  −10% 1er trajet
+                </span>
+              </div>
+            </div>
+          );
+        })()}
+
       </AbsoluteFill>
     </AbsoluteFill>
   );
