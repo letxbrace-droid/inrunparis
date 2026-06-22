@@ -434,7 +434,7 @@ function SceneNoir() {
                 letterSpacing: "0.34em",
                 textTransform: "uppercase",
               }}>
-                Votre chauffeur vous attend.
+                Sobriété · Excellence · Paris
               </div>
             </Barrier>
           </div>
@@ -575,20 +575,11 @@ function AppScreen({ localFrame }: { localFrame: number }) {
           opacity: prixOp, transform: `scale(${prixS})`, transformOrigin: "left center",
         }}>
           <div>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Tarif fixe</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Prix fixe garanti</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(0,0,0,0.28)", textDecoration: "line-through" }}>54 €</span>
               <span style={{ fontSize: 34, fontWeight: 900, color: INK, letterSpacing: "-2px" }}>49 €</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: ORANGE, letterSpacing: "0.04em" }}>Aucun surplus</span>
             </div>
-          </div>
-          {/* Promo pill badge */}
-          <div style={{
-            opacity: lerp(f, 112, 122, 0, 1),
-            transform: `scale(${lerp(f, 112, 124, 0, 1, POP)}) rotate(${lerp(f, 112, 124, -18, 3, POP)}deg)`,
-            background: `${ORANGE}18`, border: `1.5px solid ${ORANGE}50`,
-            borderRadius: 8, padding: "3px 8px", flexShrink: 0,
-          }}>
-            <span style={{ fontSize: 13, fontWeight: 900, color: ORANGE }}>-10%</span>
           </div>
           <div style={{
             background: ORANGE, borderRadius: 14, padding: "12px 22px",
@@ -600,13 +591,14 @@ function AppScreen({ localFrame }: { localFrame: number }) {
         <div style={{
           marginTop: 10,
           opacity: waOp, transform: `translateX(${waX}px)`,
-          background: "rgba(22,163,74,0.07)",
-          border: "1px solid rgba(22,163,74,0.2)",
+          background: "rgba(0,0,0,0.03)",
+          border: "1px solid rgba(0,0,0,0.08)",
           borderRadius: 10, padding: "9px 14px",
           display: "flex", alignItems: "center", gap: 8,
         }}>
-          <span style={{ fontSize: 16 }}>💬</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#16a34a" }}>Chauffeur confirmé ✓</span>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#16a34a", boxShadow: "0 0 6px #16a34a", flexShrink: 0 }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: INK }}>Mercedes Classe E · Chauffeur confirmé</span>
+          <span style={{ fontSize: 12, fontWeight: 800, color: ORANGE, marginLeft: "auto" }}>★ 4.9</span>
         </div>
       </div>
     </div>
@@ -646,7 +638,7 @@ function SceneApp() {
           marginBottom: 16,
           opacity: labelOp, transform: `translateY(${labelY}px)`,
         }}>
-          Réservez maintenant
+          Chauffeur Privé · Paris
         </div>
 
         {/* Ping-pong headline */}
@@ -664,11 +656,8 @@ function SceneApp() {
           opacity: l2Op, transform: `translateX(${l2X}px)`,
           marginBottom: 24,
         }}>
-          EN 2 MINUTES.
+          EN AVANCE.
         </div>
-
-        {/* Promo code chip */}
-        <PromoChip f={f} start={42} />
 
         {/* Phone mockup */}
         <div style={{
@@ -722,9 +711,9 @@ function SceneCar() {
 
   // Attribute words — staggered barrier reveals
   const attrs = [
-    { text: "Ponctuel.", start: 102 },
-    { text: "Discret.", start: 116 },
-    { text: "Premium.", start: 130 },
+    { text: "Mercedes Classe E.", start: 102 },
+    { text: "Chauffeur certifié.", start: 116 },
+    { text: "Tarif fixe garanti.", start: 130 },
   ];
 
   // Badge
@@ -734,8 +723,12 @@ function SceneCar() {
   return (
     <AbsoluteFill style={{ background: BG, transform: `translate(${camX}px, ${camY}px)` }}>
 
-      {/* Speed lines SVG — appear when car enters */}
-      <SpeedLines f={f} />
+      {/* Cinematic vignette — light sweep when car enters */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: `radial-gradient(ellipse 90% 60% at 50% 80%, ${ORANGE}08 0%, transparent 65%)`,
+        opacity: lerp(f, 0, 40, 0, 1, SLOW),
+      }} />
 
       {/* Sol lumineux */}
       <div style={{
@@ -844,14 +837,6 @@ function SceneCar() {
         </div>
       </div>
 
-      {/* Promo badge stamp — bottom right */}
-      <div style={{
-        position: "absolute",
-        bottom: 330, right: 48,
-        filter: `drop-shadow(0 0 24px ${ORANGE}55)`,
-      }}>
-        <PromoBadge f={f} start={144} />
-      </div>
     </AbsoluteFill>
   );
 }
@@ -947,13 +932,12 @@ function SceneBrand() {
         }}>
           <div style={{
             background: `linear-gradient(135deg, ${ORANGE}, #d63500)`,
-            borderRadius: 999, padding: "20px 54px",
+            borderRadius: 999, padding: "20px 64px",
             display: "flex", alignItems: "center", gap: 12,
             boxShadow: `0 0 60px ${ORANGE}50, 0 0 120px ${ORANGE}20`,
           }}>
-            <span style={{ fontSize: 26 }}>📲</span>
             <span style={{ fontFamily: BODY, fontSize: 26, fontWeight: 800, color: WHITE, letterSpacing: "-0.5px" }}>
-              Réserver maintenant
+              Réserver votre trajet
             </span>
           </div>
         </div>
@@ -965,43 +949,20 @@ function SceneBrand() {
           </span>
         </div>
 
-        {/* Limited-offer promo chip */}
-        {(() => {
-          const chipOp  = lerp(f, 54, 66, 0, 1);
-          const chipY   = lerp(f, 54, 66, 18, 0, POP);
-          const chipScl = lerp(f, 54, 66, 0.82, 1, POP);
-          const glowP   = f > 56 ? interpolate((f - 56) % 44, [0, 22, 44], [0, 1, 0], { extrapolateRight: "clamp" }) : 0;
-          return (
-            <div style={{
-              marginTop: 16,
-              opacity: chipOp,
-              transform: `translateY(${chipY}px) scale(${chipScl})`,
-            }}>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                background: `rgba(255,90,31,0.08)`,
-                border: `1px solid rgba(255,90,31,${0.22 + glowP * 0.32})`,
-                borderRadius: 10, padding: "8px 18px",
-                boxShadow: `0 0 ${8 + glowP * 24}px rgba(255,90,31,${0.10 + glowP * 0.22})`,
-              }}>
-                {/* Star icon */}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <polygon
-                    points="8,1.5 9.6,6 14.4,6 10.5,9 11.9,13.8 8,11 4.1,13.8 5.5,9 1.6,6 6.4,6"
-                    fill={ORANGE} opacity="0.85"
-                  />
-                </svg>
-                <span style={{ fontFamily: BODY, fontSize: 13, fontWeight: 700, color: ORANGE, letterSpacing: "0.08em" }}>
-                  CODE FIRST10
-                </span>
-                <div style={{ width: 1, height: 14, background: `${ORANGE}35` }} />
-                <span style={{ fontFamily: BODY, fontSize: 13, fontWeight: 400, color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em" }}>
-                  −10% 1er trajet
-                </span>
-              </div>
-            </div>
-          );
-        })()}
+        {/* Prestige closing line */}
+        <div style={{
+          marginTop: 20,
+          opacity: lerp(f, 54, 66, 0, 1),
+          transform: `translateY(${lerp(f, 54, 66, 14, 0, POP)}px)`,
+        }}>
+          <span style={{
+            fontFamily: BODY, fontSize: 14, fontWeight: 400,
+            color: "rgba(255,255,255,0.22)",
+            letterSpacing: "0.12em", fontStyle: "italic",
+          }}>
+            Pas une voiture avec un chauffeur.
+          </span>
+        </div>
 
       </AbsoluteFill>
     </AbsoluteFill>
