@@ -1,3 +1,4 @@
+import React from "react";
 import {
   AbsoluteFill,
   Sequence,
@@ -88,21 +89,20 @@ function SceneNoir() {
 function AppScreen({ localFrame }: { localFrame: number }) {
   const f = localFrame;
 
-  // Adresse départ se tape
-  const dep = typed(f, 10, 55, "Tour Eiffel, Paris 7e");
-  // Adresse destination se tape
+  const dep = typed(f, 10, 55, "Gare de Lyon, Paris 12e");
   const arr = typed(f, 58, 105, "Aéroport CDG · T2E");
-  // Prix apparaît
   const prixOp = lerp(f, 108, 124, 0, 1);
   const prixS  = lerp(f, 108, 124, 0.7, 1, POP);
-  // WA confirm
   const waOp = lerp(f, 128, 142, 0, 1);
   const waX  = lerp(f, 128, 142, 60, 0);
+
+  const LIGHT_BG = "#F7F5F2";
+  const INK      = "#1C1917";
 
   return (
     <div style={{
       width: "100%", height: "100%",
-      background: "#0C1220",
+      background: LIGHT_BG,
       borderRadius: "inherit",
       display: "flex", flexDirection: "column",
       fontFamily, overflow: "hidden",
@@ -112,117 +112,126 @@ function AppScreen({ localFrame }: { localFrame: number }) {
         padding: "14px 20px 0",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.5)" }}>9:41</span>
-        <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
-          {[12, 16, 20, 24].map((h, i) => (
-            <div key={i} style={{ width: 3, height: h, background: "rgba(255,255,255,0.5)", borderRadius: 1 }} />
+        <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.4)" }}>9:41</span>
+        <div style={{ display: "flex", gap: 4, alignItems: "flex-end" }}>
+          {[10, 14, 18, 22].map((h, i) => (
+            <div key={i} style={{ width: 3, height: h, background: "rgba(0,0,0,0.3)", borderRadius: 1 }} />
           ))}
         </div>
       </div>
 
-      {/* App header */}
+      {/* Progress steps */}
       <div style={{
-        padding: "10px 20px 12px",
-        display: "flex", alignItems: "center", gap: 10,
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        padding: "8px 18px 6px",
+        display: "flex", alignItems: "center", gap: 4,
       }}>
-        <Img src={staticFile("inrun-icon.png")}
-          style={{ width: 32, height: 32, borderRadius: 8 }} />
-        <span style={{ fontSize: 17, fontWeight: 900, color: WHITE, letterSpacing: "-0.5px" }}>
-          I<em style={{ fontStyle: "italic", fontWeight: 400 }}>&amp;</em>N RUN
-        </span>
-        <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 600,
-          color: ORANGE, letterSpacing: "0.06em" }}>
-          RÉSERVER
-        </span>
+        {(["Trajet", "Tarif", "Options"] as const).map((label, i) => {
+          const done = i < 2;
+          return (
+            <React.Fragment key={label}>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <div style={{
+                  width: 18, height: 18, borderRadius: "50%",
+                  background: done ? ORANGE : "transparent",
+                  border: done ? "none" : `2px solid ${ORANGE}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0,
+                }}>
+                  <span style={{ fontSize: 9, fontWeight: 800, color: done ? WHITE : ORANGE }}>
+                    {done ? "✓" : "3"}
+                  </span>
+                </div>
+                <span style={{
+                  fontSize: 10, fontWeight: 700,
+                  color: done ? ORANGE : "rgba(0,0,0,0.35)",
+                }}>
+                  {label}
+                </span>
+              </div>
+              {i < 2 && (
+                <div style={{ flex: 1, height: 1.5, background: ORANGE, opacity: 0.25, margin: "0 2px" }} />
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
 
       {/* Map area */}
       <div style={{
         flex: 1, position: "relative", overflow: "hidden",
-        background: "linear-gradient(180deg, #0A1628 0%, #060E1C 100%)",
+        background: "#DDE8EF",
       }}>
-        {/* Route line */}
-        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-          <defs>
-            <linearGradient id="routeGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#22c55e" stopOpacity="0.8" />
-              <stop offset="100%" stopColor={ORANGE} stopOpacity="0.8" />
-            </linearGradient>
-          </defs>
-          {/* Dashed route */}
-          <line x1="50%" y1="30%" x2="50%" y2="70%"
-            stroke="url(#routeGrad)" strokeWidth="2.5"
-            strokeDasharray="8,6" />
-          {/* Start dot */}
-          <circle cx="50%" cy="30%" r="7" fill="#22c55e" />
-          <circle cx="50%" cy="30%" r="12" fill="#22c55e" fillOpacity="0.25" />
-          {/* End dot */}
-          <circle cx="50%" cy="70%" r="7" fill={ORANGE} />
-          <circle cx="50%" cy="70%" r="12" fill={ORANGE} fillOpacity="0.25" />
+        <svg viewBox="0 0 310 240" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          {/* Street grid */}
+          <line x1="90" y1="0" x2="90" y2="240" stroke="white" strokeWidth="5" />
+          <line x1="200" y1="0" x2="200" y2="240" stroke="white" strokeWidth="3" />
+          <line x1="0" y1="80" x2="310" y2="80" stroke="white" strokeWidth="5" />
+          <line x1="0" y1="165" x2="310" y2="165" stroke="white" strokeWidth="3" />
+          <line x1="40" y1="0" x2="40" y2="240" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
+          <line x1="255" y1="0" x2="255" y2="240" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
+          <line x1="0" y1="130" x2="310" y2="130" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
+          {/* Orange route */}
+          <line x1="148" y1="205" x2="158" y2="38"
+            stroke={ORANGE} strokeWidth="5" strokeLinecap="round" strokeDasharray="12,8" />
+          {/* Origin — green */}
+          <circle cx="148" cy="205" r="9" fill="#16a34a" />
+          <circle cx="148" cy="205" r="16" fill="#16a34a" fillOpacity="0.18" />
+          {/* Destination — orange */}
+          <circle cx="158" cy="38" r="9" fill={ORANGE} />
+          <circle cx="158" cy="38" r="16" fill={ORANGE} fillOpacity="0.18" />
         </svg>
-        {/* Grid lines (map feel) */}
-        {[20, 40, 60, 80].map((x) => (
-          <div key={x} style={{
-            position: "absolute", top: 0, bottom: 0, left: `${x}%`, width: 1,
-            background: "rgba(255,255,255,0.03)",
-          }} />
-        ))}
-        {[25, 50, 75].map((y) => (
-          <div key={y} style={{
-            position: "absolute", left: 0, right: 0, top: `${y}%`, height: 1,
-            background: "rgba(255,255,255,0.03)",
-          }} />
-        ))}
+
+        {/* Distance pill */}
+        <div style={{
+          position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+          background: "white", borderRadius: 8, padding: "4px 10px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.12)",
+        }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: INK }}>~32 km</span>
+        </div>
       </div>
 
       {/* Bottom booking panel */}
       <div style={{
-        padding: "16px 20px 20px",
-        background: "#0C1220",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
+        padding: "14px 18px 18px",
+        background: "#FFFFFF",
+        borderTop: "1px solid rgba(0,0,0,0.06)",
+        boxShadow: "0 -6px 24px rgba(0,0,0,0.06)",
       }}>
-        {/* Champ départ */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: 12, marginBottom: 10,
-        }}>
+        {/* Départ */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
           <div style={{
-            width: 8, height: 8, borderRadius: "50%",
-            background: "#22c55e", boxShadow: "0 0 8px #22c55e80", flexShrink: 0,
+            width: 10, height: 10, borderRadius: "50%",
+            background: "#EF4444", flexShrink: 0,
           }} />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.35)",
-              textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)",
+              textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 1 }}>
               Départ
             </div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: WHITE, minHeight: 20 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: INK, minHeight: 18 }}>
               {dep}
-              {dep.length < "Tour Eiffel, Paris 7e".length && (
-                <span style={{ borderRight: `2px solid ${ORANGE}`, marginLeft: 1, animation: "none" }}>
-                  &nbsp;
-                </span>
+              {dep.length < "Gare de Lyon, Paris 12e".length && (
+                <span style={{ borderRight: `2px solid ${ORANGE}`, marginLeft: 1 }}>&nbsp;</span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Séparateur */}
-        <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "0 0 10px 20px" }} />
+        <div style={{ height: 1, background: "rgba(0,0,0,0.06)", margin: "0 0 8px 22px" }} />
 
-        {/* Champ arrivée */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: 12, marginBottom: 14,
-        }}>
+        {/* Arrivée */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
           <div style={{
-            width: 8, height: 8, borderRadius: "50%",
-            background: ORANGE, boxShadow: `0 0 8px ${ORANGE}80`, flexShrink: 0,
+            width: 10, height: 10, borderRadius: "50%",
+            border: `2.5px solid ${ORANGE}`, flexShrink: 0,
           }} />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.35)",
-              textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>
-              Destination
+            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)",
+              textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 1 }}>
+              Arrivée
             </div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: WHITE, minHeight: 20 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: INK, minHeight: 18 }}>
               {arr}
               {arr.length > 0 && arr.length < "Aéroport CDG · T2E".length && (
                 <span style={{ borderRight: `2px solid ${ORANGE}`, marginLeft: 1 }}>&nbsp;</span>
@@ -231,36 +240,35 @@ function AppScreen({ localFrame }: { localFrame: number }) {
           </div>
         </div>
 
-        {/* Prix + bouton */}
+        {/* Prix + CTA */}
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
           opacity: prixOp, transform: `scale(${prixS})`, transformOrigin: "left center",
         }}>
           <div>
-            <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.38)",
+            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(0,0,0,0.38)",
               textTransform: "uppercase", letterSpacing: "0.1em" }}>Tarif fixe</div>
-            <div style={{ fontSize: 36, fontWeight: 900, color: WHITE, letterSpacing: "-2px" }}>65 €</div>
+            <div style={{ fontSize: 34, fontWeight: 900, color: INK, letterSpacing: "-2px" }}>49 €</div>
           </div>
           <div style={{
-            background: `linear-gradient(135deg, ${ORANGE}, #d63500)`,
-            borderRadius: 14, padding: "12px 22px",
-            boxShadow: `0 0 24px ${ORANGE}55`,
+            background: ORANGE, borderRadius: 14, padding: "12px 22px",
+            boxShadow: `0 6px 20px ${ORANGE}55`,
           }}>
-            <span style={{ fontSize: 16, fontWeight: 800, color: WHITE }}>Réserver →</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: WHITE }}>Réserver →</span>
           </div>
         </div>
 
         {/* WhatsApp confirm */}
         <div style={{
-          marginTop: 12,
+          marginTop: 10,
           opacity: waOp, transform: `translateX(${waX}px)`,
-          background: "rgba(37,211,102,0.1)",
-          border: "1px solid rgba(37,211,102,0.25)",
-          borderRadius: 12, padding: "10px 16px",
-          display: "flex", alignItems: "center", gap: 10,
+          background: "rgba(22,163,74,0.07)",
+          border: "1px solid rgba(22,163,74,0.2)",
+          borderRadius: 10, padding: "9px 14px",
+          display: "flex", alignItems: "center", gap: 8,
         }}>
-          <span style={{ fontSize: 20 }}>💬</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#25D366" }}>
+          <span style={{ fontSize: 16 }}>💬</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#16a34a" }}>
             Chauffeur confirmé ✓
           </span>
         </div>
@@ -318,9 +326,9 @@ function SceneApp() {
             width: 310,
             height: 540,
             borderRadius: 44,
-            background: "#0C1220",
-            border: "2px solid rgba(255,255,255,0.1)",
-            boxShadow: `0 40px 120px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px ${ORANGE}15`,
+            background: "#F7F5F2",
+            border: "2px solid rgba(0,0,0,0.08)",
+            boxShadow: `0 40px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.04), 0 0 60px ${ORANGE}20`,
             overflow: "hidden",
             position: "relative",
           }}>
@@ -329,7 +337,7 @@ function SceneApp() {
               position: "absolute", top: 0, left: "50%",
               transform: "translateX(-50%)",
               width: 100, height: 28,
-              background: "#0C1220",
+              background: "#F7F5F2",
               borderBottomLeftRadius: 16, borderBottomRightRadius: 16,
               zIndex: 10,
             }} />
