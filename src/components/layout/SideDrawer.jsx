@@ -115,20 +115,21 @@ function ThemeSwitcher({ theme, onChange, isDark }) {
 }
 
 // ── Nav config ────────────────────────────────────────────────────────────────
+// Jobs hierarchy: the primary list is ONLY the actions a rider actually comes
+// here to do. Everything reference/occasional lives in secondary. The campaign
+// gets its own offer card so it never competes as a peer with "Mentions légales".
 
 const NAV_ITEMS = [
-  { view: 'home',    label: 'Accueil'          },
-  { view: 'reserve', label: 'Réserver'          },
-  { view: 'tarifs',  label: 'Tarifs'            },
-  { view: 'call',    label: 'Appeler'           },
+  { view: 'reserve', label: 'Réserver'    },
+  { view: 'courses', label: 'Mes courses' },
+  { view: 'call',    label: 'Appeler'     },
 ]
 
 const SECONDARY = [
-  { label: 'Mes courses',          view: 'courses' },
-  { label: 'Code promo',           view: 'promo'   },
-  { label: 'Coupe du Monde 2026',  view: 'coupe26', badge: '−10%' },
-  { label: 'Aide & FAQ',           view: 'faq'     },
-  { label: 'Mentions légales',     view: 'legal'   },
+  { label: 'Tarifs',           view: 'tarifs' },
+  { label: 'Code promo',       view: 'promo'  },
+  { label: 'Aide & FAQ',       view: 'faq'    },
+  { label: 'Mentions légales', view: 'legal'  },
 ]
 
 // ── Animations ────────────────────────────────────────────────────────────────
@@ -159,6 +160,10 @@ const rowVar = {
 const footerVar = {
   closed: { opacity: 0, y: 10, transition: { duration: 0.12 } },
   open:   { opacity: 1, y: 0,  transition: { duration: 0.42, ease: EXPO, delay: 0.60 } },
+}
+const offerVar = {
+  closed: { opacity: 0, y: 16, transition: { duration: 0.12 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.52, ease: EXPO, delay: 0.40 } },
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -360,6 +365,53 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
           {/* Separator */}
           <div className="mx-6 my-4" style={{ height: 1, background: border }} />
+
+          {/* ── OFFER CARD — campaign, quarantined to its own surface ── */}
+          <motion.button
+            initial="closed"
+            animate={ani}
+            variants={offerVar}
+            onClick={() => { onNavigate('coupe26'); onClose() }}
+            className="relative flex items-center gap-3 mx-6 mb-4 rounded-2xl px-3.5 py-3 cursor-pointer select-none active:scale-[.98] transition-transform duration-100 overflow-hidden"
+            style={{
+              background: isDark
+                ? 'linear-gradient(135deg, rgba(245,197,24,.10), rgba(245,197,24,.03))'
+                : 'linear-gradient(135deg, rgba(245,197,24,.16), rgba(245,197,24,.06))',
+              border: '1px solid rgba(245,197,24,.30)',
+            }}
+            aria-label="Coupe du Monde 2026 — offre −10%"
+          >
+            {/* Icon tile */}
+            <span
+              className="flex items-center justify-center flex-shrink-0 rounded-xl text-[17px] leading-none"
+              style={{
+                width: 38, height: 38,
+                background: 'rgba(245,197,24,.16)',
+                border: '1px solid rgba(245,197,24,.30)',
+              }}
+              aria-hidden="true"
+            >
+              ⚽
+            </span>
+            <span className="flex flex-col flex-1 min-w-0 text-left">
+              <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.01em', color: isDark ? '#F5F1E8' : '#1a1505' }}>
+                Coupe du Monde 2026
+              </span>
+              <span style={{ fontSize: 11.5, fontWeight: 500, color: isDark ? 'rgba(245,197,24,.78)' : 'rgba(160,120,10,.95)' }}>
+                −10% sur vos trajets
+              </span>
+            </span>
+            <span
+              className="flex-shrink-0"
+              style={{
+                fontSize: 11, fontWeight: 800, letterSpacing: '.03em',
+                color: '#0D0D0D', background: '#F5C518',
+                borderRadius: 999, padding: '3px 9px',
+              }}
+            >
+              −10%
+            </span>
+          </motion.button>
 
           {/* ── SECONDARY NAV ── */}
           <motion.ul
