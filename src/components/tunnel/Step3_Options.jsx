@@ -4,6 +4,7 @@ import useBookingStore from '../../store/useBookingStore'
 import GlowingCTA    from '../ui/GlowingCTA'
 import FloatingInput from '../ui/FloatingInput'
 import useAppTheme   from '../../hooks/useAppTheme'
+import { haptic }    from '../../utils/haptics'
 
 // ── Stagger variants ──────────────────────────────────────────────────────────
 const containerV = {
@@ -512,6 +513,9 @@ export default function Step3Options({ onNext, onBack }) {
   const note           = useBookingStore((s) => s.note)
   const setNote        = useBookingStore((s) => s.setNote)
 
+  // Comfort preferences collapsed by default — booking never requires them
+  const [prefsOpen, setPrefsOpen] = useState(false)
+
   const canSend = clientName.trim().length > 0
   const handleSend = () => { if (canSend) onNext?.() }
 
@@ -554,183 +558,216 @@ export default function Step3Options({ onNext, onBack }) {
         </div>
       </motion.section>
 
-      {/* ── Ambiance sonore ─────────────────────────────────────── */}
+      {/* ── À bord, inclus — trust line, not a fake interactive section ── */}
       <motion.section variants={sectionV}>
-        <SectionLabel th={th}>Ambiance sonore</SectionLabel>
-        <div className="flex gap-2.5">
-          {AMBIANCE_OPTS.map((opt) => (
-            <AmbiancePill
-              key={opt.value}
-              active={ambiance === opt.value}
-              onClick={() => setAmbiance(opt.value)}
-              Icon={opt.Icon}
-              label={opt.label}
-              th={th}
-            />
-          ))}
-        </div>
-
-        {/* Volume — premium card, animates in/out */}
-        <AnimatePresence>
-          {ambiance !== 'silence' && (
-            <motion.div
-              initial={{ opacity: 0, y: -6, height: 0 }}
-              animate={{ opacity: 1, y: 0,  height: 'auto' }}
-              exit={{    opacity: 0, y: -4,  height: 0 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div
-                className="px-4 py-4 rounded-2xl flex flex-col gap-3 mt-2.5"
-                style={{
-                  background: th.bgInput,
-                  border: `1px solid ${th.border}`,
-                  boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <VolumeIcon level={volume} th={th} />
-                    <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>
-                      Volume
-                    </span>
-                  </div>
-                  <span
-                    className="text-[15px] font-bold tabular-nums"
-                    style={{ color: th.inkFull, minWidth: 40, textAlign: 'right' }}
-                  >
-                    {volume}%
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>0</span>
-                  <div className="flex-1">
-                    <PremiumSlider
-                      min={0} max={100} step={1}
-                      value={volume}
-                      onChange={setVolume}
-                      gradient={volGradient}
-                      label="Volume"
-                      th={th}
-                    />
-                  </div>
-                  <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>100</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.section>
-
-      {/* ── Climatisation ───────────────────────────────────────── */}
-      <motion.section variants={sectionV}>
-        <SectionLabel th={th}>Climatisation</SectionLabel>
         <div
-          className="px-4 py-4 rounded-2xl flex flex-col gap-3"
+          className="flex items-center gap-2.5 px-4 py-3 rounded-2xl"
           style={{
             background: th.bgInput,
             border: `1px solid ${th.border}`,
             boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
           }}
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ThermometerIcon clim={clim} />
-              <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>
-                Température
-              </span>
-            </div>
-            <span
-              className="text-[15px] font-bold tabular-nums"
-              style={{ color: th.inkFull, minWidth: 44, textAlign: 'right' }}
-            >
-              {clim}°C
+          {PRESTATIONS.map(({ key, label, Icon }, i) => (
+            <span key={key} className="flex items-center gap-1.5 flex-1 min-w-0">
+              {i > 0 && <span className="flex-shrink-0" style={{ color: th.borderStrong }}>·</span>}
+              <span className="flex-shrink-0 scale-[0.62] -ml-1.5 -mr-1"><Icon th={th} /></span>
+              <span className="text-[11.5px] font-semibold truncate" style={{ color: th.inkMid }}>{label}</span>
             </span>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Froid */}
-            <span className="flex items-center gap-1 flex-shrink-0">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(130,200,255,.85)" strokeWidth="2.2" strokeLinecap="round">
-                <line x1="12" y1="2"  x2="12" y2="22"/>
-                <line x1="2"  y1="12" x2="22" y2="12"/>
-                <line x1="6"  y1="6"  x2="18" y2="18"/>
-                <line x1="18" y1="6"  x2="6"  y2="18"/>
-              </svg>
-              <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(130,200,255,.85)' }}>16°</span>
-            </span>
-            <div className="flex-1">
-              <PremiumSlider
-                min={16} max={28} step={1}
-                value={clim}
-                onChange={setClim}
-                gradient={tempGradient}
-                label="Température climatisation"
-                th={th}
-              />
-            </div>
-            {/* Chaud */}
-            <span className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(255,100,30,.85)' }}>28°</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,100,30,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2c0 0-5 6-5 10a5 5 0 0 0 10 0c0-3-2-5-2-5s-1 3-3 3c-1.1 0-2-.9-2-2 0-2 2-6 2-6z"/>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ── Prestations à bord ──────────────────────────────────── */}
-      <motion.section variants={sectionV}>
-        <SectionLabel th={th}>Prestations à bord</SectionLabel>
-        <div className="flex gap-3">
-          {PRESTATIONS.map(({ key, label, Icon }) => (
-            <PrestationCard
-              key={key}
-              Icon={Icon}
-              label={label}
-              th={th}
-            />
           ))}
+          <span
+            className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+            style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent)' }}
+          >
+            Inclus
+          </span>
         </div>
       </motion.section>
 
-      {/* ── Mode de règlement ────────────────────────────────────── */}
+      {/* ── Préférences de confort — collapsed by default ── */}
       <motion.section variants={sectionV}>
-        <SectionLabel th={th}>Mode de règlement</SectionLabel>
-        <div className="flex gap-2.5">
-          {PAYMENT_OPTS.map((p) => (
-            <PaymentButton
-              key={p.value}
-              active={payment === p.value}
-              onClick={() => setPayment(p.value)}
-              Icon={p.Icon}
-              label={p.label}
-              th={th}
-            />
-          ))}
-        </div>
-      </motion.section>
-
-      {/* ── Note ────────────────────────────────────────────────── */}
-      <motion.section variants={sectionV}>
-        <SectionLabel th={th}>Note (facultatif)</SectionLabel>
-        <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="Vol, bagages, instructions particulières…"
-          rows={2}
-          className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none"
+        <button
+          onClick={() => { haptic.select(); setPrefsOpen(o => !o) }}
+          className="flex items-center justify-between w-full px-4 py-3.5 rounded-2xl cursor-pointer select-none active:scale-[.99] transition-transform"
           style={{
-            background:  th.bgInput,
-            border:      `1px solid ${th.border}`,
-            color:       th.inkFull,
-            boxShadow:   `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.55)'}`,
-            transition:  'border-color .2s',
+            background: th.bgInput,
+            border: `1px solid ${prefsOpen ? 'color-mix(in srgb, var(--accent) 40%, transparent)' : th.border}`,
+            boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
+            transition: 'border-color .2s',
           }}
-          onFocus={e => e.target.style.borderColor = 'color-mix(in srgb, var(--accent) 42%, transparent)'}
-          onBlur={e  => { e.target.style.borderColor = th.border }}
-          aria-label="Note complémentaire"
-        />
+          aria-expanded={prefsOpen}
+        >
+          <span className="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span className="flex flex-col text-left">
+              <span className="text-[13px] font-bold" style={{ color: th.inkHigh }}>Préférences de confort</span>
+              <span className="text-[11px]" style={{ color: th.inkMuted }}>Ambiance · clim · paiement — facultatif</span>
+            </span>
+          </span>
+          <motion.svg
+            animate={{ rotate: prefsOpen ? 180 : 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke={th.inkMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          >
+            <path d="M6 9l6 6 6-6"/>
+          </motion.svg>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {prefsOpen && (
+            <motion.div
+              key="prefs"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="flex flex-col gap-5 pt-4">
+
+                {/* Ambiance sonore */}
+                <div>
+                  <SectionLabel th={th}>Ambiance sonore</SectionLabel>
+                  <div className="flex gap-2.5">
+                    {AMBIANCE_OPTS.map((opt) => (
+                      <AmbiancePill
+                        key={opt.value}
+                        active={ambiance === opt.value}
+                        onClick={() => setAmbiance(opt.value)}
+                        Icon={opt.Icon}
+                        label={opt.label}
+                        th={th}
+                      />
+                    ))}
+                  </div>
+
+                  <AnimatePresence>
+                    {ambiance !== 'silence' && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6, height: 0 }}
+                        animate={{ opacity: 1, y: 0,  height: 'auto' }}
+                        exit={{    opacity: 0, y: -4,  height: 0 }}
+                        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div
+                          className="px-4 py-4 rounded-2xl flex flex-col gap-3 mt-2.5"
+                          style={{
+                            background: th.bgInput,
+                            border: `1px solid ${th.border}`,
+                            boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <VolumeIcon level={volume} th={th} />
+                              <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>Volume</span>
+                            </div>
+                            <span className="text-[15px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 40, textAlign: 'right' }}>
+                              {volume}%
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>0</span>
+                            <div className="flex-1">
+                              <PremiumSlider min={0} max={100} step={1} value={volume} onChange={setVolume} gradient={volGradient} label="Volume" th={th} />
+                            </div>
+                            <span className="text-[11px] font-bold tabular-nums flex-shrink-0" style={{ color: th.inkMuted }}>100</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Climatisation */}
+                <div>
+                  <SectionLabel th={th}>Climatisation</SectionLabel>
+                  <div
+                    className="px-4 py-4 rounded-2xl flex flex-col gap-3"
+                    style={{
+                      background: th.bgInput,
+                      border: `1px solid ${th.border}`,
+                      boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <ThermometerIcon clim={clim} />
+                        <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>Température</span>
+                      </div>
+                      <span className="text-[15px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 44, textAlign: 'right' }}>
+                        {clim}°C
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-1 flex-shrink-0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(130,200,255,.85)" strokeWidth="2.2" strokeLinecap="round">
+                          <line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/>
+                          <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+                        </svg>
+                        <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(130,200,255,.85)' }}>16°</span>
+                      </span>
+                      <div className="flex-1">
+                        <PremiumSlider min={16} max={28} step={1} value={clim} onChange={setClim} gradient={tempGradient} label="Température climatisation" th={th} />
+                      </div>
+                      <span className="flex items-center gap-1 flex-shrink-0">
+                        <span className="text-[11px] font-bold tabular-nums" style={{ color: 'rgba(255,100,30,.85)' }}>28°</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,100,30,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 2c0 0-5 6-5 10a5 5 0 0 0 10 0c0-3-2-5-2-5s-1 3-3 3c-1.1 0-2-.9-2-2 0-2 2-6 2-6z"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mode de règlement */}
+                <div>
+                  <SectionLabel th={th}>Mode de règlement</SectionLabel>
+                  <div className="flex gap-2.5">
+                    {PAYMENT_OPTS.map((p) => (
+                      <PaymentButton
+                        key={p.value}
+                        active={payment === p.value}
+                        onClick={() => setPayment(p.value)}
+                        Icon={p.Icon}
+                        label={p.label}
+                        th={th}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Note */}
+                <div>
+                  <SectionLabel th={th}>Note (facultatif)</SectionLabel>
+                  <textarea
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Vol, bagages, instructions particulières…"
+                    rows={2}
+                    className="w-full px-4 py-3 rounded-2xl resize-none text-sm outline-none"
+                    style={{
+                      background:  th.bgInput,
+                      border:      `1px solid ${th.border}`,
+                      color:       th.inkFull,
+                      boxShadow:   `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.55)'}`,
+                      transition:  'border-color .2s',
+                    }}
+                    onFocus={e => e.target.style.borderColor = 'color-mix(in srgb, var(--accent) 42%, transparent)'}
+                    onBlur={e  => { e.target.style.borderColor = th.border }}
+                    aria-label="Note complémentaire"
+                  />
+                </div>
+
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.section>
 
       {/* ── CTA ─────────────────────────────────────────────────── */}
