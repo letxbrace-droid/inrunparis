@@ -296,21 +296,6 @@ export default function HomePill({ onOpenSheet }) {
               : 'linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent)',
           }} />
 
-          {/* Reflet glissant — lumière qui balaie la pilule */}
-          <motion.span
-            aria-hidden="true"
-            className="absolute inset-y-0 pointer-events-none"
-            style={{
-              width: '38%',
-              background: th.isDark
-                ? 'linear-gradient(100deg, transparent, rgba(255,255,255,.07) 45%, rgba(255,180,120,.10) 55%, transparent)'
-                : 'linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent)',
-            }}
-            initial={{ x: '-130%' }}
-            animate={{ x: '360%' }}
-            transition={{ duration: 1.15, repeat: Infinity, repeatDelay: 4.8, ease: [0.4, 0, 0.2, 1] }}
-          />
-
           {depart && arrive ? (
             /* ───── Aperçu du trajet ───── */
             <span className="flex items-center gap-3 w-full px-4 py-3">
@@ -367,7 +352,7 @@ export default function HomePill({ onOpenSheet }) {
             /* ───── Invite — signature : typo massive + profondeur + micro-motion ───── */
             <span className="flex items-center gap-3.5 w-full px-4 py-3.5">
               {/* Tuile loupe — cœur niché accent, respiration idle */}
-              <motion.span
+              <span
                 className="flex items-center justify-center flex-shrink-0 relative"
                 style={{
                   width: 42, height: 42, borderRadius: 14,
@@ -375,13 +360,11 @@ export default function HomePill({ onOpenSheet }) {
                   border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
                   boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 30%, transparent), 0 4px 14px color-mix(in srgb, var(--accent) 24%, transparent)',
                 }}
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.5" strokeLinecap="round">
                   <circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.35-4.35"/>
                 </svg>
-              </motion.span>
+              </span>
 
               {/* Prompt dominant — typo massive + tag micro */}
               <span className="flex flex-col flex-1 min-w-0 text-left gap-1">
@@ -400,25 +383,20 @@ export default function HomePill({ onOpenSheet }) {
               </span>
 
               {/* Flèche niche — pastille accent, nudge + halo pulsant */}
-              <motion.span
+              <span
                 className="flex items-center justify-center flex-shrink-0 relative"
-                style={{ width: 36, height: 36, borderRadius: 999, background: 'var(--accent)' }}
-                animate={{ boxShadow: [
-                  '0 3px 12px color-mix(in srgb, var(--accent) 40%, transparent)',
-                  '0 4px 20px color-mix(in srgb, var(--accent) 65%, transparent)',
-                  '0 3px 12px color-mix(in srgb, var(--accent) 40%, transparent)',
-                ] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  width: 36, height: 36, borderRadius: 999, background: 'var(--accent)',
+                  boxShadow: '0 3px 14px color-mix(in srgb, var(--accent) 45%, transparent)',
+                }}
               >
                 <span aria-hidden="true" className="absolute inset-0 rounded-full" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35)' }} />
-                <motion.svg
+                <svg
                   width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"
-                  animate={{ x: [0, 2.5, 0] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   <path d="M5 12h14M12 5l7 7-7 7"/>
-                </motion.svg>
-              </motion.span>
+                </svg>
+              </span>
             </span>
           )}
         </button>
