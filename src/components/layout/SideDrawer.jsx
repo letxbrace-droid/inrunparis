@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { subscribeToVapid, isPushSupported, encodeSubscription, registerWithWorker } from '../../utils/pushNotifications'
+import SignatureTrace from '../ui/SignatureTrace'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -312,6 +313,19 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               </svg>
             </button>
           </div>
+
+          {/* ── BRAND LOCKUP — the signature answers « à qui c'est ? » ── */}
+          <motion.div
+            initial="closed"
+            animate={ani}
+            variants={rowVar}
+            className="px-6 pb-7 flex flex-col gap-2.5"
+          >
+            <span style={{ fontSize: 21, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
+              I&amp;N<span style={{ color: 'var(--accent)' }}> RUN</span>
+            </span>
+            {open && <SignatureTrace width={140} />}
+          </motion.div>
 
           {/* ── PRIMARY NAV — Heetch-style editorial ── */}
           <motion.ul
