@@ -84,7 +84,7 @@ export default function AideFaqView({ open, onClose }) {
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Aide & FAQ</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Aide & FAQ</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Questions fréquentes</p>
         </div>
       </div>

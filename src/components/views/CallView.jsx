@@ -75,7 +75,7 @@ export default function CallView({ open, onClose }) {
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Contacter</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Contacter</h1>
           <p className="text-xs font-medium mt-0.5" style={{ color: th.inkMuted }}>
             Réservation à l'avance
           </p>

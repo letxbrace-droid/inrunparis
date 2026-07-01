@@ -134,7 +134,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
         </button>
         <div>
           <SignatureTrace width={52} loop={false} strokeOpacity={0.5} style={{ marginBottom: 7 }} />
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Tarifs & services</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Tarifs & services</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Transparents · Sans surprise</p>
         </div>
       </div>

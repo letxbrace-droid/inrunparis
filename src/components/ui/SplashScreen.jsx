@@ -330,8 +330,9 @@ export default function SplashScreen({ onDone }) {
         {/* ── Brand name ── */}
         <p style={{
           marginTop:     18,
-          fontSize:      24,
-          fontWeight:    900,
+          fontFamily:    'var(--font-display)',
+          fontSize:      25,
+          fontWeight:    800,
           letterSpacing: '-.04em',
           color:         '#ffffff',
           animation:     'sp-text .52s cubic-bezier(.23,1,.32,1) .52s both',

@@ -82,7 +82,7 @@ export default function CodePromoView({ open, onClose }) {
 
         <div className="relative">
           <SignatureTrace width={52} loop={false} strokeOpacity={0.5} style={{ marginBottom: 7 }} />
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Code promo</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Code promo</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Réduisez votre tarif</p>
         </div>
       </div>

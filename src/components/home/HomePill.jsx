@@ -385,7 +385,7 @@ export default function HomePill({ onOpenSheet }) {
 
               {/* Prompt dominant — typo massive + tag micro */}
               <span className="flex flex-col flex-1 min-w-0 text-left gap-1">
-                <span className="leading-none" style={{ color: th.inkFull, fontSize: 19, fontWeight: 800, letterSpacing: '-0.02em' }}>
+                <span className="leading-none" style={{ fontFamily: 'var(--font-display)', color: th.inkFull, fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em' }}>
                   Où allons-nous&nbsp;?
                 </span>
                 <span className="flex items-center gap-1.5 overflow-hidden">

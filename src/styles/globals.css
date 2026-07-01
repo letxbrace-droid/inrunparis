@@ -16,6 +16,11 @@
     --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
     --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
 
+    /* ── Typographic voice ──────────────────────────────────────────
+       Display: Bricolage Grotesque — big moments only (brand, headers,
+       hero prompts). Body stays Outfit, numerals stay JetBrains Mono. */
+    --font-display: 'Bricolage Grotesque', 'Outfit', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
     /* ── Discipline couleur — hiérarchie en castes ──────────────────
        Action     : --accent / --accent-press  → CTA + état actif SEULEMENT
        Neutre     : --label-* / --bg-* / --separator-*  → 90% de l'UI

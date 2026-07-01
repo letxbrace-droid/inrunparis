@@ -96,7 +96,7 @@ export default function Coupe2026View({ open, onClose, onReserve }) {
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Coupe du Monde 2026</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Coupe du Monde 2026</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Offre spéciale I&N RUN</p>
         </div>
       </div>

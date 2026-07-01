@@ -321,7 +321,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             variants={rowVar}
             className="px-6 pb-7 flex flex-col gap-2.5"
           >
-            <span style={{ fontSize: 21, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
               I&amp;N<span style={{ color: 'var(--accent)' }}> RUN</span>
             </span>
             {open && <SignatureTrace width={140} />}
@@ -347,8 +347,9 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     <span
                       style={{
                         display:       'block',
+                        fontFamily:    'var(--font-display)',
                         fontSize:      isActive ? 28 : 26,
-                        fontWeight:    isActive ? 900 : 800,
+                        fontWeight:    isActive ? 800 : 700,
                         letterSpacing: isActive ? '-0.03em' : '-0.02em',
                         lineHeight:    1.08,
                         textTransform: 'uppercase',

@@ -44,7 +44,7 @@ export default function LegalView({ open, onClose }) {
           </svg>
         </button>
         <div>
-          <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Mentions légales</h1>
+          <h1 className="text-[19px] font-display font-bold" style={{ color: th.inkFull, letterSpacing: '-0.02em' }}>Mentions légales</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Informations réglementaires</p>
         </div>
       </div>

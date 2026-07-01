@@ -30,9 +30,10 @@ export default {
         danger:   'var(--danger)',
       },
       fontFamily: {
-        body:  ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
-        brand: ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        body:    ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        brand:   ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', 'Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       transitionTimingFunction: {
         spring:     'cubic-bezier(.32,1.2,.55,1)',
