@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 function barStyle(isDark) {
@@ -6,7 +7,8 @@ function barStyle(isDark) {
     width:           20,
     height:          2.5,
     borderRadius:    99,
-    background:      isDark ? '#F5F1E8' : '#0c1e2e',
+    // System ink — cream on dark, near-black on light. No rogue navy.
+    background:      isDark ? '#F5F1E8' : '#0D0D0D',
     transformOrigin: 'center',
   }
 }
@@ -14,9 +16,19 @@ function barStyle(isDark) {
 export default function TopBar({ onBurgerClick, burgerOpen, isDark = true }) {
   const BAR = barStyle(isDark)
 
-  // Glass pill — constant contrast for the bars over any map background
+  // Stay above the drawer through its close animation too, so BOTH the
+  // open (burger→X) and close (X→burger) morphs are fully visible.
+  const [elevated, setElevated] = useState(false)
+  useEffect(() => {
+    if (burgerOpen) { setElevated(true); return }
+    const t = setTimeout(() => setElevated(false), 340)
+    return () => clearTimeout(t)
+  }, [burgerOpen])
+
+  // Glass pill — constant contrast for the bars over any map background.
+  // True-black tint (not navy) to honour the AMOLED discipline.
   const pillBg = isDark
-    ? 'rgba(10,14,24,.62)'
+    ? 'rgba(9,9,11,.62)'
     : 'rgba(255,255,255,.72)'
   const pillBorder = isDark
     ? '1px solid rgba(255,255,255,.14)'
@@ -27,8 +39,14 @@ export default function TopBar({ onBurgerClick, burgerOpen, isDark = true }) {
 
   return (
     <header
-      className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-5 pointer-events-none"
-      style={{ paddingTop: `calc(var(--safe-top) + 14px)` }}
+      className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 pointer-events-none"
+      style={{
+        paddingTop: `calc(var(--safe-top) + 14px)`,
+        // Rise above the drawer (z-99999) only while it's open, so the burger
+        // stays visible and morphs into the single close control (Fluid Island).
+        // Otherwise it sits at chrome level, below full-screen views/sheets.
+        zIndex: elevated ? 100000 : 20,
+      }}
     >
       {/* Burger — pastille glass, traits toujours lisibles sur la carte */}
       <button

@@ -244,6 +244,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
       {/* Panel */}
       <motion.nav
+        id="side-drawer"
         role="dialog"
         aria-modal="true"
         aria-label="Menu principal"
@@ -292,27 +293,9 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           className="relative z-10 flex flex-col h-full"
           style={{ paddingTop: 'calc(var(--safe-top) + 14px)' }}
         >
-          {/* Close */}
-          <div className="flex justify-end px-5 pb-6">
-            <button
-              onClick={onClose}
-              aria-label="Fermer le menu"
-              className="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer active:scale-90 transition-transform select-none"
-              style={{
-                background: isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)',
-                border:     `1px solid ${border}`,
-              }}
-            >
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" strokeWidth="2.2" strokeLinecap="round" overflow="visible">
-                <motion.g initial="closed" animate={ani} variants={arm1Var}>
-                  <path d="M1 1l12 12" stroke={inkFull} />
-                </motion.g>
-                <motion.g initial="closed" animate={ani} variants={arm2Var}>
-                  <path d="M13 1L1 13" stroke={inkFull} />
-                </motion.g>
-              </svg>
-            </button>
-          </div>
+          {/* Space reserved for the floating burger — now the single close
+              control, which morphs to an X in place above the panel. */}
+          <div aria-hidden="true" style={{ height: 46 }} />
 
           {/* ── BRAND LOCKUP — the signature answers « à qui c'est ? » ── */}
           <motion.div

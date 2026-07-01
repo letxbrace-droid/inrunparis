@@ -178,7 +178,7 @@ export default function App() {
 
       {/* Top bar */}
       <TopBar
-        onBurgerClick={() => setDrawerOpen(true)}
+        onBurgerClick={() => setDrawerOpen((o) => !o)}
         burgerOpen={drawerOpen}
         isDark={isDark}
       />
