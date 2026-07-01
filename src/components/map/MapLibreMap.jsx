@@ -202,7 +202,14 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
 
   return (
     <div className="absolute inset-0 z-0" style={{ pointerEvents: frozen ? 'none' : 'auto' }}>
-      <div ref={containerRef} className="absolute inset-0" aria-label="Carte de Paris" />
+      {/* Inline position — maplibre-gl.css's `.maplibregl-map{position:relative}`
+          loads after Tailwind and overrides `.absolute`, collapsing the height
+          to 0 (the "thin strip" bug). Inline style beats any stylesheet class. */}
+      <div
+        ref={containerRef}
+        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
+        aria-label="Carte de Paris"
+      />
 
       {/* Cinematic compositing — pure presentation, never intercepts touch */}
       {isDark && (
