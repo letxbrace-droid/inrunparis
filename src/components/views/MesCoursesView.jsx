@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 import { haptic } from '../../utils/haptics'
+import SignatureTrace from '../ui/SignatureTrace'
 
 function formatDate(iso) {
   if (!iso) return ''
@@ -72,6 +73,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
         </button>
 
         <div className="relative">
+          <SignatureTrace width={52} loop={false} strokeOpacity={0.5} style={{ marginBottom: 7 }} />
           <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Mes courses</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>
             {bookingHistory.length} course{bookingHistory.length !== 1 ? 's' : ''} enregistrée{bookingHistory.length !== 1 ? 's' : ''}

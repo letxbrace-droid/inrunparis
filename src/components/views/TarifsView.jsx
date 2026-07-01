@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import useAppTheme from '../../hooks/useAppTheme'
+import SignatureTrace from '../ui/SignatureTrace'
 
 const WA_MAD = `https://wa.me/33767742220?text=${encodeURIComponent('*DEMANDE DE DEVIS — MISE À DISPOSITION*\n\nBonjour Nourdine,\n\nJe souhaite réserver votre service de mise à disposition :\n\n📅 Date : \n🕒 Horaires : \n⏱️ Durée estimée : \n📍 Point de départ : \n🎯 Type de prestation : (Business / Mariage / Tourisme / Autre)\n👥 Nombre de passagers : \n\nMerci de me confirmer votre disponibilité et le tarif final.')}`
 
@@ -132,6 +133,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
           </svg>
         </button>
         <div>
+          <SignatureTrace width={52} loop={false} strokeOpacity={0.5} style={{ marginBottom: 7 }} />
           <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Tarifs & services</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Transparents · Sans surprise</p>
         </div>

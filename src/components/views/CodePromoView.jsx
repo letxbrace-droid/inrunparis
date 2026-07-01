@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore, { getPromoCodes } from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 import { haptic } from '../../utils/haptics'
+import SignatureTrace from '../ui/SignatureTrace'
 
 const HINTS = [
   { icon: '🏅', text: 'Fidélité — après votre 5ème course' },
@@ -80,6 +81,7 @@ export default function CodePromoView({ open, onClose }) {
         </button>
 
         <div className="relative">
+          <SignatureTrace width={52} loop={false} strokeOpacity={0.5} style={{ marginBottom: 7 }} />
           <h1 className="text-[17px] font-bold" style={{ color: th.inkFull }}>Code promo</h1>
           <p className="text-xs" style={{ color: th.inkMuted }}>Réduisez votre tarif</p>
         </div>
