@@ -20,6 +20,10 @@ const FAQ = [
     a: "Carte bancaire, espèces ou virement bancaire. Précisez votre préférence lors de la réservation.",
   },
   {
+    q: "Comment obtenir un code promo ?",
+    a: "Trois façons : la fidélité (un code après votre 5ᵉ course), le parrainage (invitez un ami à réserver) et la newsletter I&N RUN. Une fois votre code obtenu, saisissez-le à l'étape Tarif de la réservation — la réduction s'applique au prix affiché.",
+  },
+  {
     q: "Proposez-vous des trajets longue distance ?",
     a: "Oui — Province, Côte d'Azur, Genève, Monaco. Contactez-nous pour un devis personnalisé.",
   },
