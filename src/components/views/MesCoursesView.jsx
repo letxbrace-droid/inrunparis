@@ -3,6 +3,7 @@ import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
 import { haptic } from '../../utils/haptics'
 import SignatureTrace from '../ui/SignatureTrace'
+import RouteTimeline from '../ui/RouteTimeline'
 
 function formatDate(iso) {
   if (!iso) return ''
@@ -183,23 +184,13 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                   </span>
                 </div>
 
-                {/* Route A → B */}
-                <div className="px-4 pt-3 pb-2.5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }} />
+                {/* Route A → B — canonical mark */}
+                <div className="flex items-stretch gap-3 px-4 pt-3 pb-2.5">
+                  <RouteTimeline bg={th.bgCard} minLine={14} className="mt-1.5 mb-0.5" />
+                  <div className="flex flex-col justify-between flex-1 min-w-0" style={{ gap: 12 }}>
                     <p className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>
-                  </div>
-                  <div className="flex items-stretch gap-3 my-1.5">
-                    <div className="flex justify-center" style={{ width: 8, flexShrink: 0 }}>
-                      <div className="w-px flex-1" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 45%, transparent), color-mix(in srgb, var(--accent) 10%, transparent))' }} />
-                    </div>
-                    <div style={{ height: 10 }} />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full border-[2px] flex-shrink-0 mt-0.5"
-                      style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)', background: th.bgCard }} />
                     <p className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
                       {ShortName(booking.arrive?.name ?? '—')}
                     </p>

@@ -5,6 +5,7 @@ import { sendWhatsApp, generateBonNumber } from '../../utils/whatsappEncoder'
 import { applyPromoDiscount } from '../../utils/priceEngine'
 import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
+import RouteTimeline from '../ui/RouteTimeline'
 
 const AMBIANCE_LABEL  = { musique: 'Musique', radio: 'Radio', silence: 'Silence' }
 const PAYMENT_LABEL   = { Espèces: 'Espèces', Carte: 'Carte',  Virement: 'Virement' }
@@ -102,12 +103,8 @@ export default function Step4Recap({ onBack }) {
 
         {/* ROUTE A → B — compact */}
         <div className="flex items-stretch gap-3 px-4 py-3">
-          {/* Timeline */}
-          <div className="flex flex-col items-center flex-shrink-0 mt-1">
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }} />
-            <div className="w-px flex-1 my-1" style={{ minHeight: 20, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 45%, transparent), color-mix(in srgb, var(--accent) 10%, transparent))' }} />
-            <div className="w-2 h-2 rounded-full flex-shrink-0 border-2" style={{ borderColor: 'color-mix(in srgb, var(--accent) 65%, transparent)', background: th.bgCard }} />
-          </div>
+          {/* Timeline — canonical A→B mark */}
+          <RouteTimeline bg={th.bgCard} minLine={20} className="mt-1" />
           {/* Addresses */}
           <div className="flex flex-col flex-1 min-w-0" style={{ gap: 10 }}>
             <div className="min-w-0">
