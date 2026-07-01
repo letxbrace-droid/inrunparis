@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v109 */
-const CACHE = 'inrun-v109';
+/* I&N RUN — Service Worker v110 */
+const CACHE = 'inrun-v110';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -96,7 +96,7 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-  if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('openstreetmap.de') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
+  if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openfreemap.org') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('openstreetmap.de') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
     e.respondWith(fetch(request).catch(() => new Response('', { status: 503 }))); return;
   }
   e.respondWith(caches.match(request).then(r => r || fetch(request).then(res => {

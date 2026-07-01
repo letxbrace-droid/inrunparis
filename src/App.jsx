@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-import LeafletMap          from './components/map/LeafletMap'
+import MapLibreMap         from './components/map/MapLibreMap'
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
 import BottomSheet         from './components/tunnel/BottomSheet'
@@ -156,7 +156,7 @@ export default function App() {
         }} />
       )}
       {/* Map — frozen (pointer-events-none) when any overlay is open */}
-      <LeafletMap
+      <MapLibreMap
         depart={depart}
         arrive={arrive}
         route={route}
