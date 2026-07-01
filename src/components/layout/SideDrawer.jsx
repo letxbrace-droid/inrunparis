@@ -128,7 +128,6 @@ const NAV_ITEMS = [
 
 const SECONDARY = [
   { label: 'Tarifs',           view: 'tarifs' },
-  { label: 'Code promo',       view: 'promo'  },
   { label: 'Aide & FAQ',       view: 'faq'    },
   { label: 'Mentions légales', view: 'legal'  },
 ]

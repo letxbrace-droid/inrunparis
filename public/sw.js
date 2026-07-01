@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v107 */
-const CACHE = 'inrun-v107';
+/* I&N RUN — Service Worker v108 */
+const CACHE = 'inrun-v108';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 

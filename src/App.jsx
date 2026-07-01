@@ -7,7 +7,6 @@ import BottomSheet         from './components/tunnel/BottomSheet'
 import TarifsView          from './components/views/TarifsView'
 import CallView            from './components/views/CallView'
 import MesCoursesView      from './components/views/MesCoursesView'
-import CodePromoView       from './components/views/CodePromoView'
 import Coupe2026View       from './components/views/Coupe2026View'
 import AideFaqView         from './components/views/AideFaqView'
 import LegalView           from './components/views/LegalView'
@@ -19,7 +18,7 @@ import InstallPrompt       from './components/ui/InstallPrompt'
 import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
 
-const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'promo', 'coupe26', 'faq', 'legal']
+const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'coupe26', 'faq', 'legal']
 
 const SPLASH_KEY = 'inr-splash'
 
@@ -213,7 +212,6 @@ export default function App() {
       <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
       <CallView       open={activeView === 'call'}    onClose={handleClose} />
       <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
-      <CodePromoView  open={activeView === 'promo'}   onClose={handleClose} />
       <Coupe2026View  open={activeView === 'coupe26'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
       <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
       <LegalView      open={activeView === 'legal'}   onClose={handleClose} />
