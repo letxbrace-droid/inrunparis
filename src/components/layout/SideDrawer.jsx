@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { subscribeToVapid, isPushSupported, encodeSubscription, registerWithWorker } from '../../utils/pushNotifications'
 import SignatureTrace from '../ui/SignatureTrace'
@@ -457,10 +457,27 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 </button>
               </motion.li>
             ))}
+          </motion.ul>
 
-            {/* Push notifications opt-in */}
+          {/* ── RÉGLAGES — settings grouped, out of the nav list ── */}
+          <motion.div
+            initial="closed"
+            animate={ani}
+            variants={footerVar}
+            className="mt-auto px-6"
+            style={{
+              borderTop:     `1px solid ${border}`,
+              paddingTop:    14,
+              paddingBottom: 'calc(var(--safe-bot) + 16px)',
+            }}
+          >
+            <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em', color: isDark ? 'rgba(245,241,232,.34)' : 'rgba(17,17,17,.34)', marginBottom: 10 }}>
+              Réglages
+            </p>
+
+            {/* Notifications — a setting, not a destination */}
             {(pushSupported || isIOSBrowser) && notifPerm !== 'denied' && (
-              <motion.li variants={rowVar}>
+              <div>
                 <button
                   onClick={handleNotifToggle}
                   disabled={notifPerm === 'granted'}
@@ -514,40 +531,16 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     Envoyer mon abonnement au chauffeur
                   </a>
                 )}
-              </motion.li>
+              </div>
             )}
-          </motion.ul>
 
-          {/* ── FOOTER — theme switcher ── */}
-          <motion.div
-            initial="closed"
-            animate={ani}
-            variants={footerVar}
-            className="flex items-center justify-between px-6 mt-auto"
-            style={{
-              borderTop:     `1px solid ${border}`,
-              paddingTop:    16,
-              paddingBottom: 'calc(var(--safe-bot) + 16px)',
-            }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={theme}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.18 }}
-                style={{
-                  fontSize:   13,
-                  fontWeight: 500,
-                  color:      isDark ? 'rgba(245,241,232,.45)' : 'rgba(17,17,17,.42)',
-                  userSelect: 'none',
-                }}
-              >
-                {THEME_OPTIONS.find(t => t.value === theme)?.label ?? 'Sombre'}
-              </motion.span>
-            </AnimatePresence>
-            <ThemeSwitcher theme={theme} onChange={setTheme} isDark={isDark} />
+            {/* Apparence */}
+            <div className="flex items-center justify-between" style={{ paddingTop: 8 }}>
+              <span style={{ fontSize: 14, fontWeight: 500, color: isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)' }}>
+                Apparence
+              </span>
+              <ThemeSwitcher theme={theme} onChange={setTheme} isDark={isDark} />
+            </div>
           </motion.div>
         </div>
       </motion.nav>
