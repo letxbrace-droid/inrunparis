@@ -101,12 +101,23 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       maxZoom: 19,
     })
     mapRef.current = map
-    map.on('load', () => { onMapReady?.(map); syncRoute() })
 
-    const observer = new ResizeObserver(() => mapRef.current?.resize())
+    // MapLibre measures the container at construction; in an absolutely-
+    // positioned flex/PWA shell that size can be wrong until layout settles,
+    // leaving the canvas rendering only a thin strip. Force resize() the way
+    // Leaflet's invalidateSize did — on load, next frame, and after a beat.
+    const bump = () => { try { map.resize() } catch {} }
+    map.on('load', () => { onMapReady?.(map); syncRoute(); bump() })
+
+    const raf = requestAnimationFrame(bump)
+    const t0  = setTimeout(bump, 0)
+    const t1  = setTimeout(bump, 300)
+
+    const observer = new ResizeObserver(bump)
     observer.observe(containerRef.current)
 
     return () => {
+      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1)
       observer.disconnect()
       map.remove()
       mapRef.current = null
