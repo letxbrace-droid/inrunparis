@@ -165,9 +165,9 @@ function ChargerIcon({ th }) {
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const AMBIANCE_OPTS = [
-  { value: 'musique', label: 'Musique', Icon: MusiqueIcon },
-  { value: 'radio',   label: 'Radio',   Icon: RadioIcon   },
-  { value: 'silence', label: 'Silence', Icon: SilenceIcon },
+  { value: 'musique', label: 'Musique', img: '/inrunparis/brand/ambiance-music.png'   },
+  { value: 'radio',   label: 'Radio',   img: '/inrunparis/brand/ambiance-radio.png'   },
+  { value: 'silence', label: 'Silence', img: '/inrunparis/brand/ambiance-silence.png' },
 ]
 
 const PAYMENT_OPTS = [
@@ -272,7 +272,7 @@ function SectionLabel({ children, th }) {
 }
 
 // ── Ambiance pill — 3D UHD ────────────────────────────────────────────────────
-function AmbiancePill({ active, onClick, Icon, label, th }) {
+function AmbiancePill({ active, onClick, img, label, th }) {
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
@@ -318,7 +318,7 @@ function AmbiancePill({ active, onClick, Icon, label, th }) {
       }}
     >
       <span className="flex flex-col items-center gap-1.5">
-        <Icon active={active} th={th} />
+        <img src={img} alt="" aria-hidden="true" style={{ width: 20, height: 20, objectFit: 'contain', opacity: active ? 1 : 0.8 }} />
         <span
           className="text-[11px] font-bold tracking-wide"
           style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
@@ -607,7 +607,7 @@ export default function Step3Options({ onNext, onBack }) {
                         key={opt.value}
                         active={ambiance === opt.value}
                         onClick={() => setAmbiance(opt.value)}
-                        Icon={opt.Icon}
+                        img={opt.img}
                         label={opt.label}
                         th={th}
                       />
