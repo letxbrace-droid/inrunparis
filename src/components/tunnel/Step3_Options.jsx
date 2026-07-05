@@ -208,9 +208,9 @@ const PAYMENT_OPTS = [
 ]
 
 const PRESTATIONS = [
-  { key: 'wifi', label: 'Wi-Fi 5G',     Icon: WifiIcon    },
-  { key: 'eau',  label: 'Eau minérale', Icon: WaterIcon   },
-  { key: 'usb',  label: 'Chargeur',     Icon: ChargerIcon },
+  { key: 'wifi', label: 'Wi-Fi 5G',     img: '/inrunparis/brand/onboard-wifi.png'    },
+  { key: 'eau',  label: 'Eau minérale', img: '/inrunparis/brand/onboard-water.png'   },
+  { key: 'usb',  label: 'Chargeur',     img: '/inrunparis/brand/onboard-charger.png' },
 ]
 
 // ── Premium custom slider ─────────────────────────────────────────────────────
@@ -568,10 +568,10 @@ export default function Step3Options({ onNext, onBack }) {
             boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
           }}
         >
-          {PRESTATIONS.map(({ key, label, Icon }, i) => (
+          {PRESTATIONS.map(({ key, label, img }, i) => (
             <span key={key} className="flex items-center gap-1.5 flex-1 min-w-0">
               {i > 0 && <span className="flex-shrink-0" style={{ color: th.borderStrong }}>·</span>}
-              <span className="flex-shrink-0 scale-[0.62] -ml-1.5 -mr-1"><Icon th={th} /></span>
+              <img src={img} alt="" aria-hidden="true" className="flex-shrink-0" style={{ width: 15, height: 15, objectFit: 'contain' }} />
               <span className="text-[11.5px] font-semibold truncate" style={{ color: th.inkMid }}>{label}</span>
             </span>
           ))}

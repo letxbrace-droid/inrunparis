@@ -303,9 +303,17 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
             variants={rowVar}
             className="px-6 pb-7 flex flex-col gap-2.5"
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
-              I&amp;N<span style={{ color: 'var(--accent)' }}> RUN</span>
-            </span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/inrunparis/icons/icon-192.png"
+                alt="I&N RUN"
+                width="46" height="46"
+                style={{ width: 46, height: 46, borderRadius: 13, flexShrink: 0, boxShadow: '0 4px 14px rgba(0,0,0,.5)' }}
+              />
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
+                I&amp;N<span style={{ color: 'var(--accent)' }}> RUN</span>
+              </span>
+            </div>
             {open && <SignatureTrace width={140} />}
           </motion.div>
 

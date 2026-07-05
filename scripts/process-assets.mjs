@@ -90,10 +90,32 @@ async function buildSplash() {
   console.log('ios splash ✓')
 }
 
+// ── On-board prestation icons (Wi-Fi · eau · chargeur) ──────────────────────
+// One combined image; chroma-key, split into 3 columns, trim each tight.
+async function buildOnboard() {
+  const keyed = await keyToTransparent(`${SRC}/onboard-icons.png`)
+  const meta = await sharp(keyed).metadata()
+  const W = meta.width, H = meta.height, third = Math.floor(W / 3)
+  const parts = [
+    ['onboard-wifi',    { left: 0,          top: 0, width: third,         height: H }],
+    ['onboard-water',   { left: third,      top: 0, width: third,         height: H }],
+    ['onboard-charger', { left: 2 * third,  top: 0, width: W - 2 * third, height: H }],
+  ]
+  for (const [name, box] of parts) {
+    const col = await sharp(keyed).extract(box).png().toBuffer()
+    let out
+    try { out = await sharp(col).trim({ threshold: 10 }).resize({ height: 96 }).png().toBuffer() }
+    catch { out = await sharp(col).resize({ height: 96 }).png().toBuffer() }
+    await sharp(out).toFile(`public/brand/${name}.png`)
+  }
+  console.log('onboard ✓')
+}
+
 await buildIcons()
 await buildOG()
 await buildLineArt('swace-side', 640)
 await buildLineArt('swace-hybrid', 760)
 await buildLineArt('trace-success', 560)
+await buildOnboard()
 await buildSplash()
 console.log('done')
