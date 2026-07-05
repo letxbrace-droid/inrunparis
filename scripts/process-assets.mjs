@@ -90,25 +90,25 @@ async function buildSplash() {
   console.log('ios splash ✓')
 }
 
-// ── On-board prestation icons (Wi-Fi · eau · chargeur) ──────────────────────
+// ── 3-up icon sheets → individual keyed, trimmed icons ──────────────────────
 // One combined image; chroma-key, split into 3 columns, trim each tight.
-async function buildOnboard() {
-  const keyed = await keyToTransparent(`${SRC}/onboard-icons.png`)
+async function sliceTrio(srcName, names) {
+  const keyed = await keyToTransparent(`${SRC}/${srcName}.png`)
   const meta = await sharp(keyed).metadata()
   const W = meta.width, H = meta.height, third = Math.floor(W / 3)
-  const parts = [
-    ['onboard-wifi',    { left: 0,          top: 0, width: third,         height: H }],
-    ['onboard-water',   { left: third,      top: 0, width: third,         height: H }],
-    ['onboard-charger', { left: 2 * third,  top: 0, width: W - 2 * third, height: H }],
+  const boxes = [
+    { left: 0,         top: 0, width: third,         height: H },
+    { left: third,     top: 0, width: third,         height: H },
+    { left: 2 * third, top: 0, width: W - 2 * third, height: H },
   ]
-  for (const [name, box] of parts) {
-    const col = await sharp(keyed).extract(box).png().toBuffer()
+  for (let i = 0; i < 3; i++) {
+    const col = await sharp(keyed).extract(boxes[i]).png().toBuffer()
     let out
     try { out = await sharp(col).trim({ threshold: 10 }).resize({ height: 96 }).png().toBuffer() }
     catch { out = await sharp(col).resize({ height: 96 }).png().toBuffer() }
-    await sharp(out).toFile(`public/brand/${name}.png`)
+    await sharp(out).toFile(`public/brand/${names[i]}.png`)
   }
-  console.log('onboard ✓')
+  console.log(`${srcName} ✓`)
 }
 
 await buildIcons()
@@ -116,6 +116,9 @@ await buildOG()
 await buildLineArt('swace-side', 640)
 await buildLineArt('swace-hybrid', 760)
 await buildLineArt('trace-success', 560)
-await buildOnboard()
+await sliceTrio('onboard-icons', ['onboard-wifi', 'onboard-water', 'onboard-charger'])
+await sliceTrio('temperature',   ['temp-cold', 'temp-mid', 'temp-hot'])
+await sliceTrio('volume',        ['vol-mute', 'vol-low', 'vol-high'])
+await sliceTrio('payment',       ['pay-card', 'pay-cash', 'pay-transfer'])
 await buildSplash()
 console.log('done')

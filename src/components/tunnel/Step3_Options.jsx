@@ -83,27 +83,9 @@ function SilenceIcon({ active, th }) {
 }
 
 // ── Volume icon ───────────────────────────────────────────────────────────────
-function VolumeIcon({ level, th }) {
-  const c = th?.isDark ? 'color-mix(in srgb, var(--accent) 75%, transparent)' : 'color-mix(in srgb, var(--accent) 85%, transparent)'
-  if (level === 0) return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-  )
-  if (level < 40) return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-    </svg>
-  )
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-  )
+function VolumeIcon({ level }) {
+  const src = level === 0 ? 'vol-mute' : level < 40 ? 'vol-low' : 'vol-high'
+  return <img src={`/inrunparis/brand/${src}.png`} alt="" aria-hidden="true" style={{ width: 17, height: 17, objectFit: 'contain' }} />
 }
 
 // ── Payment icons (theme-aware) ───────────────────────────────────────────────
@@ -142,22 +124,9 @@ function TransferIcon({ active, th }) {
 
 // ── Thermometer ───────────────────────────────────────────────────────────────
 function ThermometerIcon({ clim }) {
-  const ratio      = (clim - 16) / 12
-  const fillColor  = ratio < 0.3 ? 'rgba(130,200,255,.95)' : ratio < 0.65 ? 'rgba(255,175,70,.9)' : 'color-mix(in srgb, var(--accent) 95%, transparent)'
-  const shellColor = ratio < 0.3 ? 'rgba(130,200,255,.55)'  : ratio < 0.65 ? 'rgba(255,175,70,.50)' : 'color-mix(in srgb, var(--accent) 55%, transparent)'
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" stroke={shellColor} strokeWidth="1.8"/>
-      <motion.line
-        x1="12" x2="12" y1="17"
-        animate={{ y2: 15 - ratio * 9 }}
-        initial={{ y2: 15 }}
-        transition={{ type: 'spring', stiffness: 90, damping: 18 }}
-        stroke={fillColor} strokeWidth="2.5"
-      />
-      <circle cx="12" cy="17" r="2" fill={fillColor}/>
-    </svg>
-  )
+  const ratio = (clim - 16) / 12
+  const src = ratio < 0.34 ? 'temp-cold' : ratio < 0.67 ? 'temp-mid' : 'temp-hot'
+  return <img src={`/inrunparis/brand/${src}.png`} alt="" aria-hidden="true" style={{ width: 17, height: 17, objectFit: 'contain' }} />
 }
 
 // ── Prestation icons ──────────────────────────────────────────────────────────
@@ -202,9 +171,9 @@ const AMBIANCE_OPTS = [
 ]
 
 const PAYMENT_OPTS = [
-  { value: 'Carte',    label: 'Carte',    Icon: CardIcon    },
-  { value: 'Espèces',  label: 'Espèces',  Icon: CashIcon    },
-  { value: 'Virement', label: 'Virement', Icon: TransferIcon },
+  { value: 'Carte',    label: 'Carte',    img: '/inrunparis/brand/pay-card.png'     },
+  { value: 'Espèces',  label: 'Espèces',  img: '/inrunparis/brand/pay-cash.png'     },
+  { value: 'Virement', label: 'Virement', img: '/inrunparis/brand/pay-transfer.png' },
 ]
 
 const PRESTATIONS = [
@@ -437,7 +406,7 @@ function PrestationCard({ Icon, label, th }) {
 }
 
 // ── Payment button — UHD animated ─────────────────────────────────────────────
-function PaymentButton({ active, onClick, Icon, label, th }) {
+function PaymentButton({ active, onClick, img, label, th }) {
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
@@ -483,7 +452,7 @@ function PaymentButton({ active, onClick, Icon, label, th }) {
       }}
     >
       <div className="flex flex-col items-center gap-1.5">
-        <Icon active={active} th={th} />
+        <img src={img} alt="" aria-hidden="true" style={{ width: 22, height: 22, objectFit: 'contain', opacity: active ? 1 : 0.82 }} />
         <span
           className="text-[11px] font-bold tracking-wide"
           style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
@@ -734,7 +703,7 @@ export default function Step3Options({ onNext, onBack }) {
                         key={p.value}
                         active={payment === p.value}
                         onClick={() => setPayment(p.value)}
-                        Icon={p.Icon}
+                        img={p.img}
                         label={p.label}
                         th={th}
                       />
