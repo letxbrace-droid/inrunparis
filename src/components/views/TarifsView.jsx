@@ -9,15 +9,15 @@ const TRAJETS = [
     title:    'Aéroports & gares',
     subtitle: 'CDG · Orly · Beauvais · Gares TGV',
     price:    'dès 45 €',
-    emoji:    '✈️',
+    img:      '/inrunparis/brand/poi-plane.png',
     accent:   'rgba(255,90,31,0.14)',
   },
   {
     title:    'Longue distance',
     subtitle: "Province · Côte d'Azur · Genève",
     price:    'Sur devis',
-    emoji:    '🗺️',
-    accent:   'rgba(245,197,24,0.12)',
+    img:      '/inrunparis/brand/fav-pin.png',
+    accent:   'rgba(255,90,31,0.10)',
   },
 ]
 
@@ -250,10 +250,9 @@ export default function TarifsView({ open, onClose, onReserve }) {
                     width: 42, height: 42,
                     borderRadius: 13,
                     background: t.accent,
-                    fontSize: 20,
                   }}
                 >
-                  {t.emoji}
+                  <img src={t.img} alt="" aria-hidden="true" style={{ width: 24, height: 24, objectFit: 'contain' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>

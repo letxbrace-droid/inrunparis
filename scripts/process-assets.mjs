@@ -120,5 +120,7 @@ await sliceTrio('onboard-icons', ['onboard-wifi', 'onboard-water', 'onboard-char
 await sliceTrio('temperature',   ['temp-cold', 'temp-mid', 'temp-hot'])
 await sliceTrio('volume',        ['vol-mute', 'vol-low', 'vol-high'])
 await sliceTrio('payment',       ['pay-card', 'pay-cash', 'pay-transfer'])
+await sliceTrio('poi',          ['poi-plane', 'poi-train', 'poi-eiffel'])
+await sliceTrio('fav',          ['fav-home', 'fav-work', 'fav-pin'])
 await buildSplash()
 console.log('done')

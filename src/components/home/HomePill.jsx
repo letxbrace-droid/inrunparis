@@ -456,9 +456,9 @@ export default function HomePill({ onOpenSheet }) {
               {(favs.home || favs.work) && (
                 <div className="flex gap-2 -mt-1">
                   {[
-                    { slot: 'home', icon: '🏠', label: 'Domicile' },
-                    { slot: 'work', icon: '💼', label: 'Travail'  },
-                  ].map(({ slot, icon, label }) => {
+                    { slot: 'home', img: '/inrunparis/brand/fav-home.png', label: 'Domicile' },
+                    { slot: 'work', img: '/inrunparis/brand/fav-work.png', label: 'Travail'  },
+                  ].map(({ slot, img, label }) => {
                     const fav = favs[slot]
                     if (!fav) return null
                     return (
@@ -474,7 +474,7 @@ export default function HomePill({ onOpenSheet }) {
                         }}
                         aria-label={`Utiliser ${label} : ${fav.name}`}
                       >
-                        <span aria-hidden="true" className="flex-shrink-0">{icon}</span>
+                        <img src={img} alt="" aria-hidden="true" className="flex-shrink-0" style={{ width: 14, height: 14, objectFit: 'contain' }} />
                         <span className="truncate">{fav.name.split(',')[0]}</span>
                         <span
                           role="button"
@@ -663,14 +663,14 @@ export default function HomePill({ onOpenSheet }) {
                         className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer active:scale-95 transition-transform"
                         style={{ background: 'rgba(245,197,24,.18)', color: '#8a6e00', border: '1px solid rgba(245,197,24,.35)' }}
                       >
-                        🏠 Domicile
+                        <img src="/inrunparis/brand/fav-home.png" alt="" aria-hidden="true" style={{ width: 13, height: 13, objectFit: 'contain' }} /> Domicile
                       </button>
                       <button
                         onClick={() => handleSaveFav('work')}
                         className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer active:scale-95 transition-transform"
                         style={{ background: 'rgba(99,102,241,.12)', color: '#5558e3', border: '1px solid rgba(99,102,241,.3)' }}
                       >
-                        💼 Travail
+                        <img src="/inrunparis/brand/fav-work.png" alt="" aria-hidden="true" style={{ width: 13, height: 13, objectFit: 'contain' }} /> Travail
                       </button>
                       <button
                         onClick={() => setSavingFor(null)}
