@@ -95,37 +95,14 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
             transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center justify-center gap-5 pt-24 px-6"
           >
-            <div
-              className="flex items-center justify-center rounded-2xl overflow-hidden"
-              style={{
-                width: 216, height: 96,
-                background: th.bgCard,
-                border: `1px solid ${th.borderFaint}`,
-                boxShadow: th.isDark
-                  ? 'inset 0 1px 0 rgba(255,255,255,.04)'
-                  : 'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 4px rgba(0,0,0,.06)',
-              }}
-            >
-              <svg width="196" height="84" viewBox="0 0 196 84" fill="none">
-                <ellipse cx="98" cy="80" rx="76" ry="2.5" style={{ fill: 'color-mix(in srgb, var(--accent) 6%, transparent)' }} />
-                <circle cx="44" cy="66" r="13" strokeWidth="2" style={{ fill: 'color-mix(in srgb, var(--accent) 7%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
-                <circle cx="44" cy="66" r="5" strokeWidth="1.2" style={{ fill: 'color-mix(in srgb, var(--accent) 14%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 30%, transparent)' }} />
-                {[0,72,144,216,288].map(deg => { const r1=5.8,r2=12,a=(deg*Math.PI)/180; return <line key={deg} x1={44+r1*Math.cos(a)} y1={66+r1*Math.sin(a)} x2={44+r2*Math.cos(a)} y2={66+r2*Math.sin(a)} strokeWidth="1.2" strokeLinecap="round" style={{ stroke: 'color-mix(in srgb, var(--accent) 24%, transparent)' }} /> })}
-                <circle cx="152" cy="66" r="13" strokeWidth="2" style={{ fill: 'color-mix(in srgb, var(--accent) 7%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
-                <circle cx="152" cy="66" r="5" strokeWidth="1.2" style={{ fill: 'color-mix(in srgb, var(--accent) 14%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 30%, transparent)' }} />
-                {[0,72,144,216,288].map(deg => { const r1=5.8,r2=12,a=(deg*Math.PI)/180; return <line key={deg} x1={152+r1*Math.cos(a)} y1={66+r1*Math.sin(a)} x2={152+r2*Math.cos(a)} y2={66+r2*Math.sin(a)} strokeWidth="1.2" strokeLinecap="round" style={{ stroke: 'color-mix(in srgb, var(--accent) 24%, transparent)' }} /> })}
-                <line x1="2" y1="79" x2="194" y2="79" strokeWidth="1.2" strokeLinecap="round" strokeDasharray="10 8" style={{ stroke: 'color-mix(in srgb, var(--accent) 11%, transparent)' }} />
-                <path d="M 58 46 L 62 24 Q 65 17 72 17 L 126 17 Q 133 17 136 24 L 140 46 L 168 46 Q 180 46 180 56 L 180 66 L 166 66 A 14 14 0 0 0 138 66 L 58 66 A 14 14 0 0 0 30 66 L 14 66 Q 12 66 12 64 L 12 55 Q 12 46 16 46 Z" strokeWidth="1.6" strokeLinejoin="round" style={{ fill: 'color-mix(in srgb, var(--accent) 8%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 40%, transparent)' }} />
-                <path d="M 61 46 L 65 26 Q 68 20 74 20 L 124 20 Q 130 20 133 26 L 137 46 Z" strokeWidth="1.1" strokeLinejoin="round" style={{ fill: 'color-mix(in srgb, var(--accent) 5%, transparent)', stroke: 'color-mix(in srgb, var(--accent) 26%, transparent)' }} />
-                <line x1="98" y1="20" x2="98" y2="46" strokeWidth="1.2" style={{ stroke: 'color-mix(in srgb, var(--accent) 20%, transparent)' }} />
-                <rect x="10" y="48" width="3" height="14" rx="1.5" style={{ fill: 'color-mix(in srgb, var(--accent) 62%, transparent)' }} />
-                <line x1="180" y1="51" x2="187" y2="50" strokeWidth="2.2" strokeLinecap="round" style={{ stroke: 'color-mix(in srgb, var(--accent) 76%, transparent)' }} />
-                <line x1="180" y1="56" x2="186" y2="55.5" strokeWidth="1.2" strokeLinecap="round" style={{ stroke: 'color-mix(in srgb, var(--accent) 44%, transparent)' }} />
-                <line x1="58" y1="59" x2="165" y2="59" strokeWidth="0.9" style={{ stroke: 'color-mix(in srgb, var(--accent) 14%, transparent)' }} />
-                <line x1="98" y1="46" x2="98" y2="66" strokeWidth="1" strokeDasharray="3.5 2.5" style={{ stroke: 'color-mix(in srgb, var(--accent) 13%, transparent)' }} />
-                <path d="M 137 38 L 145 38 L 145 44 L 137 44" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'color-mix(in srgb, var(--accent) 32%, transparent)' }} />
-              </svg>
-            </div>
+            {/* Signature Suzuki Swace line illustration */}
+            <img
+              src="/inrunparis/brand/swace-side.png"
+              alt="Suzuki Swace"
+              width="248"
+              draggable="false"
+              style={{ width: 248, height: 'auto', opacity: th.isDark ? 0.95 : 0.9, userSelect: 'none' }}
+            />
 
             <div className="flex flex-col items-center gap-2 text-center">
               <p className="text-[15px] font-bold" style={{ color: th.inkFull }}>Aucune course pour le moment</p>
