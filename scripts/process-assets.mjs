@@ -48,14 +48,52 @@ async function buildOG() {
   console.log('og-image.jpg ✓')
 }
 
-// ── In-app Suzuki Swace (empty state) ───────────────────────────────────────
-async function buildSwace() {
-  const buf = await sharp(`${SRC}/swace-side.png`).trim({ threshold: 20 }).resize({ width: 640 }).png().toBuffer()
-  await sharp(buf).toFile('public/brand/swace-side.png')
-  console.log('swace-side ✓')
+// ── In-app line illustrations (empty state, vehicle card, success) ──────────
+// The AI export bakes a grey/white checkerboard into the PNG instead of true
+// transparency. Chroma-key by saturation: grey/white pixels (low sat) → alpha 0,
+// orange line pixels (high sat) → kept, with soft anti-aliased edges.
+async function keyToTransparent(srcPath) {
+  const { data, info } = await sharp(srcPath).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  const ch = info.channels
+  for (let i = 0; i < data.length; i += ch) {
+    const r = data[i], g = data[i + 1], b = data[i + 2]
+    const sat = Math.max(r, g, b) - Math.min(r, g, b)
+    data[i + 3] = Math.max(0, Math.min(255, (sat - 18) * 3))
+  }
+  return sharp(data, { raw: { width: info.width, height: info.height, channels: ch } }).png().toBuffer()
+}
+
+async function buildLineArt(name, width) {
+  const keyed = await keyToTransparent(`${SRC}/${name}.png`)
+  const buf = await sharp(keyed).trim().resize({ width }).png().toBuffer()
+  await sharp(buf).toFile(`public/brand/${name}.png`)
+  console.log(`${name} ✓`)
+}
+
+// ── iOS launch images (apple-touch-startup-image) ───────────────────────────
+// splash-trace.png is a portrait AMOLED plate; cover-fit to common iPhone
+// device resolutions and bury the corner watermark.
+const IOS = [
+  [1170, 2532], [1179, 2556], [1290, 2796], [1284, 2778], [1125, 2436],
+]
+async function buildSplash() {
+  for (const [w, h] of IOS) {
+    const base = await sharp(`${SRC}/splash-trace.png`).resize(w, h, { fit: 'cover', position: 'center' }).png().toBuffer()
+    const scrim = Buffer.from(
+      `<svg width="${w}" height="${h}"><defs><radialGradient id="g" cx="90%" cy="94%" r="16%">
+         <stop offset="0%" stop-color="#050505" stop-opacity="0.98"/>
+         <stop offset="65%" stop-color="#050505" stop-opacity="0.7"/>
+         <stop offset="100%" stop-color="#050505" stop-opacity="0"/>
+       </radialGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/></svg>`)
+    await sharp(base).composite([{ input: scrim }]).png().toFile(`public/brand/splash-${w}x${h}.png`)
+  }
+  console.log('ios splash ✓')
 }
 
 await buildIcons()
 await buildOG()
-await buildSwace()
+await buildLineArt('swace-side', 640)
+await buildLineArt('swace-hybrid', 760)
+await buildLineArt('trace-success', 560)
+await buildSplash()
 console.log('done')

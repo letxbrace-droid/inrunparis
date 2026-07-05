@@ -37,5 +37,10 @@
       "url": "/inrunparis/?view=courses",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
+  ],
+  "screenshots": [
+    { "src": "screenshots/tarifs.png",  "sizes": "1170x2532", "type": "image/png", "form_factor": "narrow", "label": "Tarifs transparents · véhicule Suzuki Swace hybride" },
+    { "src": "screenshots/courses.png", "sizes": "1170x2532", "type": "image/png", "form_factor": "narrow", "label": "Historique de vos courses" },
+    { "src": "screenshots/coupe.png",   "sizes": "1170x2532", "type": "image/png", "form_factor": "narrow", "label": "Offre Coupe du Monde 2026" }
   ]
 }

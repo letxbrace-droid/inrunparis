@@ -38,7 +38,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
       style={{ bottom: 'calc(var(--safe-bot, 0px) + 20px)', maxWidth: 540, marginLeft: 'auto', marginRight: 'auto' }}
     >
       <div
-        className="rounded-2xl overflow-hidden"
+        className="relative rounded-2xl overflow-hidden"
         style={{
           background: th.bgCard,
           border:     done
@@ -71,6 +71,13 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             >
+              {/* Signature « Le Tracé » flourish — subtle brand mark */}
+              <img
+                aria-hidden="true"
+                src="/inrunparis/brand/trace-success.png"
+                style={{ position: 'absolute', top: -6, right: -10, width: 108, opacity: 0.1, pointerEvents: 'none' }}
+              />
+
               {/* Header vert */}
               <div className="flex items-center gap-3 px-4 pt-4 pb-3">
                 <motion.div

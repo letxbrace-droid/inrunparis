@@ -203,6 +203,37 @@ export default function TarifsView({ open, onClose, onReserve }) {
           </div>
         </motion.section>
 
+        {/* ── Notre véhicule ── */}
+        <motion.section className="px-5 pt-7" {...reveal(0.06)}>
+          <SectionLabel>Notre véhicule</SectionLabel>
+          <div style={{
+            borderRadius: 20, padding: '16px 16px 6px', position: 'relative', overflow: 'hidden',
+            background: 'var(--bg-card)', border: '1px solid var(--separator)',
+          }}>
+            <span aria-hidden="true" style={{
+              position: 'absolute', inset: 0, pointerEvents: 'none',
+              background: 'radial-gradient(ellipse 95% 70% at 50% 0, rgba(255,90,31,0.10), transparent 60%)',
+            }} />
+            <div className="flex items-center justify-between relative">
+              <div>
+                <p style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--label)' }}>Suzuki Swace</p>
+                <p style={{ fontSize: 12, color: 'var(--label-tertiary)', marginTop: 2 }}>Break hybride · 4 passagers · clim · Wi-Fi · eau à bord</p>
+              </div>
+              <span style={{
+                flexShrink: 0, fontSize: 10, fontWeight: 800, letterSpacing: '.06em',
+                color: 'var(--positive)', border: '1px solid var(--positive-dim)', borderRadius: 999, padding: '4px 9px',
+              }}>HYBRIDE</span>
+            </div>
+            <img
+              src="/inrunparis/brand/swace-hybrid.png"
+              alt="Suzuki Swace hybride"
+              draggable="false"
+              className="relative"
+              style={{ width: '100%', maxWidth: 340, margin: '4px auto 0', display: 'block', userSelect: 'none' }}
+            />
+          </div>
+        </motion.section>
+
         {/* ── Trajets fixes ── */}
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
           <SectionLabel>Trajets fixes</SectionLabel>
