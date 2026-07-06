@@ -22,11 +22,19 @@
       "filter": ["in", "class", "residential", "suburb", "neighbourhood"],
       "paint": { "fill-color": "#0b0c10", "fill-opacity": 0.5 } },
 
-    { "id": "building", "type": "fill", "source": "omt", "source-layer": "building", "minzoom": 13,
+    { "id": "building", "type": "fill", "source": "omt", "source-layer": "building", "minzoom": 13, "maxzoom": 16,
       "paint": {
         "fill-color": "#161922",
         "fill-outline-color": "#1e222c",
-        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0, 14.5, 0.75]
+        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0, 14.5, 0.75, 15.5, 0.75, 16, 0]
+      } },
+
+    { "id": "building-3d", "type": "fill-extrusion", "source": "omt", "source-layer": "building", "minzoom": 15,
+      "paint": {
+        "fill-extrusion-color": ["interpolate", ["linear"], ["get", "render_height"], 0, "#171a22", 40, "#20242e", 120, "#2a2f3b"],
+        "fill-extrusion-height": ["interpolate", ["linear"], ["zoom"], 15, 0, 16, ["get", "render_height"]],
+        "fill-extrusion-base": ["get", "render_min_height"],
+        "fill-extrusion-opacity": ["interpolate", ["linear"], ["zoom"], 15, 0, 16, 0.88]
       } },
 
     { "id": "tunnel", "type": "line", "source": "omt", "source-layer": "transportation",

@@ -57,6 +57,8 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
   const arriveMkRef   = useRef(null)
   const userMkRef     = useRef(null)
   const didFlyRef     = useRef(false)
+  const isDarkRef     = useRef(isDark)          // for camera pitch inside []-dep effects
+  isDarkRef.current   = isDark
 
   // Add / refresh the route layers (below the first label so street names stay legible)
   const syncRoute = useCallback(() => {
@@ -131,6 +133,8 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     if (!map) return
     if (firstStyle.current) { firstStyle.current = false; return }  // initial style set in init
     map.setStyle(isDark ? DARK_STYLE : LIGHT_STYLE)
+    // Light (Positron) has no extrusions — flatten if we were tilted.
+    if (!isDark && map.getPitch() > 0) map.easeTo({ pitch: 0, duration: 300 })
     map.once('idle', () => syncRoute())
   }, [isDark, syncRoute])
 
@@ -149,8 +153,11 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
         }
         if (!didFlyRef.current && !depart && !route?.geometry) {
           didFlyRef.current = true
-          if (REDUCED()) map.jumpTo({ center: pos, zoom: 15.5 })
-          else           map.flyTo({ center: pos, zoom: 15.5, duration: 2600, essential: true })
+          // Tilt into 3D only in dark mode at this close zoom — the "here you
+          // are, in the city" moment. Extruded buildings live in the dark style.
+          const pitch = isDarkRef.current ? 55 : 0
+          if (REDUCED()) map.jumpTo({ center: pos, zoom: 15.5, pitch })
+          else           map.flyTo({ center: pos, zoom: 15.5, pitch, duration: 2600, essential: true })
         }
       },
       () => {},
@@ -173,11 +180,12 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     if (!coords || !coords.length) return
     const b = coords.reduce((acc, c) => acc.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]))
     const pad = { top: 64, bottom: 148, left: 52, right: 52 }
+    // Route overview is always flat — the whole trajet must read clearly.
     if (depart) {
-      map.jumpTo({ center: [depart.lng, depart.lat], zoom: 15 })
-      setTimeout(() => map.fitBounds(b, { padding: pad, duration: REDUCED() ? 0 : 1600 }), 180)
+      map.jumpTo({ center: [depart.lng, depart.lat], zoom: 15, pitch: 0 })
+      setTimeout(() => map.fitBounds(b, { padding: pad, pitch: 0, duration: REDUCED() ? 0 : 1600 }), 180)
     } else {
-      map.fitBounds(b, { padding: pad, duration: 0 })
+      map.fitBounds(b, { padding: pad, pitch: 0, duration: 0 })
     }
   }, [route, depart, syncRoute])
 
@@ -195,7 +203,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
         const b = new maplibregl.LngLatBounds([depart.lng, depart.lat], [depart.lng, depart.lat]).extend([arrive.lng, arrive.lat])
         map.fitBounds(b, { padding: 80, duration: REDUCED() ? 0 : 900 })
       } else if (depart) {
-        map.flyTo({ center: [depart.lng, depart.lat], zoom: 14, duration: REDUCED() ? 0 : 800 })
+        map.flyTo({ center: [depart.lng, depart.lat], zoom: 14, pitch: 0, duration: REDUCED() ? 0 : 800 })
       }
     }
   }, [depart, arrive]) // eslint-disable-line
