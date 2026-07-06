@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-import MapLibreMap         from './components/map/MapLibreMap'
+// Code-split the vector map (maplibre-gl ~280kb gzip) into its own chunk — it
+// loads during the splash, so the initial bundle stays lean.
+const MapLibreMap = lazy(() => import('./components/map/MapLibreMap'))
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
 import BottomSheet         from './components/tunnel/BottomSheet'
@@ -155,14 +157,17 @@ export default function App() {
           setSplash(false)
         }} />
       )}
-      {/* Map — frozen (pointer-events-none) when any overlay is open */}
-      <MapLibreMap
-        depart={depart}
-        arrive={arrive}
-        route={route}
-        isDark={isDark}
-        frozen={mapFrozen}
-      />
+      {/* Map — frozen (pointer-events-none) when any overlay is open.
+          Lazy chunk; dark placeholder matches the map bg while it loads. */}
+      <Suspense fallback={<div className="absolute inset-0 z-0" style={{ background: '#0b0c0e' }} />}>
+        <MapLibreMap
+          depart={depart}
+          arrive={arrive}
+          route={route}
+          isDark={isDark}
+          frozen={mapFrozen}
+        />
+      </Suspense>
 
       {/* Vignette overlay */}
       <div
