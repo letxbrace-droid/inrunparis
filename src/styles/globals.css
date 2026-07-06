@@ -482,6 +482,14 @@
   50%       { opacity: 0.38; }
 }
 
+/* Soft fade at the top/bottom of a scroll area so sections melt into the
+   header/footer instead of clipping hard. Tuned to the ~pt-4 / pb-8 buffers
+   the scroll contents already carry, so nothing fades at rest. */
+.scroll-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+}
+
 @keyframes shimmer-sweep {
   100% { transform: translateX(100%); }
 }

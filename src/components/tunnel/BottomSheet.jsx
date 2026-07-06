@@ -247,12 +247,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           {/* Content — slides between steps. Soft fade at the scroll edges so
               sections melt into the header/footer instead of clipping hard. */}
           <div
-            className="flex-1 min-h-0 overflow-y-auto scrollbar-thin"
-            style={{
-              overscrollBehavior: 'contain',
-              maskImage:       'linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%)',
-            }}
+            className="flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-fade"
+            style={{ overscrollBehavior: 'contain' }}
           >
             <LayoutGroup>
               <AnimatePresence mode="wait" initial={false}>

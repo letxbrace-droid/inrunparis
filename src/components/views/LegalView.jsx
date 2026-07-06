@@ -51,7 +51,7 @@ export default function LegalView({ open, onClose }) {
 
       <div
         key={open}
-        className="flex-1 overflow-y-auto px-5 scrollbar-thin relative z-10"
+        className="flex-1 overflow-y-auto px-5 scrollbar-thin scroll-fade relative z-10"
         style={{ paddingBottom: 'calc(var(--safe-bot) + 32px)' }}
       >
         <div className="flex flex-col gap-5 pt-4">

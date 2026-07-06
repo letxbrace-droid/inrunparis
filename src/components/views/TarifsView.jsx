@@ -142,7 +142,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
       {/* Body */}
       <div
         key={open}
-        className="flex-1 overflow-y-auto overscroll-contain scrollbar-thin relative z-10"
+        className="flex-1 overflow-y-auto overscroll-contain scrollbar-thin scroll-fade relative z-10"
         style={{ paddingBottom: 'calc(var(--safe-bot) + 120px)' }}
       >
         {/* ── Hero ── */}
