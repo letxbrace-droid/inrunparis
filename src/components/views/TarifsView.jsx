@@ -229,7 +229,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
               alt="Suzuki Swace hybride"
               draggable="false"
               className="relative"
-              style={{ width: '100%', maxWidth: 340, margin: '4px auto 0', display: 'block', userSelect: 'none' }}
+              style={{ width: '100%', maxWidth: 340, aspectRatio: '760 / 392', margin: '4px auto 0', display: 'block', userSelect: 'none' }}
             />
           </div>
         </motion.section>

@@ -21,6 +21,18 @@
        hero prompts). Body stays Outfit, numerals stay JetBrains Mono. */
     --font-display: 'Bricolage Grotesque', 'Outfit', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
+    /* ── Physique émotionnelle — vocabulaire de mouvement unique ─────
+       Entrées/sorties : ease-out fort (réponse immédiate, pose douce).
+       Déplacements à l'écran : in-out fort. Sheets : courbe iOS.
+       Une app qui bouge avec UNE seule voix paraît intentionnelle. */
+    --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-sheet:  cubic-bezier(0.32, 0.72, 0, 1);
+    --dur-press:   140ms;   /* feedback bouton      */
+    --dur-fast:    200ms;   /* tooltips, hovers     */
+    --dur-base:    300ms;   /* dropdowns, toggles   */
+    --dur-slow:    440ms;   /* sheets, vues         */
+
     /* ── Discipline couleur — hiérarchie en castes ──────────────────
        Action     : --accent / --accent-press  → CTA + état actif SEULEMENT
        Neutre     : --label-* / --bg-* / --separator-*  → 90% de l'UI
@@ -189,6 +201,25 @@
   }
 
   html { overflow: hidden; width: 100%; height: 100%; }
+
+  /* ── Physique du pixel — zéro mensonge visuel ─────────────────────
+     1. text-size-adjust : iOS ne gonfle plus les textes en paysage.
+     2. touch-action: manipulation : supprime le délai double-tap →
+        le tap répond instantanément, sensation « organique ».
+     3. Inputs ≥ 16px sur écrans tactiles : Safari iOS ne déclenche
+        plus son zoom brutal au focus (le pire layout-shift émotionnel).
+     4. overflow-wrap : aucun texte ne déborde d'un pixel de sa carte. */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  button, a, [role="button"], input, select, textarea, label {
+    touch-action: manipulation;
+  }
+  @media (pointer: coarse) {
+    input, select, textarea { font-size: max(1em, 16px); }
+  }
+  body { overflow-wrap: break-word; }
 
   body {
     background: var(--bg-base);

@@ -101,7 +101,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
               alt="Suzuki Swace"
               width="248"
               draggable="false"
-              style={{ width: 248, height: 'auto', opacity: th.isDark ? 0.95 : 0.9, userSelect: 'none' }}
+              style={{ width: 248, aspectRatio: '640 / 215', height: 'auto', opacity: th.isDark ? 0.95 : 0.9, userSelect: 'none' }}
             />
 
             <div className="flex flex-col items-center gap-2 text-center">
