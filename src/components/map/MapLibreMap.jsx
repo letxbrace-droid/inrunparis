@@ -17,6 +17,34 @@ const PARIS = [2.3522, 48.8566]
 const DARK_LAYERS = '/inrunparis/mapstyle-dark.json'
 const LIGHT_STYLE = 'https://tiles.openfreemap.org/styles/positron'
 
+/**
+ * Last-resort basemap: the CartoDB raster tiles this app used successfully for
+ * its whole life before the vector migration. Vector styling is nicer, but a
+ * map that renders beats a beautiful one that doesn't — if the vector stack
+ * fails for any reason (unreachable host, wrong endpoint, CSP, DNS), we fall
+ * back to tiles already proven to work on real devices.
+ */
+const CARTO_SUBS = ['a', 'b', 'c', 'd']
+function rasterFallbackStyle(dark) {
+  const set = dark ? 'dark_all' : 'rastertiles/voyager'
+  return {
+    version: 8,
+    sources: {
+      base: {
+        type: 'raster',
+        tiles: CARTO_SUBS.map(s => `https://${s}.basemaps.cartocdn.com/${set}/{z}/{x}/{y}@2x.png`),
+        tileSize: 256,
+        maxzoom: 20,
+        attribution: '© OpenStreetMap · © CARTO',
+      },
+    },
+    layers: [
+      { id: 'bg',   type: 'background', paint: { 'background-color': dark ? '#0b0c0e' : '#eae7e2' } },
+      { id: 'base', type: 'raster', source: 'base' },
+    ],
+  }
+}
+
 // Cache the resolved dark style so switching themes doesn't refetch.
 let darkStylePromise = null
 
@@ -100,6 +128,8 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
   const arriveMkRef   = useRef(null)
   const userMkRef     = useRef(null)
   const didFlyRef     = useRef(false)
+  const basemapOkRef    = useRef(false)         // a basemap source has loaded
+  const usingFallbackRef = useRef(false)        // raster fallback engaged
   const isDarkRef     = useRef(isDark)          // for camera pitch inside []-dep effects
   isDarkRef.current   = isDark
 
@@ -174,6 +204,20 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     // map just stays black. Surface it so it's diagnosable on a real device.
     map.on('error', (e) => console.warn('[map]', e?.error?.message || e?.error || e))
 
+    // Watchdog: whatever goes wrong upstream (unreachable host, bad endpoint,
+    // CSP, DNS), if no basemap source has loaded shortly after start-up, swap
+    // to the raster tiles that are known to work on real devices.
+    map.on('sourcedata', (ev) => {
+      if (ev.isSourceLoaded && ev.sourceId && ev.sourceId !== 'route') basemapOkRef.current = true
+    })
+    const watchdog = setTimeout(() => {
+      if (basemapOkRef.current || mapRef.current !== map || usingFallbackRef.current) return
+      console.warn('[map] no basemap after 6s — switching to raster fallback')
+      usingFallbackRef.current = true
+      map.setStyle(rasterFallbackStyle(isDarkRef.current))
+      map.once('idle', () => syncRoute())
+    }, 6000)
+
     const raf = requestAnimationFrame(bump)
     const t0  = setTimeout(bump, 0)
     const t1  = setTimeout(bump, 300)
@@ -182,7 +226,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     observer.observe(containerRef.current)
 
     return () => {
-      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1)
+      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1); clearTimeout(watchdog)
       observer.disconnect()
       map.remove()
       mapRef.current = null
@@ -204,6 +248,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       map.setStyle(style)
       map.once('idle', () => syncRoute())
     }
+    if (usingFallbackRef.current) { apply(rasterFallbackStyle(isDark)); return }
     if (isDark) resolveDarkStyle().then(apply)
     else        apply(LIGHT_STYLE)
   }, [isDark, syncRoute])
