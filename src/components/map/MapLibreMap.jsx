@@ -7,10 +7,43 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 // MapLibre uses [lng, lat]
 const PARIS = [2.3522, 48.8566]
 
-// Vector styles. Dark = custom AMOLED style (self-hosted JSON on OpenFreeMap
-// tiles). Light = OpenFreeMap Positron. Both keyless, free, unlimited.
-const DARK_STYLE  = '/inrunparis/mapstyle-dark.json'
+// Vector styles, keyless and free. Light is OpenFreeMap's own published style.
+// Dark is our AMOLED layer design — but it deliberately does NOT hard-code the
+// tile endpoints: an earlier version hand-wrote a `sources` URL that turned out
+// to be wrong, which renders as a black map (the canvas mounts, markers draw,
+// but no tiles ever arrive). Instead we graft our layers onto the sources,
+// glyphs and sprite declared by OpenFreeMap's published style, so the endpoints
+// are correct by construction and survive any change on their side.
+const DARK_LAYERS = '/inrunparis/mapstyle-dark.json'
 const LIGHT_STYLE = 'https://tiles.openfreemap.org/styles/positron'
+
+// Cache the resolved dark style so switching themes doesn't refetch.
+let darkStylePromise = null
+
+async function resolveDarkStyle() {
+  if (darkStylePromise) return darkStylePromise
+  darkStylePromise = (async () => {
+    const [mine, base] = await Promise.all([
+      fetch(DARK_LAYERS).then(r => r.json()),
+      fetch(LIGHT_STYLE).then(r => r.json()),
+    ])
+    const vectorKey = Object.keys(base.sources).find(k => base.sources[k].type === 'vector')
+    if (!vectorKey) throw new Error('no vector source in base style')
+    return {
+      ...mine,
+      sources: base.sources,
+      glyphs:  base.glyphs  ?? mine.glyphs,
+      sprite:  base.sprite,
+      // our layers were authored against a source named "omt"
+      layers:  mine.layers.map(l => (l.source ? { ...l, source: vectorKey } : l)),
+    }
+  })().catch(err => {
+    darkStylePromise = null
+    console.warn('[map] dark style unavailable, falling back to Positron', err)
+    return LIGHT_STYLE          // a readable map beats a black rectangle
+  })
+  return darkStylePromise
+}
 
 const REDUCED = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -111,7 +144,9 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     if (mapRef.current || !containerRef.current || !HAS_WEBGL2) return
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: isDark ? DARK_STYLE : LIGHT_STYLE,
+      // Start on the published style so tiles appear as early as possible; the
+      // dark design is swapped in below once resolved.
+      style: LIGHT_STYLE,
       center: PARIS,
       zoom: 12,
       attributionControl: false,
@@ -121,12 +156,23 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     })
     mapRef.current = map
 
+    if (isDark) {
+      resolveDarkStyle().then(style => {
+        if (mapRef.current !== map) return
+        map.setStyle(style)
+        map.once('idle', () => syncRoute())
+      })
+    }
+
     // MapLibre measures the container at construction; in an absolutely-
     // positioned flex/PWA shell that size can be wrong until layout settles,
     // leaving the canvas rendering only a thin strip. Force resize() the way
     // Leaflet's invalidateSize did — on load, next frame, and after a beat.
     const bump = () => { try { map.resize() } catch {} }
     map.on('load', () => { onMapReady?.(map); syncRoute(); bump() })
+    // A failing style or tile endpoint is otherwise completely silent — the
+    // map just stays black. Surface it so it's diagnosable on a real device.
+    map.on('error', (e) => console.warn('[map]', e?.error?.message || e?.error || e))
 
     const raf = requestAnimationFrame(bump)
     const t0  = setTimeout(bump, 0)
@@ -149,10 +195,17 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     const map = mapRef.current
     if (!map) return
     if (firstStyle.current) { firstStyle.current = false; return }  // initial style set in init
-    map.setStyle(isDark ? DARK_STYLE : LIGHT_STYLE)
+
     // Light (Positron) has no extrusions — flatten if we were tilted.
     if (!isDark && map.getPitch() > 0) map.easeTo({ pitch: 0, duration: 300 })
-    map.once('idle', () => syncRoute())
+
+    const apply = (style) => {
+      if (mapRef.current !== map) return
+      map.setStyle(style)
+      map.once('idle', () => syncRoute())
+    }
+    if (isDark) resolveDarkStyle().then(apply)
+    else        apply(LIGHT_STYLE)
   }, [isDark, syncRoute])
 
   // Live GPS user dot + cinematic fly-in on first fix
