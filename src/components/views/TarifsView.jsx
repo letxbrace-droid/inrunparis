@@ -51,25 +51,40 @@ function reveal(delay = 0) {
   }
 }
 
-function SectionLabel({ children }) {
+// Matches the label + hairline used in the booking steps and Mentions légales —
+// this view was the only one dressing its section labels as accent pills.
+function SectionLabel({ children, th }) {
   return (
-    <div style={{ marginBottom: 14 }}>
-      <span style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '3px 10px',
-        borderRadius: 999,
-        fontSize: 10,
-        fontWeight: 700,
-        letterSpacing: '0.10em',
-        textTransform: 'uppercase',
-        color: 'var(--accent)',
-        background: 'rgba(255,90,31,0.12)',
-        border: '1px solid rgba(255,90,31,0.22)',
-      }}>
+    <div className="flex items-center gap-2 mb-3">
+      <span className="text-[11px] font-bold uppercase tracking-[.14em]"
+        style={{ color: 'color-mix(in srgb, var(--accent) 85%, transparent)' }}>
         {children}
       </span>
+      <div className="flex-1 h-px" style={{ background: th.divider }} />
     </div>
+  )
+}
+
+/**
+ * A price, or the honest absence of one.
+ *
+ * "Sur devis" is not a price — rendering it in the same big accent type as
+ * "150 €" makes the eye scan a price column and hit prose. Real figures keep
+ * the hero treatment; quotes drop to quiet secondary text.
+ */
+function PriceTag({ value, th, size = 16 }) {
+  const isFigure = /\d/.test(value)
+  if (isFigure) {
+    return (
+      <span className="tnum" style={{ fontSize: size, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+        {value}
+      </span>
+    )
+  }
+  return (
+    <span style={{ fontSize: 12.5, fontWeight: 600, color: th.inkMuted, whiteSpace: 'nowrap' }}>
+      {value}
+    </span>
   )
 }
 
@@ -143,7 +158,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
       <div
         key={open}
         className="flex-1 overflow-y-auto overscroll-contain scrollbar-thin scroll-fade relative z-10"
-        style={{ paddingBottom: 'calc(var(--safe-bot) + 120px)' }}
+        style={{ paddingBottom: 28 }}
       >
         {/* ── Hero ── */}
         <motion.section className="px-5 pt-6" {...reveal(0)}>
@@ -205,7 +220,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* ── Notre véhicule ── */}
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
-          <SectionLabel>Notre véhicule</SectionLabel>
+          <SectionLabel th={th}>Notre véhicule</SectionLabel>
           <div style={{
             borderRadius: 20, padding: '16px 16px 6px', position: 'relative', overflow: 'hidden',
             background: 'var(--bg-card)', border: '1px solid var(--separator)',
@@ -236,7 +251,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* ── Trajets fixes ── */}
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
-          <SectionLabel>Trajets fixes</SectionLabel>
+          <SectionLabel th={th}>Trajets fixes</SectionLabel>
           <div style={CARD}>
             {TRAJETS.map((t, i) => (
               <div
@@ -256,11 +271,9 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>
-                  <div className="text-xs mt-0.5 truncate" style={{ color: th.inkMuted }}>{t.subtitle}</div>
+                  <div className="text-xs mt-0.5 leading-snug" style={{ color: th.inkMuted }}>{t.subtitle}</div>
                 </div>
-                <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-                  {t.price}
-                </span>
+                <PriceTag value={t.price} th={th} size={16} />
               </div>
             ))}
           </div>
@@ -268,7 +281,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* ── Mise à disposition ── */}
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
-          <SectionLabel>Mise à disposition</SectionLabel>
+          <SectionLabel th={th}>Mise à disposition</SectionLabel>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {MAD_ROWS.map((row) => (
               <div
@@ -297,9 +310,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   )}
                   <div className="text-[11px] mt-0.5" style={{ color: th.inkMuted }}>{row.note}</div>
                 </div>
-                <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em' }}>
-                  {row.price}
-                </span>
+                <PriceTag value={row.price} th={th} size={18} />
               </div>
             ))}
           </div>
@@ -310,7 +321,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
 
         {/* ── Pourquoi I&N RUN ── */}
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
-          <SectionLabel>Pourquoi I&amp;N RUN</SectionLabel>
+          <SectionLabel th={th}>Pourquoi I&amp;N RUN</SectionLabel>
           <div style={CARD}>
             {COMPARE.map((adv, i) => (
               <div
@@ -335,7 +346,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
         {/* ── Avis clients ── */}
         <motion.section className="pt-7" {...reveal(0.06)}>
           <div className="px-5">
-            <SectionLabel>Avis clients</SectionLabel>
+            <SectionLabel th={th}>Avis clients</SectionLabel>
           </div>
           <div className="flex gap-3 overflow-x-auto px-5 pb-3" style={{ scrollbarWidth: 'none' }}>
             {REVIEWS.map((r, i) => (
