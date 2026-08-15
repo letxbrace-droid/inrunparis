@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v123 */
-const CACHE = 'inrun-v123';
+/* I&N RUN — Service Worker v124 */
+const CACHE = 'inrun-v124';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -56,7 +56,6 @@ const PASSTHROUGH = [
   '/inrunparis/mentions-legales.html',
   '/inrunparis/qr.html',
   '/inrunparis/urgence.html',
-  '/inrunparis/coupe2026.html',
 ];
 self.addEventListener('install', e => {
   e.waitUntil((async () => {

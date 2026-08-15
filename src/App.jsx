@@ -9,18 +9,16 @@ import BottomSheet         from './components/tunnel/BottomSheet'
 import TarifsView          from './components/views/TarifsView'
 import CallView            from './components/views/CallView'
 import MesCoursesView      from './components/views/MesCoursesView'
-import Coupe2026View       from './components/views/Coupe2026View'
 import AideFaqView         from './components/views/AideFaqView'
 import LegalView           from './components/views/LegalView'
 import HomePill            from './components/home/HomePill'
-import CampaignBanner      from './components/home/CampaignBanner'
 import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
 import InstallPrompt       from './components/ui/InstallPrompt'
 import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
 
-const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'coupe26', 'faq', 'legal']
+const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'faq', 'legal']
 
 const SPLASH_KEY = 'inr-splash'
 
@@ -79,18 +77,9 @@ export default function App() {
 
   const handleClose = () => setActiveView('home')
 
-  // Deep link /?promo=COUPE26 → open offer view + auto-apply code
-  // Deep link /?view=courses  → open courses view (from home-screen shortcut)
+  // Deep link /?view=courses → open courses view (from home-screen shortcut)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-
-    const promo = params.get('promo')
-    if (promo?.toUpperCase() === 'COUPE26') {
-      setActiveView('coupe26')
-      const st = useBookingStore.getState()
-      if (!st.promo) st.setPromo({ code: 'COUPE26', discount: 10, label: 'Coupe du Monde 2026 — −10%' })
-      window.history.replaceState(null, '', window.location.pathname)
-    }
 
     const view = params.get('view')
     if (view && ['courses', 'tarifs', 'faq', 'legal'].includes(view)) {
@@ -193,7 +182,6 @@ export default function App() {
           <HomePill
             onOpenSheet={(step) => { setSheetOpen(true); setSheetStep(step) }}
           />
-          {!sheetOpen && <CampaignBanner onOpen={() => setActiveView('coupe26')} />}
         </>
       )}
 
@@ -217,7 +205,6 @@ export default function App() {
       <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
       <CallView       open={activeView === 'call'}    onClose={handleClose} />
       <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
-      <Coupe2026View  open={activeView === 'coupe26'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
       <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
       <LegalView      open={activeView === 'legal'}   onClose={handleClose} />
 

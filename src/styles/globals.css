@@ -37,9 +37,9 @@
        Action     : --accent / --accent-press  → CTA + état actif SEULEMENT
        Neutre     : --label-* / --bg-* / --separator-*  → 90% de l'UI
        Sémantique : --positive / --danger / --info  → fonctionnel pur
-       Campagne   : --gold / --indigo  → QUARANTAINE (coupe26 / favoris)
+       Accent tiers: --gold / --indigo  → QUARANTAINE (jamais en CTA)
        ─────────────────────────────────────────────────────────────── */
-    --gold:   #F5C518;   /* Coupe du Monde 2026 — surfaces campagne   */
+    --gold:   #F5C518;   /* étoiles d'avis, confettis de confirmation  */
     --indigo: #6366f1;   /* favori « Travail »                        */
 
     /* ── AMOLED background hierarchy ────────────────────────────── */

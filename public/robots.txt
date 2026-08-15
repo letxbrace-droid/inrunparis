@@ -5,7 +5,6 @@ Allow: /inrunparis/mentions-legales.html
 Disallow: /inrunparis/hub.html
 Disallow: /inrunparis/qr.html
 Disallow: /inrunparis/urgence.html
-Disallow: /inrunparis/coupe2026.html
 Disallow: /inrunparis/ops/
 
 Sitemap: https://letxbrace-droid.github.io/inrunparis/sitemap.xml
