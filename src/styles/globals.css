@@ -448,11 +448,6 @@
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
   }
 
-  /* Leaflet */
-  .leaflet-container { background: #050505 !important; }
-  .leaflet-control-attribution { display: none !important; }
-  .leaflet-control-container { display: none !important; }
-
   /* GPS pulse */
   .gps-user-dot { animation: gps-pulse 2.4s ease-out infinite; }
 
@@ -511,6 +506,25 @@
 @keyframes route-glow {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.38; }
+}
+
+/* ── View Transitions ──────────────────────────────────────────────
+   Theme switching cross-fades the whole page instead of snapping. The
+   default browser fade is 250ms linear; this matches it to the app's
+   motion voice. Unsupported browsers simply switch instantly. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 340ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+/* The outgoing snapshot sits under the incoming one, so the new theme
+   wipes in cleanly rather than both layers washing each other out. */
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
 }
 
 /* Soft fade at the top/bottom of a scroll area so sections melt into the

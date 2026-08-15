@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import { subscribeToVapid, isPushSupported, encodeSubscription, registerWithWorker } from '../../utils/pushNotifications'
 import SignatureTrace from '../ui/SignatureTrace'
+import { withViewTransition } from '../../utils/viewTransition'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -495,7 +496,11 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               <span style={{ fontSize: 14, fontWeight: 500, color: isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)' }}>
                 Apparence
               </span>
-              <ThemeSwitcher theme={theme} onChange={setTheme} isDark={isDark} />
+              <ThemeSwitcher
+                theme={theme}
+                onChange={(v) => withViewTransition(() => setTheme(v))}
+                isDark={isDark}
+              />
             </div>
           </motion.div>
         </div>

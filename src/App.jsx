@@ -17,6 +17,7 @@ import BookingConfirmToast from './components/ui/BookingConfirmToast'
 import InstallPrompt       from './components/ui/InstallPrompt'
 import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
+import useWakeLock         from './hooks/useWakeLock'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'faq', 'legal']
 
@@ -97,6 +98,10 @@ export default function App() {
       navigator.clearAppBadge?.().catch?.(() => {})
     }
   }, [awaitingReturn])
+
+  // Keep the screen awake while the client waits on their driver — that card
+  // is the one thing they're watching, so it shouldn't black out.
+  useWakeLock(Boolean(confirmBon))
 
   // Detect return from WhatsApp → confirm booking + back to home.
   // Requires a real hidden→visible round-trip so a blocked window.open
