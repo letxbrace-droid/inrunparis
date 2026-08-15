@@ -1,5 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react'
-import maplibregl from 'maplibre-gl'
+// v6 is ESM-only and dropped its default export — the namespace import keeps
+// every maplibregl.Map / .Marker / .LngLatBounds call site working unchanged.
+import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 // MapLibre uses [lng, lat]
@@ -11,6 +13,14 @@ const DARK_STYLE  = '/inrunparis/mapstyle-dark.json'
 const LIGHT_STYLE = 'https://tiles.openfreemap.org/styles/positron'
 
 const REDUCED = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// v6 dropped WebGL1 and requires WebGL2. It's near-universal (iOS 15+, Android
+// Chrome for years), but on a device without it the map would just render a
+// silent black rectangle — so detect it once and show the reason instead.
+const HAS_WEBGL2 = (() => {
+  if (typeof document === 'undefined') return true
+  try { return !!document.createElement('canvas').getContext('webgl2') } catch { return false }
+})()
 
 const DEPART_HTML = `
   <div style="position:relative;width:20px;height:20px;">
@@ -75,12 +85,19 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       data: { type: 'Feature', geometry: { type: 'LineString', coordinates: coords } },
     })
     const before = firstSymbolId(map)
+    // The two glow layers use v6's `line-layer-opacity`, not `line-opacity`.
+    // `line-opacity` blends per segment, so wherever the route bends back on
+    // itself the translucent halo stacks with itself into bright blotches.
+    // `line-layer-opacity` draws the line opaque into an offscreen texture and
+    // composites the layer as a whole — no self-blending. It costs one extra
+    // render pass each, which is why the near-opaque core below keeps the
+    // cheaper per-segment path.
     map.addLayer({ id: 'route-glow2', type: 'line', source: 'route',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': '#FF5A1F', 'line-width': 24, 'line-opacity': 0.11, 'line-blur': 8 } }, before)
+      paint: { 'line-color': '#FF5A1F', 'line-width': 24, 'line-layer-opacity': 0.11, 'line-blur': 8 } }, before)
     map.addLayer({ id: 'route-glow', type: 'line', source: 'route',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': '#FF5A1F', 'line-width': 14, 'line-opacity': 0.22, 'line-blur': 3 } }, before)
+      paint: { 'line-color': '#FF5A1F', 'line-width': 14, 'line-layer-opacity': 0.22, 'line-blur': 3 } }, before)
     map.addLayer({ id: 'route-core', type: 'line', source: 'route',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': '#FF5A1F', 'line-width': 4.5, 'line-opacity': 0.95 } }, before)
@@ -91,7 +108,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
 
   // Init map once
   useEffect(() => {
-    if (mapRef.current || !containerRef.current) return
+    if (mapRef.current || !containerRef.current || !HAS_WEBGL2) return
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: isDark ? DARK_STYLE : LIGHT_STYLE,
@@ -218,6 +235,19 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
         style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
         aria-label="Carte de Paris"
       />
+
+      {!HAS_WEBGL2 && (
+        <div
+          className="absolute inset-0 flex items-center justify-center px-8 text-center"
+          style={{ background: '#0b0c0e', zIndex: 502 }}
+          role="status"
+        >
+          <p style={{ fontSize: 13, lineHeight: 1.6, color: 'rgba(245,241,232,.5)' }}>
+            La carte n'est pas disponible sur cet appareil.<br />
+            Vous pouvez réserver normalement.
+          </p>
+        </div>
+      )}
 
       {/* Cinematic compositing — pure presentation, never intercepts touch */}
       {isDark && (
