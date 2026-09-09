@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v130 */
-const CACHE = 'inrun-v130';
+/* I&N RUN — Service Worker v131 */
+const CACHE = 'inrun-v131';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -51,6 +51,7 @@ const STATIC = [
 ];
 const PASSTHROUGH = [
   '/inrunparis/hub.html',
+  '/inrunparis/mapcheck.html',
   '/inrunparis/ops/',
   '/inrunparis/ops/index.html',
   '/inrunparis/mentions-legales.html',
@@ -101,7 +102,7 @@ self.addEventListener('fetch', e => {
     // an unparseable style and the map stayed black until the next cold start.
     // Style/glyph/sprite responses are small and on the critical path, so they
     // are cached; map tiles are not, to keep storage bounded.
-    const isTile = /\/\d+\/\d+\/\d+\.(pbf|mvt|png|jpg|jpeg|webp)$/.test(url.pathname);
+    const isTile = /\/\d+\/\d+\/\d+(@\d+x)?\.(pbf|mvt|png|jpg|jpeg|webp)$/.test(url.pathname);
     e.respondWith((async () => {
       try {
         const res = await fetch(request);

@@ -45,32 +45,44 @@ function rasterFallbackStyle(dark) {
   }
 }
 
-// Cache the resolved dark style so switching themes doesn't refetch.
-let darkStylePromise = null
+// Cache the resolved vector style so switching themes doesn't refetch.
+let vectorStylePromise = null
 
-async function resolveDarkStyle() {
-  if (darkStylePromise) return darkStylePromise
-  darkStylePromise = (async () => {
-    const [mine, base] = await Promise.all([
-      fetch(DARK_LAYERS).then(r => r.json()),
-      fetch(LIGHT_STYLE).then(r => r.json()),
-    ])
+/**
+ * Fetch the vector style, or return null if it isn't usable.
+ *
+ * Returning null (rather than throwing or falling back to another URL) lets the
+ * caller simply keep the raster basemap it already booted with — the map is
+ * never left without a style.
+ */
+async function resolveVectorStyle(dark) {
+  if (vectorStylePromise) return vectorStylePromise
+  vectorStylePromise = (async () => {
+    const base = await fetch(LIGHT_STYLE).then(r => {
+      if (!r.ok) throw new Error(`style HTTP ${r.status}`)
+      return r.json()
+    })
+    if (!dark) return base
+
+    // Dark = our AMOLED layer design grafted onto the published style's
+    // sources/glyphs/sprite, so the tile endpoints are correct by construction
+    // instead of hand-written (an earlier hand-written URL was simply wrong).
+    const mine = await fetch(DARK_LAYERS).then(r => r.json())
     const vectorKey = Object.keys(base.sources).find(k => base.sources[k].type === 'vector')
     if (!vectorKey) throw new Error('no vector source in base style')
     return {
       ...mine,
       sources: base.sources,
-      glyphs:  base.glyphs  ?? mine.glyphs,
+      glyphs:  base.glyphs ?? mine.glyphs,
       sprite:  base.sprite,
-      // our layers were authored against a source named "omt"
       layers:  mine.layers.map(l => (l.source ? { ...l, source: vectorKey } : l)),
     }
   })().catch(err => {
-    darkStylePromise = null
-    console.warn('[map] dark style unavailable, falling back to Positron', err)
-    return LIGHT_STYLE          // a readable map beats a black rectangle
+    vectorStylePromise = null
+    console.warn('[map] vector style unavailable, staying on raster basemap:', err?.message || err)
+    return null
   })
-  return darkStylePromise
+  return vectorStylePromise
 }
 
 const REDUCED = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -128,8 +140,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
   const arriveMkRef   = useRef(null)
   const userMkRef     = useRef(null)
   const didFlyRef     = useRef(false)
-  const basemapOkRef    = useRef(false)         // a basemap source has loaded
-  const usingFallbackRef = useRef(false)        // raster fallback engaged
+  const usingVectorRef  = useRef(false)         // vector style successfully applied
   const isDarkRef     = useRef(isDark)          // for camera pitch inside []-dep effects
   isDarkRef.current   = isDark
 
@@ -174,9 +185,10 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     if (mapRef.current || !containerRef.current || !HAS_WEBGL2) return
     const map = new maplibregl.Map({
       container: containerRef.current,
-      // Start on the published style so tiles appear as early as possible; the
-      // dark design is swapped in below once resolved.
-      style: LIGHT_STYLE,
+      // Boot on the raster basemap. It is a plain inline object, so the map
+      // ALWAYS gets a valid style and `load` always fires — no remote fetch
+      // stands between the user and a visible map. Vector is layered on after.
+      style: rasterFallbackStyle(isDark),
       center: PARIS,
       zoom: 12,
       attributionControl: false,
@@ -185,14 +197,6 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       maxZoom: 19,
     })
     mapRef.current = map
-
-    if (isDark) {
-      resolveDarkStyle().then(style => {
-        if (mapRef.current !== map) return
-        map.setStyle(style)
-        map.once('idle', () => syncRoute())
-      })
-    }
 
     // MapLibre measures the container at construction; in an absolutely-
     // positioned flex/PWA shell that size can be wrong until layout settles,
@@ -204,19 +208,16 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     // map just stays black. Surface it so it's diagnosable on a real device.
     map.on('error', (e) => console.warn('[map]', e?.error?.message || e?.error || e))
 
-    // Watchdog: whatever goes wrong upstream (unreachable host, bad endpoint,
-    // CSP, DNS), if no basemap source has loaded shortly after start-up, swap
-    // to the raster tiles that are known to work on real devices.
-    map.on('sourcedata', (ev) => {
-      if (ev.isSourceLoaded && ev.sourceId && ev.sourceId !== 'route') basemapOkRef.current = true
-    })
-    const watchdog = setTimeout(() => {
-      if (basemapOkRef.current || mapRef.current !== map || usingFallbackRef.current) return
-      console.warn('[map] no basemap after 6s — switching to raster fallback')
-      usingFallbackRef.current = true
-      map.setStyle(rasterFallbackStyle(isDarkRef.current))
+    // Progressive upgrade: once the raster map is up, try the vector style in
+    // the background. It only replaces the basemap if it actually resolves —
+    // otherwise the user simply keeps the working raster map, with no black
+    // window and no timeout to wait out.
+    resolveVectorStyle(isDark).then(style => {
+      if (!style || mapRef.current !== map || usingVectorRef.current) return
+      usingVectorRef.current = true
+      map.setStyle(style)
       map.once('idle', () => syncRoute())
-    }, 6000)
+    })
 
     const raf = requestAnimationFrame(bump)
     const t0  = setTimeout(bump, 0)
@@ -226,7 +227,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     observer.observe(containerRef.current)
 
     return () => {
-      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1); clearTimeout(watchdog)
+      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1)
       observer.disconnect()
       map.remove()
       mapRef.current = null
@@ -248,9 +249,10 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       map.setStyle(style)
       map.once('idle', () => syncRoute())
     }
-    if (usingFallbackRef.current) { apply(rasterFallbackStyle(isDark)); return }
-    if (isDark) resolveDarkStyle().then(apply)
-    else        apply(LIGHT_STYLE)
+    // Repaint immediately with the raster basemap for the new theme, then
+    // upgrade to vector again if it's available — never leaves a blank map.
+    apply(rasterFallbackStyle(isDark))
+    resolveVectorStyle(isDark).then(style => { if (style) apply(style) })
   }, [isDark, syncRoute])
 
   // Live GPS user dot + cinematic fly-in on first fix

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>I&N RUN — diagnostic carte</title>
+<style>
+  body{margin:0;padding:20px 16px calc(env(safe-area-inset-bottom) + 24px);background:#050505;color:#F5F1E8;
+       font:14px/1.5 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+  h1{font-size:17px;margin:0 0 4px}
+  p.s{color:rgba(245,241,232,.5);font-size:12px;margin:0 0 18px}
+  .r{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);align-items:flex-start}
+  .b{flex-shrink:0;width:22px;font-size:15px}
+  .t{flex:1;min-width:0}
+  .n{font-weight:600}
+  .d{color:rgba(245,241,232,.45);font-size:11.5px;word-break:break-all;margin-top:2px}
+  .ok{color:#34d399}.ko{color:#ef4444}.wa{color:#F5C518}
+  #sum{margin-top:18px;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);
+       border:1px solid rgba(255,255,255,.1);font-size:12.5px;white-space:pre-wrap}
+</style></head><body>
+<h1>Diagnostic carte</h1>
+<p class="s">Chaque ligne teste une dépendance de la carte. Fais une capture de cet écran.</p>
+<div id="o"></div>
+<div id="sum">Test en cours…</div>
+<script>
+const o = document.getElementById('o'), lines = []
+function row(name, state, detail){
+  const icons = { ok:'✓', ko:'✗', wa:'!' }
+  const d = document.createElement('div'); d.className = 'r'
+  d.innerHTML = `<div class="b ${state}">${icons[state]}</div><div class="t"><div class="n">${name}</div><div class="d">${detail}</div></div>`
+  o.appendChild(d); lines.push(`${icons[state]} ${name} — ${detail}`)
+}
+async function timed(url, opts){
+  const t0 = performance.now()
+  const c = new AbortController(); const to = setTimeout(()=>c.abort(), 12000)
+  try {
+    const r = await fetch(url, { signal: c.signal, cache: 'no-store', ...opts })
+    clearTimeout(to)
+    return { ok: r.ok, status: r.status, ms: Math.round(performance.now()-t0), r }
+  } catch (e) { clearTimeout(to); return { ok:false, status:0, ms: Math.round(performance.now()-t0), err: e.name === 'AbortError' ? 'timeout 12s' : (e.message||String(e)) } }
+}
+(async () => {
+  // 1 — WebGL2 (MapLibre v6 l'exige)
+  let gl = null
+  try { gl = document.createElement('canvas').getContext('webgl2') } catch {}
+  row('WebGL2', gl ? 'ok' : 'ko', gl ? (gl.getParameter(gl.VERSION)||'disponible') : 'ABSENT → la carte ne peut pas s\'afficher')
+
+  // 2 — style vectoriel OpenFreeMap
+  const st = await timed('https://tiles.openfreemap.org/styles/positron')
+  let styleJson = null
+  if (st.ok) { try { styleJson = await st.r.clone().json() } catch {} }
+  row('Style OpenFreeMap', st.ok ? 'ok':'ko',
+      st.ok ? `HTTP ${st.status} · ${st.ms} ms${styleJson? ' · JSON valide':' · JSON ILLISIBLE'}`
+            : `échec (${st.err||('HTTP '+st.status)}) · ${st.ms} ms`)
+
+  // 3 — tuile vectorielle réellement référencée par ce style
+  if (styleJson) {
+    const k = Object.keys(styleJson.sources||{}).find(x => styleJson.sources[x].type === 'vector')
+    const src = k ? styleJson.sources[k] : null
+    let tileUrl = src?.tiles?.[0]
+    if (!tileUrl && src?.url) {
+      const tj = await timed(src.url)
+      if (tj.ok) { try { tileUrl = (await tj.r.json()).tiles?.[0] } catch {} }
+      row('TileJSON', tj.ok?'ok':'ko', `${src.url} → ${tj.ok?('HTTP '+tj.status):(tj.err||tj.status)}`)
+    }
+    if (tileUrl) {
+      const u = tileUrl.replace('{z}','13').replace('{x}','4149').replace('{y}','2818')
+      const t = await timed(u)
+      row('Tuile vectorielle', t.ok?'ok':'ko', `${u.slice(0,58)}… → ${t.ok?('HTTP '+t.status+' · '+t.ms+' ms'):(t.err||('HTTP '+t.status))}`)
+    } else row('Tuile vectorielle','wa','URL de tuile introuvable dans le style')
+  }
+
+  // 4 — tuile raster CartoDB (le repli)
+  const c = await timed('https://a.basemaps.cartocdn.com/dark_all/13/4149/2818@2x.png')
+  row('Tuile CartoDB (repli)', c.ok?'ok':'ko', c.ok ? `HTTP ${c.status} · ${c.ms} ms` : `échec (${c.err||('HTTP '+c.status)}) · ${c.ms} ms`)
+
+  // 5 — style sombre local
+  const d = await timed('/inrunparis/mapstyle-dark.json')
+  let dOk = false; if (d.ok) { try { await d.r.clone().json(); dOk = true } catch {} }
+  row('Style sombre local', d.ok && dOk ?'ok':'ko', d.ok ? (dOk?`HTTP ${d.status} · JSON valide`:`HTTP ${d.status} mais JSON ILLISIBLE (service worker ?)`) : `échec ${d.err||d.status}`)
+
+  // 6 — service worker
+  const regs = navigator.serviceWorker ? await navigator.serviceWorker.getRegistrations() : []
+  row('Service worker', regs.length?'wa':'ok', regs.length ? `${regs.length} enregistré(s) · scope ${regs[0].scope}` : 'aucun')
+
+  document.getElementById('sum').textContent =
+    'À copier / capturer :\n\n' + lines.join('\n') +
+    '\n\nUA: ' + navigator.userAgent.slice(0,110)
+})()
+</script></body></html>
