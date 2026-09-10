@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v135 */
-const CACHE = 'inrun-v135';
+/* I&N RUN — Service Worker v136 */
+const CACHE = 'inrun-v136';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -30,7 +30,7 @@ self.addEventListener('notificationclick', event => {
 const OFFLINE = '/inrunparis/offline.html'
 
 // Hosts the service worker must never touch — see the fetch handler.
-const MAP_HOSTS = /(^|\.)(cartocdn\.com|openfreemap\.org|openstreetmap\.org|openstreetmap\.de|komoot\.io|project-osrm\.org)$/;
+const MAP_HOSTS = /(^|\.)(cartocdn\.com|openstreetmap\.org|openstreetmap\.de|komoot\.io|project-osrm\.org)$/;
 
 const STATIC = [
   OFFLINE,
@@ -54,7 +54,6 @@ const STATIC = [
 ];
 const PASSTHROUGH = [
   '/inrunparis/hub.html',
-  '/inrunparis/mapcheck.html',
   '/inrunparis/ops/',
   '/inrunparis/ops/index.html',
   '/inrunparis/mentions-legales.html',
