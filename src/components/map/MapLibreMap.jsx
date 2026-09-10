@@ -156,6 +156,27 @@ const ARRIVE_HTML = `
 
 const GPS_HTML = `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:var(--info);border:2px solid #fff"></div>`
 
+/**
+ * Wipe the installed app and reload from the network.
+ *
+ * A PWA caches itself, which means a bad service worker or a poisoned cache
+ * entry survives every reload the user can perform by hand — the app keeps
+ * serving itself the broken version. Uninstalling and reinstalling the PWA is
+ * the only other way out, and nobody should have to know that. This button is
+ * the way out.
+ */
+async function hardReset() {
+  try {
+    const regs = await navigator.serviceWorker?.getRegistrations?.() ?? []
+    await Promise.all(regs.map(r => r.unregister()))
+  } catch {}
+  try {
+    const keys = await caches.keys()
+    await Promise.all(keys.map(k => caches.delete(k)))
+  } catch {}
+  location.reload()
+}
+
 function el(html) {
   const d = document.createElement('div')
   d.innerHTML = html.trim()
@@ -186,6 +207,16 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
   const usingVectorRef  = useRef(false)         // vector style successfully applied
   const tileOkRef       = useRef(false)         // at least one basemap tile painted
   const errsRef         = useRef([])            // recent map errors, for the panel
+  // Request accounting. MapLibre calls transformRequest for every URL it
+  // decides to fetch, before any network work — so `asked` counts what MapLibre
+  // WANTED and `got` counts what actually came back. The gap between the two is
+  // the whole diagnosis: asked=0 means the map never even tried (style or
+  // render-loop problem), asked>0 with got=0 means the requests went out and
+  // nothing returned (network, CSP or service-worker problem).
+  const askedRef        = useRef(0)
+  const gotRef          = useRef(0)
+  const framesRef       = useRef(0)
+  const upgradedRef     = useRef(false)
   // Shown only when the basemap never appears — turns a silent black rectangle
   // into something a user can screenshot and send.
   const [diag, setDiag] = useState(null)
@@ -243,6 +274,10 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       dragRotate: false,
       pitchWithRotate: false,
       maxZoom: 19,
+      transformRequest: (url, resourceType) => {
+        if (resourceType === 'Tile') askedRef.current++
+        return { url }
+      },
     })
     mapRef.current = map
 
@@ -270,6 +305,24 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     }
     const bump = () => { try { map.resize() } catch {} }
     const ensureSize = () => { if (!sizeMatches()) bump() }
+    // Progressive upgrade to the vector style — but NOT before the raster
+    // basemap has actually painted. setStyle() tears down the current sources
+    // and cancels their in-flight tile requests, so upgrading eagerly could
+    // cancel a raster map that was about to appear and replace it with a vector
+    // style that then fails quietly, leaving nothing on screen and no error to
+    // explain it. Waiting for proof that the basemap works means the upgrade
+    // can only ever trade one working map for another.
+    const upgradeToVector = () => {
+      if (upgradedRef.current || mapRef.current !== map) return
+      upgradedRef.current = true
+      resolveVectorStyle(isDark).then(style => {
+        if (!style || mapRef.current !== map) return
+        usingVectorRef.current = true
+        map.setStyle(style)
+        map.once('idle', () => syncRoute())
+      })
+    }
+
     map.on('load', () => { onMapReady?.(map); syncRoute(); bump() })
     // A failing style or tile endpoint is otherwise completely silent — the
     // map just stays black. Surface it so it's diagnosable on a real device.
@@ -278,8 +331,15 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       console.warn('[map]', msg)
       if (errsRef.current.length < 4 && !errsRef.current.includes(msg)) errsRef.current.push(msg)
     })
+    map.on('render', () => { framesRef.current++ })
     map.on('data', (ev) => {
-      if (ev.dataType === 'source' && ev.sourceId !== 'route' && ev.tile) tileOkRef.current = true
+      if (ev.dataType !== 'source' || ev.sourceId === 'route' || !ev.tile) return
+      gotRef.current++
+      if (!tileOkRef.current) {
+        tileOkRef.current = true
+        // The basemap is alive. Only now is it safe to try the vector upgrade.
+        upgradeToVector()
+      }
     })
 
     // If no basemap tile has painted after 8s, surface why instead of a void.
@@ -291,23 +351,19 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
       setDiag({
         webgl2: HAS_WEBGL2,
         vector: usingVectorRef.current,
-        tiles:  tileOkRef.current,
+        asked:  askedRef.current,
+        got:    gotRef.current,
+        frames: framesRef.current,
         canvas: cv ? `${cv.style.width || cv.clientWidth}x${cv.style.height || cv.clientHeight}` : 'absent',
         box:    el ? `${el.clientWidth}x${el.clientHeight}` : 'absent',
         errs: errsRef.current.slice(0, 3),
       })
     }, 8000)
 
-    // Progressive upgrade: once the raster map is up, try the vector style in
-    // the background. It only replaces the basemap if it actually resolves —
-    // otherwise the user simply keeps the working raster map, with no black
-    // window and no timeout to wait out.
-    resolveVectorStyle(isDark).then(style => {
-      if (!style || mapRef.current !== map || usingVectorRef.current) return
-      usingVectorRef.current = true
-      map.setStyle(style)
-      map.once('idle', () => syncRoute())
-    })
+
+    // Fallback: if no raster tile has painted after 6s the raster basemap is
+    // the thing that's broken, so try vector anyway rather than show nothing.
+    const upgradeTimer = setTimeout(upgradeToVector, 6000)
 
     const raf = requestAnimationFrame(bump)
     const t0  = setTimeout(bump, 0)
@@ -325,7 +381,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
 
     return () => {
       cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1); clearTimeout(diagTimer)
-      clearInterval(sizePoll); clearTimeout(stopPoll)
+      clearInterval(sizePoll); clearTimeout(stopPoll); clearTimeout(upgradeTimer)
       window.removeEventListener('resize', ensureSize)
       window.removeEventListener('orientationchange', ensureSize)
       document.removeEventListener('visibilitychange', ensureSize)
@@ -447,15 +503,22 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
           <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: 4, fontFamily: 'inherit' }}>
             Carte indisponible — diagnostic
           </div>
-          <div>WebGL2 : {diag.webgl2 ? 'oui' : 'NON'} · vecteur : {diag.vector ? 'oui' : 'non'} · tuiles : {diag.tiles ? 'oui' : 'NON'}</div>
+          <div>WebGL2 : {diag.webgl2 ? 'oui' : 'NON'} · vecteur : {diag.vector ? 'oui' : 'non'} · images rendues : {diag.frames}</div>
+          <div>tuiles demandées : {diag.asked} · reçues : {diag.got}</div>
           <div>canvas : {diag.canvas} · conteneur : {diag.box}</div>
           {diag.errs.length
             ? diag.errs.map((e, i) => <div key={i} style={{ marginTop: 3, opacity: .75, wordBreak: 'break-all' }}>• {e}</div>)
-            : <div style={{ marginTop: 3, opacity: .75 }}>• aucune erreur remontée (tuiles jamais demandées ?)</div>}
-          <button
-            onClick={() => setDiag(null)}
-            style={{ marginTop: 8, fontSize: 11, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
-          >Masquer</button>
+            : <div style={{ marginTop: 3, opacity: .75 }}>• aucune erreur remontée</div>}
+          <div style={{ display: 'flex', gap: 16, marginTop: 8 }}>
+            <button
+              onClick={hardReset}
+              style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
+            >Réinitialiser</button>
+            <button
+              onClick={() => setDiag(null)}
+              style={{ fontSize: 11, fontWeight: 700, color: 'rgba(245,241,232,.5)', background: 'none', border: 'none', padding: 0 }}
+            >Masquer</button>
+          </div>
         </div>
       )}
 

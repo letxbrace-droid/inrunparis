@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v134 */
-const CACHE = 'inrun-v134';
+/* I&N RUN — Service Worker v135 */
+const CACHE = 'inrun-v135';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -28,6 +28,9 @@ self.addEventListener('notificationclick', event => {
   )
 })
 const OFFLINE = '/inrunparis/offline.html'
+
+// Hosts the service worker must never touch — see the fetch handler.
+const MAP_HOSTS = /(^|\.)(cartocdn\.com|openfreemap\.org|openstreetmap\.org|openstreetmap\.de|komoot\.io|project-osrm\.org)$/;
 
 const STATIC = [
   OFFLINE,
@@ -96,27 +99,21 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-  if (url.hostname.includes('cartocdn.com') || url.hostname.includes('openfreemap.org') || url.hostname.includes('openstreetmap.org') || url.hostname.includes('openstreetmap.de') || url.hostname.includes('komoot.io') || url.hostname.includes('project-osrm.org')) {
-    // Network-first with a cache fallback. This used to answer any failure with
-    // an EMPTY 503 and cache nothing — so a single network blip handed MapLibre
-    // an unparseable style and the map stayed black until the next cold start.
-    // Style/glyph/sprite responses are small and on the critical path, so they
-    // are cached; map tiles are not, to keep storage bounded.
-    const isTile = /\/\d+\/\d+\/\d+(@\d+x)?\.(pbf|mvt|png|jpg|jpeg|webp)$/.test(url.pathname);
-    e.respondWith((async () => {
-      try {
-        const res = await fetch(request);
-        if (res.ok && !isTile) {
-          const c = await caches.open(CACHE);
-          c.put(request, res.clone()).catch(() => {});
-        }
-        return res;
-      } catch {
-        return (await caches.match(request)) || new Response('', { status: 503 });
-      }
-    })());
-    return;
-  }
+  // Map tiles, styles, glyphs, geocoding, routing: the service worker steps
+  // ASIDE. Returning without calling respondWith() hands the request straight
+  // back to the browser's own network stack.
+  //
+  // This is the fix for the map that never appeared. MapLibre fetches tiles
+  // from a dedicated worker thread. Intercepting those with
+  // respondWith(fetch(request)) routes every one of them page-worker ->
+  // service-worker -> network -> back, and if that detour stalls (a terminated
+  // SW, an iOS cross-origin worker-fetch stall) the promise never settles: the
+  // request neither succeeds nor fails. MapLibre then raises no error and
+  // paints no tiles — precisely the "tuiles : NON, aucune erreur" the device
+  // reported. The detour also bought nothing: tiles were deliberately not
+  // cached anyway.
+  if (MAP_HOSTS.test(url.hostname)) return;
+
   e.respondWith(caches.match(request).then(r => r || fetch(request).then(res => {
     if (res.ok && res.type !== 'opaque') caches.open(CACHE).then(c => c.put(request, res.clone()));
     return res;
