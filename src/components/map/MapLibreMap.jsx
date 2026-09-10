@@ -207,7 +207,26 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     // positioned flex/PWA shell that size can be wrong until layout settles,
     // leaving the canvas rendering only a thin strip. Force resize() the way
     // Leaflet's invalidateSize did — on load, next frame, and after a beat.
+    // MapLibre measures its container once, at construction. If that
+    // measurement is wrong — a not-yet-settled 100dvh, the splash overlay, a
+    // mid-layout frame — the canvas keeps a tiny backing store which CSS then
+    // stretches over the full container, rendering the map as a smooth blurred
+    // gradient. A ResizeObserver does NOT rescue this: the container never
+    // changed size, only MapLibre's idea of it was wrong. So instead of firing
+    // resize() at a few hopeful moments, verify the canvas actually matches the
+    // container and correct it until it does.
+    const sizeMatches = () => {
+      const el = containerRef.current
+      const cv = map.getCanvas?.()
+      if (!el || !cv) return true
+      const w = el.clientWidth, h = el.clientHeight
+      if (!w || !h) return true                       // not laid out yet
+      const cw = parseFloat(cv.style.width)  || cv.clientWidth
+      const ch = parseFloat(cv.style.height) || cv.clientHeight
+      return Math.abs(cw - w) <= 1 && Math.abs(ch - h) <= 1
+    }
     const bump = () => { try { map.resize() } catch {} }
+    const ensureSize = () => { if (!sizeMatches()) bump() }
     map.on('load', () => { onMapReady?.(map); syncRoute(); bump() })
     // A failing style or tile endpoint is otherwise completely silent — the
     // map just stays black. Surface it so it's diagnosable on a real device.
@@ -222,11 +241,16 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
 
     // If no basemap tile has painted after 8s, surface why instead of a void.
     const diagTimer = setTimeout(() => {
-      if (tileOkRef.current || mapRef.current !== map) return
+      if (mapRef.current !== map) return
+      const fits = sizeMatches()
+      if (tileOkRef.current && fits) return          // map is fine
+      const el = containerRef.current, cv = map.getCanvas?.()
       setDiag({
         webgl2: HAS_WEBGL2,
         vector: usingVectorRef.current,
-        canvas: (() => { const c = map.getCanvas?.(); return c ? `${c.width}x${c.height}` : 'absent' })(),
+        tiles:  tileOkRef.current,
+        canvas: cv ? `${cv.style.width || cv.clientWidth}x${cv.style.height || cv.clientHeight}` : 'absent',
+        box:    el ? `${el.clientWidth}x${el.clientHeight}` : 'absent',
         errs: errsRef.current.slice(0, 3),
       })
     }, 8000)
@@ -245,12 +269,23 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     const raf = requestAnimationFrame(bump)
     const t0  = setTimeout(bump, 0)
     const t1  = setTimeout(bump, 300)
+    // Poll briefly — covers the case where the container was always correct and
+    // only MapLibre's measurement was stale, which no event would report.
+    const sizePoll = setInterval(ensureSize, 400)
+    const stopPoll = setTimeout(() => clearInterval(sizePoll), 10000)
 
     const observer = new ResizeObserver(bump)
     observer.observe(containerRef.current)
+    window.addEventListener('resize', ensureSize)
+    window.addEventListener('orientationchange', ensureSize)
+    document.addEventListener('visibilitychange', ensureSize)
 
     return () => {
       cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1); clearTimeout(diagTimer)
+      clearInterval(sizePoll); clearTimeout(stopPoll)
+      window.removeEventListener('resize', ensureSize)
+      window.removeEventListener('orientationchange', ensureSize)
+      document.removeEventListener('visibilitychange', ensureSize)
       observer.disconnect()
       map.remove()
       mapRef.current = null
@@ -369,7 +404,8 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
           <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: 4, fontFamily: 'inherit' }}>
             Carte indisponible — diagnostic
           </div>
-          <div>WebGL2 : {diag.webgl2 ? 'oui' : 'NON'} · vecteur : {diag.vector ? 'oui' : 'non'} · canvas : {diag.canvas}</div>
+          <div>WebGL2 : {diag.webgl2 ? 'oui' : 'NON'} · vecteur : {diag.vector ? 'oui' : 'non'} · tuiles : {diag.tiles ? 'oui' : 'NON'}</div>
+          <div>canvas : {diag.canvas} · conteneur : {diag.box}</div>
           {diag.errs.length
             ? diag.errs.map((e, i) => <div key={i} style={{ marginTop: 3, opacity: .75, wordBreak: 'break-all' }}>• {e}</div>)
             : <div style={{ marginTop: 3, opacity: .75 }}>• aucune erreur remontée (tuiles jamais demandées ?)</div>}
