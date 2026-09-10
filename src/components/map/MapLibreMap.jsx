@@ -45,44 +45,87 @@ function rasterFallbackStyle(dark) {
   }
 }
 
-// Cache the resolved vector style so switching themes doesn't refetch.
-let vectorStylePromise = null
+/**
+ * Absolutise every URL a style points at, against the URL it was fetched from.
+ *
+ * This is the whole reason the map stayed empty. When MapLibre loads a style
+ * from a URL it resolves the style's relative references against that URL. Hand
+ * it an already-parsed OBJECT and it has no base, so it resolves them against
+ * the PAGE origin instead — a relative source URL becomes a path on our own
+ * domain, where the service worker answers with index.html. MapLibre then gets
+ * HTML where it expected TileJSON, builds no tile source, and requests nothing:
+ * no tiles and, tellingly, no error either. Exactly what the device reported.
+ */
+function absolutiseStyle(style, baseUrl) {
+  const abs = (u) => {
+    if (typeof u !== 'string') return u
+    // new URL() percent-encodes the {fontstack}/{range}/{z}/{x}/{y} placeholders,
+    // and MapLibre then rejects the style as invalid — which creates no sources,
+    // so no tiles are ever requested AND no network error is raised. Restore them.
+    return new URL(u, baseUrl).href.replace(/%7B/gi, '{').replace(/%7D/gi, '}')
+  }
+  const out = { ...style }
+  if (out.glyphs) out.glyphs = abs(out.glyphs)
+  if (out.sprite) {
+    out.sprite = Array.isArray(out.sprite)
+      ? out.sprite.map(sp => ({ ...sp, url: abs(sp.url) }))
+      : abs(out.sprite)
+  }
+  out.sources = Object.fromEntries(Object.entries(style.sources || {}).map(([k, src]) => {
+    const n = { ...src }
+    if (n.url)   n.url   = abs(n.url)
+    if (n.tiles) n.tiles = n.tiles.map(abs)
+    return [k, n]
+  }))
+  return out
+}
+
+// Cache the resolved vector style per theme. (This used to be a single promise
+// that ignored `dark`, so a style resolved for one theme was handed to the other.)
+const vectorStyleCache = { true: null, false: null }
 
 /**
- * Fetch the vector style, or return null if it isn't usable.
+ * Resolve the vector style for a theme, or null if it isn't usable.
  *
- * Returning null (rather than throwing or falling back to another URL) lets the
- * caller simply keep the raster basemap it already booted with — the map is
- * never left without a style.
+ * Light mode returns the style URL itself — letting MapLibre fetch it means it
+ * resolves the style's own relative URLs correctly, which is the safest path.
+ * Dark mode has to merge our AMOLED layers in, so it must build an object; that
+ * object is absolutised first.
+ *
+ * Returning null rather than throwing lets the caller simply keep the raster
+ * basemap it booted with, so the map is never left without a style.
  */
 async function resolveVectorStyle(dark) {
-  if (vectorStylePromise) return vectorStylePromise
-  vectorStylePromise = (async () => {
-    const base = await fetch(LIGHT_STYLE).then(r => {
-      if (!r.ok) throw new Error(`style HTTP ${r.status}`)
-      return r.json()
-    })
-    if (!dark) return base
+  const key = String(!!dark)
+  if (vectorStyleCache[key]) return vectorStyleCache[key]
+  vectorStyleCache[key] = (async () => {
+    // Light: hand back the URL so MapLibre does its own base-relative resolution.
+    if (!dark) {
+      const probe = await fetch(LIGHT_STYLE, { method: 'GET' })
+      if (!probe.ok) throw new Error(`style HTTP ${probe.status}`)
+      await probe.json()                       // must be parseable, not an HTML fallback
+      return LIGHT_STYLE
+    }
 
-    // Dark = our AMOLED layer design grafted onto the published style's
-    // sources/glyphs/sprite, so the tile endpoints are correct by construction
-    // instead of hand-written (an earlier hand-written URL was simply wrong).
-    const mine = await fetch(DARK_LAYERS).then(r => r.json())
-    const vectorKey = Object.keys(base.sources).find(k => base.sources[k].type === 'vector')
+    const [base, mine] = await Promise.all([
+      fetch(LIGHT_STYLE).then(r => { if (!r.ok) throw new Error(`style HTTP ${r.status}`); return r.json() }),
+      fetch(DARK_LAYERS).then(r => r.json()),
+    ])
+    const vectorKey = Object.keys(base.sources || {}).find(k => base.sources[k].type === 'vector')
     if (!vectorKey) throw new Error('no vector source in base style')
-    return {
+    return absolutiseStyle({
       ...mine,
       sources: base.sources,
       glyphs:  base.glyphs ?? mine.glyphs,
       sprite:  base.sprite,
       layers:  mine.layers.map(l => (l.source ? { ...l, source: vectorKey } : l)),
-    }
+    }, LIGHT_STYLE)
   })().catch(err => {
-    vectorStylePromise = null
+    vectorStyleCache[key] = null
     console.warn('[map] vector style unavailable, staying on raster basemap:', err?.message || err)
     return null
   })
-  return vectorStylePromise
+  return vectorStyleCache[key]
 }
 
 const REDUCED = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
