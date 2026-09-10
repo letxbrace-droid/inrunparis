@@ -26,15 +26,42 @@ async function hardReset() {
   location.reload()
 }
 
-// Split tile strategy: terrain filtered for aesthetics, labels unfiltered for legibility
-const TILES = {
-  darkBase:   'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-  darkLabels: 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
-  lightBase:   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
-  lightLabels: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-}
+// ── Fond de carte ───────────────────────────────────────────────────────────
+// CARTO stamped "API KEY REQUIRED" across its keyless basemaps, so the default
+// here is OpenStreetMap's own raster tiles: no key, no signup, works today.
+// They are a light-coloured map, so dark mode is produced by inverting them —
+// invert() flips the luminance and hue-rotate(180deg) puts the hues back where
+// they were. It is the classic dark-OSM grade: not as refined as a
+// purpose-built dark basemap, but legible and honest.
+//
+// To get a real dark basemap back, paste a free Geoapify key below and the
+// tile URLs switch automatically. Their free plan allows commercial use and
+// their "dark-matter" / "positron" styles are the same designs this app used
+// before. Two minutes at https://myprojects.geoapify.com — restrict the key to
+// your domain in their dashboard. A web-map key is always visible in the
+// bundle; every provider expects that and rate-limits by referring domain, not
+// by secrecy.
+const TILE_KEY = ''
 
-const TILE_OPTS = { attribution: '', subdomains: 'abcd', maxZoom: 20 }
+function basemap(dark) {
+  if (TILE_KEY) {
+    return {
+      url: `https://maps.geoapify.com/v1/tile/${dark ? 'dark-matter' : 'positron'}/{z}/{x}/{y}.png?apiKey=${TILE_KEY}`,
+      options: { maxZoom: 20, crossOrigin: true },
+      // Purpose-built dark tiles only need lifting, never inverting.
+      filter: dark ? 'brightness(1.42) contrast(.95) saturate(.85)'
+                   : 'saturate(.8) contrast(1.03)',
+      attribution: '\u00a9 Geoapify \u00b7 \u00a9 OpenStreetMap',
+    }
+  }
+  return {
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    options: { maxZoom: 19, crossOrigin: true },
+    filter: dark ? 'invert(1) hue-rotate(180deg) brightness(.92) contrast(.9) saturate(.55)'
+                 : 'saturate(.82) contrast(1.03)',
+    attribution: '\u00a9 OpenStreetMap',
+  }
+}
 
 const userPosIcon = L.divIcon({
   html: `<div class="gps-user-dot" style="width:12px;height:12px;border-radius:50%;background:var(--info);border:2px solid #fff"></div>`,
@@ -67,7 +94,6 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   const containerRef  = useRef(null)
   const mapRef        = useRef(null)
   const tileBaseRef   = useRef(null)
-  const tileLabelRef  = useRef(null)
   const routeRef      = useRef([])
   const markersRef    = useRef([])
   const userMarkerRef = useRef(null)
@@ -85,7 +111,21 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return
     const map = L.map(containerRef.current, {
-      center: PARIS, zoom: 12, zoomControl: false, attributionControl: false,
+      center: PARIS, zoom: 12, zoomControl: false, attributionControl: true,
+    })
+    // OpenStreetMap's licence requires visible credit. Keep it discreet, but
+    // keep it: the previous build hid it, which was not ours to do.
+    map.attributionControl.setPrefix('')
+    const attrEl = map.attributionControl.getContainer()
+    if (attrEl) Object.assign(attrEl.style, {
+      background: 'transparent', padding: '0 6px 2px 0',
+      font: '9.5px/1.4 system-ui, sans-serif', color: 'rgba(150,150,158,.9)',
+      // The credit sits directly on map tiles that can be light or dark, so it
+      // carries its own contrast rather than relying on whatever is behind it.
+      textShadow: '0 1px 2px rgba(0,0,0,.45), 0 0 3px rgba(255,255,255,.25)',
+      // Lift it clear of the search pill that owns the bottom of the screen —
+      // credit pinned underneath the UI is credit nobody can read.
+      marginBottom: 'calc(env(safe-area-inset-bottom, 0px) + 100px)',
     })
     mapRef.current = map
     onMapReady?.(map)
@@ -95,12 +135,6 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     map.createPane('baseTilesPane')
     map.getPane('baseTilesPane').style.zIndex = 199
     map.getPane('baseTilesPane').style.pointerEvents = 'none'
-
-    // labelPane sits above polylines (overlayPane = 400) but below markers (600)
-    // so street names are readable through the route overlay
-    map.createPane('labelPane')
-    map.getPane('labelPane').style.zIndex = 450
-    map.getPane('labelPane').style.pointerEvents = 'none'
 
     setTimeout(() => map.invalidateSize({ animate: false }), 0)
 
@@ -146,54 +180,33 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }
   }, []) // eslint-disable-line
 
-  // Switch tile layers on isDark change — filter applied to baseTilesPane only
+  // Swap the basemap on isDark change. There is one tile layer now: the
+  // nolabels / only-labels pair this used to stack was a CARTO-only luxury,
+  // and no keyless provider serves it. Labels are baked into the tiles, so the
+  // grade has to stay gentle enough to keep street names readable.
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
-    if (tileBaseRef.current)  { try { map.removeLayer(tileBaseRef.current)  } catch {} }
-    if (tileLabelRef.current) { try { map.removeLayer(tileLabelRef.current) } catch {} }
+    if (tileBaseRef.current) { try { map.removeLayer(tileBaseRef.current) } catch {} }
 
-    // Aesthetic filter stays on the terrain pane — labels are never filtered.
-    // Because labels live on their own unfiltered pane, we can grade the terrain
-    // far more aggressively (deep AMOLED blacks, punchy contrast) for a cinematic
-    // look without ever hurting street-name / POI legibility.
-    const basePaneEl = map.getPane('baseTilesPane')
-    if (basePaneEl) {
-      // Lift the terrain so the road network, parks and water are clearly
-      // visible — a pro VTC map shows its streets. Labels live on their own
-      // pane, so brightening here never washes them out.
-      basePaneEl.style.filter = isDark
-        ? 'brightness(1.62) contrast(0.94) saturate(0.82)'
-        : 'saturate(0.78) brightness(0.99) contrast(1.04)'
-    }
+    const bm = basemap(isDark)
+    const pane = map.getPane('baseTilesPane')
+    if (pane) pane.style.filter = bm.filter
 
-    tileBaseRef.current = L.tileLayer(
-      isDark ? TILES.darkBase : TILES.lightBase,
-      { ...TILE_OPTS, pane: 'baseTilesPane' },
-    )
+    tileBaseRef.current = L.tileLayer(bm.url, {
+      ...bm.options,
+      pane: 'baseTilesPane',
+      attribution: bm.attribution,
+    })
       .on('tileloadstart', () => { askedRef.current++ })
       .on('tileload',      () => { gotRef.current++; setDiag(null) })
       .on('tileerror',     (ev) => {
         const url = ev?.tile?.src || '(url inconnue)'
-        console.warn('[map] tuile en échec', url)
+        console.warn('[map] tuile en \u00e9chec', url)
         if (errsRef.current.length < 4 && !errsRef.current.includes(url)) errsRef.current.push(url)
       })
       .addTo(map)
-
-    // Crispen the labels independently — whiter, punchier text so street names,
-    // addresses and POIs stay perfectly legible over the moody dark terrain
-    const labelPaneEl = map.getPane('labelPane')
-    if (labelPaneEl) {
-      labelPaneEl.style.filter = isDark
-        ? 'brightness(1.12) contrast(1.08)'
-        : 'contrast(1.04)'
-    }
-
-    tileLabelRef.current = L.tileLayer(
-      isDark ? TILES.darkLabels : TILES.lightLabels,
-      { ...TILE_OPTS, pane: 'labelPane' },
-    ).addTo(map)
   }, [isDark])
 
   // Live GPS user position blue dot + animated zoom-in on first fix
