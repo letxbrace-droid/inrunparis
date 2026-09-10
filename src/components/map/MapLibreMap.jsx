@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 // v6 is ESM-only and dropped its default export — the namespace import keeps
 // every maplibregl.Map / .Marker / .LngLatBounds call site working unchanged.
 import * as maplibregl from 'maplibre-gl'
@@ -141,6 +141,11 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
   const userMkRef     = useRef(null)
   const didFlyRef     = useRef(false)
   const usingVectorRef  = useRef(false)         // vector style successfully applied
+  const tileOkRef       = useRef(false)         // at least one basemap tile painted
+  const errsRef         = useRef([])            // recent map errors, for the panel
+  // Shown only when the basemap never appears — turns a silent black rectangle
+  // into something a user can screenshot and send.
+  const [diag, setDiag] = useState(null)
   const isDarkRef     = useRef(isDark)          // for camera pitch inside []-dep effects
   isDarkRef.current   = isDark
 
@@ -206,7 +211,25 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     map.on('load', () => { onMapReady?.(map); syncRoute(); bump() })
     // A failing style or tile endpoint is otherwise completely silent — the
     // map just stays black. Surface it so it's diagnosable on a real device.
-    map.on('error', (e) => console.warn('[map]', e?.error?.message || e?.error || e))
+    map.on('error', (e) => {
+      const msg = e?.error?.message || String(e?.error || e)
+      console.warn('[map]', msg)
+      if (errsRef.current.length < 4 && !errsRef.current.includes(msg)) errsRef.current.push(msg)
+    })
+    map.on('data', (ev) => {
+      if (ev.dataType === 'source' && ev.sourceId !== 'route' && ev.tile) tileOkRef.current = true
+    })
+
+    // If no basemap tile has painted after 8s, surface why instead of a void.
+    const diagTimer = setTimeout(() => {
+      if (tileOkRef.current || mapRef.current !== map) return
+      setDiag({
+        webgl2: HAS_WEBGL2,
+        vector: usingVectorRef.current,
+        canvas: (() => { const c = map.getCanvas?.(); return c ? `${c.width}x${c.height}` : 'absent' })(),
+        errs: errsRef.current.slice(0, 3),
+      })
+    }, 8000)
 
     // Progressive upgrade: once the raster map is up, try the vector style in
     // the background. It only replaces the basemap if it actually resolves —
@@ -227,7 +250,7 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
     observer.observe(containerRef.current)
 
     return () => {
-      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1)
+      cancelAnimationFrame(raf); clearTimeout(t0); clearTimeout(t1); clearTimeout(diagTimer)
       observer.disconnect()
       map.remove()
       mapRef.current = null
@@ -335,6 +358,27 @@ export default function MapLibreMap({ route, depart, arrive, onMapReady, isDark 
         style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
         aria-label="Carte de Paris"
       />
+
+      {diag && (
+        <div
+          className="absolute inset-x-3 top-24 rounded-2xl px-4 py-3"
+          style={{ zIndex: 503, background: 'rgba(10,10,12,.94)', border: '1px solid rgba(255,90,31,.35)',
+                   font: '11.5px/1.5 ui-monospace,monospace', color: 'rgba(245,241,232,.82)' }}
+          role="status"
+        >
+          <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: 4, fontFamily: 'inherit' }}>
+            Carte indisponible — diagnostic
+          </div>
+          <div>WebGL2 : {diag.webgl2 ? 'oui' : 'NON'} · vecteur : {diag.vector ? 'oui' : 'non'} · canvas : {diag.canvas}</div>
+          {diag.errs.length
+            ? diag.errs.map((e, i) => <div key={i} style={{ marginTop: 3, opacity: .75, wordBreak: 'break-all' }}>• {e}</div>)
+            : <div style={{ marginTop: 3, opacity: .75 }}>• aucune erreur remontée (tuiles jamais demandées ?)</div>}
+          <button
+            onClick={() => setDiag(null)}
+            style={{ marginTop: 8, fontSize: 11, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
+          >Masquer</button>
+        </div>
+      )}
 
       {!HAS_WEBGL2 && (
         <div
