@@ -9,5 +9,7 @@ composition/.hyperframes
 #   cd composition && npx hyperframes snapshot --at <times> --output ../snapshots
 snapshots
 
-# In-flight render transaction directories
+# In-flight render scratch — hyperframes cleans these up itself on success,
+# but a cancelled or interrupted render leaves them behind
 .*.hf-transaction-*
+work-*/
