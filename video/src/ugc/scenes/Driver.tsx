@@ -8,9 +8,9 @@ import {
   useVideoConfig,
 } from "remotion";
 import { Caption } from "../Caption";
-import { Grade } from "../Grade";
+import { Stage } from "../Stage";
 import { Kicker } from "../Kicker";
-import { ACCENT, BG, handheld, OUT } from "../theme";
+import { ACCENT, handheld, OUT } from "../theme";
 
 const CAR = "ugc/swace-3d.png";
 const CAR_W = 1010;
@@ -32,20 +32,7 @@ export const Driver: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ background: BG }}>
-      {/* Floor: a horizon, not a gradient wash. The car needs a plane. */}
-      <AbsoluteFill
-        style={{
-          background:
-            "linear-gradient(180deg, #050505 0%, #0A0B0E 42%, #16181D 50%, #121419 58%, #09090B 78%, #050505 100%)",
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          background: `radial-gradient(42% 10% at 50% 55%, ${ACCENT}44 0%, ${ACCENT}14 40%, transparent 76%)`,
-          filter: "blur(46px)",
-        }}
-      />
+    <Stage intensity={1.15} horizon={62}>
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", ...handheld(frame, 0.55, 7) }}>
         <div
@@ -191,7 +178,6 @@ export const Driver: React.FC = () => {
         </Caption>
       </AbsoluteFill>
 
-      <Grade warmth={0.85} />
-    </AbsoluteFill>
+    </Stage>
   );
 };

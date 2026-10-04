@@ -1,18 +1,96 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Caption } from "../Caption";
-import { Grade } from "../Grade";
 import { Kicker } from "../Kicker";
-import { ACCENT, BG, handheld, HAIRLINE, INK, INK_DIM, OUT, WHATSAPP } from "../theme";
+import { Panel, Reflect } from "../Panel";
+import { Stage } from "../Stage";
+import { ACCENT, INK, INK_DIM, OUT, WHATSAPP } from "../theme";
 import { UI } from "../fonts";
 
 // The actual exchange, not a dramatised one: this is the message the app sends
 // and the answer that comes back.
 const THREAD = [
-  { at: 4,  mine: true,  text: "Paris 11e → CDG T2E, demain 5h15. 45 € ?", time: "16:41" },
+  { at: 4, mine: true, text: "Paris 11e → CDG T2E, demain 5h15. 45 € ?", time: "16:41" },
   { at: 30, mine: false, text: "C'est noté 👍 Je serai en bas à 5h05.", time: "16:42" },
   { at: 54, mine: false, text: "Suzuki Swace brun foncé, je me gare devant le 14.", time: "16:42" },
 ];
+
+const BUBBLE_W = 830;
+const STACK_H = 620;
+
+function Bubble({ m }: { readonly m: (typeof THREAD)[number] }) {
+  return (
+    <Panel
+      width={BUBBLE_W}
+      radius={34}
+      style={{
+        background: m.mine
+          ? "linear-gradient(158deg, rgba(23,70,46,.95) 0%, rgba(14,46,30,.96) 100%)"
+          : undefined,
+        border: m.mine ? "1px solid rgba(37,211,102,.26)" : undefined,
+        borderBottomRightRadius: m.mine ? 10 : 34,
+        borderBottomLeftRadius: m.mine ? 34 : 10,
+      }}
+    >
+      <div
+        style={{
+          padding: "28px 34px 20px",
+          color: INK,
+          fontFamily: UI,
+          fontSize: 40,
+          fontWeight: 500,
+          lineHeight: 1.26,
+          letterSpacing: "-0.015em",
+        }}
+      >
+        {m.text}
+        <div
+          style={{
+            marginTop: 10,
+            fontSize: 22,
+            color: INK_DIM,
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 8,
+          }}
+        >
+          {m.time}
+          {m.mine ? <span style={{ color: WHATSAPP }}>✓✓</span> : null}
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+function Thread({ frame }: { readonly frame: number }) {
+  return (
+    <>
+      {THREAD.map((m, i) => (
+        <div
+          key={m.text}
+          style={{
+            position: "absolute",
+            top: i * 190,
+            left: m.mine ? 60 : 0,
+            // Each message sits a little closer to camera than the last, so
+            // the thread advances towards the viewer as it is answered.
+            translate: `${interpolate(frame, [m.at, m.at + 14], [m.mine ? 70 : -70, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: OUT,
+            })}px 0 ${i * 50}px`,
+            opacity: interpolate(frame, [m.at, m.at + 8], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            }),
+          }}
+        >
+          <Bubble m={m} />
+        </div>
+      ))}
+    </>
+  );
+}
 
 /**
  * Scene 4 — the proof, which for this business is a human answering.
@@ -25,74 +103,35 @@ export const Proof: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ background: BG, fontFamily: UI }}>
-      <AbsoluteFill
-        style={{
-          padding: "0 86px",
-          justifyContent: "center",
-          gap: 24,
-          ...handheld(frame, 0.7, 5),
-        }}
-      >
-        {THREAD.map((m) => (
-          <div
-            key={m.text}
-            style={{
-              alignSelf: m.mine ? "flex-end" : "flex-start",
-              maxWidth: 760,
-              borderRadius: 34,
-              borderBottomRightRadius: m.mine ? 10 : 34,
-              borderBottomLeftRadius: m.mine ? 34 : 10,
-              padding: "26px 32px 20px",
-              background: m.mine ? "#103C26" : "#16181C",
-              border: `1px solid ${m.mine ? "rgba(37,211,102,.26)" : HAIRLINE}`,
-              color: INK,
-              fontSize: 44,
-              fontWeight: 500,
-              lineHeight: 1.26,
-              letterSpacing: "-0.015em",
-              boxShadow: "0 24px 60px -18px rgba(0,0,0,.9)",
-              opacity: interpolate(frame, [m.at, m.at + 8], [0, 1], {
-                extrapolateLeft: "clamp",
-                extrapolateRight: "clamp",
-                easing: OUT,
-              }),
-              // Bubbles arrive from the side they belong to, the way they do
-              // in the app itself.
-              translate: interpolate(
-                frame,
-                [m.at, m.at + 14],
-                [`${m.mine ? 70 : -70}px 30px`, "0px 0px"],
-                { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: OUT },
-              ),
-            }}
-          >
-            {m.text}
-            <div
-              style={{
-                marginTop: 10,
-                fontSize: 22,
-                color: INK_DIM,
-                textAlign: "right",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 8,
-              }}
-            >
-              {m.time}
-              {m.mine ? <span style={{ color: WHATSAPP }}>✓✓</span> : null}
-            </div>
-          </div>
-        ))}
-      </AbsoluteFill>
-
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 196 }}>
+    <Stage intensity={0.72} shaftX={54} horizon={80}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 168 }}>
         <Kicker index="04" delay={2}>
           La confirmation
         </Kicker>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 190 }}>
+      <AbsoluteFill
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          paddingBottom: 150,
+          perspective: 1900,
+          perspectiveOrigin: "50% 44%",
+        }}
+      >
+        <div style={{ position: "relative", width: BUBBLE_W + 60, height: STACK_H, transformStyle: "preserve-3d" }}>
+          <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d", rotate: "x 13deg" }}>
+            <Thread frame={frame} />
+          </div>
+          <Reflect height={STACK_H} opacity={0.3} blur={10} gap={16} perspective={1900}>
+            <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d", rotate: "x 13deg" }}>
+              <Thread frame={frame} />
+            </div>
+          </Reflect>
+        </div>
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 150 }}>
         <Caption
           name="Deux minutes"
           from={74}
@@ -100,13 +139,11 @@ export const Proof: React.FC = () => {
           premountFor={fps}
           highlight="deux minutes."
           accentColor={ACCENT}
-          size={88}
+          size={84}
         >
           Confirmé en deux minutes.
         </Caption>
       </AbsoluteFill>
-
-      <Grade warmth={0.5} />
-    </AbsoluteFill>
+    </Stage>
   );
 };

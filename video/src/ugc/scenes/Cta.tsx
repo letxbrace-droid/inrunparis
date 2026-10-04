@@ -6,36 +6,43 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
-import { Grade } from "../Grade";
-import { ACCENT, BG, HAIRLINE, INK, INK_DIM, OUT, POP } from "../theme";
+import { Stage } from "../Stage";
+import { Reflect } from "../Panel";
+import { ACCENT, HAIRLINE, INK, INK_DIM, OUT, POP } from "../theme";
 import { CONDENSED, DISPLAY, UI } from "../fonts";
+
+function Mark() {
+  return (
+    <CanvasImage
+      src={staticFile("ugc/icon-512.png")}
+      style={{ width: 230, height: 230, borderRadius: 54, display: "block" }}
+    />
+  );
+}
 
 /**
  * Scene 6 — the card.
  *
- * One name, one instruction. A UGC end card that lists four things gets none of
- * them remembered; this one asks for a single action and names the place to do
- * it, because the app is a PWA and "add to home screen" is the conversion.
+ * One name, one instruction. An end card that lists four things gets none of
+ * them remembered; this one asks for a single action and names the place to
+ * do it, because the app is a PWA and "add to home screen" is the conversion.
  */
 export const Cta: React.FC = () => {
   const frame = useCurrentFrame();
 
   return (
-    <AbsoluteFill style={{ background: BG }}>
-      <AbsoluteFill
-        style={{
-          background: `radial-gradient(52% 32% at 50% 44%, ${ACCENT}2E 0%, transparent 70%)`,
-          filter: "blur(36px)",
-        }}
-      />
-
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 34 }}>
-        <CanvasImage
-          src={staticFile("ugc/icon-512.png")}
+    <Stage
+      intensity={interpolate(frame, [0, 20], [0.8, 1.4], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: OUT,
+      })}
+      horizon={70}
+    >
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 32, paddingBottom: 90 }}>
+        <div
           style={{
-            width: 260,
-            height: 260,
-            borderRadius: 60,
+            position: "relative",
             scale: interpolate(frame, [0, 18], [0.7, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
@@ -47,14 +54,19 @@ export const Cta: React.FC = () => {
               extrapolateRight: "clamp",
             }),
           }}
-        />
+        >
+          <Mark />
+          <Reflect height={230} opacity={0.3} blur={8} gap={12}>
+            <Mark />
+          </Reflect>
+        </div>
 
-        {/* The wordmark, set letter by letter.
-            Bricolage is variable, so each letter can gain weight as it
-            arrives instead of appearing at its final mass — the name assembles
-            rather than switching on. The tracking opens wide and closes, which
-            is the gesture that makes a logotype feel set rather than typed. */}
-        <div style={{ display: "flex", fontFamily: DISPLAY, fontSize: 128, lineHeight: 1 }}>
+        {/* The wordmark, set letter by letter. Bricolage is variable, so each
+            letter gains weight as it arrives instead of appearing at its final
+            mass — the name assembles rather than switching on, and the
+            tracking opening wide then closing is the gesture that makes a
+            logotype feel set rather than typed. */}
+        <div style={{ display: "flex", fontFamily: DISPLAY, fontSize: 126, lineHeight: 1, marginTop: 10 }}>
           {"I&N RUN".split("").map((ch, i) => (
             <span
               key={i}
@@ -62,12 +74,11 @@ export const Cta: React.FC = () => {
                 display: "inline-block",
                 whiteSpace: "pre",
                 color: INK,
-                fontVariationSettings: `'wght' ${interpolate(
-                  frame,
-                  [8 + i * 2, 26 + i * 2],
-                  [300, 800],
-                  { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: OUT },
-                )}`,
+                fontVariationSettings: `'wght' ${interpolate(frame, [8 + i * 2, 26 + i * 2], [300, 800], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                  easing: OUT,
+                })}`,
                 letterSpacing: `${interpolate(frame, [8 + i * 2, 30 + i * 2], [0.3, -0.055], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
@@ -82,6 +93,7 @@ export const Cta: React.FC = () => {
                   extrapolateRight: "clamp",
                   easing: POP,
                 })}px`,
+                textShadow: "0 6px 40px rgba(0,0,0,.8)",
               }}
             >
               {ch}
@@ -93,11 +105,11 @@ export const Cta: React.FC = () => {
           style={{
             fontFamily: CONDENSED,
             fontWeight: 700,
-            fontSize: 50,
+            fontSize: 48,
             color: INK_DIM,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
-            opacity: interpolate(frame, [16, 28], [0, 1], {
+            opacity: interpolate(frame, [18, 30], [0, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
               easing: OUT,
@@ -109,15 +121,16 @@ export const Cta: React.FC = () => {
 
         <div
           style={{
-            marginTop: 18,
+            marginTop: 16,
             fontFamily: UI,
             fontWeight: 700,
             fontSize: 40,
             color: INK,
             padding: "26px 52px",
             borderRadius: 999,
-            background: "rgba(255,90,31,.12)",
+            background: "rgba(255,90,31,.14)",
             border: `1px solid ${HAIRLINE}`,
+            boxShadow: "0 18px 50px -14px rgba(255,90,31,.5), inset 0 1px 0 rgba(255,200,170,.3)",
             opacity: interpolate(frame, [26, 40], [0, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
@@ -134,8 +147,6 @@ export const Cta: React.FC = () => {
           <span style={{ color: ACCENT }}>↓</span> Ajoute-la à ton écran d'accueil
         </div>
       </AbsoluteFill>
-
-      <Grade warmth={1.1} />
-    </AbsoluteFill>
+    </Stage>
   );
 };
