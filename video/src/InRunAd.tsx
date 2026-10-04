@@ -11,17 +11,7 @@ import {
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { noise2D } from "@remotion/noise";
-import { loadFont as loadDisplay } from "@remotion/google-fonts/BarlowCondensed";
-import { loadFont as loadBody } from "@remotion/google-fonts/SpaceGrotesk";
-
-const { fontFamily: DISPLAY } = loadDisplay("normal", {
-  weights: ["700", "800", "900"],
-  subsets: ["latin"],
-});
-const { fontFamily: BODY } = loadBody("normal", {
-  weights: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+import { BARLOW_CONDENSED as DISPLAY, SPACE_GROTESK as BODY } from "./lib/fonts";
 
 // ── Tokens ────────────────────────────────────────────────────────────────
 const BG     = "#04080F";
