@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Caption } from "../Caption";
 import { Grade } from "../Grade";
+import { Kicker } from "../Kicker";
 import { ACCENT, BG, handheld, HAIRLINE, INK, INK_DIM, OUT, WHATSAPP } from "../theme";
 import { UI } from "../fonts";
 
@@ -10,7 +11,7 @@ import { UI } from "../fonts";
 const THREAD = [
   { at: 4,  mine: true,  text: "Paris 11e → CDG T2E, demain 5h15. 45 € ?", time: "16:41" },
   { at: 30, mine: false, text: "C'est noté 👍 Je serai en bas à 5h05.", time: "16:42" },
-  { at: 54, mine: false, text: "Suzuki Swace grise — FR-472-QN", time: "16:42" },
+  { at: 54, mine: false, text: "Suzuki Swace brun foncé, je me gare devant le 14.", time: "16:42" },
 ];
 
 /**
@@ -83,6 +84,12 @@ export const Proof: React.FC = () => {
             </div>
           </div>
         ))}
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 196 }}>
+        <Kicker index="04" delay={2}>
+          La confirmation
+        </Kicker>
       </AbsoluteFill>
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 190 }}>

@@ -33,3 +33,13 @@ export const fontsReady = Promise.all([
     format: "woff2",
   }),
 ]);
+
+/**
+ * Condensed display face, for numbers and labels only.
+ *
+ * Bricolage is the voice; Barlow Condensed is the shout. A price set in a
+ * condensed face at 320px reads as a headline, where the same figure in the
+ * body grotesk just reads as large text — and because it is narrow, it leaves
+ * room on either side instead of filling the frame edge to edge.
+ */
+export { BARLOW_CONDENSED as CONDENSED } from "../lib/fonts";

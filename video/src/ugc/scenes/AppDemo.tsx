@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Caption } from "../Caption";
 import { Grade } from "../Grade";
+import { Kicker } from "../Kicker";
 import { AppScreen } from "../AppScreen";
 import { PhoneFrame } from "../PhoneFrame";
 import { ACCENT, BG, handheld, OUT } from "../theme";
@@ -36,15 +37,16 @@ export const AppDemo: React.FC = () => {
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <PhoneFrame
           style={{
-            // 0.62 keeps the 648×1371 device inside a 1080×1920 frame with room
-            // for a caption above it.
-            scale: interpolate(frame, [0, 26], [0.52, 0.63], {
+            // 0.72 puts the 648×1371 device at 986px tall inside 1920 — large
+            // enough to read the price card, with the top third still free for
+            // the chapter label and the caption.
+            scale: interpolate(frame, [0, 26], [0.60, 0.72], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
               easing: OUT,
               output: "perceptual-scale",
             }),
-            translate: interpolate(frame, [0, 26], ["0px 320px", "0px 96px"], {
+            translate: interpolate(frame, [0, 26], ["0px 340px", "0px 150px"], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
               easing: OUT,
@@ -60,7 +62,13 @@ export const AppDemo: React.FC = () => {
         </PhoneFrame>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 150 }}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 72 }}>
+        <Kicker index="03" delay={10}>
+          La réservation
+        </Kicker>
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 140 }}>
         <Caption
           name="Tu tapes"
           from={22}

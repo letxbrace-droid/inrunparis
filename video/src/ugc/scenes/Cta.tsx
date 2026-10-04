@@ -8,7 +8,7 @@ import {
 } from "remotion";
 import { Grade } from "../Grade";
 import { ACCENT, BG, HAIRLINE, INK, INK_DIM, OUT, POP } from "../theme";
-import { DISPLAY, UI } from "../fonts";
+import { CONDENSED, DISPLAY, UI } from "../fonts";
 
 /**
  * Scene 6 — the card.
@@ -74,11 +74,12 @@ export const Cta: React.FC = () => {
 
         <div
           style={{
-            fontFamily: UI,
-            fontWeight: 600,
-            fontSize: 42,
+            fontFamily: CONDENSED,
+            fontWeight: 700,
+            fontSize: 50,
             color: INK_DIM,
-            letterSpacing: "-0.01em",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
             opacity: interpolate(frame, [16, 28], [0, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
