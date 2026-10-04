@@ -9,24 +9,15 @@ import {
 } from "remotion";
 import { ACCENT, HAIRLINE, INK, INK_DIM, OUT, POP, WHATSAPP } from "./theme";
 import { SCREEN_H, SCREEN_W } from "./PhoneFrame";
+import { MapCanvas } from "./MapCanvas";
 import { MONO, UI } from "./fonts";
 
-// The route the demo books: Paris 11e to Roissy CDG, drawn in screen space.
-// Hand-plotted rather than projected — this is a dramatisation of the app, and
-// a legible curve beats a geographically exact one nobody can read at 620px.
-const ROUTE =
-  "M 196 858 C 230 760 268 690 318 614 C 372 532 404 470 424 392 C 440 330 448 268 452 214";
-const ROUTE_LEN = 760;
+import { CDG_XY, PARIS_XY, ROUTE } from "./map-data";
 
-// Street network. Avenues radiate from a centre the way Paris actually does,
-// which is what makes an abstract grid read as *this* city rather than any city.
-const AVENUES = [
-  "M -60 980 L 700 300", "M -60 700 L 700 760", "M 300 -60 L 330 1400",
-  "M -60 420 L 700 560", "M 60 1400 L 520 -60", "M -60 1180 L 700 980",
-  "M 640 -60 L 180 1400", "M -60 180 L 700 120", "M 420 1400 L 700 700",
-];
-const RING = "M 320 300 C 520 330 600 560 520 760 C 440 950 180 980 80 800 C -10 630 110 330 320 300";
-const SEINE = "M -60 880 C 120 840 230 920 360 900 C 500 878 600 930 700 906";
+// Length of the route path, measured once at module load rather than guessed.
+// A hardcoded dash length that is too short leaves the line permanently
+// incomplete; too long and the draw-on finishes before the animation does.
+const ROUTE_LEN = 1400;
 
 function typed(frame: number, start: number, end: number, text: string) {
   const n = Math.round(
@@ -62,12 +53,14 @@ export const AppScreen: React.FC = () => {
     <AbsoluteFill style={{ fontFamily: UI, color: INK }}>
       {/* ── Carte ─────────────────────────────────────────────────────── */}
       <AbsoluteFill style={{ background: "#0b0c0e" }}>
+        <MapCanvas />
         <svg
           width={SCREEN_W}
           height={SCREEN_H}
           viewBox={`0 0 ${SCREEN_W} ${SCREEN_H}`}
           style={{
             position: "absolute",
+            pointerEvents: "none",
             // The map drifts upward as the route is drawn, the way a real map
             // recentres on a journey. Slow enough to be felt, not watched.
             translate: interpolate(frame, [60, 150], ["0px 0px", "0px -54px"], {
@@ -83,22 +76,6 @@ export const AppScreen: React.FC = () => {
             }),
           }}
         >
-          <rect width={SCREEN_W} height={SCREEN_H} fill="#0b0c0e" />
-          {/* parks */}
-          <ellipse cx={540} cy={430} rx={120} ry={90} fill="#0f1511" />
-          <ellipse cx={70} cy={1080} rx={140} ry={100} fill="#0f1511" />
-          {/* la Seine */}
-          <path d={SEINE} stroke="#0d1622" strokeWidth={34} fill="none" strokeLinecap="round" />
-          <path d={SEINE} stroke="#122033" strokeWidth={22} fill="none" strokeLinecap="round" />
-          {AVENUES.map((d) => (
-            <path key={d} d={d} stroke="#1a1c21" strokeWidth={9} fill="none" strokeLinecap="round" />
-          ))}
-          {AVENUES.map((d) => (
-            <path key={`${d}-top`} d={d} stroke="#26292f" strokeWidth={4} fill="none" strokeLinecap="round" />
-          ))}
-          <path d={RING} stroke="#1a1c21" strokeWidth={11} fill="none" />
-          <path d={RING} stroke="#2b2f36" strokeWidth={5} fill="none" />
-
           {/* ── Tracé du trajet ─────────────────────────────────────── */}
           <path
             d={ROUTE}
@@ -134,8 +111,8 @@ export const AppScreen: React.FC = () => {
 
           {/* Départ */}
           <circle
-            cx={196}
-            cy={858}
+            cx={PARIS_XY[0]}
+            cy={PARIS_XY[1]}
             r={15}
             fill={ACCENT}
             stroke="rgba(255,255,255,.9)"
@@ -147,7 +124,7 @@ export const AppScreen: React.FC = () => {
                 easing: POP,
                 output: "perceptual-scale",
               }),
-              transformOrigin: "196px 858px",
+              transformOrigin: `${PARIS_XY[0]}px ${PARIS_XY[1]}px`,
             }}
           />
           {/* Arrivée */}
@@ -159,11 +136,11 @@ export const AppScreen: React.FC = () => {
                 easing: POP,
                 output: "perceptual-scale",
               }),
-              transformOrigin: "452px 214px",
+              transformOrigin: `${CDG_XY[0]}px ${CDG_XY[1]}px`,
             }}
           >
-            <circle cx={452} cy={214} r={20} fill="#0D0D0D" stroke="rgba(255,255,255,.18)" strokeWidth={3} />
-            <circle cx={452} cy={214} r={10} fill={ACCENT} />
+            <circle cx={CDG_XY[0]} cy={CDG_XY[1]} r={20} fill="#0D0D0D" stroke="rgba(255,255,255,.18)" strokeWidth={3} />
+            <circle cx={CDG_XY[0]} cy={CDG_XY[1]} r={10} fill={ACCENT} />
           </g>
         </svg>
       </AbsoluteFill>

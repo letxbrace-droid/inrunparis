@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remo
 import { Caption } from "../Caption";
 import { Grade } from "../Grade";
 import { Kicker } from "../Kicker";
+import { Odometer } from "../Odometer";
 import { ACCENT, BG, handheld, INK, INK_DIM, OUT, POP } from "../theme";
 import { CONDENSED, MONO } from "../fonts";
 
@@ -81,6 +82,8 @@ export const PriceChaos: React.FC = () => {
 
         <div
           style={{
+            display: "flex",
+            alignItems: "flex-start",
             fontFamily: CONDENSED,
             fontWeight: 800,
             fontSize: 360,
@@ -97,8 +100,8 @@ export const PriceChaos: React.FC = () => {
             }),
           }}
         >
-          {current.value}
-          <span style={{ color: ACCENT }}> €</span>
+          <Odometer value={current.value} at={current.at} size={360} />
+          <span style={{ color: ACCENT, marginLeft: 18 }}>€</span>
         </div>
 
         <div

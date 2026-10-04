@@ -1,0 +1,13 @@
+{
+  "ready": false,
+  "attribution": "© OpenStreetMap",
+  "z": 12,
+  "x0": 2074,
+  "y0": 1404,
+  "nx": 4,
+  "ny": 8,
+  "tileSize": 256,
+  "offsetX": -75.57538702222519,
+  "offsetY": -99.8625748512568,
+  "tiles": []
+}

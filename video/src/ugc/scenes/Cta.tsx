@@ -49,27 +49,44 @@ export const Cta: React.FC = () => {
           }}
         />
 
-        <div
-          style={{
-            fontFamily: DISPLAY,
-            fontWeight: 800,
-            fontSize: 128,
-            letterSpacing: "-0.055em",
-            color: INK,
-            lineHeight: 1,
-            opacity: interpolate(frame, [8, 20], [0, 1], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-              easing: OUT,
-            }),
-            translate: interpolate(frame, [8, 24], ["0px 26px", "0px 0px"], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-              easing: OUT,
-            }),
-          }}
-        >
-          I&amp;N RUN
+        {/* The wordmark, set letter by letter.
+            Bricolage is variable, so each letter can gain weight as it
+            arrives instead of appearing at its final mass — the name assembles
+            rather than switching on. The tracking opens wide and closes, which
+            is the gesture that makes a logotype feel set rather than typed. */}
+        <div style={{ display: "flex", fontFamily: DISPLAY, fontSize: 128, lineHeight: 1 }}>
+          {"I&N RUN".split("").map((ch, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-block",
+                whiteSpace: "pre",
+                color: INK,
+                fontVariationSettings: `'wght' ${interpolate(
+                  frame,
+                  [8 + i * 2, 26 + i * 2],
+                  [300, 800],
+                  { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: OUT },
+                )}`,
+                letterSpacing: `${interpolate(frame, [8 + i * 2, 30 + i * 2], [0.3, -0.055], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                  easing: OUT,
+                })}em`,
+                opacity: interpolate(frame, [8 + i * 2, 15 + i * 2], [0, 1], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                }),
+                translate: `0 ${interpolate(frame, [8 + i * 2, 24 + i * 2], [34, 0], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                  easing: POP,
+                })}px`,
+              }}
+            >
+              {ch}
+            </span>
+          ))}
         </div>
 
         <div
