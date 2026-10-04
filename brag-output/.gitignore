@@ -3,6 +3,7 @@
 composition/node_modules
 composition/.hyperframes
 *.mp4
+*.jpg
 
 # Verification frames — regenerate with
 #   cd composition && npx hyperframes snapshot --at <times> --output ../snapshots
