@@ -8,6 +8,7 @@ import {
 } from "remotion";
 import { Stage } from "../Stage";
 import { Reflect } from "../Panel";
+import { Smear } from "../Smear";
 import { ACCENT, HAIRLINE, INK, INK_DIM, OUT, POP } from "../theme";
 import { CONDENSED, DISPLAY, UI } from "../fonts";
 
@@ -68,8 +69,15 @@ export const Cta: React.FC = () => {
             logotype feel set rather than typed. */}
         <div style={{ display: "flex", fontFamily: DISPLAY, fontSize: 126, lineHeight: 1, marginTop: 10 }}>
           {"I&N RUN".split("").map((ch, i) => (
-            <span
+            <Smear
               key={i}
+              y={interpolate(frame, [8 + i * 2, 12 + i * 2, 20 + i * 2], [22, 12, 0], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+              })}
+              style={{ display: "inline-block" }}
+            >
+            <span
               style={{
                 display: "inline-block",
                 whiteSpace: "pre",
@@ -98,6 +106,7 @@ export const Cta: React.FC = () => {
             >
               {ch}
             </span>
+            </Smear>
           ))}
         </div>
 

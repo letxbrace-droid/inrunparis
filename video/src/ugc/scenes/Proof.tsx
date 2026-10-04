@@ -4,6 +4,7 @@ import { Caption } from "../Caption";
 import { Kicker } from "../Kicker";
 import { Panel, Reflect } from "../Panel";
 import { Stage } from "../Stage";
+import { Smear } from "../Smear";
 import { ACCENT, INK, INK_DIM, OUT, WHATSAPP } from "../theme";
 import { UI } from "../fonts";
 
@@ -85,7 +86,14 @@ function Thread({ frame }: { readonly frame: number }) {
             }),
           }}
         >
-          <Bubble m={m} />
+          <Smear
+            x={interpolate(frame, [m.at, m.at + 4, m.at + 12], [28, 16, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            })}
+          >
+            <Bubble m={m} />
+          </Smear>
         </div>
       ))}
     </>

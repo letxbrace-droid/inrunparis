@@ -2,6 +2,7 @@ import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
 import { CONDENSED } from "./fonts";
 import { OUT } from "./theme";
+import { Smear } from "./Smear";
 
 const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -26,6 +27,13 @@ export const Odometer: React.FC<{
   const h = size * 0.82;
 
   return (
+    <Smear
+      y={interpolate(frame, [at, at + 5, at + 20], [26, 16, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })}
+      style={{ display: "inline-flex", height: h, alignItems: "flex-start" }}
+    >
     <span style={{ display: "inline-flex", height: h, overflow: "hidden", alignItems: "flex-start" }}>
       {digits.map((d, i) => (
         <span
@@ -61,5 +69,6 @@ export const Odometer: React.FC<{
         </span>
       ))}
     </span>
+    </Smear>
   );
 };

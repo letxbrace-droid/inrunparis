@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { OUT } from "./theme";
+import { Smear } from "./Smear";
 
 /**
  * The first eight frames of every scene.
@@ -17,6 +18,11 @@ export const CutIn: React.FC<{
   readonly strength?: number;
 }> = ({ children, from = 1.055, strength = 1 }) => {
   const frame = useCurrentFrame();
+  const blur = interpolate(frame, [0, 6], [16 * strength, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: OUT,
+  });
   return (
     <AbsoluteFill
       style={{
@@ -26,14 +32,14 @@ export const CutIn: React.FC<{
           easing: OUT,
           output: "perceptual-scale",
         }),
-        filter: `blur(${interpolate(frame, [0, 7], [5 * strength, 0], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-          easing: OUT,
-        })}px)`,
       }}
     >
-      {children}
+      {/* The incoming frame is smeared along both axes for a sixth of a
+          second. A cut between two sharp images is a change of picture; a cut
+          where the new image is still resolving is a camera arriving. */}
+      <Smear x={blur} y={blur} style={{ width: "100%", height: "100%" }}>
+        {children}
+      </Smear>
     </AbsoluteFill>
   );
 };

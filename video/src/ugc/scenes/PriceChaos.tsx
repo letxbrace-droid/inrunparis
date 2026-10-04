@@ -5,6 +5,7 @@ import { Kicker } from "../Kicker";
 import { Odometer } from "../Odometer";
 import { Panel, Reflect } from "../Panel";
 import { Stage } from "../Stage";
+import { Smear } from "../Smear";
 import { ACCENT, handheld, INK, INK_DIM, POP } from "../theme";
 import { CONDENSED, MONO } from "../fonts";
 
@@ -131,7 +132,14 @@ function Stack({
               }),
             }}
           >
-            <Row step={step} active={step === current} />
+            <Smear
+              y={interpolate(t, [0, 4, 13], [30, 18, 0], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+              })}
+            >
+              <Row step={step} active={step === current} />
+            </Smear>
           </div>
         );
       })}

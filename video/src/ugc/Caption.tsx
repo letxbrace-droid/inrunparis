@@ -7,6 +7,7 @@ import {
 } from "remotion";
 import { ACCENT, INK, OUT, POP } from "./theme";
 import { DISPLAY } from "./fonts";
+import { Smear } from "./Smear";
 
 type CaptionProps = {
   readonly children: string;
@@ -90,6 +91,13 @@ const CaptionInner: React.FC<CaptionProps> = ({
               marginBottom: -size * 0.12,
             }}
           >
+            <Smear
+              y={interpolate(frame, [t0, t0 + 4, t0 + 11], [34, 20, 0], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+              })}
+              style={{ display: "inline-block" }}
+            >
             <span
               style={{
                 display: "inline-block",
@@ -105,17 +113,18 @@ const CaptionInner: React.FC<CaptionProps> = ({
                   extrapolateRight: "clamp",
                   easing: OUT,
                 })}em`,
-                filter: `blur(${interpolate(frame, [t0, t0 + 7], [7, 0], {
+                scale: `${interpolate(frame, [t0, t0 + 14], [1.42, 1], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
                   easing: OUT,
-                })}px)`,
+                  output: "perceptual-scale",
+                })}`,
                 opacity: interpolate(frame, [t0, t0 + 5], [0, 1], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
                   easing: OUT,
                 }),
-                translate: `0 ${interpolate(frame, [t0, t0 + 13], [size * 1.1, 0], {
+                translate: `0 ${interpolate(frame, [t0, t0 + 13], [size * 1.25, 0], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
                   easing: POP,
@@ -127,6 +136,7 @@ const CaptionInner: React.FC<CaptionProps> = ({
             >
               {word}
             </span>
+            </Smear>
 
             {/* Accent words get a rule wiped under them, a beat late. It is
                 the one gesture in the caption that is meant to be noticed. */}
