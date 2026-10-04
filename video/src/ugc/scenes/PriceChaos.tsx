@@ -171,7 +171,7 @@ export const PriceChaos: React.FC = () => {
     >
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 160 }}>
         <Kicker index="02" delay={4}>
-          Le prix qui monte
+          Ce que tu paies vraiment
         </Kicker>
       </AbsoluteFill>
 
@@ -244,11 +244,11 @@ export const PriceChaos: React.FC = () => {
           from={68}
           durationInFrames={34}
           premountFor={fps}
-          highlight="monte"
+          highlight="prévient."
           accentColor={ACCENT}
           size={78}
         >
-          Il monte pendant que t'attends.
+          Et personne ne te prévient.
         </Caption>
       </AbsoluteFill>
     </Stage>

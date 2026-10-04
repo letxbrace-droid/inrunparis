@@ -85,22 +85,22 @@ export const AppDemo: React.FC = () => {
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 72 }}>
         <Kicker index="03" delay={10}>
-          La réservation
+          Chez nous
         </Kicker>
       </AbsoluteFill>
 
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 140 }}>
         <Caption name="Tu tapes" from={22} durationInFrames={70} premountFor={fps}
-          highlight="adresse." accentColor={ACCENT} size={74}>
-          Tu tapes ton adresse.
+          highlight="adresse." accentColor={ACCENT} size={88}>
+          Une adresse.
         </Caption>
         <Caption name="Prix affiche" from={100} durationInFrames={74} premountFor={fps}
-          highlight="avant" accentColor={ACCENT} size={74}>
-          Le prix s'affiche avant de monter.
+          highlight="Avant" accentColor={ACCENT} size={88}>
+          Un prix. Avant de monter.
         </Caption>
         <Caption name="Et il bouge pas" from={176} durationInFrames={40} premountFor={fps}
-          highlight="bouge plus." accentColor={ACCENT} size={74}>
-          Et il bouge plus.
+          highlight="bougera plus." accentColor={ACCENT} size={88}>
+          Il ne bougera plus.
         </Caption>
       </AbsoluteFill>
     </Stage>

@@ -10,7 +10,7 @@ import { Stage } from "../Stage";
 import { Reflect } from "../Panel";
 import { Smear } from "../Smear";
 import { ACCENT, HAIRLINE, INK, INK_DIM, OUT, POP } from "../theme";
-import { CONDENSED, DISPLAY, UI } from "../fonts";
+import { CONDENSED, DISPLAY, MONO, UI } from "../fonts";
 
 function Mark() {
   return (
@@ -40,7 +40,7 @@ export const Cta: React.FC = () => {
       })}
       horizon={70}
     >
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 32, paddingBottom: 90 }}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 26, paddingBottom: 70 }}>
         <div
           style={{
             position: "relative",
@@ -128,24 +128,29 @@ export const Cta: React.FC = () => {
           Chauffeur privé · Paris &amp; Île-de-France
         </div>
 
+        {/* One action, and a destination for it.
+            "Ajoute-la à ton écran d'accueil" was an instruction with nowhere
+            to go — the viewer is on a phone, not on the site. The whole film
+            has just shown a booking happening on WhatsApp, so ending anywhere
+            else would also be a change of subject. */}
         <div
           style={{
-            marginTop: 16,
+            marginTop: 14,
             fontFamily: UI,
             fontWeight: 700,
-            fontSize: 40,
+            fontSize: 42,
             color: INK,
-            padding: "26px 52px",
+            padding: "26px 54px",
             borderRadius: 999,
-            background: "rgba(255,90,31,.14)",
+            background: "rgba(255,90,31,.15)",
             border: `1px solid ${HAIRLINE}`,
             boxShadow: "0 18px 50px -14px rgba(255,90,31,.5), inset 0 1px 0 rgba(255,200,170,.3)",
-            opacity: interpolate(frame, [26, 40], [0, 1], {
+            opacity: interpolate(frame, [24, 38], [0, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
               easing: OUT,
             }),
-            scale: interpolate(frame, [26, 42], [0.9, 1], {
+            scale: interpolate(frame, [24, 40], [0.9, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
               easing: POP,
@@ -153,8 +158,42 @@ export const Cta: React.FC = () => {
             }),
           }}
         >
-          <span style={{ color: ACCENT }}>↓</span> Ajoute-la à ton écran d'accueil
+          Réserve sur <span style={{ color: ACCENT }}>WhatsApp</span>
         </div>
+
+        <div
+          style={{
+            fontFamily: MONO,
+            fontWeight: 500,
+            fontSize: 40,
+            letterSpacing: "0.12em",
+            color: INK,
+            opacity: interpolate(frame, [32, 44], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: OUT,
+            }),
+          }}
+        >
+          07 67 74 22 20
+        </div>
+
+        <div
+          style={{
+            fontFamily: UI,
+            fontWeight: 500,
+            fontSize: 26,
+            color: INK_DIM,
+            opacity: interpolate(frame, [40, 52], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: OUT,
+            }),
+          }}
+        >
+          ou ajoute l'app à ton écran d'accueil
+        </div>
+
       </AbsoluteFill>
     </Stage>
   );

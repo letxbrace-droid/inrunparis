@@ -37,9 +37,9 @@ export const Hook: React.FC = () => {
           from={4}
           durationInFrames={74}
           premountFor={fps}
-          highlight="applis"
+          highlight="71"
           accentColor={ACCENT}
-          size={100}
+          size={108}
           style={{
             scale: interpolate(frame, [4, 78], [1, 1.06], {
               extrapolateLeft: "clamp",
@@ -49,7 +49,7 @@ export const Hook: React.FC = () => {
             }),
           }}
         >
-          J'ai arrêté de commander mes VTC sur les applis.
+          Tu commandes à 42 €. Tu montes à 71 €.
         </Caption>
       </AbsoluteFill>
     </Stage>

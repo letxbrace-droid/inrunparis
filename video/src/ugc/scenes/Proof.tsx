@@ -145,11 +145,11 @@ export const Proof: React.FC = () => {
           from={74}
           durationInFrames={40}
           premountFor={fps}
-          highlight="deux minutes."
+          highlight="2 min."
           accentColor={ACCENT}
-          size={84}
+          size={82}
         >
-          Confirmé en deux minutes.
+          Un humain répond en 2 min.
         </Caption>
       </AbsoluteFill>
     </Stage>

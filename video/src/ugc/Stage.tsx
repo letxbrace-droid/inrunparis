@@ -20,8 +20,10 @@ export const Stage: React.FC<{
   readonly shaftX?: number;
   /** Where the floor starts, in percent of frame height. */
   readonly horizon?: number;
+  /** 0 disables the moving floor and the passing lights. */
+  readonly motion?: number;
   readonly children?: React.ReactNode;
-}> = ({ intensity = 1, shaftX = 50, horizon = 72, children }) => {
+}> = ({ intensity = 1, shaftX = 50, horizon = 72, motion = 1, children }) => {
   const frame = useCurrentFrame();
   // The shaft breathes. A light source that holds perfectly still reads as a
   // gradient; one that flickers a few percent reads as a lamp.
@@ -69,6 +71,35 @@ export const Stage: React.FC<{
             "linear-gradient(180deg, rgba(255,255,255,.055) 0%, rgba(10,10,12,.5) 7%, #060607 38%, #030304 100%)",
         }}
       />
+      {/* The floor moves.
+          A perspective grid scrolling towards camera is the cheapest honest
+          depth cue there is, and for a company that drives people across Paris
+          at night it is also the right one: the background is a road. The
+          lines are far apart and dim — a bright grid is a synthwave poster,
+          a faint one is a reflective surface catching the light. */}
+      {motion > 0 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "-60%",
+            right: "-60%",
+            top: `${horizon}%`,
+            bottom: "-30%",
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,130,70,.5) 0 2px, transparent 2px 120px)," +
+              "repeating-linear-gradient(90deg, rgba(255,130,70,.32) 0 2px, transparent 2px 120px)",
+            // Only the horizontal lines scroll. Moving both axes reads as the
+            // whole world sliding sideways rather than as travel forwards.
+            backgroundPosition: `0 ${(frame * 2.1 * motion) % 120}px, 0 0`,
+            transform: "perspective(460px) rotateX(74deg)",
+            transformOrigin: "top center",
+            opacity: 0.4 * I * motion,
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, rgba(0,0,0,.95) 22%, transparent 78%)",
+            maskImage: "linear-gradient(180deg, transparent 0%, rgba(0,0,0,.95) 22%, transparent 78%)",
+          }}
+        />
+      ) : null}
+
       {/* The shaft's own pool of light on the floor, stretched by the angle */}
       <div
         style={{
@@ -82,6 +113,59 @@ export const Stage: React.FC<{
           filter: "blur(26px)",
         }}
       />
+
+      {/* Passing lights. Headlights crossing a dark street, at three depths:
+          the near ones are wide, fast and soft, the far ones thin and slow.
+          Same direction, different speeds — that difference IS the depth. */}
+      {motion > 0
+        ? [0, 1, 2, 3].map((i) => {
+            const period = 150 + i * 70;
+            const t = ((frame * (2.4 - i * 0.42) * motion) % period) / period;
+            return (
+              <div
+                key={`streak${i}`}
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: `${18 + i * 17}%`,
+                  left: "-45%",
+                  width: `${60 - i * 9}%`,
+                  height: 5 + (3 - i) * 4,
+                  borderRadius: 999,
+                  background: `linear-gradient(90deg, transparent, rgba(255,${180 - i * 20},${130 - i * 30},${0.5 - i * 0.09}), transparent)`,
+                  filter: `blur(${12 + i * 7}px)`,
+                  opacity: I * motion * Math.sin(Math.PI * t) ** 1.5,
+                  translate: `${t * 230}% 0`,
+                }}
+              />
+            );
+          })
+        : null}
+
+      {/* Embers. Slow, sparse, rising — the air has something in it. */}
+      {motion > 0
+        ? Array.from({ length: 14 }, (_, i) => {
+            const speed = 0.22 + (i % 5) * 0.09;
+            const y = 108 - ((frame * speed * motion + i * 17) % 126);
+            return (
+              <div
+                key={`ember${i}`}
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  left: `${6 + ((i * 37) % 88) + noise2D(`ex${i}`, frame / 70, 0) * 4}%`,
+                  top: `${y}%`,
+                  width: 3 + (i % 3),
+                  height: 3 + (i % 3),
+                  borderRadius: "50%",
+                  background: "rgba(255,170,110,.85)",
+                  filter: `blur(${0.6 + (i % 3) * 0.7}px)`,
+                  opacity: I * motion * 0.5 * Math.sin((Math.PI * (108 - y)) / 126),
+                }}
+              />
+            );
+          })
+        : null}
 
       {children}
 
