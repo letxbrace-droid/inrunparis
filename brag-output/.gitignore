@@ -1,0 +1,12 @@
+# Render output and the vendored CLI deps — regenerate with
+#   cd composition && npx hyperframes render --output ../brag.mp4
+composition/node_modules
+composition/.hyperframes
+*.mp4
+
+# Verification frames — regenerate with
+#   cd composition && npx hyperframes snapshot --at <times> --output ../snapshots
+snapshots
+
+# In-flight render transaction directories
+.*.hf-transaction-*
