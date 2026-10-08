@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import GlowingCTA    from '../ui/GlowingCTA'
 import FloatingInput from '../ui/FloatingInput'
+import Icon from '../ui/Icon'
 import useAppTheme   from '../../hooks/useAppTheme'
 import { haptic }    from '../../utils/haptics'
 
@@ -84,8 +85,8 @@ function SilenceIcon({ active, th }) {
 
 // ── Volume icon ───────────────────────────────────────────────────────────────
 function VolumeIcon({ level }) {
-  const src = level === 0 ? 'vol-mute' : level < 40 ? 'vol-low' : 'vol-high'
-  return <img src={`/inrunparis/brand/${src}.png`} alt="" aria-hidden="true" style={{ width: 17, height: 17, objectFit: 'contain' }} />
+  const name = level === 0 ? 'volume-mute' : level < 40 ? 'volume-low' : 'volume-high'
+  return <Icon name={name} size={17} style={{ color: level === 0 ? 'var(--label-tertiary)' : 'var(--accent)' }} />
 }
 
 // ── Payment icons (theme-aware) ───────────────────────────────────────────────
@@ -124,9 +125,11 @@ function TransferIcon({ active, th }) {
 
 // ── Thermometer ───────────────────────────────────────────────────────────────
 function ThermometerIcon({ clim }) {
+  // Froid tire vers le bleu, chaud vers l'accent : la consigne se lit sans
+  // avoir à lire le nombre — ce qu'un PNG à trois variantes ne donnait pas.
   const ratio = (clim - 16) / 12
-  const src = ratio < 0.34 ? 'temp-cold' : ratio < 0.67 ? 'temp-mid' : 'temp-hot'
-  return <img src={`/inrunparis/brand/${src}.png`} alt="" aria-hidden="true" style={{ width: 17, height: 17, objectFit: 'contain' }} />
+  const color = ratio < 0.34 ? 'var(--info)' : ratio < 0.67 ? 'var(--label-secondary)' : 'var(--accent)'
+  return <Icon name="thermometer" size={17} style={{ color }} />
 }
 
 // ── Prestation icons ──────────────────────────────────────────────────────────
@@ -165,21 +168,21 @@ function ChargerIcon({ th }) {
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const AMBIANCE_OPTS = [
-  { value: 'musique', label: 'Musique', img: '/inrunparis/brand/ambiance-music.png'   },
-  { value: 'radio',   label: 'Radio',   img: '/inrunparis/brand/ambiance-radio.png'   },
-  { value: 'silence', label: 'Silence', img: '/inrunparis/brand/ambiance-silence.png' },
+  { value: 'musique', label: 'Musique', icon: 'music'   },
+  { value: 'radio',   label: 'Radio',   icon: 'radio'   },
+  { value: 'silence', label: 'Silence', icon: 'silence' },
 ]
 
 const PAYMENT_OPTS = [
-  { value: 'Carte',    label: 'Carte',    img: '/inrunparis/brand/pay-card.png'     },
-  { value: 'Espèces',  label: 'Espèces',  img: '/inrunparis/brand/pay-cash.png'     },
-  { value: 'Virement', label: 'Virement', img: '/inrunparis/brand/pay-transfer.png' },
+  { value: 'Carte',    label: 'Carte',    icon: 'card'     },
+  { value: 'Espèces',  label: 'Espèces',  icon: 'cash'     },
+  { value: 'Virement', label: 'Virement', icon: 'transfer' },
 ]
 
 const PRESTATIONS = [
-  { key: 'wifi', label: 'Wi-Fi 5G',     img: '/inrunparis/brand/onboard-wifi.png'    },
-  { key: 'eau',  label: 'Eau minérale', img: '/inrunparis/brand/onboard-water.png'   },
-  { key: 'usb',  label: 'Chargeur',     img: '/inrunparis/brand/onboard-charger.png' },
+  { key: 'wifi', label: 'Wi-Fi 5G',     icon: 'wifi'    },
+  { key: 'eau',  label: 'Eau minérale', icon: 'water'   },
+  { key: 'usb',  label: 'Chargeur',     icon: 'charger' },
 ]
 
 // ── Premium custom slider ─────────────────────────────────────────────────────
@@ -272,7 +275,7 @@ function SectionLabel({ children, th }) {
 }
 
 // ── Ambiance pill — 3D UHD ────────────────────────────────────────────────────
-function AmbiancePill({ active, onClick, img, label, th }) {
+function AmbiancePill({ active, onClick, icon, label, th }) {
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
@@ -318,7 +321,7 @@ function AmbiancePill({ active, onClick, img, label, th }) {
       }}
     >
       <span className="flex flex-col items-center gap-1.5">
-        <img src={img} alt="" aria-hidden="true" style={{ width: 20, height: 20, objectFit: 'contain', opacity: active ? 1 : 0.8 }} />
+        <Icon name={icon} size={20} style={{ color: active ? 'var(--accent)' : th.inkMid }} />
         <span
           className="text-[11px] font-bold tracking-wide"
           style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
@@ -406,7 +409,7 @@ function PrestationCard({ Icon, label, th }) {
 }
 
 // ── Payment button — UHD animated ─────────────────────────────────────────────
-function PaymentButton({ active, onClick, img, label, th }) {
+function PaymentButton({ active, onClick, icon, label, th }) {
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
@@ -452,7 +455,7 @@ function PaymentButton({ active, onClick, img, label, th }) {
       }}
     >
       <div className="flex flex-col items-center gap-1.5">
-        <img src={img} alt="" aria-hidden="true" style={{ width: 22, height: 22, objectFit: 'contain', opacity: active ? 1 : 0.82 }} />
+        <Icon name={icon} size={22} style={{ color: active ? 'var(--accent)' : th.inkMid }} />
         <span
           className="text-[11px] font-bold tracking-wide"
           style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
@@ -541,10 +544,10 @@ export default function Step3Options({ onNext, onBack }) {
               s'affichait « Eau mi… ». C'est une liste de ce qui est à bord, pas
               un contrôle — elle a le droit de passer à la ligne, et une
               prestation dont on ne lit pas le nom ne vaut pas d'être annoncée. */}
-          {PRESTATIONS.map(({ key, label, img }, i) => (
+          {PRESTATIONS.map(({ key, label, icon }, i) => (
             <span key={key} className="flex items-center gap-1.5">
               {i > 0 && <span style={{ color: th.borderStrong }}>·</span>}
-              <img src={img} alt="" aria-hidden="true" className="flex-shrink-0" style={{ width: 15, height: 15, objectFit: 'contain' }} />
+              <Icon name={icon} size={15} style={{ color: 'var(--accent)' }} />
               <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: th.inkMid }}>{label}</span>
             </span>
           ))}
@@ -611,7 +614,7 @@ export default function Step3Options({ onNext, onBack }) {
                         key={opt.value}
                         active={ambiance === opt.value}
                         onClick={() => setAmbiance(opt.value)}
-                        img={opt.img}
+                        icon={opt.icon}
                         label={opt.label}
                         th={th}
                       />
@@ -707,7 +710,7 @@ export default function Step3Options({ onNext, onBack }) {
                         key={p.value}
                         active={payment === p.value}
                         onClick={() => setPayment(p.value)}
-                        img={p.img}
+                        icon={p.icon}
                         label={p.label}
                         th={th}
                       />

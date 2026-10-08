@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import Icon from '../ui/Icon'
 import useAppTheme from '../../hooks/useAppTheme'
 import { useFavorites } from '../../hooks/useFavorites'
 import useBookingStore from '../../store/useBookingStore'
@@ -76,12 +77,12 @@ export default function QuickRail({ onPick, traffic }) {
 
   if (favs.home) items.push({
     id: 'home', label: `Aller à ${favs.home.name.split(',')[0]}`,
-    icon: '/inrunparis/brand/fav-home.png', text: 'Maison',
+    icon: 'home', text: 'Maison',
     onClick: () => onPick(favs.home),
   })
   if (favs.work) items.push({
     id: 'work', label: `Aller à ${favs.work.name.split(',')[0]}`,
-    icon: '/inrunparis/brand/fav-work.png', text: 'Travail',
+    icon: 'work', text: 'Travail',
     onClick: () => onPick(favs.work),
   })
   for (const a of AIRPORTS) {
@@ -92,7 +93,7 @@ export default function QuickRail({ onPick, traffic }) {
       // affiché comme une donnée vivante serait exactement le genre de détail
       // qui ruine la confiance quand le client le vérifie.
       label: mins ? `Aller à ${a.label}, ${mins} minutes actuellement` : `Aller à ${a.label}`,
-      icon: '/inrunparis/brand/poi-plane.png',
+      icon: 'plane',
       text: mins ? `${a.label} · ${mins} min` : a.label,
       onClick: () => onPick(a),
     })
@@ -116,8 +117,7 @@ export default function QuickRail({ onPick, traffic }) {
       {items.map((it) => (
         <Chip key={it.id} onClick={it.onClick} label={it.label} th={th} accent={it.accent}>
           {it.icon ? (
-            <img src={it.icon} alt="" aria-hidden="true"
-                 style={{ width: 14, height: 14, objectFit: 'contain', flexShrink: 0 }} />
+            <Icon name={it.icon} size={14} style={{ color: 'var(--accent)' }} />
           ) : (
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"
                  stroke="var(--accent)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"

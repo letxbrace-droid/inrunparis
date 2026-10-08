@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import Icon from '../ui/Icon'
 import useAppTheme from '../../hooks/useAppTheme'
 import PushView from '../ui/PushView'
 import SignatureTrace from '../ui/SignatureTrace'
@@ -10,14 +11,14 @@ const TRAJETS = [
     title:    'Aéroports & gares',
     subtitle: 'CDG · Orly · Beauvais · Gares TGV',
     price:    'dès 45 €',
-    img:      '/inrunparis/brand/poi-plane.png',
+    icon:     'plane',
     accent:   'rgba(255,90,31,0.14)',
   },
   {
     title:    'Longue distance',
     subtitle: "Province · Côte d'Azur · Genève",
     price:    'Sur devis',
-    img:      '/inrunparis/brand/fav-pin.png',
+    icon:     'pin',
     accent:   'rgba(255,90,31,0.10)',
   },
 ]
@@ -270,7 +271,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                     background: t.accent,
                   }}
                 >
-                  <img src={t.img} alt="" aria-hidden="true" style={{ width: 24, height: 24, objectFit: 'contain' }} />
+                  <Icon name={t.icon} size={24} style={{ color: 'var(--accent)' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-sm leading-tight" style={{ color: th.inkFull }}>{t.title}</div>

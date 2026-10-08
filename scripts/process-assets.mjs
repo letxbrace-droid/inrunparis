@@ -121,12 +121,13 @@ await buildOG()
 await buildLineArt('swace-side', 640)
 await buildLineArt('swace-hybrid', 760)
 await buildLineArt('trace-success', 560)
-await sliceTrio('onboard-icons', ['onboard-wifi', 'onboard-water', 'onboard-charger'])
-await sliceTrio('temperature',   ['temp-cold', 'temp-mid', 'temp-hot'])
-await sliceTrio('volume',        ['vol-mute', 'vol-low', 'vol-high'])
-await sliceTrio('payment',       ['pay-card', 'pay-cash', 'pay-transfer'])
-await sliceTrio('poi',          ['poi-plane', 'poi-train', 'poi-eiffel'])
-await sliceTrio('fav',          ['fav-home', 'fav-work', 'fav-pin'])
-await sliceTrio('ambiance',     ['ambiance-music', 'ambiance-radio', 'ambiance-silence'])
+// NOTE — les sept planches d'icônes (onboard, température, volume, paiement,
+// POI, favoris, ambiance) ne sont plus découpées. Ces 21 PNG étaient des
+// illustrations de 96 px affichées entre 13 et 22 px dans l'interface, où une
+// illustration anti-aliasée n'est plus qu'une tache à la bonne silhouette. Ils
+// sont remplacés par src/components/ui/Icon.jsx, qui suit le thème et prend la
+// couleur d'accent — deux choses qu'un PNG ne sait pas faire.
+// Les planches sources restent dans scripts/src/ : les redécouper ne coûte
+// qu'une ligne si le besoin revient, par exemple pour un support imprimé.
 await buildSplash()
 console.log('done')
