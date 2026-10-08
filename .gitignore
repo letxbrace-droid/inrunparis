@@ -6,3 +6,6 @@ ios/
 .code-review-graph/
 dist/
 node_modules/
+
+# Rapport de couverture — régénérer avec `npm run test:coverage`
+coverage/
