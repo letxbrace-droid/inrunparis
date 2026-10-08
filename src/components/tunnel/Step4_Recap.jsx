@@ -214,11 +214,18 @@ export default function Step4Recap({ onBack }) {
               <p className="text-[11px] leading-snug mt-0.5" style={{ color: th.inkMuted }}>
                 Nourdine revient vers vous pour confirmer votre course
               </p>
+              {/* La référence part dans le message mais n'apparaissait nulle
+                  part à l'écran : le client qui quitte WhatsApp n'avait plus
+                  rien pour nommer sa réservation. Elle est sélectionnable,
+                  parce que c'est exactement ce qu'on recopie. */}
+              {useBookingStore.getState().bonNumber && (
+                <p className="text-[11px] font-mono font-semibold mt-1.5 select-all"
+                   style={{ color: 'var(--accent)', letterSpacing: '.04em' }}>
+                  {useBookingStore.getState().bonNumber}
+                </p>
+              )}
             </div>
           </div>
-          <p className="text-[11px] text-center" style={{ color: th.inkDim }}>
-            Fermez ce panneau pour voir la carte
-          </p>
         </motion.div>
       ) : (
         <>
