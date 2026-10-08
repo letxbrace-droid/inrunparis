@@ -91,8 +91,8 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
             />
 
             <div className="flex flex-col items-center gap-2 text-center">
-              <p className="text-[15px] font-bold" style={{ color: th.inkFull }}>Aucune course pour le moment</p>
-              <p className="text-[13px] leading-relaxed" style={{ color: th.inkMuted, maxWidth: 240 }}>
+              <p className="text-[14px] font-bold" style={{ color: th.inkFull }}>Aucune course pour le moment</p>
+              <p className="text-[12px] leading-relaxed" style={{ color: th.inkMuted, maxWidth: 240 }}>
                 Vos réservations envoyées sur WhatsApp apparaîtront ici automatiquement.
               </p>
             </div>
@@ -123,7 +123,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 }}
-                className="rounded-[18px] overflow-hidden"
+                className="rounded-[16px] overflow-hidden"
                 style={{
                   background: th.bgCard,
                   border: `1px solid ${th.borderFaint}`,
@@ -151,10 +151,10 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 <div className="flex items-stretch gap-3 px-4 pt-3 pb-2.5">
                   <RouteTimeline bg={th.bgCard} minLine={14} className="mt-1.5 mb-0.5" />
                   <div className="flex flex-col justify-between flex-1 min-w-0" style={{ gap: 12 }}>
-                    <p className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
+                    <p className="text-[12px] font-semibold truncate" style={{ color: th.inkFull }}>
                       {ShortName(booking.depart?.name ?? '—')}
                     </p>
-                    <p className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
+                    <p className="text-[12px] font-semibold truncate" style={{ color: th.inkFull }}>
                       {ShortName(booking.arrive?.name ?? '—')}
                     </p>
                   </div>
@@ -165,7 +165,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                   style={{ borderTop: `1px solid ${th.borderFaint}` }}>
 
                   {/* Price — hero */}
-                  <span className="font-bold text-[17px] tabular-nums" style={{ color: 'var(--accent)' }}>
+                  <span className="font-bold text-[16px] tabular-nums" style={{ color: 'var(--accent)' }}>
                     {booking.price?.final ?? '—'} €
                   </span>
 
@@ -175,10 +175,10 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                   </span>
 
                   {booking.price?.isAirport && (
-                    <span style={{ fontSize: 13 }}>✈</span>
+                    <span style={{ fontSize: 12 }}>✈</span>
                   )}
                   {booking.promoCode && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
                       style={{ background: 'color-mix(in srgb, var(--positive) 12%, transparent)', color: 'var(--positive)' }}>
                       {booking.promoCode}
                     </span>

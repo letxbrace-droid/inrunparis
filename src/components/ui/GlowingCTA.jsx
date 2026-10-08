@@ -11,7 +11,7 @@ export default function GlowingCTA({ children, onClick, disabled, type = 'button
         ${variant === 'wa' ? 'cta-wa' : 'cta-glow'}
         relative flex items-center justify-center gap-2.5
         w-full py-4 px-6 rounded-2xl
-        text-white font-bold text-[15px] tracking-wide
+        text-white font-bold text-[14px] tracking-wide
         transition-transform duration-150 cursor-pointer
         active:scale-[.97]
         disabled:opacity-55 disabled:pointer-events-none

@@ -99,7 +99,7 @@ function PriceTag({ value, th, size = 16 }) {
     )
   }
   return (
-    <span style={{ fontSize: 12.5, fontWeight: 600, color: th.inkMuted, whiteSpace: 'nowrap' }}>
+    <span style={{ fontSize: 12, fontWeight: 600, color: th.inkMuted, whiteSpace: 'nowrap' }}>
       {value}
     </span>
   )
@@ -123,7 +123,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
   const HAIRLINE = `1px solid ${th.divider}`
   const CARD = {
     background:   th.bgCard,
-    borderRadius: 18,
+    borderRadius: 16,
     border:       `1px solid ${th.borderFaint}`,
     overflow:     'hidden',
   }
@@ -167,7 +167,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
         <motion.section className="px-5 pt-6" {...reveal(0)}>
           <div
             style={{
-              borderRadius: 20,
+              borderRadius: 16,
               padding: 24,
               position: 'relative',
               overflow: 'hidden',
@@ -188,12 +188,12 @@ export default function TarifsView({ open, onClose, onReserve }) {
             }} />
 
             <h2 style={{
-              fontSize: 21, fontWeight: 800, letterSpacing: '-0.03em',
+              fontSize: 19, fontWeight: 800, letterSpacing: '-0.03em',
               color: '#F5F1E8', lineHeight: 1.18, margin: 0,
             }}>
               Prix annoncé avant<br />chaque course
             </h2>
-            <p style={{ fontSize: 13, color: 'rgba(245,241,232,.48)', marginTop: 8, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: 'rgba(245,241,232,.48)', marginTop: 8, lineHeight: 1.5 }}>
               Aéroports, longue distance et mise à disposition.
             </p>
 
@@ -209,10 +209,10 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, ease: EASE, delay: 0.12 + i * 0.08 }}
                 >
-                  <span style={{ display: 'block', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--accent)' }}>
+                  <span style={{ display: 'block', fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--accent)' }}>
                     {s.val}
                   </span>
-                  <span style={{ display: 'block', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(245,241,232,0.40)', marginTop: 3 }}>
+                  <span style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(245,241,232,0.40)', marginTop: 3 }}>
                     {s.lab}
                   </span>
                 </motion.div>
@@ -225,7 +225,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
         <motion.section className="px-5 pt-7" {...reveal(0.06)}>
           <SectionLabel th={th}>Notre véhicule</SectionLabel>
           <div style={{
-            borderRadius: 20, padding: '16px 16px 6px', position: 'relative', overflow: 'hidden',
+            borderRadius: 16, padding: '16px 16px 6px', position: 'relative', overflow: 'hidden',
             background: 'var(--bg-card)', border: '1px solid var(--separator)',
           }}>
             <span aria-hidden="true" style={{
@@ -238,7 +238,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 <p style={{ fontSize: 12, color: 'var(--label-tertiary)', marginTop: 2 }}>Break hybride · 4 passagers · clim · Wi-Fi · eau à bord</p>
               </div>
               <span style={{
-                flexShrink: 0, fontSize: 10, fontWeight: 800, letterSpacing: '.06em',
+                flexShrink: 0, fontSize: 11, fontWeight: 800, letterSpacing: '.06em',
                 color: 'var(--positive)', border: '1px solid var(--positive-dim)', borderRadius: 999, padding: '4px 9px',
               }}>HYBRIDE</span>
             </div>
@@ -266,7 +266,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   className="flex-shrink-0 flex items-center justify-center"
                   style={{
                     width: 42, height: 42,
-                    borderRadius: 13,
+                    borderRadius: 12,
                     background: t.accent,
                   }}
                 >
@@ -291,7 +291,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 key={row.duration}
                 className="flex items-center justify-between px-4 py-4"
                 style={{
-                  borderRadius: 14,
+                  borderRadius: 12,
                   background: row.highlight
                     ? (th.isDark ? 'rgba(255,90,31,0.10)' : 'rgba(255,90,31,0.07)')
                     : th.bgCard,
@@ -304,7 +304,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   <span className="font-bold text-sm" style={{ color: th.inkFull }}>{row.duration}</span>
                   {row.highlight && (
                     <span style={{
-                      marginLeft: 8, fontSize: 10, fontWeight: 700,
+                      marginLeft: 8, fontSize: 11, fontWeight: 700,
                       padding: '2px 7px', borderRadius: 999,
                       background: 'var(--accent)', color: '#fff',
                     }}>
@@ -334,7 +334,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
               >
                 <div
                   className="flex-shrink-0 flex items-center justify-center"
-                  style={{ width: 24, height: 24, borderRadius: 7, background: 'rgba(52,211,153,0.14)' }}
+                  style={{ width: 24, height: 24, borderRadius: 8, background: 'rgba(52,211,153,0.14)' }}
                 >
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 6L9 17l-5-5"/>
@@ -362,7 +362,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 style={{
                   flexShrink: 0,
                   width: 248,
-                  borderRadius: 18,
+                  borderRadius: 16,
                   padding: 18,
                   display: 'flex',
                   flexDirection: 'column',
@@ -372,7 +372,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 }}
               >
                 <StarRow rating={r.rating} />
-                <p style={{ fontSize: 12.5, color: th.inkLow, lineHeight: 1.6, flex: 1 }}>{r.text}</p>
+                <p style={{ fontSize: 12, color: th.inkLow, lineHeight: 1.6, flex: 1 }}>{r.text}</p>
                 <div className="flex items-center gap-2.5">
                   <div
                     style={{
@@ -385,7 +385,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   </div>
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 600, color: th.inkFull }}>{r.name}</div>
-                    <div style={{ fontSize: 10, color: th.inkDim }}>
+                    <div style={{ fontSize: 11, color: th.inkDim }}>
                       {r.route}{r.date ? ` · ${r.date}` : ''}
                     </div>
                   </div>
@@ -394,7 +394,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
             ))}
           </div>
 
-          <p className="px-5 pt-1" style={{ fontSize: 10.5, lineHeight: 1.55, color: th.inkDim }}>
+          <p className="px-5 pt-1" style={{ fontSize: 11, lineHeight: 1.55, color: th.inkDim }}>
             Avis de clients ayant effectué une course avec I&amp;N RUN, publiés
             sans contrepartie et sans sélection.{' '}
             <a
@@ -418,7 +418,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
       >
         <button
           onClick={onReserve}
-          className="cta-glow w-full py-4 rounded-2xl font-bold text-[15px] tracking-wide text-white cursor-pointer active:scale-[.97] transition-transform duration-150 select-none relative overflow-hidden"
+          className="cta-glow w-full py-4 rounded-2xl font-bold text-[14px] tracking-wide text-white cursor-pointer active:scale-[.97] transition-transform duration-150 select-none relative overflow-hidden"
         >
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
             style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent)' }} />

@@ -122,7 +122,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               Réservation<br />envoyée !
             </h2>
             <p style={{
-              fontSize: 15, color: 'rgba(245,241,232,.52)',
+              fontSize: 14, color: 'rgba(245,241,232,.52)',
               marginTop: 12, lineHeight: 1.58,
             }}>
               {bonNumber ? `Bon n°${bonNumber} · ` : ''}Nourdine vous recontacte<br />pour confirmer votre trajet.
@@ -163,7 +163,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                   background: 'rgba(255,255,255,.06)',
                   border: '1px solid rgba(255,255,255,.10)',
                   color: 'rgba(245,241,232,.65)',
-                  fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer',
                 }}
               >
                 🔔 Me notifier à la confirmation
@@ -181,7 +181,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               <motion.p key="push-done"
                 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{ marginTop: 10, fontSize: 13, color: 'rgba(52,211,153,.85)', fontWeight: 600 }}
+                style={{ marginTop: 10, fontSize: 12, color: 'rgba(52,211,153,.85)', fontWeight: 600 }}
               >
                 ✓ Notifications activées
               </motion.p>

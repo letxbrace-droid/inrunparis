@@ -220,7 +220,7 @@ export default function HomePill({ onOpenSheet }) {
                 {/* Icon — emoji pill for POIs, pin for addresses */}
                 {s.poiIcon ? (
                   <span
-                    className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-[15px] leading-none"
+                    className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-[14px] leading-none"
                     style={{ background: (s.poiColor || '#666') + '22' }}
                     aria-hidden="true"
                   >
@@ -357,17 +357,17 @@ export default function HomePill({ onOpenSheet }) {
               </span>
               {/* Names — full address including city */}
               <span className="flex flex-col flex-1 min-w-0 gap-[5px] text-left">
-                <span className="text-[13px] font-semibold truncate" style={{ color: th.inkFull }}>
+                <span className="text-[12px] font-semibold truncate" style={{ color: th.inkFull }}>
                   {depart ? `${depart.name}${depart.city ? ', ' + depart.city : ''}` : 'Départ'}
                 </span>
-                <span className="text-[13px] font-semibold truncate" style={{ color: th.inkMid }}>
+                <span className="text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
                   {arrive ? `${arrive.name}${arrive.city ? ', ' + arrive.city : ''}` : 'Destination'}
                 </span>
               </span>
               {/* Price + chevron */}
               <span className="flex items-center gap-2.5 flex-shrink-0 pl-1">
                 {price && (
-                  <span className="font-brand font-bold text-[15px] whitespace-nowrap tnum text-accent">
+                  <span className="font-brand font-bold text-[14px] whitespace-nowrap tnum text-accent">
                     {price.final} €
                   </span>
                 )}
@@ -387,7 +387,7 @@ export default function HomePill({ onOpenSheet }) {
               <span
                 className="flex items-center justify-center flex-shrink-0 relative"
                 style={{
-                  width: 42, height: 42, borderRadius: 14,
+                  width: 42, height: 42, borderRadius: 12,
                   background: 'linear-gradient(145deg, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent) 9%, transparent))',
                   border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
                   boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 30%, transparent), 0 4px 14px color-mix(in srgb, var(--accent) 24%, transparent)',
@@ -400,12 +400,12 @@ export default function HomePill({ onOpenSheet }) {
 
               {/* Prompt dominant — typo massive + tag micro */}
               <span className="flex flex-col flex-1 min-w-0 text-left gap-1">
-                <span className="leading-none" style={{ fontFamily: 'var(--font-display)', color: th.inkFull, fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em' }}>
+                <span className="leading-none" style={{ fontFamily: 'var(--font-display)', color: th.inkFull, fontSize: 19, fontWeight: 700, letterSpacing: '-0.02em' }}>
                   Où allons-nous&nbsp;?
                 </span>
                 <span className="flex items-center gap-1.5 overflow-hidden">
                   <span className="w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0" />
-                  <span className="text-[11.5px] tracking-wide truncate" style={{ color: th.inkMuted }}>
+                  <span className="text-[11px] tracking-wide truncate" style={{ color: th.inkMuted }}>
                     {contextLine(traffic)}
                   </span>
                 </span>
@@ -534,7 +534,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                     style={{ background: 'var(--accent)' }} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-[10px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Départ</div>
+                    <div className="text-[11px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Départ</div>
                     <input
                       type="text"
                       value={departQuery}
@@ -544,7 +544,7 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse de départ"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-[15px] font-semibold outline-none"
+                      className="w-full bg-transparent text-[14px] font-semibold outline-none"
                       style={{ color: th.inkFull }}
                     />
                   </div>
@@ -615,7 +615,7 @@ export default function HomePill({ onOpenSheet }) {
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 18%, transparent))' }} />
                     <motion.div
                       className="absolute left-0 right-0"
-                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', borderRadius: 4 }}
+                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', borderRadius: 8 }}
                       animate={{ y: [-12, 30] }}
                       transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
                     />
@@ -628,7 +628,7 @@ export default function HomePill({ onOpenSheet }) {
                   <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
                     style={{ borderColor: 'color-mix(in srgb, var(--accent) 75%, transparent)', background: th.bgBase }} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-[10px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Arrivée</div>
+                    <div className="text-[11px] font-bold tracking-[.12em] uppercase mb-1.5" style={{ color: th.inkMuted }}>Arrivée</div>
                     <input
                       type="text"
                       value={arriveQuery}
@@ -638,7 +638,7 @@ export default function HomePill({ onOpenSheet }) {
                       autoComplete="off"
                       aria-label="Adresse d'arrivée"
                       aria-autocomplete="list"
-                      className="w-full bg-transparent text-[15px] font-semibold outline-none"
+                      className="w-full bg-transparent text-[14px] font-semibold outline-none"
                       style={{ color: th.inkFull }}
                     />
                   </div>

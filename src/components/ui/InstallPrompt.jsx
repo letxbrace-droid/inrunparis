@@ -30,7 +30,7 @@ function PillBase({ children }) {
       alignItems:   'center',
       gap:          12,
       padding:      '11px 12px 11px 14px',
-      borderRadius: 20,
+      borderRadius: 16,
       background:   '#0F0F0F',
       border:       '1px solid color-mix(in srgb, var(--accent) 28%, transparent)',
       boxShadow:    '0 12px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07)',
@@ -60,7 +60,7 @@ function DismissBtn({ onClick }) {
 function AppIcon() {
   return (
     <img src="/inrunparis/icon-192.png" alt="" aria-hidden="true"
-      style={{ width: 42, height: 42, borderRadius: 11, flexShrink: 0 }} />
+      style={{ width: 42, height: 42, borderRadius: 12, flexShrink: 0 }} />
   )
 }
 
@@ -70,7 +70,7 @@ function AndroidBanner({ onInstall, onDismiss }) {
     <PillBase>
       <AppIcon />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
           Installer I&amp;N RUN
         </p>
         <p style={{ fontSize: 11, color: 'rgba(245,241,232,.48)', marginTop: 2, margin: 0 }}>
@@ -78,7 +78,7 @@ function AndroidBanner({ onInstall, onDismiss }) {
         </p>
       </div>
       <button onClick={onInstall} style={{
-        flexShrink: 0, padding: '8px 15px', borderRadius: 11,
+        flexShrink: 0, padding: '8px 15px', borderRadius: 12,
         background: 'var(--accent)', border: 'none', color: '#fff',
         fontSize: 12, fontWeight: 700, cursor: 'pointer', letterSpacing: '.02em',
         boxShadow: '0 2px 10px color-mix(in srgb, var(--accent) 45%, transparent)',
@@ -96,7 +96,7 @@ function IOSBanner({ onDismiss }) {
     <PillBase>
       <AppIcon />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
           Installer I&amp;N RUN
         </p>
         <p style={{ fontSize: 11, color: 'rgba(245,241,232,.52)', marginTop: 2, margin: '2px 0 0' }}>

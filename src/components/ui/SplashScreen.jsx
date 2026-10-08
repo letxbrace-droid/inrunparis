@@ -53,7 +53,7 @@ export default function SplashScreen({ onDone }) {
       }}>
         <img
           src={LOGO} width={72} height={72} alt=""
-          style={{ borderRadius: 18, boxShadow: '0 10px 30px rgba(0,0,0,.6)', animation: 'sp-logo .7s cubic-bezier(.34,1.56,.64,1) both' }}
+          style={{ borderRadius: 16, boxShadow: '0 10px 30px rgba(0,0,0,.6)', animation: 'sp-logo .7s cubic-bezier(.34,1.56,.64,1) both' }}
         />
         <p style={{
           marginTop: 16, fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 800,
@@ -63,7 +63,7 @@ export default function SplashScreen({ onDone }) {
           I<em style={{ fontStyle: 'italic', fontWeight: 400 }}>&amp;</em>N <span style={{ color: '#FF5A1F' }}>RUN</span>
         </p>
         <p style={{
-          marginTop: 8, fontSize: 10.5, fontWeight: 600, letterSpacing: '.22em',
+          marginTop: 8, fontSize: 11, fontWeight: 600, letterSpacing: '.22em',
           textTransform: 'uppercase', color: 'rgba(245,241,232,.5)',
           animation: 'sp-in .6s cubic-bezier(.23,1,.32,1) .38s both',
         }}>

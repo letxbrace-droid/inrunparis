@@ -17,7 +17,7 @@ function Chip({ children, onClick, label, th, accent = false }) {
       style={{
         padding: '9px 14px',
         borderRadius: 999,
-        fontSize: 12.5,
+        fontSize: 12,
         fontWeight: 600,
         whiteSpace: 'nowrap',
         color: accent ? 'var(--accent)' : th.inkFull,

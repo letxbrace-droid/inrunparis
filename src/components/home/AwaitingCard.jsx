@@ -101,7 +101,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 </motion.div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-[15px] font-bold leading-tight" style={{ color: 'var(--positive)' }}>
+                  <p className="text-[14px] font-bold leading-tight" style={{ color: 'var(--positive)' }}>
                     Course confirmée !
                   </p>
                   <p className="text-[11px] leading-snug mt-0.5" style={{ color: th.inkMuted }}>
@@ -144,10 +144,10 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 <div className="flex flex-col items-end flex-shrink-0 gap-1">
                   {price && (
                     <div className="flex items-baseline gap-0.5">
-                      <span style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
+                      <span style={{ fontSize: 30, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
                         {price.final}
                       </span>
-                      <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--accent)' }}>€</span>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)' }}>€</span>
                     </div>
                   )}
                   {pickup && (
@@ -162,7 +162,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
               <div className="px-4 pb-4">
                 <button
                   onClick={onDismiss}
-                  className="w-full py-3 rounded-xl text-[13px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
+                  className="w-full py-3 rounded-xl text-[12px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
                   style={{
                     background: th.isDark ? 'color-mix(in srgb, var(--positive) 12%, transparent)' : 'rgba(5,150,105,.10)',
                     color:      'var(--positive)',
@@ -196,7 +196,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-bold leading-tight" style={{ color: th.inkFull }}>
+                  <p className="text-[12px] font-bold leading-tight" style={{ color: th.inkFull }}>
                     En attente de confirmation
                   </p>
                   <p className="text-[11px] leading-snug mt-0.5" style={{ color: th.inkMuted }}>
@@ -232,10 +232,10 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 </div>
                 {price && (
                   <div className="flex items-baseline gap-0.5 flex-shrink-0">
-                    <span style={{ fontSize: '1.9rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
+                    <span style={{ fontSize: 30, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: th.inkFull }}>
                       {price.final}
                     </span>
-                    <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--accent)' }}>€</span>
+                    <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--accent)' }}>€</span>
                   </div>
                 )}
               </div>
@@ -247,7 +247,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 py-3 rounded-xl text-[13px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
+                  className="flex w-full items-center justify-center gap-2 py-3 rounded-xl text-[12px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
                   style={{ background: 'var(--wa)', color: '#fff', textDecoration: 'none' }}
                 >
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" style={{ flexShrink: 0 }}>
@@ -259,7 +259,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                 {/* Course confirmée */}
                 <button
                   onClick={handleConfirm}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[13px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[12px] font-bold cursor-pointer active:scale-[.97] transition-transform select-none"
                   style={{
                     background: th.isDark ? 'color-mix(in srgb, var(--positive) 10%, transparent)' : 'rgba(5,150,105,.08)',
                     color:      'var(--positive)',

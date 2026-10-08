@@ -265,7 +265,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               style={{
                 background: 'var(--accent)',
                 color: '#fff',
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.01em',
                 boxShadow: '0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent), 0 2px 8px rgba(0,0,0,.30)',
@@ -351,7 +351,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: th.inkDim }}>
                     <polyline points="6 9 12 15 18 9"/>
                   </svg>
-                  <span className="text-[9px] font-semibold uppercase tracking-[.10em]" style={{ color: th.inkDim }}>
+                  <span className="text-[11px] font-semibold uppercase tracking-[.10em]" style={{ color: th.inkDim }}>
                     Voir la carte
                   </span>
                 </div>

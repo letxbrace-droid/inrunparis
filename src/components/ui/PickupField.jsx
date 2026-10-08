@@ -63,7 +63,7 @@ export default function PickupField({ th, pickup, highlight = false, hint, iconS
         </svg>
 
         <div className="flex-1 min-w-0">
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.08em',
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em',
                         textTransform: 'uppercase', color: th.inkDim }}>
             Prise en charge
           </div>

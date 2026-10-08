@@ -79,14 +79,14 @@ export default function Step4Recap({ onBack }) {
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-baseline gap-1.5">
             {promo && displayPrice !== price?.final && (
-              <span style={{ fontSize: '1.1rem', fontWeight: 700, color: th.inkDim, textDecoration: 'line-through', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: 19, fontWeight: 700, color: th.inkDim, textDecoration: 'line-through', letterSpacing: '-0.02em' }}>
                 {price.final}€
               </span>
             )}
-            <span className="tnum selectable" style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? 'var(--positive)' : th.inkFull }}>
+            <span className="tnum selectable" style={{ fontSize: 40, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? 'var(--positive)' : th.inkFull }}>
               {displayPrice ?? '—'}
             </span>
-            <span style={{ fontSize: '1.3rem', fontWeight: 800, color: promo && displayPrice !== price?.final ? 'var(--positive)' : 'var(--accent)', letterSpacing: '-0.02em' }}>€</span>
+            <span style={{ fontSize: 19, fontWeight: 800, color: promo && displayPrice !== price?.final ? 'var(--positive)' : 'var(--accent)', letterSpacing: '-0.02em' }}>€</span>
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1.5">
@@ -97,11 +97,11 @@ export default function Step4Recap({ onBack }) {
             {(price?.isNight || price?.isAirport) && (
               <div className="flex gap-1">
                 {price.isNight && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                  <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full"
                     style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent)' }}>Nuit</span>
                 )}
                 {price.isAirport && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                  <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full"
                     style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent)' }}>✈</span>
                 )}
               </div>
@@ -118,7 +118,7 @@ export default function Step4Recap({ onBack }) {
           {/* Addresses */}
           <div className="flex flex-col flex-1 min-w-0" style={{ gap: 10 }}>
             <div className="min-w-0">
-              <div className="text-[13px] font-bold truncate" style={{ color: th.inkFull }}>
+              <div className="text-[12px] font-bold truncate" style={{ color: th.inkFull }}>
                 {depart?.name ?? '—'}
               </div>
               {depart?.city && (
@@ -126,7 +126,7 @@ export default function Step4Recap({ onBack }) {
               )}
             </div>
             <div className="min-w-0">
-              <div className="text-[13px] font-bold truncate" style={{ color: th.inkFull }}>
+              <div className="text-[12px] font-bold truncate" style={{ color: th.inkFull }}>
                 {arrive?.name ?? '—'}
               </div>
               {arrive?.city && (
@@ -157,13 +157,13 @@ export default function Step4Recap({ onBack }) {
               {summary.map(({ label, value, accent }) => (
                 <div key={label} className="flex items-baseline gap-3">
                   <dt
-                    className="text-[10px] font-bold uppercase tracking-[.09em] flex-shrink-0"
+                    className="text-[11px] font-bold uppercase tracking-[.09em] flex-shrink-0"
                     style={{ color: th.inkDim, width: 82 }}
                   >
                     {label}
                   </dt>
                   <dd
-                    className="text-[12.5px] font-semibold flex-1 min-w-0"
+                    className="text-[12px] font-semibold flex-1 min-w-0"
                     style={{ color: accent ? 'var(--accent)' : th.inkFull }}
                   >
                     {value}
@@ -208,7 +208,7 @@ export default function Step4Recap({ onBack }) {
               </svg>
             </motion.div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-bold leading-tight" style={{ color: th.inkFull }}>
+              <p className="text-[12px] font-bold leading-tight" style={{ color: th.inkFull }}>
                 Message envoyé sur WhatsApp
               </p>
               <p className="text-[11px] leading-snug mt-0.5" style={{ color: th.inkMuted }}>

@@ -350,19 +350,19 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
                    color: 'rgba(245,241,232,.9)' }}
           role="status"
         >
-          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-.01em' }}>
+          <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-.01em' }}>
             Le fond de carte ne s&apos;affiche pas
           </div>
-          <div style={{ fontSize: 13, lineHeight: 1.55, marginTop: 5, color: 'rgba(245,241,232,.6)' }}>
+          <div style={{ fontSize: 12, lineHeight: 1.55, marginTop: 5, color: 'rgba(245,241,232,.6)' }}>
             Vos adresses et votre tarif fonctionnent normalement. C&apos;est seulement
             l&apos;image de la carte qui manque.
           </div>
           <div style={{ display: 'flex', gap: 18, marginTop: 12 }}>
             <button onClick={hardReset}
-              style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
+              style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
             >Réinitialiser l&apos;application</button>
             <button onClick={() => setMapDown(false)}
-              style={{ fontSize: 13, fontWeight: 700, color: 'rgba(245,241,232,.45)', background: 'none', border: 'none', padding: 0 }}
+              style={{ fontSize: 12, fontWeight: 700, color: 'rgba(245,241,232,.45)', background: 'none', border: 'none', padding: 0 }}
             >Masquer</button>
           </div>
         </div>

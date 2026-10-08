@@ -305,9 +305,9 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 src="/inrunparis/icons/icon-192.png"
                 alt="I&N RUN"
                 width="46" height="46"
-                style={{ width: 46, height: 46, borderRadius: 13, flexShrink: 0, boxShadow: '0 4px 14px rgba(0,0,0,.5)' }}
+                style={{ width: 46, height: 46, borderRadius: 12, flexShrink: 0, boxShadow: '0 4px 14px rgba(0,0,0,.5)' }}
               />
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1, color: inkFull }}>
                 I&amp;N<span style={{ color: 'var(--accent)' }}> RUN</span>
               </span>
             </div>
@@ -385,7 +385,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                 >
                   <span className="flex items-center gap-2">
                     <span style={{
-                      fontSize:      15,
+                      fontSize:      14,
                       fontWeight:    500,
                       letterSpacing: '-0.01em',
                       color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
@@ -394,7 +394,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     </span>
                     {item.badge && (
                       <span style={{
-                        fontSize:      10,
+                        fontSize:      11,
                         fontWeight:    700,
                         letterSpacing: '.04em',
                         color:         '#E8B84B',
@@ -428,7 +428,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               paddingBottom: 'calc(var(--safe-bot) + 16px)',
             }}
           >
-            <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em', color: isDark ? 'rgba(245,241,232,.34)' : 'rgba(17,17,17,.34)', marginBottom: 10 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em', color: isDark ? 'rgba(245,241,232,.34)' : 'rgba(17,17,17,.34)', marginBottom: 10 }}>
               Réglages
             </p>
 
@@ -443,7 +443,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                   aria-label={notifPerm === 'granted' ? 'Notifications activées' : 'Activer les notifications'}
                 >
                   <span style={{
-                    fontSize:      15,
+                    fontSize:      14,
                     fontWeight:    500,
                     letterSpacing: '-0.01em',
                     color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
@@ -478,7 +478,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                       borderRadius:   12,
                       background:     '#25D366',
                       color:          '#fff',
-                      fontSize:       13,
+                      fontSize:       12,
                       fontWeight:     600,
                       textDecoration: 'none',
                       cursor:         'pointer',

@@ -18,7 +18,7 @@ function LineItem({ icon, label, value, valueColor, badge, th }) {
         style={{ background: th.isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.05)' }}>
         {icon}
       </span>
-      <span className="flex-1 text-[13px] font-semibold" style={{ color: th.inkMid }}>
+      <span className="flex-1 text-[12px] font-semibold" style={{ color: th.inkMid }}>
         {label}
       </span>
       {badge ? (
@@ -33,7 +33,7 @@ function LineItem({ icon, label, value, valueColor, badge, th }) {
           {value}
         </span>
       ) : (
-        <span className="text-[13px] font-bold" style={{ color: valueColor || th.inkFull }}>
+        <span className="text-[12px] font-bold" style={{ color: valueColor || th.inkFull }}>
           {value}
         </span>
       )}
@@ -118,7 +118,7 @@ export default function Step2Price({ onNext, onBack }) {
           <div className="flex items-baseline gap-1">
             {promo && displayPrice !== price.final && (
               <span style={{
-                fontSize: '1.5rem', fontWeight: 700,
+                fontSize: 24, fontWeight: 700,
                 letterSpacing: '-0.02em', lineHeight: 1,
                 color: th.inkDim, textDecoration: 'line-through',
                 marginRight: 4,
@@ -127,14 +127,14 @@ export default function Step2Price({ onNext, onBack }) {
               </span>
             )}
             <span className="tnum" style={{
-              fontSize: '3.6rem', fontWeight: 900,
+              fontSize: 56, fontWeight: 900,
               letterSpacing: '-0.04em', lineHeight: 1,
               color: promo && displayPrice !== price.final ? 'var(--positive)' : th.inkFull,
             }}>
               {displayPrice}
             </span>
             <span style={{
-              fontSize: '1.6rem', fontWeight: 800,
+              fontSize: 24, fontWeight: 800,
               color: promo && displayPrice !== price.final ? 'var(--positive)' : 'var(--accent)',
               letterSpacing: '-0.02em',
             }}>
@@ -150,7 +150,7 @@ export default function Step2Price({ onNext, onBack }) {
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
               </svg>
-              <span className="text-[13px] font-bold tabular-nums" style={{ color: th.inkMid }}>
+              <span className="text-[12px] font-bold tabular-nums" style={{ color: th.inkMid }}>
                 ≈ {price.mins} min
               </span>
             </div>
@@ -160,7 +160,7 @@ export default function Step2Price({ onNext, onBack }) {
                 <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/>
                 <path d="M12 8v4l2.5 2.5"/>
               </svg>
-              <span className="text-[13px] font-bold tabular-nums" style={{ color: th.inkMuted }}>
+              <span className="text-[12px] font-bold tabular-nums" style={{ color: th.inkMuted }}>
                 {price.km} km
               </span>
             </div>

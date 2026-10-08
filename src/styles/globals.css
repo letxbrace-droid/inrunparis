@@ -196,10 +196,31 @@
     --info:         #5B8DEF;
     --danger:       #FF6B5C;
 
-    /* ── Geometry ───────────────────────────────────────────────── */
-    --r-card:    16px;
-    --r-cell:    12px;
-    --r-control: 10px;
+    /* ── Géométrie ───────────────────────────────────────────────────
+       Ces trois jetons étaient déclarés et utilisés ZÉRO fois : chaque rayon
+       était réécrit à la main sur place, d'où treize valeurs distinctes pour
+       trois intentions. Les valeurs ci-dessous sont maintenant celles
+       réellement employées, ramenées par scripts/apply-scale.py.
+       Relancer ce script après toute série de modifications. */
+    --r-chip:    8px;    /* pastilles, badges            */
+    --r-cell:    12px;   /* lignes, champs               */
+    --r-card:    16px;   /* cartes, panneaux             */
+    --r-sheet:   24px;   /* feuilles, grandes surfaces   */
+
+    /* ── Échelle typographique ───────────────────────────────────────
+       Neuf paliers. Il y en avait vingt-huit, de 9 à 57,6 px, avec des écarts
+       de 0,2 px : 12 / 12,5 / 13 / 14 / 15 / 16 / 16,8 / 17 / 17,6. L'œil ne
+       distingue pas 16,8 de 17, mais il sent que rien ne s'aligne — c'est ce
+       qui empêchait l'interface de paraître aussi soignée qu'elle l'est. */
+    --t-micro:   11px;   /* intertitres capitales, horodatages */
+    --t-small:   12px;   /* texte secondaire                   */
+    --t-body:    14px;   /* texte courant                      */
+    --t-lead:    16px;   /* texte mis en avant                 */
+    --t-title:   19px;   /* titres de section                  */
+    --t-screen:  24px;   /* titres d'écran                     */
+    --t-hero:    30px;
+    --t-display: 40px;
+    --t-price:   56px;   /* le tarif, et rien d'autre          */
 
     /* ── Elevation — flat cards, real shadow only for floating ──── */
     --elev-1:     0 1px 4px rgba(0,0,0,0.6);

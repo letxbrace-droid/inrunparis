@@ -392,7 +392,7 @@ function PrestationCard({ Icon, label, th }) {
         </span>
 
         <span
-          className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+          className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
           style={{
             background: th.isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)',
             color: th.inkDim,
@@ -545,11 +545,11 @@ export default function Step3Options({ onNext, onBack }) {
             <span key={key} className="flex items-center gap-1.5">
               {i > 0 && <span style={{ color: th.borderStrong }}>·</span>}
               <img src={img} alt="" aria-hidden="true" className="flex-shrink-0" style={{ width: 15, height: 15, objectFit: 'contain' }} />
-              <span className="text-[11.5px] font-semibold whitespace-nowrap" style={{ color: th.inkMid }}>{label}</span>
+              <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: th.inkMid }}>{label}</span>
             </span>
           ))}
           <span
-            className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+            className="flex-shrink-0 text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
             style={{ background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent)' }}
           >
             Inclus
@@ -576,7 +576,7 @@ export default function Step3Options({ onNext, onBack }) {
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
             <span className="flex flex-col text-left">
-              <span className="text-[13px] font-bold" style={{ color: th.inkHigh }}>Préférences de confort</span>
+              <span className="text-[12px] font-bold" style={{ color: th.inkHigh }}>Préférences de confort</span>
               <span className="text-[11px]" style={{ color: th.inkMuted }}>Ambiance · clim · paiement — facultatif</span>
             </span>
           </span>
@@ -640,7 +640,7 @@ export default function Step3Options({ onNext, onBack }) {
                               <VolumeIcon level={volume} th={th} />
                               <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>Volume</span>
                             </div>
-                            <span className="text-[15px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 40, textAlign: 'right' }}>
+                            <span className="text-[14px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 40, textAlign: 'right' }}>
                               {volume}%
                             </span>
                           </div>
@@ -673,7 +673,7 @@ export default function Step3Options({ onNext, onBack }) {
                         <ThermometerIcon clim={clim} />
                         <span className="text-sm font-semibold" style={{ color: th.inkHigh }}>Température</span>
                       </div>
-                      <span className="text-[15px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 44, textAlign: 'right' }}>
+                      <span className="text-[14px] font-bold tabular-nums" style={{ color: th.inkFull, minWidth: 44, textAlign: 'right' }}>
                         {clim}°C
                       </span>
                     </div>
