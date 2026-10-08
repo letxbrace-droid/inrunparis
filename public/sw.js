@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v137 */
-const CACHE = 'inrun-v137';
+/* I&N RUN — Service Worker v138 */
+const CACHE = 'inrun-v138';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -34,6 +34,11 @@ const MAP_HOSTS = /(^|\.)(cartocdn\.com|geoapify\.com|openstreetmap\.org|openstr
 
 const STATIC = [
   OFFLINE,
+  // Les polices sont auto-hébergées depuis v138. Seuls les deux fichiers du
+  // premier texte visible sont pré-cachés : les sous-ensembles latin-ext et les
+  // graisses mono tombent dans le cache à la demande, via la règle générale.
+  '/inrunparis/fonts/outfit-latin-400-800.woff2',
+  '/inrunparis/fonts/bricolage-grotesque-latin-400-800.woff2',
   '/inrunparis/manifest.json',
   '/inrunparis/hub-manifest.json',
   '/inrunparis/favicon.ico',

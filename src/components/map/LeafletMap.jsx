@@ -99,12 +99,13 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
   const userMarkerRef = useRef(null)
   const didFlyRef     = useRef(false)
   // Tile accounting. `asked` is what Leaflet decided to fetch, `got` is what
-  // arrived. The gap is the whole diagnosis: asked 0 means the map never tried,
-  // asked N with got 0 means the requests left and nothing came back.
+  // arrived. The gap is the whole diagnosis — asked 0 means the map never
+  // tried, asked N with got 0 means the requests left and nothing came back —
+  // so it still gets logged, just to the console rather than to the customer.
   const askedRef      = useRef(0)
   const gotRef        = useRef(0)
   const errsRef       = useRef([])
-  const [diag, setDiag] = useState(null)
+  const [mapDown, setMapDown] = useState(false)
 
   // Initialize map — creates custom pane for base tiles so the aesthetic filter
   // applies only to terrain, leaving label tiles unfiltered and crisp
@@ -157,19 +158,21 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }, 400)
     const stopPoll = setTimeout(() => clearInterval(sizePoll), 10000)
 
-    // If no tile has painted after 8s, say why instead of showing a void the
-    // user can only screenshot and wonder about.
+    // If no tile has painted after 8s, tell the user — and log the numbers
+    // that say which of the three possible failures it was, where they cost
+    // the customer nothing to carry.
     const diagTimer = setTimeout(() => {
       if (mapRef.current !== map || gotRef.current > 0) return
       const el = containerRef.current
-      const s = map.getSize()
-      setDiag({
-        asked: askedRef.current,
-        got:   gotRef.current,
-        size:  `${s.x}x${s.y}`,
-        box:   el ? `${el.clientWidth}x${el.clientHeight}` : 'absent',
-        errs:  errsRef.current.slice(0, 3),
-      })
+      const size = map.getSize()
+      console.warn(
+        '[map] aucune tuile après 8s —',
+        `demandées ${askedRef.current}, reçues ${gotRef.current},`,
+        `carte ${size.x}x${size.y},`,
+        `conteneur ${el ? `${el.clientWidth}x${el.clientHeight}` : 'absent'}`,
+        errsRef.current.slice(0, 3),
+      )
+      setMapDown(true)
     }, 8000)
 
     return () => {
@@ -200,7 +203,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       attribution: bm.attribution,
     })
       .on('tileloadstart', () => { askedRef.current++ })
-      .on('tileload',      () => { gotRef.current++; setDiag(null) })
+      .on('tileload',      () => { gotRef.current++; setMapDown(false) })
       .on('tileerror',     (ev) => {
         const url = ev?.tile?.src || '(url inconnue)'
         console.warn('[map] tuile en \u00e9chec', url)
@@ -333,27 +336,33 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     <div className="absolute inset-0 z-0" style={{ pointerEvents: frozen ? 'none' : 'auto' }}>
       <div ref={containerRef} className="absolute inset-0" aria-label="Carte de Paris" />
 
-      {diag && (
+      {/* Le fond de carte n'est jamais arrivé.
+          Ce panneau affichait un relevé technique — tuiles demandées, taille du
+          canvas, erreurs brutes. C'était un outil de dépannage, utile le temps
+          de trouver la panne, et qui n'a rien à faire devant un client. Reste
+          ce dont le client a besoin : savoir que ce n'est pas lui, que sa
+          réservation marche quand même, et comment s'en sortir.
+          Les compteurs restent dans la console pour qui ouvre l'inspecteur. */}
+      {mapDown && (
         <div
-          className="absolute inset-x-3 top-24 rounded-2xl px-4 py-3"
-          style={{ zIndex: 503, background: 'rgba(10,10,12,.94)', border: '1px solid rgba(255,90,31,.35)',
-                   font: '11.5px/1.5 ui-monospace,monospace', color: 'rgba(245,241,232,.82)' }}
+          className="absolute inset-x-4 top-24 rounded-2xl px-5 py-4"
+          style={{ zIndex: 503, background: 'rgba(10,10,12,.94)', border: '1px solid rgba(255,90,31,.3)',
+                   color: 'rgba(245,241,232,.9)' }}
           role="status"
         >
-          <div style={{ fontWeight: 700, color: 'var(--accent)', marginBottom: 4 }}>
-            Carte indisponible — diagnostic
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-.01em' }}>
+            Le fond de carte ne s&apos;affiche pas
           </div>
-          <div>tuiles demandées : {diag.asked} · reçues : {diag.got}</div>
-          <div>carte : {diag.size} · conteneur : {diag.box}</div>
-          {diag.errs.length
-            ? diag.errs.map((e, i) => <div key={i} style={{ marginTop: 3, opacity: .75, wordBreak: 'break-all' }}>• {e}</div>)
-            : <div style={{ marginTop: 3, opacity: .75 }}>• aucune erreur remontée</div>}
-          <div style={{ display: 'flex', gap: 16, marginTop: 8 }}>
+          <div style={{ fontSize: 13, lineHeight: 1.55, marginTop: 5, color: 'rgba(245,241,232,.6)' }}>
+            Vos adresses et votre tarif fonctionnent normalement. C&apos;est seulement
+            l&apos;image de la carte qui manque.
+          </div>
+          <div style={{ display: 'flex', gap: 18, marginTop: 12 }}>
             <button onClick={hardReset}
-              style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
-            >Réinitialiser</button>
-            <button onClick={() => setDiag(null)}
-              style={{ fontSize: 11, fontWeight: 700, color: 'rgba(245,241,232,.5)', background: 'none', border: 'none', padding: 0 }}
+              style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
+            >Réinitialiser l&apos;application</button>
+            <button onClick={() => setMapDown(false)}
+              style={{ fontSize: 13, fontWeight: 700, color: 'rgba(245,241,232,.45)', background: 'none', border: 'none', padding: 0 }}
             >Masquer</button>
           </div>
         </div>

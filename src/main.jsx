@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './styles/globals.css'
 import App from './App'
+import ErrorBoundary from './components/ui/ErrorBoundary'
 import { initRemotePromoCodes } from './store/useBookingStore'
 import { initPushConfig, autoResubscribe } from './utils/pushNotifications'
 
@@ -17,7 +18,9 @@ Promise.all([
 ]).finally(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </React.StrictMode>
   )
 })

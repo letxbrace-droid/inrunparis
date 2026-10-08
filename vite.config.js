@@ -12,6 +12,10 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom'],
           zustand: ['zustand'],
+          // framer-motion pèse plus de la moitié du morceau principal et ne
+          // change jamais entre deux déploiements : isolé, il reste en cache
+          // navigateur quand le code de l'app, lui, est remplacé.
+          motion: ['framer-motion'],
         },
       },
     },

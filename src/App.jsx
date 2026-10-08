@@ -6,11 +6,19 @@ const LeafletMap = lazy(() => import('./components/map/LeafletMap'))
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
 import BottomSheet         from './components/tunnel/BottomSheet'
-import TarifsView          from './components/views/TarifsView'
-import CallView            from './components/views/CallView'
-import MesCoursesView      from './components/views/MesCoursesView'
-import AideFaqView         from './components/views/AideFaqView'
-import LegalView           from './components/views/LegalView'
+// Les cinq vues en plein écran vivent derrière le menu : la grande majorité
+// des visites ne va jamais plus loin que l'accueil. Les charger d'emblée, c'est
+// faire payer à tout le monde du code que presque personne n'ouvre.
+//
+// Elles restent montées une fois ouvertes, parce qu'elles gèrent leur propre
+// animation de sortie : les démonter dès la fermeture supprimerait cette
+// sortie. Seule la toute première ouverture attend son morceau de code — et le
+// service worker l'a déjà en cache dès la seconde visite.
+const TarifsView     = lazy(() => import('./components/views/TarifsView'))
+const CallView       = lazy(() => import('./components/views/CallView'))
+const MesCoursesView = lazy(() => import('./components/views/MesCoursesView'))
+const AideFaqView    = lazy(() => import('./components/views/AideFaqView'))
+const LegalView      = lazy(() => import('./components/views/LegalView'))
 import HomePill            from './components/home/HomePill'
 import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
@@ -29,6 +37,8 @@ export default function App() {
   const [sheetOpen,   setSheetOpen]   = useState(false)
   const [sheetStep,   setSheetStep]   = useState(1)
   const [activeView,  setActiveView]  = useState('home')
+  // Les vues déjà ouvertes au moins une fois, donc à garder montées.
+  const [seenViews,   setSeenViews]   = useState(() => new Set())
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [confirmBon,  setConfirmBon]  = useState(null)
 
@@ -128,6 +138,11 @@ export default function App() {
     return () => document.removeEventListener('visibilitychange', onChange)
   }, [])
 
+  useEffect(() => {
+    if (activeView === 'home' || seenViews.has(activeView)) return
+    setSeenViews((prev) => new Set(prev).add(activeView))
+  }, [activeView, seenViews])
+
   // Auto-dismiss the confirmation toast
   useEffect(() => {
     if (!confirmOpen) return
@@ -207,11 +222,13 @@ export default function App() {
       </AnimatePresence>
 
       {/* Slide-in views */}
-      <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />
-      <CallView       open={activeView === 'call'}    onClose={handleClose} />
-      <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />
-      <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />
-      <LegalView      open={activeView === 'legal'}   onClose={handleClose} />
+      <Suspense fallback={null}>
+        {seenViews.has('tarifs')  && <TarifsView     open={activeView === 'tarifs'}  onClose={handleClose} onReserve={handleTarifsReserve} />}
+        {seenViews.has('call')    && <CallView       open={activeView === 'call'}    onClose={handleClose} />}
+        {seenViews.has('courses') && <MesCoursesView open={activeView === 'courses'} onClose={handleClose} onReserve={() => { handleClose(); setSheetOpen(true); setSheetStep(1) }} />}
+        {seenViews.has('faq')     && <AideFaqView    open={activeView === 'faq'}     onClose={handleClose} />}
+        {seenViews.has('legal')   && <LegalView      open={activeView === 'legal'}   onClose={handleClose} />}
+      </Suspense>
 
       {/* Side drawer */}
       <SideDrawer
