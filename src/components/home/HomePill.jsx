@@ -6,17 +6,32 @@ import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
 import { computePriceForBooking } from '../../utils/priceEngine'
 import { searchPlaces, displayAddr, TYPE_COLOR } from '../../utils/geocoder'
+import { PRICE } from '../../utils/priceEngine'
+import useTrafficWeather from '../../hooks/useTrafficWeather'
+import QuickRail from './QuickRail'
 import useAppTheme from '../../hooks/useAppTheme'
 import GlowingCTA from '../ui/GlowingCTA'
 import { useFavorites } from '../../hooks/useFavorites'
 import { haptic } from '../../utils/haptics'
 
-const TAGS = [
-  'CDG · Orly · Beauvais',
-  'Province · Gares TGV',
-  'Mise à disposition',
-  "Réservation à l'avance",
-]
+/**
+ * Une ligne, vraie au moment où elle s'affiche.
+ *
+ * C'était un carrousel de quatre slogans qui tournait toutes les 8 secondes,
+ * indépendamment de tout. Du texte qui change tout seul dans un élément
+ * permanent, c'est un bandeau publicitaire — et les gens ont appris à ne pas
+ * lire les bandeaux. Celle-ci dit quelque chose de l'instant, ou se tait en
+ * rappelant la promesse qui ne change jamais.
+ */
+function contextLine(traffic) {
+  const h = new Date().getHours()
+  if (h >= PRICE.nightStart || h < PRICE.nightEnd) {
+    return `Tarif de nuit · ${PRICE.nightStart}h–${PRICE.nightEnd}h`
+  }
+  const cdg = traffic?.find((t) => t.name === 'CDG' && t.live)
+  if (cdg) return `CDG en ${cdg.mins} min actuellement`
+  return 'Prix fixe, annoncé avant le départ'
+}
 
 
 function PinIcon({ color = 'currentColor' }) {
@@ -31,8 +46,7 @@ function PinIcon({ color = 'currentColor' }) {
 export default function HomePill({ onOpenSheet }) {
   const th = useAppTheme()
   const [open,       setOpen]       = useState(false)
-  const [tagIdx,     setTagIdx]     = useState(0)
-  const [tagVisible, setTagVisible] = useState(true)
+
 
   // Inputs display value (short label, not full display_name)
   const [departQuery, setDepartQuery] = useState('')
@@ -63,6 +77,10 @@ export default function HomePill({ onOpenSheet }) {
 
   // Favoris (Maison / Travail)
   const { favs, saveFav, removeFav } = useFavorites()
+  // Le trafic sert deux fois : la ligne contextuelle sous le titre et les
+  // minutes vivantes sur les puces aéroport. Une seule requête pour les deux.
+  const { traffic, fetchAll } = useTrafficWeather()
+  useEffect(() => { fetchAll() }, [fetchAll])
   const [savingFor, setSavingFor] = useState(null) // 'depart' | 'arrive' | null
 
   // Hydrate input display from persisted store on mount
@@ -70,15 +88,6 @@ export default function HomePill({ onOpenSheet }) {
     if (depart?.name) setDepartQuery(displayAddr(depart))
     if (arrive?.name) setArriveQuery(displayAddr(arrive))
   }, []) // eslint-disable-line
-
-  // Rotating pill tag
-  useEffect(() => {
-    const t = setInterval(() => {
-      setTagVisible(false)
-      setTimeout(() => { setTagIdx(i => (i + 1) % TAGS.length); setTagVisible(true) }, 300)
-    }, 8000)
-    return () => clearInterval(t)
-  }, [])
 
   // Auto-calculate route when both endpoints change
   useEffect(() => {
@@ -259,6 +268,23 @@ export default function HomePill({ onOpenSheet }) {
           transition:    'opacity .22s ease',
         }}
       >
+        {/* Le rail de départ, au-dessus de la pastille — il doit rester
+            cliquable alors que le conteneur est pointer-events-none. */}
+        <div className="pointer-events-auto">
+          <QuickRail
+            traffic={traffic}
+            onPick={(place) => {
+              if (place) {
+                const st = useBookingStore.getState()
+                st.setArrive(place)
+                st.setRouteGeometry(null)
+                setArriveQuery(displayAddr(place))
+              }
+              openCard()
+            }}
+          />
+        </div>
+
         {/* Halo accent — signature lumineuse animée sous la pilule */}
         <motion.div
           aria-hidden="true"
@@ -373,12 +399,9 @@ export default function HomePill({ onOpenSheet }) {
                   Où allons-nous&nbsp;?
                 </span>
                 <span className="flex items-center gap-1.5 overflow-hidden">
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0 transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
-                  />
-                  <span className={`text-[11.5px] tracking-wide truncate transition-opacity duration-300 ${tagVisible ? 'opacity-100' : 'opacity-0'}`}
-                    style={{ color: th.inkMuted }}>
-                    {TAGS[tagIdx]}
+                  <span className="w-1.5 h-1.5 rounded-full bg-positive flex-shrink-0" />
+                  <span className="text-[11.5px] tracking-wide truncate" style={{ color: th.inkMuted }}>
+                    {contextLine(traffic)}
                   </span>
                 </span>
               </span>
