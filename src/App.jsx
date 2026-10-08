@@ -52,6 +52,11 @@ export default function App() {
   // Sync theme to <html data-theme> so CSS variables switch globally
   useEffect(() => {
     document.documentElement.dataset.theme = isDark ? 'dark' : 'light'
+    // La barre d'état du téléphone suit le thème de l'app. Figée en noir, elle
+    // reste noire par-dessus un écran clair : la coupure entre le système et
+    // l'application est le premier détail qui signale « ceci est un site web ».
+    document.querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', isDark ? '#050505' : '#F7F5F0')
   }, [isDark])
 
   // Auto mode: Paris sunrise/sunset by month [rise_h, set_h] local time

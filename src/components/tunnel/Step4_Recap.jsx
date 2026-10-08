@@ -73,7 +73,7 @@ export default function Step4Recap({ onBack }) {
                 {price.final}€
               </span>
             )}
-            <span className="tnum" style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? 'var(--positive)' : th.inkFull }}>
+            <span className="tnum selectable" style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: promo && displayPrice !== price?.final ? 'var(--positive)' : th.inkFull }}>
               {displayPrice ?? '—'}
             </span>
             <span style={{ fontSize: '1.3rem', fontWeight: 800, color: promo && displayPrice !== price?.final ? 'var(--positive)' : 'var(--accent)', letterSpacing: '-0.02em' }}>€</span>

@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import PickupField from '../ui/PickupField'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
@@ -124,6 +125,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
             border: `1px solid ${th.border}`,
             maxHeight: DROPDOWN_MAX_H,
             overflowY: 'auto',
+            overscrollBehavior: 'contain',
           }}
         >
           {suggestions.map((s, i) => (
@@ -260,42 +262,12 @@ export default function Step1Route({ onNext }) {
         th={th}
       />
 
-      {/* Date/time */}
-      <div>
-        <div
-          className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
-          style={{
-            background: th.bgInput,
-            border: depart && arrive && !pickup
-              ? '1px solid color-mix(in srgb, var(--accent) 45%, transparent)'
-              : `1px solid ${th.border}`,
-            boxShadow: depart && arrive && !pickup
-              ? '0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent)'
-              : undefined,
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke={depart && arrive && !pickup ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
-            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-          </svg>
-          <input
-            type="datetime-local"
-            defaultValue={pickup ?? ''}
-            min={new Date().toISOString().slice(0, 16)}
-            onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
-            className="flex-1 bg-transparent text-sm outline-none"
-            style={{ color: th.inkHigh, colorScheme: th.inputScheme }}
-            aria-label="Date et heure de prise en charge"
-            aria-required="true"
-          />
-        </div>
-        {depart && arrive && !pickup && (
-          <p className="text-xs px-1 mt-1.5" style={{ color: 'color-mix(in srgb, var(--accent) 80%, transparent)' }}>
-            Sélectionnez une date et heure pour calculer le tarif
-          </p>
-        )}
-      </div>
+      <PickupField
+        th={th}
+        pickup={pickup}
+        highlight={Boolean(depart && arrive && !pickup)}
+        hint="Sélectionnez une date et heure pour calculer le tarif"
+      />
 
       {error && (
         <p className="text-sm text-center px-1" style={{ color: 'color-mix(in srgb, var(--danger) 80%, transparent)' }}>{error}</p>

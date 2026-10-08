@@ -303,6 +303,41 @@
   }
   body { overflow-wrap: break-word; }
 
+  /* ── Coque native ──────────────────────────────────────────────────────
+     Les gestes du navigateur sont ce qui trahit une PWA avant tout le reste :
+     la page qui rebondit en bout de course, le « tirer pour rafraîchir »
+     d'Android qui recharge l'app au milieu d'une réservation, la loupe iOS qui
+     surgit quand on garde le doigt sur un bouton. Aucune application native ne
+     fait ça, et aucun de ces comportements ne sert ici. */
+  html, body {
+    overscroll-behavior: none;
+    overflow-x: hidden;
+  }
+
+  body {
+    /* Le texte de l'interface ne se sélectionne pas — un appui long sur
+       « Réserver » doit déclencher le bouton, pas proposer « Copier ». Les
+       champs de saisie et tout ce qui porte .selectable gardent la sélection,
+       parce qu'une adresse ou un tarif, ça se copie légitimement. */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  input, textarea, select, [contenteditable], .selectable, .select-all {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+
+  /* Un panneau qui défile ne doit pas entraîner la page derrière lui une fois
+     arrivé en butée : c'est le « scroll chaining », et c'est exactement ce qui
+     fait qu'une feuille modale web ne ressemble pas à une feuille modale iOS. */
+  .scroll-area {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     background: var(--bg-base);
     color: var(--label);

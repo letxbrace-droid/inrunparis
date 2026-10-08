@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import PickupField from '../ui/PickupField'
 import useBookingStore from '../../store/useBookingStore'
 import useOSRM         from '../../hooks/useOSRM'
 import useGeolocation  from '../../hooks/useGeolocation'
@@ -705,41 +706,13 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
               )}
 
-              {/* Date/time */}
-              <div>
-                <div
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200"
-                  style={{
-                    background: th.bgInput,
-                    border: depart && arrive && !pickup
-                      ? '1px solid color-mix(in srgb, var(--accent) 40%, transparent)'
-                      : `1px solid ${th.border}`,
-                  }}
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                    stroke={depart && arrive && !pickup ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
-                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    style={{ flexShrink: 0 }}
-                  >
-                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-                  </svg>
-                  <input
-                    type="datetime-local"
-                    value={pickup ?? ''}
-                    min={new Date().toISOString().slice(0, 16)}
-                    onChange={(e) => useBookingStore.getState().setPickup(e.target.value || null)}
-                    className="flex-1 bg-transparent text-sm outline-none"
-                    style={{ color: pickup ? th.inkHigh : th.inkMuted, colorScheme: th.inputScheme }}
-                    aria-label="Date et heure de prise en charge"
-                    aria-required="true"
-                  />
-                </div>
-                {depart && arrive && !pickup && (
-                  <p className="text-xs px-1 mt-1.5" style={{ color: 'color-mix(in srgb, var(--accent) 80%, transparent)' }}>
-                    Sélectionnez une date et heure pour continuer
-                  </p>
-                )}
-              </div>
+              <PickupField
+                th={th}
+                pickup={pickup}
+                highlight={Boolean(depart && arrive && !pickup)}
+                hint="Sélectionnez une date et heure pour continuer"
+                iconSize={15}
+              />
 
               {/* Reserve CTA */}
               <GlowingCTA
