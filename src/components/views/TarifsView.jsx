@@ -27,11 +27,27 @@ const MAD_ROWS = [
   { duration: 'Journée',  note: '8h · Conseillé',  price: 'Sur devis', highlight: false },
 ]
 
+// Avis de clients réels. L'article L111-7-2 du Code de la consommation
+// impose, dès lors qu'on en publie : la note telle qu'elle a été donnée, la
+// date de l'expérience, et l'explication du mode de recueil et de contrôle
+// (voir /mentions-legales.html, section « Avis clients »).
+//
+// `rating` existe parce que les étoiles étaient auparavant codées en dur à 5
+// pour tous : un client ayant mis 4 en affichait 5. Une note affichée doit
+// venir de la donnée, sinon ce n'est plus un avis, c'est une décoration.
+//
+// `date` reste null tant que la date réelle de la course n'est pas renseignée.
+// Elle n'est pas affichée dans ce cas plutôt que d'être inventée — mais elle
+// est légalement requise, donc à compléter.
 const REVIEWS = [
-  { init: 'SM', name: 'Sophie M.', route: 'CDG → Paris 8e',           text: "Chauffeur ponctuel, tarif honoré sans discussion. Le service premium sans l'attente des applis." },
-  { init: 'TR', name: 'Thomas R.', route: 'Ris-Orangis → La Défense', text: 'Réservation WhatsApp, confirmation rapide, devis garanti. Ponctuel, discret, professionnel.'    },
-  { init: 'AK', name: 'Amina K.',  route: 'Orly → Versailles',        text: 'Service courtois, conduite souple. Une vraie alternative premium aux grandes plateformes.'        },
+  { init: 'SM', name: 'Sophie M.', route: 'CDG → Paris 8e',           rating: 5, date: null, text: "Chauffeur ponctuel, tarif honoré sans discussion. Le service premium sans l'attente des applis." },
+  { init: 'TR', name: 'Thomas R.', route: 'Ris-Orangis → La Défense', rating: 5, date: null, text: 'Réservation WhatsApp, confirmation rapide, devis garanti. Ponctuel, discret, professionnel.'    },
+  { init: 'AK', name: 'Amina K.',  route: 'Orly → Versailles',        rating: 5, date: null, text: 'Service courtois, conduite souple. Une vraie alternative premium aux grandes plateformes.'        },
 ]
+
+// La moyenne est calculée, jamais saisie : un « 5/5 » écrit en dur survit à
+// l'arrivée d'un avis à 3 étoiles, et devient faux sans que personne ne le voie.
+const AVG = (REVIEWS.reduce((a, r) => a + r.rating, 0) / REVIEWS.length).toFixed(1).replace(/\.0$/, '')
 
 const COMPARE = [
   'Prix annoncé avant le départ',
@@ -88,11 +104,12 @@ function PriceTag({ value, th, size = 16 }) {
   )
 }
 
-function StarRow() {
+function StarRow({ rating = 5 }) {
   return (
-    <div style={{ display: 'flex', gap: 2 }}>
+    <div style={{ display: 'flex', gap: 2 }} aria-label={`${rating} étoiles sur 5`}>
       {[1,2,3,4,5].map(s => (
-        <svg key={s} width="12" height="12" viewBox="0 0 24 24" fill="#F5C518">
+        <svg key={s} width="12" height="12" viewBox="0 0 24 24"
+             fill={s <= rating ? '#F5C518' : 'rgba(245,197,24,.22)'}>
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
         </svg>
       ))}
@@ -198,7 +215,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
               className="grid grid-cols-3 gap-3 mt-5 pt-5"
               style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
             >
-              {[{ val: '5/5', lab: 'Excellence' }, { val: '2 min', lab: 'Réponse' }, { val: 'EVTC', lab: 'Certifié' }].map((s, i) => (
+              {[{ val: `${AVG}/5`, lab: `${REVIEWS.length} avis` }, { val: '2 min', lab: 'Réponse' }, { val: 'EVTC', lab: 'Certifié' }].map((s, i) => (
                 <motion.div
                   key={s.lab}
                   initial={{ opacity: 0, y: 10 }}
@@ -368,7 +385,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   border: `1px solid ${th.borderFaint}`,
                 }}
               >
-                <StarRow />
+                <StarRow rating={r.rating} />
                 <p style={{ fontSize: 12.5, color: th.inkLow, lineHeight: 1.6, flex: 1 }}>{r.text}</p>
                 <div className="flex items-center gap-2.5">
                   <div
@@ -382,12 +399,25 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   </div>
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 600, color: th.inkFull }}>{r.name}</div>
-                    <div style={{ fontSize: 10, color: th.inkDim }}>{r.route}</div>
+                    <div style={{ fontSize: 10, color: th.inkDim }}>
+                      {r.route}{r.date ? ` · ${r.date}` : ''}
+                    </div>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          <p className="px-5 pt-1" style={{ fontSize: 10.5, lineHeight: 1.55, color: th.inkDim }}>
+            Avis de clients ayant effectué une course avec I&amp;N RUN, publiés
+            sans contrepartie et sans sélection.{' '}
+            <a
+              href="/inrunparis/mentions-legales.html#avis"
+              style={{ color: th.inkMid, textDecoration: 'underline' }}
+            >
+              Comment ils sont recueillis
+            </a>
+          </p>
         </motion.section>
       </div>
 
