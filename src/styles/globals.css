@@ -93,8 +93,13 @@
   :root {
     /* ── Accent ─────────────────────────────────────────────────── */
     --accent:        #FF5A1F;
-    --accent-2:      #FF5A1F;
-    --accent-press:  #e84000;
+    /* La braise claire, en haut à gauche des dégradés de marque — la lumière
+       vient d'en haut. En sRGB ce jeton valait exactement --accent : les deux
+       dégradés qui s'en servent étaient donc des aplats sur tout écran non-P3,
+       c'est-à-dire la majorité des Android et tous les navigateurs de bureau.
+       Seule la couche P3 les différenciait, et dans l'autre sens. */
+    --accent-2:      #FF7A3D;
+    --accent-press:  #E84000;
     --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
     --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
 
@@ -121,47 +126,75 @@
        Sémantique : --positive / --danger / --info  → fonctionnel pur
        Accent tiers: --gold / --indigo  → QUARANTAINE (jamais en CTA)
        ─────────────────────────────────────────────────────────────── */
-    --gold:   #F5C518;   /* étoiles d'avis, confettis de confirmation  */
-    --indigo: #6366f1;   /* favori « Travail »                        */
+    /* L'or des étoiles était #F5C518 — le jaune d'IMDb, reconnaissable et
+       emprunté. Celui-ci est plus chaud et plus profond : il appartient à la
+       même famille que l'accent au lieu de citer une autre marque. */
+    --gold:   #F2B82C;   /* étoiles d'avis, confettis de confirmation  */
+    /* Le violet du favori « Travail » était #6366f1, à deux doigts du bleu
+       --info : deux repères censés se distinguer et qui se confondaient. */
+    --indigo: #8A7CF7;   /* favori « Travail »                        */
 
-    /* ── AMOLED background hierarchy ────────────────────────────── */
-    --bg-grouped:    #030303;   /* deepest — true AMOLED      */
-    --bg-base:       #050505;   /* main app background         */
-    --bg-secondary:  #0B0B0B;   /* card level 1                */
-    --bg-tertiary:   #111111;   /* card level 2 / elevated     */
-    --bg-elevated:   #161616;   /* inputs / innermost          */
-    --bg-glass:      rgba(10,10,10,0.94);  /* nav chrome — near-solid  */
+    /* ── Hiérarchie des fonds — noir chaud ───────────────────────────
+       Les gris étaient parfaitement neutres (R=G=B). À côté d'un orange, un
+       gris neutre ne se lit pas comme neutre : il se lit comme FROID, et c'est
+       ce qui donne à une interface sombre son air de « thème sombre par
+       défaut » plutôt que de choix.
+       Chaque niveau porte donc quelques points de chaleur, et il en gagne en
+       s'élevant — une matière qui s'avance capte davantage la lumière de la
+       pièce. L'écart reste sous le seuil du nommable : on ne voit pas du brun,
+       on cesse seulement de voir du gris. */
+    --bg-grouped:    #040302;   /* deepest — true AMOLED      */
+    --bg-base:       #060504;   /* main app background         */
+    --bg-secondary:  #0C0A08;   /* card level 1                */
+    --bg-tertiary:   #13100D;   /* card level 2 / elevated     */
+    --bg-elevated:   #191512;   /* inputs / innermost          */
+    --bg-glass:      rgba(11,9,7,0.94);    /* nav chrome — near-solid  */
 
     /* Named surfaces — single source for useAppTheme + components */
-    --bg-panel:   #0B0B0B;
-    --bg-header:  #0D0D0D;
-    --bg-card:    #111111;
-    --bg-input:   #161616;
-    --bg-inset:   #141414;
-    --bg-hover:   #1A1A1A;
-    --bg-avatar:  #0A1828;
+    --bg-panel:   #0C0A08;
+    --bg-header:  #0E0C0A;
+    --bg-card:    #13100D;
+    --bg-input:   #191512;
+    --bg-inset:   #161310;
+    --bg-hover:   #201A16;
+    /* Le fond d'avatar était #0A1828, un bleu nuit — la seule surface froide
+       d'une interface entièrement chaude, et elle encadrait des initiales de
+       clients. */
+    --bg-avatar:  #1C1510;
 
     /* ── Labels — 4 levels only (Uber-style discipline) ─────────── */
+    /* Quatre niveaux, et les quatre doivent rester lisibles.
+       Le dernier était à 0,44 : mesuré sur la surface la plus claire, il
+       tombait à 3,94 contre les 4,5 exigés pour du texte courant. Il portait
+       des horaires et des mentions — pas de la décoration. 0,50 le ramène à
+       4,82 sans écraser la hiérarchie au-dessus. */
     --label:            #F5F1E8;
     --label-secondary:  rgba(245,241,232,0.82);
     --label-tertiary:   rgba(245,241,232,0.62);
-    --label-quaternary: rgba(245,241,232,0.44);
+    --label-quaternary: rgba(245,241,232,0.50);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
-    --separator:        rgba(255,255,255,0.07);
-    --separator-strong: rgba(255,255,255,0.11);
-    --separator-faint:  rgba(255,255,255,0.05);
-    --fill:             rgba(255,255,255,0.05);
-    --fill-secondary:   rgba(255,255,255,0.04);
-    --handle:           rgba(255,255,255,0.18);
+    /* Filets et remplissages tirent vers le blanc chaud du texte, pas vers le
+       blanc pur : un liseré neutre sur une surface chaude se voit comme bleu. */
+    --separator:        rgba(255,246,236,0.07);
+    --separator-strong: rgba(255,246,236,0.12);
+    --separator-faint:  rgba(255,246,236,0.05);
+    --fill:             rgba(255,246,236,0.05);
+    --fill-secondary:   rgba(255,246,236,0.035);
+    --handle:           rgba(255,246,236,0.20);
     --overlay:          rgba(0,0,0,0.72);
     --scrim:            rgba(0,0,0,0.90);
 
     /* ── Semantic status ────────────────────────────────────────── */
-    --positive:     #34d399;
+    /* Les couleurs sémantiques venaient telles quelles d'une palette générique.
+       Quatre teintes sans rapport entre elles, dont aucune n'avait été accordée
+       au reste. Retendues ici vers une même famille — un peu moins saturées, un
+       peu plus chaudes — pour qu'elles se lisent comme appartenant à cette
+       application plutôt qu'importées. */
+    --positive:     #3CCB8E;
     --positive-dim: color-mix(in srgb, var(--positive) 25%, transparent);
-    --info:         #3b82f6;
-    --danger:       #f87171;
+    --info:         #5B8DEF;
+    --danger:       #FF6B5C;
 
     /* ── Geometry ───────────────────────────────────────────────── */
     --r-card:    16px;
@@ -202,7 +235,7 @@
   @supports (color: color(display-p3 1 1 1)) {
     :root {
       --accent:       color(display-p3 1 0.40 0.16);
-      --accent-2:     color(display-p3 1 0.31 0.08);
+      --accent-2:     color(display-p3 1 0.52 0.28);
       --accent-press: color(display-p3 0.92 0.28 0.04);
     }
   }
@@ -244,10 +277,16 @@
     --bg-avatar:  #E0DDD6;
 
     /* High-contrast editorial ink — readable, not washed out */
+    /* Le mode clair était bien plus sévère que le sombre : son niveau le plus
+       pâle mesurait 2,44 — à peine plus de la moitié du seuil — et le
+       tertiaire lui-même échouait à 4,43. Sur fond clair, quatre paliers
+       d'opacité ne peuvent pas être à la fois tous lisibles et tous
+       distincts ; l'échelle est donc resserrée plutôt que laissée mentir.
+       1,00 / 0,78 / 0,66 / 0,60 — le dernier passe à 4,76. */
     --label:            #0D0D0D;
-    --label-secondary:  rgba(13,13,13,0.80);
-    --label-tertiary:   rgba(13,13,13,0.58);
-    --label-quaternary: rgba(13,13,13,0.38);
+    --label-secondary:  rgba(13,13,13,0.78);
+    --label-tertiary:   rgba(13,13,13,0.66);
+    --label-quaternary: rgba(13,13,13,0.60);
 
     /* Crisp 1-px hairlines instead of diffuse blur */
     --separator:        rgba(0,0,0,0.10);
@@ -259,10 +298,11 @@
     --overlay:          rgba(0,0,0,0.35);
     --scrim:            rgba(0,0,0,0.50);
 
-    --positive:     #047857;
-    --positive-dim: rgba(5,150,105,0.25);
-    --info:         #2563eb;
-    --danger:       #dc2626;
+    /* Mêmes familles qu'en sombre, assombries pour tenir sur fond clair. */
+    --positive:     #0A7A52;
+    --positive-dim: rgba(10,122,82,0.22);
+    --info:         #2B5FD9;
+    --danger:       #D43A2C;
 
     /* Flat editorial elevations — 0 blur, sharp outline */
     --elev-1:     0 0 0 1px rgba(0,0,0,0.08);
@@ -453,7 +493,7 @@
   .cta-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(155deg, #FF6B3D 0%, var(--accent) 42%, var(--accent-press) 100%);
+    background: linear-gradient(155deg, var(--accent-2) 0%, var(--accent) 42%, var(--accent-press) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.28),
       inset 0 -1px 0 rgba(0,0,0,0.32),
