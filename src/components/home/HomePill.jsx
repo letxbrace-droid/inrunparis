@@ -83,11 +83,16 @@ export default function HomePill({ onOpenSheet }) {
   useEffect(() => { fetchAll() }, [fetchAll])
   const [savingFor, setSavingFor] = useState(null) // 'depart' | 'arrive' | null
 
-  // Hydrate input display from persisted store on mount
+  // Les champs suivent le store, pas seulement le premier rendu.
+  // Cet effet ne tournait qu'au montage. La puce « Refaire » remplit le store
+  // bien après : le trajet revenait, le prix se calculait, et les deux champs
+  // d'adresse restaient vides — un formulaire blanc surmonté d'un tarif.
   useEffect(() => {
     if (depart?.name) setDepartQuery(displayAddr(depart))
+  }, [depart])
+  useEffect(() => {
     if (arrive?.name) setArriveQuery(displayAddr(arrive))
-  }, []) // eslint-disable-line
+  }, [arrive])
 
   // Auto-calculate route when both endpoints change
   useEffect(() => {
@@ -719,13 +724,49 @@ export default function HomePill({ onOpenSheet }) {
                 </div>
               )}
 
-              {route && price && !routeLoading && (
+              {/* Le trajet d'abord, le tarif ensuite.
+                  Le prix s'affichait dès que la route était connue — mais sans
+                  heure de prise en charge, le moteur retombe sur l'heure
+                  COURANTE pour décider du tarif de nuit. Ouvrir l'app à 23 h
+                  pour un départ à midi affichait donc un prix majoré de 15 %
+                  qui baissait ensuite tout seul ; l'inverse était pire. Un
+                  tarif qui bouge après avoir été montré, c'est exactement ce
+                  que « prix fixe, annoncé avant le départ » promet de ne pas
+                  faire.
+                  La distance et la durée, elles, ne dépendent pas de l'heure :
+                  elles s'affichent tout de suite. */}
+              {route && !routeLoading && (
                 <div className="flex items-center justify-center gap-3">
                   <span className="font-mono text-xs text-ink-muted">{route.km.toFixed(1)} km</span>
                   <span className="text-ink-muted text-xs">·</span>
                   <span className="font-mono text-xs text-ink-muted">≈ {Math.round(route.mins)} min</span>
                   <span className="text-ink-muted text-xs">·</span>
-                  <span className="font-brand font-bold text-accent text-base tnum">{price.final.toFixed(2)} €</span>
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    {pickup && price ? (
+                      <motion.span
+                        key="prix"
+                        layout
+                        initial={{ opacity: 0, scale: 0.72, filter: 'blur(5px)' }}
+                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+                        className="font-brand font-bold text-accent text-base tnum"
+                      >
+                        {price.final.toFixed(2)} €
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="attente"
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-xs"
+                        style={{ color: 'var(--ink-muted)' }}
+                      >
+                        tarif à l&apos;heure choisie
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
