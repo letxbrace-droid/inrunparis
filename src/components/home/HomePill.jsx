@@ -442,7 +442,7 @@ export default function HomePill({ onOpenSheet }) {
       {/* ──────────── CARD (expanded) ──────────── */}
       <div
         role="dialog"
-        aria-label="Réservation"
+        aria-label="Saisie du trajet"
         aria-modal={open}
         className="fixed left-0 right-0 z-[25] flex justify-center will-change-transform"
         style={{

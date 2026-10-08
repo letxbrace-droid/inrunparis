@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup, useMotionValue, useDragControls, animate } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
@@ -10,6 +10,41 @@ import { haptic }   from '../../utils/haptics'
 const STEPS = ['Trajet', 'Tarif', 'Options']
 
 const SPRING = { type: 'spring', stiffness: 380, damping: 32 }
+
+/**
+ * Les crans de la feuille, en fraction de hauteur d'écran.
+ *
+ * La feuille était fixe — 93 % tout le temps, carte invisible, et une poignée
+ * qui annonçait qu'on pouvait la tirer sans que rien ne se passe. Une
+ * affordance qui ment coûte plus cher que pas d'affordance du tout.
+ *
+ * Le cran de repos vient de l'ÉTAPE, pas d'un pourcentage choisi d'avance :
+ * saisir deux adresses demande toute la hauteur et le clavier ; lire un tarif
+ * demande de voir la route sur la carte derrière. Deux crans atteignables à la
+ * fois — celui de l'étape et le coup d'œil — parce qu'au-delà de trois, plus
+ * personne ne sait où la feuille va atterrir.
+ */
+const DETENTS = { peek: 0.30, mid: 0.60, full: 0.93 }
+
+/** Le cran naturel de chaque étape. */
+const stepDetent = (step) => (step === 2 || step === 4 ? 'mid' : 'full')
+
+/**
+ * Où un geste se termine, et non où le doigt s'est levé.
+ *
+ * Un lancer doit atterrir là où il a été lancé : c'est la projection
+ * qu'utilise UIScrollView, avec un taux de décélération de 0,998 par
+ * milliseconde — soit 0,998 / (1 − 0,998) ≈ 499 ms de course restante.
+ * Framer donne la vélocité en px/s, d'où la division par 1000.
+ *
+ * Sans ça, on s'accroche au cran le plus proche du point de relâchement, et
+ * une chiquenaude vive vers le bas remonte la feuille : le geste exact que
+ * tout le monde fait pour la fermer.
+ */
+const project = (position, velocity) => position + (velocity / 1000) * 499
+
+/** Au-delà, un geste est une chiquenaude même s'il a parcouru peu de chemin. */
+const FLICK = 500
 
 function StepDot({ index, current, th }) {
   const state = index + 1 < current ? 'done' : index + 1 === current ? 'active' : 'future'
@@ -88,6 +123,39 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
 
   useEffect(() => { setCollapsed(false) }, [step])
 
+  // ── Crans ───────────────────────────────────────────────────────────────
+  const natural = stepDetent(step)
+  const [detent, setDetent] = useState(natural)
+  const y = useMotionValue(0)
+  const dragControls = useDragControls()
+
+  const vh = () => (typeof window === 'undefined' ? 800 : window.innerHeight)
+  // La feuille est dimensionnée au plus grand cran et translatée vers le bas
+  // pour en montrer moins : la hauteur ne change jamais, donc le contenu ne
+  // se remet pas en page à chaque cran et le bouton d'action ne saute pas.
+  const offsetOf = (d) => (DETENTS.full - DETENTS[d]) * vh()
+
+  useEffect(() => { setDetent(natural) }, [natural])
+  useEffect(() => {
+    if (!open) return
+    animate(y, offsetOf(detent), { type: 'spring', stiffness: 320, damping: 34 })
+  }, [detent, open]) // eslint-disable-line
+
+  const settle = (_e, info) => {
+    const landing = project(y.get(), info.velocity.y)
+    const reach = [natural, 'peek']
+    // Lancée franchement vers le bas au-delà du coup d'œil : on ferme.
+    if (info.velocity.y > FLICK && landing > offsetOf('peek') + vh() * 0.08) {
+      onClose?.()
+      return
+    }
+    const target = reach.reduce((best, d) =>
+      Math.abs(offsetOf(d) - landing) < Math.abs(offsetOf(best) - landing) ? d : best, reach[0])
+    if (target !== detent) haptic.light()
+    setDetent(target)
+    animate(y, offsetOf(target), { type: 'spring', stiffness: 320, damping: 34 })
+  }
+
   // Haptic tap on every step advance/retreat (skip initial mount)
   const isFirstStepRef = useRef(true)
   useEffect(() => {
@@ -106,9 +174,13 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         aria-hidden="true"
         className="fixed inset-0 z-[90] transition-all duration-500"
         style={{
+          // La modalité suit le cran, pas l'ouverture.
+          // Au cran de coup d'œil, la carte DERRIÈRE est tout l'intérêt : la
+          // voiler et lui couper les événements revient à annuler la raison
+          // pour laquelle on vient de réduire la feuille.
           background: isRecap ? 'rgba(0,0,0,.22)' : th.overlay,
-          opacity: open && !collapsed ? 1 : 0,
-          pointerEvents: open && !collapsed && !isRecap ? 'auto' : 'none',
+          opacity: open && !collapsed && detent === 'full' ? 1 : 0,
+          pointerEvents: open && !collapsed && !isRecap && detent === 'full' ? 'auto' : 'none',
         }}
       />
 
@@ -152,12 +224,22 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
         className="fixed bottom-0 left-0 right-0 z-[95] flex justify-center"
         style={{ pointerEvents: open ? 'auto' : 'none' }}
       >
-        <div
+        <motion.div
           className="w-full max-w-[560px] flex flex-col"
+          drag="y"
+          // Le glissement ne part que de l'en-tête : à l'intérieur, le doigt
+          // appartient au contenu qui défile. C'est la seule façon d'avoir une
+          // feuille tirable ET un contenu scrollable sans qu'ils se disputent.
+          dragListener={false}
+          dragControls={dragControls}
+          dragConstraints={{ top: 0, bottom: offsetOf('peek') }}
+          dragElastic={{ top: 0.04, bottom: 0.18 }}
+          dragMomentum={false}
+          onDragEnd={settle}
           style={{
+            y,
             willChange:   'transform, opacity',
-            height:       step === 4 ? 'auto' : '93dvh',
-            maxHeight:    step === 4 ? '72dvh' : '93dvh',
+            height:       '93dvh',
             borderRadius: '24px 24px 0 0',
             overflow:     'hidden',
             background:   th.bgPanel,
@@ -167,10 +249,11 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             boxShadow: th.isDark
               ? '0 -24px 56px rgba(0,0,0,0.90), 0 -6px 40px -8px rgba(255,90,31,0.18), 0 -2px 12px -2px rgba(255,90,31,0.10)'
               : `0 -8px 32px ${th.scrim}`,
-            transform:    sheetOut ? 'translateY(100%)' : 'translateY(0)',
             opacity:      open ? 1 : 0,
-            transition:   'transform .44s cubic-bezier(.32,1,.55,1), opacity .28s ease, height .4s cubic-bezier(.32,1,.55,1), max-height .4s cubic-bezier(.32,1,.55,1)',
+            transition:   'opacity .28s ease',
           }}
+          animate={sheetOut ? { y: vh() } : {}}
+          transition={{ type: 'spring', stiffness: 320, damping: 34 }}
         >
           {/* Specular top edge — accent halo on dark, white on light */}
           {th.isDark && (
@@ -189,10 +272,12 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           >
             {/* Handle — tappable on step 4 to collapse */}
             <div
-              onClick={isRecap ? () => setCollapsed(true) : undefined}
-              className={`flex flex-col items-center pt-3 pb-1 ${isRecap ? 'cursor-pointer active:opacity-60 transition-opacity' : ''}`}
-              aria-label={isRecap ? 'Réduire pour voir la carte' : undefined}
-              role={isRecap ? 'button' : undefined}
+              onPointerDown={(e) => dragControls.start(e)}
+              onClick={() => setDetent((d) => (d === 'peek' ? natural : 'peek'))}
+              className="flex flex-col items-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
+              style={{ touchAction: 'none' }}
+              aria-label={detent === 'peek' ? 'Déplier la réservation' : 'Réduire pour voir la carte'}
+              role="button"
             >
               <div className="w-10 h-[3px] rounded-full" style={{ background: th.handle }} />
               {isRecap && (
@@ -268,7 +353,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               </AnimatePresence>
             </LayoutGroup>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   )
