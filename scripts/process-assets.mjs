@@ -76,20 +76,10 @@ async function buildLineArt(name, width) {
 const IOS = [
   [1170, 2532], [1179, 2556], [1290, 2796], [1284, 2778], [1125, 2436],
 ]
-// Full-bleed evergreen splash (Swace night Paris + trace) for the in-app
-// React SplashScreen background — scrim the corner watermark.
-async function buildEvergreen() {
-  const meta = await sharp(`${SRC}/splash-evergreen.png`).metadata()
-  const W = meta.width, H = meta.height
-  const scrim = Buffer.from(
-    `<svg width="${W}" height="${H}"><defs><radialGradient id="g" cx="90%" cy="95%" r="13%">
-       <stop offset="0%" stop-color="#050505" stop-opacity="0.98"/>
-       <stop offset="65%" stop-color="#050505" stop-opacity="0.7"/>
-       <stop offset="100%" stop-color="#050505" stop-opacity="0"/>
-     </radialGradient></defs><rect width="${W}" height="${H}" fill="url(#g)"/></svg>`)
-  await sharp(`${SRC}/splash-evergreen.png`).composite([{ input: scrim }]).jpeg({ quality: 90 }).toFile('public/brand/splash-evergreen.jpg')
-  console.log('evergreen ✓')
-}
+// NOTE — buildEvergreen() a été supprimé avec l'écran d'intro React, qui était
+// le seul consommateur de splash-evergreen.jpg (128 Ko déployés). La SOURCE
+// splash-evergreen.png reste indispensable : buildSplash() en tire les cinq
+// apple-touch-startup-image.
 
 async function buildSplash() {
   for (const [w, h] of IOS) {
@@ -138,6 +128,5 @@ await sliceTrio('payment',       ['pay-card', 'pay-cash', 'pay-transfer'])
 await sliceTrio('poi',          ['poi-plane', 'poi-train', 'poi-eiffel'])
 await sliceTrio('fav',          ['fav-home', 'fav-work', 'fav-pin'])
 await sliceTrio('ambiance',     ['ambiance-music', 'ambiance-radio', 'ambiance-silence'])
-await buildEvergreen()
 await buildSplash()
 console.log('done')

@@ -1,7 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-// Code-split the vector map (maplibre-gl ~280kb gzip) into its own chunk — it
-// loads during the splash, so the initial bundle stays lean.
+// La carte part dans son propre morceau : 47 ko gzip que la plupart des
+// visites n'ont pas besoin d'attendre pour voir la pastille de réservation.
 const LeafletMap = lazy(() => import('./components/map/LeafletMap'))
 import TopBar              from './components/layout/TopBar'
 import SideDrawer          from './components/layout/SideDrawer'
@@ -23,16 +23,12 @@ import HomePill            from './components/home/HomePill'
 import AwaitingCard        from './components/home/AwaitingCard'
 import BookingConfirmToast from './components/ui/BookingConfirmToast'
 import InstallPrompt       from './components/ui/InstallPrompt'
-import SplashScreen        from './components/ui/SplashScreen'
 import useBookingStore     from './store/useBookingStore'
 import useWakeLock         from './hooks/useWakeLock'
 
 const OVERLAY_VIEWS = ['tarifs', 'call', 'courses', 'faq', 'legal']
 
-const SPLASH_KEY = 'inr-splash'
-
 export default function App() {
-  const [splash,      setSplash]      = useState(() => !sessionStorage.getItem(SPLASH_KEY))
   const [drawerOpen,  setDrawerOpen]  = useState(false)
   const [sheetOpen,   setSheetOpen]   = useState(false)
   const [sheetStep,   setSheetStep]   = useState(1)
@@ -164,13 +160,15 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
     <div className="relative w-full h-full overflow-hidden bg-bg-base">
-      {/* Splash screen — plays once per browser session */}
-      {splash && (
-        <SplashScreen onDone={() => {
-          sessionStorage.setItem(SPLASH_KEY, '1')
-          setSplash(false)
-        }} />
-      )}
+      {/* L'écran d'intro JavaScript a été retiré.
+          Il bloquait 2,96 s à chaque session (2400 ms + 560 ms de sortie) pour
+          masquer un chargement qui n'avait pas lieu : l'app est déjà prête
+          derrière. Et les utilisateurs qui l'ont installée en voyaient DEUX —
+          les apple-touch-startup-image s'affichent instantanément au
+          lancement, sans JavaScript, puis celui-ci rajoutait trois secondes.
+          Le code l'admettait déjà : il se sautait entièrement sous
+          prefers-reduced-motion. Une animation qu'on accepte de sauter sans
+          perte est décorative. */}
       {/* La couche d'accueil, et sa parallaxe.
           Quand une vue est poussée par-dessus, celle qui reste dessous recule
           et s'assombrit. Sans ce recul, une vue qui glisse ne se lit pas comme
