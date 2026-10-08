@@ -29,18 +29,28 @@ export default function Step4Recap({ onBack }) {
   const { depart, arrive, pickup, price, promo, ambiance, clim, options, clientName, payment } = useBookingStore()
   const displayPrice = applyPromoDiscount(price?.final, promo)
 
-  const allChips = [
-    clientName,
-    AMBIANCE_LABEL[ambiance],
-    clim && `${clim}°C`,
-    PAYMENT_LABEL[payment],
-    promo && `🎟 ${promo.code}`,
-    options.wifi        && 'Wi-Fi',
-    options.eau         && 'Eau',
-    options.usb         && 'USB',
-    options.confiseries && 'Confiseries',
-    options.siege       && 'Siège enfant',
-  ].filter(Boolean)
+  // Un récapitulatif sert à vérifier avant de s'engager, et une valeur sans
+  // libellé ne se vérifie pas.
+  //
+  // Tout était aplati dans une seule rangée de pastilles identiques : le
+  // prénom du client s'affichait à côté de « Eau » et de « 21°C », comme si
+  // la personne qui voyage était une option de confort. « Carte » ne disait
+  // pas qu'il s'agissait du paiement, et « 21°C » ne disait pas qu'il
+  // s'agissait de la climatisation. Sur le dernier écran avant l'engagement,
+  // ce sont les libellés qui portent l'information, pas les valeurs.
+  const summary = [
+    { label: 'Passager',   value: clientName },
+    { label: 'Paiement',   value: PAYMENT_LABEL[payment] },
+    { label: 'Ambiance',   value: [AMBIANCE_LABEL[ambiance], clim && `${clim}°C`].filter(Boolean).join(' · ') },
+    { label: 'À bord',     value: [
+        options.wifi        && 'Wi-Fi',
+        options.eau         && 'Eau',
+        options.usb         && 'USB',
+        options.confiseries && 'Confiseries',
+        options.siege       && 'Siège enfant',
+      ].filter(Boolean).join(' · ') },
+    { label: 'Code promo', value: promo?.code, accent: true },
+  ].filter((r) => r.value)
 
   const handleSend = () => {
     if (sent) return
@@ -139,27 +149,28 @@ export default function Step4Recap({ onBack }) {
           </span>
         </div>
 
-        {/* TOUS LES CHIPS — nom + ambiance + clim + paiement + options */}
-        {allChips.length > 0 && (
+        {/* RÉCAPITULATIF DÉTAILLÉ — une ligne par nature d'information */}
+        {summary.length > 0 && (
           <>
             <Div th={th} />
-            <div className="flex flex-wrap gap-1.5 px-4 py-2.5">
-              {allChips.map((chip) => (
-                <span
-                  key={chip}
-                  className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
-                  style={{
-                    background: chip === clientName
-                      ? 'color-mix(in srgb, var(--accent) 10%, transparent)'
-                      : th.bgInput,
-                    color: chip === clientName ? 'var(--accent)' : th.inkMid,
-                    border: `1px solid ${chip === clientName ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : th.borderFaint}`,
-                  }}
-                >
-                  {chip}
-                </span>
+            <dl className="flex flex-col gap-2 px-4 py-3">
+              {summary.map(({ label, value, accent }) => (
+                <div key={label} className="flex items-baseline gap-3">
+                  <dt
+                    className="text-[10px] font-bold uppercase tracking-[.09em] flex-shrink-0"
+                    style={{ color: th.inkDim, width: 82 }}
+                  >
+                    {label}
+                  </dt>
+                  <dd
+                    className="text-[12.5px] font-semibold flex-1 min-w-0"
+                    style={{ color: accent ? 'var(--accent)' : th.inkFull }}
+                  >
+                    {value}
+                  </dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </>
         )}
       </div>

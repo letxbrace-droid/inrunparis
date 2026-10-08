@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import useAppTheme from '../../hooks/useAppTheme'
 
 export default function FloatingInput({
@@ -7,6 +7,12 @@ export default function FloatingInput({
   className = '',
 }) {
   const th = useAppTheme()
+  // Le libellé flottant n'était relié à rien : un <label> posé à côté d'un
+  // <input>, sans htmlFor ni id. À l'écran on lit « Prénom » ; au lecteur
+  // d'écran, un champ de saisie sans nom — dans le formulaire qui collecte
+  // justement le nom et l'email du client. Toucher le libellé ne donnait pas
+  // le focus non plus.
+  const id = useId()
   const [focused, setFocused] = useState(false)
   const hasValue = value && value.length > 0
   const raised   = focused || hasValue
@@ -14,6 +20,7 @@ export default function FloatingInput({
   return (
     <div className={`relative ${className}`}>
       <input
+        id={id}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -35,6 +42,7 @@ export default function FloatingInput({
         }}
       />
       <label
+        htmlFor={id}
         className="absolute left-4 pointer-events-none transition-all duration-200"
         style={{
           top:           raised ? '8px' : '50%',
