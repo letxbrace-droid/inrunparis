@@ -530,18 +530,22 @@ export default function Step3Options({ onNext, onBack }) {
       {/* ── À bord, inclus — trust line, not a fake interactive section ── */}
       <motion.section variants={sectionV}>
         <div
-          className="flex items-center gap-2.5 px-4 py-3 rounded-2xl"
+          className="flex flex-wrap items-center gap-x-2.5 gap-y-2 px-4 py-3 rounded-2xl"
           style={{
             background: th.bgInput,
             border: `1px solid ${th.border}`,
             boxShadow: `inset 0 1px 0 ${th.isDark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.60)'}`,
           }}
         >
+          {/* Trois libellés forcés sur une ligne par `flex-1` : « Eau minérale »
+              s'affichait « Eau mi… ». C'est une liste de ce qui est à bord, pas
+              un contrôle — elle a le droit de passer à la ligne, et une
+              prestation dont on ne lit pas le nom ne vaut pas d'être annoncée. */}
           {PRESTATIONS.map(({ key, label, img }, i) => (
-            <span key={key} className="flex items-center gap-1.5 flex-1 min-w-0">
-              {i > 0 && <span className="flex-shrink-0" style={{ color: th.borderStrong }}>·</span>}
+            <span key={key} className="flex items-center gap-1.5">
+              {i > 0 && <span style={{ color: th.borderStrong }}>·</span>}
               <img src={img} alt="" aria-hidden="true" className="flex-shrink-0" style={{ width: 15, height: 15, objectFit: 'contain' }} />
-              <span className="text-[11.5px] font-semibold truncate" style={{ color: th.inkMid }}>{label}</span>
+              <span className="text-[11.5px] font-semibold whitespace-nowrap" style={{ color: th.inkMid }}>{label}</span>
             </span>
           ))}
           <span

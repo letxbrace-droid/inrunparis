@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, LayoutGroup, useMotionValue, useDragControls, animate } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup, useMotionValue, useTransform, useDragControls, animate } from 'framer-motion'
 import Step1Route   from './Step1_Route'
 import Step2Price   from './Step2_Price'
 import Step3Options from './Step3_Options'
@@ -125,25 +125,89 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
 
   // ── Crans ───────────────────────────────────────────────────────────────
   const natural = stepDetent(step)
-  const [detent, setDetent] = useState(natural)
+  const [detent, setDetent] = useState('natural')
   const y = useMotionValue(0)
   const dragControls = useDragControls()
+  const headerRef = useRef(null)
+  const scrollRef = useRef(null)
+  const [fit, setFit] = useState(null)
 
   const vh = () => (typeof window === 'undefined' ? 800 : window.innerHeight)
   // La feuille est dimensionnée au plus grand cran et translatée vers le bas
   // pour en montrer moins : la hauteur ne change jamais, donc le contenu ne
   // se remet pas en page à chaque cran et le bouton d'action ne saute pas.
-  const offsetOf = (d) => (DETENTS.full - DETENTS[d]) * vh()
+  // La hauteur réellement visible de la feuille, suivie image par image.
+  //
+  // Le panneau garde une hauteur fixe et descend pour en montrer moins — c'est
+  // ce qui évite que le contenu se remette en page à chaque cran. Mais son
+  // contenu, lui, se dispose depuis le HAUT du panneau : au cran bas, le
+  // panneau dépassait de 333 px sous l'écran et le bouton d'action tombait
+  // avec. La feuille tenait son contenu et coupait la seule chose sur
+  // laquelle il faut appuyer.
+  // La colonne intérieure est donc bornée à la zone visible, pas au panneau.
+  const visibleH = useTransform(y, (v) => `${Math.max(120, DETENTS.full * vh() - v)}px`)
 
-  useEffect(() => { setDetent(natural) }, [natural])
+  const fracOf = (d) => (d === 'natural' ? (step === 1 ? DETENTS.full : fit ?? DETENTS[natural]) : DETENTS[d])
+  const offsetOf = (d) => (DETENTS.full - fracOf(d)) * vh()
+
+  // Le cran dérivé du CONTENU, pas du numéro d'étape.
+  //
+  // L'étape « Options » tient dans la moitié d'un écran, et la feuille lui
+  // donnait 93 % : une grande zone vide sous le dernier champ. La recherche
+  // est explicite là-dessus — dériver les crans du contenu, pas de
+  // pourcentages fixes. On mesure donc ce que l'étape occupe réellement et on
+  // s'arrête là.
+  //
+  // L'étape 1 fait exception et garde toute la hauteur : sa liste de
+  // suggestions n'existe pas encore au moment de la mesure, et le clavier
+  // mangera la moitié de ce qui reste.
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    // On mesure l'ENFANT, pas le conteneur. Le conteneur porte `flex-1` : son
+    // scrollHeight vaut au minimum sa hauteur étirée, donc il rapportait
+    // toujours la hauteur de la feuille — et le cran « mesuré » retombait
+    // systématiquement sur 93 %, c'est-à-dire sur ce qu'il devait corriger.
+    const measure = () => {
+      const content = el.firstElementChild
+      if (!content) return
+      // getBoundingClientRect() de l'enfant ignore le rembourrage du parent et
+      // la zone sûre du bas. Les oublier rognait le bouton d'action de
+      // quelques dizaines de pixels : la feuille tenait son contenu et coupait
+      // la seule chose sur laquelle il faut appuyer.
+      const cs = getComputedStyle(el)
+      const pad = parseFloat(cs.paddingTop || 0) + parseFloat(cs.paddingBottom || 0)
+      const safe = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--safe-bot') || 0,
+      ) || 0
+      const h = (headerRef.current?.offsetHeight ?? 0)
+        + content.getBoundingClientRect().height + pad + safe + 24
+      setFit(Math.min(DETENTS.full, Math.max(DETENTS.peek, h / vh())))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    if (el.firstElementChild) ro.observe(el.firstElementChild)
+    return () => ro.disconnect()
+  }, [step])
+
+  // Le cran ne revient à sa position de repos qu'au CHANGEMENT D'ÉTAPE.
+  // Avec `fit` dans les dépendances, chaque nouvelle mesure du contenu
+  // réinitialisait le cran — donc un glissement vers le coup d'œil était
+  // annulé par la mesure qui suivait, et la feuille remontait toute seule
+  // sous le doigt qui venait de la baisser.
+  useEffect(() => { setDetent('natural') }, [step])
   useEffect(() => {
     if (!open) return
     animate(y, offsetOf(detent), { type: 'spring', stiffness: 320, damping: 34 })
-  }, [detent, open]) // eslint-disable-line
+    // `fit` fait partie des dépendances : sans lui, la feuille se plaçait une
+    // fois puis ignorait la mesure du contenu qui arrivait juste après — elle
+    // restait au cran d'avant pendant que la colonne, elle, se redimensionnait.
+  }, [detent, open, fit]) // eslint-disable-line
 
   const settle = (_e, info) => {
     const landing = project(y.get(), info.velocity.y)
-    const reach = [natural, 'peek']
+    const reach = ['natural', 'peek']
     // Lancée franchement vers le bas au-delà du coup d'œil : on ferme.
     if (info.velocity.y > FLICK && landing > offsetOf('peek') + vh() * 0.08) {
       onClose?.()
@@ -179,8 +243,8 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           // voiler et lui couper les événements revient à annuler la raison
           // pour laquelle on vient de réduire la feuille.
           background: isRecap ? 'rgba(0,0,0,.22)' : th.overlay,
-          opacity: open && !collapsed && detent === 'full' ? 1 : 0,
-          pointerEvents: open && !collapsed && !isRecap && detent === 'full' ? 'auto' : 'none',
+          opacity: open && !collapsed && detent === 'natural' && fracOf('natural') > 0.8 ? 1 : 0,
+          pointerEvents: open && !collapsed && !isRecap && detent === 'natural' && fracOf('natural') > 0.8 ? 'auto' : 'none',
         }}
       />
 
@@ -255,6 +319,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           animate={sheetOut ? { y: vh() } : {}}
           transition={{ type: 'spring', stiffness: 320, damping: 34 }}
         >
+          <motion.div className="flex flex-col w-full min-h-0" style={{ height: visibleH }}>
           {/* Specular top edge — accent halo on dark, white on light */}
           {th.isDark && (
             <span aria-hidden="true" style={{
@@ -264,6 +329,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           )}
           {/* Header strip */}
           <div
+            ref={headerRef}
             className="flex-shrink-0"
             style={{
               background:   th.bgHeader,
@@ -273,7 +339,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             {/* Handle — tappable on step 4 to collapse */}
             <div
               onPointerDown={(e) => dragControls.start(e)}
-              onClick={() => setDetent((d) => (d === 'peek' ? natural : 'peek'))}
+              onClick={() => setDetent((d) => (d === 'peek' ? 'natural' : 'peek'))}
               className="flex flex-col items-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
               style={{ touchAction: 'none' }}
               aria-label={detent === 'peek' ? 'Déplier la réservation' : 'Réduire pour voir la carte'}
@@ -332,6 +398,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           {/* Content — slides between steps. Soft fade at the scroll edges so
               sections melt into the header/footer instead of clipping hard. */}
           <div
+            ref={scrollRef}
             className="flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-fade scroll-area"
             style={{ overscrollBehavior: 'contain' }}
           >
@@ -353,6 +420,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               </AnimatePresence>
             </LayoutGroup>
           </div>
+          </motion.div>
         </motion.div>
       </div>
     </>
