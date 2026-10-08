@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import useBookingStore from '../../store/useBookingStore'
 import useAppTheme from '../../hooks/useAppTheme'
+import PushView from '../ui/PushView'
 import { haptic } from '../../utils/haptics'
 import SignatureTrace from '../ui/SignatureTrace'
 import RouteTimeline from '../ui/RouteTimeline'
@@ -30,22 +31,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
   const redoBooking    = useBookingStore((s) => s.redoBooking)
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Mes courses"
-      aria-hidden={!open}
-      className="fixed inset-0 z-[80] flex flex-col will-change-transform"
-      style={{
-        background:    th.bgBase,
-        transform:     open ? 'translateX(0)' : 'translateX(100%)',
-        visibility:    open ? 'visible' : 'hidden',
-        pointerEvents: open ? 'auto' : 'none',
-        transition:    open
-          ? 'transform .34s cubic-bezier(.16,1,.3,1), visibility 0s linear 0s'
-          : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
-      }}
-    >
+    <PushView open={open} onClose={onClose} label="Mes courses">
       {/* Header */}
       <div
         className="relative flex items-center gap-4 px-5 flex-shrink-0 overflow-hidden"
@@ -224,6 +210,6 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
           </div>
         )}
       </div>
-    </div>
+    </PushView>
   )
 }

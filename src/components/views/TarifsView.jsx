@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import useAppTheme from '../../hooks/useAppTheme'
+import PushView from '../ui/PushView'
 import SignatureTrace from '../ui/SignatureTrace'
 
 const WA_MAD = `https://wa.me/33767742220?text=${encodeURIComponent('*DEMANDE DE DEVIS — MISE À DISPOSITION*\n\nBonjour Nourdine,\n\nJe souhaite réserver votre service de mise à disposition :\n\n📅 Date : \n🕒 Horaires : \n⏱️ Durée estimée : \n📍 Point de départ : \n🎯 Type de prestation : (Business / Mariage / Tourisme / Autre)\n👥 Nombre de passagers : \n\nMerci de me confirmer votre disponibilité et le tarif final.')}`
@@ -128,22 +129,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
   }
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Tarifs et services"
-      aria-hidden={!open}
-      className="fixed inset-0 z-[80] flex flex-col will-change-transform"
-      style={{
-        background:    th.bgBase,
-        transform:     open ? 'translateX(0)' : 'translateX(100%)',
-        visibility:    open ? 'visible' : 'hidden',
-        pointerEvents: open ? 'auto' : 'none',
-        transition:    open
-          ? 'transform .34s cubic-bezier(.16,1,.3,1), visibility 0s linear 0s'
-          : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
-      }}
-    >
+    <PushView open={open} onClose={onClose} label="Tarifs & services">
       {/* Header */}
       <div
         className="flex-shrink-0 flex items-center gap-3 px-5 relative z-10"
@@ -456,6 +442,6 @@ export default function TarifsView({ open, onClose, onReserve }) {
           Demander mon estimation
         </a>
       </div>
-    </div>
+    </PushView>
   )
 }

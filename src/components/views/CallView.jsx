@@ -1,4 +1,5 @@
 import useAppTheme from '../../hooks/useAppTheme'
+import PushView from '../ui/PushView'
 
 const PHONE      = '+33767742220'
 const PHONE_HREF = 'tel:+33767742220'
@@ -37,22 +38,7 @@ export default function CallView({ open, onClose }) {
   const th = useAppTheme()
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Contacter le chauffeur"
-      aria-hidden={!open}
-      className="fixed inset-0 z-[80] flex flex-col will-change-transform"
-      style={{
-        background: th.bgBase,
-        transform:     open ? 'translateX(0)' : 'translateX(100%)',
-        visibility:    open ? 'visible' : 'hidden',
-        pointerEvents: open ? 'auto' : 'none',
-        transition:    open
-          ? 'transform .34s cubic-bezier(.16,1,.3,1), visibility 0s linear 0s'
-          : 'transform .28s cubic-bezier(.55,0,.1,1), visibility 0s linear .28s',
-      }}
-    >
+    <PushView open={open} onClose={onClose} label="Contact">
 
       {/* Header */}
       <div
@@ -211,6 +197,6 @@ export default function CallView({ open, onClose }) {
         </div>
 
       </div>
-    </div>
+    </PushView>
   )
 }

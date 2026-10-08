@@ -171,6 +171,22 @@ export default function App() {
           setSplash(false)
         }} />
       )}
+      {/* La couche d'accueil, et sa parallaxe.
+          Quand une vue est poussée par-dessus, celle qui reste dessous recule
+          et s'assombrit. Sans ce recul, une vue qui glisse ne se lit pas comme
+          une pile mais comme un panneau qui passe devant — c'est la moitié du
+          geste natif, et c'est celle qu'on ne remarque que par son absence.
+          --push-in est posée par <PushView> à chaque frame du glissement, donc
+          l'accueil suit le doigt sans qu'aucun composant ne se re-rende. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          transform: 'translateX(calc(var(--push-in, 0) * -14%)) scale(calc(1 - var(--push-in, 0) * 0.04))',
+          transformOrigin: 'center left',
+          transition: 'transform .34s cubic-bezier(.16,1,.3,1)',
+          willChange: 'transform',
+        }}
+      >
       {/* Map — frozen (pointer-events-none) when any overlay is open.
           Lazy chunk; dark placeholder matches the map bg while it loads. */}
       <Suspense fallback={<div className="absolute inset-0 z-0" style={{ background: '#0b0c0e' }} />}>
@@ -225,6 +241,21 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+
+        {/* Le voile qui accompagne le recul. Un scrim coûte une seule couche
+            composée ; passer la couche entière en filter: brightness ferait
+            repeindre la carte à chaque frame. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: '#000',
+            opacity: 'calc(var(--push-in, 0) * 0.46)',
+            transition: 'opacity .34s cubic-bezier(.16,1,.3,1)',
+            zIndex: 60,
+          }}
+        />
+      </div>
 
       {/* Slide-in views */}
       <Suspense fallback={null}>
