@@ -2,10 +2,9 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import PickupField from '../ui/PickupField'
 import useBookingStore from '../../store/useBookingStore'
-import useOSRM         from '../../hooks/useOSRM'
+import useRoutePricing from '../../hooks/useRoutePricing'
 import useGeolocation  from '../../hooks/useGeolocation'
 import { searchPlaces, displayAddr } from '../../utils/geocoder'
-import { computePriceForBooking } from '../../utils/priceEngine'
 import GlowingCTA  from '../ui/GlowingCTA'
 import useAppTheme from '../../hooks/useAppTheme'
 
@@ -165,18 +164,9 @@ const IconArrive = (
 export default function Step1Route({ onNext }) {
   const th = useAppTheme()
   const { depart, arrive, pickup, vehicleType, setDepart, setArrive, setPrice, setRouteGeometry } = useBookingStore()
-  const { route, loading, error, fetchRoute } = useOSRM()
+  const { route, loading, error } = useRoutePricing()
   const { status: geoStatus, error: geoError, detect } = useGeolocation()
 
-  const handleCalculate = useCallback(async () => {
-    if (!depart || !arrive || !pickup) return
-    const result = await fetchRoute(depart, arrive)
-    if (result) {
-      setRouteGeometry(result.geometry)
-      const price = computePriceForBooking(result.km, result.mins, { pickup, depart, arrive, vehicleType })
-      setPrice(price)
-    }
-  }, [depart, arrive, pickup, vehicleType, fetchRoute, setPrice, setRouteGeometry])
 
   const handleGeolocate = useCallback(() => {
     detect((result) => {
@@ -302,7 +292,7 @@ export default function Step1Route({ onNext }) {
       )}
 
       <GlowingCTA
-        onClick={canProceed ? onNext : handleCalculate}
+        onClick={canProceed ? onNext : undefined}
         disabled={(!depart || !arrive || !pickup) || loading}
       >
         {loading ? (

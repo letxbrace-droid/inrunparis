@@ -2,9 +2,8 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PickupField from '../ui/PickupField'
 import useBookingStore from '../../store/useBookingStore'
-import useOSRM         from '../../hooks/useOSRM'
+import useRoutePricing from '../../hooks/useRoutePricing'
 import useGeolocation  from '../../hooks/useGeolocation'
-import { computePriceForBooking } from '../../utils/priceEngine'
 import { searchPlaces, displayAddr, TYPE_COLOR } from '../../utils/geocoder'
 import { PRICE } from '../../utils/priceEngine'
 import useTrafficWeather from '../../hooks/useTrafficWeather'
@@ -68,7 +67,7 @@ export default function HomePill({ onOpenSheet }) {
   const isDark = useBookingStore(s => s.isDark)
 
   // Route — local instance for display in the card
-  const { route, loading: routeLoading, fetchRoute } = useOSRM()
+  const { route, loading: routeLoading } = useRoutePricing()
 
   // GPS
   const { status: geoStatus, detect } = useGeolocation()
@@ -94,16 +93,6 @@ export default function HomePill({ onOpenSheet }) {
   useEffect(() => {
     if (arrive?.name) setArriveQuery(displayAddr(arrive))
   }, [arrive])
-
-  // Auto-calculate route when both endpoints change
-  useEffect(() => {
-    if (!depart || !arrive || routeLoading) return
-    fetchRoute(depart, arrive).then(result => {
-      if (!result) return
-      setRouteGeometry(result.geometry)
-      setPrice(computePriceForBooking(result.km, result.mins, { pickup, depart, arrive, vehicleType }))
-    })
-  }, [depart?.lat, depart?.lng, arrive?.lat, arrive?.lng]) // eslint-disable-line
 
   // Autocomplete trigger — passes a nearby center for location-biased / POI searches
   const triggerAC = useCallback((q, field) => {
