@@ -1,0 +1,168 @@
+rules_version = '2';
+
+// I&N RUN — règles Firestore
+//
+// Trois profils :
+//   · le public (PWA client, non authentifié) — peut DÉPOSER une demande de
+//     course en « a_confirmer » et lire un code promo qu'il connaît. Rien d'autre.
+//   · un chauffeur partenaire (authentifié, role 'partner') — voit les courses
+//     qui LUI sont assignées, et ne peut en changer que le statut.
+//   · le propriétaire (role 'owner') — voit et pilote tout.
+//
+// Le rôle n'est jamais dans le jeton : il est lu dans /chauffeurs/{uid}, qui
+// n'est modifiable que par le propriétaire. Un chauffeur ne peut donc pas
+// s'élever lui-même au rang de propriétaire.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── helpers ────────────────────────────────────────────────────────────
+    function signedIn() {
+      return request.auth != null;
+    }
+    // Pour une requête anonyme request.auth.uid vaut null, et comparer null
+    // réussit là où on ne veut pas : on substitue un identifiant qui n'existe
+    // dans aucune collection.
+    function uid() {
+      return signedIn() ? request.auth.uid : '__anonyme__';
+    }
+    // La fiche du demandeur, ou null s'il n'en a pas. get() rend null sur un
+    // document absent et .data sur null lève, d'où le exists() préalable.
+    function fiche() {
+      let ref = /databases/$(database)/documents/chauffeurs/$(uid());
+      return signedIn() && exists(ref) ? get(ref).data : null;
+    }
+    function isOwner() {
+      let f = fiche();
+      return f != null && f.role == 'owner' && f.actif == true;
+    }
+    function isDriver() {
+      let f = fiche();
+      return f != null && f.actif == true;
+    }
+    function touchedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    // ── /chauffeurs ────────────────────────────────────────────────────────
+    // Le téléphone et le n° de carte VTC d'un partenaire sont des données
+    // personnelles : un partenaire ne lit que sa propre fiche.
+    match /chauffeurs/{uid} {
+      allow get           : if isOwner() || (signedIn() && uid() == uid);
+      allow list          : if isOwner();
+      allow create, delete: if isOwner();
+      // Le propriétaire modifie tout ; un chauffeur ne corrige que ses
+      // coordonnées — jamais son rôle, son activation ni sa société.
+      allow update        : if isOwner()
+                             || (signedIn() && uid() == uid
+                                 && touchedOnly(['tel', 'vehicule', 'plaque', 'majAt']));
+    }
+
+    // ── /courses ───────────────────────────────────────────────────────────
+    // Cycle de vie :
+    //   a_confirmer ──(propriétaire)──> confirmee ──> assignee
+    //        │                              ▲            │
+    //        └──> refusee                   └─────────────┤ (le chauffeur refuse)
+    //                                                     ▼
+    //                                   acceptee ─> en_route ─> terminee
+    //   annulee : accessible au propriétaire depuis n'importe quel état.
+    match /courses/{courseId} {
+
+      function validPublicDeposit() {
+        let d = request.resource.data;
+        return d.keys().hasOnly([
+                 'client', 'pickup', 'depart', 'arrive', 'km', 'mins',
+                 'prixTtc', 'paiement', 'prestations', 'note',
+                 'statut', 'chauffeurId', 'source', 'createdAt', 'majAt'
+               ])
+            && d.keys().hasAll(['client', 'depart', 'arrive', 'prixTtc', 'statut', 'source', 'createdAt'])
+            && d.statut == 'a_confirmer'
+            && d.chauffeurId == null
+            && d.source == 'pwa'
+            && d.createdAt == request.time
+            && d.prixTtc is number && d.prixTtc >= 0 && d.prixTtc <= 2000
+            && d.client.keys().hasOnly(['nom', 'tel', 'email'])
+            && d.client.nom is string && d.client.nom.size() >= 2 && d.client.nom.size() <= 60
+            && (!('tel'   in d.client) || (d.client.tel   is string && d.client.tel.size()   <= 24))
+            && (!('email' in d.client) || (d.client.email is string && d.client.email.size() <= 80))
+            && d.depart.label is string && d.depart.label.size() <= 200
+            && d.arrive.label is string && d.arrive.label.size() <= 200
+            && (!('note'        in d) || (d.note is string && d.note.size() <= 500))
+            && (!('prestations' in d) || (d.prestations is list && d.prestations.size() <= 12));
+      }
+
+      function ownerUpdateOk() {
+        let a = request.resource.data;
+        return a.statut in ['a_confirmer', 'confirmee', 'refusee', 'assignee',
+                            'acceptee', 'en_route', 'terminee', 'annulee']
+            // L'origine et l'horodatage de dépôt ne se réécrivent pas.
+            && a.source    == resource.data.source
+            && a.createdAt == resource.data.createdAt
+            // Une course assignée porte forcément un chauffeur.
+            && (!(a.statut in ['assignee', 'acceptee', 'en_route', 'terminee'])
+                || a.chauffeurId != null);
+      }
+
+      function driverUpdateOk() {
+        let b = resource.data;
+        let a = request.resource.data;
+        return isDriver()
+            && b.chauffeurId == uid()
+            && touchedOnly(['statut', 'chauffeurId', 'majAt'])
+            && (
+                 (b.statut == 'assignee' && a.statut == 'acceptee'  && a.chauffeurId == uid()) ||
+                 (b.statut == 'assignee' && a.statut == 'confirmee' && a.chauffeurId == null) ||
+                 (b.statut == 'acceptee' && a.statut == 'en_route'  && a.chauffeurId == uid()) ||
+                 (b.statut == 'en_route' && a.statut == 'terminee'  && a.chauffeurId == uid())
+               );
+      }
+
+      allow get, list: if isOwner()
+                        || (isDriver() && resource.data.chauffeurId == uid());
+      allow create    : if isOwner() || validPublicDeposit();
+      allow update    : if isOwner() ? ownerUpdateOk() : driverUpdateOk();
+      // Une course ne se supprime pas : elle s'annule. Traçabilité.
+      allow delete    : if false;
+    }
+
+    // ── /documents ─────────────────────────────────────────────────────────
+    // Bons de réservation et factures. Figés à l'émission : l'article 289 du
+    // CGI impose dix ans de conservation, un document émis ne se réécrit pas.
+    match /documents/{num} {
+      allow get, list     : if isOwner()
+                             || (isDriver() && resource.data.chauffeurId == uid());
+      allow create        : if isOwner()
+                             && request.resource.data.num == num
+                             && request.resource.data.emisAt == request.time;
+      allow update, delete: if false;
+    }
+
+    // ── /compteurs ─────────────────────────────────────────────────────────
+    // Numérotation séquentielle des bons et factures (BDR-20261014-001).
+    // Incrémentée en transaction : une série ne recule jamais.
+    match /compteurs/{serie} {
+      allow get   : if isOwner();
+      allow list  : if isOwner();
+      allow create: if isOwner() && request.resource.data.n is int && request.resource.data.n >= 1;
+      allow update: if isOwner() && request.resource.data.n == resource.data.n + 1;
+      allow delete: if false;
+    }
+
+    // ── /promos ────────────────────────────────────────────────────────────
+    // Lecture publique d'un code que le client saisit — c'est ce qui répare le
+    // bug actuel (un code créé dans le hub ne quittait pas ton navigateur).
+    // L'énumération reste fermée : on ne peut pas lister les codes pour les
+    // découvrir, seulement vérifier un code qu'on connaît déjà.
+    match /promos/{code} {
+      allow get           : if isOwner() || resource.data.actif == true;
+      allow list          : if isOwner();
+      allow create, update: if isOwner();
+      allow delete        : if isOwner();
+    }
+
+    // Tout le reste est fermé.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

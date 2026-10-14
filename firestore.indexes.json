@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "comment": "Le tableau de bord du chauffeur : mes courses, la plus proche d'abord.",
+      "collectionGroup": "courses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "chauffeurId", "order": "ASCENDING" },
+        { "fieldPath": "pickup", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "comment": "La file d'attente du hub : les dépôts PWA à valider, les plus anciens d'abord.",
+      "collectionGroup": "courses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "statut", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "comment": "Les courses d'un chauffeur filtrées par statut (en cours / terminées).",
+      "collectionGroup": "courses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "chauffeurId", "order": "ASCENDING" },
+        { "fieldPath": "statut", "order": "ASCENDING" },
+        { "fieldPath": "pickup", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -9,3 +9,9 @@ node_modules/
 
 # Rapport de couverture — régénérer avec `npm run test:coverage`
 coverage/
+
+# Journaux des émulateurs Firebase — régénérés à chaque `npm run test:rules`
+firestore-debug.log
+firebase-debug.log
+ui-debug.log
+pubsub-debug.log
