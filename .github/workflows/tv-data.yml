@@ -1,0 +1,36 @@
+name: TV data (actus + foot)
+
+# Met à jour actus.json (titres franceinfo + Ligue 1) sur la branche `tv-data`,
+# lue par les dashboards TV. N'affecte pas le site (pas de déploiement Pages).
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tv-data
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/tv_data.py
+          sparse-checkout-cone-mode: false
+      - name: Build actus.json
+        run: |
+          mkdir -p out
+          python3 scripts/tv_data.py out/actus.json
+      - name: Publish to tv-data branch
+        working-directory: out
+        run: |
+          git init -q
+          git checkout -q -b tv-data
+          git add actus.json
+          git -c user.name="tv-data bot" -c user.email="actions@users.noreply.github.com" commit -q -m "TV data $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" tv-data
