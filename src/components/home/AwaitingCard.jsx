@@ -69,7 +69,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Signature « Le Tracé » flourish — subtle brand mark */}
               <img
@@ -95,7 +95,7 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
                       d="M4 12.5l5 5L20 6"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.38, delay: 0.22, ease: 'easeOut' }}
+                      transition={{ duration: 0.3, delay: 0.09, ease: 'easeOut' }}
                     />
                   </motion.svg>
                 </motion.div>

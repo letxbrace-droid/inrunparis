@@ -4,7 +4,7 @@ import PushView from '../ui/PushView'
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 18 },
-  visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 } }),
+  visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 } }),
 }
 
 export default function LegalView({ open, onClose }) {

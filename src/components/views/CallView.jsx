@@ -86,7 +86,7 @@ export default function CallView({ open, onClose }) {
             >
               <span
                 className="font-bold select-none"
-                style={{ fontSize: 24, color: th.inkFull, fontFamily: "'Inter', sans-serif", letterSpacing: '-.01em' }}
+                style={{ fontSize: 24, color: th.inkFull, fontFamily: 'var(--font-display)', letterSpacing: '-.01em' }}
               >
                 N
               </span>

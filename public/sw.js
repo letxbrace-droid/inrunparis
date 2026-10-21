@@ -1,5 +1,5 @@
-/* I&N RUN — Service Worker v140 */
-const CACHE = 'inrun-v140';
+/* I&N RUN — Service Worker v141 */
+const CACHE = 'inrun-v141';
 
 const BASE  = 'https://letxbrace-droid.github.io/inrunparis'
 
@@ -38,7 +38,6 @@ const STATIC = [
   // premier texte visible sont pré-cachés : les sous-ensembles latin-ext et les
   // graisses mono tombent dans le cache à la demande, via la règle générale.
   '/inrunparis/fonts/outfit-latin-400-800.woff2',
-  '/inrunparis/fonts/bricolage-grotesque-latin-400-800.woff2',
   '/inrunparis/manifest.json',
   '/inrunparis/hub-manifest.json',
   '/inrunparis/favicon.ico',

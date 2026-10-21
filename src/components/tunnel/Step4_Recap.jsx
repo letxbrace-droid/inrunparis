@@ -66,7 +66,7 @@ export default function Step4Recap({ onBack }) {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-col gap-3 px-4 pb-5 pt-0"
     >
       {/* ── SINGLE RECEIPT CARD ──────────────────────────────────── */}
@@ -203,7 +203,7 @@ export default function Step4Recap({ onBack }) {
                   d="M4 12.5l5 5L20 6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.38, delay: 0.22, ease: 'easeOut' }}
+                  transition={{ duration: 0.3, delay: 0.09, ease: 'easeOut' }}
                 />
               </svg>
             </motion.div>

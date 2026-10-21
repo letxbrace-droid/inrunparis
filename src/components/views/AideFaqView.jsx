@@ -46,7 +46,7 @@ const WA_SUPPORT = `https://wa.me/33767742220?text=${encodeURIComponent("Bonjour
 
 const itemVariants = {
   hidden: { opacity: 0, y: 18 },
-  visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.045 } }),
+  visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: i * 0.045 } }),
 }
 
 export default function AideFaqView({ open, onClose }) {
@@ -115,7 +115,7 @@ export default function AideFaqView({ open, onClose }) {
                   width="14" height="14" viewBox="0 0 24 24" fill="none"
                   stroke="rgba(255,90,31,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   animate={{ rotate: expanded === i ? 180 : 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
                   style={{ flexShrink: 0 }}
                 >
                   <path d="M6 9l6 6 6-6"/>
@@ -129,7 +129,7 @@ export default function AideFaqView({ open, onClose }) {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     style={{ overflow: 'hidden', borderTop: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)' }}
                   >
                     <p className="text-sm px-4 py-4 leading-relaxed" style={{ color: th.inkLow }}>
@@ -146,7 +146,7 @@ export default function AideFaqView({ open, onClose }) {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: FAQ.length * 0.045 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: FAQ.length * 0.045 }}
           className="mt-5 mb-2 px-4 py-5 flex flex-col gap-3"
           style={{ background: th.bgCard, borderRadius: 16, border: `1px solid ${th.borderFaint}` }}
         >

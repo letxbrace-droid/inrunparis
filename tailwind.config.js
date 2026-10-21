@@ -32,8 +32,10 @@ export default {
       fontFamily: {
         body:    ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
         brand:   ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        display: ['"Bricolage Grotesque"', 'Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        display: ['Outfit', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        // Pas de famille mono auto-hébergée : on s'appuie sur celle du système,
+        // qui est déjà là et ne coûte aucun téléchargement.
+        mono:    ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       transitionTimingFunction: {
         spring:     'cubic-bezier(.32,1.2,.55,1)',

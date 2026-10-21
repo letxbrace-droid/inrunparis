@@ -14,7 +14,7 @@ const containerV = {
 }
 const sectionV = {
   hidden: { opacity: 0, y: 14 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.36, ease: [0.16, 1, 0.3, 1] } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
 }
 
 // ── Ambiance icons (theme-aware inactive) ─────────────────────────────────────
@@ -585,7 +585,7 @@ export default function Step3Options({ onNext, onBack }) {
           </span>
           <motion.svg
             animate={{ rotate: prefsOpen ? 180 : 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke={th.inkMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
           >
@@ -627,7 +627,7 @@ export default function Step3Options({ onNext, onBack }) {
                         initial={{ opacity: 0, y: -6, height: 0 }}
                         animate={{ opacity: 1, y: 0,  height: 'auto' }}
                         exit={{    opacity: 0, y: -4,  height: 0 }}
-                        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         style={{ overflow: 'hidden' }}
                       >
                         <div

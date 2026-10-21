@@ -138,12 +138,12 @@ const SECONDARY = [
 const EXPO = [0.22, 1, 0.36, 1]
 
 const arm1Var = {
-  closed: { x: -12, y: -12, opacity: 0, transition: { duration: 0.1 } },
-  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.58, ease: EXPO, delay: 0.28 } },
+  closed: { x: -12, y: -12, opacity: 0, transition: { duration: 0.14 } },
+  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.3, ease: EXPO, delay: 0.11 } },
 }
 const arm2Var = {
-  closed: { x: 12,  y: -12, opacity: 0, transition: { duration: 0.1 } },
-  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.58, ease: EXPO, delay: 0.38 } },
+  closed: { x: 12,  y: -12, opacity: 0, transition: { duration: 0.14 } },
+  open:   { x: 0,   y: 0,   opacity: 1, transition: { duration: 0.3, ease: EXPO, delay: 0.15 } },
 }
 
 const navListVar = {
@@ -156,11 +156,11 @@ const secListVar = {
 }
 const rowVar = {
   closed: { opacity: 0, y: 22, transition: { duration: 0.14 } },
-  open:   { opacity: 1, y: 0,  transition: { duration: 0.54, ease: EXPO } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.3, ease: EXPO } },
 }
 const footerVar = {
-  closed: { opacity: 0, y: 10, transition: { duration: 0.12 } },
-  open:   { opacity: 1, y: 0,  transition: { duration: 0.42, ease: EXPO, delay: 0.60 } },
+  closed: { opacity: 0, y: 10, transition: { duration: 0.14 } },
+  open:   { opacity: 1, y: 0,  transition: { duration: 0.3, ease: EXPO, delay: 0.24 } },
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────

@@ -78,7 +78,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center justify-center gap-5 pt-24 px-6"
           >
             {/* Signature Suzuki Swace line illustration */}
@@ -122,7 +122,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 key={booking.bonNumber ?? i}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: i * 0.055 }}
                 className="rounded-[16px] overflow-hidden"
                 style={{
                   background: th.bgCard,

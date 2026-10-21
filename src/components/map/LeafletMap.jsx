@@ -120,7 +120,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     const attrEl = map.attributionControl.getContainer()
     if (attrEl) Object.assign(attrEl.style, {
       background: 'transparent', padding: '0 6px 2px 0',
-      font: '9.5px/1.4 system-ui, sans-serif', color: 'rgba(150,150,158,.9)',
+      font: '9.5px/1.4 Outfit, system-ui, sans-serif', color: 'rgba(150,150,158,.9)',
       // The credit sits directly on map tiles that can be light or dark, so it
       // carries its own contrast rather than relying on whatever is behind it.
       textShadow: '0 1px 2px rgba(0,0,0,.45), 0 0 3px rgba(255,255,255,.25)',

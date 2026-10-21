@@ -15,7 +15,8 @@
 #   bash scripts/fetch-fonts.sh
 set -euo pipefail
 UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-URL='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Outfit:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap'
+# Une seule famille, délibérément : voir --font-display dans globals.css.
+URL='https://fonts.googleapis.com/css2?family=Outfit:wght@400..800&display=swap'
 
 curl -sS -A "$UA" "$URL" -o /tmp/inrun-fonts.css
 python3 - <<'PY'

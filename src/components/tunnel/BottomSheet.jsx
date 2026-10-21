@@ -103,7 +103,7 @@ function StepConnector({ index, current, th }) {
         className="absolute inset-y-0 left-0 h-full"
         animate={{ scaleX: filled ? 1 : 0 }}
         style={{ originX: 0, background: 'linear-gradient(90deg, color-mix(in srgb, var(--accent) 80%, transparent), color-mix(in srgb, var(--accent) 30%, transparent))' }}
-        transition={{ duration: 0.38, ease: [0.32, 1, 0.55, 1] }}
+        transition={{ duration: 0.44, ease: [0.32, 1, 0.55, 1] }}
       />
     </div>
   )
@@ -383,7 +383,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                             : i + 1 < step ? 'color-mix(in srgb, var(--accent) 75%, transparent)'
                             : th.inkMuted,
                         }}
-                        transition={{ duration: 0.25 }}
+                        transition={{ duration: 0.2 }}
                       >
                         {label}
                       </motion.span>
@@ -409,7 +409,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                   initial={{ opacity: 0, x: dirRef.current * 58, scale: 0.97, filter: 'blur(3px)' }}
                   animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, x: dirRef.current * -42, scale: 0.97, filter: 'blur(2px)' }}
-                  transition={{ duration: 0.36, ease: [0.32, 1, 0.55, 1] }}
+                  transition={{ duration: 0.3, ease: [0.32, 1, 0.55, 1] }}
                   className="pt-4"
                 >
                   {step === 1 && <Step1Route   onNext={() => onStepChange(2)} />}

@@ -48,7 +48,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.28 }}
+          transition={{ duration: 0.3 }}
           onClick={onClose}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center cursor-pointer select-none"
           style={{ background: 'rgba(2,3,6,0.94)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
@@ -58,7 +58,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             <motion.div
               initial={{ opacity: 0, scale: 0.3 }}
               animate={{ opacity: [0, 0.55, 0], scale: [0.3, 2.4, 3.0] }}
-              transition={{ duration: 1.0, delay: 0.08, ease: 'easeOut' }}
+              transition={{ duration: 0.3, delay: 0.08, ease: 'easeOut' }}
               style={{
                 position: 'absolute', inset: 0, borderRadius: '50%',
                 background: 'radial-gradient(circle, rgba(52,211,153,0.55) 0%, transparent 68%)',
@@ -72,7 +72,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                   key={i}
                   initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
                   animate={{ opacity: 0, x: Math.cos(rad) * p.d, y: Math.sin(rad) * p.d, scale: 0.15 }}
-                  transition={{ duration: 0.72, delay: 0.14 + i * 0.022, ease: [0.23, 1, 0.32, 1] }}
+                  transition={{ duration: 0.3, delay: 0.06 + i * 0.022, ease: [0.23, 1, 0.32, 1] }}
                   style={{
                     position: 'absolute',
                     width: p.s, height: p.s,
@@ -101,7 +101,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                 stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 0.46, delay: 0.22, ease: 'easeOut' }}
+                transition={{ duration: 0.3, delay: 0.09, ease: 'easeOut' }}
               >
                 <motion.path d="M4 12.5l5 5L20 6" />
               </motion.svg>
@@ -112,7 +112,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.52, ease: [0.23, 1, 0.32, 1], delay: 0.26 }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
             style={{ textAlign: 'center', marginTop: 28, padding: '0 40px' }}
           >
             <h2 style={{
@@ -133,7 +133,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.44, ease: [0.23, 1, 0.32, 1], delay: 0.42 }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1], delay: 0.17 }}
             onClick={(e) => { e.stopPropagation(); onClose() }}
             className="active:scale-[.95] transition-transform duration-100"
             style={{
@@ -155,7 +155,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ delay: 1.6, duration: 0.38, ease: [0.23, 1, 0.32, 1] }}
+                transition={{ delay: 0.64, duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 onClick={handlePushOptIn}
                 className="active:scale-[.97] transition-transform duration-100"
                 style={{
@@ -191,7 +191,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.72, duration: 0.4 }}
+            transition={{ delay: 0.29, duration: 0.3 }}
             style={{ marginTop: 16, fontSize: 12, color: 'rgba(245,241,232,.22)', userSelect: 'none' }}
           >
             Toucher n'importe où pour fermer

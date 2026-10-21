@@ -65,7 +65,7 @@ function reveal(delay = 0) {
     initial:    { opacity: 0, y: 28 },
     whileInView:{ opacity: 1, y: 0  },
     viewport:   { once: true, margin: '-48px' },
-    transition: { duration: 0.48, ease: EASE, delay },
+    transition: { duration: 0.3, ease: EASE, delay },
   }
 }
 
@@ -208,7 +208,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, ease: EASE, delay: 0.12 + i * 0.08 }}
+                  transition={{ duration: 0.3, ease: EASE, delay: 0.12 + i * 0.08 }}
                 >
                   <span style={{ display: 'block', fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--accent)' }}>
                     {s.val}
@@ -359,7 +359,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
-                transition={{ duration: 0.44, ease: EASE, delay: i * 0.08 }}
+                transition={{ duration: 0.3, ease: EASE, delay: i * 0.08 }}
                 style={{
                   flexShrink: 0,
                   width: 248,

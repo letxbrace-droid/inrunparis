@@ -110,7 +110,7 @@ export default function QuickRail({ onPick, traffic }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1], delay: 0.06 }}
       className="flex gap-2 overflow-x-auto px-1 pb-2.5 scroll-area"
       style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
     >

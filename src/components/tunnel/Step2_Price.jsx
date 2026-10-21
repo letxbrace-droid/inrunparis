@@ -43,7 +43,7 @@ function LineItem({ icon, label, value, valueColor, badge, th }) {
 
 // ── Stagger variants ──────────────────────────────────────────────────────────
 const containerV = { hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.04 } } }
-const itemV      = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] } } }
+const itemV      = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } } }
 
 export default function Step2Price({ onNext, onBack }) {
   const th = useAppTheme()
@@ -323,7 +323,7 @@ export default function Step2Price({ onNext, onBack }) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
                   <div className="flex gap-2 pt-1">

@@ -78,7 +78,7 @@ export default function TopBar({ onBurgerClick, burgerOpen, isDark = true }) {
         <motion.span
           initial={false}
           animate={burgerOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.18 }}
+          transition={{ duration: 0.2 }}
           style={BAR}
         />
         {/* Trait bas */}
