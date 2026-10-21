@@ -129,10 +129,16 @@
        tombait à 3,94 contre les 4,5 exigés pour du texte courant. Il portait
        des horaires et des mentions — pas de la décoration. 0,50 le ramène à
        4,82 sans écraser la hiérarchie au-dessus. */
+    /* Des gris PLEINS, pas des blancs translucides. Un libellé à 62 %
+       d'opacité se compose différemment selon la carte sous lui : sa couleur
+       change d'un écran à l'autre, et le texte paraît lavé. Ces valeurs sont
+       les équivalents composés sur le fond de base, figés — même couleur
+       partout, quelle que soit l'élévation. Les deux plus pâles sont relevés
+       pour tenir 4,5:1 jusque sur la surface la plus claire (#232327). */
     --label:            #FFFFFF;
-    --label-secondary:  rgba(255,255,255,0.82);
-    --label-tertiary:   rgba(255,255,255,0.62);
-    --label-quaternary: rgba(255,255,255,0.50);
+    --label-secondary:  #D3D3D3;
+    --label-tertiary:   #A2A2A2;
+    --label-quaternary: #8C8C8C;
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
     /* Filets et remplissages tirent vers le blanc chaud du texte, pas vers le
@@ -184,8 +190,11 @@
     --t-price:   56px;   /* le tarif, et rien d'autre          */
 
     /* ── Elevation — flat cards, real shadow only for floating ──── */
-    --elev-1:     0 1px 4px rgba(0,0,0,0.6);
-    --elev-2:     0 6px 20px rgba(0,0,0,0.7);
+    /* « hairline borders · no diffuse glow » dit l'en-tête de ce fichier ;
+       elev-2 portait un halo de 20 px de rayon. Une arête nette sépare mieux
+       deux surfaces qu'un dégradé d'ombre, et ne salit pas le noir OLED. */
+    --elev-1:     0 0 0 1px rgba(255,255,255,0.08);
+    --elev-2:     0 0 0 1px rgba(255,255,255,0.12), 0 2px 8px rgba(0,0,0,0.6);
     --elev-float:
       0 24px 56px -12px rgba(0,0,0,0.90),
       0 10px 24px -4px  rgba(0,0,0,0.70),
@@ -267,9 +276,9 @@
        distincts ; l'échelle est donc resserrée plutôt que laissée mentir.
        1,00 / 0,78 / 0,66 / 0,60 — le dernier passe à 4,76. */
     --label:            #0D0D0D;
-    --label-secondary:  rgba(13,13,13,0.78);
-    --label-tertiary:   rgba(13,13,13,0.66);
-    --label-quaternary: rgba(13,13,13,0.60);
+    --label-secondary:  #404041;
+    --label-tertiary:   #5D5D5D;
+    --label-quaternary: #626262;
 
     /* Crisp 1-px hairlines instead of diffuse blur */
     --separator:        rgba(0,0,0,0.10);
@@ -392,81 +401,14 @@
 
   /* ── Flat grouped surfaces ──────────────────────────────────── */
 
-  .ios-group {
-    background: var(--bg-secondary);
-    border: 1px solid var(--separator);
-    border-radius: var(--r-card);
-    overflow: hidden;
-  }
-
-  .ios-cell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 48px;
-    padding: 13px 16px;
-  }
   .ios-cell + .ios-cell { border-top: 1px solid var(--separator); }
 
-  .ios-section {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--label-tertiary);
-    padding: 0 4px;
-    margin-bottom: 8px;
-  }
-
-  /* Chrome de navigation — OPAQUE. Il était en verre dépoli avec
-     saturate(1.6) : ce rehaussement de saturation est la signature du
-     glassmorphism, et un fond déjà à 94 % d'opacité floutait un arrière-plan
-     qu'on ne voyait pas. Du calcul GPU pour un voile. */
-  .ios-chrome {
-    background: var(--bg-header);
-    border-bottom: 1px solid var(--separator);
-  }
-  [data-theme="light"] .ios-chrome {
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
-  }
-
-  .ios-icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--separator);
-    cursor: pointer;
-    transition: transform 0.12s ease, background 0.15s ease;
-  }
-  .ios-icon-btn:active { transform: scale(0.9); }
-
-  .ios-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--separator);
-    border-radius: var(--r-card);
-  }
-
   /* ── Legacy — re-pointed to AMOLED surfaces ─────────────────── */
-
-  .glass {
-    background: var(--bg-panel);
-    border: 1px solid var(--separator);
-  }
 
   .card-neu {
     background: var(--bg-secondary);
     border: 1px solid var(--separator);
     border-radius: var(--r-card);
-  }
-
-  .inset-neu {
-    background: var(--bg-elevated);
-    border: 1px solid var(--separator);
-    border-radius: var(--r-control);
   }
 
   /* ── Primary CTA ────────────────────────────────────────────── */
@@ -481,16 +423,13 @@
     color: var(--accent-ink);
   }
 
-  .cta-glow:disabled,
-  .cta-pill:disabled {
+  .cta-glow:disabled {
     opacity: 1;
     background: var(--fill);
     color: var(--label-quaternary);
-    box-shadow: none;
     cursor: not-allowed;
   }
 
-  /* WhatsApp green primary CTA */
   /* Le vert de WhatsApp est une marque extérieure : on le garde tel quel,
      mais à plat. Le texte blanc est déclaré ici parce que la classe utilitaire
      text-white a été retirée du composant — l'action principale, elle, prend
@@ -501,59 +440,11 @@
     background: var(--wa);
     color: #FFFFFF;
   }
-  [data-theme="light"] .cta-wa {
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.28),
-      inset 0 -1px 0 rgba(0,0,0,0.10),
-      0 3px 12px color-mix(in srgb, var(--wa) 24%, transparent),
-      0 1px 4px  rgba(0,0,0,0.12);
-  }
-  .cta-wa::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.16) 0%,
-      rgba(200,255,220,0.07) 40%,
-      transparent 65%
-    );
-    transform: translate(-100%, 100%);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-  .cta-wa:not(:disabled):hover::before,
-  .cta-wa:not(:disabled):active::before {
-    transform: translate(0, 0);
-  }
-
-  /* Safe-area helpers */
-  .pt-safe { padding-top: var(--safe-top); }
-  .pb-safe { padding-bottom: var(--safe-bot); }
 
   .divider { width: 100%; height: 1px; background: var(--separator); }
 
   .scrollbar-thin::-webkit-scrollbar { width: 0; height: 0; }
   .scrollbar-thin { scrollbar-width: none; }
-
-  /* Skeleton shimmer — layout-matching loading surfaces */
-  .shimmer {
-    position: relative;
-    overflow: hidden;
-    background: var(--fill);
-    border-radius: var(--r-control);
-  }
-  .shimmer::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
-    animation: shimmer-sweep 1.8s ease-in-out infinite;
-  }
-  [data-theme="light"] .shimmer::after {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
-  }
 
   /* GPS pulse */
   .gps-user-dot { animation: gps-pulse 2.4s ease-out infinite; }
@@ -640,10 +531,6 @@
 .scroll-fade {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
-}
-
-@keyframes shimmer-sweep {
-  100% { transform: translateX(100%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

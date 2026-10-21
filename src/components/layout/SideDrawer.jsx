@@ -79,8 +79,8 @@ function ThemeSwitcher({ theme, onChange, isDark }) {
           width:        38, height: 38,
           borderRadius: '50%',
           background:   isDark
-            ? 'linear-gradient(145deg, rgba(255,255,255,.20), rgba(255,255,255,.08))'
-            : 'linear-gradient(145deg, #FFFFFF, #F0EDE8)',
+            ? 'var(--fill)'
+            : '#FFFFFF',
           border:       `1px solid ${isDark ? 'rgba(255,255,255,.20)' : 'rgba(0,0,0,.12)'}`,
           boxShadow:    isDark
             ? '0 2px 8px rgba(0,0,0,.5)'
@@ -270,7 +270,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         <div
           aria-hidden="true"
           className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, var(--accent) 0%, transparent 55%)' }}
+          style={{ background: 'var(--accent)' }}
         />
         {/* Ambient mesh gradient */}
         <div
@@ -278,8 +278,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           className="absolute inset-0 pointer-events-none"
           style={{
             background: isDark
-              ? 'radial-gradient(ellipse 200% 140px at 55% 0, color-mix(in srgb, var(--accent) 11%, transparent), transparent 55%)'
-              : 'radial-gradient(ellipse 200% 120px at 55% 0, color-mix(in srgb, var(--accent) 6%, transparent), transparent 55%)',
+              ? 'none'
+              : 'none',
           }}
         />
 

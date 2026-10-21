@@ -73,7 +73,7 @@ const departIcon = L.divIcon({
     <div style="position:relative;width:20px;height:20px;">
       <div class="map-ping"  style="position:absolute;inset:-2px;border-radius:50%;background:var(--accent);"></div>
       <div class="map-ping2" style="position:absolute;inset:-2px;border-radius:50%;background:var(--accent);"></div>
-      <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 36% 32%,#ff8c55 0%,var(--accent) 48%,#cc3800 100%);border:2px solid rgba(255,255,255,.88);box-shadow:0 0 20px color-mix(in srgb, var(--accent) 90%, transparent),0 0 8px color-mix(in srgb, var(--accent) 50%, transparent),0 3px 10px rgba(0,0,0,.7);"></div>
+      <div style="position:absolute;inset:0;border-radius:50%;background:var(--accent);border:2px solid var(--accent-ink);box-shadow:0 1px 3px rgba(0,0,0,.6);"></div>
     </div>`,
   iconSize: [20, 20], iconAnchor: [10, 10], className: '',
 })

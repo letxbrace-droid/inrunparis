@@ -56,8 +56,8 @@ export default function AwaitingCard({ bonNumber, onDismiss }) {
           className="block h-px transition-all duration-500"
           style={{
             background: done
-              ? 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--positive) 65%, transparent), transparent)'
-              : 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent), transparent)',
+              ? 'none'
+              : 'none',
           }}
         />
 

@@ -268,7 +268,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.01em',
-                boxShadow: '0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent), 0 2px 8px rgba(0,0,0,.30)',
+                boxShadow: 'none',
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
@@ -406,9 +406,9 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={step}
-                  initial={{ opacity: 0, x: dirRef.current * 58, scale: 0.97 }}
+                  initial={{ opacity: 0, x: dirRef.current * 58 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: dirRef.current * -42, scale: 0.97 }}
+                  exit={{ opacity: 0, x: dirRef.current * -42 }}
                   transition={{ duration: 0.3, ease: [0.32, 1, 0.55, 1] }}
                   className="pt-4"
                 >

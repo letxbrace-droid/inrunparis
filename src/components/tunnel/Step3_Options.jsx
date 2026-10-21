@@ -192,8 +192,8 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
   const THUMB = 22
 
   const thumbBg = th.isDark
-    ? 'radial-gradient(circle at 38% 32%, #2A2A2A, #111111)'
-    : 'radial-gradient(circle at 38% 32%, #FFFFFF, #EAE7E1)'
+    ? '#1C1C1F'
+    : '#FFFFFF'
 
   const thumbShadow = `0 0 0 2.5px var(--accent), 0 2px 10px rgba(0,0,0,.28), inset 0 1px 0 ${
     th.isDark ? 'rgba(255,255,255,.14)' : 'rgba(255,255,255,.90)'
@@ -491,15 +491,12 @@ export default function Step3Options({ onNext, onBack }) {
   const canSend = clientName.trim().length > 0
   const handleSend = () => { if (canSend) onNext?.() }
 
-  // Temp gradient: cool → warm → hot based on position
-  const tempRatio   = (clim - 16) / 12
-  const tempGradient = tempRatio < 0.3
-    ? 'linear-gradient(90deg, rgba(130,200,255,.95) 0%, rgba(255,190,80,.85) 100%)'
-    : tempRatio < 0.65
-    ? 'linear-gradient(90deg, rgba(255,190,80,.90) 0%, rgba(255,130,40,.95) 100%)'
-    : 'linear-gradient(90deg, rgba(255,130,40,.90) 0%, color-mix(in srgb, var(--accent) 98%, transparent) 100%)'
+  // La piste était un dégradé bleu → ambre → orange selon la température.
+  // La valeur est affichée en chiffres juste à côté : le dégradé répétait
+  // l'information en moins précis, et ramenait de la couleur.
+  const tempGradient = 'var(--accent)'
 
-  const volGradient = 'linear-gradient(90deg, color-mix(in srgb, var(--accent) 60%, transparent) 0%, color-mix(in srgb, var(--accent) 95%, transparent) 100%)'
+  const volGradient = 'var(--accent)'
 
   return (
     <motion.div

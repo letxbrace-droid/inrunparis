@@ -8,7 +8,7 @@ const isInStandalone =
 
 // Shared animation
 const SPRING = { type: 'spring', damping: 26, stiffness: 260 }
-const SLIDE  = { initial: { y: 72, opacity: 0, scale: 0.96 }, animate: { y: 0, opacity: 1, scale: 1 }, exit: { y: 72, opacity: 0, scale: 0.96 }, transition: SPRING }
+const SLIDE  = { initial: { y: 72, opacity: 0 }, animate: { y: 0, opacity: 1, scale: 1 }, exit: { y: 72, opacity: 0 }, transition: SPRING }
 
 // iOS share icon (SF-style, outline)
 function ShareIcon() {
@@ -33,7 +33,7 @@ function PillBase({ children }) {
       borderRadius: 16,
       background:   '#0F0F0F',
       border:       '1px solid color-mix(in srgb, var(--accent) 28%, transparent)',
-      boxShadow:    '0 12px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07)',
+      boxShadow:    'var(--elev-2)',
     }}>
       {children}
     </div>

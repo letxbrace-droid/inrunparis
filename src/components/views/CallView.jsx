@@ -141,14 +141,14 @@ export default function CallView({ open, onClose }) {
           href={PHONE_HREF}
           className="relative flex items-center justify-center gap-3 w-full py-5 rounded-2xl mb-3 select-none active:scale-[.97] transition-transform overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, var(--accent-2) 0%, var(--accent) 45%, var(--accent-press) 100%)',
+            background: 'var(--accent)',
             boxShadow: '0 4px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.18)',
             animation: 'cta-breathe 3.5s ease-in-out infinite',
             textDecoration: 'none',
           }}
         >
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent)' }} />
+            style={{ background: 'none' }} />
           <span aria-hidden="true" className="absolute w-12 h-12 rounded-full"
             style={{ background: 'rgba(255,255,255,.12)', animation: 'pulse-ring 2s ease-out infinite' }} />
           <span aria-hidden="true" className="absolute w-12 h-12 rounded-full"

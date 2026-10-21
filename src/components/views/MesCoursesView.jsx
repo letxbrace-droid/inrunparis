@@ -44,7 +44,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
       >
         {/* Ambient accent glow */}
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(70% 120% at 18% -20%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 55%)',
+          background: 'none',
         }} />
 
         {/* Back button */}
@@ -133,7 +133,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 }}
               >
                 {/* Accent line */}
-                <div style={{ height: 2, background: 'linear-gradient(90deg, var(--accent) 0%, transparent 55%)' }} />
+                <div style={{ height: 2, background: 'var(--accent)' }} />
 
                 {/* Bon + date */}
                 <div className="flex items-center justify-between px-4 pt-3 pb-2.5"

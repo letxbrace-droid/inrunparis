@@ -349,7 +349,7 @@ export default function Step2Price({ onNext, onBack }) {
                       disabled={!promoInput.trim()}
                       className="cta-glow px-4 py-3 rounded-xl text-sm font-bold text-white cursor-pointer disabled:opacity-35 active:scale-95 transition-transform overflow-hidden relative"
                     >
-                      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent)' }} />
+                      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px" style={{ background: 'none' }} />
                       OK
                     </button>
                   </div>

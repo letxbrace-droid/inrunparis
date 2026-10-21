@@ -61,7 +61,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               transition={{ duration: 0.3, delay: 0.08, ease: 'easeOut' }}
               style={{
                 position: 'absolute', inset: 0, borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(52,211,153,0.55) 0%, transparent 68%)',
+                background: 'none',
               }}
             />
 
@@ -92,7 +92,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               style={{
                 position: 'relative', width: 90, height: 90, borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'linear-gradient(140deg, #34d399 0%, #059669 100%)',
+                background: 'var(--positive)',
                 boxShadow: '0 0 52px rgba(52,211,153,0.48), 0 0 0 1px rgba(52,211,153,0.25)',
               }}
             >
@@ -140,7 +140,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               marginTop: 36, padding: '14px 44px', borderRadius: 999,
               background: 'var(--accent)', color: 'var(--accent-ink)',
               fontSize: 16, fontWeight: 700, letterSpacing: '-0.01em',
-              boxShadow: '0 8px 28px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 1px 0 rgba(255,255,255,.2)',
+              boxShadow: 'none',
               cursor: 'pointer', border: 'none',
             }}
           >

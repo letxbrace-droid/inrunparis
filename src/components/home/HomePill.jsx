@@ -180,9 +180,9 @@ export default function HomePill({ onOpenSheet }) {
       {acField === field && suggestions.length > 0 && (
         <motion.ul
           role="listbox"
-          initial={{ opacity: 0, y: -8, scale: 0.97 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -8, scale: 0.97 }}
+          exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute left-0 right-0 z-30 rounded-2xl border border-[var(--rule-strong)] overflow-hidden"
           style={{
@@ -300,8 +300,8 @@ export default function HomePill({ onOpenSheet }) {
           {/* Liseré spéculaire haut — touche premium */}
           <span aria-hidden="true" className="absolute inset-x-6 top-0 h-px" style={{
             background: th.isDark
-              ? 'linear-gradient(90deg, transparent, rgba(255,140,60,.45), transparent)'
-              : 'linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent)',
+              ? 'none'
+              : 'none',
           }} />
 
           {depart && arrive ? (
@@ -323,7 +323,7 @@ export default function HomePill({ onOpenSheet }) {
                   <span className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 15%, transparent))' }} />
                   <motion.span
                     className="absolute left-0 right-0"
-                    style={{ height: 7, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)' }}
+                    style={{ height: 7, background: 'var(--accent)' }}
                     animate={{ y: [-7, 18] }}
                     transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.7 }}
                   />
@@ -591,7 +591,7 @@ export default function HomePill({ onOpenSheet }) {
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 18%, transparent))' }} />
                     <motion.div
                       className="absolute left-0 right-0"
-                      style={{ height: 12, background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', borderRadius: 8 }}
+                      style={{ height: 12, background: 'var(--accent)', borderRadius: 8 }}
                       animate={{ y: [-12, 30] }}
                       transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
                     />
@@ -722,7 +722,7 @@ export default function HomePill({ onOpenSheet }) {
                       <motion.span
                         key="prix"
                         layout
-                        initial={{ opacity: 0, scale: 0.72 }}
+                        initial={{ opacity: 0 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: 'spring', stiffness: 420, damping: 26 }}
                         className="font-brand font-bold text-accent text-base tnum"

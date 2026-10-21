@@ -172,7 +172,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
               padding: 24,
               position: 'relative',
               overflow: 'hidden',
-              background: 'linear-gradient(140deg, #1A0F06 0%, #0D0A08 55%, #0A0D18 100%)',
+              background: 'var(--bg-card)',
               border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
               boxShadow: '0 0 0 1px color-mix(in srgb, var(--accent) 6%, transparent), inset 0 1px 0 rgba(255,255,255,0.05)',
             }}
@@ -180,12 +180,12 @@ export default function TarifsView({ open, onClose, onReserve }) {
             {/* Accent top line */}
             <span aria-hidden="true" style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-              background: 'linear-gradient(90deg, transparent 5%, var(--accent) 38%, #FF8C3F 52%, var(--accent) 66%, transparent 95%)',
+              background: 'none',
             }} />
             {/* Ambient glow */}
             <span aria-hidden="true" style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'radial-gradient(ellipse 80% 60% at 10% 0, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%)',
+              background: 'none',
             }} />
 
             <h2 style={{
@@ -231,7 +231,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
           }}>
             <span aria-hidden="true" style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'radial-gradient(ellipse 95% 70% at 50% 0, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%)',
+              background: 'none',
             }} />
             <div className="flex items-center justify-between relative">
               <div>
@@ -422,7 +422,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
           className="cta-glow w-full py-4 rounded-2xl font-bold text-[14px] tracking-wide text-white cursor-pointer active:scale-[.97] transition-transform duration-150 select-none relative overflow-hidden"
         >
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent)' }} />
+            style={{ background: 'none' }} />
           Réserver ma course
         </button>
         <a
