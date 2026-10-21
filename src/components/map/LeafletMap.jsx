@@ -71,9 +71,9 @@ const userPosIcon = L.divIcon({
 const departIcon = L.divIcon({
   html: `
     <div style="position:relative;width:20px;height:20px;">
-      <div class="map-ping"  style="position:absolute;inset:-2px;border-radius:50%;background:#FF5A1F;"></div>
-      <div class="map-ping2" style="position:absolute;inset:-2px;border-radius:50%;background:#FF5A1F;"></div>
-      <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 36% 32%,#ff8c55 0%,#FF5A1F 48%,#cc3800 100%);border:2px solid rgba(255,255,255,.88);box-shadow:0 0 20px rgba(255,90,31,.9),0 0 8px rgba(255,90,31,.5),0 3px 10px rgba(0,0,0,.7);"></div>
+      <div class="map-ping"  style="position:absolute;inset:-2px;border-radius:50%;background:var(--accent);"></div>
+      <div class="map-ping2" style="position:absolute;inset:-2px;border-radius:50%;background:var(--accent);"></div>
+      <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 36% 32%,#ff8c55 0%,var(--accent) 48%,#cc3800 100%);border:2px solid rgba(255,255,255,.88);box-shadow:0 0 20px color-mix(in srgb, var(--accent) 90%, transparent),0 0 8px color-mix(in srgb, var(--accent) 50%, transparent),0 3px 10px rgba(0,0,0,.7);"></div>
     </div>`,
   iconSize: [20, 20], iconAnchor: [10, 10], className: '',
 })
@@ -81,9 +81,9 @@ const departIcon = L.divIcon({
 const arriveIcon = L.divIcon({
   html: `
     <div style="position:relative;width:24px;height:32px;">
-      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;filter:drop-shadow(0 0 8px rgba(255,90,31,.6)) drop-shadow(0 4px 10px rgba(0,0,0,.75))">
+      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;filter:drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 60%, transparent)) drop-shadow(0 4px 10px rgba(0,0,0,.75))">
         <path d="M12 1C5.925 1 1 5.925 1 12c0 8.25 11 19.5 11 19.5S23 20.25 23 12C23 5.925 18.075 1 12 1z" fill="#0D0D0D" stroke="rgba(255,255,255,0.16)" stroke-width="1.5"/>
-        <circle cx="12" cy="12" r="5.5" fill="#FF5A1F"/>
+        <circle cx="12" cy="12" r="5.5" fill="var(--accent)"/>
         <circle cx="12" cy="12" r="2.5" fill="white" opacity="0.92"/>
       </svg>
     </div>`,
@@ -264,7 +264,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
     }).addTo(map)
 
     const core = L.polyline(coords, {
-      color: '#FF5A1F', weight: 5, opacity: 0.95,
+      color: 'var(--accent)', weight: 5, opacity: 0.95,
       lineCap: 'round', lineJoin: 'round',
     }).addTo(map)
 
@@ -346,14 +346,14 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       {mapDown && (
         <div
           className="absolute inset-x-4 top-24 rounded-2xl px-5 py-4"
-          style={{ zIndex: 503, background: 'rgba(10,10,12,.94)', border: '1px solid rgba(255,90,31,.3)',
-                   color: 'rgba(245,241,232,.9)' }}
+          style={{ zIndex: 503, background: 'rgba(10,10,12,.94)', border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+                   color: 'rgba(255, 255, 255, .9)' }}
           role="status"
         >
           <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-.01em' }}>
             Le fond de carte ne s&apos;affiche pas
           </div>
-          <div style={{ fontSize: 12, lineHeight: 1.55, marginTop: 5, color: 'rgba(245,241,232,.6)' }}>
+          <div style={{ fontSize: 12, lineHeight: 1.55, marginTop: 5, color: 'rgba(255, 255, 255, .6)' }}>
             Vos adresses et votre tarif fonctionnent normalement. C&apos;est seulement
             l&apos;image de la carte qui manque.
           </div>
@@ -362,7 +362,7 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
               style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', background: 'none', border: 'none', padding: 0 }}
             >Réinitialiser l&apos;application</button>
             <button onClick={() => setMapDown(false)}
-              style={{ fontSize: 12, fontWeight: 700, color: 'rgba(245,241,232,.45)', background: 'none', border: 'none', padding: 0 }}
+              style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255, 255, 255, .45)', background: 'none', border: 'none', padding: 0 }}
             >Masquer</button>
           </div>
         </div>

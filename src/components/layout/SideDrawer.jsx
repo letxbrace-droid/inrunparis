@@ -104,7 +104,7 @@ function ThemeSwitcher({ theme, onChange, isDark }) {
               cursor: 'pointer', background: 'none', border: 'none', padding: 0,
               color: active
                 ? (isDark ? '#F5F1E8' : '#111111')
-                : (isDark ? 'rgba(245,241,232,.30)' : 'rgba(17,17,17,.30)'),
+                : (isDark ? 'rgba(255, 255, 255, .55)' : 'rgba(17,17,17,.55)'),
               transition: 'color .25s',
             }}
           >
@@ -207,7 +207,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
   const bg      = isDark ? '#0A0A0A' : '#FAFAF8'
   const inkFull = isDark ? '#F5F1E8' : '#0D0D0D'
-  const inkDim  = isDark ? 'rgba(245,241,232,.42)' : 'rgba(13,13,13,.62)'
+  const inkDim  = isDark ? 'rgba(255, 255, 255, .42)' : 'rgba(13,13,13,.62)'
   const border  = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.08)'
 
   useEffect(() => {
@@ -280,8 +280,8 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
           className="absolute inset-0 pointer-events-none"
           style={{
             background: isDark
-              ? 'radial-gradient(ellipse 200% 140px at 55% 0, rgba(255,90,31,0.11), transparent 55%)'
-              : 'radial-gradient(ellipse 200% 120px at 55% 0, rgba(255,90,31,0.06), transparent 55%)',
+              ? 'radial-gradient(ellipse 200% 140px at 55% 0, color-mix(in srgb, var(--accent) 11%, transparent), transparent 55%)'
+              : 'radial-gradient(ellipse 200% 120px at 55% 0, color-mix(in srgb, var(--accent) 6%, transparent), transparent 55%)',
           }}
         />
 
@@ -388,7 +388,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                       fontSize:      14,
                       fontWeight:    500,
                       letterSpacing: '-0.01em',
-                      color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                      color:         isDark ? 'rgba(255, 255, 255, .72)' : 'rgba(17,17,17,.68)',
                     }}>
                       {item.label}
                     </span>
@@ -407,7 +407,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     )}
                   </span>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                    stroke={isDark ? 'rgba(245,241,232,.28)' : 'rgba(17,17,17,.25)'}
+                    stroke={isDark ? 'rgba(255, 255, 255, .55)' : 'rgba(17,17,17,.55)'}
                     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
@@ -428,7 +428,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
               paddingBottom: 'calc(var(--safe-bot) + 16px)',
             }}
           >
-            <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em', color: isDark ? 'rgba(245,241,232,.34)' : 'rgba(17,17,17,.34)', marginBottom: 10 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em', color: isDark ? 'rgba(255, 255, 255, .62)' : 'rgba(17,17,17,.62)', marginBottom: 10 }}>
               Réglages
             </p>
 
@@ -446,7 +446,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
                     fontSize:      14,
                     fontWeight:    500,
                     letterSpacing: '-0.01em',
-                    color:         isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)',
+                    color:         isDark ? 'rgba(255, 255, 255, .72)' : 'rgba(17,17,17,.68)',
                   }}>
                     Notifications
                   </span>
@@ -493,7 +493,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
 
             {/* Apparence */}
             <div className="flex items-center justify-between" style={{ paddingTop: 8 }}>
-              <span style={{ fontSize: 14, fontWeight: 500, color: isDark ? 'rgba(245,241,232,.72)' : 'rgba(17,17,17,.68)' }}>
+              <span style={{ fontSize: 14, fontWeight: 500, color: isDark ? 'rgba(255, 255, 255, .72)' : 'rgba(17,17,17,.68)' }}>
                 Apparence
               </span>
               <ThemeSwitcher

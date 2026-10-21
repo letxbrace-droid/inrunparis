@@ -102,7 +102,7 @@ export default function MesCoursesView({ open, onClose, onReserve }) {
                 onClick={onReserve}
                 className="flex items-center gap-2 px-6 py-3.5 rounded-2xl cursor-pointer active:scale-[.97] transition-transform duration-150 select-none"
                 style={{
-                  background: 'var(--accent)', color: '#fff',
+                  background: 'var(--accent)', color: 'var(--accent-ink)',
                   fontSize: 14, fontWeight: 700, letterSpacing: '0.01em',
                   boxShadow: '0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent)',
                 }}

@@ -113,7 +113,7 @@ export default function AideFaqView({ open, onClose }) {
                 </span>
                 <motion.svg
                   width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="rgba(255,90,31,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  stroke="color-mix(in srgb, var(--accent) 70%, transparent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   animate={{ rotate: expanded === i ? 180 : 0 }}
                   transition={{ duration: 0.2, ease: 'easeInOut' }}
                   style={{ flexShrink: 0 }}

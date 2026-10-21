@@ -12,7 +12,8 @@
     "test:coverage": "vitest run --coverage",
     "scale": "python3 scripts/apply-scale.py",
     "scale:check": "python3 scripts/apply-scale.py --dry",
-    "test:rules": "firebase emulators:exec --only firestore --project demo-inrun 'node scripts/test-rules.mjs'"
+    "test:rules": "firebase emulators:exec --only firestore --project demo-inrun 'node scripts/test-rules.mjs'",
+    "audit:contrast": "node scripts/audit-contrast.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

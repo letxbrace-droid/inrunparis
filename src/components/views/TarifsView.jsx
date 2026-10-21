@@ -12,14 +12,14 @@ const TRAJETS = [
     subtitle: 'CDG · Orly · Beauvais · Gares TGV',
     price:    'dès 45 €',
     icon:     'plane',
-    accent:   'rgba(255,90,31,0.14)',
+    accent:   'color-mix(in srgb, var(--accent) 14%, transparent)',
   },
   {
     title:    'Longue distance',
     subtitle: "Province · Côte d'Azur · Genève",
     price:    'Sur devis',
     icon:     'pin',
-    accent:   'rgba(255,90,31,0.10)',
+    accent:   'color-mix(in srgb, var(--accent) 10%, transparent)',
   },
 ]
 
@@ -173,8 +173,8 @@ export default function TarifsView({ open, onClose, onReserve }) {
               position: 'relative',
               overflow: 'hidden',
               background: 'linear-gradient(140deg, #1A0F06 0%, #0D0A08 55%, #0A0D18 100%)',
-              border: '1px solid rgba(255,90,31,0.18)',
-              boxShadow: '0 0 0 1px rgba(255,90,31,0.06), inset 0 1px 0 rgba(255,255,255,0.05)',
+              border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
+              boxShadow: '0 0 0 1px color-mix(in srgb, var(--accent) 6%, transparent), inset 0 1px 0 rgba(255,255,255,0.05)',
             }}
           >
             {/* Accent top line */}
@@ -185,7 +185,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
             {/* Ambient glow */}
             <span aria-hidden="true" style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'radial-gradient(ellipse 80% 60% at 10% 0, rgba(255,90,31,0.12), transparent 55%)',
+              background: 'radial-gradient(ellipse 80% 60% at 10% 0, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%)',
             }} />
 
             <h2 style={{
@@ -194,7 +194,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
             }}>
               Prix annoncé avant<br />chaque course
             </h2>
-            <p style={{ fontSize: 12, color: 'rgba(245,241,232,.48)', marginTop: 8, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: 'rgba(255, 255, 255, .48)', marginTop: 8, lineHeight: 1.5 }}>
               Aéroports, longue distance et mise à disposition.
             </p>
 
@@ -213,7 +213,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                   <span style={{ display: 'block', fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--accent)' }}>
                     {s.val}
                   </span>
-                  <span style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(245,241,232,0.40)', marginTop: 3 }}>
+                  <span style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255, 255, 255, 0.40)', marginTop: 3 }}>
                     {s.lab}
                   </span>
                 </motion.div>
@@ -231,7 +231,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
           }}>
             <span aria-hidden="true" style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'radial-gradient(ellipse 95% 70% at 50% 0, rgba(255,90,31,0.10), transparent 60%)',
+              background: 'radial-gradient(ellipse 95% 70% at 50% 0, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%)',
             }} />
             <div className="flex items-center justify-between relative">
               <div>
@@ -294,10 +294,10 @@ export default function TarifsView({ open, onClose, onReserve }) {
                 style={{
                   borderRadius: 12,
                   background: row.highlight
-                    ? (th.isDark ? 'rgba(255,90,31,0.10)' : 'rgba(255,90,31,0.07)')
+                    ? (th.isDark ? 'color-mix(in srgb, var(--accent) 10%, transparent)' : 'color-mix(in srgb, var(--accent) 7%, transparent)')
                     : th.bgCard,
                   border: row.highlight
-                    ? '1px solid rgba(255,90,31,0.24)'
+                    ? '1px solid color-mix(in srgb, var(--accent) 24%, transparent)'
                     : `1px solid ${th.borderFaint}`,
                 }}
               >
@@ -307,7 +307,7 @@ export default function TarifsView({ open, onClose, onReserve }) {
                     <span style={{
                       marginLeft: 8, fontSize: 11, fontWeight: 700,
                       padding: '2px 7px', borderRadius: 999,
-                      background: 'var(--accent)', color: '#fff',
+                      background: 'var(--accent)', color: 'var(--accent-ink)',
                     }}>
                       Populaire
                     </span>

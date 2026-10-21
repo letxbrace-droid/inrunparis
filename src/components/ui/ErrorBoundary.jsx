@@ -52,13 +52,13 @@ export default class ErrorBoundary extends Component {
           fontFamily: "'Outfit', system-ui, sans-serif",
         }}
       >
-        <div style={{ fontSize: 14, letterSpacing: '.22em', textTransform: 'uppercase', color: 'rgba(245,241,232,.45)' }}>
+        <div style={{ fontSize: 14, letterSpacing: '.22em', textTransform: 'uppercase', color: 'rgba(255, 255, 255, .45)' }}>
           I&amp;N RUN
         </div>
         <h1 style={{ fontSize: 24, fontWeight: 700, lineHeight: 1.3, letterSpacing: '-.02em', margin: 0 }}>
           L&apos;application a rencontré un problème.
         </h1>
-        <p style={{ fontSize: 14, lineHeight: 1.6, color: 'rgba(245,241,232,.6)', maxWidth: 320, margin: 0 }}>
+        <p style={{ fontSize: 14, lineHeight: 1.6, color: 'rgba(255, 255, 255, .6)', maxWidth: 320, margin: 0 }}>
           Votre course, elle, reste possible. Écrivez-moi directement, je réponds
           en quelques minutes.
         </p>
@@ -94,7 +94,7 @@ export default class ErrorBoundary extends Component {
             padding: 0,
             fontSize: 12,
             fontWeight: 700,
-            color: 'rgba(245,241,232,.45)',
+            color: 'rgba(255, 255, 255, .45)',
             textDecoration: 'underline',
           }}
         >

@@ -5,7 +5,7 @@ export default function iOSToggle({ checked, onChange, label, id }) {
       className="flex items-center justify-between gap-3 cursor-pointer select-none py-0.5"
     >
       {label && (
-        <span className="text-sm" style={{ color: 'rgba(245,241,232,.7)' }}>{label}</span>
+        <span className="text-sm" style={{ color: 'rgba(255, 255, 255, .7)' }}>{label}</span>
       )}
       <div className="relative flex-shrink-0">
         <input

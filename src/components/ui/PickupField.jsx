@@ -55,7 +55,7 @@ export default function PickupField({ th, pickup, highlight = false, hint, iconS
         }}
       >
         <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none"
-          stroke={highlight ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
+          stroke={highlight ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 55%, transparent)'}
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           style={{ flexShrink: 0 }}
         >

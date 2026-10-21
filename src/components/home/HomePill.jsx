@@ -280,20 +280,6 @@ export default function HomePill({ onOpenSheet }) {
           />
         </div>
 
-        {/* Halo accent — signature lumineuse animée sous la pilule */}
-        <motion.div
-          aria-hidden="true"
-          className="absolute pointer-events-none"
-          style={{
-            inset:        -10,
-            borderRadius: depart && arrive ? 30 : 999,
-            background:   'radial-gradient(60% 80% at 50% 60%, color-mix(in srgb, var(--accent) 32%, transparent), transparent 75%)',
-            filter:       'blur(14px)',
-            opacity:      th.isDark ? 1 : 0.55,
-          }}
-          animate={{ opacity: th.isDark ? [0.55, 0.95, 0.55] : [0.35, 0.6, 0.35], scale: [1, 1.04, 1] }}
-          transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-        />
 
         <button
           onClick={openCard}
@@ -373,17 +359,19 @@ export default function HomePill({ onOpenSheet }) {
           ) : (
             /* ───── Invite — signature : typo massive + profondeur + micro-motion ───── */
             <span className="flex items-center gap-3.5 w-full px-4 py-3.5">
-              {/* Tuile loupe — cœur niché accent, respiration idle */}
+              {/* Tuile loupe — une affordance, pas une action. Elle portait un
+                  dégradé, un liseré, un vernis intérieur et une ombre colorée :
+                  quatre décorations pour dire « on peut taper ici ». Une seule
+                  chose doit tirer l'œil sur cet écran, et c'est la flèche. */}
               <span
                 className="flex items-center justify-center flex-shrink-0 relative"
                 style={{
                   width: 42, height: 42, borderRadius: 12,
-                  background: 'linear-gradient(145deg, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent) 9%, transparent))',
-                  border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-                  boxShadow: 'inset 0 1px 0 color-mix(in srgb, var(--accent) 30%, transparent), 0 4px 14px color-mix(in srgb, var(--accent) 24%, transparent)',
+                  background: 'var(--fill)',
+                  border: '1px solid var(--separator)',
                 }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5A1F" strokeWidth="2.5" strokeLinecap="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--label-secondary)" strokeWidth="2.5" strokeLinecap="round">
                   <circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.35-4.35"/>
                 </svg>
               </span>
@@ -406,12 +394,10 @@ export default function HomePill({ onOpenSheet }) {
                 className="flex items-center justify-center flex-shrink-0 relative"
                 style={{
                   width: 36, height: 36, borderRadius: 999, background: 'var(--accent)',
-                  boxShadow: '0 3px 14px color-mix(in srgb, var(--accent) 45%, transparent)',
                 }}
               >
-                <span aria-hidden="true" className="absolute inset-0 rounded-full" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35)' }} />
                 <svg
-                  width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"
+                  width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>

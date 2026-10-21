@@ -25,7 +25,7 @@ const BAR_KF = [
 ]
 
 function MusiqueIcon({ active, th }) {
-  const dim = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.4)')
+  const dim = active ? 'var(--accent)' : (th?.inkMuted || 'rgba(255, 255, 255, .4)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       {BAR_KF.map(({ heights, ys }, i) => (
@@ -48,9 +48,9 @@ function MusiqueIcon({ active, th }) {
 }
 
 function RadioIcon({ active, th }) {
-  const dot  = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.68)')
-  const wav1 = active ? 'color-mix(in srgb, var(--accent) 85%, transparent)'  : (th?.inkMuted || 'rgba(245,241,232,.55)')
-  const wav2 = active ? 'color-mix(in srgb, var(--accent) 55%, transparent)'  : (th?.inkDim   || 'rgba(245,241,232,.22)')
+  const dot  = active ? 'var(--accent)' : (th?.inkMuted || 'rgba(255, 255, 255, .68)')
+  const wav1 = active ? 'color-mix(in srgb, var(--accent) 85%, transparent)'  : (th?.inkMuted || 'rgba(255, 255, 255, .55)')
+  const wav2 = active ? 'color-mix(in srgb, var(--accent) 55%, transparent)'  : (th?.inkDim   || 'rgba(255, 255, 255, .22)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="2" fill={dot}/>
@@ -73,7 +73,7 @@ function RadioIcon({ active, th }) {
 }
 
 function SilenceIcon({ active, th }) {
-  const c = active ? '#FF5A1F' : (th?.inkMuted || 'rgba(245,241,232,.65)')
+  const c = active ? 'var(--accent)' : (th?.inkMuted || 'rgba(255, 255, 255, .65)')
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={c} fill={active ? 'color-mix(in srgb, var(--accent) 12%, transparent)' : 'none'}/>
@@ -91,7 +91,7 @@ function VolumeIcon({ level }) {
 
 // ── Payment icons (theme-aware) ───────────────────────────────────────────────
 function CardIcon({ active, th }) {
-  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? 'var(--accent)' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="1" y="4" width="22" height="16" rx="2"/>
@@ -101,7 +101,7 @@ function CardIcon({ active, th }) {
 }
 
 function CashIcon({ active, th }) {
-  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? 'var(--accent)' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -112,7 +112,7 @@ function CashIcon({ active, th }) {
 }
 
 function TransferIcon({ active, th }) {
-  const s = active ? '#FF5A1F' : (th?.inkMid || 'rgba(13,13,13,.78)')
+  const s = active ? 'var(--accent)' : (th?.inkMid || 'rgba(13,13,13,.78)')
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={s} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="17 1 21 5 17 9"/>
@@ -195,7 +195,7 @@ function PremiumSlider({ min, max, step = 1, value, onChange, label, gradient, t
     ? 'radial-gradient(circle at 38% 32%, #2A2A2A, #111111)'
     : 'radial-gradient(circle at 38% 32%, #FFFFFF, #EAE7E1)'
 
-  const thumbShadow = `0 0 0 2.5px #FF5A1F, 0 2px 10px rgba(0,0,0,.28), inset 0 1px 0 ${
+  const thumbShadow = `0 0 0 2.5px var(--accent), 0 2px 10px rgba(0,0,0,.28), inset 0 1px 0 ${
     th.isDark ? 'rgba(255,255,255,.14)' : 'rgba(255,255,255,.90)'
   }`
 
@@ -324,7 +324,7 @@ function AmbiancePill({ active, onClick, icon, label, th }) {
         <Icon name={icon} size={20} style={{ color: active ? 'var(--accent)' : th.inkMid }} />
         <span
           className="text-[11px] font-bold tracking-wide"
-          style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
+          style={{ color: active ? 'var(--accent)' : hovered ? th.inkHigh : th.inkMid }}
         >
           {label}
         </span>
@@ -458,7 +458,7 @@ function PaymentButton({ active, onClick, icon, label, th }) {
         <Icon name={icon} size={22} style={{ color: active ? 'var(--accent)' : th.inkMid }} />
         <span
           className="text-[11px] font-bold tracking-wide"
-          style={{ color: active ? '#FF5A1F' : hovered ? th.inkHigh : th.inkMid }}
+          style={{ color: active ? 'var(--accent)' : hovered ? th.inkHigh : th.inkMid }}
         >
           {label}
         </span>

@@ -65,7 +65,7 @@ export default function Step2Price({ onNext, onBack }) {
 
   if (!price) return (
     <div className="flex flex-col items-center justify-center gap-4 px-5 py-16">
-      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,90,31,.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="color-mix(in srgb, var(--accent) 35%, transparent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
       </svg>
       <p className="text-sm text-center" style={{ color: th.inkMuted }}>
@@ -98,7 +98,7 @@ export default function Step2Price({ onNext, onBack }) {
         <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
           {depart?.name?.split(',')[0] ?? '—'}
         </p>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,90,31,.55)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="color-mix(in srgb, var(--accent) 55%, transparent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
         <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: th.inkMid }}>
@@ -176,7 +176,7 @@ export default function Step2Price({ onNext, onBack }) {
               th={th}
               icon={
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                  stroke="#FF5A1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5c-1.5-1.5-3.5-1.5-5 0L11 6 2.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 6.2 7.3c.4.4.9.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
                 </svg>
               }

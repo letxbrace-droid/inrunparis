@@ -45,7 +45,7 @@ function DismissBtn({ onClick }) {
     <button onClick={onClick} aria-label="Fermer" style={{
       flexShrink: 0, width: 28, height: 28, borderRadius: '50%',
       background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.08)',
-      color: 'rgba(245,241,232,.35)', cursor: 'pointer',
+      color: 'rgba(255, 255, 255, .35)', cursor: 'pointer',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
     }}>
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -73,13 +73,13 @@ function AndroidBanner({ onInstall, onDismiss }) {
         <p style={{ fontSize: 12, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
           Installer I&amp;N RUN
         </p>
-        <p style={{ fontSize: 11, color: 'rgba(245,241,232,.48)', marginTop: 2, margin: 0 }}>
+        <p style={{ fontSize: 11, color: 'rgba(255, 255, 255, .48)', marginTop: 2, margin: 0 }}>
           Accès direct depuis votre écran d'accueil
         </p>
       </div>
       <button onClick={onInstall} style={{
         flexShrink: 0, padding: '8px 15px', borderRadius: 12,
-        background: 'var(--accent)', border: 'none', color: '#fff',
+        background: 'var(--accent)', border: 'none', color: 'var(--accent-ink)',
         fontSize: 12, fontWeight: 700, cursor: 'pointer', letterSpacing: '.02em',
         boxShadow: '0 2px 10px color-mix(in srgb, var(--accent) 45%, transparent)',
       }}>
@@ -99,7 +99,7 @@ function IOSBanner({ onDismiss }) {
         <p style={{ fontSize: 12, fontWeight: 700, color: '#F5F1E8', lineHeight: 1.25, margin: 0 }}>
           Installer I&amp;N RUN
         </p>
-        <p style={{ fontSize: 11, color: 'rgba(245,241,232,.52)', marginTop: 2, margin: '2px 0 0' }}>
+        <p style={{ fontSize: 11, color: 'rgba(255, 255, 255, .52)', marginTop: 2, margin: '2px 0 0' }}>
           Appuyez sur <ShareIcon /> puis <strong style={{ color: '#F5F1E8' }}>« Sur l'écran d'accueil »</strong>
         </p>
       </div>

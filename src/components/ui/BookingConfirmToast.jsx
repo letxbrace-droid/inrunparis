@@ -122,7 +122,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
               Réservation<br />envoyée !
             </h2>
             <p style={{
-              fontSize: 14, color: 'rgba(245,241,232,.52)',
+              fontSize: 14, color: 'rgba(255, 255, 255, .52)',
               marginTop: 12, lineHeight: 1.58,
             }}>
               {bonNumber ? `Bon n°${bonNumber} · ` : ''}Nourdine vous recontacte<br />pour confirmer votre trajet.
@@ -138,9 +138,9 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             className="active:scale-[.95] transition-transform duration-100"
             style={{
               marginTop: 36, padding: '14px 44px', borderRadius: 999,
-              background: 'var(--accent)', color: '#fff',
+              background: 'var(--accent)', color: 'var(--accent-ink)',
               fontSize: 16, fontWeight: 700, letterSpacing: '-0.01em',
-              boxShadow: '0 8px 28px rgba(255,90,31,.55), inset 0 1px 0 rgba(255,255,255,.2)',
+              boxShadow: '0 8px 28px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 1px 0 rgba(255,255,255,.2)',
               cursor: 'pointer', border: 'none',
             }}
           >
@@ -162,7 +162,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
                   marginTop: 10, padding: '10px 22px', borderRadius: 999,
                   background: 'rgba(255,255,255,.06)',
                   border: '1px solid rgba(255,255,255,.10)',
-                  color: 'rgba(245,241,232,.65)',
+                  color: 'rgba(255, 255, 255, .65)',
                   fontSize: 12, fontWeight: 600, cursor: 'pointer',
                 }}
               >
@@ -172,7 +172,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             {pushState === 'asking' && (
               <motion.p key="push-asking"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                style={{ marginTop: 10, fontSize: 12, color: 'rgba(245,241,232,.38)', fontWeight: 500 }}
+                style={{ marginTop: 10, fontSize: 12, color: 'rgba(255, 255, 255, .38)', fontWeight: 500 }}
               >
                 Autoriser dans la boîte de dialogue…
               </motion.p>
@@ -192,7 +192,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.29, duration: 0.3 }}
-            style={{ marginTop: 16, fontSize: 12, color: 'rgba(245,241,232,.22)', userSelect: 'none' }}
+            style={{ marginTop: 16, fontSize: 12, color: 'rgba(255, 255, 255, .22)', userSelect: 'none' }}
           >
             Toucher n'importe où pour fermer
           </motion.p>

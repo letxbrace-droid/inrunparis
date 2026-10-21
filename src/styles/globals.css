@@ -38,16 +38,27 @@
 @layer base {
   :root {
     /* ── Accent ─────────────────────────────────────────────────── */
-    --accent:        #FF5A1F;
+    /* L'action principale est BLANCHE sur fond noir, NOIRE sur fond clair.
+       Aucune teinte : un accent chromatique vieillit, se confond avec un
+       concurrent (G7 est bleu, Uber et Bolt sont verts) et oblige à réaccorder
+       toute la rampe autour de lui. Le noir et le blanc n'appartiennent à
+       personne et donnent le contraste maximal possible — 21:1. */
+    --accent:        #FFFFFF;
     /* La braise claire, en haut à gauche des dégradés de marque — la lumière
        vient d'en haut. En sRGB ce jeton valait exactement --accent : les deux
        dégradés qui s'en servent étaient donc des aplats sur tout écran non-P3,
        c'est-à-dire la majorité des Android et tous les navigateurs de bureau.
        Seule la couche P3 les différenciait, et dans l'autre sens. */
-    --accent-2:      #FF7A3D;
-    --accent-press:  #E84000;
-    --accent-dim:    color-mix(in srgb, var(--accent) 12%, transparent);
-    --accent-glow:   color-mix(in srgb, var(--accent) 35%, transparent);
+    --accent-2:      #FFFFFF;
+    --accent-press:  #D2D2D7;
+    --accent-dim:    rgba(255,255,255,0.10);
+    /* Ce qui se pose SUR un aplat d'accent. Inversé avec lui par thème : sans
+       ce jeton, le « color: #fff » des boutons devenait blanc sur blanc. */
+    --accent-ink:    #000000;
+    /* Les halos sont éteints par ce seul jeton : aucun composant à toucher.
+       Un halo diffus est la signature d'une interface qui cherche à
+       impressionner ; Base n'en a aucun. */
+    --accent-glow:   transparent;
 
     /* ── Voix typographique — UNE SEULE ─────────────────────────────
        Outfit partout, du prix de 56 px au libellé de 11 px. Les design
@@ -93,24 +104,24 @@
        s'élevant — une matière qui s'avance capte davantage la lumière de la
        pièce. L'écart reste sous le seuil du nommable : on ne voit pas du brun,
        on cesse seulement de voir du gris. */
-    --bg-grouped:    #040302;   /* deepest — true AMOLED      */
-    --bg-base:       #060504;   /* main app background         */
-    --bg-secondary:  #0C0A08;   /* card level 1                */
-    --bg-tertiary:   #13100D;   /* card level 2 / elevated     */
-    --bg-elevated:   #191512;   /* inputs / innermost          */
-    --bg-glass:      rgba(11,9,7,0.94);    /* nav chrome — near-solid  */
+    --bg-grouped:    #000000;   /* le plus profond — vrai AMOLED */
+    --bg-base:       #0A0A0B;   /* fond de l'application         */
+    --bg-secondary:  #141416;   /* carte niveau 1                */
+    --bg-tertiary:   #1C1C1F;   /* carte niveau 2 / surélevée    */
+    --bg-elevated:   #232327;   /* champs / le plus intérieur    */
+    --bg-glass:      rgba(10,10,11,0.94);  /* chrome de navigation  */
 
     /* Named surfaces — single source for useAppTheme + components */
-    --bg-panel:   #0C0A08;
-    --bg-header:  #0E0C0A;
-    --bg-card:    #13100D;
-    --bg-input:   #191512;
-    --bg-inset:   #161310;
-    --bg-hover:   #201A16;
+    --bg-panel:   #141416;
+    --bg-header:  #121214;
+    --bg-card:    #1C1C1F;
+    --bg-input:   #232327;
+    --bg-inset:   #1A1A1D;
+    --bg-hover:   #2A2A2F;
     /* Le fond d'avatar était #0A1828, un bleu nuit — la seule surface froide
        d'une interface entièrement chaude, et elle encadrait des initiales de
        clients. */
-    --bg-avatar:  #1C1510;
+    --bg-avatar:  #232327;
 
     /* ── Labels — 4 levels only (Uber-style discipline) ─────────── */
     /* Quatre niveaux, et les quatre doivent rester lisibles.
@@ -118,20 +129,20 @@
        tombait à 3,94 contre les 4,5 exigés pour du texte courant. Il portait
        des horaires et des mentions — pas de la décoration. 0,50 le ramène à
        4,82 sans écraser la hiérarchie au-dessus. */
-    --label:            #F5F1E8;
-    --label-secondary:  rgba(245,241,232,0.82);
-    --label-tertiary:   rgba(245,241,232,0.62);
-    --label-quaternary: rgba(245,241,232,0.50);
+    --label:            #FFFFFF;
+    --label-secondary:  rgba(255,255,255,0.82);
+    --label-tertiary:   rgba(255,255,255,0.62);
+    --label-quaternary: rgba(255,255,255,0.50);
 
     /* ── Borders — razor thin, never blurred ────────────────────── */
     /* Filets et remplissages tirent vers le blanc chaud du texte, pas vers le
        blanc pur : un liseré neutre sur une surface chaude se voit comme bleu. */
-    --separator:        rgba(255,246,236,0.07);
-    --separator-strong: rgba(255,246,236,0.12);
-    --separator-faint:  rgba(255,246,236,0.05);
-    --fill:             rgba(255,246,236,0.05);
-    --fill-secondary:   rgba(255,246,236,0.035);
-    --handle:           rgba(255,246,236,0.20);
+    --separator:        rgba(255,255,255,0.07);
+    --separator-strong: rgba(255,255,255,0.12);
+    --separator-faint:  rgba(255,255,255,0.05);
+    --fill:             rgba(255,255,255,0.05);
+    --fill-secondary:   rgba(255,255,255,0.035);
+    --handle:           rgba(255,255,255,0.20);
     --overlay:          rgba(0,0,0,0.72);
     --scrim:            rgba(0,0,0,0.90);
 
@@ -202,15 +213,6 @@
     color-scheme: dark;
   }
 
-  /* ── Wide-gamut accent — true UHD orange on P3/OLED displays ── */
-  @supports (color: color(display-p3 1 1 1)) {
-    :root {
-      --accent:       color(display-p3 1 0.40 0.16);
-      --accent-2:     color(display-p3 1 0.52 0.28);
-      --accent-press: color(display-p3 0.92 0.28 0.04);
-    }
-  }
-
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -232,20 +234,30 @@
 
   /* ── Light mode — editorial UHD, zero diffuse shadow ──────── */
   [data-theme="light"] {
-    --bg-grouped:    #F2F0EC;
-    --bg-base:       #F7F5F0;
-    --bg-secondary:  #FFFFFF;
-    --bg-tertiary:   #EDEAE4;
-    --bg-elevated:   #E4E1DB;
-    --bg-glass:      rgba(247,245,240,0.97);
+    /* L'accent s'INVERSE avec le thème : bouton noir sur fond clair, bouton
+       blanc sur fond sombre. Sans cette bascule, l'action principale serait
+       blanche sur blanc. */
+    --accent:        #0D0D0D;
+    --accent-2:      #0D0D0D;
+    --accent-press:  #3A3A3C;
+    --accent-dim:    rgba(0,0,0,0.07);
+    --accent-ink:    #FFFFFF;
+    --accent-glow:   transparent;
 
-    --bg-panel:   #F0EDE8;
-    --bg-header:  #EFEDE8;
+    --bg-grouped:    #EFEFF2;
+    --bg-base:       #F7F7F9;
+    --bg-secondary:  #FFFFFF;
+    --bg-tertiary:   #EBEBEF;
+    --bg-elevated:   #E2E2E7;
+    --bg-glass:      rgba(247,247,249,0.97);
+
+    --bg-panel:   #F0F0F3;
+    --bg-header:  #EFEFF2;
     --bg-card:    #FFFFFF;
-    --bg-input:   #E8E5E0;
-    --bg-inset:   #EDEBE6;
-    --bg-hover:   #E5E3DE;
-    --bg-avatar:  #E0DDD6;
+    --bg-input:   #E8E8EC;
+    --bg-inset:   #EDEDF0;
+    --bg-hover:   #E4E4E9;
+    --bg-avatar:  #DEDEE3;
 
     /* High-contrast editorial ink — readable, not washed out */
     /* Le mode clair était bien plus sévère que le sombre : son niveau le plus
@@ -461,46 +473,36 @@
   }
 
   /* ── Primary CTA ────────────────────────────────────────────── */
+  /* L'action principale : un aplat, et c'est tout. Il y avait ici un dégradé
+     à trois arrêts et cinq ombres, dont un halo coloré. Une surface pleine à
+     21:1 n'a besoin d'aucun de ces artifices pour se faire voir — et le même
+     jeton sert les deux thèmes, donc plus de saumon codé en dur en clair. */
   .cta-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(155deg, var(--accent-2) 0%, var(--accent) 42%, var(--accent-press) 100%);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.28),
-      inset 0 -1px 0 rgba(0,0,0,0.32),
-      0 2px  0   rgba(0,0,0,0.45),
-      0 6px  20px rgba(0,0,0,0.55),
-      0 12px 32px -4px color-mix(in srgb, var(--accent) 42%, transparent);
+    background: var(--accent);
+    color: var(--accent-ink);
   }
 
-  /* Light mode CTA */
-  [data-theme="light"] .cta-glow {
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.32),
-      inset 0 -1px 0 rgba(0,0,0,0.12),
-      0 3px 14px color-mix(in srgb, var(--accent) 30%, transparent),
-      0 1px 4px  rgba(0,0,0,0.14);
-  }
-
-  /* Light mode disabled — muted orange instead of transparent salmon */
-  [data-theme="light"] .cta-glow:disabled,
-  [data-theme="light"] .cta-pill:disabled {
+  .cta-glow:disabled,
+  .cta-pill:disabled {
     opacity: 1;
-    background: linear-gradient(160deg, #FFAC84 0%, #FF9A6A 45%, #FF8040 100%);
+    background: var(--fill);
+    color: var(--label-quaternary);
     box-shadow: none;
     cursor: not-allowed;
   }
 
   /* WhatsApp green primary CTA */
+  /* Le vert de WhatsApp est une marque extérieure : on le garde tel quel,
+     mais à plat. Le texte blanc est déclaré ici parce que la classe utilitaire
+     text-white a été retirée du composant — l'action principale, elle, prend
+     son encre du thème. */
   .cta-wa {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(160deg, #34eb74 0%, var(--wa) 50%, #1aad52 100%);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.20),
-      inset 0 -1px 0 rgba(0,0,0,0.24),
-      0 4px 16px rgba(0,0,0,0.50),
-      0 1px 4px  rgba(0,0,0,0.40);
+    background: var(--wa);
+    color: #FFFFFF;
   }
   [data-theme="light"] .cta-wa {
     box-shadow:
@@ -525,26 +527,6 @@
   }
   .cta-wa:not(:disabled):hover::before,
   .cta-wa:not(:disabled):active::before {
-    transform: translate(0, 0);
-  }
-
-  /* Diagonal shine sweep on hover */
-  .cta-glow::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.18) 0%,
-      rgba(255,200,120,0.08) 40%,
-      transparent 65%
-    );
-    transform: translate(-100%, 100%);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-  .cta-glow:not(:disabled):hover::before,
-  .cta-glow:not(:disabled):active::before {
     transform: translate(0, 0);
   }
 

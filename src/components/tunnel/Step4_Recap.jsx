@@ -141,7 +141,7 @@ export default function Step4Recap({ onBack }) {
         {/* DATE */}
         <div className="flex items-center gap-2.5 px-4 py-2.5">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-            stroke="rgba(255,90,31,.65)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            stroke="color-mix(in srgb, var(--accent) 65%, transparent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
             <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
           </svg>
           <span className="text-[12px] font-semibold" style={{ color: th.inkMid }}>

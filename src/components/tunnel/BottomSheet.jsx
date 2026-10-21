@@ -60,7 +60,7 @@ function StepDot({ index, current, th }) {
         scale:     state === 'active' ? 1.12 : 1,
         boxShadow:
           state === 'active'
-            ? 'inset 0 1px 0 rgba(255,255,255,.15)'
+            ? 'none'
             : 'none',
       }}
       transition={SPRING}
@@ -68,7 +68,7 @@ function StepDot({ index, current, th }) {
         border: state === 'future' ? `1px solid ${th.borderStrong}` : 'none',
         fontSize: 12,
         fontWeight: 700,
-        color: state === 'future' ? th.inkLow : '#F5F1E8',
+        color: state === 'future' ? th.inkLow : 'var(--accent-ink)',
       }}
     >
       {state === 'done' ? (
@@ -77,7 +77,7 @@ function StepDot({ index, current, th }) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ ...SPRING, delay: 0.05 }}
           width="11" height="11" viewBox="0 0 14 14"
-          fill="none" stroke="#FF5A1F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
         >
           <path d="M2 7l4 4 6-6"/>
         </motion.svg>
@@ -264,7 +264,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               className="pointer-events-auto flex items-center gap-2 px-5 py-3 rounded-full select-none cursor-pointer"
               style={{
                 background: 'var(--accent)',
-                color: '#fff',
+                color: 'var(--accent-ink)',
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.01em',
@@ -311,7 +311,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
             borderLeft:   th.isDark ? '1px solid rgba(255,255,255,0.06)' : `1px solid ${th.border}`,
             borderRight:  th.isDark ? '1px solid rgba(255,255,255,0.06)' : `1px solid ${th.border}`,
             boxShadow: th.isDark
-              ? '0 -24px 56px rgba(0,0,0,0.90), 0 -6px 40px -8px rgba(255,90,31,0.18), 0 -2px 12px -2px rgba(255,90,31,0.10)'
+              ? '0 -24px 56px rgba(0,0,0,0.90), 0 -6px 40px -8px color-mix(in srgb, var(--accent) 18%, transparent), 0 -2px 12px -2px color-mix(in srgb, var(--accent) 10%, transparent)'
               : `0 -8px 32px ${th.scrim}`,
             opacity:      open ? 1 : 0,
             transition:   'opacity .28s ease',
@@ -324,7 +324,7 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
           {th.isDark && (
             <span aria-hidden="true" style={{
               display: 'block', height: 1, flexShrink: 0,
-              background: 'linear-gradient(90deg, transparent 0%, rgba(255,90,31,0.55) 35%, rgba(255,140,60,0.70) 50%, rgba(255,90,31,0.55) 65%, transparent 100%)',
+              background: 'linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--accent) 55%, transparent) 35%, rgba(255,140,60,0.70) 50%, color-mix(in srgb, var(--accent) 55%, transparent) 65%, transparent 100%)',
             }} />
           )}
           {/* Header strip */}

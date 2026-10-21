@@ -89,7 +89,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
             : 'inset 0 1px 0 rgba(255,255,255,.03)',
         }}
       >
-        <span className="pl-4 flex-shrink-0" style={{ color: focused ? '#FF5A1F' : 'color-mix(in srgb, var(--accent) 50%, transparent)' }}>
+        <span className="pl-4 flex-shrink-0" style={{ color: focused ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 50%, transparent)' }}>
           {icon}
         </span>
         <input
@@ -107,7 +107,7 @@ function LocationInput({ label, value, onSelect, placeholder, icon, th }) {
         {loading && (
           <span className="pr-3 flex-shrink-0">
             <span className="block w-4 h-4 border-2 rounded-full animate-spin"
-              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: '#FF5A1F' }} />
+              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: 'var(--accent)' }} />
           </span>
         )}
       </div>
@@ -207,13 +207,13 @@ export default function Step1Route({ onNext }) {
         >
           {geoStatus === 'loading' ? (
             <span className="block w-4 h-4 border-2 rounded-full animate-spin"
-              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: '#FF5A1F' }} />
+              style={{ borderColor: 'color-mix(in srgb, var(--accent) 30%, transparent)', borderTopColor: 'var(--accent)' }} />
           ) : (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#FF5A1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="7"/>
-              <circle cx="12" cy="12" r="2.5" fill="#FF5A1F" stroke="none"/>
+              <circle cx="12" cy="12" r="2.5" fill="var(--accent)" stroke="none"/>
               <line x1="12" y1="1"  x2="12" y2="5"/>
               <line x1="12" y1="19" x2="12" y2="23"/>
               <line x1="1"  y1="12" x2="5"  y2="12"/>
@@ -274,18 +274,18 @@ export default function Step1Route({ onNext }) {
           }}
         >
           <div className="flex flex-col items-center flex-shrink-0" aria-hidden="true">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FF5A1F' }} />
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
             <span className="w-px my-1" style={{ height: 8, background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent) 50%, transparent), color-mix(in srgb, var(--accent) 12%, transparent))' }} />
             <span className="w-1.5 h-1.5 rounded-full border" style={{ borderColor: 'color-mix(in srgb, var(--accent) 60%, transparent)', background: 'transparent' }} />
           </div>
-          <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: '#FF5A1F' }}>
+          <p className="flex-1 text-[12px] font-semibold truncate" style={{ color: 'var(--accent)' }}>
             {depart?.name?.split(',')[0] ?? '—'}
           </p>
           <span className="font-mono text-[11px] font-semibold flex-shrink-0 px-2 py-0.5 rounded-full"
-            style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: '#FF5A1F' }}>
+            style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: 'var(--accent)' }}>
             {route.km.toFixed(1)} km · {Math.round(route.mins)} min
           </span>
-          <p className="flex-1 text-[12px] font-semibold truncate text-right" style={{ color: '#FF5A1F' }}>
+          <p className="flex-1 text-[12px] font-semibold truncate text-right" style={{ color: 'var(--accent)' }}>
             {arrive?.name?.split(',')[0] ?? '—'}
           </p>
         </motion.div>
