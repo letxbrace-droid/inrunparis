@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06070A">
+<title>Accueil · Abdellah</title>
+<style>
+@font-face{font-family:"PP";src:url(fonts/poppins-Light.woff) format("woff");font-weight:200 300}
+@font-face{font-family:"PP";src:url(fonts/poppins-Regular.woff) format("woff");font-weight:400}
+@font-face{font-family:"PP";src:url(fonts/poppins-Medium.woff) format("woff");font-weight:500}
+@font-face{font-family:"PP";src:url(fonts/poppins-Bold.woff) format("woff");font-weight:600 800}
+@font-face{font-family:"LI";src:url(fonts/lora-italic.woff) format("woff");font-weight:400 800;font-style:italic}
+:root{--txt:#F4F1EA;--mut:#A7A39A;--dim:#5F5D58;--gold:#E9A23B;--gold2:#F6CD86}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#06070A;color:var(--txt);font-family:"PP","Poppins",Roboto,Arial,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
+#root{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:#06070A}
+/* fond animé */
+.blob{position:absolute;border-radius:50%;opacity:.55;will-change:transform}
+#b1{width:1300px;height:1300px;left:-380px;top:-560px;background:radial-gradient(closest-side,#2A1E6E,rgba(42,30,110,0))}
+#b2{width:1500px;height:1500px;right:-620px;top:-700px;background:radial-gradient(closest-side,var(--amb,#7C5B1F),rgba(0,0,0,0));transition:background 6s}
+#b3{width:1200px;height:1200px;left:520px;bottom:-760px;background:radial-gradient(closest-side,#0E6B5A,rgba(14,107,90,0))}
+.anim #b1{animation:f1 46s ease-in-out infinite alternate}
+.anim #b2{animation:f2 58s ease-in-out infinite alternate}
+.anim #b3{animation:f3 52s ease-in-out infinite alternate}
+@keyframes f1{to{transform:translate(260px,180px) scale(1.15)}}
+@keyframes f2{to{transform:translate(-220px,140px) scale(.9)}}
+@keyframes f3{to{transform:translate(-300px,-120px) scale(1.2)}}
+#stars{position:absolute;left:0;top:0;width:1920px;height:1080px}
+#stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:#FFE7B5;opacity:0}
+.anim #stars i{animation:tw 6s ease-in-out infinite}
+@keyframes tw{50%{opacity:.7}}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;padding:54px 80px 0;transition:transform 2s ease}
+.row{display:flex}
+/* cartes 3D */
+.card{border-radius:36px;position:relative;overflow:hidden;--c1:#2B2D35;--c2:#1A1B21;--c3:#0E0F13;background:linear-gradient(150deg,var(--c1),var(--c2));
+ box-shadow:0 12px 0 var(--c3),0 36px 60px -10px rgba(0,0,0,.75),inset 0 2px 0 rgba(255,255,255,.28),inset 0 -3px 0 rgba(0,0,0,.25);
+ transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.card:before{content:"";position:absolute;left:-20%;top:-60%;width:90%;height:120%;background:radial-gradient(closest-side,rgba(255,255,255,.22),rgba(255,255,255,0));pointer-events:none}
+.card:after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.14),rgba(255,255,255,0));transform:skewX(-18deg);pointer-events:none}
+.anim .card:after{animation:sheen 9s ease-in-out infinite}
+@keyframes sheen{0%,70%{left:-60%}100%{left:130%}}
+.card>*{position:relative}
+.go .card.sel,.card.sel{transform:translateY(-10px) scale(1.015);box-shadow:0 16px 0 var(--c3),0 44px 70px -10px rgba(0,0,0,.85),0 0 0 5px #FFE2A8,inset 0 2px 0 rgba(255,255,255,.3)}
+.lab{font-size:20px;font-weight:500;letter-spacing:5px;color:rgba(255,255,255,.75)}
+.hint{position:absolute;right:30px;bottom:22px;font-size:18px;font-weight:500;color:rgba(255,255,255,.8);opacity:0;transition:opacity .3s}
+.card.sel .hint{opacity:1}
+.enter{opacity:0;transform:translateY(40px)}
+.go .enter{opacity:1;transform:none;transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+/* haut */
+#top{height:372px;justify-content:space-between}
+#hello{font-family:"LI",Georgia,serif;font-style:italic;font-weight:650;font-size:50px;color:#FFE2A8}
+#clock{font-size:220px;font-weight:500;line-height:.95;letter-spacing:-4px;margin-left:-8px;display:flex;text-shadow:0 6px 0 rgba(0,0,0,.45),0 24px 50px rgba(0,0,0,.6)}
+#clock .d{display:inline-block;overflow:hidden;height:1em}
+#clock .d span{display:block}
+#clock .d.flip span{animation:flip .7s cubic-bezier(.2,.9,.2,1)}
+@keyframes flip{from{transform:translateY(60%);opacity:0}to{transform:none;opacity:1}}
+#clock .sep{color:var(--gold);margin:0 14px 0 8px;transform:translateY(-14px);display:inline-block}
+.anim #clock .sep{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.3}}
+#date{font-size:36px;margin-top:12px}
+#date .h{color:var(--gold2);font-family:"LI",Georgia,serif;font-style:italic;font-weight:650;font-size:38px}
+#date .dot{color:var(--dim);margin:0 14px}
+#weather{width:600px;padding:34px 40px 30px;--c1:#3B82E6;--c2:#1C4CA8;--c3:#102E6B}
+#weather.cloud{--c1:#5E7896;--c2:#36495F;--c3:#202C3A}
+#weather.rain{--c1:#355C8C;--c2:#1C3354;--c3:#0F1D31}
+#weather.night{--c1:#3A3F9E;--c2:#1D1F5C;--c3:#111238}
+#wnow{display:flex;align-items:center;justify-content:space-between}
+#wtemp{font-size:104px;font-weight:500;letter-spacing:-3px;line-height:1}
+#wicon svg{width:120px;height:120px}
+#wdesc{font-size:27px;color:rgba(255,255,255,.85);margin-top:8px}
+#hourly{display:flex;justify-content:space-between;margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.18)}
+.hr{text-align:center;width:90px}.hr .t{font-size:20px;color:rgba(255,255,255,.75)}.hr svg{width:50px;height:50px;margin:6px 0 2px}.hr .v{font-size:27px;font-weight:500}
+/* icônes animées */
+.anim .spin{animation:spin 14s linear infinite;transform-origin:32px 32px}
+.anim .drift{animation:drift 5s ease-in-out infinite alternate}
+.anim .drop{animation:drop 1.1s linear infinite}
+.anim .drop:nth-child(2){animation-delay:.35s}.anim .drop:nth-child(3){animation-delay:.7s}
+.anim .flash{animation:flash 3s steps(1) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{to{transform:translateX(5px)}}
+@keyframes drop{0%{transform:translateY(-4px);opacity:0}30%{opacity:1}100%{transform:translateY(8px);opacity:0}}
+@keyframes flash{0%,80%{opacity:1}85%{opacity:.2}90%{opacity:1}}
+/* milieu */
+#mid{margin-top:34px;height:330px}
+#prayer{width:1100px;margin-right:30px;padding:32px 44px 0;--c1:#13876F;--c2:#0A5246;--c3:#05302A}
+#phead{display:flex;justify-content:space-between;align-items:flex-start}
+#nextLine{margin-top:10px;line-height:1}
+#nextName{font-family:"LI",Georgia,serif;font-style:italic;font-weight:650;font-size:78px;color:#FFE2A8;margin-right:24px}
+#nextTime{font-size:70px;font-weight:500}
+#countdown{margin-top:6px;font-size:24px;font-weight:500;color:#3A2402;background:linear-gradient(180deg,#FFE0A3,#F2B657);padding:12px 26px;border-radius:40px;white-space:nowrap;box-shadow:0 5px 0 #A9701E,0 12px 22px rgba(0,0,0,.35)}
+#arc{position:absolute;left:10px;bottom:4px;width:1082px;height:200px}
+.anim .sunglow{animation:glow 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes glow{50%{transform:scale(1.5);opacity:.05}}
+#foot{flex:1;padding:30px 36px;--c1:#8B5CF6;--c2:#5B2FC2;--c3:#351A74}
+.m{display:flex;align-items:center;height:68px;border-top:1px solid rgba(255,255,255,.14)}
+.m:first-of-type{border-top:none}
+.m img{width:42px;height:42px;object-fit:contain}
+.m .tm{flex:1;font-size:24px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 12px}
+.m .tm.r{text-align:right}
+.m .w{width:110px;text-align:center;font-size:22px;font-weight:600;color:#FFE2A8;line-height:1.1}
+.m .w small{display:block;font-size:17px;font-weight:500;color:rgba(255,255,255,.75)}
+#fmatches{margin-top:14px}
+/* résultats */
+#res{display:flex;margin-top:28px;height:170px;padding:6px}
+.rt{width:276px;height:138px;margin-right:24px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between}
+.rt:last-child{margin-right:0}
+.rt .sc{display:flex;align-items:center;justify-content:space-between}
+.rt img{width:52px;height:52px;object-fit:contain}
+.rt .s{font-size:42px;font-weight:600;letter-spacing:1px}
+.rt .n{font-size:18px;font-weight:500;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#resWrap{position:relative}
+#resWrap.sel .rt{box-shadow:0 12px 0 var(--c3),0 36px 60px -10px rgba(0,0,0,.75),0 0 0 4px #FFE2A8,inset 0 2px 0 rgba(255,255,255,.28)}
+/* actus */
+#news{position:absolute;left:0;bottom:0;width:1920px;height:82px;display:flex;align-items:center;border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.4)}
+#newsTag{flex:none;margin-left:80px;margin-right:30px;font-size:18px;font-weight:600;letter-spacing:3px;color:#1D1305;background:var(--gold2);padding:8px 16px;border-radius:10px}
+#newsWin{flex:1;overflow:hidden;height:82px;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+#newsTxt{position:absolute;left:0;top:0;line-height:82px;white-space:nowrap;font-size:28px;font-weight:600;color:#EDEAE3;will-change:transform}
+/* écrans de détail */
+.ov{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#050608;opacity:0;visibility:hidden;transition:opacity .6s,visibility 0s .6s;z-index:20}
+.ov.on{opacity:1;visibility:visible;transition:opacity .6s}
+.dpanel{position:absolute;left:110px;top:90px;width:1700px}
+.dtitle{font-family:"LI",Georgia,serif;font-style:italic;font-weight:650;font-size:64px;color:#FFE2A8}
+.dtitle span{font-family:"PP",sans-serif;font-style:normal;font-size:26px;font-weight:500;color:var(--mut);margin-left:24px;letter-spacing:3px}
+.close{position:absolute;right:110px;bottom:60px;font-size:22px;color:var(--dim)}
+.ptable{margin-top:40px;padding:14px 0;--c1:#13876F;--c2:#0A5246;--c3:#05302A}
+.prow{display:flex;align-items:center;height:96px;padding:0 44px;border-top:1px solid rgba(255,255,255,.1)}
+.prow:first-child{border-top:none;height:70px}
+.prow div{flex:1;text-align:center;font-size:36px;font-weight:500}
+.prow div:first-child{flex:1.4;text-align:left;font-size:30px}
+.prow.head div{font-size:20px;letter-spacing:3px;color:rgba(255,255,255,.7)}
+.prow.today{background:rgba(255,226,168,.16)}.prow.today div:first-child{color:#FFE2A8}
+#wdays{display:flex;margin-top:40px}
+.wday{width:220px;height:400px;margin-right:26px;padding:30px 24px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;--c1:#3B82E6;--c2:#1C4CA8;--c3:#102E6B}
+.wday:last-child{margin-right:0}.wday svg{width:100px;height:100px}
+.wd1{font-size:22px;font-weight:600;letter-spacing:4px;color:rgba(255,255,255,.8)}.wd2{font-size:52px;font-weight:500}.wd3{font-size:28px;color:rgba(255,255,255,.75)}.wd4{font-size:22px;color:#CFE3FF}
+#wdNow{font-size:34px;margin-top:30px;color:#E8F0FF}
+#fdet{display:flex;margin-top:40px}
+#fcol1{width:640px;margin-right:40px;padding:26px 34px;--c1:#8B5CF6;--c2:#5B2FC2;--c3:#351A74}
+#fcol2{flex:1;padding:26px 34px;--c1:#2B2D35;--c2:#1A1B21;--c3:#0E0F13}
+.cl{display:flex;align-items:center;height:92px;border-top:1px solid rgba(255,255,255,.14);font-size:30px;font-weight:500}
+.cl:first-of-type{border-top:none}
+.cl .rk{width:56px;color:#FFE2A8;font-weight:600}.cl img{width:54px;height:54px;object-fit:contain;margin-right:20px}.cl .eq{flex:1}.cl .pt{font-weight:600}
+#fcol2 .m{height:72px}
+/* alerte */
+#alert{position:absolute;left:50%;top:44px;width:1000px;margin-left:-500px;padding:34px 46px;z-index:30;transform:translateY(-420px);transition:transform .9s cubic-bezier(.2,.9,.2,1);--c1:#13876F;--c2:#0A5246;--c3:#05302A;display:flex;align-items:center;justify-content:space-between}
+#alert.on{transform:translateY(0)}
+#alName{font-family:"LI",Georgia,serif;font-style:italic;font-weight:650;font-size:84px;color:#FFE2A8;line-height:1.05}
+#alTime{font-size:84px;font-weight:500}
+</style>
+</head>
+<body>
+<div id="root">
+<div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+<div id="stars"></div>
+<div id="stage">
+  <div id="top" class="row">
+    <div class="enter">
+      <div id="hello">Salam Abdellah</div>
+      <div id="clock"></div>
+      <div id="date"></div>
+    </div>
+    <div id="weather" class="card enter">
+      <div id="wnow"><div><div id="wtemp">--°</div><div id="wdesc">Météo</div></div><div id="wicon"></div></div>
+      <div id="hourly"></div><div class="hint">OK · 7 jours</div>
+    </div>
+  </div>
+  <div id="mid" class="row">
+    <div id="prayer" class="card enter">
+      <div id="phead">
+        <div><div class="lab">PROCHAINE PRIÈRE</div><div id="nextLine"><span id="nextName">--</span><span id="nextTime">--:--</span></div></div>
+        <div id="countdown">--</div>
+      </div>
+      <svg id="arc" viewBox="0 0 1082 200"></svg>
+      <div class="hint" style="top:104px;bottom:auto;right:46px">OK · horaires de la semaine</div>
+    </div>
+    <div id="foot" class="card enter">
+      <div class="lab" id="fLab">LIGUE 1</div>
+      <div id="fmatches"></div><div class="hint">OK · classement</div>
+    </div>
+  </div>
+  <div id="resWrap" class="enter"><div id="res"></div></div>
+</div>
+<div id="news"><div id="newsTag">ACTU</div><div id="newsWin"><div id="newsTxt">Chargement des titres…</div></div></div>
+
+<div id="dPray" class="ov"><div class="dpanel"><div class="dtitle">Horaires de prière<span>SEVRAN</span></div><div id="ptab" class="card ptable"></div></div><div class="close">Retour pour fermer</div></div>
+<div id="dMeteo" class="ov"><div class="dpanel"><div class="dtitle">Météo<span>SEVRAN</span></div><div id="wdNow"></div><div id="wdays"></div></div><div class="close">Retour pour fermer</div></div>
+<div id="dFoot" class="ov"><div class="dpanel"><div class="dtitle">Ligue 1<span id="dFootS"></span></div>
+  <div id="fdet"><div id="fcol1" class="card"><div class="lab">CLASSEMENT</div><div id="ftable"></div></div><div id="fcol2" class="card"><div class="lab" id="fcol2l">MATCHS</div><div id="fall"></div></div></div>
+</div><div class="close">Retour pour fermer</div></div>
+<div id="alert" class="card"><div><div class="lab">C'EST L'HEURE DE LA PRIÈRE</div><div id="alName"></div></div><div id="alTime"></div></div>
+</div>
+
+<script>
+/* ===================== RÉGLAGES ===================== */
+var CONFIG = {
+  prenom: "Abdellah",
+  ville: "Sevran",
+  lat: 48.9386, lng: 2.5275,
+  fajrAngle: 12, ishaAngle: 12,        // UOIF ; à caler sur sa mosquée si besoin
+  asrFacteur: 1,
+  decalages: {Fajr:0, Chourouq:0, Dhuhr:0, Asr:0, Maghrib:0, Isha:0},
+  hijriDecalage: -1,
+  donnees: "https://raw.githubusercontent.com/letxbrace-droid/inrunparis/tv-data/actus.json",
+  son: "carillon",                     // "carillon" ou "aucun"
+  animations: true
+};
+/* ==================================================== */
+var $=function(id){return document.getElementById(id);};
+var pad=function(n){return (n<10?"0":"")+n;};
+var hm=function(d){return pad(d.getHours())+":"+pad(d.getMinutes());};
+var cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1);};
+if (CONFIG.animations) $("root").className="anim";
+
+/* ---------- Mise à l'échelle de l'écran ---------- */
+function fit(){ var s=Math.min(window.innerWidth/1920, window.innerHeight/1080), r=$("root");
+  r.style.transform="translate("+((window.innerWidth-1920*s)/2)+"px,"+((window.innerHeight-1080*s)/2)+"px) scale("+s+")"; }
+window.addEventListener("resize",fit); fit();
+
+/* ---------- Étoiles ---------- */
+(function(){ var h=""; for (var i=0;i<46;i++){ h+='<i style="left:'+Math.round(Math.random()*1920)+'px;top:'+Math.round(Math.random()*700)+'px;animation-delay:'+(Math.random()*6).toFixed(1)+'s"></i>'; } $("stars").innerHTML=h; })();
+
+/* ---------- Dates ---------- */
+var JOURS=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+var JC=["DIM","LUN","MAR","MER","JEU","VEN","SAM"];
+var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+var MOIS_H=["Muharram","Safar","Rabi' al-awwal","Rabi' ath-thani","Joumada al-oula","Joumada ath-thania","Rajab","Cha'bane","Ramadan","Chawwal","Dhou al-qi'da","Dhou al-hijja"];
+function hijri(d){
+  d=new Date(d.getTime()+(CONFIG.hijriDecalage||0)*86400000);
+  try{ var f=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura",{day:"numeric",month:"numeric",year:"numeric"});
+    if (f.formatToParts){ var p=f.formatToParts(d),o={}; for(var i=0;i<p.length;i++) o[p[i].type]=p[i].value;
+      var dd=parseInt(o.day,10),mm=parseInt(o.month,10),yy=parseInt(o.year,10);
+      if (dd>0&&mm>0&&mm<=12&&yy>1300&&yy<1600) return dd+" "+MOIS_H[mm-1]+" "+yy; } }catch(e){}
+  var jd=Math.floor(d.getTime()/86400000)+2440588, l=jd-1948440+10632, n=Math.floor((l-1)/10631); l=l-10631*n+354;
+  var j=Math.floor((10985-l)/5316)*Math.floor(50*l/17719)+Math.floor(l/5670)*Math.floor(43*l/15238);
+  l=l-Math.floor((30-j)/15)*Math.floor(17719*j/50)-Math.floor(j/16)*Math.floor(15238*j/43)+29;
+  var m=Math.floor(24*l/709), day=l-Math.floor(709*m/24), y=30*n+j-30; return day+" "+MOIS_H[m-1]+" "+y;
+}
+
+/* ---------- Horaires de prière ---------- */
+var R=Math.PI/180;
+function fix(a,b){a=a-b*Math.floor(a/b);return a<0?a+b:a;}
+function julian(y,m,d){if(m<=2){y-=1;m+=12;}var A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;}
+function sunPos(jd){var D=jd-2451545,g=fix(357.529+0.98560028*D,360),q=fix(280.459+0.98564736*D,360);var L=fix(q+1.915*Math.sin(g*R)+0.020*Math.sin(2*g*R),360),e=23.439-0.00000036*D;var RA=Math.atan2(Math.cos(e*R)*Math.sin(L*R),Math.cos(L*R))/R/15;return {decl:Math.asin(Math.sin(e*R)*Math.sin(L*R))/R,eqt:q/15-fix(RA,24)};}
+function prayerTimes(date){
+  var lat=CONFIG.lat,lng=CONFIG.lng,jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-lng/(15*24);
+  function mid(t){return fix(12-sunPos(jd+t).eqt,24);}
+  function angleTime(a,t,ccw){var dec=sunPos(jd+t).decl;var x=(-Math.sin(a*R)-Math.sin(dec*R)*Math.sin(lat*R))/(Math.cos(dec*R)*Math.cos(lat*R));if(x>1||x<-1)return NaN;var T=Math.acos(x)/R/15;return mid(t)+(ccw?-T:T);}
+  function asr(f,t){var dec=sunPos(jd+t).decl;var a=-Math.atan(1/(f+Math.tan(Math.abs(lat-dec)*R)))/R;return angleTime(a,t);}
+  var h={Fajr:angleTime(CONFIG.fajrAngle,5/24,true),Chourouq:angleTime(0.833,6/24,true),Dhuhr:mid(12/24),Asr:asr(CONFIG.asrFacteur,13/24),Maghrib:angleTime(0.833,18/24),Isha:angleTime(CONFIG.ishaAngle,18/24)};
+  var base=Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()),out={};
+  for (var k in h){ if(isNaN(h[k])){out[k]=null;continue;} var off=(CONFIG.decalages[k]||0)+(k==="Dhuhr"?1:0); out[k]=new Date(base+Math.round(((h[k]-lng/15)*60+off))*60000); }
+  return out;
+}
+var ORDRE=["Fajr","Dhuhr","Asr","Maghrib","Isha"], cacheDay=null, today=null, tomorrow=null;
+var AMB={nuit:"#1F2C66",aube:"#5A4790",matin:"#7C5B1F",apresmidi:"#8C4E16",soir:"#6E2638"};
+function setAmbiance(now){ var t=today,p="nuit";
+  if(t.Fajr&&now>=t.Fajr)p="aube"; if(t.Chourouq&&now>=t.Chourouq)p="matin"; if(t.Dhuhr&&now>=t.Dhuhr)p="apresmidi"; if(t.Maghrib&&now>=t.Maghrib)p="soir"; if(t.Isha&&now>=t.Isha)p="nuit";
+  $("b2").style.background="radial-gradient(closest-side,"+AMB[p]+",rgba(0,0,0,0))"; }
+function drawArc(now){
+  var W=1082,base=112,H=82,x0=100,x1=W-100,t=today,step=(x1-x0)/4;
+  var PX=[x0,x0+step,x0+2*step,x0+3*step,x1],PY=[base,base-H,base-H*.55,base,base];
+  function Y(x){var i=Math.max(0,Math.min(3,Math.floor((x-x0)/step))),u=(x-PX[i])/step;var p0=PY[Math.max(0,i-1)],p1=PY[i],p2=PY[i+1],p3=PY[Math.min(4,i+2)];return 0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u);}
+  function X(ms){var ts=ORDRE.map(function(k){return t[k].getTime();});if(ms<=ts[0])return x0;if(ms>=ts[4])return x1;for(var i=0;i<4;i++)if(ms<ts[i+1])return PX[i]+(ms-ts[i])/(ts[i+1]-ts[i])*step;return x1;}
+  var nowX=X(now.getTime()),past="",fut="";
+  for(var x=x0;x<=x1;x+=6){var pt=x.toFixed(1)+","+Y(x).toFixed(1)+" ";if(x<=nowX)past+=pt;else fut+=pt;}
+  fut=nowX.toFixed(1)+","+Y(nowX).toFixed(1)+" "+fut;
+  var s='<line x1="20" y1="'+base+'" x2="'+(W-20)+'" y2="'+base+'" stroke="rgba(255,255,255,.2)" stroke-width="2"/>';
+  s+='<polyline points="'+fut+'" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>';
+  if(past)s+='<polyline points="'+past+nowX.toFixed(1)+','+Y(nowX).toFixed(1)+'" fill="none" stroke="#FFD27A" stroke-width="5" stroke-linecap="round"/>';
+  var nextK=null;for(var i=0;i<ORDRE.length;i++){if(t[ORDRE[i]]>now){nextK=ORDRE[i];break;}}
+  for(var k=0;k<ORDRE.length;k++){var key=ORDRE[k],px=PX[k],py=PY[k],isNext=key===nextK,done=t[key]<=now;
+    if(isNext)s+='<circle cx="'+px+'" cy="'+py+'" r="15" fill="none" stroke="#F6CD86" stroke-width="2" opacity=".6"/>';
+    s+='<circle cx="'+px+'" cy="'+py+'" r="7" fill="'+(done||isNext?"#FFE2A8":"#0A5246")+'" stroke="'+(done||isNext?"#F6CD86":"rgba(255,255,255,.35)")+'" stroke-width="2"/>';
+    var col=isNext?"#FFE2A8":done?"rgba(255,255,255,.5)":"#FFFFFF";
+    s+='<text x="'+px+'" y="'+(base+42)+'" text-anchor="middle" font-size="19" font-weight="600" letter-spacing="2" fill="'+col+'">'+key.toUpperCase()+'</text>';
+    s+='<text x="'+px+'" y="'+(base+74)+'" text-anchor="middle" font-size="29" font-weight="500" fill="'+col+'">'+hm(t[key])+'</text>';}
+  if(!(now<t.Fajr||now>=t.Isha)){var sy=Y(nowX);s+='<circle class="sunglow" cx="'+nowX+'" cy="'+sy+'" r="26" fill="#F6CD86" opacity=".2"/><circle cx="'+nowX+'" cy="'+sy+'" r="12" fill="#F6CD86"/>';}
+  else{var mx=now<t.Fajr?x0-40:x1+40;s+='<circle cx="'+mx+'" cy="'+(base-30)+'" r="12" fill="#D9DCE6"/><circle cx="'+(mx+6)+'" cy="'+(base-35)+'" r="11" fill="#0D6655"/>';}
+  $("arc").innerHTML=s;
+}
+function updatePrayers(now){
+  var key=now.toDateString();
+  if(key!==cacheDay){cacheDay=key;today=prayerTimes(now);tomorrow=prayerTimes(new Date(now.getTime()+86400000));}
+  var next=null;for(var i=0;i<ORDRE.length;i++){var d=today[ORDRE[i]];if(d&&d>now){next={k:ORDRE[i],d:d};break;}}
+  if(!next)next={k:"Fajr",d:tomorrow.Fajr};
+  $("nextName").textContent=next.k;$("nextTime").textContent=hm(next.d);
+  var mn=Math.ceil((next.d-now)/60000),hh=Math.floor(mn/60),m2=mn%60;
+  $("countdown").textContent="dans "+(hh>0?hh+" h "+pad(m2):m2+" min");
+  setAmbiance(now);try{drawArc(now);}catch(e){}
+}
+
+/* ---------- Horloge (chiffres qui basculent) ---------- */
+var lastDigits="";
+function renderClock(now){
+  var d=pad(now.getHours())+pad(now.getMinutes());
+  if (d===lastDigits) return;
+  var h="";
+  for (var i=0;i<4;i++){ if(i===2) h+='<span class="sep">:</span>'; h+='<span class="d'+(lastDigits&&lastDigits[i]!==d[i]?" flip":"")+'"><span>'+d[i]+'</span></span>'; }
+  $("clock").innerHTML=h; lastDigits=d;
+}
+function tick(){
+  var now=new Date();
+  renderClock(now);
+  $("date").innerHTML=cap(JOURS[now.getDay()])+" "+now.getDate()+" "+MOIS[now.getMonth()]+'<span class="dot">·</span><span class="h">'+hijri(now)+"</span>";
+  var hr=now.getHours(); $("hello").textContent=(hr<5||hr>=22?"Bonne nuit ":hr<12?"Sabah el-kheir ":"Salam ")+CONFIG.prenom;
+  updatePrayers(now); checkAlert(now);
+}
+
+/* ---------- Météo animée ---------- */
+var WMO={0:["Ciel dégagé","sun"],1:["Plutôt dégagé","sun"],2:["Partiellement nuageux","cloudsun"],3:["Couvert","cloud"],45:["Brouillard","fog"],48:["Brouillard givrant","fog"],51:["Bruine légère","rain"],53:["Bruine","rain"],55:["Bruine forte","rain"],61:["Pluie faible","rain"],63:["Pluie","rain"],65:["Forte pluie","rain"],66:["Pluie verglaçante","rain"],67:["Pluie verglaçante","rain"],71:["Neige faible","snow"],73:["Neige","snow"],75:["Forte neige","snow"],77:["Grains de neige","snow"],80:["Averses","rain"],81:["Averses","rain"],82:["Fortes averses","rain"],85:["Averses de neige","snow"],86:["Averses de neige","snow"],95:["Orage","storm"],96:["Orage et grêle","storm"],99:["Orage et grêle","storm"]};
+function icon(t,night){
+  var s='<svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">';
+  var cloud='<g class="drift"><path d="M19 47h27a10 10 0 0 0 0-20 14 14 0 0 0-27-2 11 11 0 0 0 0 22z" stroke="#F1EEE6" fill="rgba(255,255,255,.08)"/></g>';
+  var moon='<path d="M40 14a13 13 0 1 0 10 20 11 11 0 0 1-10-20z" stroke="#E3E6F0"/>';
+  var sun='<g class="spin"><path d="M32 9v6M32 49v6M9 32h6M49 32h6M16 16l4 4M44 44l4 4M16 48l4-4M44 20l4-4" stroke="#FFD27A"/></g><circle cx="32" cy="32" r="11" stroke="#FFD27A" fill="rgba(255,210,122,.15)"/>';
+  if(t==="sun") s+=night?moon:sun;
+  else if(t==="cloudsun") s+=(night?'<path d="M30 10a9 9 0 1 0 7 14 8 8 0 0 1-7-14z" stroke="#E3E6F0"/>':'<g class="spin" style="transform-origin:24px 22px"><path d="M24 7v4M9 22h4M13 11l3 3M35 11l-3 3" stroke="#FFD27A"/></g><circle cx="24" cy="22" r="8" stroke="#FFD27A"/>')+cloud;
+  else if(t==="cloud") s+=cloud;
+  else if(t==="fog") s+='<g class="drift"><path d="M12 26h40M8 34h48M12 42h40" stroke="#F1EEE6"/></g>';
+  else if(t==="rain") s+=cloud+'<g><path class="drop" d="M24 52l-2 5" stroke="#9CCBFF"/><path class="drop" d="M34 52l-2 5" stroke="#9CCBFF"/><path class="drop" d="M44 52l-2 5" stroke="#9CCBFF"/></g>';
+  else if(t==="snow") s+=cloud+'<g><path class="drop" d="M24 55v.1" stroke="#fff" stroke-width="5"/><path class="drop" d="M34 55v.1" stroke="#fff" stroke-width="5"/><path class="drop" d="M44 55v.1" stroke="#fff" stroke-width="5"/></g>';
+  else if(t==="storm") s+=cloud+'<path class="flash" d="M34 47l-6 9h8l-5 8" stroke="#FFD27A"/>';
+  return s+'</svg>';
+}
+var LASTW=null;
+function isNight(d){ return today?(d<today.Chourouq||d>=today.Maghrib):false; }
+function loadWeather(){
+  fetch("https://api.open-meteo.com/v1/forecast?latitude="+CONFIG.lat+"&longitude="+CONFIG.lng+"&current=temperature_2m,weather_code&hourly=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Europe%2FParis&forecast_days=7")
+  .then(function(r){return r.json();}).then(function(j){
+    LASTW=j; var c=j.current,w=WMO[c.weather_code]||["","cloud"],now=new Date(),n=isNight(now);
+    $("wtemp").textContent=Math.round(c.temperature_2m)+"°"; $("wicon").innerHTML=icon(w[1],n);
+    $("weather").className="card enter"+(zone==="weather"?" sel":"")+(n?" night":(w[1]==="rain"||w[1]==="storm"||w[1]==="snow")?" rain":(w[1]==="cloud"||w[1]==="fog")?" cloud":"");
+    $("wdesc").textContent=w[0]+" · "+Math.round(j.daily.temperature_2m_min[0])+"° / "+Math.round(j.daily.temperature_2m_max[0])+"°";
+    var h=j.hourly,out="",k=0;
+    for(var i=0;i<h.time.length&&k<5;i++){var p=h.time[i].split(/[-T:]/),d=new Date(+p[0],+p[1]-1,+p[2],+p[3]);
+      if(d<=now||(d.getHours()-now.getHours()+24)%2!==1)continue; var ww=WMO[h.weather_code[i]]||["","cloud"];
+      out+='<div class="hr"><div class="t">'+pad(d.getHours())+'h</div>'+icon(ww[1],d.getHours()<7||d.getHours()>=19)+'<div class="v">'+Math.round(h.temperature_2m[i])+'°</div></div>';k++;}
+    $("hourly").innerHTML=out;
+  }).catch(function(){$("wdesc").textContent="Météo indisponible";});
+}
+
+/* ---------- Actus + foot (flux mis à jour toutes les 30 min) ---------- */
+var DATA=null, tickerAnim=null;
+function loadData(){
+  fetch(CONFIG.donnees+"?t="+Math.floor(Date.now()/600000)).then(function(r){return r.json();}).then(function(j){
+    DATA=j; if(j.actus&&j.actus.length) startTicker(j.actus.join("      •      ")); renderFoot();
+  }).catch(function(){ if(!DATA) $("newsTxt").textContent="Actus indisponibles pour le moment"; });
+}
+function startTicker(txt){
+  var el=$("newsTxt"); el.textContent=txt+"      •      "+txt+"      •      ";
+  var w=el.scrollWidth/2,x=0,last=null; if(tickerAnim)cancelAnimationFrame(tickerAnim);
+  function step(ts){if(last!==null){x-=(ts-last)*0.075;if(-x>=w)x+=w;}last=ts;el.style.transform="translateX("+x.toFixed(1)+"px)";tickerAnim=requestAnimationFrame(step);}
+  tickerAnim=requestAnimationFrame(step);
+}
+function quand(iso){ if(!iso) return {j:"",h:""}; var d=new Date(iso), n=new Date(), t0=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  var dd=Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-t0)/86400000);
+  return {j: dd===0?"Auj.":dd===1?"Demain":cap(JOURS[d.getDay()]).slice(0,3)+". "+d.getDate(), h: hm(d)}; }
+function img(u){ return u?'<img src="'+u+'" alt="">':'<img alt="">'; }
+function mRow(m){ var q=quand(m.quand), mid=m.sd!=null?'<div class="w">'+m.sd+' - '+m.se+'</div>':'<div class="w">'+q.h+'<small>'+q.j+'</small></div>';
+  return '<div class="m">'+img(m.bdom)+'<div class="tm">'+m.dom+'</div>'+mid+'<div class="tm r">'+m.ext+'</div>'+img(m.bext)+'</div>'; }
+var TUILES=[["#F0544F","#B3261E","#6E1511"],["#F5A524","#C26A0A","#713C04"],["#2FBF8F","#12805C","#094A35"],["#3B8CF0","#1A56B8","#0E336F"],["#EC4899","#AE1F66","#68113C"],["#14B8C8","#0B7A88","#064650"]];
+function renderFoot(){
+  var f=DATA&&DATA.foot; if(!f){ $("fmatches").innerHTML='<div class="m"><div class="tm">Matchs indisponibles</div></div>'; return; }
+  $("fLab").textContent="LIGUE 1 · JOURNÉE "+f.journee;
+  $("fmatches").innerHTML=(f.prochains||[]).slice(0,3).map(mRow).join("")||'<div class="m"><div class="tm">Pas de match à venir</div></div>';
+  var r=(f.resultats||[]).slice(0,6), h="";
+  for(var i=0;i<r.length;i++){ var c=TUILES[i%TUILES.length], m=r[i];
+    h+='<div class="rt card" style="--c1:'+c[0]+';--c2:'+c[1]+';--c3:'+c[2]+'"><div class="sc">'+img(m.bdom)+'<div class="s">'+m.sd+' - '+m.se+'</div>'+img(m.bext)+'</div><div class="n">'+m.dom+' · '+m.ext+'</div></div>'; }
+  $("res").innerHTML=h;
+}
+
+/* ---------- Alerte prière ---------- */
+var alerted={},alertT=null,audioCtx=null;
+function checkAlert(now){ if(!today)return; for(var i=0;i<ORDRE.length;i++){var k=ORDRE[i],t=today[k];if(!t)continue;var id=k+t.toDateString();
+  if(now>=t&&now-t<90000&&!alerted[id]){alerted[id]=1;$("alName").textContent=k;$("alTime").textContent=hm(t);$("alert").className="card on";clearTimeout(alertT);alertT=setTimeout(function(){$("alert").className="card";},60000);chime();}}}
+function chime(){ if(CONFIG.son!=="carillon")return; try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  [[0,659.25],[0.45,523.25],[0.9,783.99]].forEach(function(n){var o=audioCtx.createOscillator(),g=audioCtx.createGain(),t0=audioCtx.currentTime+n[0];o.type="sine";o.frequency.value=n[1];o.connect(g);g.connect(audioCtx.destination);g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(0.25,t0+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t0+1.6);o.start(t0);o.stop(t0+1.7);}); }catch(e){} }
+
+/* ---------- Détails ---------- */
+var detail=null;
+function showDetail(id,fromPop){
+  if(id&&!fromPop){ try{history.pushState({d:id},"");}catch(e){} }
+  detail=id; ["dPray","dMeteo","dFoot"].forEach(function(x){$(x).className="ov"+(x===id?" on":"");});
+  if(id==="dPray")renderPrayWeek(); if(id==="dMeteo")renderMeteoWeek(); if(id==="dFoot")renderFootDetail();
+}
+window.addEventListener("popstate",function(){ if(detail) showDetail(null,true); });
+function closeDetail(){ if(!detail)return; try{ if(history.state&&history.state.d){ history.back(); return; } }catch(e){} showDetail(null,true); }
+function renderPrayWeek(){
+  var now=new Date(),h='<div class="prow head"><div>JOUR</div><div>FAJR</div><div>CHOUROUQ</div><div>DHUHR</div><div>ASR</div><div>MAGHRIB</div><div>ISHA</div></div>';
+  for(var i=0;i<7;i++){var d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i),t=prayerTimes(d);
+    h+='<div class="prow'+(i===0?" today":"")+'"><div>'+(i===0?"Aujourd'hui":cap(JOURS[d.getDay()])+" "+d.getDate())+'</div>';
+    ["Fajr","Chourouq","Dhuhr","Asr","Maghrib","Isha"].forEach(function(k){h+='<div>'+(t[k]?hm(t[k]):"--")+'</div>';});h+='</div>';}
+  $("ptab").innerHTML=h;
+}
+function renderMeteoWeek(){
+  if(!LASTW){$("wdNow").textContent="Météo indisponible";return;}
+  var dl=LASTW.daily,h="";
+  for(var i=0;i<dl.time.length&&i<7;i++){var p=dl.time[i].split("-"),d=new Date(+p[0],+p[1]-1,+p[2]),w=WMO[dl.weather_code[i]]||["","cloud"];
+    h+='<div class="wday card"><div class="wd1">'+(i===0?"AUJ.":JC[d.getDay()])+'</div>'+icon(w[1],false)+'<div class="wd2">'+Math.round(dl.temperature_2m_max[i])+'°</div><div class="wd3">min '+Math.round(dl.temperature_2m_min[i])+'°</div><div class="wd4">pluie '+(dl.precipitation_probability_max[i]||0)+' %</div></div>';}
+  $("wdays").innerHTML=h; var c=LASTW.current,cw=WMO[c.weather_code]||["",""]; $("wdNow").textContent="Maintenant "+Math.round(c.temperature_2m)+"° · "+cw[0];
+}
+function renderFootDetail(){
+  var f=DATA&&DATA.foot; if(!f)return;
+  $("dFootS").textContent="SAISON "+f.saison+" · JOURNÉE "+f.journee;
+  $("ftable").innerHTML=(f.classement||[]).map(function(t){return '<div class="cl"><div class="rk">'+t.rang+'</div>'+img(t.badge)+'<div class="eq">'+t.equipe+'</div><div class="pt">'+t.pts+' pts</div></div>';}).join("");
+  var list=(f.prochains||[]).length?f.prochains:f.resultats; $("fcol2l").textContent=(f.prochains||[]).length?"PROCHAINS MATCHS":"RÉSULTATS";
+  $("fall").innerHTML=(list||[]).slice(0,9).map(mRow).join("");
+}
+
+/* ---------- Télécommande ---------- */
+var zone=null;
+function setZone(z){ zone=z; ["weather","prayer","foot"].forEach(function(id){$(id).className=$(id).className.replace(/ ?sel/g,"")+(z===id?" sel":"");}); $("resWrap").className="enter"+(z==="res"?" sel":""); }
+document.addEventListener("keydown",function(e){
+  var k=e.keyCode; if(k>=37&&k<=40||k===13) e.preventDefault();
+  if($("alert").className.indexOf("on")>=0) $("alert").className="card";
+  if(detail){ if(k===13||k===27||k===8||k===10009||k===4) closeDetail(); return; }
+  if(!zone){ setZone("prayer"); return; }
+  if(zone==="res"){ if(k===38) setZone("prayer"); else if(k===13) showDetail("dFoot"); }
+  else if(zone==="prayer"||zone==="foot"){ if(k===37) setZone("prayer"); else if(k===39) setZone("foot"); else if(k===38) setZone("weather"); else if(k===40) setZone("res");
+    else if(k===13) showDetail(zone==="prayer"?"dPray":"dFoot"); }
+  else if(zone==="weather"){ if(k===40) setZone("foot"); else if(k===37) setZone("prayer"); else if(k===13) showDetail("dMeteo"); }
+});
+window.addEventListener("scroll",function(){ if(window.scrollX||window.scrollY) window.scrollTo(0,0); });
+
+/* ---------- Anti-marquage ---------- */
+var shifts=[[0,0],[6,4],[-5,6],[4,-5],[-6,-3]],si=0;
+setInterval(function(){si=(si+1)%shifts.length;$("stage").style.transform="translate("+shifts[si][0]+"px,"+shifts[si][1]+"px)";},120000);
+
+/* ---------- Démarrage ---------- */
+tick(); setInterval(tick,5000);
+loadWeather(); setInterval(loadWeather,15*60000);
+loadData(); setInterval(loadData,10*60000);
+var en=document.querySelectorAll(".enter"); for(var q=0;q<en.length;q++) en[q].style.transitionDelay=(q*0.12)+"s";
+setTimeout(function(){ $("stage").className="go"; },60);
+setTimeout(function(){ for(var q=0;q<en.length;q++) en[q].style.transitionDelay=""; },2500);
+</script>
+</body>
+</html>
