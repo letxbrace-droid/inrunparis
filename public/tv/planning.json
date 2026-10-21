@@ -1,0 +1,9 @@
+{
+  "services": [
+    { "date": "2026-10-19", "debut": "04:13", "fin": "10:41", "lieu": "Marcoussis" },
+    { "date": "2026-10-20", "debut": "05:43", "fin": "14:05", "lieu": "Marcoussis" },
+    { "date": "2026-10-21", "debut": "05:18", "fin": "11:45", "lieu": "Marcoussis" },
+    { "date": "2026-10-22", "debut": "05:28", "fin": "13:23", "lieu": "Marcoussis" },
+    { "date": "2026-10-23", "debut": "06:16", "fin": "14:34", "lieu": "Marcoussis" }
+  ]
+}
