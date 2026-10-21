@@ -51,7 +51,7 @@ export default function BookingConfirmToast({ open, bonNumber, onClose }) {
           transition={{ duration: 0.3 }}
           onClick={onClose}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center cursor-pointer select-none"
-          style={{ background: 'rgba(2,3,6,0.94)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+          style={{ background: 'var(--scrim)' }}
         >
           {/* ── Burst ring ── */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 140, height: 140 }}>

@@ -722,8 +722,8 @@ export default function HomePill({ onOpenSheet }) {
                       <motion.span
                         key="prix"
                         layout
-                        initial={{ opacity: 0, scale: 0.72, filter: 'blur(5px)' }}
-                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                        initial={{ opacity: 0, scale: 0.72 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: 'spring', stiffness: 420, damping: 26 }}
                         className="font-brand font-bold text-accent text-base tnum"
                       >

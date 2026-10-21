@@ -197,14 +197,17 @@ export default function App() {
         />
       </Suspense>
 
-      {/* Vignette overlay */}
+      {/* Assise du bas uniquement, et courte. Ce voile montait jusqu'à 40 %
+          de la hauteur en bas et 18 % en haut : la carte était estompée sur
+          plus de la moitié de l'écran. Le haut n'en a pas besoin, le bouton
+          menu porte son propre fond. */}
       <div
         aria-hidden="true"
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background: isDark
-            ? 'linear-gradient(to bottom, rgba(5,5,5,.55) 0%, transparent 18%, transparent 60%, rgba(5,5,5,.92) 100%)'
-            : 'linear-gradient(to bottom, rgba(240,238,232,.50) 0%, transparent 22%, transparent 58%, rgba(240,238,232,.88) 100%)',
+            ? 'linear-gradient(to bottom, transparent 88%, rgba(0,0,0,.55) 100%)'
+            : 'linear-gradient(to bottom, transparent 88%, rgba(247,247,249,.55) 100%)',
         }}
       />
 

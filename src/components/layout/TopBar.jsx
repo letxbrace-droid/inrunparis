@@ -63,8 +63,6 @@ export default function TopBar({ onBurgerClick, burgerOpen, isDark = true }) {
           background:     pillBg,
           border:         pillBorder,
           boxShadow:      pillShadow,
-          backdropFilter:       'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
         }}
       >
         {/* Trait haut */}

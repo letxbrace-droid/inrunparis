@@ -369,33 +369,12 @@ export default function LeafletMap({ route, depart, arrive, onMapReady, isDark =
       )}
 
       {/* ── Cinematic compositing — pure presentation, never intercepts touch ── */}
-      {isDark && (
-        <>
-          {/* Brand warmth — faint orange lift from where the HomePill lives.
-              soft-light keeps it a grade, never a wash that hides streets. */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(120% 76% at 50% 94%, rgba(255,122,46,0.10) 0%, rgba(255,122,46,0.03) 26%, transparent 48%)',
-              mixBlendMode: 'soft-light',
-              zIndex: 500,
-            }}
-          />
-          {/* Lens vignette — only the extreme corners settle, keeping the road
-              network and every label in the usable area fully visible */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(150% 120% at 50% 44%, transparent 70%, rgba(4,4,4,0.10) 88%, rgba(4,4,4,0.26) 100%)',
-              zIndex: 501,
-            }}
-          />
-        </>
-      )}
+      {/* Il y avait ici deux calques plein écran posés sur la carte : un lavis
+          orange en soft-light, et une « lens vignette » qui assombrissait les
+          coins. Les deux sont partis. Une vignette est un défaut d'objectif
+          photographique ; l'imiter sur un plan de Paris ne l'enrichit pas, ça
+          le salit — et c'est précisément ce qui se lit comme un rendu fabriqué
+          plutôt que comme une carte. */}
     </div>
   )
 }

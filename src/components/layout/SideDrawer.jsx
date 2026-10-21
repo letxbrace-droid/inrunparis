@@ -257,9 +257,7 @@ export default function SideDrawer({ open, onClose, activeView, onNavigate }) {
         className="fixed top-0 left-0 bottom-0 z-[99999] flex flex-col overflow-hidden"
         style={{
           width:               'min(82vw, 310px)',
-          background:          isDark ? 'rgba(6,7,14,0.84)' : 'rgba(252,251,248,0.90)',
-          backdropFilter:      'blur(28px) saturate(160%)',
-          WebkitBackdropFilter:'blur(28px) saturate(160%)',
+          background:          isDark ? '#0A0A0B' : '#F7F7F9',
           borderRight:         `1px solid ${border}`,
           pointerEvents:       open ? 'auto' : 'none',
           boxShadow:           open

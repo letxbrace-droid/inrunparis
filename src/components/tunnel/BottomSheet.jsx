@@ -406,9 +406,9 @@ export default function BottomSheet({ open, step, onStepChange, onClose }) {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={step}
-                  initial={{ opacity: 0, x: dirRef.current * 58, scale: 0.97, filter: 'blur(3px)' }}
-                  animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, x: dirRef.current * -42, scale: 0.97, filter: 'blur(2px)' }}
+                  initial={{ opacity: 0, x: dirRef.current * 58, scale: 0.97 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: dirRef.current * -42, scale: 0.97 }}
                   transition={{ duration: 0.3, ease: [0.32, 1, 0.55, 1] }}
                   className="pt-4"
                 >
