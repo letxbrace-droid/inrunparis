@@ -1,0 +1,157 @@
+{
+ "maj": "2026-10-24T21:51:25+00:00",
+ "actus": [
+  "\"S'il le faut, je manifesterai tous les samedis\" : à Paris, le cortège défile dans le calme et appelle à amplifier la mobilisation",
+  "Mobilisation en baisse, près de 1 000 interpellations, deux blessés graves… Ce qu'il faut retenir de cette nouvelle journée de manifestation contre la vie chère",
+  "Réformer Parcoursup, prendre soin des lycées, augmenter le SMIC… Quelles pistes pour calmer la colère des manifestants ?",
+  "Amiens, Bordeaux, Nantes, Toulouse... Le point sur les manifestations du 24 octobre en régions",
+  "Près de 410 000 personnes ont manifesté en France d'après le ministère de l'Intérieur, 800 000 selon la CGT, des tensions dans plusieurs grandes villes",
+  "Mobilisation du 24 octobre : des tensions constatées à la fin de certains cortèges",
+  "Manifestations du 24 octobre : \"Les cortèges se sont bien passés\", estime le ministre de l'Intérieur, qui dénonce néanmoins la présence de \"casseurs\"",
+  "\"Il était de ceux qui donnent l'exemple\" : qui était Pengo Bossio Wangi, le jeune homme tué lors de l'attentat raciste de Trappes ?",
+  "\"J'aurais beaucoup à craindre que ce genre de parti passe au pouvoir\" : à Orléans, une marche pour dire non au Rassemblement national",
+  "Tempête Austen : 72 000 foyers restent toujours privés d'électricité, selon Enedis",
+  "La France passe à l'heure d'hiver dans la nuit de samedi à dimanche",
+  "\"Je n'ai pas l'impression d'être en vie\" : une rescapée de l'explosion de la rue de Trévise raconte son long combat",
+  "Au Brésil, Lula et Bolsonaro mobilisent des milliers de partisans à la veille du second tour de la présidentielle",
+  "Une \"probable\" éruption du Piton de la fournaise, sur l'île de La Réunion, attendue, alerte la préfecture",
+  "Incendie de la mairie de Limoges : le principal suspect va faire appel de sa mise en examen et de son placement en détention provisoire"
+ ],
+ "foot": {
+  "ligue": "Ligue 1",
+  "journee": 8,
+  "saison": "2026-2027",
+  "prochains": [
+   {
+    "dom": "Monaco",
+    "ext": "Lille",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T14:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Angers",
+    "ext": "Lorient",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/ix6q4w1678808069.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sxsttw1473504748.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Marseille",
+    "ext": "Le Havre",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/aikowk1546475003.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Rennes",
+    "ext": "Strasbourg",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/b8k77w1766625501.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Toulouse",
+    "ext": "Troyes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/17eqox1688449282.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sl5kzg1766617559.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Auxerre",
+    "ext": "Le Mans",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/lzdtbf1658753355.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Paris Saint-Germain",
+    "ext": "Lyon",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-25T19:45:00Z",
+    "statut": "NS"
+   }
+  ],
+  "resultats": [
+   {
+    "dom": "Brest",
+    "ext": "Nice",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/msy7ly1621593859.png",
+    "sd": "1",
+    "se": "2",
+    "quand": "2026-10-23T18:45:00Z",
+    "statut": "FT"
+   },
+   {
+    "dom": "Lens",
+    "ext": "Paris FC",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/3pxoum1598797195.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png",
+    "sd": "2",
+    "se": "1",
+    "quand": "2026-10-24T18:45:00Z",
+    "statut": "FT"
+   }
+  ],
+  "journee_resultats": 8,
+  "classement": [
+   {
+    "rang": "1",
+    "equipe": "Lyon",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png/tiny",
+    "pts": "14",
+    "j": "7"
+   },
+   {
+    "rang": "2",
+    "equipe": "Paris Saint-Germain",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png/tiny",
+    "pts": "14",
+    "j": "7"
+   },
+   {
+    "rang": "3",
+    "equipe": "Lille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png/tiny",
+    "pts": "14",
+    "j": "7"
+   },
+   {
+    "rang": "4",
+    "equipe": "Paris FC",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png/tiny",
+    "pts": "14",
+    "j": "8"
+   },
+   {
+    "rang": "5",
+    "equipe": "Monaco",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png/tiny",
+    "pts": "14",
+    "j": "7"
+   }
+  ]
+ }
+}
