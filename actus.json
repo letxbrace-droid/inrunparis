@@ -1,0 +1,157 @@
+{
+ "maj": "2026-10-31T16:17:53+00:00",
+ "actus": [
+  "Mobilisation du 31 octobre : des tensions éclatent dans plusieurs villes, dont Lyon, Marseille et Grenoble",
+  "L'Union syndicale lycéenne et l'Union étudiante appellent à bloquer lycées et universités mardi et jeudi",
+  "Bordeaux, Toulouse, Strasbourg... Le point sur les manifestations du 31 octobre en régions",
+  "\"Le commerce traditionnel est en danger\", alerte le président de la Chambre du commerce et de l'industrie de Paris avant de nouvelles manifestations samedi",
+  "Lors de la mobilisation du 31 octobre, les autorités craignent la présence de 300 à 600 militants d'ultragauche à Paris",
+  "Le Conseil d'Etat donne raison à Laurent Nuñez et valide le parcours entre les portes de Bagnolet et de Charenton pour la manifestation du 31 octobre à Paris",
+  "Manifestations du 31 octobre et masques d'Halloween : qu'a-t-on le droit de faire (ou pas) dans la rue ?",
+  "Une Française figure parmi les victimes de la collision de trains en Espagne qui a fait 69 morts, annonce le ministère des Affaires étrangères",
+  "Des habitants évacués d'Olechky, ville sous occupation russe, sont arrivés en Ukraine",
+  "Chances d'une vague démocrate, enjeu pour Donald Trump et pour 2028... L'article à lire pour tout comprendre aux midterms, les élections de mi-mandat aux Etats-Unis",
+  "Guerre au Moyen-Orient : le régime iranien menace les Etats-Unis d'une \"riposte sans limite géographique\" en cas de reprise des combats",
+  "La mairie de Paris saisit la justice après la découverte de tags \"remigration\" sur des façades de commerces",
+  "Une semaine après l'attentat de Trappes, une lettre raciste contenant une poudre blanche a été adressée au maire Ali Rabeh",
+  "\"Je suis juste content d'être en vie et d'être debout\" : Tadej Pogacar révèle que sa blessure était plus sévère que le diagnostic initial",
+  "En Bulgarie, un scrutin présidentiel dans l'ombre de la guerre en Ukraine et des attaques russes en mer Noire"
+ ],
+ "foot": {
+  "ligue": "Ligue 1",
+  "journee": 9,
+  "saison": "2026-2027",
+  "prochains": [
+   {
+    "dom": "Troyes",
+    "ext": "Le Mans",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/sl5kzg1766617559.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-10-31T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Strasbourg",
+    "ext": "Auxerre",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/b8k77w1766625501.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/lzdtbf1658753355.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-01T14:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lyon",
+    "ext": "Angers",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/ix6q4w1678808069.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-01T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Paris FC",
+    "ext": "Monaco",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-01T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Marseille",
+    "ext": "Toulouse",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/17eqox1688449282.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-01T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lorient",
+    "ext": "Brest",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/sxsttw1473504748.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-02T19:45:00Z",
+    "statut": "NS"
+   }
+  ],
+  "resultats": [
+   {
+    "dom": "Lille",
+    "ext": "Lens",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/3pxoum1598797195.png",
+    "sd": "1",
+    "se": "0",
+    "quand": "2026-10-30T20:05:00Z",
+    "statut": "FT"
+   },
+   {
+    "dom": "Nice",
+    "ext": "Rennes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/msy7ly1621593859.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png",
+    "sd": "5",
+    "se": "2",
+    "quand": "2026-10-30T18:00:00Z",
+    "statut": "FT"
+   },
+   {
+    "dom": "Le Havre",
+    "ext": "Paris Saint-Germain",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/aikowk1546475003.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
+    "sd": "1",
+    "se": "5",
+    "quand": "2026-10-30T18:00:00Z",
+    "statut": "FT"
+   }
+  ],
+  "journee_resultats": 9,
+  "classement": [
+   {
+    "rang": "1",
+    "equipe": "Paris Saint-Germain",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png/tiny",
+    "pts": "20",
+    "j": "9"
+   },
+   {
+    "rang": "2",
+    "equipe": "Lille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png/tiny",
+    "pts": "18",
+    "j": "9"
+   },
+   {
+    "rang": "3",
+    "equipe": "Rennes",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png/tiny",
+    "pts": "16",
+    "j": "9"
+   },
+   {
+    "rang": "4",
+    "equipe": "Monaco",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png/tiny",
+    "pts": "15",
+    "j": "8"
+   },
+   {
+    "rang": "5",
+    "equipe": "Lyon",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png/tiny",
+    "pts": "14",
+    "j": "8"
+   }
+  ]
+ }
+}
