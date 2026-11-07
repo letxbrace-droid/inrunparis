@@ -1,0 +1,157 @@
+{
+ "maj": "2026-11-07T15:53:38+00:00",
+ "actus": [
+  "Mobilisation du 7 novembre : 46 000 personnes ont défilé à Paris, estime la préfecture, la mobilisation en \"net recul\" sur l'ensemble du territoire, selon l'entourage du ministre de l'Intérieur",
+  "Le parquet de Paris ouvre une enquête sur les récentes alertes à la bombe visant des avions survolant la France et recherche un \"lien éventuel avec des puissances étrangères\"",
+  "En Pologne, une fusillade à Cracovie fait cinq morts et \"plusieurs blessés\", selon le porte-parole de la police",
+  "Au Yémen, des frappes saoudiennes font 22 morts, selon les rebelles houthis",
+  "Présidentielle 2027 : les députés communistes qui soutiennent LFI se sont mis \"en dehors du parti\", selon le PCF",
+  "Le lycéen de La Courneuve soupçonné d'avoir poignardé l'un de ses camarades va être présenté à un juge pour \"tentative d'homicide volontaire\"",
+  "\"J'aimerais bien savoir pourquoi c'était comme ça entre ma fille et moi\" : la mère d'Inass, \"la petite martyre de l'A10\", s'enfonce dans le déni",
+  "Née dans l'ombre du nazisme, Volkswagen s'impose un devoir de mémoire pour plus de responsabilité pour le présent et l'avenir",
+  "Les prix de l'électricité \"sont et seront stables pour la quasi-totalité de nos offres jusqu'au 1er février au moins\", promet le PDG d'EDF",
+  "En Iran, un homme a été exécuté en lien avec l'attaque meurtrière d'un poste de police",
+  "L'illustrateur Serge Bloch, père de SamSam, Grande Ourse 2026 du Salon du livre et de la presse jeunesse de Montreuil",
+  "Que sait-on des effets sur la santé des gaz lacrymogènes utilisés par les forces de l'ordre dans les manifestations ?",
+  "Le ministère de l'Education nationale a-t-il envoyé un mail demandant de signaler les enseignants grévistes solidaires de la mobilisation des lycéens ?",
+  "\"Personne ne mérite ça\" : rencontre avec Maïssa, 18 ans, qui a perdu un œil à la suite d'un tir de grenade le 17 octobre",
+  "Gaël Monfils nommé nouveau capitaine de l'équipe de France de Coupe Davis de tennis"
+ ],
+ "foot": {
+  "ligue": "Ligue 1",
+  "journee": 10,
+  "saison": "2026-2027",
+  "prochains": [
+   {
+    "dom": "Auxerre",
+    "ext": "Paris FC",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/lzdtbf1658753355.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-07T18:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Paris Saint-Germain",
+    "ext": "Troyes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sl5kzg1766617559.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-07T20:05:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Rennes",
+    "ext": "Lille",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T14:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Angers",
+    "ext": "Nice",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/ix6q4w1678808069.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/msy7ly1621593859.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Brest",
+    "ext": "Lyon",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Le Havre",
+    "ext": "Lorient",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/aikowk1546475003.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sxsttw1473504748.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Le Mans",
+    "ext": "Monaco",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lens",
+    "ext": "Marseille",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/3pxoum1598797195.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-08T19:45:00Z",
+    "statut": "NS"
+   }
+  ],
+  "resultats": [
+   {
+    "dom": "Toulouse",
+    "ext": "Strasbourg",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/17eqox1688449282.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/b8k77w1766625501.png",
+    "sd": "3",
+    "se": "1",
+    "quand": "2026-11-06T19:45:00Z",
+    "statut": "FT"
+   }
+  ],
+  "journee_resultats": 10,
+  "classement": [
+   {
+    "rang": "1",
+    "equipe": "Paris Saint-Germain",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png/tiny",
+    "pts": "20",
+    "j": "9"
+   },
+   {
+    "rang": "2",
+    "equipe": "Lille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png/tiny",
+    "pts": "18",
+    "j": "9"
+   },
+   {
+    "rang": "3",
+    "equipe": "Lyon",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png/tiny",
+    "pts": "17",
+    "j": "9"
+   },
+   {
+    "rang": "4",
+    "equipe": "Paris FC",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png/tiny",
+    "pts": "17",
+    "j": "9"
+   },
+   {
+    "rang": "5",
+    "equipe": "Rennes",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png/tiny",
+    "pts": "16",
+    "j": "9"
+   }
+  ]
+ }
+}
