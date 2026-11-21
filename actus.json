@@ -1,0 +1,157 @@
+{
+ "maj": "2026-11-21T15:16:47+00:00",
+ "actus": [
+  "Mobilisation du 21 novembre : Une quarantaine de rassemblements recensés par le ministère de l'Intérieur en début d'après-midi",
+  "La Finlande soupçonne un hélicoptère russe d'avoir violé son espace aérien",
+  "Le remorquage du cargo échoué dans les Landes pourrait prendre plusieurs jours, selon la préfecture",
+  "Le président du Conseil européen propose un budget de l'UE en baisse de 204 milliards d'euros, aussitôt rejeté par la France",
+  "Quatre mois après le mégafeu au Porge, \"il y a énormément de douleur\" parmi les habitants, souligne le maire Martial Zaninetti",
+  "Black Week, Cyber Monday, Black Month… Pourquoi les commerçants n'attendent-ils plus le Black Friday pour casser les prix ?",
+  "\"Nous nous sentons ici chez nous\" : une brigade allemande de 5 000 soldats s'apprête à mener des exercices pendant un mois en Lituanie",
+  "Un directeur d'école maternelle de Montpellier mis en examen pour viol et agression sexuelle",
+  "Jusqu'à deux ans de prison ferme et le caractère raciste des violences retenu pour les trois policiers accusés d'avoir roué de coups Michel Zecler",
+  "Guerre en Ukraine : des frappes russes font deux morts et 58 blessés à Kryvyï Rih, ville natale de Volodymyr Zelensky",
+  "\"Bulldozer\", \"super shérif\" et \"serviteur de l'Etat\" : qui est Hugues Moutouh, le préfet soupçonné d'avoir fait fuiter des informations au RN ?",
+  "Présidentielle 2027 : Eric Zemmour lance sa campagne avec un meeting à Toulon",
+  "\"My Rock Stars\" : le photographe Hassan Hajjaj immortalise ses stars de la musique",
+  "Une conférence de l'ONU ouvre à la voie à un possible encadrement international des \"robots tueurs\"",
+  "La Bourse de Wall Street enregistre des centaines de milliards de dollars de pertes, pénalisée par le secteur de l'IA"
+ ],
+ "foot": {
+  "ligue": "Ligue 1",
+  "journee": 11,
+  "saison": "2026-2027",
+  "prochains": [
+   {
+    "dom": "Nice",
+    "ext": "Paris Saint-Germain",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/msy7ly1621593859.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-21T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lille",
+    "ext": "Lyon",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-21T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Monaco",
+    "ext": "Auxerre",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/lzdtbf1658753355.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-21T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Strasbourg",
+    "ext": "Brest",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/b8k77w1766625501.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-21T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lens",
+    "ext": "Toulouse",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/3pxoum1598797195.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/17eqox1688449282.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-21T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Paris FC",
+    "ext": "Angers",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/ix6q4w1678808069.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-22T14:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lorient",
+    "ext": "Rennes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/sxsttw1473504748.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-22T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Marseille",
+    "ext": "Le Mans",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-22T19:45:00Z",
+    "statut": "NS"
+   }
+  ],
+  "resultats": [
+   {
+    "dom": "Troyes",
+    "ext": "Le Havre",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/sl5kzg1766617559.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/aikowk1546475003.png",
+    "sd": "3",
+    "se": "1",
+    "quand": "2026-11-20T19:45:00Z",
+    "statut": "FT"
+   }
+  ],
+  "journee_resultats": 11,
+  "classement": [
+   {
+    "rang": "1",
+    "equipe": "Paris Saint-Germain",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png/tiny",
+    "pts": "23",
+    "j": "10"
+   },
+   {
+    "rang": "2",
+    "equipe": "Lille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png/tiny",
+    "pts": "21",
+    "j": "10"
+   },
+   {
+    "rang": "3",
+    "equipe": "Paris FC",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png/tiny",
+    "pts": "20",
+    "j": "10"
+   },
+   {
+    "rang": "4",
+    "equipe": "Marseille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png/tiny",
+    "pts": "18",
+    "j": "10"
+   },
+   {
+    "rang": "5",
+    "equipe": "Lyon",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png/tiny",
+    "pts": "17",
+    "j": "10"
+   }
+  ]
+ }
+}
