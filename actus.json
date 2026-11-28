@@ -1,0 +1,157 @@
+{
+ "maj": "2026-11-28T10:15:55+00:00",
+ "actus": [
+  "Roland Lescure voit un \"avertissement\" dans la décision de S&amp;P et maintient l'objectif d'un déficit public à 5% en 2027",
+  "Dans l'affaire des fuites au profit du RN, le bureau et le domicile d'Ambroise de Rancourt, coordinateur du programme présidentiel du parti, ont été perquisitionnés",
+  "\"Les immigrés sont instrumentalisés par les politiques\" : en Espagne, le modèle d'immigration défendu par Pedro Sanchez au cœur de la campagne des législatives",
+  "Deux syndicats d'Aéroports de Paris appellent à la grève le premier week-end des vacances de Noël",
+  "L'état de catastrophe naturelle reconnu pour 227 communes du Pas-de-Calais après les intempéries du mois de novembre",
+  "\"Le petit Grégory américain\" : on vous raconte l'histoire du meurtre non élucidé de JonBenét Ramsey, 6 ans, au cœur d'une nouvelle série Netflix",
+  "Manifestations : nouvelle journée de mobilisation samedi, notamment contre les violences faites aux femmes",
+  "Au Vélodrome jeudi soir à Marseille, \"une dizaine de personnes m'a entouré et frappé\", raconte un supporter bulgare blessé au Vélodrome",
+  "\"Un bon petit soldat\", \"Paper Tiger\", \"Congo Boy\" : quels sont les films à voir (ou pas) cette semaine au cinéma ?",
+  "La Russie annonce l'interception de plus de 1 200 drones ukrainiens sur son territoire",
+  "\"Je préfère acheter du bois du coin que du pétrole de Russie\" : dans ce village du Charolais, un réseau de chaleur remplace les chaudières au fioul",
+  "La star du catch Bronson Reed meurt à l'âge de 38 ans",
+  "Deux employés de Médecins sans frontières tués par une frappe israélienne à Gaza",
+  "Des milliers de personnes affectées par des inondations au Pérou et en Equateur, au moins 34 morts",
+  "Attention aux fausses publicités générées par intelligence artificielle pendant le Black Friday"
+ ],
+ "foot": {
+  "ligue": "Ligue 1",
+  "journee": 12,
+  "saison": "2026-2027",
+  "prochains": [
+   {
+    "dom": "Angers",
+    "ext": "Lens",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/ix6q4w1678808069.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/3pxoum1598797195.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-28T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Nice",
+    "ext": "Troyes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/msy7ly1621593859.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sl5kzg1766617559.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-28T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Paris Saint-Germain",
+    "ext": "Lorient",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/sxsttw1473504748.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-28T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Le Havre",
+    "ext": "Strasbourg",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/aikowk1546475003.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/b8k77w1766625501.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-28T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Le Mans",
+    "ext": "Lille",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-28T19:45:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Auxerre",
+    "ext": "Marseille",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/lzdtbf1658753355.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/c6bazh1779212287.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-29T14:00:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Toulouse",
+    "ext": "Rennes",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/17eqox1688449282.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/ypturx1473504818.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-29T16:15:00Z",
+    "statut": "NS"
+   },
+   {
+    "dom": "Lyon",
+    "ext": "Monaco",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+    "sd": null,
+    "se": null,
+    "quand": "2026-11-29T19:45:00Z",
+    "statut": "NS"
+   }
+  ],
+  "resultats": [
+   {
+    "dom": "Brest",
+    "ext": "Paris FC",
+    "bdom": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png",
+    "bext": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png",
+    "sd": "1",
+    "se": "0",
+    "quand": "2026-11-27T19:45:00Z",
+    "statut": "FT"
+   }
+  ],
+  "journee_resultats": 12,
+  "classement": [
+   {
+    "rang": "1",
+    "equipe": "Paris Saint-Germain",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/rwqrrq1473504808.png/tiny",
+    "pts": "26",
+    "j": "11"
+   },
+   {
+    "rang": "2",
+    "equipe": "Paris FC",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/yuvtsy1447594254.png/tiny",
+    "pts": "23",
+    "j": "12"
+   },
+   {
+    "rang": "3",
+    "equipe": "Brest",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/z69be41598797026.png/tiny",
+    "pts": "21",
+    "j": "12"
+   },
+   {
+    "rang": "4",
+    "equipe": "Lille",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png/tiny",
+    "pts": "21",
+    "j": "11"
+   },
+   {
+    "rang": "5",
+    "equipe": "Lyon",
+    "badge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png/tiny",
+    "pts": "20",
+    "j": "11"
+   }
+  ]
+ }
+}
